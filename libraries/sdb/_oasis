@@ -1,0 +1,26 @@
+OASISFormat: 0.4
+Name:        aws_sdb
+Version:     0.1.0
+Synopsis:    Data-Driven Infrastructure
+Maintainers: Spiros Eliopoulos <spiros@inhabitedtype.com>
+Authors:     Spiros Eliopoulos <spiros@inhabitedtype.com>, Daniel Patterson <dbp@dbpmail.net>
+Copyrights:  (C) 2016 Inhabited Type LLC
+License:     BSD-3-Clause
+Plugins:     META (0.4), DevFiles (0.4)
+BuildTools: ocamlbuild
+
+Library aws_sdb
+  Path:         lib
+  Findlibname:  aws_sdb
+  Pack:         true
+  Modules:      Types, Errors, BatchDeleteAttributes, BatchPutAttributes, CreateDomain, DeleteAttributes, DeleteDomain, DomainMetadata, GetAttributes, ListDomains, PutAttributes, Select
+  BuildDepends: aws
+
+Document aws_sdb
+  Title:                aws_sdb Docs
+  Type:                 ocamlbuild (0.4)
+  BuildTools+:          ocamldoc
+  Install:              true
+  XOCamlbuildPath:      lib
+  XOCamlbuildLibraries: aws_sdb
+

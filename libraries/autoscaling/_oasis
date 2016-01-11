@@ -1,0 +1,26 @@
+OASISFormat: 0.4
+Name:        aws_autoscaling
+Version:     0.1.0
+Synopsis:    Data-Driven Infrastructure
+Maintainers: Spiros Eliopoulos <spiros@inhabitedtype.com>
+Authors:     Spiros Eliopoulos <spiros@inhabitedtype.com>, Daniel Patterson <dbp@dbpmail.net>
+Copyrights:  (C) 2016 Inhabited Type LLC
+License:     BSD-3-Clause
+Plugins:     META (0.4), DevFiles (0.4)
+BuildTools: ocamlbuild
+
+Library aws_autoscaling
+  Path:         lib
+  Findlibname:  aws_autoscaling
+  Pack:         true
+  Modules:      Types, Errors, AttachInstances, AttachLoadBalancers, CompleteLifecycleAction, CreateAutoScalingGroup, CreateLaunchConfiguration, CreateOrUpdateTags, DeleteAutoScalingGroup, DeleteLaunchConfiguration, DeleteLifecycleHook, DeleteNotificationConfiguration, DeletePolicy, DeleteScheduledAction, DeleteTags, DescribeAccountLimits, DescribeAdjustmentTypes, DescribeAutoScalingGroups, DescribeAutoScalingInstances, DescribeAutoScalingNotificationTypes, DescribeLaunchConfigurations, DescribeLifecycleHookTypes, DescribeLifecycleHooks, DescribeLoadBalancers, DescribeMetricCollectionTypes, DescribeNotificationConfigurations, DescribePolicies, DescribeScalingActivities, DescribeScalingProcessTypes, DescribeScheduledActions, DescribeTags, DescribeTerminationPolicyTypes, DetachInstances, DetachLoadBalancers, DisableMetricsCollection, EnableMetricsCollection, EnterStandby, ExecutePolicy, ExitStandby, PutLifecycleHook, PutNotificationConfiguration, PutScalingPolicy, PutScheduledUpdateGroupAction, RecordLifecycleActionHeartbeat, ResumeProcesses, SetDesiredCapacity, SetInstanceHealth, SuspendProcesses, TerminateInstanceInAutoScalingGroup, UpdateAutoScalingGroup
+  BuildDepends: aws
+
+Document aws_autoscaling
+  Title:                aws_autoscaling Docs
+  Type:                 ocamlbuild (0.4)
+  BuildTools+:          ocamldoc
+  Install:              true
+  XOCamlbuildPath:      lib
+  XOCamlbuildLibraries: aws_autoscaling
+

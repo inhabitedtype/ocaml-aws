@@ -1,0 +1,11 @@
+# OASIS_START
+# DO NOT EDIT (digest: 19fa5e8baee042a8104e7fa584b00f24)
+Types
+Errors
+AssumeRole
+AssumeRoleWithSAML
+AssumeRoleWithWebIdentity
+DecodeAuthorizationMessage
+GetFederationToken
+GetSessionToken
+# OASIS_STOP

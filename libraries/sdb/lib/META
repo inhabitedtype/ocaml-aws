@@ -1,0 +1,12 @@
+# OASIS_START
+# DO NOT EDIT (digest: 99d3b5188b7a6dc456a9163cb58cdff5)
+version = "0.1.0"
+description = "Data-Driven Infrastructure"
+requires = "aws"
+archive(byte) = "aws_sdb.cma"
+archive(byte, plugin) = "aws_sdb.cma"
+archive(native) = "aws_sdb.cmxa"
+archive(native, plugin) = "aws_sdb.cmxs"
+exists_if = "aws_sdb.cma"
+# OASIS_STOP
+

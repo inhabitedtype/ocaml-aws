@@ -1,0 +1,16 @@
+opam-version: "1.2"
+version: "dev"
+maintainer: "Spiros Eliopoulos <spiros@inhabitedtype.com>"
+author: "Inhabited Type LLC"
+build: [
+  ["./configure" "--prefix=%{prefix}%"]
+  [make]
+]
+install: [make "install"]
+remove: [
+  ["ocamlfind" "remove" "aws_cloudtrail"]
+]
+depends: [
+  "ocamlfind" {build}
+  "aws"
+]

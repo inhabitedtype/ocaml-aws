@@ -1,0 +1,29 @@
+opam-version: "1.2"
+version: "dev"
+maintainer: "Spiros Eliopoulos <spiros@inhabitedtype.com>"
+author: "Inhabited Type LLC"
+build: [
+  ["./configure" "--prefix=%{prefix}%" "--%{lwt+cohttp+ssl:enable}%-lwt" "--%{async+cohttp+async_ssl:enable}%-async"]
+  ["make"]
+]
+install: ["make" "install"]
+remove: [
+  ["ocamlfind" "remove" "aws"]
+]
+depends: [
+  "ocamlfind" {build}
+  "ezxmlm"
+  "nocrypto"
+  "calendar"
+  "uri"
+]
+depopts: [
+  "async"
+  "async_ssl"
+  "cohttp"
+  "lwt"
+  "ssl"
+]
+conflicts: [
+  "cohttp" {< "0.17.0"}
+]

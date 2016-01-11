@@ -1,0 +1,58 @@
+OASISFormat: 0.4
+Name:        aws_ec2
+Version:     0.1.0
+Synopsis:    Data-Driven Infrastructure
+Authors:     Spiros Eliopoulos <spiros@inhabitedtype.com>, Daniel Patterson <dbp@dbpmail.net>
+Copyrights:  (C) 2015 Inhabited Type LLC
+License:     PROP
+Plugins:     META (0.4), DevFiles (0.4)
+BuildTools: ocamlbuild
+
+Library aws_ec2
+  Path:         lib
+  Findlibname:  aws_ec2
+  Pack:         true
+  Modules:      Types, Errors, AcceptVpcPeeringConnection, AllocateAddress, AssignPrivateIpAddresses, AssociateAddress, AssociateDhcpOptions, AssociateRouteTable, AttachClassicLinkVpc, AttachInternetGateway, AttachNetworkInterface, AttachVolume, AttachVpnGateway, AuthorizeSecurityGroupEgress, AuthorizeSecurityGroupIngress, BundleInstance, CancelBundleTask, CancelConversionTask, CancelExportTask, CancelImportTask, CancelReservedInstancesListing, CancelSpotFleetRequests, CancelSpotInstanceRequests, ConfirmProductInstance, CopyImage, CopySnapshot, CreateCustomerGateway, CreateDhcpOptions, CreateFlowLogs, CreateImage, CreateInstanceExportTask, CreateInternetGateway, CreateKeyPair, CreateNetworkAcl, CreateNetworkAclEntry, CreateNetworkInterface, CreatePlacementGroup, CreateReservedInstancesListing, CreateRoute, CreateRouteTable, CreateSecurityGroup, CreateSnapshot, CreateSpotDatafeedSubscription, CreateSubnet, CreateTags, CreateVolume, CreateVpc, CreateVpcEndpoint, CreateVpcPeeringConnection, CreateVpnConnection, CreateVpnConnectionRoute, CreateVpnGateway, DeleteCustomerGateway, DeleteDhcpOptions, DeleteFlowLogs, DeleteInternetGateway, DeleteKeyPair, DeleteNetworkAcl, DeleteNetworkAclEntry, DeleteNetworkInterface, DeletePlacementGroup, DeleteRoute, DeleteRouteTable, DeleteSecurityGroup, DeleteSnapshot, DeleteSpotDatafeedSubscription, DeleteSubnet, DeleteTags, DeleteVolume, DeleteVpc, DeleteVpcEndpoints, DeleteVpcPeeringConnection, DeleteVpnConnection, DeleteVpnConnectionRoute, DeleteVpnGateway, DeregisterImage, DescribeAccountAttributes, DescribeAddresses, DescribeAvailabilityZones, DescribeBundleTasks, DescribeClassicLinkInstances, DescribeConversionTasks, DescribeCustomerGateways, DescribeDhcpOptions, DescribeExportTasks, DescribeFlowLogs, DescribeImageAttribute, DescribeImages, DescribeImportImageTasks, DescribeImportSnapshotTasks, DescribeInstanceAttribute, DescribeInstanceStatus, DescribeInstances, DescribeInternetGateways, DescribeKeyPairs, DescribeMovingAddresses, DescribeNetworkAcls, DescribeNetworkInterfaceAttribute, DescribeNetworkInterfaces, DescribePlacementGroups, DescribePrefixLists, DescribeRegions, DescribeReservedInstances, DescribeReservedInstancesListings, DescribeReservedInstancesModifications, DescribeReservedInstancesOfferings, DescribeRouteTables, DescribeSecurityGroups, DescribeSnapshotAttribute, DescribeSnapshots, DescribeSpotDatafeedSubscription, DescribeSpotFleetInstances, DescribeSpotFleetRequestHistory, DescribeSpotFleetRequests, DescribeSpotInstanceRequests, DescribeSpotPriceHistory, DescribeSubnets, DescribeTags, DescribeVolumeAttribute, DescribeVolumeStatus, DescribeVolumes, DescribeVpcAttribute, DescribeVpcClassicLink, DescribeVpcEndpointServices, DescribeVpcEndpoints, DescribeVpcPeeringConnections, DescribeVpcs, DescribeVpnConnections, DescribeVpnGateways, DetachClassicLinkVpc, DetachInternetGateway, DetachNetworkInterface, DetachVolume, DetachVpnGateway, DisableVgwRoutePropagation, DisableVpcClassicLink, DisassociateAddress, DisassociateRouteTable, EnableVgwRoutePropagation, EnableVolumeIO, EnableVpcClassicLink, GetConsoleOutput, GetPasswordData, ImportImage, ImportInstance, ImportKeyPair, ImportSnapshot, ImportVolume, ModifyImageAttribute, ModifyInstanceAttribute, ModifyNetworkInterfaceAttribute, ModifyReservedInstances, ModifySnapshotAttribute, ModifySubnetAttribute, ModifyVolumeAttribute, ModifyVpcAttribute, ModifyVpcEndpoint, MonitorInstances, MoveAddressToVpc, PurchaseReservedInstancesOffering, RebootInstances, RegisterImage, RejectVpcPeeringConnection, ReleaseAddress, ReplaceNetworkAclAssociation, ReplaceNetworkAclEntry, ReplaceRoute, ReplaceRouteTableAssociation, ReportInstanceStatus, RequestSpotFleet, RequestSpotInstances, ResetImageAttribute, ResetInstanceAttribute, ResetNetworkInterfaceAttribute, ResetSnapshotAttribute, RestoreAddressToClassic, RevokeSecurityGroupEgress, RevokeSecurityGroupIngress, RunInstances, StartInstances, StopInstances, TerminateInstances, UnassignPrivateIpAddresses, UnmonitorInstances
+  BuildDepends: aws
+
+Document aws_ec2
+  Title:                aws_ec2 Docs
+  Type:                 ocamlbuild (0.4)
+  BuildTools+:          ocamldoc
+  Install:              true
+  XOCamlbuildPath:      lib
+  XOCamlbuildLibraries: aws_ec2
+
+Flag lwt
+  Description:  Run the Lwt tests
+  Default:      false
+
+Flag async
+  Description:  Run the Async tests
+  Default:      false
+
+Executable test_ec2_lwt
+  Path:             lib_test
+  MainIs:           test_lwt.ml
+  Build$:           flag(tests) && flag(lwt)
+  CompiledObject:   best
+  Install:          false
+  BuildDepends:     aws, aws_ec2, aws.lwt, lwt.syntax, yojson, oUnit (>= 1.0.2), threads
+
+Test test_ec2_lwt
+  Run$:             flag(tests) && flag(lwt)
+  Command:          $test_ec2_lwt
+  WorkingDirectory: lib_test
+
+Executable test_ec2_async
+  Path:             lib_test
+  MainIs:           test_async.ml
+  Build$:           flag(tests) && flag(async)
+  CompiledObject:   best
+  Install:          false
+  BuildDepends:     aws, aws_ec2, aws.async, async, yojson, oUnit (>= 1.0.2), threads
+
+Test test_ec2_async
+  Run$:             flag(tests) && flag(async)
+  Command:          $test_ec2_async
+  WorkingDirectory: lib_test

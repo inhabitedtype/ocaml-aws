@@ -1,0 +1,59 @@
+# OASIS_START
+# DO NOT EDIT (digest: 2812ab8cb49d47fb380b2ffc4165e954)
+# Ignore VCS directories, you can use the same kind of rule outside
+# OASIS_START/STOP if you want to exclude directories that contains
+# useless stuff for the build process
+true: annot, bin_annot
+<**/.svn>: -traverse
+<**/.svn>: not_hygienic
+".bzr": -traverse
+".bzr": not_hygienic
+".hg": -traverse
+".hg": not_hygienic
+".git": -traverse
+".git": not_hygienic
+"_darcs": -traverse
+"_darcs": not_hygienic
+# Library aws_elasticache
+"lib/aws_elasticache.cmxs": use_aws_elasticache
+"lib/types.cmx": for-pack(Aws_elasticache)
+"lib/errors.cmx": for-pack(Aws_elasticache)
+"lib/addTagsToResource.cmx": for-pack(Aws_elasticache)
+"lib/authorizeCacheSecurityGroupIngress.cmx": for-pack(Aws_elasticache)
+"lib/copySnapshot.cmx": for-pack(Aws_elasticache)
+"lib/createCacheCluster.cmx": for-pack(Aws_elasticache)
+"lib/createCacheParameterGroup.cmx": for-pack(Aws_elasticache)
+"lib/createCacheSecurityGroup.cmx": for-pack(Aws_elasticache)
+"lib/createCacheSubnetGroup.cmx": for-pack(Aws_elasticache)
+"lib/createReplicationGroup.cmx": for-pack(Aws_elasticache)
+"lib/createSnapshot.cmx": for-pack(Aws_elasticache)
+"lib/deleteCacheCluster.cmx": for-pack(Aws_elasticache)
+"lib/deleteCacheParameterGroup.cmx": for-pack(Aws_elasticache)
+"lib/deleteCacheSecurityGroup.cmx": for-pack(Aws_elasticache)
+"lib/deleteCacheSubnetGroup.cmx": for-pack(Aws_elasticache)
+"lib/deleteReplicationGroup.cmx": for-pack(Aws_elasticache)
+"lib/deleteSnapshot.cmx": for-pack(Aws_elasticache)
+"lib/describeCacheClusters.cmx": for-pack(Aws_elasticache)
+"lib/describeCacheEngineVersions.cmx": for-pack(Aws_elasticache)
+"lib/describeCacheParameterGroups.cmx": for-pack(Aws_elasticache)
+"lib/describeCacheParameters.cmx": for-pack(Aws_elasticache)
+"lib/describeCacheSecurityGroups.cmx": for-pack(Aws_elasticache)
+"lib/describeCacheSubnetGroups.cmx": for-pack(Aws_elasticache)
+"lib/describeEngineDefaultParameters.cmx": for-pack(Aws_elasticache)
+"lib/describeEvents.cmx": for-pack(Aws_elasticache)
+"lib/describeReplicationGroups.cmx": for-pack(Aws_elasticache)
+"lib/describeReservedCacheNodes.cmx": for-pack(Aws_elasticache)
+"lib/describeReservedCacheNodesOfferings.cmx": for-pack(Aws_elasticache)
+"lib/describeSnapshots.cmx": for-pack(Aws_elasticache)
+"lib/listTagsForResource.cmx": for-pack(Aws_elasticache)
+"lib/modifyCacheCluster.cmx": for-pack(Aws_elasticache)
+"lib/modifyCacheParameterGroup.cmx": for-pack(Aws_elasticache)
+"lib/modifyCacheSubnetGroup.cmx": for-pack(Aws_elasticache)
+"lib/modifyReplicationGroup.cmx": for-pack(Aws_elasticache)
+"lib/purchaseReservedCacheNodesOffering.cmx": for-pack(Aws_elasticache)
+"lib/rebootCacheCluster.cmx": for-pack(Aws_elasticache)
+"lib/removeTagsFromResource.cmx": for-pack(Aws_elasticache)
+"lib/resetCacheParameterGroup.cmx": for-pack(Aws_elasticache)
+"lib/revokeCacheSecurityGroupIngress.cmx": for-pack(Aws_elasticache)
+<lib/*.ml{,i,y}>: pkg_aws
+# OASIS_STOP

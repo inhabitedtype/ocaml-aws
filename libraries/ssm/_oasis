@@ -1,0 +1,26 @@
+OASISFormat: 0.4
+Name:        aws_ssm
+Version:     0.1.0
+Synopsis:    Data-Driven Infrastructure
+Maintainers: Spiros Eliopoulos <spiros@inhabitedtype.com>
+Authors:     Spiros Eliopoulos <spiros@inhabitedtype.com>, Daniel Patterson <dbp@dbpmail.net>
+Copyrights:  (C) 2016 Inhabited Type LLC
+License:     BSD-3-Clause
+Plugins:     META (0.4), DevFiles (0.4)
+BuildTools: ocamlbuild
+
+Library aws_ssm
+  Path:         lib
+  Findlibname:  aws_ssm
+  Pack:         true
+  Modules:      Types, Errors, CreateAssociation, CreateAssociationBatch, CreateDocument, DeleteAssociation, DeleteDocument, DescribeAssociation, DescribeDocument, GetDocument, ListAssociations, ListDocuments, UpdateAssociationStatus
+  BuildDepends: aws
+
+Document aws_ssm
+  Title:                aws_ssm Docs
+  Type:                 ocamlbuild (0.4)
+  BuildTools+:          ocamldoc
+  Install:              true
+  XOCamlbuildPath:      lib
+  XOCamlbuildLibraries: aws_ssm
+

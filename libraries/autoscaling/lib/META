@@ -1,0 +1,12 @@
+# OASIS_START
+# DO NOT EDIT (digest: f5ae1e1db7af6120ca0dd8e6184d2997)
+version = "0.1.0"
+description = "Data-Driven Infrastructure"
+requires = "aws"
+archive(byte) = "aws_autoscaling.cma"
+archive(byte, plugin) = "aws_autoscaling.cma"
+archive(native) = "aws_autoscaling.cmxa"
+archive(native, plugin) = "aws_autoscaling.cmxs"
+exists_if = "aws_autoscaling.cma"
+# OASIS_STOP
+

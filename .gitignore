@@ -1,0 +1,11 @@
+.*.sw[po]
+_build/
+setup.log
+setup.data
+*.native
+*.byte
+*#*
+*.core
+output/
+aws.docdir
+libraries/**/_build

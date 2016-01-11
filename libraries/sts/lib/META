@@ -1,0 +1,12 @@
+# OASIS_START
+# DO NOT EDIT (digest: 9673e170bcc2b680d8b147f063ace001)
+version = "0.1.0"
+description = "Data-Driven Infrastructure"
+requires = "aws"
+archive(byte) = "aws_sts.cma"
+archive(byte, plugin) = "aws_sts.cma"
+archive(native) = "aws_sts.cmxa"
+archive(native, plugin) = "aws_sts.cmxs"
+exists_if = "aws_sts.cma"
+# OASIS_STOP
+

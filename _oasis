@@ -1,0 +1,63 @@
+OASISFormat: 0.4
+Name:        aws
+Version:     0.1.0
+Synopsis:    Amazon Web Services SDK
+Maintainers: Spiros Eliopoulos <spiros@inhabitedtype.com>
+Authors:     Spiros Eliopoulos <spiros@inhabitedtype.com>, Daniel Patterson <dbp@dbpmail.net>
+Homepage:    https://github.com/inhabitedtype/ocaml-aws
+Copyrights:  (C) 2016 Inhabited Type LLC
+License:     BSD-3-clause
+Plugins:     META (0.4), DevFiles (0.4)
+BuildTools: ocamlbuild
+
+Flag lwt
+  Description:  Build the Lwt runtime
+  Default:      false
+
+Flag async
+  Description:  Build the Async runtime
+  Default:      false
+
+Flag gen
+  Description:  Build the code generation binary
+  Default:      false
+
+Library aws
+  Path:         lib
+  Findlibname:  aws
+  Modules:      Aws
+  BuildDepends: ezxmlm, nocrypto, calendar, uri
+
+Document aws
+  Title:                aws Docs
+  Type:                 ocamlbuild (0.4)
+  BuildTools+:          ocamldoc
+  Install:              false
+  XOCamlbuildPath:      lib
+  XOCamlbuildLibraries: aws
+
+Library aws_lwt
+  Path:             lwt
+  Findlibname:      lwt
+  Findlibparent:    aws
+  Pack:             true
+  Build$:           flag(lwt)
+  Modules:          Runtime
+  BuildDepends:     aws, cohttp.lwt-core, lwt, ssl
+
+Library aws_async
+  Path:             async
+  Findlibname:      async
+  Findlibparent:    aws
+  Pack:             true
+  Build$:           flag(async)
+  Modules:          Runtime
+  BuildDepends:     aws, cohttp.async, async, async_ssl, threads
+
+Executable aws_gen
+  Path:             src
+  MainIs:           aws_gen.ml
+  Build$:           flag(gen)
+  Install:          false
+  CompiledObject:   best
+  BuildDepends:     cmdliner, yojson, ppx_tools, ppx_tools.metaquot, ocamlgraph, unix

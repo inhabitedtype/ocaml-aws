@@ -1,0 +1,7 @@
+open Types
+type input = DescribeDBSecurityGroupsMessage.t
+type output = DBSecurityGroupMessage.t
+type error = Errors.t
+include
+  (Aws.Call with type  input :=  input and type  output :=  output and type
+     error :=  error)
