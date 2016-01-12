@@ -1,6 +1,6 @@
 # ocaml-aws
 
-ocaml-aws is an Amazon Web Services SDK for OCaml. Its soruce distribution
+ocaml-aws is an Amazon Web Services SDK for OCaml. Its source distribution
 includes a core runtime API and a code generation tool that generates
 individual libraries from [botocore][] service descriptions.
 
