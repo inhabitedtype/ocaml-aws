@@ -72,7 +72,7 @@ Scheduler.go_main ~main ()
 ### FreeBSD
 
 In order to install the library dependencies&mdash;specifically zarith which is
-a transitive dependency of nocrypto&mdash;you must fist make the following
+a transitive dependency of nocrypto&mdash;you must first make the following
 modifications to your system and environment:
 
 ```bash
