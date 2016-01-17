@@ -32,5 +32,3 @@
   ----------------------------------------------------------------------------*)
 
 val oasis : string -> string -> string list -> string
-
-val opam : string -> string

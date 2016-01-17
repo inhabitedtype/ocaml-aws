@@ -60,7 +60,7 @@ LIBRARIES := \
 .PHONY: $(LIBRARIES)
 $(LIBRARIES): aws_%:
 	./aws_gen.native -i input/$*/latest/service-2.json -r input/$*/overrides.json -e input/errors.json -o libraries
-	cd libraries/$* && oasis setup
+	cd libraries/$* && oasis setup && oasis2opam --local -y
 
 gen: all aws_ec2 $(LIBRARIES)
 

@@ -60,21 +60,3 @@ Document aws_%s
 
 %s" service service service (String.concat ", " modules) service service service
     append
-
-let opam service =
-  Printf.sprintf "opam-version: \"1.2\"
-version: \"dev\"
-maintainer: \"Spiros Eliopoulos <spiros@inhabitedtype.com>\"
-author: \"Inhabited Type LLC\"
-build: [
-  [\"./configure\" \"--prefix=%%{prefix}%%\"]
-  [make]
-]
-install: [make \"install\"]
-remove: [
-  [\"ocamlfind\" \"remove\" \"aws_%s\"]
-]
-depends: [
-  \"ocamlfind\" {build}
-  \"aws\"
-]" service

@@ -186,8 +186,6 @@ let main input override errors_path outdir is_ec2 =
   in
   Util.Printing.write_all (dir ^ "/_oasis") (Templates.oasis oasis_append service mods);
   print_endline "## Wrote _oasis file.";
-  Util.Printing.write_all (dir ^ "/opam") (Templates.opam service);
-  print_endline "## Wrote opam file."
 ;;
 
 module CommandLine = struct
