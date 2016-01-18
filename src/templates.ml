@@ -36,8 +36,9 @@ let oasis append service full_name modules =
 Name:        aws_%s
 Version:     0.1.0
 Synopsis:    %s
-Maintainers: Spiros Eliopoulos <spiros@inhabitedtype.com>
 Authors:     Spiros Eliopoulos <spiros@inhabitedtype.com>, Daniel Patterson <dbp@dbpmail.net>
+Maintainers: Spiros Eliopoulos <spiros@inhabitedtype.com>
+Homepage:    https://github.com/inhabitedtype/ocaml-aws
 Copyrights:  (C) 2016 Inhabited Type LLC
 License:     BSD-3-Clause
 Plugins:     META (0.4), DevFiles (0.4)
