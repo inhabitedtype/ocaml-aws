@@ -1,7 +1,7 @@
 # OASIS_START
-# DO NOT EDIT (digest: c701df8840ad95f28d7a768e6071bf8f)
+# DO NOT EDIT (digest: 9dc8e8454ff707f2c5dd2e6f3ebbc115)
 version = "0.1.0"
-description = "Data-Driven Infrastructure"
+description = "Elastic Load Balancing"
 requires = "aws"
 archive(byte) = "aws_elasticloadbalancing.cma"
 archive(byte, plugin) = "aws_elasticloadbalancing.cma"

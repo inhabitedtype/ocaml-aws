@@ -117,6 +117,7 @@ let main input override errors_path outdir is_ec2 =
   let version  = Json.(member_exn "apiVersion"     meta |> to_string) in
   let ops_json = Json.(member_exn "operations"     desc |> to_assoc) in
   let shp_json = Json.(member_exn "shapes"         desc |> to_assoc) in
+  let full_name  = Json.(member_exn "serviceFullName" meta |> to_string) in
   let parsed_ops = List.map Reading.op ops_json in
   let common_errors =
     let parse_common common =
@@ -184,7 +185,7 @@ let main input override errors_path outdir is_ec2 =
       really_input_string in_ (in_channel_length in_)
     with Sys_error _ -> ""
   in
-  Util.Printing.write_all (dir ^ "/_oasis") (Templates.oasis oasis_append service mods);
+  Util.Printing.write_all (dir ^ "/_oasis") (Templates.oasis oasis_append service full_name mods);
   print_endline "## Wrote _oasis file.";
 ;;
 

@@ -1,7 +1,7 @@
 OASISFormat: 0.4
 Name:        aws_ssm
 Version:     0.1.0
-Synopsis:    Data-Driven Infrastructure
+Synopsis:    Amazon Simple Systems Management Service
 Maintainers: Spiros Eliopoulos <spiros@inhabitedtype.com>
 Authors:     Spiros Eliopoulos <spiros@inhabitedtype.com>, Daniel Patterson <dbp@dbpmail.net>
 Copyrights:  (C) 2016 Inhabited Type LLC

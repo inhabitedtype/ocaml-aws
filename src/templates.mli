@@ -31,4 +31,4 @@
     POSSIBILITY OF SUCH DAMAGE.
   ----------------------------------------------------------------------------*)
 
-val oasis : string -> string -> string list -> string
+val oasis : string -> string -> string -> string list -> string

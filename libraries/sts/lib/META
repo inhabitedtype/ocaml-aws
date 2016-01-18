@@ -1,7 +1,7 @@
 # OASIS_START
-# DO NOT EDIT (digest: 9673e170bcc2b680d8b147f063ace001)
+# DO NOT EDIT (digest: 24f0b99aefa9ecb8a60e9e00d5e60854)
 version = "0.1.0"
-description = "Data-Driven Infrastructure"
+description = "AWS Security Token Service"
 requires = "aws"
 archive(byte) = "aws_sts.cma"
 archive(byte, plugin) = "aws_sts.cma"

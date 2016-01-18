@@ -1,7 +1,7 @@
 # OASIS_START
-# DO NOT EDIT (digest: 1578165d94d885ae504dd3ee17cf7e85)
+# DO NOT EDIT (digest: 5b6d325ec4660ff073bf10a89eaf89df)
 version = "0.1.0"
-description = "Data-Driven Infrastructure"
+description = "Amazon Relational Database Service"
 requires = "aws"
 archive(byte) = "aws_rds.cma"
 archive(byte, plugin) = "aws_rds.cma"
