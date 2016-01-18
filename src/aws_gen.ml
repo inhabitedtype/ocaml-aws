@@ -104,8 +104,22 @@ module Json = struct
     original)
 end
 
+let log s = Printf.eprintf (s ^^ "\n%!")
+let (</>) a b = Filename.concat a b
+
+let rec mkdir_p ?(root="") dirs =
+  match dirs with
+  | []    -> ()
+  | d::ds ->
+    let dir = root </> d in
+    begin
+      try Unix.mkdir dir 0o777
+      with Unix.Unix_error (Unix.EEXIST,_,_) -> ()
+    end;
+    mkdir_p ~root:dir ds
+
 let main input override errors_path outdir is_ec2 =
-  print_endline "## Generating...";
+  log "## Generating...";
   let desc =
     let json = Yojson.Basic.from_file input in
     match override with
@@ -162,31 +176,31 @@ let main input override errors_path outdir is_ec2 =
       StringTable.add nm shape acc)
     StringTable.empty shp_json)
   in
-  let dir = outdir ^ "/" ^ service in
-  mkdir_safe dir;
-  mkdir_safe (dir ^ "/lib");
-  Printing.write_structure (dir ^ "/lib/types.ml") (Generate.types is_ec2 shapes);
-  Printf.printf "## Wrote %d/%d shape modules...\n"
+  mkdir_p [outdir; service; "lib"];
+  let dir     = outdir </> service in
+  let lib_dir = dir    </> "lib" in
+  Printing.write_structure (lib_dir </> "types.ml") (Generate.types is_ec2 shapes);
+  log "## Wrote %d/%d shape modules..."
     (StringTable.cardinal shapes) (List.length shp_json);
-  Printing.write_structure (dir ^ "/lib/errors.ml") (Generate.errors errors common_errors);
-  Printf.printf "## Wrote %d error variants...\n" (List.length errors);
+  Printing.write_structure (lib_dir </> "errors.ml") (Generate.errors errors common_errors);
+  log "## Wrote %d error variants..." (List.length errors);
   List.iter (fun op ->
     let (mli, ml) = Generate.op service version shapes op in
     let modname = uncapitalize op.Operation.name in
-    Printing.write_signature (dir ^ "/lib/" ^ modname ^ ".mli") mli;
-    Printing.write_structure (dir ^ "/lib/" ^ modname ^ ".ml") ml)
+    Printing.write_signature (lib_dir </> (modname ^ ".mli")) mli;
+    Printing.write_structure (lib_dir </> (modname ^ ".ml")) ml)
   ops;
-  Printf.printf "## Wrote %d/%d ops modules...\n"
+  log "## Wrote %d/%d ops modules..."
     (List.length ops) (List.length ops_json);
   let mods = List.map (fun op -> op.Operation.name) ops in
   let oasis_append =
     try
-      let in_ = open_in (dir ^ "/_oasis_append") in
+      let in_ = open_in (dir </> "_oasis_append") in
       really_input_string in_ (in_channel_length in_)
     with Sys_error _ -> ""
   in
-  Util.Printing.write_all (dir ^ "/_oasis") (Templates.oasis oasis_append service full_name mods);
-  print_endline "## Wrote _oasis file.";
+  Printing.write_all (dir </> "_oasis") (Templates.oasis oasis_append service full_name mods);
+  log "## Wrote _oasis file.";
 ;;
 
 module CommandLine = struct

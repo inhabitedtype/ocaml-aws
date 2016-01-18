@@ -38,8 +38,6 @@ module Printing : sig
   val write_signature : string -> Parsetree.signature -> unit
 end
 
-val mkdir_safe : string -> unit
-
 
 (** This translates strings into legal variant identfiers. This is
     used, for example, in creating enum types and exception variants. *)
