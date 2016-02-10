@@ -120,19 +120,23 @@ let rec mkdir_p ?(root="") dirs =
 
 let main input override errors_path outdir is_ec2 =
   log "## Generating...";
+  let overrides =
+    match override with
+    | None      -> `Assoc []
+    | Some over -> Yojson.Basic.from_file over
+  in
   let desc =
     let json = Yojson.Basic.from_file input in
-    match override with
-    | None      -> json
-    | Some over -> Json.override json (Yojson.Basic.from_file over)
+    Json.override json overrides
   in
   let meta     = Json.(member_exn "metadata"       desc) in
-  let service  = Json.(member_exn "endpointPrefix" meta |> to_string) in
-  let version  = Json.(member_exn "apiVersion"     meta |> to_string) in
   let ops_json = Json.(member_exn "operations"     desc |> to_assoc) in
   let shp_json = Json.(member_exn "shapes"         desc |> to_assoc) in
-  let full_name  = Json.(member_exn "serviceFullName" meta |> to_string) in
-  let parsed_ops = List.map Reading.op ops_json in
+  let lib_name      = Json.(member_exn "endpointPrefix" meta |> to_string) in
+  let lib_version   = Json.(member_exn "libraryVersion" overrides |> to_string) in
+  let service_name  = Json.(member_exn "serviceFullName" meta |> to_string) in
+  let api_version   = Json.(member_exn "apiVersion"     meta |> to_string) in
+  let parsed_ops  = List.map Reading.op ops_json in
   let common_errors =
     let parse_common common =
       Util.filter_map (Json.to_list common) ~f:(fun e ->
@@ -155,7 +159,7 @@ let main input override errors_path outdir is_ec2 =
         match Json.member "specific" json with
         | `Null    -> []
         | specific ->
-          begin match Json.member service specific with
+          begin match Json.member lib_name specific with
           | `Null -> []
           | specific -> parse_common specific
           end
@@ -176,8 +180,8 @@ let main input override errors_path outdir is_ec2 =
       StringTable.add nm shape acc)
     StringTable.empty shp_json)
   in
-  mkdir_p [outdir; service; "lib"];
-  let dir     = outdir </> service in
+  mkdir_p [outdir; lib_name; "lib"];
+  let dir     = outdir </> lib_name in
   let lib_dir = dir    </> "lib" in
   Printing.write_structure (lib_dir </> "types.ml") (Generate.types is_ec2 shapes);
   log "## Wrote %d/%d shape modules..."
@@ -185,21 +189,22 @@ let main input override errors_path outdir is_ec2 =
   Printing.write_structure (lib_dir </> "errors.ml") (Generate.errors errors common_errors);
   log "## Wrote %d error variants..." (List.length errors);
   List.iter (fun op ->
-    let (mli, ml) = Generate.op service version shapes op in
+    let (mli, ml) = Generate.op lib_name api_version shapes op in
     let modname = uncapitalize op.Operation.name in
     Printing.write_signature (lib_dir </> (modname ^ ".mli")) mli;
     Printing.write_structure (lib_dir </> (modname ^ ".ml")) ml)
   ops;
   log "## Wrote %d/%d ops modules..."
     (List.length ops) (List.length ops_json);
-  let mods = List.map (fun op -> op.Operation.name) ops in
-  let oasis_append =
+  let modules = List.map (fun op -> op.Operation.name) ops in
+  let append =
     try
       let in_ = open_in (dir </> "_oasis_append") in
       really_input_string in_ (in_channel_length in_)
     with Sys_error _ -> ""
   in
-  Printing.write_all (dir </> "_oasis") (Templates.oasis oasis_append service full_name mods);
+  Printing.write_all (dir </> "_oasis")
+    (Templates.oasis ~append ~lib_name ~lib_version ~service_name ~modules);
   log "## Wrote _oasis file.";
 ;;
 

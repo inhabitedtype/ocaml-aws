@@ -31,10 +31,10 @@
     POSSIBILITY OF SUCH DAMAGE.
   ----------------------------------------------------------------------------*)
 
-let oasis append service full_name modules =
+let oasis ~append ~lib_name ~lib_version ~service_name ~modules =
   Printf.sprintf "OASISFormat: 0.4
 Name:        aws_%s
-Version:     0.1.0
+Version:     %s
 Synopsis:    %s
 Authors:     Spiros Eliopoulos <spiros@inhabitedtype.com>, Daniel Patterson <dbp@dbpmail.net>
 Maintainers: Spiros Eliopoulos <spiros@inhabitedtype.com>
@@ -59,5 +59,5 @@ Document aws_%s
   XOCamlbuildPath:      lib
   XOCamlbuildLibraries: aws_%s
 
-%s" service full_name service service (String.concat ", " modules) service service service
+%s" lib_name lib_version service_name lib_name lib_name (String.concat ", " modules) lib_name lib_name lib_name
     append

@@ -2,6 +2,7 @@
     "referenceUrl": "http://docs.aws.amazon.com/AmazonCloudFront/latest/APIReference/Welcome.html",
     "operationUrl": "http://docs.aws.amazon.com/AmazonCloudFront/latest/APIReference/",
     "libraryName": "aws_cloudfront",
+    "libraryVersion": "0.1.0",
     "typeOverrides": {
         "ListCloudFrontOriginAccessIdentitiesResult": {
             "requiredFields": [

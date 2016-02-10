@@ -2,6 +2,7 @@
     "referenceUrl": "http://docs.aws.amazon.com/datapipeline/latest/APIReference/Welcome.html",
     "operationUrl": "http://docs.aws.amazon.com/datapipeline/latest/APIReference/API_",
     "libraryName": "aws_datapipeline",
+    "libraryVersion": "0.1.0",
     "typeOverrides": {
         "OperatorType": {
             "enumPrefix": "Operator"

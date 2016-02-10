@@ -1,5 +1,6 @@
 {
     "referenceUrl": "http://dynamodb-preview.s3-website-us-west-2.amazonaws.com/docs/streams-api/Welcome.html",
     "operationUrl": "http://dynamodb-preview.s3-website-us-west-2.amazonaws.com/docs/streams-api/API_",
-    "libraryName": "aws_dynamodb-streams"
+    "libraryName": "aws_dynamodb-streams",
+    "libraryVersion": "0.1.0"
 }

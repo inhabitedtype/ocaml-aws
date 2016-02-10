@@ -2,6 +2,7 @@
     "referenceUrl": "http://docs.aws.amazon.com/kms/latest/APIReference/Welcome.html",
     "operationUrl": "http://docs.aws.amazon.com/kms/latest/APIReference/API_",
     "libraryName": "aws_kms",
+    "libraryVersion": "0.1.0",
     "typeOverrides": {
         "GenerateDataKeyResponse": {
             "requiredFields": [
