@@ -9,3 +9,4 @@ setup.data
 output/
 aws.docdir
 libraries/**/_build
+release.tar.gz
