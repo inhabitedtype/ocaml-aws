@@ -15,7 +15,7 @@ Library aws_elasticloadbalancing
   Findlibname:  aws_elasticloadbalancing
   Pack:         true
   Modules:      Types, Errors, AddTags, ApplySecurityGroupsToLoadBalancer, AttachLoadBalancerToSubnets, ConfigureHealthCheck, CreateAppCookieStickinessPolicy, CreateLBCookieStickinessPolicy, CreateLoadBalancer, CreateLoadBalancerListeners, CreateLoadBalancerPolicy, DeleteLoadBalancer, DeleteLoadBalancerListeners, DeleteLoadBalancerPolicy, DeregisterInstancesFromLoadBalancer, DescribeInstanceHealth, DescribeLoadBalancerAttributes, DescribeLoadBalancerPolicies, DescribeLoadBalancerPolicyTypes, DescribeLoadBalancers, DescribeTags, DetachLoadBalancerFromSubnets, DisableAvailabilityZonesForLoadBalancer, EnableAvailabilityZonesForLoadBalancer, ModifyLoadBalancerAttributes, RegisterInstancesWithLoadBalancer, RemoveTags, SetLoadBalancerListenerSSLCertificate, SetLoadBalancerPoliciesForBackendServer, SetLoadBalancerPoliciesOfListener
-  BuildDepends: aws
+  BuildDepends: aws (>= 0.1.0)
 
 Document aws_elasticloadbalancing
   Title:                aws_elasticloadbalancing Docs

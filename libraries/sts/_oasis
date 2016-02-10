@@ -15,7 +15,7 @@ Library aws_sts
   Findlibname:  aws_sts
   Pack:         true
   Modules:      Types, Errors, AssumeRole, AssumeRoleWithSAML, AssumeRoleWithWebIdentity, DecodeAuthorizationMessage, GetFederationToken, GetSessionToken
-  BuildDepends: aws
+  BuildDepends: aws (>= 0.1.0)
 
 Document aws_sts
   Title:                aws_sts Docs

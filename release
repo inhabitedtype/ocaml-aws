@@ -6,8 +6,8 @@ function release_service() {
     make distclean
     rm release.tar.gz
     tar czvf release.tar.gz *
-    git upload-release inhabitedtype ocaml-aws aws_$service-v$version release.tar.gz
-    rm release.tar.gz
+    #git upload-release inhabitedtype ocaml-aws aws_$service-v$version release.tar.gz
+    #rm release.tar.gz
 }
 
 function release_top() {
@@ -15,8 +15,8 @@ function release_top() {
     make distclean
     rm release.tar.gz
     tar cvzf release.tar.gz --exclude=libraries/** --exclude=input/** --exclude=.git/** *
-    git upload-release inhabitedtype ocaml-aws aws-v$version release.tar.gz
-    rm release.tar.gz
+    #git upload-release inhabitedtype ocaml-aws aws-v$version release.tar.gz
+    #rm release.tar.gz
 }
 
 function release() {

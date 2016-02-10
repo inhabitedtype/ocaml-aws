@@ -15,7 +15,7 @@ Library aws_ssm
   Findlibname:  aws_ssm
   Pack:         true
   Modules:      Types, Errors, CreateAssociation, CreateAssociationBatch, CreateDocument, DeleteAssociation, DeleteDocument, DescribeAssociation, DescribeDocument, GetDocument, ListAssociations, ListDocuments, UpdateAssociationStatus
-  BuildDepends: aws
+  BuildDepends: aws (>= 0.1.0)
 
 Document aws_ssm
   Title:                aws_ssm Docs

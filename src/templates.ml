@@ -49,7 +49,7 @@ Library aws_%s
   Findlibname:  aws_%s
   Pack:         true
   Modules:      Types, Errors, %s
-  BuildDepends: aws
+  BuildDepends: aws (>= 0.1.0)
 
 Document aws_%s
   Title:                aws_%s Docs
