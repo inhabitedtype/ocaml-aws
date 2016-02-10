@@ -30,14 +30,13 @@ dependencies that must be installed in order for the build to succeed. See the
 `_oasis` file for details. In addition, the Makefile is written for GNU make.
 Some platforms such as OS X and FreeBSD do not have a GNU-compatible make
 installed by default. If you get strage error messages at this stage of the
-build, check your make.
+build, check your make. The following commands will configure the build for
+code generation and regenrate the libraries from the current definitions:
 
 ```bash
 ./configure --enable-gen
 make gen
 ```
-
-This should h
 
 ## Example
 
