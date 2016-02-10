@@ -15,7 +15,7 @@ Library aws_cloudformation
   Findlibname:  aws_cloudformation
   Pack:         true
   Modules:      Types, Errors, CancelUpdateStack, CreateStack, DeleteStack, DescribeStackEvents, DescribeStackResource, DescribeStackResources, DescribeStacks, EstimateTemplateCost, GetStackPolicy, GetTemplate, GetTemplateSummary, ListStackResources, ListStacks, SetStackPolicy, SignalResource, UpdateStack, ValidateTemplate
-  BuildDepends: aws
+  BuildDepends: aws (>= 0.1.0)
 
 Document aws_cloudformation
   Title:                aws_cloudformation Docs

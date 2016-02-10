@@ -15,7 +15,7 @@ Library aws_cloudtrail
   Findlibname:  aws_cloudtrail
   Pack:         true
   Modules:      Types, Errors, CreateTrail, DeleteTrail, DescribeTrails, GetTrailStatus, LookupEvents, StartLogging, StopLogging, UpdateTrail
-  BuildDepends: aws
+  BuildDepends: aws (>= 0.1.0)
 
 Document aws_cloudtrail
   Title:                aws_cloudtrail Docs

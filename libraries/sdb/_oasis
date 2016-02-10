@@ -15,7 +15,7 @@ Library aws_sdb
   Findlibname:  aws_sdb
   Pack:         true
   Modules:      Types, Errors, BatchDeleteAttributes, BatchPutAttributes, CreateDomain, DeleteAttributes, DeleteDomain, DomainMetadata, GetAttributes, ListDomains, PutAttributes, Select
-  BuildDepends: aws
+  BuildDepends: aws (>= 0.1.0)
 
 Document aws_sdb
   Title:                aws_sdb Docs
