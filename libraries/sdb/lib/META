@@ -1,7 +1,7 @@
 # OASIS_START
-# DO NOT EDIT (digest: 99d3b5188b7a6dc456a9163cb58cdff5)
+# DO NOT EDIT (digest: 43525f00d9447fefa9ceae20b5d93cb2)
 version = "0.1.0"
-description = "Data-Driven Infrastructure"
+description = "Amazon SimpleDB"
 requires = "aws"
 archive(byte) = "aws_sdb.cma"
 archive(byte, plugin) = "aws_sdb.cma"

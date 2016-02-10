@@ -1,7 +1,7 @@
 # OASIS_START
-# DO NOT EDIT (digest: 731b8536805aea211fa7d76b25e248b6)
+# DO NOT EDIT (digest: 19ae29edde2025a2ba4c8d23199e76ce)
 version = "0.1.0"
-description = "Data-Driven Infrastructure"
+description = "Amazon Elastic Compute Cloud"
 requires = "aws"
 archive(byte) = "aws_ec2.cma"
 archive(byte, plugin) = "aws_ec2.cma"

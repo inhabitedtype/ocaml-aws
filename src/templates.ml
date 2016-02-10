@@ -31,13 +31,14 @@
     POSSIBILITY OF SUCH DAMAGE.
   ----------------------------------------------------------------------------*)
 
-let oasis append service modules =
+let oasis ~append ~lib_name ~lib_version ~service_name ~modules =
   Printf.sprintf "OASISFormat: 0.4
 Name:        aws_%s
-Version:     0.1.0
-Synopsis:    Data-Driven Infrastructure
-Maintainers: Spiros Eliopoulos <spiros@inhabitedtype.com>
+Version:     %s
+Synopsis:    %s
 Authors:     Spiros Eliopoulos <spiros@inhabitedtype.com>, Daniel Patterson <dbp@dbpmail.net>
+Maintainers: Spiros Eliopoulos <spiros@inhabitedtype.com>
+Homepage:    https://github.com/inhabitedtype/ocaml-aws
 Copyrights:  (C) 2016 Inhabited Type LLC
 License:     BSD-3-Clause
 Plugins:     META (0.4), DevFiles (0.4)
@@ -58,23 +59,5 @@ Document aws_%s
   XOCamlbuildPath:      lib
   XOCamlbuildLibraries: aws_%s
 
-%s" service service service (String.concat ", " modules) service service service
+%s" lib_name lib_version service_name lib_name lib_name (String.concat ", " modules) lib_name lib_name lib_name
     append
-
-let opam service =
-  Printf.sprintf "opam-version: \"1.2\"
-version: \"dev\"
-maintainer: \"Spiros Eliopoulos <spiros@inhabitedtype.com>\"
-author: \"Inhabited Type LLC\"
-build: [
-  [\"./configure\" \"--prefix=%%{prefix}%%\"]
-  [make]
-]
-install: [make \"install\"]
-remove: [
-  [\"ocamlfind\" \"remove\" \"aws_%s\"]
-]
-depends: [
-  \"ocamlfind\" {build}
-  \"aws\"
-]" service

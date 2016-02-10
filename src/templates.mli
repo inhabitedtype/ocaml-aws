@@ -31,6 +31,10 @@
     POSSIBILITY OF SUCH DAMAGE.
   ----------------------------------------------------------------------------*)
 
-val oasis : string -> string -> string list -> string
-
-val opam : string -> string
+val oasis 
+  :  append:string
+  -> lib_name:string 
+  -> lib_version:string
+  -> service_name:string
+  -> modules:string list
+  -> string

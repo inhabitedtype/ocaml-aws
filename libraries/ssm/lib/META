@@ -1,7 +1,7 @@
 # OASIS_START
-# DO NOT EDIT (digest: 214b1fc1016ef88c7171a1949ce4f94f)
+# DO NOT EDIT (digest: 2519d5be43ab001788934e4cb3619748)
 version = "0.1.0"
-description = "Data-Driven Infrastructure"
+description = "Amazon Simple Systems Management Service"
 requires = "aws"
 archive(byte) = "aws_ssm.cma"
 archive(byte, plugin) = "aws_ssm.cma"

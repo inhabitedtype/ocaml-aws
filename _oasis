@@ -2,6 +2,9 @@ OASISFormat: 0.4
 Name:        aws
 Version:     0.1.0
 Synopsis:    Amazon Web Services SDK
+Description: ocaml-aws is an Amazon Web Services SDK for OCaml. Its soruce distribution
+  includes a core runtime API and a code generation tool that generates
+  individual libraries from [botocore][] service descriptions.
 Maintainers: Spiros Eliopoulos <spiros@inhabitedtype.com>
 Authors:     Spiros Eliopoulos <spiros@inhabitedtype.com>, Daniel Patterson <dbp@dbpmail.net>
 Homepage:    https://github.com/inhabitedtype/ocaml-aws
@@ -19,7 +22,7 @@ Flag async
   Default:      false
 
 Flag gen
-  Description:  Build the code generation binary
+  Description:  Build the code generation tool
   Default:      false
 
 Library aws

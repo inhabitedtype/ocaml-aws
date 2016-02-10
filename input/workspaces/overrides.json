@@ -1,5 +1,6 @@
 {
     "referenceUrl": "http://docs.aws.amazon.com/workspaces/latest/devguide/welcome.html",
     "operationUrl": "http://docs.aws.amazon.com/workspaces/latest/devguide/API_",
-    "libraryName": "aws_workspaces"
+    "libraryName": "aws_workspaces",
+    "libraryVersion": "0.1.0"
 }

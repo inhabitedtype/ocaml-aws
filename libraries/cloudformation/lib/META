@@ -1,7 +1,7 @@
 # OASIS_START
-# DO NOT EDIT (digest: 0e5b3719e5e31247817fca2f8ede5880)
+# DO NOT EDIT (digest: 127413052ccedaadf2ac79cc175ba54d)
 version = "0.1.0"
-description = "Data-Driven Infrastructure"
+description = "AWS CloudFormation"
 requires = "aws"
 archive(byte) = "aws_cloudformation.cma"
 archive(byte, plugin) = "aws_cloudformation.cma"

@@ -1,7 +1,7 @@
 # OASIS_START
-# DO NOT EDIT (digest: 5b0596be19128b4e2589c044abd91c8c)
+# DO NOT EDIT (digest: 9aab69c962d5de5386c0b1359dd09884)
 version = "0.1.0"
-description = "Data-Driven Infrastructure"
+description = "Amazon ElastiCache"
 requires = "aws"
 archive(byte) = "aws_elasticache.cma"
 archive(byte, plugin) = "aws_elasticache.cma"

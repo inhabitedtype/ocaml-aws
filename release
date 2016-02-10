@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+function release_service() {
+    local service=$1
+    local version=$(grep ^Version _oasis | sed 's/^.*: *\([^ ]\)/\1/')
+    make distclean
+    rm release.tar.gz
+    tar czvf release.tar.gz *
+    git upload-release inhabitedtype ocaml-aws aws_$service-v$version release.tar.gz
+    rm release.tar.gz
+}
+
+function release_top() {
+    local version=$(grep Version _oasis | sed 's/^.*: *\([^ ]\)/\1/')
+    make distclean
+    rm release.tar.gz
+    tar cvzf release.tar.gz --exclude=libraries/** --exclude=input/** --exclude=.git/** *
+    git upload-release inhabitedtype ocaml-aws aws-v$version release.tar.gz
+    rm release.tar.gz
+}
+
+function release() {
+    release_top
+    for lib in $(ls libraries); do
+        if [[ -d libraries/$lib ]]; then
+            pushd libraries/$lib > /dev/null
+            release_service $lib
+            popd > /dev/null
+        fi
+    done
+}
+
+release

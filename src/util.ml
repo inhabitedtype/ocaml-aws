@@ -57,12 +57,6 @@ end
 
 module StringTable = Map.Make(String)
 
-let mkdir_safe dir =
-  try
-    Printf.printf "## Creating directory %s...\n%!" dir;
-    Unix.mkdir dir 0o777
-  with Unix.Unix_error (Unix.EEXIST,_,_) -> ()
-
 module Char = struct
   include Char
 

@@ -1,5 +1,6 @@
 {
     "referenceUrl": "http://docs.aws.amazon.com/config/latest/APIReference/Welcome.html",
     "operationUrl": "http://docs.aws.amazon.com/config/latest/APIReference/API_",
-    "libraryName": "aws_config"
+    "libraryName": "aws_config",
+    "libraryVersion": "0.1.0"
 }

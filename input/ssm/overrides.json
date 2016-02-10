@@ -1,5 +1,6 @@
 {
     "referenceUrl": "http://docs.aws.amazon.com/ssm/latest/APIReference/Welcome.html",
     "operationUrl": "http://docs.aws.amazon.com/ssm/latest/APIReference/API_",
-    "libraryName": "aws_ssm"
+    "libraryName": "aws_ssm",
+    "libraryVersion": "0.1.0"
 }

@@ -1,5 +1,6 @@
 {
     "referenceUrl": "http://docs.aws.amazon.com/amazondynamodb/latest/APIReference/Welcome.html",
     "operationUrl": "http://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_",
-    "libraryName": "aws_dynamodb"
+    "libraryName": "aws_dynamodb",
+    "libraryVersion": "0.1.0"
 }

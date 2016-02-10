@@ -1,7 +1,0 @@
-open Types
-type input = CreateInternetGatewayRequest.t
-type output = CreateInternetGatewayResult.t
-type error = Errors.t
-include
-  (Aws.Call with type  input :=  input and type  output :=  output and type
-     error :=  error)
