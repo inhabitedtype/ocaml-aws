@@ -1,6 +1,6 @@
 # OASIS_START
-# DO NOT EDIT (digest: 9b75f60ef7dc897a943b5e80420d5077)
-version = "0.1.0"
+# DO NOT EDIT (digest: 8c6d649992d2e768ebd58da8ae67e086)
+version = "1.0.0"
 description = "Amazon Web Services SDK"
 requires = "ezxmlm nocrypto calendar uri"
 archive(byte) = "aws.cma"
@@ -9,7 +9,7 @@ archive(native) = "aws.cmxa"
 archive(native, plugin) = "aws.cmxs"
 exists_if = "aws.cma"
 package "lwt" (
- version = "0.1.0"
+ version = "1.0.0"
  description = "Amazon Web Services SDK"
  requires = "aws cohttp.lwt-core lwt ssl"
  archive(byte) = "aws_lwt.cma"
@@ -20,7 +20,7 @@ package "lwt" (
 )
 
 package "async" (
- version = "0.1.0"
+ version = "1.0.0"
  description = "Amazon Web Services SDK"
  requires = "aws cohttp.async async async_ssl threads"
  archive(byte) = "aws_async.cma"

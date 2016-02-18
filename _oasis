@@ -1,6 +1,6 @@
 OASISFormat: 0.4
 Name:        aws
-Version:     0.1.0
+Version:     1.0.0
 Synopsis:    Amazon Web Services SDK
 Description: ocaml-aws is an Amazon Web Services SDK for OCaml. Its source distribution
   includes a core runtime API and a code generation tool that generates
