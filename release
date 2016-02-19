@@ -3,20 +3,26 @@
 function release_service() {
     local service=$1
     local version=$(grep ^Version _oasis | sed 's/^.*: *\([^ ]\)/\1/')
+    local release=$service-${version}
     make distclean
-    rm release.tar.gz
-    tar czvf release.tar.gz *
-    #git upload-release inhabitedtype ocaml-aws aws_$service-v$version release.tar.gz
-    #rm release.tar.gz
+    rm ${release}.tar.gz
+    ln -s . $release
+    tar cvzf ${release}.tar.gz --exclude=${release}/${release} ${release}/*
+    rm ${release}
+    #git upload-release inhabitedtype ocaml-aws ${release} ${release}.tar.gz
+    #rm ${release}.tar.gz
 }
 
 function release_top() {
     local version=$(grep Version _oasis | sed 's/^.*: *\([^ ]\)/\1/')
+    local release=aws-${version}
     make distclean
-    rm release.tar.gz
-    tar cvzf release.tar.gz --exclude=libraries/** --exclude=input/** --exclude=.git/** *
-    #git upload-release inhabitedtype ocaml-aws aws-v$version release.tar.gz
-    #rm release.tar.gz
+    rm ${release}.tar.gz
+    ln -s . $release
+    tar cvzf ${release}.tar.gz --exclude=libraries/** --exclude=input/** --exclude=.git/** --exclude=${release}/${release} ${release}/*
+    rm ${release}
+    #git upload-release inhabitedtype ocaml-aws ${release} ${release}.tar.gz
+    #rm ${release}.tar.gz
 }
 
 function release() {
