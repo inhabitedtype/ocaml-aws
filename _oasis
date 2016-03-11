@@ -46,7 +46,7 @@ Library aws_lwt
   Pack:             true
   Build$:           flag(lwt)
   Modules:          Runtime
-  BuildDepends:     aws, cohttp.lwt-core, lwt, ssl
+  BuildDepends:     aws, cohttp.lwt, lwt, ssl
 
 Library aws_async
   Path:             async
