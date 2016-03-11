@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: d2186fc32d7bb905a293e204af3a521a)
+# DO NOT EDIT (digest: 52d521389e77d638178cffeee895b6dd)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -24,7 +24,7 @@ true: annot, bin_annot
 "lwt/aws_lwt.cmxs": use_aws_lwt
 "lwt/runtime.cmx": for-pack(Aws_lwt)
 <lwt/*.ml{,i,y}>: pkg_calendar
-<lwt/*.ml{,i,y}>: pkg_cohttp.lwt-core
+<lwt/*.ml{,i,y}>: pkg_cohttp.lwt
 <lwt/*.ml{,i,y}>: pkg_ezxmlm
 <lwt/*.ml{,i,y}>: pkg_lwt
 <lwt/*.ml{,i,y}>: pkg_nocrypto
