@@ -34,6 +34,7 @@ function release_service() {
     local service=$(oasis query name)
     local version=$(oasis query version)
     local release=$service-${version}
+    local aws_release=$1
     echo "== $release"
     make distclean > /dev/null
     rm ${release}.tar.gz
@@ -61,10 +62,11 @@ function release_top() {
 
 function release() {
     release_top
+    local aws_release=aws-$(oasis query version)
     for lib in $(ls libraries); do
         if [[ -d libraries/$lib ]]; then
             pushd libraries/$lib > /dev/null
-            release_service
+            release_service $aws_release
             popd > /dev/null
         fi
     done
