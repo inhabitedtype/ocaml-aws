@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 52d521389e77d638178cffeee895b6dd)
+# DO NOT EDIT (digest: c747494e57de1dc4045a2d874ed6cfc2)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -16,46 +16,46 @@ true: annot, bin_annot
 "_darcs": not_hygienic
 # Library aws
 "lib/aws.cmxs": use_aws
-<lib/*.ml{,i,y}>: pkg_calendar
-<lib/*.ml{,i,y}>: pkg_ezxmlm
-<lib/*.ml{,i,y}>: pkg_nocrypto
-<lib/*.ml{,i,y}>: pkg_uri
+<lib/*.ml{,i,y}>: package(calendar)
+<lib/*.ml{,i,y}>: package(ezxmlm)
+<lib/*.ml{,i,y}>: package(nocrypto)
+<lib/*.ml{,i,y}>: package(uri)
 # Library aws_lwt
 "lwt/aws_lwt.cmxs": use_aws_lwt
 "lwt/runtime.cmx": for-pack(Aws_lwt)
-<lwt/*.ml{,i,y}>: pkg_calendar
-<lwt/*.ml{,i,y}>: pkg_cohttp.lwt
-<lwt/*.ml{,i,y}>: pkg_ezxmlm
-<lwt/*.ml{,i,y}>: pkg_lwt
-<lwt/*.ml{,i,y}>: pkg_nocrypto
-<lwt/*.ml{,i,y}>: pkg_ssl
-<lwt/*.ml{,i,y}>: pkg_uri
+<lwt/*.ml{,i,y}>: package(calendar)
+<lwt/*.ml{,i,y}>: package(cohttp.lwt)
+<lwt/*.ml{,i,y}>: package(ezxmlm)
+<lwt/*.ml{,i,y}>: package(lwt)
+<lwt/*.ml{,i,y}>: package(nocrypto)
+<lwt/*.ml{,i,y}>: package(ssl)
+<lwt/*.ml{,i,y}>: package(uri)
 <lwt/*.ml{,i,y}>: use_aws
 # Library aws_async
 "async/aws_async.cmxs": use_aws_async
 "async/runtime.cmx": for-pack(Aws_async)
-<async/*.ml{,i,y}>: pkg_async
-<async/*.ml{,i,y}>: pkg_async_ssl
-<async/*.ml{,i,y}>: pkg_calendar
-<async/*.ml{,i,y}>: pkg_cohttp.async
-<async/*.ml{,i,y}>: pkg_ezxmlm
-<async/*.ml{,i,y}>: pkg_nocrypto
-<async/*.ml{,i,y}>: pkg_threads
-<async/*.ml{,i,y}>: pkg_uri
+<async/*.ml{,i,y}>: package(async)
+<async/*.ml{,i,y}>: package(async_ssl)
+<async/*.ml{,i,y}>: package(calendar)
+<async/*.ml{,i,y}>: package(cohttp.async)
+<async/*.ml{,i,y}>: package(ezxmlm)
+<async/*.ml{,i,y}>: package(nocrypto)
+<async/*.ml{,i,y}>: package(threads)
+<async/*.ml{,i,y}>: package(uri)
 <async/*.ml{,i,y}>: use_aws
 # Executable aws_gen
-<src/aws_gen.{native,byte}>: pkg_cmdliner
-<src/aws_gen.{native,byte}>: pkg_ocamlgraph
-<src/aws_gen.{native,byte}>: pkg_ppx_tools
-<src/aws_gen.{native,byte}>: pkg_ppx_tools.metaquot
-<src/aws_gen.{native,byte}>: pkg_unix
-<src/aws_gen.{native,byte}>: pkg_yojson
-<src/*.ml{,i,y}>: pkg_cmdliner
-<src/*.ml{,i,y}>: pkg_ocamlgraph
-<src/*.ml{,i,y}>: pkg_ppx_tools
-<src/*.ml{,i,y}>: pkg_ppx_tools.metaquot
-<src/*.ml{,i,y}>: pkg_unix
-<src/*.ml{,i,y}>: pkg_yojson
+<src/aws_gen.{native,byte}>: package(cmdliner)
+<src/aws_gen.{native,byte}>: package(ocamlgraph)
+<src/aws_gen.{native,byte}>: package(ppx_tools)
+<src/aws_gen.{native,byte}>: package(ppx_tools.metaquot)
+<src/aws_gen.{native,byte}>: package(unix)
+<src/aws_gen.{native,byte}>: package(yojson)
+<src/*.ml{,i,y}>: package(cmdliner)
+<src/*.ml{,i,y}>: package(ocamlgraph)
+<src/*.ml{,i,y}>: package(ppx_tools)
+<src/*.ml{,i,y}>: package(ppx_tools.metaquot)
+<src/*.ml{,i,y}>: package(unix)
+<src/*.ml{,i,y}>: package(yojson)
 # OASIS_STOP
 "libraries": -traverse
 "libraries": not_hygienic
