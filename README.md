@@ -6,6 +6,9 @@ individual libraries from [botocore][] service descriptions.
 
 [botocore]: https://github.com/boto/botocore
 
+[![Build Status](https://travis-ci.org/inhabitedtype/ocaml-aws.svg?branch=master)](https://travis-ci.org/inhabitedtype/ocaml-aws)
+
+
 ## Development
 
 You can install the core library and its dependencies by pinning:
