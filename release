@@ -10,8 +10,9 @@ function release_service() {
     ln -s . $release
     tar czf ${release}.tar.gz --exclude=${release}/${release} ${release}/*
     rm ${release}
-    #git upload-release inhabitedtype ocaml-aws ${release} ${release}.tar.gz
-    #rm ${release}.tar.gz
+    if [[ -n ${COOKIE_JAR+x} ]]; then
+        git upload-release -c ${COOKIE_JAR} inhabitedtype ocaml-aws ${aws_release} ${release}.tar.gz
+    fi
 }
 
 function release_top() {
@@ -23,8 +24,9 @@ function release_top() {
     ln -s . $release
     tar czf ${release}.tar.gz --exclude=libraries/** --exclude=input/** --exclude=.git/** --exclude=${release}/${release} ${release}/*
     rm ${release}
-    #git upload-release inhabitedtype ocaml-aws ${release} ${release}.tar.gz
-    #rm ${release}.tar.gz
+    if [[ -n ${COOKIE_JAR+x} ]]; then
+        git upload-release -c ${COOKIE_JAR} inhabitedtype ocaml-aws ${release} ${release}.tar.gz
+    fi
 }
 
 function release() {
