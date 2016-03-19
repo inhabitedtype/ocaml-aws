@@ -65,3 +65,8 @@ Executable aws_gen
   Install:          false
   CompiledObject:   best
   BuildDepends:     cmdliner, yojson, ppx_tools, ppx_tools.metaquot, ocamlgraph, unix
+
+SourceRepository master
+  Type:     git
+  Location: https://github.com/inhabitedtype/ocaml-aws.git
+  Browser:  https://github.com/inhabitedtype/ocaml-aws

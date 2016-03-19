@@ -6,7 +6,7 @@ maintainer: "$(oasis query maintainers)"
 authors: [ $(oasis query authors | sed 's/, /", "/') ]
 license: "$(oasis query license)"
 homepage: "$(oasis query homepage)"
-bug-reports: "https://github.com/inhabitedtype/ocaml-aws/issues"
+bug-reports: "$(oasis query homepage)/issues"
 build: [
   ["ocaml" "setup.ml" "-configure" "--prefix" prefix]
   ["ocaml" "setup.ml" "-build"]
