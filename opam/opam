@@ -44,3 +44,4 @@ depopts: [
 conflicts: [
   "cohttp" {< "0.17.0"}
 ]
+available: [ ocaml-version >= "4.01" ]
