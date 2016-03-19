@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 function release_service() {
-    local service=$1
-    local version=$(grep ^Version _oasis | sed 's/^.*: *\([^ ]\)/\1/')
+    local service=$(oasis query name)
+    local version=$(oasis query version)
     local release=$service-${version}
     make distclean
     rm ${release}.tar.gz
@@ -14,7 +14,7 @@ function release_service() {
 }
 
 function release_top() {
-    local version=$(grep Version _oasis | sed 's/^.*: *\([^ ]\)/\1/')
+    local version=$(oasis query version)
     local release=aws-${version}
     make distclean
     rm ${release}.tar.gz
@@ -30,7 +30,7 @@ function release() {
     for lib in $(ls libraries); do
         if [[ -d libraries/$lib ]]; then
             pushd libraries/$lib > /dev/null
-            release_service $lib
+            release_service
             popd > /dev/null
         fi
     done
