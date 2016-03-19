@@ -4,10 +4,11 @@ function release_service() {
     local service=$(oasis query name)
     local version=$(oasis query version)
     local release=$service-${version}
-    make distclean
+    echo "== $release"
+    make distclean > /dev/null
     rm ${release}.tar.gz
     ln -s . $release
-    tar cvzf ${release}.tar.gz --exclude=${release}/${release} ${release}/*
+    tar czf ${release}.tar.gz --exclude=${release}/${release} ${release}/*
     rm ${release}
     #git upload-release inhabitedtype ocaml-aws ${release} ${release}.tar.gz
     #rm ${release}.tar.gz
@@ -16,10 +17,11 @@ function release_service() {
 function release_top() {
     local version=$(oasis query version)
     local release=aws-${version}
-    make distclean
+    echo "== $release"
+    make distclean > /dev/null
     rm ${release}.tar.gz
     ln -s . $release
-    tar cvzf ${release}.tar.gz --exclude=libraries/** --exclude=input/** --exclude=.git/** --exclude=${release}/${release} ${release}/*
+    tar czf ${release}.tar.gz --exclude=libraries/** --exclude=input/** --exclude=.git/** --exclude=${release}/${release} ${release}/*
     rm ${release}
     #git upload-release inhabitedtype ocaml-aws ${release} ${release}.tar.gz
     #rm ${release}.tar.gz
