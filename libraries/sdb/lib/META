@@ -1,12 +1,12 @@
 # OASIS_START
-# DO NOT EDIT (digest: 43525f00d9447fefa9ceae20b5d93cb2)
+# DO NOT EDIT (digest: df12269f83d881922f2ab5ebcde48acb)
 version = "0.1.0"
 description = "Amazon SimpleDB"
 requires = "aws"
-archive(byte) = "aws_sdb.cma"
-archive(byte, plugin) = "aws_sdb.cma"
-archive(native) = "aws_sdb.cmxa"
-archive(native, plugin) = "aws_sdb.cmxs"
-exists_if = "aws_sdb.cma"
+archive(byte) = "aws-sdb.cma"
+archive(byte, plugin) = "aws-sdb.cma"
+archive(native) = "aws-sdb.cmxa"
+archive(native, plugin) = "aws-sdb.cmxs"
+exists_if = "aws-sdb.cma"
 # OASIS_STOP
 

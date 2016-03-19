@@ -1,12 +1,12 @@
 # OASIS_START
-# DO NOT EDIT (digest: 127413052ccedaadf2ac79cc175ba54d)
+# DO NOT EDIT (digest: e169830fda7c990a42d5bddd04dd3337)
 version = "0.1.0"
 description = "AWS CloudFormation"
 requires = "aws"
-archive(byte) = "aws_cloudformation.cma"
-archive(byte, plugin) = "aws_cloudformation.cma"
-archive(native) = "aws_cloudformation.cmxa"
-archive(native, plugin) = "aws_cloudformation.cmxs"
-exists_if = "aws_cloudformation.cma"
+archive(byte) = "aws-cloudformation.cma"
+archive(byte, plugin) = "aws-cloudformation.cma"
+archive(native) = "aws-cloudformation.cmxa"
+archive(native, plugin) = "aws-cloudformation.cmxs"
+exists_if = "aws-cloudformation.cma"
 # OASIS_STOP
 

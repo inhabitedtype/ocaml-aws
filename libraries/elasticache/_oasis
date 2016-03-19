@@ -1,5 +1,5 @@
 OASISFormat: 0.4
-Name:        aws_elasticache
+Name:        aws-elasticache
 Version:     0.1.0
 Synopsis:    Amazon ElastiCache
 Authors:     Spiros Eliopoulos <spiros@inhabitedtype.com>, Daniel Patterson <dbp@dbpmail.net>
@@ -10,18 +10,18 @@ License:     BSD-3-Clause
 Plugins:     META (0.4), DevFiles (0.4)
 BuildTools: ocamlbuild
 
-Library aws_elasticache
+Library "aws-elasticache"
   Path:         lib
-  Findlibname:  aws_elasticache
+  Findlibname:  aws-elasticache
   Pack:         true
   Modules:      Types, Errors, AddTagsToResource, AuthorizeCacheSecurityGroupIngress, CopySnapshot, CreateCacheCluster, CreateCacheParameterGroup, CreateCacheSecurityGroup, CreateCacheSubnetGroup, CreateReplicationGroup, CreateSnapshot, DeleteCacheCluster, DeleteCacheParameterGroup, DeleteCacheSecurityGroup, DeleteCacheSubnetGroup, DeleteReplicationGroup, DeleteSnapshot, DescribeCacheClusters, DescribeCacheEngineVersions, DescribeCacheParameterGroups, DescribeCacheParameters, DescribeCacheSecurityGroups, DescribeCacheSubnetGroups, DescribeEngineDefaultParameters, DescribeEvents, DescribeReplicationGroups, DescribeReservedCacheNodes, DescribeReservedCacheNodesOfferings, DescribeSnapshots, ListTagsForResource, ModifyCacheCluster, ModifyCacheParameterGroup, ModifyCacheSubnetGroup, ModifyReplicationGroup, PurchaseReservedCacheNodesOffering, RebootCacheCluster, RemoveTagsFromResource, ResetCacheParameterGroup, RevokeCacheSecurityGroupIngress
   BuildDepends: aws (>= 0.1.0)
 
-Document aws_elasticache
-  Title:                aws_elasticache Docs
+Document "aws-elasticache"
+  Title:                aws-elasticache Docs
   Type:                 ocamlbuild (0.4)
   BuildTools+:          ocamldoc
   Install:              true
   XOCamlbuildPath:      lib
-  XOCamlbuildLibraries: aws_elasticache
+  XOCamlbuildLibraries: aws-elasticache
 

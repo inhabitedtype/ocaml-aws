@@ -1,5 +1,5 @@
 (* OASIS_START *)
-(* DO NOT EDIT (digest: fd22d9c69f144976c7468cc9daa7c74b) *)
+(* DO NOT EDIT (digest: bc7b951287af851bed8eb8fbd2265c5e) *)
 module OASISGettext = struct
 (* # 22 "src/oasis/OASISGettext.ml" *)
 
@@ -607,7 +607,7 @@ end
 open Ocamlbuild_plugin;;
 let package_default =
   {
-     MyOCamlbuildBase.lib_ocaml = [("aws_rds", ["lib"], [])];
+     MyOCamlbuildBase.lib_ocaml = [("aws-rds", ["lib"], [])];
      lib_c = [];
      flags = [];
      includes = []

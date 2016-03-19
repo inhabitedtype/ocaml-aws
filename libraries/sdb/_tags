@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 75535eb7ca11459474b7bac0ef0250ba)
+# DO NOT EDIT (digest: 165daea39da43127d38d5d4f043fff43)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -14,19 +14,19 @@ true: annot, bin_annot
 ".git": not_hygienic
 "_darcs": -traverse
 "_darcs": not_hygienic
-# Library aws_sdb
-"lib/aws_sdb.cmxs": use_aws_sdb
-"lib/types.cmx": for-pack(Aws_sdb)
-"lib/errors.cmx": for-pack(Aws_sdb)
-"lib/batchDeleteAttributes.cmx": for-pack(Aws_sdb)
-"lib/batchPutAttributes.cmx": for-pack(Aws_sdb)
-"lib/createDomain.cmx": for-pack(Aws_sdb)
-"lib/deleteAttributes.cmx": for-pack(Aws_sdb)
-"lib/deleteDomain.cmx": for-pack(Aws_sdb)
-"lib/domainMetadata.cmx": for-pack(Aws_sdb)
-"lib/getAttributes.cmx": for-pack(Aws_sdb)
-"lib/listDomains.cmx": for-pack(Aws_sdb)
-"lib/putAttributes.cmx": for-pack(Aws_sdb)
-"lib/select.cmx": for-pack(Aws_sdb)
+# Library aws-sdb
+"lib/aws-sdb.cmxs": use_aws-sdb
+"lib/types.cmx": for-pack(Aws-sdb)
+"lib/errors.cmx": for-pack(Aws-sdb)
+"lib/batchDeleteAttributes.cmx": for-pack(Aws-sdb)
+"lib/batchPutAttributes.cmx": for-pack(Aws-sdb)
+"lib/createDomain.cmx": for-pack(Aws-sdb)
+"lib/deleteAttributes.cmx": for-pack(Aws-sdb)
+"lib/deleteDomain.cmx": for-pack(Aws-sdb)
+"lib/domainMetadata.cmx": for-pack(Aws-sdb)
+"lib/getAttributes.cmx": for-pack(Aws-sdb)
+"lib/listDomains.cmx": for-pack(Aws-sdb)
+"lib/putAttributes.cmx": for-pack(Aws-sdb)
+"lib/select.cmx": for-pack(Aws-sdb)
 <lib/*.ml{,i,y}>: pkg_aws
 # OASIS_STOP

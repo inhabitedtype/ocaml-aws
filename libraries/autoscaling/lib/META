@@ -1,12 +1,12 @@
 # OASIS_START
-# DO NOT EDIT (digest: 6006c25cb571ad1c1fc52c483b43aa79)
+# DO NOT EDIT (digest: ad9a94a6897d6e39b439afa2b1784c39)
 version = "0.1.0"
 description = "Auto Scaling"
 requires = "aws"
-archive(byte) = "aws_autoscaling.cma"
-archive(byte, plugin) = "aws_autoscaling.cma"
-archive(native) = "aws_autoscaling.cmxa"
-archive(native, plugin) = "aws_autoscaling.cmxs"
-exists_if = "aws_autoscaling.cma"
+archive(byte) = "aws-autoscaling.cma"
+archive(byte, plugin) = "aws-autoscaling.cma"
+archive(native) = "aws-autoscaling.cmxa"
+archive(native, plugin) = "aws-autoscaling.cmxs"
+exists_if = "aws-autoscaling.cma"
 # OASIS_STOP
 

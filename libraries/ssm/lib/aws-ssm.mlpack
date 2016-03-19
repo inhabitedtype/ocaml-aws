@@ -1,0 +1,16 @@
+# OASIS_START
+# DO NOT EDIT (digest: 2f013107cb35e0330dc0f061f18a42ba)
+Types
+Errors
+CreateAssociation
+CreateAssociationBatch
+CreateDocument
+DeleteAssociation
+DeleteDocument
+DescribeAssociation
+DescribeDocument
+GetDocument
+ListAssociations
+ListDocuments
+UpdateAssociationStatus
+# OASIS_STOP

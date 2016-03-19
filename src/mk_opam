@@ -1,0 +1,25 @@
+#!/bin/bash
+mkdir -p opam
+cat <<EOF > opam/opam
+opam-version: "1.2"
+maintainer: "$(oasis query maintainers)"
+authors: [ $(oasis query authors | sed 's/, /", "/') ]
+license: "$(oasis query license)"
+homepage: "$(oasis query homepage)"
+bug-reports: "https://github.com/inhabitedtype/ocaml-aws/issues"
+build: [
+  ["ocaml" "setup.ml" "-configure" "--prefix" prefix]
+  ["ocaml" "setup.ml" "-build"]
+]
+install: ["ocaml" "setup.ml" "-install"]
+remove: [
+  ["ocamlfind" "remove" "aws-autoscaling"]
+]
+build-doc: [ "ocaml" "setup.ml" "-doc" ]
+depends: [
+  "aws" {>= "0.1.0"}
+  "ocamlfind" {build}
+]
+EOF
+oasis query synopsis  > opam/descr
+oasis query name > opam/findlib

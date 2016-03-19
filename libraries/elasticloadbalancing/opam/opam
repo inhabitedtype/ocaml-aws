@@ -1,131 +1,19 @@
 opam-version: "1.2"
-name: "aws_elasticloadbalancing"
-version: "0.1.0"
 maintainer: "Spiros Eliopoulos <spiros@inhabitedtype.com>"
-authors: [ "Spiros Eliopoulos <spiros@inhabitedtype.com>"
-           "Daniel Patterson <dbp@dbpmail.net>" ]
+authors: [ Spiros Eliopoulos <spiros@inhabitedtype.com>", "Daniel Patterson <dbp@dbpmail.net> ]
 license: "BSD-3-clause"
 homepage: "https://github.com/inhabitedtype/ocaml-aws"
 bug-reports: "https://github.com/inhabitedtype/ocaml-aws/issues"
 build: [
-  ["ocaml" "setup.ml" "-configure" "--prefix" prefix
-    "--%{lwt:enable}%-lwt"
-    "--%{async:enable}%-async"]
+  ["ocaml" "setup.ml" "-configure" "--prefix" prefix]
   ["ocaml" "setup.ml" "-build"]
 ]
 install: ["ocaml" "setup.ml" "-install"]
 remove: [
-  ["ocamlfind" "remove" "aws_elasticloadbalancing"]
-]
-build-test: [
-  ["ocaml" "setup.ml" "-configure" "--enable-tests"
-    "--%{lwt:enable}%-lwt"
-    "--%{async:enable}%-async"]
-  ["ocaml" "setup.ml" "-build"]
-  ["ocaml" "setup.ml" "-test"]
+  ["ocamlfind" "remove" "aws-autoscaling"]
 ]
 build-doc: [ "ocaml" "setup.ml" "-doc" ]
 depends: [
   "aws" {>= "0.1.0"}
   "ocamlfind" {build}
-]
-depopts: [
-  "async"
-  "base-threads"
-  "lwt"
-  "ounit"
-  "yojson"
-]
-conflicts: [
-  "async" {> "108.00.01"}
-  "async" {< "108.00.01"}
-  "async" {> "108.00.02"}
-  "async" {< "108.00.02"}
-  "async" {> "108.07.00"}
-  "async" {< "108.07.00"}
-  "async" {> "108.07.01"}
-  "async" {< "108.07.01"}
-  "async" {> "108.08.00"}
-  "async" {< "108.08.00"}
-  "async" {> "109.07.00"}
-  "async" {< "109.07.00"}
-  "async" {> "109.08.00"}
-  "async" {< "109.08.00"}
-  "async" {> "109.09.00"}
-  "async" {< "109.09.00"}
-  "async" {> "109.10.00"}
-  "async" {< "109.10.00"}
-  "async" {> "109.11.00"}
-  "async" {< "109.11.00"}
-  "async" {> "109.12.00"}
-  "async" {< "109.12.00"}
-  "async" {> "109.13.00"}
-  "async" {< "109.13.00"}
-  "async" {> "109.14.00"}
-  "async" {< "109.14.00"}
-  "async" {> "109.15.00"}
-  "async" {< "109.15.00"}
-  "async" {> "109.17.00"}
-  "async" {< "109.17.00"}
-  "async" {> "109.19.00"}
-  "async" {< "109.19.00"}
-  "async" {> "109.20.00"}
-  "async" {< "109.20.00"}
-  "async" {> "109.21.00"}
-  "async" {< "109.21.00"}
-  "async" {> "109.22.00"}
-  "async" {< "109.22.00"}
-  "async" {> "109.24.00"}
-  "async" {< "109.24.00"}
-  "async" {> "109.27.00"}
-  "async" {< "109.27.00"}
-  "async" {> "109.30.00"}
-  "async" {< "109.30.00"}
-  "async" {> "109.31.00"}
-  "async" {< "109.31.00"}
-  "async" {> "109.32.00"}
-  "async" {< "109.32.00"}
-  "async" {> "109.33.00"}
-  "async" {< "109.33.00"}
-  "async" {> "109.34.00"}
-  "async" {< "109.34.00"}
-  "async" {> "109.35.00"}
-  "async" {< "109.35.00"}
-  "async" {> "109.38.00"}
-  "async" {< "109.38.00"}
-  "async" {> "109.42.00"}
-  "async" {< "109.42.00"}
-  "async" {> "109.53.00"}
-  "async" {< "109.53.00"}
-  "async" {> "109.53.02"}
-  "async" {< "109.53.02"}
-  "async" {> "109.58.00"}
-  "async" {< "109.58.00"}
-  "async" {> "109.60.00"}
-  "async" {< "109.60.00"}
-  "async" {> "110.01.00"}
-  "async" {< "110.01.00"}
-  "async" {> "111.03.00"}
-  "async" {< "111.03.00"}
-  "async" {> "111.11.00"}
-  "async" {< "111.11.00"}
-  "async" {> "111.13.00"}
-  "async" {< "111.13.00"}
-  "async" {> "111.17.00"}
-  "async" {< "111.17.00"}
-  "async" {> "111.25.00"}
-  "async" {< "111.25.00"}
-  "async" {> "112.01.00"}
-  "async" {< "112.01.00"}
-  "async" {> "112.06.00"}
-  "async" {< "112.06.00"}
-  "async" {> "112.17.00"}
-  "async" {< "112.17.00"}
-  "async" {> "112.24.00"}
-  "async" {< "112.24.00"}
-  "async" {> "112.35.00"}
-  "async" {< "112.35.00"}
-  "async" {> "113.00.00"}
-  "async" {< "113.00.00"}
-  "ounit" {< "1.0.2"}
 ]

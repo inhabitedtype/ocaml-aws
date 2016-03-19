@@ -1,9 +1,6 @@
 opam-version: "1.2"
-name: "aws_ssm"
-version: "0.1.0"
 maintainer: "Spiros Eliopoulos <spiros@inhabitedtype.com>"
-authors: [ "Spiros Eliopoulos <spiros@inhabitedtype.com>"
-           "Daniel Patterson <dbp@dbpmail.net>" ]
+authors: [ Spiros Eliopoulos <spiros@inhabitedtype.com>", "Daniel Patterson <dbp@dbpmail.net> ]
 license: "BSD-3-clause"
 homepage: "https://github.com/inhabitedtype/ocaml-aws"
 bug-reports: "https://github.com/inhabitedtype/ocaml-aws/issues"
@@ -13,12 +10,7 @@ build: [
 ]
 install: ["ocaml" "setup.ml" "-install"]
 remove: [
-  ["ocamlfind" "remove" "aws_ssm"]
-]
-build-test: [
-  ["ocaml" "setup.ml" "-configure" "--enable-tests"]
-  ["ocaml" "setup.ml" "-build"]
-  ["ocaml" "setup.ml" "-test"]
+  ["ocamlfind" "remove" "aws-autoscaling"]
 ]
 build-doc: [ "ocaml" "setup.ml" "-doc" ]
 depends: [

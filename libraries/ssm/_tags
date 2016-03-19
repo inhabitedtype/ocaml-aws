@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 264363a0342d3bcd8e60533f548f0ae6)
+# DO NOT EDIT (digest: 1d3e5a52b5ba4d0a627711d8dbb9af29)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -14,20 +14,20 @@ true: annot, bin_annot
 ".git": not_hygienic
 "_darcs": -traverse
 "_darcs": not_hygienic
-# Library aws_ssm
-"lib/aws_ssm.cmxs": use_aws_ssm
-"lib/types.cmx": for-pack(Aws_ssm)
-"lib/errors.cmx": for-pack(Aws_ssm)
-"lib/createAssociation.cmx": for-pack(Aws_ssm)
-"lib/createAssociationBatch.cmx": for-pack(Aws_ssm)
-"lib/createDocument.cmx": for-pack(Aws_ssm)
-"lib/deleteAssociation.cmx": for-pack(Aws_ssm)
-"lib/deleteDocument.cmx": for-pack(Aws_ssm)
-"lib/describeAssociation.cmx": for-pack(Aws_ssm)
-"lib/describeDocument.cmx": for-pack(Aws_ssm)
-"lib/getDocument.cmx": for-pack(Aws_ssm)
-"lib/listAssociations.cmx": for-pack(Aws_ssm)
-"lib/listDocuments.cmx": for-pack(Aws_ssm)
-"lib/updateAssociationStatus.cmx": for-pack(Aws_ssm)
+# Library aws-ssm
+"lib/aws-ssm.cmxs": use_aws-ssm
+"lib/types.cmx": for-pack(Aws-ssm)
+"lib/errors.cmx": for-pack(Aws-ssm)
+"lib/createAssociation.cmx": for-pack(Aws-ssm)
+"lib/createAssociationBatch.cmx": for-pack(Aws-ssm)
+"lib/createDocument.cmx": for-pack(Aws-ssm)
+"lib/deleteAssociation.cmx": for-pack(Aws-ssm)
+"lib/deleteDocument.cmx": for-pack(Aws-ssm)
+"lib/describeAssociation.cmx": for-pack(Aws-ssm)
+"lib/describeDocument.cmx": for-pack(Aws-ssm)
+"lib/getDocument.cmx": for-pack(Aws-ssm)
+"lib/listAssociations.cmx": for-pack(Aws-ssm)
+"lib/listDocuments.cmx": for-pack(Aws-ssm)
+"lib/updateAssociationStatus.cmx": for-pack(Aws-ssm)
 <lib/*.ml{,i,y}>: pkg_aws
 # OASIS_STOP
