@@ -1,5 +1,5 @@
 (* OASIS_START *)
-(* DO NOT EDIT (digest: a4695abaea11043d23157b446f35d864) *)
+(* DO NOT EDIT (digest: cd5881d111a43b59bea565f571846964) *)
 module OASISGettext = struct
 (* # 22 "src/oasis/OASISGettext.ml" *)
 
@@ -607,7 +607,7 @@ end
 open Ocamlbuild_plugin;;
 let package_default =
   {
-     MyOCamlbuildBase.lib_ocaml = [("aws_cloudtrail", ["lib"], [])];
+     MyOCamlbuildBase.lib_ocaml = [("aws-cloudtrail", ["lib"], [])];
      lib_c = [];
      flags = [];
      includes = []

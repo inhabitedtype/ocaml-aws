@@ -40,29 +40,29 @@ configure:
 
 # OASIS_STOP
 
-.PHONY: aws_ec2
-aws_ec2:
+.PHONY: aws-ec2
+aws-ec2:
 	./aws_gen.native --is-ec2 -i input/ec2/latest/service-2.json -r input/ec2/overrides.json -e input/errors.json -o libraries
-	cd libraries/ec2 && oasis setup
+	cd libraries/ec2 && oasis setup && bash ../../src/mk_opam
 
-# NOTE: This does not include aws_ec2, which is special-cased.
+# NOTE: This does not include aws-ec2, which is special-cased.
 LIBRARIES := \
-	aws_autoscaling \
-	aws_cloudformation \
-	aws_cloudtrail \
-	aws_elasticache \
-	aws_elasticloadbalancing \
-	aws_rds \
-	aws_sdb \
-	aws_ssm \
-	aws_sts \
+	aws-autoscaling \
+	aws-cloudformation \
+	aws-cloudtrail \
+	aws-elasticache \
+	aws-elasticloadbalancing \
+	aws-rds \
+	aws-sdb \
+	aws-ssm \
+	aws-sts \
 
 .PHONY: $(LIBRARIES)
-$(LIBRARIES): aws_%:
+$(LIBRARIES): aws-%:
 	./aws_gen.native -i input/$*/latest/service-2.json -r input/$*/overrides.json -e input/errors.json -o libraries
-	cd libraries/$* && oasis setup && oasis2opam --local -y
+	cd libraries/$* && oasis setup && bash ../../src/mk_opam
 
-gen: all aws_ec2 $(LIBRARIES)
+gen: all aws-ec2 $(LIBRARIES)
 
 test-libraries: gen reinstall
 	$(MAKE) -C libraries configure CONFIGUREFLAGS=--enable-tests test

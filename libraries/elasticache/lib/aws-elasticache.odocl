@@ -1,0 +1,42 @@
+# OASIS_START
+# DO NOT EDIT (digest: e78ffee6afcaa7ddfe03a1468a7dff27)
+Types
+Errors
+AddTagsToResource
+AuthorizeCacheSecurityGroupIngress
+CopySnapshot
+CreateCacheCluster
+CreateCacheParameterGroup
+CreateCacheSecurityGroup
+CreateCacheSubnetGroup
+CreateReplicationGroup
+CreateSnapshot
+DeleteCacheCluster
+DeleteCacheParameterGroup
+DeleteCacheSecurityGroup
+DeleteCacheSubnetGroup
+DeleteReplicationGroup
+DeleteSnapshot
+DescribeCacheClusters
+DescribeCacheEngineVersions
+DescribeCacheParameterGroups
+DescribeCacheParameters
+DescribeCacheSecurityGroups
+DescribeCacheSubnetGroups
+DescribeEngineDefaultParameters
+DescribeEvents
+DescribeReplicationGroups
+DescribeReservedCacheNodes
+DescribeReservedCacheNodesOfferings
+DescribeSnapshots
+ListTagsForResource
+ModifyCacheCluster
+ModifyCacheParameterGroup
+ModifyCacheSubnetGroup
+ModifyReplicationGroup
+PurchaseReservedCacheNodesOffering
+RebootCacheCluster
+RemoveTagsFromResource
+ResetCacheParameterGroup
+RevokeCacheSecurityGroupIngress
+# OASIS_STOP

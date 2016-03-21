@@ -1,12 +1,12 @@
 # OASIS_START
-# DO NOT EDIT (digest: 9cfcce64429969bd94f34754e1e3e91e)
+# DO NOT EDIT (digest: 3525a397a40def2fe80a7f831e52d215)
 version = "0.1.0"
 description = "AWS CloudTrail"
 requires = "aws"
-archive(byte) = "aws_cloudtrail.cma"
-archive(byte, plugin) = "aws_cloudtrail.cma"
-archive(native) = "aws_cloudtrail.cmxa"
-archive(native, plugin) = "aws_cloudtrail.cmxs"
-exists_if = "aws_cloudtrail.cma"
+archive(byte) = "aws-cloudtrail.cma"
+archive(byte, plugin) = "aws-cloudtrail.cma"
+archive(native) = "aws-cloudtrail.cmxa"
+archive(native, plugin) = "aws-cloudtrail.cmxs"
+exists_if = "aws-cloudtrail.cma"
 # OASIS_STOP
 

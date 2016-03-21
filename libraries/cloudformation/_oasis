@@ -1,5 +1,5 @@
 OASISFormat: 0.4
-Name:        aws_cloudformation
+Name:        aws-cloudformation
 Version:     0.1.0
 Synopsis:    AWS CloudFormation
 Authors:     Spiros Eliopoulos <spiros@inhabitedtype.com>, Daniel Patterson <dbp@dbpmail.net>
@@ -10,18 +10,18 @@ License:     BSD-3-Clause
 Plugins:     META (0.4), DevFiles (0.4)
 BuildTools: ocamlbuild
 
-Library aws_cloudformation
+Library "aws-cloudformation"
   Path:         lib
-  Findlibname:  aws_cloudformation
+  Findlibname:  aws-cloudformation
   Pack:         true
   Modules:      Types, Errors, CancelUpdateStack, CreateStack, DeleteStack, DescribeStackEvents, DescribeStackResource, DescribeStackResources, DescribeStacks, EstimateTemplateCost, GetStackPolicy, GetTemplate, GetTemplateSummary, ListStackResources, ListStacks, SetStackPolicy, SignalResource, UpdateStack, ValidateTemplate
   BuildDepends: aws (>= 0.1.0)
 
-Document aws_cloudformation
-  Title:                aws_cloudformation Docs
+Document "aws-cloudformation"
+  Title:                aws-cloudformation Docs
   Type:                 ocamlbuild (0.4)
   BuildTools+:          ocamldoc
   Install:              true
   XOCamlbuildPath:      lib
-  XOCamlbuildLibraries: aws_cloudformation
+  XOCamlbuildLibraries: aws-cloudformation
 

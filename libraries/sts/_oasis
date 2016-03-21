@@ -1,5 +1,5 @@
 OASISFormat: 0.4
-Name:        aws_sts
+Name:        aws-sts
 Version:     0.1.0
 Synopsis:    AWS Security Token Service
 Authors:     Spiros Eliopoulos <spiros@inhabitedtype.com>, Daniel Patterson <dbp@dbpmail.net>
@@ -10,18 +10,18 @@ License:     BSD-3-Clause
 Plugins:     META (0.4), DevFiles (0.4)
 BuildTools: ocamlbuild
 
-Library aws_sts
+Library "aws-sts"
   Path:         lib
-  Findlibname:  aws_sts
+  Findlibname:  aws-sts
   Pack:         true
   Modules:      Types, Errors, AssumeRole, AssumeRoleWithSAML, AssumeRoleWithWebIdentity, DecodeAuthorizationMessage, GetFederationToken, GetSessionToken
   BuildDepends: aws (>= 0.1.0)
 
-Document aws_sts
-  Title:                aws_sts Docs
+Document "aws-sts"
+  Title:                aws-sts Docs
   Type:                 ocamlbuild (0.4)
   BuildTools+:          ocamldoc
   Install:              true
   XOCamlbuildPath:      lib
-  XOCamlbuildLibraries: aws_sts
+  XOCamlbuildLibraries: aws-sts
 

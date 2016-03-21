@@ -33,7 +33,7 @@
 
 let oasis ~append ~lib_name ~lib_version ~service_name ~modules =
   Printf.sprintf "OASISFormat: 0.4
-Name:        aws_%s
+Name:        aws-%s
 Version:     %s
 Synopsis:    %s
 Authors:     Spiros Eliopoulos <spiros@inhabitedtype.com>, Daniel Patterson <dbp@dbpmail.net>
@@ -44,20 +44,20 @@ License:     BSD-3-Clause
 Plugins:     META (0.4), DevFiles (0.4)
 BuildTools: ocamlbuild
 
-Library aws_%s
+Library \"aws-%s\"
   Path:         lib
-  Findlibname:  aws_%s
+  Findlibname:  aws-%s
   Pack:         true
   Modules:      Types, Errors, %s
   BuildDepends: aws (>= 0.1.0)
 
-Document aws_%s
-  Title:                aws_%s Docs
+Document \"aws-%s\"
+  Title:                aws-%s Docs
   Type:                 ocamlbuild (0.4)
   BuildTools+:          ocamldoc
   Install:              true
   XOCamlbuildPath:      lib
-  XOCamlbuildLibraries: aws_%s
+  XOCamlbuildLibraries: aws-%s
 
 %s" lib_name lib_version service_name lib_name lib_name (String.concat ", " modules) lib_name lib_name lib_name
     append

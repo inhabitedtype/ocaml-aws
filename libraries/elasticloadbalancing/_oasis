@@ -1,5 +1,5 @@
 OASISFormat: 0.4
-Name:        aws_elasticloadbalancing
+Name:        aws-elasticloadbalancing
 Version:     0.1.0
 Synopsis:    Elastic Load Balancing
 Authors:     Spiros Eliopoulos <spiros@inhabitedtype.com>, Daniel Patterson <dbp@dbpmail.net>
@@ -10,20 +10,20 @@ License:     BSD-3-Clause
 Plugins:     META (0.4), DevFiles (0.4)
 BuildTools: ocamlbuild
 
-Library aws_elasticloadbalancing
+Library "aws-elasticloadbalancing"
   Path:         lib
-  Findlibname:  aws_elasticloadbalancing
+  Findlibname:  aws-elasticloadbalancing
   Pack:         true
   Modules:      Types, Errors, AddTags, ApplySecurityGroupsToLoadBalancer, AttachLoadBalancerToSubnets, ConfigureHealthCheck, CreateAppCookieStickinessPolicy, CreateLBCookieStickinessPolicy, CreateLoadBalancer, CreateLoadBalancerListeners, CreateLoadBalancerPolicy, DeleteLoadBalancer, DeleteLoadBalancerListeners, DeleteLoadBalancerPolicy, DeregisterInstancesFromLoadBalancer, DescribeInstanceHealth, DescribeLoadBalancerAttributes, DescribeLoadBalancerPolicies, DescribeLoadBalancerPolicyTypes, DescribeLoadBalancers, DescribeTags, DetachLoadBalancerFromSubnets, DisableAvailabilityZonesForLoadBalancer, EnableAvailabilityZonesForLoadBalancer, ModifyLoadBalancerAttributes, RegisterInstancesWithLoadBalancer, RemoveTags, SetLoadBalancerListenerSSLCertificate, SetLoadBalancerPoliciesForBackendServer, SetLoadBalancerPoliciesOfListener
   BuildDepends: aws (>= 0.1.0)
 
-Document aws_elasticloadbalancing
-  Title:                aws_elasticloadbalancing Docs
+Document "aws-elasticloadbalancing"
+  Title:                aws-elasticloadbalancing Docs
   Type:                 ocamlbuild (0.4)
   BuildTools+:          ocamldoc
   Install:              true
   XOCamlbuildPath:      lib
-  XOCamlbuildLibraries: aws_elasticloadbalancing
+  XOCamlbuildLibraries: aws-elasticloadbalancing
 
 Flag lwt
   Description:  Run the Lwt tests

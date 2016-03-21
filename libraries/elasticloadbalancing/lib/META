@@ -1,12 +1,12 @@
 # OASIS_START
-# DO NOT EDIT (digest: 9dc8e8454ff707f2c5dd2e6f3ebbc115)
+# DO NOT EDIT (digest: cbfca2690f18378c49c33d2808f7ba18)
 version = "0.1.0"
 description = "Elastic Load Balancing"
 requires = "aws"
-archive(byte) = "aws_elasticloadbalancing.cma"
-archive(byte, plugin) = "aws_elasticloadbalancing.cma"
-archive(native) = "aws_elasticloadbalancing.cmxa"
-archive(native, plugin) = "aws_elasticloadbalancing.cmxs"
-exists_if = "aws_elasticloadbalancing.cma"
+archive(byte) = "aws-elasticloadbalancing.cma"
+archive(byte, plugin) = "aws-elasticloadbalancing.cma"
+archive(native) = "aws-elasticloadbalancing.cmxa"
+archive(native, plugin) = "aws-elasticloadbalancing.cmxs"
+exists_if = "aws-elasticloadbalancing.cma"
 # OASIS_STOP
 
