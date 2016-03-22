@@ -41,8 +41,9 @@ make gen
 ## Example
 
 Here's how you use the library and EC2 bindings to retrieve a list of regions
-from AWS and print them to `stdout`. This example uses the Async runtime, but
-the equivalent lwt example is identical in structure.
+from AWS and print them to `stdout`.
+
+An example using the `Async` runtime:
 
 ```ocaml
 open Async.Std
@@ -66,6 +67,35 @@ let main () =
 ;;
 
 Scheduler.go_main ~main ()
+```
+
+The equivalent `lwt` example:
+
+```ocaml
+let describe_regions () =
+  let response_t = Aws_lwt.Runtime.run_request
+      ~region:"us-east-1" ~access_key:"<...>" ~secret_key:"<...>"
+      (module EC2.DescribeRegions)
+      (EC2.Types.DescribeRegionsRequest.make ()) in
+  response_t >>=
+  function
+  | `Error _ -> raise Not_found
+  | `Ok x ->
+    let regions = x.EC2.Types.DescribeRegionsResult.regions in
+    let mappings = List.map (fun x ->
+        let region_name = match x.EC2.Types.Region.region_name with
+          | None -> "REGION_NAME_NOT_FOUND"
+          | Some x -> x in
+        let endpoint = match x.EC2.Types.Region.endpoint with
+          | None -> "ENDPOINT_NOT_FOUND"
+          | Some x -> x in
+        (region_name, endpoint)) regions in
+    Lwt.return mappings
+
+let () =
+  let mappings = Lwt_main.run (describe_regions ()) in
+  List.iter (fun (region_name, endpoint) -> Printf.printf "%s -> %s\n%!" region_name endpoint) mappings
+
 ```
 
 ### FreeBSD
