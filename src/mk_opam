@@ -3,7 +3,7 @@ mkdir -p opam
 cat <<EOF > opam/opam
 opam-version: "1.2"
 maintainer: "$(oasis query maintainers)"
-authors: [ $(oasis query authors | sed 's/, /", "/') ]
+authors: [ "$(oasis query authors | sed 's/, /" "/')" ]
 license: "$(oasis query license)"
 homepage: "$(oasis query homepage)"
 bug-reports: "$(oasis query homepage)/issues"
