@@ -43,7 +43,7 @@ configure:
 .PHONY: aws-ec2
 aws-ec2:
 	./aws_gen.native --is-ec2 -i input/ec2/latest/service-2.json -r input/ec2/overrides.json -e input/errors.json -o libraries
-	cd libraries/ec2 && oasis setup && bash ../../src/mk_opam
+	cd libraries/ec2 && oasis setup && bash ../../scripts/mk_opam
 
 # NOTE: This does not include aws-ec2, which is special-cased.
 LIBRARIES := \
@@ -60,7 +60,7 @@ LIBRARIES := \
 .PHONY: $(LIBRARIES)
 $(LIBRARIES): aws-%:
 	./aws_gen.native -i input/$*/latest/service-2.json -r input/$*/overrides.json -e input/errors.json -o libraries
-	cd libraries/$* && oasis setup && bash ../../src/mk_opam
+	cd libraries/$* && oasis setup && bash ../../scripts/mk_opam
 
 gen: all aws-ec2 $(LIBRARIES)
 
