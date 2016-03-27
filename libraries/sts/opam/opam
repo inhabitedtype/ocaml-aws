@@ -3,6 +3,7 @@ maintainer: "Spiros Eliopoulos <spiros@inhabitedtype.com>"
 authors: [ "Spiros Eliopoulos <spiros@inhabitedtype.com>" "Daniel Patterson <dbp@dbpmail.net>" ]
 license: "BSD-3-clause"
 homepage: "https://github.com/inhabitedtype/ocaml-aws"
+dev-repo: "https://github.com/inhabitedtype/ocaml-aws.git"
 bug-reports: "https://github.com/inhabitedtype/ocaml-aws/issues"
 build: [
   ["ocaml" "setup.ml" "-configure" "--prefix" prefix]
