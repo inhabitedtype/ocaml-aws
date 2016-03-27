@@ -30,11 +30,13 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
+AWS_RELEASE=aws-$(oasis query version)
+
 function release_service() {
     local service=$(oasis query name)
     local version=$(oasis query version)
     local release=$service-${version}
-    local aws_release=$1
+    local AWS_RELEASE=$1
     echo "== $release"
     make distclean > /dev/null
     rm -f *.tar.gz
@@ -42,7 +44,7 @@ function release_service() {
     tar czf ${release}.tar.gz --exclude=${release}/${release} ${release}/*
     rm ${release}
     if [[ -n ${COOKIE_JAR+x} ]]; then
-        git upload-release -c ${COOKIE_JAR} inhabitedtype ocaml-aws ${aws_release} ${release}.tar.gz
+        git upload-release -c ${COOKIE_JAR} inhabitedtype ocaml-aws ${AWS_RELEASE} ${release}.tar.gz
     fi
 }
 
@@ -60,16 +62,19 @@ function release_top() {
     fi
 }
 
-function release() {
-    release_top
-    local aws_release=aws-$(oasis query version)
+function release_libs() {
     for lib in $(ls libraries); do
         if [[ -d libraries/$lib ]]; then
             pushd libraries/$lib > /dev/null
-            release_service $aws_release
+            release_service $AWS_RELEASE
             popd > /dev/null
         fi
     done
 }
 
-release
+case $1 in
+    "top") release_top;;
+    "libs") release_libs;;
+    "all") release_top; release_libs;;
+    *) echo "usage: release [top|libs|all]"; exit 1;;
+esac
