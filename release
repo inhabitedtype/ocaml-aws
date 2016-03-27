@@ -37,7 +37,7 @@ function release_service() {
     local aws_release=$1
     echo "== $release"
     make distclean > /dev/null
-    rm ${release}.tar.gz
+    rm -f *.tar.gz
     ln -s . $release
     tar czf ${release}.tar.gz --exclude=${release}/${release} ${release}/*
     rm ${release}
@@ -51,7 +51,7 @@ function release_top() {
     local release=aws-${version}
     echo "== $release"
     make distclean > /dev/null
-    rm ${release}.tar.gz
+    rm -f *.tar.gz
     ln -s . $release
     tar czf ${release}.tar.gz --exclude=libraries/** --exclude=input/** --exclude=.git/** --exclude=${release}/${release} ${release}/*
     rm ${release}
