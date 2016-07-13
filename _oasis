@@ -30,7 +30,7 @@ Library aws
   Path:         lib
   Findlibname:  aws
   Modules:      Aws
-  BuildDepends: ezxmlm, nocrypto, calendar, uri
+  BuildDepends: ezxmlm, nocrypto, calendar, uri (>= 1.3.0)
 
 Document aws
   Title:                aws Docs
