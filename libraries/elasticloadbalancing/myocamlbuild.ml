@@ -1,5 +1,5 @@
 (* OASIS_START *)
-(* DO NOT EDIT (digest: aacaea9f871641869306fb5e358fe864) *)
+(* DO NOT EDIT (digest: e3d61911a876c87dc4376a8c451e87d4) *)
 module OASISGettext = struct
 (* # 22 "src/oasis/OASISGettext.ml" *)
 
@@ -767,7 +767,7 @@ end
 open Ocamlbuild_plugin;;
 let package_default =
   {
-     MyOCamlbuildBase.lib_ocaml = [("aws-elasticloadbalancing", ["lib"], [])];
+     MyOCamlbuildBase.lib_ocaml = [("aws_elasticloadbalancing", ["lib"], [])];
      lib_c = [];
      flags = [];
      includes = []

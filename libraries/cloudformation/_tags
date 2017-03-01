@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: d5edc30ed070de89cb699a320d5c131e)
+# DO NOT EDIT (digest: ecb1fdf476f08853afb3cce2e9bc0a5f)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -14,26 +14,26 @@ true: annot, bin_annot
 ".git": not_hygienic
 "_darcs": -traverse
 "_darcs": not_hygienic
-# Library aws-cloudformation
-"lib/aws-cloudformation.cmxs": use_aws-cloudformation
-"lib/types.cmx": for-pack(Aws-cloudformation)
-"lib/errors.cmx": for-pack(Aws-cloudformation)
-"lib/cancelUpdateStack.cmx": for-pack(Aws-cloudformation)
-"lib/createStack.cmx": for-pack(Aws-cloudformation)
-"lib/deleteStack.cmx": for-pack(Aws-cloudformation)
-"lib/describeStackEvents.cmx": for-pack(Aws-cloudformation)
-"lib/describeStackResource.cmx": for-pack(Aws-cloudformation)
-"lib/describeStackResources.cmx": for-pack(Aws-cloudformation)
-"lib/describeStacks.cmx": for-pack(Aws-cloudformation)
-"lib/estimateTemplateCost.cmx": for-pack(Aws-cloudformation)
-"lib/getStackPolicy.cmx": for-pack(Aws-cloudformation)
-"lib/getTemplate.cmx": for-pack(Aws-cloudformation)
-"lib/getTemplateSummary.cmx": for-pack(Aws-cloudformation)
-"lib/listStackResources.cmx": for-pack(Aws-cloudformation)
-"lib/listStacks.cmx": for-pack(Aws-cloudformation)
-"lib/setStackPolicy.cmx": for-pack(Aws-cloudformation)
-"lib/signalResource.cmx": for-pack(Aws-cloudformation)
-"lib/updateStack.cmx": for-pack(Aws-cloudformation)
-"lib/validateTemplate.cmx": for-pack(Aws-cloudformation)
+# Library aws_cloudformation
+"lib/aws_cloudformation.cmxs": use_aws_cloudformation
+"lib/types.cmx": for-pack(Aws_cloudformation)
+"lib/errors.cmx": for-pack(Aws_cloudformation)
+"lib/cancelUpdateStack.cmx": for-pack(Aws_cloudformation)
+"lib/createStack.cmx": for-pack(Aws_cloudformation)
+"lib/deleteStack.cmx": for-pack(Aws_cloudformation)
+"lib/describeStackEvents.cmx": for-pack(Aws_cloudformation)
+"lib/describeStackResource.cmx": for-pack(Aws_cloudformation)
+"lib/describeStackResources.cmx": for-pack(Aws_cloudformation)
+"lib/describeStacks.cmx": for-pack(Aws_cloudformation)
+"lib/estimateTemplateCost.cmx": for-pack(Aws_cloudformation)
+"lib/getStackPolicy.cmx": for-pack(Aws_cloudformation)
+"lib/getTemplate.cmx": for-pack(Aws_cloudformation)
+"lib/getTemplateSummary.cmx": for-pack(Aws_cloudformation)
+"lib/listStackResources.cmx": for-pack(Aws_cloudformation)
+"lib/listStacks.cmx": for-pack(Aws_cloudformation)
+"lib/setStackPolicy.cmx": for-pack(Aws_cloudformation)
+"lib/signalResource.cmx": for-pack(Aws_cloudformation)
+"lib/updateStack.cmx": for-pack(Aws_cloudformation)
+"lib/validateTemplate.cmx": for-pack(Aws_cloudformation)
 <lib/*.ml{,i,y}>: pkg_aws
 # OASIS_STOP

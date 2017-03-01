@@ -10,7 +10,7 @@ License:     BSD-3-Clause
 Plugins:     META (0.4), DevFiles (0.4)
 BuildTools: ocamlbuild
 
-Library "aws-ec2"
+Library "aws_ec2"
   Path:         lib
   Findlibname:  aws-ec2
   Pack:         true

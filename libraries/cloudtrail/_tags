@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 1adb1c6e7f58917e789d17a373b8b254)
+# DO NOT EDIT (digest: a40975f7bd4f062440ac196afa57548d)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -14,17 +14,17 @@ true: annot, bin_annot
 ".git": not_hygienic
 "_darcs": -traverse
 "_darcs": not_hygienic
-# Library aws-cloudtrail
-"lib/aws-cloudtrail.cmxs": use_aws-cloudtrail
-"lib/types.cmx": for-pack(Aws-cloudtrail)
-"lib/errors.cmx": for-pack(Aws-cloudtrail)
-"lib/createTrail.cmx": for-pack(Aws-cloudtrail)
-"lib/deleteTrail.cmx": for-pack(Aws-cloudtrail)
-"lib/describeTrails.cmx": for-pack(Aws-cloudtrail)
-"lib/getTrailStatus.cmx": for-pack(Aws-cloudtrail)
-"lib/lookupEvents.cmx": for-pack(Aws-cloudtrail)
-"lib/startLogging.cmx": for-pack(Aws-cloudtrail)
-"lib/stopLogging.cmx": for-pack(Aws-cloudtrail)
-"lib/updateTrail.cmx": for-pack(Aws-cloudtrail)
+# Library aws_cloudtrail
+"lib/aws_cloudtrail.cmxs": use_aws_cloudtrail
+"lib/types.cmx": for-pack(Aws_cloudtrail)
+"lib/errors.cmx": for-pack(Aws_cloudtrail)
+"lib/createTrail.cmx": for-pack(Aws_cloudtrail)
+"lib/deleteTrail.cmx": for-pack(Aws_cloudtrail)
+"lib/describeTrails.cmx": for-pack(Aws_cloudtrail)
+"lib/getTrailStatus.cmx": for-pack(Aws_cloudtrail)
+"lib/lookupEvents.cmx": for-pack(Aws_cloudtrail)
+"lib/startLogging.cmx": for-pack(Aws_cloudtrail)
+"lib/stopLogging.cmx": for-pack(Aws_cloudtrail)
+"lib/updateTrail.cmx": for-pack(Aws_cloudtrail)
 <lib/*.ml{,i,y}>: pkg_aws
 # OASIS_STOP

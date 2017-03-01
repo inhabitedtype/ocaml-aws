@@ -10,7 +10,7 @@ License:     BSD-3-Clause
 Plugins:     META (0.4), DevFiles (0.4)
 BuildTools: ocamlbuild
 
-Library "aws-elasticloadbalancing"
+Library "aws_elasticloadbalancing"
   Path:         lib
   Findlibname:  aws-elasticloadbalancing
   Pack:         true
