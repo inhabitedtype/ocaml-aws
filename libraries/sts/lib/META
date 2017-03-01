@@ -1,12 +1,12 @@
 # OASIS_START
-# DO NOT EDIT (digest: 953ae9eb3796058754a3b2ebf65270a1)
+# DO NOT EDIT (digest: 24f0b99aefa9ecb8a60e9e00d5e60854)
 version = "0.1.0"
 description = "AWS Security Token Service"
 requires = "aws"
-archive(byte) = "aws-sts.cma"
-archive(byte, plugin) = "aws-sts.cma"
-archive(native) = "aws-sts.cmxa"
-archive(native, plugin) = "aws-sts.cmxs"
-exists_if = "aws-sts.cma"
+archive(byte) = "aws_sts.cma"
+archive(byte, plugin) = "aws_sts.cma"
+archive(native) = "aws_sts.cmxa"
+archive(native, plugin) = "aws_sts.cmxs"
+exists_if = "aws_sts.cma"
 # OASIS_STOP
 

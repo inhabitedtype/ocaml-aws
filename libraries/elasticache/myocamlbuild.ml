@@ -1,5 +1,5 @@
 (* OASIS_START *)
-(* DO NOT EDIT (digest: 088df3d139687e02f2d6fb87314f6fb3) *)
+(* DO NOT EDIT (digest: 1cfc32fdd16553aa1821ce5d55e24625) *)
 module OASISGettext = struct
 (* # 22 "src/oasis/OASISGettext.ml" *)
 
@@ -767,7 +767,7 @@ end
 open Ocamlbuild_plugin;;
 let package_default =
   {
-     MyOCamlbuildBase.lib_ocaml = [("aws-elasticache", ["lib"], [])];
+     MyOCamlbuildBase.lib_ocaml = [("aws_elasticache", ["lib"], [])];
      lib_c = [];
      flags = [];
      includes = []

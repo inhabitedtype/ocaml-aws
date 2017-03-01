@@ -1,12 +1,12 @@
 # OASIS_START
-# DO NOT EDIT (digest: 85e478a2b9bc4218d3f5f95e4faede23)
+# DO NOT EDIT (digest: 9aab69c962d5de5386c0b1359dd09884)
 version = "0.1.0"
 description = "Amazon ElastiCache"
 requires = "aws"
-archive(byte) = "aws-elasticache.cma"
-archive(byte, plugin) = "aws-elasticache.cma"
-archive(native) = "aws-elasticache.cmxa"
-archive(native, plugin) = "aws-elasticache.cmxs"
-exists_if = "aws-elasticache.cma"
+archive(byte) = "aws_elasticache.cma"
+archive(byte, plugin) = "aws_elasticache.cma"
+archive(native) = "aws_elasticache.cmxa"
+archive(native, plugin) = "aws_elasticache.cmxs"
+exists_if = "aws_elasticache.cma"
 # OASIS_STOP
 

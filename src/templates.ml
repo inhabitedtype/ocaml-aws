@@ -44,7 +44,7 @@ License:     BSD-3-Clause
 Plugins:     META (0.4), DevFiles (0.4)
 BuildTools: ocamlbuild
 
-Library \"aws-%s\"
+Library \"aws_%s\"
   Path:         lib
   Findlibname:  aws-%s
   Pack:         true

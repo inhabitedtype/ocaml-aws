@@ -1,5 +1,5 @@
 (* OASIS_START *)
-(* DO NOT EDIT (digest: 1d6eafcea17c35846413c058458743e4) *)
+(* DO NOT EDIT (digest: d4b72fea4b4ea7b5f09d513b3b2ee5a1) *)
 module OASISGettext = struct
 (* # 22 "src/oasis/OASISGettext.ml" *)
 
@@ -767,7 +767,7 @@ end
 open Ocamlbuild_plugin;;
 let package_default =
   {
-     MyOCamlbuildBase.lib_ocaml = [("aws-cloudformation", ["lib"], [])];
+     MyOCamlbuildBase.lib_ocaml = [("aws_cloudformation", ["lib"], [])];
      lib_c = [];
      flags = [];
      includes = []

@@ -1,5 +1,5 @@
 (* OASIS_START *)
-(* DO NOT EDIT (digest: b347940ab290894bae87442fa82cfa4d) *)
+(* DO NOT EDIT (digest: f30aac89a592db948cac123a71e569af) *)
 module OASISGettext = struct
 (* # 22 "src/oasis/OASISGettext.ml" *)
 
@@ -767,7 +767,7 @@ end
 open Ocamlbuild_plugin;;
 let package_default =
   {
-     MyOCamlbuildBase.lib_ocaml = [("aws-sts", ["lib"], [])];
+     MyOCamlbuildBase.lib_ocaml = [("aws_sts", ["lib"], [])];
      lib_c = [];
      flags = [];
      includes = []

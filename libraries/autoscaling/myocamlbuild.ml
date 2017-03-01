@@ -1,5 +1,5 @@
 (* OASIS_START *)
-(* DO NOT EDIT (digest: 3a8ad0d1e7fc2341d284e49193427aea) *)
+(* DO NOT EDIT (digest: d391a410c807a53818a418ce6f22e7eb) *)
 module OASISGettext = struct
 (* # 22 "src/oasis/OASISGettext.ml" *)
 
@@ -767,7 +767,7 @@ end
 open Ocamlbuild_plugin;;
 let package_default =
   {
-     MyOCamlbuildBase.lib_ocaml = [("aws-autoscaling", ["lib"], [])];
+     MyOCamlbuildBase.lib_ocaml = [("aws_autoscaling", ["lib"], [])];
      lib_c = [];
      flags = [];
      includes = []
