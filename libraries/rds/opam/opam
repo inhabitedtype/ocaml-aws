@@ -11,7 +11,7 @@ build: [
 ]
 install: ["ocaml" "setup.ml" "-install"]
 remove: [
-  ["ocamlfind" "remove" "aws-autoscaling"]
+  ["ocamlfind" "remove" "aws-rds"]
 ]
 build-doc: [ "ocaml" "setup.ml" "-doc" ]
 depends: [
