@@ -5,5 +5,6 @@ script: bash -ex .travis-opam.sh
 env:
   - OCAML_VERSION=4.01 DEPOPTS="lwt ssl async async_ssl cohttp"
   - OCAML_VERSION=4.02 DEPOPTS="lwt ssl async async_ssl cohttp"
+  - OCAML_VERSION=4.03 DEPOPTS="lwt ssl async async_ssl cohttp"
 os:
   - linux
