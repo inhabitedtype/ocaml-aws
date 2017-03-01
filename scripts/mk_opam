@@ -14,7 +14,7 @@ build: [
 ]
 install: ["ocaml" "setup.ml" "-install"]
 remove: [
-  ["ocamlfind" "remove" "aws-autoscaling"]
+  ["ocamlfind" "remove" "$(oasis query name)"]
 ]
 build-doc: [ "ocaml" "setup.ml" "-doc" ]
 depends: [
