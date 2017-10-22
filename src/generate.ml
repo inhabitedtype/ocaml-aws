@@ -61,6 +61,7 @@ let toposort (shapes : Shape.t StringTable.t) =
     | Shape.Structure members ->
       List.iter (fun mem -> add_edge data mem.Structure.shape) members
     | Shape.List (s,_) -> add_edge data s
+    | Shape.Map ((ks,_), (vs,_)) -> add_edge data ks; add_edge data vs
     | Shape.Enum _ -> ())
   shapes;
   let module T = Topological.Make(G) in
@@ -86,6 +87,8 @@ let types is_ec2 shapes =
         members)
       | Shape.List (shp, _) ->
         Syntax.tylet "t" (Syntax.ty1 "list" (shp ^ ".t"))
+      | Shape.Map ((kshp, loc), (vshp, _)) ->
+        Syntax.tylet "t" (Syntax.ty2 "Hashtbl.t" (kshp ^ ".t") (vshp ^ ".t"))
       | Shape.Enum opts ->
         Syntax.tyvariantlet "t" (List.map (fun t -> (Util.to_variant_name t, [])) opts)
     in
@@ -102,6 +105,8 @@ let types is_ec2 shapes =
                        (List.map (fun a -> (a.Structure.field_name, ident a.Structure.field_name)) members))) in
         Syntax.let_ "make" (mkfun members body)
       | Shape.List _ -> [%stri let make elems () = elems]
+      (* TODO: maybe accept a list of tuples and create a Hashtbl *)
+      | Shape.Map _ -> [%stri let make elems () = elems]
       | Shape.Enum opts -> [%stri let make v () = v]
     in
     let extra = let open Syntax in match v.Shape.content with
@@ -136,6 +141,10 @@ let types is_ec2 shapes =
         s
         in
         Syntax.(let_ "parse" (fun_ "xml" (app1 "Some" (record fields))))
+      | Shape.Map ((shp, loc_name), _) ->
+        Syntax.(let_ "parse"
+                  (fun_ "xml"
+                     (ident "None")))
       | Shape.List (shp, loc_name) ->
         let item_name = match loc_name with
           | None -> "member"
@@ -146,6 +155,7 @@ let types is_ec2 shapes =
                         (app2 "List.map"
                            (ident (shp ^ ".parse"))
                            (app2 "Xml.members" (str item_name) (ident "xml"))))))
+
       | Shape.Enum opts ->
         Syntax.(let_ "parse"
                   (fun_ "xml"
@@ -182,6 +192,8 @@ let types is_ec2 shapes =
                                 (fun_ "f" (q (ident "f"))))) s))))
               | Shape.List (shp,_) ->
                 (app2 "Query.to_query_list" (ident (shp ^ ".to_query")) (ident "v"))
+              | Shape.Map ((shp,_),_) ->
+                (app2 "Query.to_query_hashtbl" (ident (shp ^ ".to_query")) (ident "v"))
               | Shape.Enum opts ->
                 (app1 "Query.Value"
                    (app1 "Some"
@@ -214,6 +226,13 @@ let types is_ec2 shapes =
                    (app2 "List.map"
                       (ident (shp ^ ".to_json"))
                       (ident "v")))
+              | Shape.Map ((shp,_),_) ->
+                (variant1 "Assoc"
+                   (app3 "Hashtbl.fold"
+                      (fun3 "k" "v" "acc"
+                         (list_expr (pair (ident "k") (app1 "String.to_json" (ident "v"))) (ident "acc")))
+                      (ident "v")
+                      (list [])))
               | Shape.Enum opts ->
                 app1 "String.to_json"
                   (app1 "Util.of_option_exn"
@@ -236,6 +255,7 @@ let types is_ec2 shapes =
                        (app2 "Json.lookup" (ident "j") (str mem.Structure.field_name))))
                 s)
               | Shape.List (shp,_) -> app2 "Json.to_list" (ident (shp ^ ".of_json")) (ident "j")
+              | Shape.Map ((kshp,_),(vshp,_)) -> app2 "Json.to_hashtbl" (ident (vshp ^ ".of_json")) (ident "j")
               | Shape.Enum opts ->
                 (app1 "Util.of_option_exn"
                    (app2 "Util.list_find"
@@ -307,32 +327,32 @@ let op service version shapes op =
                                                   )]))))
   in
     let op_error_parse =
-    letin "errors" (app2 "@" (list (List.map (fun name -> ident ("Errors." ^ name))
+    letin "errors" (app2 "@" (list (List.map (fun name -> ident ("Errors_internal." ^ name))
                                       op.Operation.errors))
-                      (ident "Errors.common"))
-      (matchoption (app1 "Errors.of_string" (ident "err"))
+                      (ident "Errors_internal.common"))
+      (matchoption (app1 "Errors_internal.of_string" (ident "err"))
          (ifthen (app2 "&&"
                     (app2 "List.mem" (ident "var") (ident "errors"))
-                    (matchoption (app1 "Errors.to_http_code" (ident "var"))
+                    (matchoption (app1 "Errors_internal.to_http_code" (ident "var"))
                        (app2 "=" (ident "var") (ident "code"))
                        (ident "true")))
             (app1 "Some" (ident "var"))
             (ident "None"))
          (ident "None"))
   in
-  ([ sopen_ "Types"
+  ([ sopen_ "Types_internal"
    ; stylet "input" (mkty (Some op.Operation.input_shape))
    ; stylet "output" (mkty op.Operation.output_shape)
-   ; stylet "error" (ty0 "Errors.t")
+   ; stylet "error" (ty0 "Errors_internal.t")
    ; sinclude_ "Aws.Call" [withty "input" "input"
                           ; withty "output" "output"
                           ; withty "error" "error"]
    ],
-   [ open_ "Types"
+   [ open_ "Types_internal"
    ; open_ "Aws"
    ; tylet "input" (mkty (Some op.Operation.input_shape))
    ; tylet "output" (mkty op.Operation.output_shape)
-   ; tylet "error" (ty0 "Errors.t")
+   ; tylet "error" (ty0 "Errors_internal.t")
    ; let_ "service" (str service)
    ; let_ "to_http" (fun_ "req" to_body)
    ; let_ "of_http" (fun_ "body" of_body)

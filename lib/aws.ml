@@ -232,18 +232,21 @@ module Query = struct
     let i = ref 0 in
     List (List.map (fun v -> i := !i + 1; Pair (string_of_int !i, to_query v)) vals)
 
+  let to_query_hashtbl to_query tbl =
+    List (Hashtbl.fold
+            (fun k v acc -> (Pair (k, to_query v)) :: acc) tbl [])
 end
 
 
 module Json = struct
-    type t =
-      [ `Assoc of (string * t) list
-      | `Bool of bool
-      | `Float of float
-      | `Int of int
-      | `List of t list
-      | `Null
-      | `String of string ]
+  type t =
+    [ `Assoc of (string * t) list
+    | `Bool of bool
+    | `Float of float
+    | `Int of int
+    | `List of t list
+    | `Null
+    | `String of string ]
 
   exception Casting_error of string * t
 
@@ -251,6 +254,14 @@ module Json = struct
     | `List l -> List.map f l
     | t       -> raise (Casting_error("list", t))
 
+  let to_hashtbl f = function
+    | `Assoc m ->
+      List.fold_left
+        (fun acc (k,v) -> Hashtbl.add acc k (f v); acc)
+        (Hashtbl.create (List.length m))
+        m
+    | t        -> raise (Casting_error("map", t))
+  
   let lookup t s =
     try match t with
       | `Assoc l -> Some (List.assoc s l)

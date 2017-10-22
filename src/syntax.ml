@@ -59,6 +59,9 @@ let ty0 nm = Typ.constr (lid nm) []
 (* nm2 nm1 (as a type) *)
 let ty1 nm1 nm2 = Typ.constr (lid nm1) [ty0 nm2]
 
+(* nm2 nm1 (as a type) *)
+let ty2 nm1 nm2 nm3 = Typ.constr (lid nm1) [ty0 nm2; ty0 nm3]
+
 (* type nm = { fs.. } *)
 let tyreclet nm fs =
   Str.type_ Recursive [Type.mk ~kind:(Ptype_record (List.map (fun (nm, ty) -> Type.field (strloc nm) ty) fs)) (strloc nm)]
@@ -102,10 +105,16 @@ let funopt_def exp arg body =
 let fun_ arg body =
   Exp.fun_ Nolabel None (Pat.var (strloc arg)) body
 
-(* fun arg -> body *)
+(* fun arg1 arg2 -> body *)
 let fun2 arg1 arg2 body =
   Exp.fun_ Nolabel None (Pat.var (strloc arg1))
     (Exp.fun_ Nolabel None (Pat.var (strloc arg2)) body)
+
+(* fun arg1 arg2 arg3 -> body *)
+let fun3 arg1 arg2 arg3 body =
+  Exp.fun_ "" None (Pat.var (strloc arg1))
+    (Exp.fun_ "" None (Pat.var (strloc arg2))
+       (Exp.fun_ "" None (Pat.var (strloc arg3)) body))
 
 (* fun () -> body *)
 let fununit body =
@@ -140,6 +149,8 @@ let tuple = Exp.tuple
 
 (* [x; ..] (the list of expressions) *)
 let list xs = List.fold_left (fun rest x -> Exp.construct (lid "::") (Some (pair x rest))) (Exp.construct (lid "[]") None) xs
+
+let list_expr x rest = Exp.construct (lid "::") (Some (pair x rest))
 
 (* `v *)
 let variant v = Exp.variant v None

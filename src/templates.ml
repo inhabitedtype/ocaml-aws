@@ -48,7 +48,7 @@ Library \"aws_%s\"
   Path:         lib
   Findlibname:  aws-%s
   Pack:         true
-  Modules:      Types, Errors, %s
+  Modules:      Types_internal, Errors_internal, %s
   BuildDepends: aws (>= 0.1.0)
 
 Document \"aws-%s\"
