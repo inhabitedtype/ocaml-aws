@@ -39,6 +39,12 @@ module Json = struct
   let member_exn name json =
     let r = Yojson.Basic.Util.member name json in
     if r = `Null then raise Not_found else r
+
+  let member_opt name json =
+    match Yojson.Basic.Util.member name json with
+    | exception _ -> None
+    | `Null -> None
+    | r -> Some r
 end
 
 let unreserve =
@@ -75,6 +81,22 @@ let shape ((nm, j) : (string * Yojson.Basic.json)) : Shape.parsed =
       | loc_name -> Some (Json.to_string loc_name)
     in
     (nm, "list", Some (Shape.List(shape, loc_name)))
+  | `String "map" ->
+    let key = Json.member_exn "key" j in
+    let key_shape  = Json.member_exn "shape" key |> Json.to_string in
+    let value = Json.member_exn "value" j in
+    let value_shape = Json.member_exn "shape" value |> Json.to_string in
+    let key_loc_name =
+      match Json.member "locationName" key with
+      | `Null    -> None
+      | loc_name -> Some (Json.to_string loc_name)
+    in
+    let value_loc_name =
+      match Json.member "locationName" value with
+      | `Null    -> None
+      | loc_name -> Some (Json.to_string loc_name)
+    in
+    (nm, "map", Some (Shape.Map((key_shape, key_loc_name), (value_shape, value_loc_name))))
   | `String ty ->
     if ty = "string" && Json.member "enum" j <> `Null then
       let enum    = Json.(member_exn "enum" j |> to_list) in
@@ -122,14 +144,19 @@ let op (_nm, j) : Operation.t =
   ; errors
   }
 
+(* there might be a weird bug here that is not generating the errors *)
 let error shape_name json =
   try
-    let error = Json.member_exn "error" json in
-    let code  = Json.(member_exn "code" error |> to_string) in
+    let error = Json.member "error" json in
+    let code  = match Json.member_opt "code" error with
+      | Some c -> Json.to_string c
+      | None -> shape_name
+    in
     let http_code =
       match Json.member "httpStatusCode" error with
       | `Int n -> Some n
       | `Null  -> None
+      | exception _ -> None
       | _      -> assert false
     in
     { Error.shape_name

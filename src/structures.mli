@@ -33,7 +33,7 @@
 
 module Structure : sig
 
-  (** Most shapes are structs (the rest are primitive, lists, or
+  (** Most shapes are structs (the rest are primitive, lists, maps or
       enums), which have a list of members. The fields are:
 
       name: the name of the member.
@@ -88,6 +88,7 @@ module Shape : sig
     | Structure of Structure.member list
     | List of string * string option
     | Enum of string list
+    | Map of (string * string option) * (string * string option)
 
   type t = { name : string; content : contents }
 
