@@ -82,9 +82,12 @@ let types is_ec2 shapes =
     let ty =
       match v.Shape.content with
       | Shape.Structure members ->
-        mkrecty (List.map (fun m ->
-          (m.Structure.field_name, m.Structure.shape ^ ".t", m.Structure.required || is_list ~shapes ~shp:m.Structure.shape))
-        members)
+        if List.length members = 0 then
+          Syntax.tylet "t" (Syntax.ty0 "unit")
+        else
+          mkrecty (List.map (fun m ->
+            (m.Structure.field_name, m.Structure.shape ^ ".t", m.Structure.required || is_list ~shapes ~shp:m.Structure.shape))
+            members)
       | Shape.List (shp, _) ->
         Syntax.tylet "t" (Syntax.ty1 "list" (shp ^ ".t"))
       | Shape.Map ((kshp, loc), (vshp, _)) ->
@@ -94,16 +97,19 @@ let types is_ec2 shapes =
     in
     let make = match v.Shape.content with
       | Shape.Structure members ->
-        let rec mkfun (args : Structure.member list) body = match args with
-          | [] -> body
-          | (x::xs) ->
-            let fn = if x.Structure.required then Syntax.funlab else if is_list ~shapes ~shp:x.Structure.shape then Syntax.(funopt_def (list [])) else Syntax.funopt in
-            fn x.Structure.field_name (mkfun xs body) in
-        let body =
-          Syntax.(fununit
-                    (record
-                       (List.map (fun a -> (a.Structure.field_name, ident a.Structure.field_name)) members))) in
-        Syntax.let_ "make" (mkfun members body)
+        if List.length members = 0 then
+          [%stri let make () = ()]
+        else
+          let rec mkfun (args : Structure.member list) body = match args with
+            | [] -> body
+            | (x::xs) ->
+              let fn = if x.Structure.required then Syntax.funlab else if is_list ~shapes ~shp:x.Structure.shape then Syntax.(funopt_def (list [])) else Syntax.funopt in
+              fn x.Structure.field_name (mkfun xs body) in
+          let body =
+            Syntax.(fununit
+                      (record
+                         (List.map (fun a -> (a.Structure.field_name, ident a.Structure.field_name)) members))) in
+          Syntax.let_ "make" (mkfun members body)
       | Shape.List _ -> [%stri let make elems () = elems]
       (* TODO: maybe accept a list of tuples and create a Hashtbl *)
       | Shape.Map _ -> [%stri let make elems () = elems]
@@ -140,7 +146,10 @@ let types is_ec2 shapes =
           (mem.Structure.field_name, op))
         s
         in
-        Syntax.(let_ "parse" (fun_ "xml" (app1 "Some" (record fields))))
+        Syntax.(let_ "parse" (fun_ "xml" (if List.length s = 0 then
+                                            (ident "None")
+                                          else
+                                            (app1 "Some" (record fields)))))
       | Shape.Map ((shp, loc_name), _) ->
         Syntax.(let_ "parse"
                   (fun_ "xml"
@@ -211,16 +220,22 @@ let types is_ec2 shapes =
                    (app1 "Util.list_filter_opt"
                       (list
                          (List.map (fun mem ->
+                              let location =
+                                  match mem.Structure.loc_name with
+                                  | Some name -> name
+                                  | None      ->
+                                    mem.Structure.name ^
+                                    if not is_ec2 && is_list ~shapes ~shp:mem.Structure.shape
+                                    then ".member" else ""
+                              in
                               let q arg =
                                 (pair
-                                   (str mem.Structure.field_name)
+                                   (str location)
                                    (app1 (mem.Structure.shape ^ ".to_json") arg)) in
                               if mem.Structure.required || is_list ~shapes ~shp:mem.Structure.shape
                               then app1 "Some" (q (ident ("v." ^ mem.Structure.field_name)))
                               else app2 "Util.option_map" (ident ("v." ^ mem.Structure.field_name))
-                                  (fun_ "f" (q (ident "f")))
-
-                            ) s))))
+                                  (fun_ "f" (q (ident "f")))) s))))
               | Shape.List (shp,_) ->
                 (variant1 "List"
                    (app2 "List.map"
@@ -238,22 +253,32 @@ let types is_ec2 shapes =
                   (app1 "Util.of_option_exn"
                      (app2 "Util.list_find"
                         (ident "t_to_str")
-                        (ident "v")))
-             )))
+                        (ident "v"))))))
     in
     let of_json = Syntax.(
         let_ "of_json"
           (fun_ "j"
              (match v.Shape.content with
               | Shape.Structure s ->
-                record (List.map (fun mem ->
-                    (mem.Structure.field_name,
-                     (if mem.Structure.required || is_list ~shapes ~shp:mem.Structure.shape
-                      then fun v -> app1 (mem.Structure.shape ^ ".of_json")
-                          (app1 "Util.of_option_exn" v)
-                      else fun v -> app2 "Util.option_map" v (ident (mem.Structure.shape ^ ".of_json")))
-                       (app2 "Json.lookup" (ident "j") (str mem.Structure.field_name))))
-                s)
+                if List.length s = 0 then
+                  (ident "()")
+                else
+                  record (List.map (fun mem ->
+                      let location =
+                        match mem.Structure.loc_name with
+                        | Some name -> name
+                        | None      ->
+                          mem.Structure.name ^
+                          if not is_ec2 && is_list ~shapes ~shp:mem.Structure.shape
+                          then ".member" else ""
+                      in
+                      (mem.Structure.field_name,
+                       (if mem.Structure.required || is_list ~shapes ~shp:mem.Structure.shape
+                        then fun v -> app1 (mem.Structure.shape ^ ".of_json")
+                            (app1 "Util.of_option_exn" v)
+                        else fun v -> app2 "Util.option_map" v (ident (mem.Structure.shape ^ ".of_json")))
+                         (app2 "Json.lookup" (ident "j") (str location))))
+                      s)
               | Shape.List (shp,_) -> app2 "Json.to_list" (ident (shp ^ ".of_json")) (ident "j")
               | Shape.Map ((kshp,_),(vshp,_)) -> app2 "Json.to_hashtbl" (ident (vshp ^ ".of_json")) (ident "j")
               | Shape.Enum opts ->
@@ -273,7 +298,7 @@ let types is_ec2 shapes =
   imports @ modules
 
 
-let op service version shapes op =
+let op is_ec2 service version protocol shapes op =
   let open Syntax in
   let mkty = function
     | None -> ty0 "unit"
@@ -282,7 +307,7 @@ let op service version shapes op =
   let to_body =
     letin "uri"
       (app2 "Uri.add_query_params"
-         (app1 "Uri.of_string" (str ("https://" ^ service ^ ".amazonaws.com")))
+         (app1 "Uri.of_string" (str ("amazonaws.com" ^ op.Operation.http_uri)))
          (app2 "List.append"
             (list [ pair (str "Action") (list [str op.Operation.name])
                   ; pair (str "Version") (list [str version])
@@ -297,34 +322,47 @@ let op service version shapes op =
     match op.Operation.output_shape with
     | None -> variant1 "Ok" (ident "()")
     | Some shp ->
-      tryfail (letin "xml" (app1 "Ezxmlm.from_string" (ident "body"))
-                 (letin "resp" (let r = app2 "Xml.member"
-                                   (str (op.Operation.name ^ "Response"))
-                                   (app1 "snd" (ident "xml")) in
-                                match op.Operation.output_wrapper with
-                                | None -> r
-                                | Some w -> app2 "Util.option_bind"
-                                              r (app1 "Xml.member" (str w)))
-                    (try_msg "Xml.RequiredFieldMissing"
-                       (app2 "Util.or_error"
-                          (app2 "Util.option_bind"
-                             (ident "resp")
-                             (ident (shp ^ ".parse")))
-                          (letom "Error"
-                             (app1 "BadResponse"
-                                (record [("body", ident "body"); ("message", str ("Could not find well formed " ^ shp ^ "."))]))))
-                       (letom "Error"
-                          (variant1 "Error"
-                             (app1 "BadResponse"
-                                (record [("body", ident "body"); ("message", app2 "^" (str ("Error parsing " ^ shp ^ " - missing field in body or children: ")) (ident "msg"))])))))
-                 ))
-        (variant1 "Error"
-           (letom "Error"
-              (app1 "BadResponse"
-                 (record [("body", ident "body"); ("message", app2 "^"
-                                                     (str "Error parsing xml: ")
-                                                     (ident "msg")
-                                                  )]))))
+      match protocol with
+      | "rest-json" ->
+        try_msg "Yojson.Json_error"
+          (letin "json" (app1 "Yojson.Basic.from_string" (ident "body"))
+             (variant1 "Ok"
+                (app1 (shp ^ ".of_json") (ident "json"))))
+          (variant1 "Error"
+             (letom "Error"
+                (app1 "BadResponse"
+                   (record [("body", ident "body"); ("message", app2 "^"
+                                                       (str "Error parsing JSON: ")
+                                                       (ident "msg"))]))))
+      | "rest-xml" ->
+        tryfail (letin "xml" (app1 "Ezxmlm.from_string" (ident "body"))
+                   (letin "resp" (let r = app2 "Xml.member"
+                                      (* this may be a bug. shouldn't we just use output-shape? *)
+                                      (str (op.Operation.name ^ "Response"))
+                                      (app1 "snd" (ident "xml")) in
+                                  match op.Operation.output_wrapper with
+                                  | None -> r
+                                  | Some w -> app2 "Util.option_bind"
+                                                r (app1 "Xml.member" (str w)))
+                      (try_msg "Xml.RequiredFieldMissing"
+                         (app2 "Util.or_error"
+                            (app2 "Util.option_bind"
+                               (ident "resp")
+                               (ident (shp ^ ".parse")))
+                            (letom "Error"
+                               (app1 "BadResponse"
+                                  (record [("body", ident "body"); ("message", str ("Could not find well formed " ^ shp ^ "."))]))))
+                         (letom "Error"
+                            (variant1 "Error"
+                               (app1 "BadResponse"
+                                  (record [("body", ident "body"); ("message", app2 "^" (str ("Error parsing " ^ shp ^ " - missing field in body or children: ")) (ident "msg"))])))))))
+          (variant1 "Error"
+             (letom "Error"
+                (app1 "BadResponse"
+                   (record [("body", ident "body"); ("message", app2 "^"
+                                                       (str "Error parsing xml: ")
+                                                       (ident "msg"))]))))
+      | other -> raise Not_found
   in
     let op_error_parse =
     letin "errors" (app2 "@" (list (List.map (fun name -> ident ("Errors_internal." ^ name))
@@ -340,7 +378,7 @@ let op service version shapes op =
             (ident "None"))
          (ident "None"))
   in
-  ([ sopen_ "Types_internal"
+  ([ sopen_ "Types"
    ; stylet "input" (mkty (Some op.Operation.input_shape))
    ; stylet "output" (mkty op.Operation.output_shape)
    ; stylet "error" (ty0 "Errors_internal.t")
@@ -348,7 +386,7 @@ let op service version shapes op =
                           ; withty "output" "output"
                           ; withty "error" "error"]
    ],
-   [ open_ "Types_internal"
+   [ open_ "Types"
    ; open_ "Aws"
    ; tylet "input" (mkty (Some op.Operation.input_shape))
    ; tylet "output" (mkty op.Operation.output_shape)

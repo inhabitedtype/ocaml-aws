@@ -187,6 +187,14 @@ let inline_shapes (ops : Operation.t list) (shapes : Shape.parsed StringTable.t)
        tell from the examples, it is the same as DateTime. *)
     ;("timestamp","DateTime")
     ;("blob","Blob")] in
+  let is_op_input_or_output shp =
+    let op_shapes = List.fold_left (fun acc {Operation.input_shape; output_shape} ->
+      (match output_shape with
+       | None -> input_shape :: acc
+       | Some x -> input_shape :: x :: acc))
+      [] ops in
+    List.mem shp op_shapes
+  in
   let is_empty_struct shp =
     try
       match StringTable.find shp shapes with
@@ -202,7 +210,7 @@ let inline_shapes (ops : Operation.t list) (shapes : Shape.parsed StringTable.t)
   in
   let new_shapes =
     StringTable.fold (fun key (nm, ty, contents) acc -> 
-      if List.mem_assoc ty type_map || is_empty_struct nm then 
+      if List.mem_assoc ty type_map || ((is_empty_struct nm) && not (is_op_input_or_output nm)) then 
         acc
       else
         let content =

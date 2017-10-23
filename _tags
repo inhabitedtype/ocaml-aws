@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 2c877cc481b91d4c737c8c41de5c067a)
+# DO NOT EDIT (digest: 6c554f88105f26b92337ec6971aac453)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -20,6 +20,7 @@ true: annot, bin_annot
 <lib/*.ml{,i,y}>: package(ezxmlm)
 <lib/*.ml{,i,y}>: package(nocrypto)
 <lib/*.ml{,i,y}>: package(uri)
+<lib/*.ml{,i,y}>: package(yojson)
 # Library aws_lwt
 "lwt/aws_lwt.cmxs": use_aws_lwt
 "lwt/runtime.cmx": for-pack(Aws_lwt)
@@ -30,6 +31,7 @@ true: annot, bin_annot
 <lwt/*.ml{,i,y}>: package(nocrypto)
 <lwt/*.ml{,i,y}>: package(ssl)
 <lwt/*.ml{,i,y}>: package(uri)
+<lwt/*.ml{,i,y}>: package(yojson)
 <lwt/*.ml{,i,y}>: use_aws
 # Library aws_async
 "async/aws_async.cmxs": use_aws_async
@@ -42,6 +44,7 @@ true: annot, bin_annot
 <async/*.ml{,i,y}>: package(nocrypto)
 <async/*.ml{,i,y}>: package(threads)
 <async/*.ml{,i,y}>: package(uri)
+<async/*.ml{,i,y}>: package(yojson)
 <async/*.ml{,i,y}>: use_aws
 # Executable aws_gen
 <src/aws_gen.{native,byte}>: package(cmdliner)

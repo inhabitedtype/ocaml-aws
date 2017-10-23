@@ -136,6 +136,7 @@ let main input override errors_path outdir is_ec2 =
   let lib_version   = Json.(member_exn "libraryVersion" overrides |> to_string) in
   let service_name  = Json.(member_exn "serviceFullName" meta |> to_string) in
   let api_version   = Json.(member_exn "apiVersion"     meta |> to_string) in
+  let protocol      = Json.(member_exn "protocol" meta |> to_string) in
   let parsed_ops  = List.map Reading.op ops_json in
   let common_errors =
     let parse_common common =
@@ -183,13 +184,13 @@ let main input override errors_path outdir is_ec2 =
   mkdir_p [outdir; lib_name; "lib"];
   let dir     = outdir </> lib_name in
   let lib_dir = dir    </> "lib" in
-  Printing.write_structure (lib_dir </> "types_internal.ml") (Generate.types is_ec2 shapes);
+  Printing.write_structure (lib_dir </> "types.ml") (Generate.types is_ec2 shapes);
   log "## Wrote %d/%d shape modules..."
     (StringTable.cardinal shapes) (List.length shp_json);
   Printing.write_structure (lib_dir </> "errors_internal.ml") (Generate.errors errors common_errors);
   log "## Wrote %d error variants..." (List.length errors);
   List.iter (fun op ->
-    let (mli, ml) = Generate.op lib_name api_version shapes op in
+    let (mli, ml) = Generate.op is_ec2 lib_name api_version protocol shapes op in
     let modname = uncapitalize op.Operation.name in
     Printing.write_signature (lib_dir </> (modname ^ ".mli")) mli;
     Printing.write_structure (lib_dir </> (modname ^ ".ml")) ml)

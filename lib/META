@@ -1,8 +1,8 @@
 # OASIS_START
-# DO NOT EDIT (digest: 11d01ef4347ddb64373887ce8981ee06)
+# DO NOT EDIT (digest: f51525ca1fb3685b524a56b5e897cd5f)
 version = "1.0.2"
 description = "Amazon Web Services SDK"
-requires = "ezxmlm nocrypto calendar uri"
+requires = "ezxmlm nocrypto calendar uri yojson"
 archive(byte) = "aws.cma"
 archive(byte, plugin) = "aws.cma"
 archive(native) = "aws.cmxa"

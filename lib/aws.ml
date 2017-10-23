@@ -417,7 +417,11 @@ module Signing = struct
      * http://docs.aws.amazon.com/general/latest/gr/sigv4-signed-request-examples.html
      *)
     let sign_request ~access_key ~secret_key ~service ~region (meth, uri, headers) =
-      let host = service ^ ".amazonaws.com" in
+      let uri = Uri.of_string (String.concat "" ["https://"; service; "."; region; "."; (Uri.to_string uri)]) in
+      let host = match (Uri.host uri) with
+        | None -> raise Not_found
+        | Some h -> h
+      in
       let params = encode_query (Uri.query uri) in
       let sign key msg = Hash.sha256 ~key msg in
       let get_signature_key key date region service =
@@ -425,7 +429,7 @@ module Signing = struct
       let now = Time.now_utc () in
       let amzdate = Time.date_time now in
       let datestamp = Time.date_yymmdd now in
-      let canonical_uri = "/" in
+      let canonical_uri = Uri.path uri in
       let canonical_querystring = params in
       let canonical_headers = "host:" ^ host ^ "\n" ^ "x-amz-date:" ^ amzdate ^ "\n" in
       let signed_headers = "host;x-amz-date" in
