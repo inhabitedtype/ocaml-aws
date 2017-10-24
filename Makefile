@@ -40,16 +40,11 @@ configure:
 
 # OASIS_STOP
 
-.PHONY: aws-ec2
-aws-ec2:
-	./aws_gen.native --is-ec2 -i input/ec2/latest/service-2.json -r input/ec2/overrides.json -e input/errors.json -o libraries
-	cd libraries/ec2 && oasis setup && bash ../../scripts/mk_opam
-
-# NOTE: This does not include aws-ec2, which is special-cased.
 LIBRARIES := \
 	aws-autoscaling \
 	aws-cloudformation \
 	aws-cloudtrail \
+	aws-ec2 \
 	aws-elasticache \
 	aws-elasticloadbalancing \
 	aws-rds \

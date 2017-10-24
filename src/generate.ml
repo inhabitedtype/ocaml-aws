@@ -298,7 +298,7 @@ let types is_ec2 shapes =
   imports @ modules
 
 
-let op is_ec2 service version protocol shapes op =
+let op service version protocol shapes op =
   let open Syntax in
   let mkty = function
     | None -> ty0 "unit"
@@ -323,7 +323,7 @@ let op is_ec2 service version protocol shapes op =
     | None -> variant1 "Ok" (ident "()")
     | Some shp ->
       match protocol with
-      | "rest-json" ->
+      | "json" | "rest-json" ->
         try_msg "Yojson.Json_error"
           (letin "json" (app1 "Yojson.Basic.from_string" (ident "body"))
              (variant1 "Ok"
@@ -334,7 +334,7 @@ let op is_ec2 service version protocol shapes op =
                    (record [("body", ident "body"); ("message", app2 "^"
                                                        (str "Error parsing JSON: ")
                                                        (ident "msg"))]))))
-      | "rest-xml" ->
+      | "query" | "ec2" | "rest-xml" ->
         tryfail (letin "xml" (app1 "Ezxmlm.from_string" (ident "body"))
                    (letin "resp" (let r = app2 "Xml.member"
                                       (* this may be a bug. shouldn't we just use output-shape? *)

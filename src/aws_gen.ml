@@ -118,7 +118,7 @@ let rec mkdir_p ?(root="") dirs =
     end;
     mkdir_p ~root:dir ds
 
-let main input override errors_path outdir is_ec2 =
+let main input override errors_path outdir =
   log "## Generating...";
   let overrides =
     match override with
@@ -137,6 +137,7 @@ let main input override errors_path outdir is_ec2 =
   let service_name  = Json.(member_exn "serviceFullName" meta |> to_string) in
   let api_version   = Json.(member_exn "apiVersion"     meta |> to_string) in
   let protocol      = Json.(member_exn "protocol" meta |> to_string) in
+  let is_ec2        = protocol = "ec2" in
   let parsed_ops  = List.map Reading.op ops_json in
   let common_errors =
     let parse_common common =
@@ -190,7 +191,7 @@ let main input override errors_path outdir is_ec2 =
   Printing.write_structure (lib_dir </> "errors_internal.ml") (Generate.errors errors common_errors);
   log "## Wrote %d error variants..." (List.length errors);
   List.iter (fun op ->
-    let (mli, ml) = Generate.op is_ec2 lib_name api_version protocol shapes op in
+    let (mli, ml) = Generate.op lib_name api_version protocol shapes op in
     let modname = uncapitalize op.Operation.name in
     Printing.write_signature (lib_dir </> (modname ^ ".mli")) mli;
     Printing.write_structure (lib_dir </> (modname ^ ".ml")) ml)
@@ -226,11 +227,7 @@ module CommandLine = struct
     let doc = "JSON file with common and specific errors unspecified in service description" in
     Arg.(value & opt (some non_dir_file) None & info ["e"; "errors"] ~docv:"Filename" ~doc)
 
-  let is_ec2 =
-    let doc = "This enables EC2-specific special casing in parts of code generation." in
-    Arg.(value & flag & info ["is-ec2"] ~docv:"Filename" ~doc)
-
-  let gen_t = Term.(pure main $ input $ override $ errors $ outdir $ is_ec2)
+  let gen_t = Term.(pure main $ input $ override $ errors $ outdir)
 
   let info =
     let doc = "Generate a library for an AWS schema." in
