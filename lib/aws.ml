@@ -375,6 +375,56 @@ module BaseTypes = struct
 
 end
 
+module Endpoints = struct
+  (* http://docs.aws.amazon.com/general/latest/gr/rande.html *)
+  let default_endpoint service region =
+    let default =
+      (service ^ "." ^ region ^ ".amazonaws.com" ^ (if region = "cn-north-1" then ".cn" else ""))
+    in
+    let endpoint = match service with
+    | "iam" -> begin match region with
+        | "cn-north-1" -> "iam.cn-north-1.amazonaws.com.cn"
+        | "us-gov-west-1" -> "iam.us-gov.amazonaws.com"
+        | _ -> "iam.amazonaws.com"
+      end
+    | "sdb" -> begin match region with
+        | "us-east-1" -> "sdb.amazonaws.com"
+        | _ -> service ^ "." ^ region ^ ".amazonaws.com"
+      end
+
+    | "sts" -> begin match region with
+        | "cn-north-1" -> "sts.cn-north-1.amazonaws.com.cn"
+        | "us-gov-west-1" -> "sts." ^ region ^ ".amazonaws.com"
+        | _ -> "sts.amazonaws.com"
+      end
+
+    | "s3" -> begin match region with
+        | "us-east-1" -> "s3.amazonaws.com"
+        | "cn-north-1" -> "s3." ^ region ^ ".amazonaws.com.cn"
+        | _ -> "s3-" ^ region ^ ".amazonaws.com"
+      end
+    | "rds" -> service ^ "." ^ region ^ ".amazonaws.com"
+
+    | "route53" -> "route53.amazonaws.com"
+
+    | "emr" -> begin match region with
+        | "cn-north-1" -> "elasticmapreduce.cn-north-1.amazonaws.com.cn"
+        | _ -> "elasticmapreduce." ^ region ^ ".amazonaws.com"
+      end
+
+    | "importexport" -> "importexport.amazonaws.com"
+
+    | "cloudfront" -> "cloudfront.amazonaws.com"
+
+    (* TODO: test this one? *)
+    | "waf" -> "waf.amazonaws.com"
+
+    | _ -> default
+    in
+    "https://" ^ endpoint
+
+end
+
 module Signing = struct
 
     module Hash = struct
@@ -417,7 +467,7 @@ module Signing = struct
      * http://docs.aws.amazon.com/general/latest/gr/sigv4-signed-request-examples.html
      *)
     let sign_request ~access_key ~secret_key ~service ~region (meth, uri, headers) =
-      let uri = Uri.of_string (String.concat "" ["https://"; service; "."; region; "."; (Uri.to_string uri)]) in
+      let uri = Uri.of_string ((Endpoints.default_endpoint service region) ^ (Uri.path_and_query uri)) in
       let host = match (Uri.host uri) with
         | None -> raise Not_found
         | Some h -> h

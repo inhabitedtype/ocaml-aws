@@ -48,7 +48,7 @@ module Json = struct
 end
 
 let unreserve =
-  let reserved_words = [("type", "type_");("to", "to_");("end", "end_")] in
+  let reserved_words = [("and", "and_");("type", "type_");("to", "to_");("end", "end_")] in
   fun s -> try List.assoc s reserved_words with Not_found -> s
 ;;
 
