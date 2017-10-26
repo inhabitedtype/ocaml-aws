@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 6c554f88105f26b92337ec6971aac453)
+# DO NOT EDIT (digest: 4b632d9d2c13bca6935817094fc8ff09)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -52,6 +52,7 @@ true: annot, bin_annot
 <src/aws_gen.{native,byte}>: package(ocamlgraph)
 <src/aws_gen.{native,byte}>: package(ppx_tools)
 <src/aws_gen.{native,byte}>: package(ppx_tools.metaquot)
+<src/aws_gen.{native,byte}>: package(str)
 <src/aws_gen.{native,byte}>: package(unix)
 <src/aws_gen.{native,byte}>: package(yojson)
 <src/*.ml{,i,y}>: package(cmdliner)
@@ -59,6 +60,7 @@ true: annot, bin_annot
 <src/*.ml{,i,y}>: package(ocamlgraph)
 <src/*.ml{,i,y}>: package(ppx_tools)
 <src/*.ml{,i,y}>: package(ppx_tools.metaquot)
+<src/*.ml{,i,y}>: package(str)
 <src/*.ml{,i,y}>: package(unix)
 <src/*.ml{,i,y}>: package(yojson)
 # OASIS_STOP

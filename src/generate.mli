@@ -38,5 +38,5 @@ open Structures
 open Util
 
 val types : bool -> Shape.t StringTable.t -> Parsetree.structure
-val op : bool -> string -> string -> string -> Shape.t StringTable.t -> Operation.t -> Parsetree.signature * Parsetree.structure
+val op : string -> string -> string -> Shape.t StringTable.t -> Operation.t -> Parsetree.signature * Parsetree.structure
 val errors : Error.t list -> Error.t list -> Parsetree.structure

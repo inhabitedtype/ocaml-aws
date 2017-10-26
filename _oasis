@@ -64,7 +64,7 @@ Executable aws_gen
   Build$:           flag(gen)
   Install:          false
   CompiledObject:   best
-  BuildDepends:     cmdliner, yojson, ppx_tools, ppx_tools.metaquot, ocamlgraph, unix, ocaml-migrate-parsetree
+  BuildDepends:     cmdliner, yojson, ppx_tools, ppx_tools.metaquot, ocamlgraph, unix, ocaml-migrate-parsetree, str
 
 SourceRepository master
   Type:     git
