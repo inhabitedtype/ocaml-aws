@@ -60,7 +60,7 @@ let toposort (shapes : Shape.t StringTable.t) =
     match data.Shape.content with
     | Shape.Structure members ->
       List.iter (fun mem -> add_edge data mem.Structure.shape) members
-    | Shape.List (s,_) -> add_edge data s
+    | Shape.List (s,_,_) -> add_edge data s
     | Shape.Map ((ks,_), (vs,_)) -> add_edge data ks; add_edge data vs
     | Shape.Enum _ -> ())
   shapes;
@@ -88,7 +88,7 @@ let types is_ec2 shapes =
           mkrecty (List.map (fun m ->
             (m.Structure.field_name, (String.capitalize m.Structure.shape) ^ ".t", m.Structure.required || is_list ~shapes ~shp:m.Structure.shape))
             members)
-      | Shape.List (shp, _) ->
+      | Shape.List (shp, _, _) ->
         Syntax.tylet "t" (Syntax.ty1 "list" (shp ^ ".t"))
       | Shape.Map ((kshp, loc), (vshp, _)) ->
         Syntax.tylet "t" (Syntax.ty2 "Hashtbl.t" (kshp ^ ".t") (vshp ^ ".t"))
@@ -154,7 +154,7 @@ let types is_ec2 shapes =
         Syntax.(let_ "parse"
                   (fun_ "xml"
                      (ident "None")))
-      | Shape.List (shp, loc_name) ->
+      | Shape.List (shp, loc_name, flattened) ->
         let item_name = match loc_name with
           | None -> "member"
           | Some nm -> nm in
@@ -163,7 +163,9 @@ let types is_ec2 shapes =
                      (app1 "Util.option_all"
                         (app2 "List.map"
                            (ident (shp ^ ".parse"))
-                           (app2 "Xml.members" (str item_name) (ident "xml"))))))
+                           (if flattened then
+                              (list_expr (ident "xml") (ident "[]"))
+                            else (app2 "Xml.members" (str item_name) (ident "xml")))))))
 
       | Shape.Enum opts ->
         Syntax.(let_ "parse"
@@ -199,7 +201,7 @@ let types is_ec2 shapes =
                             then app1 "Some" (q (ident ("v." ^ mem.Structure.field_name)))
                             else app2 "Util.option_map" (ident ("v." ^ mem.Structure.field_name))
                                 (fun_ "f" (q (ident "f"))))) s))))
-              | Shape.List (shp,_) ->
+              | Shape.List (shp,_,_) ->
                 (app2 "Query.to_query_list" (ident (shp ^ ".to_query")) (ident "v"))
               | Shape.Map ((shp,_),_) ->
                 (app2 "Query.to_query_hashtbl" (ident (shp ^ ".to_query")) (ident "v"))
@@ -236,7 +238,7 @@ let types is_ec2 shapes =
                               then app1 "Some" (q (ident ("v." ^ mem.Structure.field_name)))
                               else app2 "Util.option_map" (ident ("v." ^ mem.Structure.field_name))
                                   (fun_ "f" (q (ident "f")))) s))))
-              | Shape.List (shp,_) ->
+              | Shape.List (shp,_,_) ->
                 (variant1 "List"
                    (app2 "List.map"
                       (ident (shp ^ ".to_json"))
@@ -279,7 +281,7 @@ let types is_ec2 shapes =
                         else fun v -> app2 "Util.option_map" v (ident ((String.capitalize mem.Structure.shape) ^ ".of_json")))
                          (app2 "Json.lookup" (ident "j") (str location))))
                       s)
-              | Shape.List (shp,_) -> app2 "Json.to_list" (ident (shp ^ ".of_json")) (ident "j")
+              | Shape.List (shp,_,_) -> app2 "Json.to_list" (ident (shp ^ ".of_json")) (ident "j")
               | Shape.Map ((kshp,_),(vshp,_)) -> app2 "Json.to_hashtbl" (ident (vshp ^ ".of_json")) (ident "j")
               | Shape.Enum opts ->
                 (app1 "Util.of_option_exn"
@@ -382,14 +384,20 @@ let op service version protocol shapes op =
                                                        (ident "msg"))]))))
       | "query" | "ec2" | "rest-xml" ->
         tryfail (letin "xml" (app1 "Ezxmlm.from_string" (ident "body"))
-                   (letin "resp" (let r = app2 "Xml.member"
-                                      (* this may be a bug. shouldn't we just use output-shape? *)
-                                      (str (op.Operation.name ^ "Response"))
-                                      (app1 "snd" (ident "xml")) in
-                                  match op.Operation.output_wrapper with
-                                  | None -> r
-                                  | Some w -> app2 "Util.option_bind"
-                                                r (app1 "Xml.member" (str w)))
+                   (letin "resp"
+                      (if protocol = "rest-xml" then
+                         (matchvar (app1 "List.hd" (app1 "snd" (ident "xml")))
+                            [("`El (_, xs)", (app1 "Some" (ident "xs")));
+                             "_", (app1 "raise" (app1 "Failure" (str ("Could not find well formed " ^ shp ^ "."))))])
+                        else
+                          (let r = app2 "Xml.member"
+                             (* this may be a bug. shouldn't we just use output-shape? *)
+                             (str (op.Operation.name ^ "Response"))
+                             (app1 "snd" (ident "xml")) in
+                         match op.Operation.output_wrapper with
+                         | None -> r
+                         | Some w -> app2 "Util.option_bind"
+                                       r (app1 "Xml.member" (str w))))
                       (try_msg "Xml.RequiredFieldMissing"
                          (app2 "Util.or_error"
                             (app2 "Util.option_bind"
