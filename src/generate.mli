@@ -31,6 +31,9 @@
     POSSIBILITY OF SUCH DAMAGE.
   ----------------------------------------------------------------------------*)
 
+open Migrate_parsetree
+open Ast_405
+
 open Structures
 open Util
 

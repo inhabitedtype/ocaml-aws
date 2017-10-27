@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: c747494e57de1dc4045a2d874ed6cfc2)
+# DO NOT EDIT (digest: 2c877cc481b91d4c737c8c41de5c067a)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -45,12 +45,14 @@ true: annot, bin_annot
 <async/*.ml{,i,y}>: use_aws
 # Executable aws_gen
 <src/aws_gen.{native,byte}>: package(cmdliner)
+<src/aws_gen.{native,byte}>: package(ocaml-migrate-parsetree)
 <src/aws_gen.{native,byte}>: package(ocamlgraph)
 <src/aws_gen.{native,byte}>: package(ppx_tools)
 <src/aws_gen.{native,byte}>: package(ppx_tools.metaquot)
 <src/aws_gen.{native,byte}>: package(unix)
 <src/aws_gen.{native,byte}>: package(yojson)
 <src/*.ml{,i,y}>: package(cmdliner)
+<src/*.ml{,i,y}>: package(ocaml-migrate-parsetree)
 <src/*.ml{,i,y}>: package(ocamlgraph)
 <src/*.ml{,i,y}>: package(ppx_tools)
 <src/*.ml{,i,y}>: package(ppx_tools.metaquot)
