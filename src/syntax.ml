@@ -112,9 +112,9 @@ let fun2 arg1 arg2 body =
 
 (* fun arg1 arg2 arg3 -> body *)
 let fun3 arg1 arg2 arg3 body =
-  Exp.fun_ "" None (Pat.var (strloc arg1))
-    (Exp.fun_ "" None (Pat.var (strloc arg2))
-       (Exp.fun_ "" None (Pat.var (strloc arg3)) body))
+  Exp.fun_ Nolabel None (Pat.var (strloc arg1))
+    (Exp.fun_ Nolabel None (Pat.var (strloc arg2))
+       (Exp.fun_ Nolabel None (Pat.var (strloc arg3)) body))
 
 (* fun () -> body *)
 let fununit body =
