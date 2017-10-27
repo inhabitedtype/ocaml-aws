@@ -55,8 +55,12 @@ let unreserve =
 let parse_member rq (mnm, mj) =
   { Structure.name = mnm
   ; shape          = Json.(member_exn "shape" mj |> to_string)
-  ; loc_name       =
+  ; loc_name       = 
     (match Json.member "locationName" mj with
+    | `Null -> None
+    | loc   -> Some (Json.to_string loc))
+  ; location = 
+    (match Json.member "location" mj with
     | `Null -> None
     | loc   -> Some (Json.to_string loc))
   ; required      = List.mem mnm rq

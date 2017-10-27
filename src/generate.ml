@@ -164,7 +164,7 @@ let types is_ec2 shapes =
                         (app2 "List.map"
                            (ident (shp ^ ".parse"))
                            (if flattened then
-                              (list_expr (ident "xml") (ident "[]"))
+                              (list_expr (ident "xml") (list []))
                             else (app2 "Xml.members" (str item_name) (ident "xml")))))))
 
       | Shape.Enum opts ->
@@ -182,6 +182,10 @@ let types is_ec2 shapes =
           (fun_ "v"
              (match v.Shape.content with
               | Shape.Structure s ->
+                let queryparam_ms = List.filter
+                    (fun x -> match x.Structure.location with
+                       | None -> false
+                       | Some l -> l = "querystring") s in
                 (app1 "Query.List"
                    (app1 "Util.list_filter_opt"
                       (list (List.map (fun mem ->
@@ -200,7 +204,7 @@ let types is_ec2 shapes =
                            (if mem.Structure.required || is_list ~shapes ~shp:mem.Structure.shape
                             then app1 "Some" (q (ident ("v." ^ mem.Structure.field_name)))
                             else app2 "Util.option_map" (ident ("v." ^ mem.Structure.field_name))
-                                (fun_ "f" (q (ident "f"))))) s))))
+                                (fun_ "f" (q (ident "f"))))) (if not is_ec2 then queryparam_ms else s)))))
               | Shape.List (shp,_,_) ->
                 (app2 "Query.to_query_list" (ident (shp ^ ".to_query")) (ident "v"))
               | Shape.Map ((shp,_),_) ->
@@ -347,11 +351,16 @@ let op service version protocol shapes op =
   in
   let to_body =
     match protocol with
-    | "json" | "rest-json" ->
+    | "json" | "rest-json" | "rest-xml" ->
       letin "uri"
-        (app1 "Uri.of_string" (op_to_uri shapes op))
+        (app2 "Uri.add_query_params"
+           (app1 "Uri.of_string" (op_to_uri shapes op))
+           (app1 "Util.drop_empty"
+              (app1 "Uri.query_of_encoded"
+                 (app1 "Query.render"
+                    (app1 (op.Operation.input_shape ^ ".to_query") (ident "req"))))))
         (tuple [variant op.Operation.http_meth; ident "uri"; list []])
-    | "query" | "ec2" | "rest-xml" ->
+    | "query" | "ec2" ->
       letin "uri"
         (app2 "Uri.add_query_params"
            (app1 "Uri.of_string" (op_to_uri shapes op))
