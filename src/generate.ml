@@ -293,8 +293,43 @@ let types is_ec2 shapes =
                       (ident "str_to_t")
                       (app1 "String.of_json" (ident "j"))))
              )))  in
+    let to_headers = Syntax.(
+        let_ "to_headers"
+          (fun_ "v"
+             (match v.Shape.content with
+              | Shape.Structure s ->
+                let headers_ms = List.filter
+                    (fun x -> match x.Structure.location with
+                       | None -> false
+                       | Some l -> l = "header" || l = "headers") s in
+                (app1 "Headers.List"
+                   (app1 "Util.list_filter_opt"
+                        (list (List.map (fun mem ->
+                             let location =
+                               match mem.Structure.loc_name with
+                               | Some name -> name
+                               | None -> raise Not_found
+                             in
+                             let h arg =
+                               app1 "Headers.Pair"
+                                 (pair (str location) (app1 ((String.capitalize mem.Structure.shape) ^ ".to_headers") arg)) in
+                             (if mem.Structure.required || is_list ~shapes ~shp:mem.Structure.shape
+                              then app1 "Some" (h (ident ("v." ^ mem.Structure.field_name)))
+                              else app2 "Util.option_map" (ident ("v." ^ mem.Structure.field_name))
+                                  (fun_ "f" (h (ident "f"))))) headers_ms))))
+              | Shape.List (shp,_,_) ->
+                (app2 "Headers.to_headers_list" (ident (shp ^ ".to_headers")) (ident "v"))
+              | Shape.Map ((shp,_),_) ->
+                (app2 "Headers.to_headers_hashtbl" (ident (shp ^ ".to_headers")) (ident "v"))
+              | Shape.Enum opts ->
+                (app1 "Headers.Value"
+                   (app1 "Some"
+                      (app1 "Util.of_option_exn"
+                         (app2 "Util.list_find"
+                            (ident "t_to_str")
+                            (ident "v")))))))) in
     (* Force capitalize the module name, because some shapes may have uncapitalized names *)
-    Syntax.module_ (String.capitalize v.Shape.name) ([ty] @ extra @ [make; parse; to_query; to_json; of_json]) in
+    Syntax.module_ (String.capitalize v.Shape.name) ([ty] @ extra @ [make; parse; to_query; to_headers; to_json; of_json]) in
   let modules = List.map build_module (toposort shapes) in
   let imports =
     [Syntax.open_ "Aws";
@@ -359,7 +394,9 @@ let op service version protocol shapes op =
               (app1 "Uri.query_of_encoded"
                  (app1 "Query.render"
                     (app1 (op.Operation.input_shape ^ ".to_query") (ident "req"))))))
-        (tuple [variant op.Operation.http_meth; ident "uri"; list []])
+        (tuple [variant op.Operation.http_meth;
+                ident "uri";
+                app1 "Headers.render" (app1 (op.Operation.input_shape ^ ".to_headers") (ident "req"))])
     | "query" | "ec2" ->
       letin "uri"
         (app2 "Uri.add_query_params"
@@ -372,7 +409,9 @@ let op service version protocol shapes op =
                  (app1 "Uri.query_of_encoded"
                     (app1 "Query.render"
                        (app1 (op.Operation.input_shape ^ ".to_query") (ident "req")))))))
-        (tuple [variant op.Operation.http_meth; ident "uri"; list []])
+        (tuple [variant op.Operation.http_meth;
+                ident "uri";
+                app1 "Headers.render" (app1 (op.Operation.input_shape ^ ".to_headers") (ident "req"))])
     | _ -> raise Not_found
   in
   let of_body =

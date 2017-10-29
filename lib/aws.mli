@@ -192,6 +192,19 @@ module Query : sig
   val to_query_hashtbl : ('a -> t) -> (string, 'a) Hashtbl.t -> t
 end
 
+module Headers : sig
+  type t =
+    | List of t list
+    | Pair of (string * t)
+    | Value of string option
+
+  val render : t -> Request.headers
+
+  val to_headers_list : ('a -> t) -> 'a list -> t
+
+  val to_headers_hashtbl : ('a -> t) -> (string, 'a) Hashtbl.t -> t
+end
+
 (** This module contains helpers used for XML parsing. It wraps Ezxmlm
     and adds helpers. *)
 module Xml : sig
@@ -313,6 +326,7 @@ module BaseTypes : sig
     val to_json : t -> Json.t
     val of_json : Json.t -> t
     val to_query : t -> Query.t
+    val to_headers : t -> Headers.t
     val parse : Ezxmlm.nodes -> t option
   end
 
