@@ -52,7 +52,7 @@ let unreserve =
   fun s -> try List.assoc s reserved_words with Not_found -> s
 ;;
 
-let parse_member rq (mnm, mj) =
+let parse_member rq payload (mnm, mj) =
   { Structure.name = mnm
   ; shape          = Json.(member_exn "shape" mj |> to_string)
   ; loc_name       = 
@@ -65,6 +65,12 @@ let parse_member rq (mnm, mj) =
     | loc   -> Some (Json.to_string loc))
   ; required      = List.mem mnm rq
   ; field_name    = unreserve (Util.to_field_name mnm)
+  ; payload = (match payload with
+      | None -> false
+      | Some x -> x = mnm)
+  ; flattened = (match Json.member "flattened" mj with
+    | `Null -> false
+    | loc   -> (Json.to_bool loc))
   }
 ;;
 
@@ -77,7 +83,11 @@ let shape ((nm, j) : (string * Yojson.Basic.json)) : Shape.parsed =
       | required -> List.map Json.to_string (Json.to_list required)
     in
     let member = Json.(member_exn "members" j |> to_assoc)  in
-    (nm, "structure", Some (Shape.Structure (List.map (parse_member required) member)))
+    let payload = match Json.member_opt "payload" j with
+      | Some x -> Some (Json.to_string x)
+      | None -> None
+    in
+    (nm, "structure", Some (Shape.Structure (List.map (parse_member required payload) member)))
   | `String "list" ->
     let member = Json.member_exn "member" j in
     let shape  = Json.member_exn "shape" member |> Json.to_string in

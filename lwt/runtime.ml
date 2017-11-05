@@ -45,13 +45,13 @@ let run_request
                           and type error = error)
     (inp : M.input)
   =
-  let meth, uri, headers =
+  let meth, uri, headers, body =
     Aws.Signing.sign_request ~access_key ~secret_key ~service:M.service ~region (M.to_http inp)
   in
   let open Cohttp in
   let headers = Header.of_list headers in
   Lwt.catch (fun () ->
-    Cohttp_lwt_unix.Client.call ~headers meth uri >>= fun (resp, body) ->
+    Cohttp_lwt_unix.Client.call ~headers ~body:(Cohttp_lwt_body.of_string body) meth uri >>= fun (resp, body) ->
     Cohttp_lwt_body.to_string body >|= fun body ->
     let code = Code.code_of_status (Response.status resp) in
     begin if code >= 300 then

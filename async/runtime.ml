@@ -48,13 +48,13 @@ let run_request
                           and type error = error)
     (inp : M.input)
   =
-  let meth, uri, headers =
+  let meth, uri, headers, body =
     Aws.Signing.sign_request ~access_key ~secret_key ~service:M.service ~region (M.to_http inp)
   in
   let headers = Header.of_list headers in
   try_with begin fun () ->
     Log.Global.info "HTTP %s: %s" (Aws.Request.string_of_meth meth) (Uri.to_string uri);
-    Client.call ~headers meth uri >>= fun (resp, body_comp) ->
+    Client.call ~headers ~body:(Body.of_string body) meth uri >>= fun (resp, body_comp) ->
     Body.to_string body_comp >>| fun body ->
     let code = Code.code_of_status (Response.status resp) in
     if code >= 300 then

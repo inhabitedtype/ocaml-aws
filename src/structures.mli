@@ -51,6 +51,8 @@ module Structure : sig
     ; location : string option
     ; field_name : string
     ; required : bool
+    ; payload : bool
+    ; flattened : bool
     }
 
   type t = member list

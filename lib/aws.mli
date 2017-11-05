@@ -101,8 +101,8 @@ module Request : sig
   (** HTTP headers. *)
   type headers = (string * string) list
 
-  (** A request is a method, a uri, and a list of headers. *)
-  type t = (meth * Uri.t * headers)
+  (** A request is a method, a uri, a list of headers and the body (payload). *)
+  type t = (meth * Uri.t * headers * string)
 
 end
 
@@ -327,6 +327,7 @@ module BaseTypes : sig
     val of_json : Json.t -> t
     val to_query : t -> Query.t
     val to_headers : t -> Headers.t
+    val to_xml : t -> Ezxmlm.nodes
     val parse : Ezxmlm.nodes -> t option
   end
 

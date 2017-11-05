@@ -175,7 +175,7 @@ module Request = struct
 
   type headers = (string * string) list
 
-  type t = (meth * Uri.t * headers)
+  type t = (meth * Uri.t * headers * string)
 
 end
 
@@ -300,6 +300,7 @@ module BaseTypes = struct
     val of_json : Json.t -> t
     val to_query : t -> Query.t
     val to_headers : t -> Headers.t
+    val to_xml : t -> Ezxmlm.nodes
     val parse : Ezxmlm.nodes -> t option
   end
 
@@ -313,6 +314,7 @@ module BaseTypes = struct
 
     let to_query () = List []
     let to_headers () = Headers.List []
+    let to_xml () = []
     let parse _ = Some () (* XXX(seliopou): Should never be used, maybe assert that? *)
   end
 
@@ -325,6 +327,7 @@ module BaseTypes = struct
       | t         -> raise (Json.Casting_error("string", t))
     let to_query s = Value (Some s)
     let to_headers s = Headers.Value (Some s)
+    let to_xml s = [`Data s]
     let parse s = Some (data_to_string s)
   end
 
@@ -346,6 +349,9 @@ module BaseTypes = struct
     let to_headers = function
       | true -> Headers.Value (Some "true")
       | false -> Headers.Value (Some "false")
+    let to_xml = function
+      | true -> [`Data "true"]
+      | false -> [`Data "false"]
     let parse b =
       match String.parse b with
       | None   -> None
@@ -366,6 +372,7 @@ module BaseTypes = struct
       | t      -> raise (Json.Casting_error("int", t))
     let to_query i = Value (Some (string_of_int i))
     let to_headers i = Headers.Value (Some (string_of_int i))
+    let to_xml i = [`Data (string_of_int i)]
     let parse i =
       match String.parse i with
       | None   -> None
@@ -383,6 +390,7 @@ module BaseTypes = struct
       | t        -> raise (Json.Casting_error("float", t))
     let to_query f = Value (Some (string_of_float f))
     let to_headers f = Headers.Value (Some (string_of_float f))
+    let to_xml f = [`Data (string_of_float f)]
     let parse f =
       match String.parse f with
       | None   -> None
@@ -397,6 +405,7 @@ module BaseTypes = struct
     let of_json t = Time.parse (String.of_json t)
     let to_query c = Value (Some (Time.format c))
     let to_headers c = Headers.Value (Some (Time.format c))
+    let to_xml c = [`Data (Time.format c)]
     let parse c =
       match String.parse c with
       | None   -> None
@@ -496,7 +505,7 @@ module Signing = struct
     (* NOTE(dbp 2015-01-13): This is a direct translation of reference implementation at:
      * http://docs.aws.amazon.com/general/latest/gr/sigv4-signed-request-examples.html
      *)
-    let sign_request ~access_key ~secret_key ~service ~region (meth, uri, headers) =
+    let sign_request ~access_key ~secret_key ~service ~region (meth, uri, headers, body) =
       let uri = Uri.of_string ((Endpoints.default_endpoint service region) ^ (Uri.path_and_query uri)) in
       let host = match (Uri.host uri) with
         | None -> raise Not_found
@@ -508,7 +517,7 @@ module Signing = struct
         sign (sign (sign (sign ("AWS4" ^ key) date) region) service) "aws4_request" in
       let now = Time.now_utc () in
       (* TODO: only append Content-Length header when body is empty *)
-      let headers = ("Content-Length", "0") :: headers in
+      let headers = ("Content-Length", String.length body |> string_of_int) :: headers in
       let amzdate = Time.date_time now in
       let datestamp = Time.date_yymmdd now in
       let canonical_uri = Uri.path uri in
@@ -523,7 +532,7 @@ module Signing = struct
         "host" :: "x-amz-date" :: (List.map (fun (k,_) -> (String.lowercase k)) headers) |>
         List.sort compare |>
         String.concat ";" in
-      let payload_hash = Hash.sha256_hex "" in
+      let payload_hash = Hash.sha256_hex body in
       let canonical_request = Request.string_of_meth meth ^ "\n" ^ canonical_uri ^ "\n" ^ canonical_querystring ^ "\n" ^ canonical_headers ^ "\n" ^ signed_headers ^ "\n" ^ payload_hash in
       let algorithm = "AWS4-HMAC-SHA256" in
       let credential_scope = datestamp ^ "/" ^ region ^ "/" ^ service ^ "/" ^ "aws4_request" in
@@ -532,5 +541,5 @@ module Signing = struct
       let signature = Hash.sha256_hex ~key:signing_key string_to_sign in
       let authorization_header = String.concat "" [algorithm; " "; "Credential="; access_key; "/"; credential_scope; ", "; "SignedHeaders="; signed_headers; ", "; "Signature="; signature] in
       let headers = ("x-amz-date",amzdate) :: ("x-amz-content-sha256", payload_hash) :: ("Authorization", authorization_header) :: headers in
-      (meth, uri, headers)
+      (meth, uri, headers, body)
   end

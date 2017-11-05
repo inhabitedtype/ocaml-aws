@@ -129,6 +129,7 @@ let inline_shapes (ops : Operation.t list) (shapes : Shape.parsed StringTable.t)
        tell from the examples, it is the same as DateTime. *)
     ;("timestamp","DateTime")
     ;("blob","Blob")] in
+  (* TODO: revisit the assumption of output, since code below will try to replace it with None *)
   let is_op_input_or_output shp =
     let op_shapes = List.fold_left (fun acc {Operation.input_shape; output_shape} ->
       (match output_shape with
