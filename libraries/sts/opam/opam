@@ -18,3 +18,4 @@ depends: [
   "aws" {>= "0.1.0"}
   "ocamlfind" {build}
 ]
+available: [ ocaml-version >= "4.03" ]
