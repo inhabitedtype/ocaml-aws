@@ -1,0 +1,11 @@
+(jbuild_version 1)
+
+(executable
+ ((name        aws_gen)
+  (libraries ("yojson" "cmdliner" "ppx_tools" "ocaml-migrate-parsetree"))))
+
+(rule (with-stdout-to structures.ml
+       (progn
+        (echo "[@@@warning \"-a\"]\nmodule rec HACK : sig\n")
+        (cat structures.mli)
+        (echo "\nend = HACK\ninclude HACK\n"))))

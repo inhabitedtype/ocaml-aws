@@ -128,9 +128,9 @@ let to_http_code e =
   | InvalidClientTokenId  -> Some 403
   | InvalidParameter  -> None
   | InvalidParameterCombination  -> Some 400
-  | InvalidParameterCombination  -> Some 400
+  (* | InvalidParameterCombination  -> Some 400 *)
   | InvalidParameterValue  -> Some 400
-  | InvalidParameterValue  -> Some 400
+  (* | InvalidParameterValue  -> Some 400 *)
   | InvalidQueryParameter  -> Some 400
   | InvalidReplicationGroupState  -> Some 400
   | InvalidSnapshotState  -> Some 400
@@ -199,9 +199,9 @@ let to_string e =
   | InvalidClientTokenId  -> "InvalidClientTokenId"
   | InvalidParameter  -> "InvalidParameter"
   | InvalidParameterCombination  -> "InvalidParameterCombination"
-  | InvalidParameterCombination  -> "InvalidParameterCombination"
+  (* | InvalidParameterCombination  -> "InvalidParameterCombination" *)
   | InvalidParameterValue  -> "InvalidParameterValue"
-  | InvalidParameterValue  -> "InvalidParameterValue"
+  (* | InvalidParameterValue  -> "InvalidParameterValue" *)
   | InvalidQueryParameter  -> "InvalidQueryParameter"
   | InvalidReplicationGroupState  -> "InvalidReplicationGroupState"
   | InvalidSnapshotState  -> "InvalidSnapshotState"
@@ -222,8 +222,7 @@ let to_string e =
   | ReservedCacheNodeAlreadyExists  -> "ReservedCacheNodeAlreadyExists"
   | ReservedCacheNodeNotFound  -> "ReservedCacheNodeNotFound"
   | ReservedCacheNodeQuotaExceeded  -> "ReservedCacheNodeQuotaExceeded"
-  | ReservedCacheNodesOfferingNotFound  ->
-      "ReservedCacheNodesOfferingNotFound"
+  | ReservedCacheNodesOfferingNotFound  -> "ReservedCacheNodesOfferingNotFound"
   | ServiceUnavailable  -> "ServiceUnavailable"
   | SnapshotAlreadyExistsFault  -> "SnapshotAlreadyExistsFault"
   | SnapshotFeatureNotSupportedFault  -> "SnapshotFeatureNotSupportedFault"
@@ -275,9 +274,9 @@ let of_string e =
   | "InvalidClientTokenId" -> Some InvalidClientTokenId
   | "InvalidParameter" -> Some InvalidParameter
   | "InvalidParameterCombination" -> Some InvalidParameterCombination
-  | "InvalidParameterCombination" -> Some InvalidParameterCombination
+  (* | "InvalidParameterCombination" -> Some InvalidParameterCombination *)
   | "InvalidParameterValue" -> Some InvalidParameterValue
-  | "InvalidParameterValue" -> Some InvalidParameterValue
+  (* | "InvalidParameterValue" -> Some InvalidParameterValue *)
   | "InvalidQueryParameter" -> Some InvalidQueryParameter
   | "InvalidReplicationGroupState" -> Some InvalidReplicationGroupState
   | "InvalidSnapshotState" -> Some InvalidSnapshotState
