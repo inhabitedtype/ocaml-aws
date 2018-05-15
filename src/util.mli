@@ -31,6 +31,9 @@
     POSSIBILITY OF SUCH DAMAGE.
   ----------------------------------------------------------------------------*)
 
+open Migrate_parsetree
+open Ast_405
+
 module Printing : sig
   val write_all : filename:string -> string -> unit
 

@@ -41,6 +41,6 @@ depopts: [
   "ssl"
 ]
 conflicts: [
-  "cohttp" {< "0.17.0"}
+  "cohttp" {< "0.17.0" & > "0.99.0"} # Breaking changes in 1.0.0 TODO fix lwt/runtime.ml
 ]
-available: [ ocaml-version >= "4.01" ]
+available: [ ocaml-version >= "4.02" ]
