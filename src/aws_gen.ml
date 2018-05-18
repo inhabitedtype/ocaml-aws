@@ -74,7 +74,6 @@ module Json = struct
     if not !updated
       then (key, default) :: assoc
       else result
-  ;;
 
   let override_shapes original overrides : (string * Yojson.Basic.json) list =
     let open Yojson.Basic.Util in
@@ -197,16 +196,15 @@ let main input override errors_path outdir is_ec2 =
   log "## Wrote %d/%d ops modules..."
     (List.length ops) (List.length ops_json);
   let modules = List.map (fun op -> op.Operation.name) ops in
-  let append =
-    try
-      let in_ = open_in (dir </> "_oasis_append") in
-      really_input_string in_ (in_channel_length in_)
-    with Sys_error _ -> ""
-  in
-  Printing.write_all (dir </> "_oasis")
-    (Templates.oasis ~append ~lib_name ~lib_version ~service_name ~modules);
-  log "## Wrote _oasis file.";
-;;
+  (* let append =
+   *   try
+   *     let in_ = open_in (dir </> "_oasis_append") in
+   *     really_input_string in_ (in_channel_length in_)
+   *   with Sys_error _ -> ""
+   * in *)
+  Printing.write_all (lib_dir </> "jbuild")
+    (Templates.jbuild ~lib_name ~service_name);
+  log "## Wrote jbuild file.";
 
 module CommandLine = struct
   let input =

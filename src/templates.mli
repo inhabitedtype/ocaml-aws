@@ -31,10 +31,14 @@
     POSSIBILITY OF SUCH DAMAGE.
   ----------------------------------------------------------------------------*)
 
-val oasis 
+val oasis
   :  append:string
-  -> lib_name:string 
+  -> lib_name:string
   -> lib_version:string
   -> service_name:string
   -> modules:string list
   -> string
+
+val jbuild
+  :  lib_name:string
+  -> service_name:string

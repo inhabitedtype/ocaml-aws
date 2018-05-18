@@ -61,3 +61,13 @@ Document \"aws-%s\"
 
 %s" lib_name lib_version service_name lib_name lib_name (String.concat ", " modules) lib_name lib_name lib_name
     append
+
+let jbuild ~lib_name ~service_name =
+  Printf.sprintf "(jbuild_version 1)
+
+(library
+ ((name        aws-%s)
+  (public_name aws-%s)
+  (synopsis 'aws-%s')
+  (libraries ('aws'))))
+" lib_name lib_name service_name
