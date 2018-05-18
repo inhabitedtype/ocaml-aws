@@ -47,7 +47,7 @@ let of_http body =
 let parse_error code err =
   let errors =
     [Errors.DBSecurityGroupNotSupported;
-    Errors.QuotaExceeded.DBSecurityGroup;
+    Errors.QuotaExceeded_DBSecurityGroup;
     Errors.DBSecurityGroupAlreadyExists] @ Errors.common in
   match Errors.of_string err with
   | Some var ->

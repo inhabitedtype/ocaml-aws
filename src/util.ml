@@ -83,14 +83,14 @@ end
 let to_variant_name s =
   String.map (fun c -> if Char.is_alphanum c then c else '_')
     (if Char.is_alpha (String.get s 0)
-     then String.capitalize s
+     then String.capitalize_ascii s
      else "N" ^ s)
 
 let to_field_name s =
   let add_underscore = ref false in
   let acc = ref [] in
   String.iter (fun c ->
-    let c' = Printf.sprintf "%c" Char.(lowercase c) in
+    let c' = Printf.sprintf "%c" Char.(lowercase_ascii c) in
     let s  = if Char.is_uppercase c && !add_underscore
       then "_" ^ c'
       else begin add_underscore := true; c' end
@@ -143,8 +143,8 @@ let inline_shapes (ops : Operation.t list) (shapes : Shape.parsed StringTable.t)
     with Not_found -> default
   in
   let new_shapes =
-    StringTable.fold (fun key (nm, ty, contents) acc -> 
-      if List.mem_assoc ty type_map || is_empty_struct nm then 
+    StringTable.fold (fun key (nm, ty, contents) acc ->
+      if List.mem_assoc ty type_map || is_empty_struct nm then
         acc
       else
         let content =

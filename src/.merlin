@@ -1,0 +1,21 @@
+B ../_build/default/src/.aws_gen.eobjs
+B /Users/tim/.opam/4.04.2-aws/lib/biniou
+B /Users/tim/.opam/4.04.2-aws/lib/bytes
+B /Users/tim/.opam/4.04.2-aws/lib/cmdliner
+B /Users/tim/.opam/4.04.2-aws/lib/easy-format
+B /Users/tim/.opam/4.04.2-aws/lib/ocaml-migrate-parsetree
+B /Users/tim/.opam/4.04.2-aws/lib/ocaml/compiler-libs
+B /Users/tim/.opam/4.04.2-aws/lib/ppx_tools
+B /Users/tim/.opam/4.04.2-aws/lib/result
+B /Users/tim/.opam/4.04.2-aws/lib/yojson
+FLG -w -40
+S .
+S /Users/tim/.opam/4.04.2-aws/lib/biniou
+S /Users/tim/.opam/4.04.2-aws/lib/bytes
+S /Users/tim/.opam/4.04.2-aws/lib/cmdliner
+S /Users/tim/.opam/4.04.2-aws/lib/easy-format
+S /Users/tim/.opam/4.04.2-aws/lib/ocaml-migrate-parsetree
+S /Users/tim/.opam/4.04.2-aws/lib/ocaml/compiler-libs
+S /Users/tim/.opam/4.04.2-aws/lib/ppx_tools
+S /Users/tim/.opam/4.04.2-aws/lib/result
+S /Users/tim/.opam/4.04.2-aws/lib/yojson

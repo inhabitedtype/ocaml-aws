@@ -358,12 +358,11 @@ let of_string e =
   | "DBSecurityGroupAlreadyExists" -> Some DBSecurityGroupAlreadyExists
   | "DBSecurityGroupNotFound" -> Some DBSecurityGroupNotFound
   | "DBSecurityGroupNotSupported" -> Some DBSecurityGroupNotSupported
-  | "QuotaExceeded.DBSecurityGroup" -> Some QuotaExceeded_DBSecurityGroup
+  | "QuotaExceeded_DBSecurityGroup" -> Some QuotaExceeded_DBSecurityGroup
   | "DBSnapshotAlreadyExists" -> Some DBSnapshotAlreadyExists
   | "DBSnapshotNotFound" -> Some DBSnapshotNotFound
   | "DBSubnetGroupAlreadyExists" -> Some DBSubnetGroupAlreadyExists
-  | "DBSubnetGroupDoesNotCoverEnoughAZs" ->
-      Some DBSubnetGroupDoesNotCoverEnoughAZs
+  | "DBSubnetGroupDoesNotCoverEnoughAZs" -> Some DBSubnetGroupDoesNotCoverEnoughAZs
   | "DBSubnetGroupNotAllowedFault" -> Some DBSubnetGroupNotAllowedFault
   | "DBSubnetGroupNotFoundFault" -> Some DBSubnetGroupNotFoundFault
   | "DBSubnetGroupQuotaExceeded" -> Some DBSubnetGroupQuotaExceeded

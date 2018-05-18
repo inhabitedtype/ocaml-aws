@@ -73,7 +73,7 @@ module OptionSetting =
       allowed_values: String.t option;
       is_modifiable: Boolean.t option;
       is_collection: Boolean.t option;}
-    let make ?name  ?value  ?default_value  ?description  ?apply_type 
+    let make ?name  ?value  ?default_value  ?description  ?apply_type
       ?data_type  ?allowed_values  ?is_modifiable  ?is_collection  () =
       {
         name;
@@ -212,7 +212,7 @@ module Subnet =
       subnet_identifier: String.t option;
       subnet_availability_zone: AvailabilityZone.t option;
       subnet_status: String.t option;}
-    let make ?subnet_identifier  ?subnet_availability_zone  ?subnet_status 
+    let make ?subnet_identifier  ?subnet_availability_zone  ?subnet_status
       () = { subnet_identifier; subnet_availability_zone; subnet_status }
     let parse xml =
       Some
@@ -635,7 +635,7 @@ module PendingMaintenanceAction =
       opt_in_status: String.t option;
       current_apply_date: DateTime.t option;
       description: String.t option;}
-    let make ?action  ?auto_applied_after_date  ?forced_apply_date 
+    let make ?action  ?auto_applied_after_date  ?forced_apply_date
       ?opt_in_status  ?current_apply_date  ?description  () =
       {
         action;
@@ -725,8 +725,8 @@ module Option =
       option_settings: OptionSettingConfigurationList.t;
       d_b_security_group_memberships: DBSecurityGroupMembershipList.t;
       vpc_security_group_memberships: VpcSecurityGroupMembershipList.t;}
-    let make ?option_name  ?option_description  ?persistent  ?permanent 
-      ?port  ?(option_settings= [])  ?(d_b_security_group_memberships= []) 
+    let make ?option_name  ?option_description  ?persistent  ?permanent
+      ?port  ?(option_settings= [])  ?(d_b_security_group_memberships= [])
       ?(vpc_security_group_memberships= [])  () =
       {
         option_name;
@@ -891,7 +891,7 @@ module DBClusterMember =
       d_b_instance_identifier: String.t option;
       is_cluster_writer: Boolean.t option;
       d_b_cluster_parameter_group_status: String.t option;}
-    let make ?d_b_instance_identifier  ?is_cluster_writer 
+    let make ?d_b_instance_identifier  ?is_cluster_writer
       ?d_b_cluster_parameter_group_status  () =
       {
         d_b_instance_identifier;
@@ -994,7 +994,7 @@ module EC2SecurityGroup =
       e_c2_security_group_name: String.t option;
       e_c2_security_group_id: String.t option;
       e_c2_security_group_owner_id: String.t option;}
-    let make ?status  ?e_c2_security_group_name  ?e_c2_security_group_id 
+    let make ?status  ?e_c2_security_group_name  ?e_c2_security_group_id
       ?e_c2_security_group_owner_id  () =
       {
         status;
@@ -1135,8 +1135,8 @@ module Parameter =
       is_modifiable: Boolean.t option;
       minimum_engine_version: String.t option;
       apply_method: ApplyMethod.t option;}
-    let make ?parameter_name  ?parameter_value  ?description  ?source 
-      ?apply_type  ?data_type  ?allowed_values  ?is_modifiable 
+    let make ?parameter_name  ?parameter_value  ?description  ?source
+      ?apply_type  ?data_type  ?allowed_values  ?is_modifiable
       ?minimum_engine_version  ?apply_method  () =
       {
         parameter_name;
@@ -1279,7 +1279,7 @@ module DBSubnetGroup =
       vpc_id: String.t option;
       subnet_group_status: String.t option;
       subnets: SubnetList.t;}
-    let make ?d_b_subnet_group_name  ?d_b_subnet_group_description  ?vpc_id 
+    let make ?d_b_subnet_group_name  ?d_b_subnet_group_description  ?vpc_id
       ?subnet_group_status  ?(subnets= [])  () =
       {
         d_b_subnet_group_name;
@@ -1417,9 +1417,9 @@ module PendingModifiedValues =
       d_b_instance_identifier: String.t option;
       storage_type: String.t option;
       c_a_certificate_identifier: String.t option;}
-    let make ?d_b_instance_class  ?allocated_storage  ?master_user_password 
-      ?port  ?backup_retention_period  ?multi_a_z  ?engine_version  ?iops 
-      ?d_b_instance_identifier  ?storage_type  ?c_a_certificate_identifier 
+    let make ?d_b_instance_class  ?allocated_storage  ?master_user_password
+      ?port  ?backup_retention_period  ?multi_a_z  ?engine_version  ?iops
+      ?d_b_instance_identifier  ?storage_type  ?c_a_certificate_identifier
       () =
       {
         d_b_instance_class;
@@ -1832,9 +1832,9 @@ module OptionGroupOption =
       persistent: Boolean.t option;
       permanent: Boolean.t option;
       option_group_option_settings: OptionGroupOptionSettingsList.t;}
-    let make ?name  ?description  ?engine_name  ?major_engine_version 
-      ?minimum_required_minor_engine_version  ?port_required  ?default_port 
-      ?(options_depended_on= [])  ?persistent  ?permanent 
+    let make ?name  ?description  ?engine_name  ?major_engine_version
+      ?minimum_required_minor_engine_version  ?port_required  ?default_port
+      ?(options_depended_on= [])  ?persistent  ?permanent
       ?(option_group_option_settings= [])  () =
       {
         name;
@@ -2030,20 +2030,20 @@ module DBInstance =
       c_a_certificate_identifier: String.t option;
       domain_memberships: DomainMembershipList.t;
       copy_tags_to_snapshot: Boolean.t option;}
-    let make ?d_b_instance_identifier  ?d_b_instance_class  ?engine 
-      ?d_b_instance_status  ?master_username  ?d_b_name  ?endpoint 
-      ?allocated_storage  ?instance_create_time  ?preferred_backup_window 
-      ?backup_retention_period  ?(d_b_security_groups= []) 
-      ?(vpc_security_groups= [])  ?(d_b_parameter_groups= []) 
-      ?availability_zone  ?d_b_subnet_group  ?preferred_maintenance_window 
-      ?pending_modified_values  ?latest_restorable_time  ?multi_a_z 
-      ?engine_version  ?auto_minor_version_upgrade 
-      ?read_replica_source_d_b_instance_identifier 
-      ?(read_replica_d_b_instance_identifiers= [])  ?license_model  ?iops 
-      ?(option_group_memberships= [])  ?character_set_name 
+    let make ?d_b_instance_identifier  ?d_b_instance_class  ?engine
+      ?d_b_instance_status  ?master_username  ?d_b_name  ?endpoint
+      ?allocated_storage  ?instance_create_time  ?preferred_backup_window
+      ?backup_retention_period  ?(d_b_security_groups= [])
+      ?(vpc_security_groups= [])  ?(d_b_parameter_groups= [])
+      ?availability_zone  ?d_b_subnet_group  ?preferred_maintenance_window
+      ?pending_modified_values  ?latest_restorable_time  ?multi_a_z
+      ?engine_version  ?auto_minor_version_upgrade
+      ?read_replica_source_d_b_instance_identifier
+      ?(read_replica_d_b_instance_identifiers= [])  ?license_model  ?iops
+      ?(option_group_memberships= [])  ?character_set_name
       ?secondary_availability_zone  ?publicly_accessible  ?(status_infos= [])
-       ?storage_type  ?tde_credential_arn  ?db_instance_port 
-      ?d_b_cluster_identifier  ?storage_encrypted  ?kms_key_id 
+       ?storage_type  ?tde_credential_arn  ?db_instance_port
+      ?d_b_cluster_identifier  ?storage_encrypted  ?kms_key_id
       ?dbi_resource_id  ?c_a_certificate_identifier  ?(domain_memberships=
       [])  ?copy_tags_to_snapshot  () =
       {
@@ -2593,7 +2593,7 @@ module DBClusterParameterGroup =
       d_b_cluster_parameter_group_name: String.t option;
       d_b_parameter_group_family: String.t option;
       description: String.t option;}
-    let make ?d_b_cluster_parameter_group_name  ?d_b_parameter_group_family 
+    let make ?d_b_cluster_parameter_group_name  ?d_b_parameter_group_family
       ?description  () =
       {
         d_b_cluster_parameter_group_name;
@@ -2704,7 +2704,7 @@ module EventSubscription =
       event_categories_list: EventCategoriesList.t;
       enabled: Boolean.t option;}
     let make ?customer_aws_id  ?cust_subscription_id  ?sns_topic_arn  ?status
-       ?subscription_creation_time  ?source_type  ?(source_ids_list= []) 
+       ?subscription_creation_time  ?source_type  ?(source_ids_list= [])
       ?(event_categories_list= [])  ?enabled  () =
       {
         customer_aws_id;
@@ -2826,7 +2826,7 @@ module OptionConfiguration =
       d_b_security_group_memberships: DBSecurityGroupNameList.t;
       vpc_security_group_memberships: VpcSecurityGroupIdList.t;
       option_settings: OptionSettingsList.t;}
-    let make ~option_name  ?port  ?(d_b_security_group_memberships= []) 
+    let make ~option_name  ?port  ?(d_b_security_group_memberships= [])
       ?(vpc_security_group_memberships= [])  ?(option_settings= [])  () =
       {
         option_name;
@@ -2929,9 +2929,9 @@ module ReservedDBInstance =
       multi_a_z: Boolean.t option;
       state: String.t option;
       recurring_charges: RecurringChargeList.t;}
-    let make ?reserved_d_b_instance_id  ?reserved_d_b_instances_offering_id 
+    let make ?reserved_d_b_instance_id  ?reserved_d_b_instances_offering_id
       ?d_b_instance_class  ?start_time  ?duration  ?fixed_price  ?usage_price
-       ?currency_code  ?d_b_instance_count  ?product_description 
+       ?currency_code  ?d_b_instance_count  ?product_description
       ?offering_type  ?multi_a_z  ?state  ?(recurring_charges= [])  () =
       {
         reserved_d_b_instance_id;
@@ -3099,7 +3099,7 @@ module ResourcePendingMaintenanceActions =
       {
       resource_identifier: String.t option;
       pending_maintenance_action_details: PendingMaintenanceActionDetails.t;}
-    let make ?resource_identifier  ?(pending_maintenance_action_details= []) 
+    let make ?resource_identifier  ?(pending_maintenance_action_details= [])
       () = { resource_identifier; pending_maintenance_action_details }
     let parse xml =
       Some
@@ -3151,7 +3151,7 @@ module DBParameterGroup =
       d_b_parameter_group_name: String.t option;
       d_b_parameter_group_family: String.t option;
       description: String.t option;}
-    let make ?d_b_parameter_group_name  ?d_b_parameter_group_family 
+    let make ?d_b_parameter_group_name  ?d_b_parameter_group_family
       ?description  () =
       { d_b_parameter_group_name; d_b_parameter_group_family; description }
     let parse xml =
@@ -3276,7 +3276,7 @@ module Certificate =
       thumbprint: String.t option;
       valid_from: DateTime.t option;
       valid_till: DateTime.t option;}
-    let make ?certificate_identifier  ?certificate_type  ?thumbprint 
+    let make ?certificate_identifier  ?certificate_type  ?thumbprint
       ?valid_from  ?valid_till  () =
       {
         certificate_identifier;
@@ -3353,8 +3353,8 @@ module OptionGroup =
       options: OptionsList.t;
       allows_vpc_and_non_vpc_instance_memberships: Boolean.t option;
       vpc_id: String.t option;}
-    let make ?option_group_name  ?option_group_description  ?engine_name 
-      ?major_engine_version  ?(options= []) 
+    let make ?option_group_name  ?option_group_description  ?engine_name
+      ?major_engine_version  ?(options= [])
       ?allows_vpc_and_non_vpc_instance_memberships  ?vpc_id  () =
       {
         option_group_name;
@@ -3463,8 +3463,8 @@ module OrderableDBInstanceOption =
       supports_storage_encryption: Boolean.t option;
       storage_type: String.t option;
       supports_iops: Boolean.t option;}
-    let make ?engine  ?engine_version  ?d_b_instance_class  ?license_model 
-      ?(availability_zones= [])  ?multi_a_z_capable  ?read_replica_capable 
+    let make ?engine  ?engine_version  ?d_b_instance_class  ?license_model
+      ?(availability_zones= [])  ?multi_a_z_capable  ?read_replica_capable
       ?vpc  ?supports_storage_encryption  ?storage_type  ?supports_iops  () =
       {
         engine;
@@ -3602,8 +3602,8 @@ module DBEngineVersion =
       d_b_engine_version_description: String.t option;
       default_character_set: CharacterSet.t option;
       supported_character_sets: SupportedCharacterSetsList.t;}
-    let make ?engine  ?engine_version  ?d_b_parameter_group_family 
-      ?d_b_engine_description  ?d_b_engine_version_description 
+    let make ?engine  ?engine_version  ?d_b_parameter_group_family
+      ?d_b_engine_description  ?d_b_engine_version_description
       ?default_character_set  ?(supported_character_sets= [])  () =
       {
         engine;
@@ -3731,12 +3731,12 @@ module DBSnapshot =
       tde_credential_arn: String.t option;
       encrypted: Boolean.t option;
       kms_key_id: String.t option;}
-    let make ?d_b_snapshot_identifier  ?d_b_instance_identifier 
-      ?snapshot_create_time  ?engine  ?allocated_storage  ?status  ?port 
-      ?availability_zone  ?vpc_id  ?instance_create_time  ?master_username 
-      ?engine_version  ?license_model  ?snapshot_type  ?iops 
-      ?option_group_name  ?percent_progress  ?source_region 
-      ?source_d_b_snapshot_identifier  ?storage_type  ?tde_credential_arn 
+    let make ?d_b_snapshot_identifier  ?d_b_instance_identifier
+      ?snapshot_create_time  ?engine  ?allocated_storage  ?status  ?port
+      ?availability_zone  ?vpc_id  ?instance_create_time  ?master_username
+      ?engine_version  ?license_model  ?snapshot_type  ?iops
+      ?option_group_name  ?percent_progress  ?source_region
+      ?source_d_b_snapshot_identifier  ?storage_type  ?tde_credential_arn
       ?encrypted  ?kms_key_id  () =
       {
         d_b_snapshot_identifier;
@@ -3991,10 +3991,10 @@ module DBClusterSnapshot =
       license_model: String.t option;
       snapshot_type: String.t option;
       percent_progress: Integer.t option;}
-    let make ?(availability_zones= [])  ?d_b_cluster_snapshot_identifier 
-      ?d_b_cluster_identifier  ?snapshot_create_time  ?engine 
-      ?allocated_storage  ?status  ?port  ?vpc_id  ?cluster_create_time 
-      ?master_username  ?engine_version  ?license_model  ?snapshot_type 
+    let make ?(availability_zones= [])  ?d_b_cluster_snapshot_identifier
+      ?d_b_cluster_identifier  ?snapshot_create_time  ?engine
+      ?allocated_storage  ?status  ?port  ?vpc_id  ?cluster_create_time
+      ?master_username  ?engine_version  ?license_model  ?snapshot_type
       ?percent_progress  () =
       {
         availability_zones;
@@ -4219,8 +4219,8 @@ module ReservedDBInstancesOffering =
       offering_type: String.t option;
       multi_a_z: Boolean.t option;
       recurring_charges: RecurringChargeList.t;}
-    let make ?reserved_d_b_instances_offering_id  ?d_b_instance_class 
-      ?duration  ?fixed_price  ?usage_price  ?currency_code 
+    let make ?reserved_d_b_instances_offering_id  ?d_b_instance_class
+      ?duration  ?fixed_price  ?usage_price  ?currency_code
       ?product_description  ?offering_type  ?multi_a_z  ?(recurring_charges=
       [])  () =
       {
@@ -4372,14 +4372,14 @@ module DBCluster =
       preferred_maintenance_window: String.t option;
       d_b_cluster_members: DBClusterMemberList.t;
       vpc_security_groups: VpcSecurityGroupMembershipList.t;}
-    let make ?allocated_storage  ?(availability_zones= []) 
-      ?backup_retention_period  ?character_set_name  ?database_name 
-      ?d_b_cluster_identifier  ?d_b_cluster_parameter_group 
-      ?d_b_subnet_group  ?status  ?percent_progress 
-      ?earliest_restorable_time  ?endpoint  ?engine  ?engine_version 
-      ?latest_restorable_time  ?port  ?master_username 
-      ?(d_b_cluster_option_group_memberships= [])  ?preferred_backup_window 
-      ?preferred_maintenance_window  ?(d_b_cluster_members= []) 
+    let make ?allocated_storage  ?(availability_zones= [])
+      ?backup_retention_period  ?character_set_name  ?database_name
+      ?d_b_cluster_identifier  ?d_b_cluster_parameter_group
+      ?d_b_subnet_group  ?status  ?percent_progress
+      ?earliest_restorable_time  ?endpoint  ?engine  ?engine_version
+      ?latest_restorable_time  ?port  ?master_username
+      ?(d_b_cluster_option_group_memberships= [])  ?preferred_backup_window
+      ?preferred_maintenance_window  ?(d_b_cluster_members= [])
       ?(vpc_security_groups= [])  () =
       {
         allocated_storage;
@@ -4653,8 +4653,8 @@ module DBSecurityGroup =
       vpc_id: String.t option;
       e_c2_security_groups: EC2SecurityGroupList.t;
       i_p_ranges: IPRangeList.t;}
-    let make ?owner_id  ?d_b_security_group_name 
-      ?d_b_security_group_description  ?vpc_id  ?(e_c2_security_groups= []) 
+    let make ?owner_id  ?d_b_security_group_name
+      ?d_b_security_group_description  ?vpc_id  ?(e_c2_security_groups= [])
       ?(i_p_ranges= [])  () =
       {
         owner_id;
@@ -5120,12 +5120,12 @@ module CreateDBClusterMessage =
       preferred_backup_window: String.t option;
       preferred_maintenance_window: String.t option;
       tags: TagList.t;}
-    let make ?(availability_zones= [])  ?backup_retention_period 
-      ?character_set_name  ?database_name  ?d_b_cluster_identifier 
-      ?d_b_cluster_parameter_group_name  ?(vpc_security_group_ids= []) 
-      ?d_b_subnet_group_name  ?engine  ?engine_version  ?port 
-      ?master_username  ?master_user_password  ?option_group_name 
-      ?preferred_backup_window  ?preferred_maintenance_window  ?(tags= []) 
+    let make ?(availability_zones= [])  ?backup_retention_period
+      ?character_set_name  ?database_name  ?d_b_cluster_identifier
+      ?d_b_cluster_parameter_group_name  ?(vpc_security_group_ids= [])
+      ?d_b_subnet_group_name  ?engine  ?engine_version  ?port
+      ?master_username  ?master_user_password  ?option_group_name
+      ?preferred_backup_window  ?preferred_maintenance_window  ?(tags= [])
       () =
       {
         availability_zones;
@@ -5431,15 +5431,15 @@ module ModifyDBInstanceMessage =
       c_a_certificate_identifier: String.t option;
       domain: String.t option;
       copy_tags_to_snapshot: Boolean.t option;}
-    let make ~d_b_instance_identifier  ?allocated_storage 
-      ?d_b_instance_class  ?(d_b_security_groups= []) 
-      ?(vpc_security_group_ids= [])  ?apply_immediately 
-      ?master_user_password  ?d_b_parameter_group_name 
-      ?backup_retention_period  ?preferred_backup_window 
-      ?preferred_maintenance_window  ?multi_a_z  ?engine_version 
-      ?allow_major_version_upgrade  ?auto_minor_version_upgrade  ?iops 
-      ?option_group_name  ?new_d_b_instance_identifier  ?storage_type 
-      ?tde_credential_arn  ?tde_credential_password 
+    let make ~d_b_instance_identifier  ?allocated_storage
+      ?d_b_instance_class  ?(d_b_security_groups= [])
+      ?(vpc_security_group_ids= [])  ?apply_immediately
+      ?master_user_password  ?d_b_parameter_group_name
+      ?backup_retention_period  ?preferred_backup_window
+      ?preferred_maintenance_window  ?multi_a_z  ?engine_version
+      ?allow_major_version_upgrade  ?auto_minor_version_upgrade  ?iops
+      ?option_group_name  ?new_d_b_instance_identifier  ?storage_type
+      ?tde_credential_arn  ?tde_credential_password
       ?c_a_certificate_identifier  ?domain  ?copy_tags_to_snapshot  () =
       {
         d_b_instance_identifier;
@@ -5849,7 +5849,7 @@ module DescribeReservedDBInstancesOfferingsMessage =
       filters: FilterList.t;
       max_records: Integer.t option;
       marker: String.t option;}
-    let make ?reserved_d_b_instances_offering_id  ?d_b_instance_class 
+    let make ?reserved_d_b_instances_offering_id  ?d_b_instance_class
       ?duration  ?product_description  ?offering_type  ?multi_a_z  ?(filters=
       [])  ?max_records  ?marker  () =
       {
@@ -5964,7 +5964,7 @@ module ResetDBClusterParameterGroupMessage =
       d_b_cluster_parameter_group_name: String.t;
       reset_all_parameters: Boolean.t option;
       parameters: ParametersList.t;}
-    let make ~d_b_cluster_parameter_group_name  ?reset_all_parameters 
+    let make ~d_b_cluster_parameter_group_name  ?reset_all_parameters
       ?(parameters= [])  () =
       { d_b_cluster_parameter_group_name; reset_all_parameters; parameters }
     let parse xml =
@@ -6026,7 +6026,7 @@ module DeleteDBInstanceMessage =
       d_b_instance_identifier: String.t;
       skip_final_snapshot: Boolean.t option;
       final_d_b_snapshot_identifier: String.t option;}
-    let make ~d_b_instance_identifier  ?skip_final_snapshot 
+    let make ~d_b_instance_identifier  ?skip_final_snapshot
       ?final_d_b_snapshot_identifier  () =
       {
         d_b_instance_identifier;
@@ -6092,7 +6092,7 @@ module PromoteReadReplicaMessage =
       d_b_instance_identifier: String.t;
       backup_retention_period: Integer.t option;
       preferred_backup_window: String.t option;}
-    let make ~d_b_instance_identifier  ?backup_retention_period 
+    let make ~d_b_instance_identifier  ?backup_retention_period
       ?preferred_backup_window  () =
       {
         d_b_instance_identifier;
@@ -6319,9 +6319,9 @@ module RestoreDBClusterFromSnapshotMessage =
       option_group_name: String.t option;
       vpc_security_group_ids: VpcSecurityGroupIdList.t;
       tags: TagList.t;}
-    let make ?(availability_zones= [])  ~d_b_cluster_identifier 
-      ~snapshot_identifier  ~engine  ?engine_version  ?port 
-      ?d_b_subnet_group_name  ?database_name  ?option_group_name 
+    let make ?(availability_zones= [])  ~d_b_cluster_identifier
+      ~snapshot_identifier  ~engine  ?engine_version  ?port
+      ?d_b_subnet_group_name  ?database_name  ?option_group_name
       ?(vpc_security_group_ids= [])  ?(tags= [])  () =
       {
         availability_zones;
@@ -6465,7 +6465,7 @@ module DescribeDBInstancesMessage =
       filters: FilterList.t;
       max_records: Integer.t option;
       marker: String.t option;}
-    let make ?d_b_instance_identifier  ?(filters= [])  ?max_records  ?marker 
+    let make ?d_b_instance_identifier  ?(filters= [])  ?max_records  ?marker
       () = { d_b_instance_identifier; filters; max_records; marker }
     let parse xml =
       Some
@@ -6646,7 +6646,7 @@ module DescribeDBSecurityGroupsMessage =
       filters: FilterList.t;
       max_records: Integer.t option;
       marker: String.t option;}
-    let make ?d_b_security_group_name  ?(filters= [])  ?max_records  ?marker 
+    let make ?d_b_security_group_name  ?(filters= [])  ?max_records  ?marker
       () = { d_b_security_group_name; filters; max_records; marker }
     let parse xml =
       Some
@@ -6759,7 +6759,7 @@ module CreateDBSnapshotMessage =
       d_b_snapshot_identifier: String.t;
       d_b_instance_identifier: String.t;
       tags: TagList.t;}
-    let make ~d_b_snapshot_identifier  ~d_b_instance_identifier  ?(tags= []) 
+    let make ~d_b_snapshot_identifier  ~d_b_instance_identifier  ?(tags= [])
       () = { d_b_snapshot_identifier; d_b_instance_identifier; tags }
     let parse xml =
       Some
@@ -6844,7 +6844,7 @@ module CreateDBSubnetGroupMessage =
       d_b_subnet_group_description: String.t;
       subnet_ids: SubnetIdentifierList.t;
       tags: TagList.t;}
-    let make ~d_b_subnet_group_name  ~d_b_subnet_group_description 
+    let make ~d_b_subnet_group_name  ~d_b_subnet_group_description
       ~subnet_ids  ?(tags= [])  () =
       { d_b_subnet_group_name; d_b_subnet_group_description; subnet_ids; tags
       }
@@ -6917,8 +6917,8 @@ module CopyDBParameterGroupMessage =
       target_d_b_parameter_group_identifier: String.t;
       target_d_b_parameter_group_description: String.t;
       tags: TagList.t;}
-    let make ~source_d_b_parameter_group_identifier 
-      ~target_d_b_parameter_group_identifier 
+    let make ~source_d_b_parameter_group_identifier
+      ~target_d_b_parameter_group_identifier
       ~target_d_b_parameter_group_description  ?(tags= [])  () =
       {
         source_d_b_parameter_group_identifier;
@@ -7132,7 +7132,7 @@ module DescribeDBSubnetGroupsMessage =
       filters: FilterList.t;
       max_records: Integer.t option;
       marker: String.t option;}
-    let make ?d_b_subnet_group_name  ?(filters= [])  ?max_records  ?marker 
+    let make ?d_b_subnet_group_name  ?(filters= [])  ?max_records  ?marker
       () = { d_b_subnet_group_name; filters; max_records; marker }
     let parse xml =
       Some
@@ -7308,7 +7308,7 @@ module DescribeCertificatesMessage =
       filters: FilterList.t;
       max_records: Integer.t option;
       marker: String.t option;}
-    let make ?certificate_identifier  ?(filters= [])  ?max_records  ?marker 
+    let make ?certificate_identifier  ?(filters= [])  ?max_records  ?marker
       () = { certificate_identifier; filters; max_records; marker }
     let parse xml =
       Some
@@ -7442,6 +7442,14 @@ module CreateDBSecurityGroupResult =
              DBSecurityGroup.of_json)
       }
   end
+
+module DescribeAccountAttributesMessage =
+  struct
+    type t = ()
+
+    let to_query _v = Query.List []
+  end
+
 module AccountAttributesMessage =
   struct
     type t = {
@@ -7626,7 +7634,7 @@ module DescribeOptionGroupsMessage =
       max_records: Integer.t option;
       engine_name: String.t option;
       major_engine_version: String.t option;}
-    let make ?option_group_name  ?(filters= [])  ?marker  ?max_records 
+    let make ?option_group_name  ?(filters= [])  ?marker  ?max_records
       ?engine_name  ?major_engine_version  () =
       {
         option_group_name;
@@ -7853,10 +7861,10 @@ module ModifyDBClusterMessage =
       option_group_name: String.t option;
       preferred_backup_window: String.t option;
       preferred_maintenance_window: String.t option;}
-    let make ?d_b_cluster_identifier  ?new_d_b_cluster_identifier 
-      ?apply_immediately  ?backup_retention_period 
+    let make ?d_b_cluster_identifier  ?new_d_b_cluster_identifier
+      ?apply_immediately  ?backup_retention_period
       ?d_b_cluster_parameter_group_name  ?(vpc_security_group_ids= [])  ?port
-       ?master_user_password  ?option_group_name  ?preferred_backup_window 
+       ?master_user_password  ?option_group_name  ?preferred_backup_window
       ?preferred_maintenance_window  () =
       {
         d_b_cluster_identifier;
@@ -8071,8 +8079,8 @@ module RevokeDBSecurityGroupIngressMessage =
       e_c2_security_group_name: String.t option;
       e_c2_security_group_id: String.t option;
       e_c2_security_group_owner_id: String.t option;}
-    let make ~d_b_security_group_name  ?c_i_d_r_i_p 
-      ?e_c2_security_group_name  ?e_c2_security_group_id 
+    let make ~d_b_security_group_name  ?c_i_d_r_i_p
+      ?e_c2_security_group_name  ?e_c2_security_group_id
       ?e_c2_security_group_owner_id  () =
       {
         d_b_security_group_name;
@@ -8389,8 +8397,8 @@ module DescribeEventsMessage =
       filters: FilterList.t;
       max_records: Integer.t option;
       marker: String.t option;}
-    let make ?source_identifier  ?source_type  ?start_time  ?end_time 
-      ?duration  ?(event_categories= [])  ?(filters= [])  ?max_records 
+    let make ?source_identifier  ?source_type  ?start_time  ?end_time
+      ?duration  ?(event_categories= [])  ?(filters= [])  ?max_records
       ?marker  () =
       {
         source_identifier;
@@ -8501,7 +8509,7 @@ module DeleteDBClusterMessage =
       d_b_cluster_identifier: String.t option;
       skip_final_snapshot: Boolean.t option;
       final_d_b_snapshot_identifier: String.t option;}
-    let make ?d_b_cluster_identifier  ?skip_final_snapshot 
+    let make ?d_b_cluster_identifier  ?skip_final_snapshot
       ?final_d_b_snapshot_identifier  () =
       {
         d_b_cluster_identifier;
@@ -8625,7 +8633,7 @@ module DescribeDBClusterParametersMessage =
       filters: FilterList.t;
       max_records: Integer.t option;
       marker: String.t option;}
-    let make ~d_b_cluster_parameter_group_name  ?source  ?(filters= []) 
+    let make ~d_b_cluster_parameter_group_name  ?source  ?(filters= [])
       ?max_records  ?marker  () =
       {
         d_b_cluster_parameter_group_name;
@@ -8742,7 +8750,7 @@ module DescribeEngineDefaultClusterParametersMessage =
       filters: FilterList.t;
       max_records: Integer.t option;
       marker: String.t option;}
-    let make ~d_b_parameter_group_family  ?(filters= [])  ?max_records 
+    let make ~d_b_parameter_group_family  ?(filters= [])  ?max_records
       ?marker  () =
       { d_b_parameter_group_family; filters; max_records; marker }
     let parse xml =
@@ -8852,8 +8860,8 @@ module DescribeReservedDBInstancesMessage =
       filters: FilterList.t;
       max_records: Integer.t option;
       marker: String.t option;}
-    let make ?reserved_d_b_instance_id  ?reserved_d_b_instances_offering_id 
-      ?d_b_instance_class  ?duration  ?product_description  ?offering_type 
+    let make ?reserved_d_b_instance_id  ?reserved_d_b_instances_offering_id
+      ?d_b_instance_class  ?duration  ?product_description  ?offering_type
       ?multi_a_z  ?(filters= [])  ?max_records  ?marker  () =
       {
         reserved_d_b_instance_id;
@@ -9037,7 +9045,7 @@ module ModifyOptionGroupMessage =
       options_to_include: OptionConfigurationList.t;
       options_to_remove: OptionNamesList.t;
       apply_immediately: Boolean.t option;}
-    let make ~option_group_name  ?(options_to_include= []) 
+    let make ~option_group_name  ?(options_to_include= [])
       ?(options_to_remove= [])  ?apply_immediately  () =
       {
         option_group_name;
@@ -9233,7 +9241,7 @@ module DescribeDBClusterParameterGroupsMessage =
       filters: FilterList.t;
       max_records: Integer.t option;
       marker: String.t option;}
-    let make ?d_b_cluster_parameter_group_name  ?(filters= [])  ?max_records 
+    let make ?d_b_cluster_parameter_group_name  ?(filters= [])  ?max_records
       ?marker  () =
       { d_b_cluster_parameter_group_name; filters; max_records; marker }
     let parse xml =
@@ -9481,16 +9489,16 @@ module CreateDBInstanceMessage =
       kms_key_id: String.t option;
       domain: String.t option;
       copy_tags_to_snapshot: Boolean.t option;}
-    let make ?d_b_name  ~d_b_instance_identifier  ?allocated_storage 
-      ~d_b_instance_class  ~engine  ?master_username  ?master_user_password 
-      ?(d_b_security_groups= [])  ?(vpc_security_group_ids= []) 
-      ?availability_zone  ?d_b_subnet_group_name 
-      ?preferred_maintenance_window  ?d_b_parameter_group_name 
-      ?backup_retention_period  ?preferred_backup_window  ?port  ?multi_a_z 
-      ?engine_version  ?auto_minor_version_upgrade  ?license_model  ?iops 
+    let make ?d_b_name  ~d_b_instance_identifier  ?allocated_storage
+      ~d_b_instance_class  ~engine  ?master_username  ?master_user_password
+      ?(d_b_security_groups= [])  ?(vpc_security_group_ids= [])
+      ?availability_zone  ?d_b_subnet_group_name
+      ?preferred_maintenance_window  ?d_b_parameter_group_name
+      ?backup_retention_period  ?preferred_backup_window  ?port  ?multi_a_z
+      ?engine_version  ?auto_minor_version_upgrade  ?license_model  ?iops
       ?option_group_name  ?character_set_name  ?publicly_accessible  ?(tags=
-      [])  ?d_b_cluster_identifier  ?storage_type  ?tde_credential_arn 
-      ?tde_credential_password  ?storage_encrypted  ?kms_key_id  ?domain 
+      [])  ?d_b_cluster_identifier  ?storage_type  ?tde_credential_arn
+      ?tde_credential_password  ?storage_encrypted  ?kms_key_id  ?domain
       ?copy_tags_to_snapshot  () =
       {
         d_b_name;
@@ -9930,7 +9938,7 @@ module CreateOptionGroupMessage =
       major_engine_version: String.t;
       option_group_description: String.t;
       tags: TagList.t;}
-    let make ~option_group_name  ~engine_name  ~major_engine_version 
+    let make ~option_group_name  ~engine_name  ~major_engine_version
       ~option_group_description  ?(tags= [])  () =
       {
         option_group_name;
@@ -10031,12 +10039,12 @@ module RestoreDBInstanceFromDBSnapshotMessage =
       d_b_security_groups: DBSecurityGroupNameList.t;
       domain: String.t option;
       copy_tags_to_snapshot: Boolean.t option;}
-    let make ~d_b_instance_identifier  ~d_b_snapshot_identifier 
-      ?d_b_instance_class  ?port  ?availability_zone  ?d_b_subnet_group_name 
-      ?multi_a_z  ?publicly_accessible  ?auto_minor_version_upgrade 
+    let make ~d_b_instance_identifier  ~d_b_snapshot_identifier
+      ?d_b_instance_class  ?port  ?availability_zone  ?d_b_subnet_group_name
+      ?multi_a_z  ?publicly_accessible  ?auto_minor_version_upgrade
       ?license_model  ?d_b_name  ?engine  ?iops  ?option_group_name  ?(tags=
-      [])  ?storage_type  ?tde_credential_arn  ?tde_credential_password 
-      ?(vpc_security_group_ids= [])  ?(d_b_security_groups= [])  ?domain 
+      [])  ?storage_type  ?tde_credential_arn  ?tde_credential_password
+      ?(vpc_security_group_ids= [])  ?(d_b_security_groups= [])  ?domain
       ?copy_tags_to_snapshot  () =
       {
         d_b_instance_identifier;
@@ -10289,7 +10297,7 @@ module CreateDBSecurityGroupMessage =
       d_b_security_group_name: String.t;
       d_b_security_group_description: String.t;
       tags: TagList.t;}
-    let make ~d_b_security_group_name  ~d_b_security_group_description 
+    let make ~d_b_security_group_name  ~d_b_security_group_description
       ?(tags= [])  () =
       { d_b_security_group_name; d_b_security_group_description; tags }
     let parse xml =
@@ -10478,11 +10486,11 @@ module RestoreDBInstanceToPointInTimeMessage =
       domain: String.t option;}
     let make ~source_d_b_instance_identifier  ~target_d_b_instance_identifier
        ?restore_time  ?use_latest_restorable_time  ?d_b_instance_class  ?port
-       ?availability_zone  ?d_b_subnet_group_name  ?multi_a_z 
-      ?publicly_accessible  ?auto_minor_version_upgrade  ?license_model 
-      ?d_b_name  ?engine  ?iops  ?option_group_name  ?copy_tags_to_snapshot 
-      ?(tags= [])  ?storage_type  ?tde_credential_arn 
-      ?tde_credential_password  ?(vpc_security_group_ids= []) 
+       ?availability_zone  ?d_b_subnet_group_name  ?multi_a_z
+      ?publicly_accessible  ?auto_minor_version_upgrade  ?license_model
+      ?d_b_name  ?engine  ?iops  ?option_group_name  ?copy_tags_to_snapshot
+      ?(tags= [])  ?storage_type  ?tde_credential_arn
+      ?tde_credential_password  ?(vpc_security_group_ids= [])
       ?(d_b_security_groups= [])  ?domain  () =
       {
         source_d_b_instance_identifier;
@@ -10837,7 +10845,7 @@ module CreateDBClusterParameterGroupMessage =
       d_b_parameter_group_family: String.t;
       description: String.t;
       tags: TagList.t;}
-    let make ~d_b_cluster_parameter_group_name  ~d_b_parameter_group_family 
+    let make ~d_b_cluster_parameter_group_name  ~d_b_parameter_group_family
       ~description  ?(tags= [])  () =
       {
         d_b_cluster_parameter_group_name;
@@ -10943,8 +10951,8 @@ module DescribeDBEngineVersionsMessage =
       marker: String.t option;
       default_only: Boolean.t option;
       list_supported_character_sets: Boolean.t option;}
-    let make ?engine  ?engine_version  ?d_b_parameter_group_family 
-      ?(filters= [])  ?max_records  ?marker  ?default_only 
+    let make ?engine  ?engine_version  ?d_b_parameter_group_family
+      ?(filters= [])  ?max_records  ?marker  ?default_only
       ?list_supported_character_sets  () =
       {
         engine;
@@ -11208,7 +11216,7 @@ module CreateDBClusterSnapshotMessage =
       d_b_cluster_snapshot_identifier: String.t;
       d_b_cluster_identifier: String.t;
       tags: TagList.t;}
-    let make ~d_b_cluster_snapshot_identifier  ~d_b_cluster_identifier 
+    let make ~d_b_cluster_snapshot_identifier  ~d_b_cluster_identifier
       ?(tags= [])  () =
       { d_b_cluster_snapshot_identifier; d_b_cluster_identifier; tags }
     let parse xml =
@@ -11269,7 +11277,7 @@ module DescribeOptionGroupOptionsMessage =
       filters: FilterList.t;
       max_records: Integer.t option;
       marker: String.t option;}
-    let make ~engine_name  ?major_engine_version  ?(filters= []) 
+    let make ~engine_name  ?major_engine_version  ?(filters= [])
       ?max_records  ?marker  () =
       { engine_name; major_engine_version; filters; max_records; marker }
     let parse xml =
@@ -11399,7 +11407,7 @@ module ModifyDBSubnetGroupMessage =
       d_b_subnet_group_name: String.t;
       d_b_subnet_group_description: String.t option;
       subnet_ids: SubnetIdentifierList.t;}
-    let make ~d_b_subnet_group_name  ?d_b_subnet_group_description 
+    let make ~d_b_subnet_group_name  ?d_b_subnet_group_description
       ~subnet_ids  () =
       { d_b_subnet_group_name; d_b_subnet_group_description; subnet_ids }
     let parse xml =
@@ -11508,10 +11516,10 @@ module CreateDBInstanceReadReplicaMessage =
       d_b_subnet_group_name: String.t option;
       storage_type: String.t option;
       copy_tags_to_snapshot: Boolean.t option;}
-    let make ~d_b_instance_identifier  ~source_d_b_instance_identifier 
-      ?d_b_instance_class  ?availability_zone  ?port 
-      ?auto_minor_version_upgrade  ?iops  ?option_group_name 
-      ?publicly_accessible  ?(tags= [])  ?d_b_subnet_group_name 
+    let make ~d_b_instance_identifier  ~source_d_b_instance_identifier
+      ?d_b_instance_class  ?availability_zone  ?port
+      ?auto_minor_version_upgrade  ?iops  ?option_group_name
+      ?publicly_accessible  ?(tags= [])  ?d_b_subnet_group_name
       ?storage_type  ?copy_tags_to_snapshot  () =
       {
         d_b_instance_identifier;
@@ -11771,7 +11779,7 @@ module DownloadDBLogFilePortionMessage =
       log_file_name: String.t;
       marker: String.t option;
       number_of_lines: Integer.t option;}
-    let make ~d_b_instance_identifier  ~log_file_name  ?marker 
+    let make ~d_b_instance_identifier  ~log_file_name  ?marker
       ?number_of_lines  () =
       { d_b_instance_identifier; log_file_name; marker; number_of_lines }
     let parse xml =
@@ -12000,7 +12008,7 @@ module DescribeDBClusterSnapshotsMessage =
       filters: FilterList.t;
       max_records: Integer.t option;
       marker: String.t option;}
-    let make ?d_b_cluster_identifier  ?d_b_cluster_snapshot_identifier 
+    let make ?d_b_cluster_identifier  ?d_b_cluster_snapshot_identifier
       ?snapshot_type  ?(filters= [])  ?max_records  ?marker  () =
       {
         d_b_cluster_identifier;
@@ -12087,7 +12095,7 @@ module ModifyEventSubscriptionMessage =
       source_type: String.t option;
       event_categories: EventCategoriesList.t;
       enabled: Boolean.t option;}
-    let make ~subscription_name  ?sns_topic_arn  ?source_type 
+    let make ~subscription_name  ?sns_topic_arn  ?source_type
       ?(event_categories= [])  ?enabled  () =
       {
         subscription_name;
@@ -12204,8 +12212,8 @@ module AuthorizeDBSecurityGroupIngressMessage =
       e_c2_security_group_name: String.t option;
       e_c2_security_group_id: String.t option;
       e_c2_security_group_owner_id: String.t option;}
-    let make ~d_b_security_group_name  ?c_i_d_r_i_p 
-      ?e_c2_security_group_name  ?e_c2_security_group_id 
+    let make ~d_b_security_group_name  ?c_i_d_r_i_p
+      ?e_c2_security_group_name  ?e_c2_security_group_id
       ?e_c2_security_group_owner_id  () =
       {
         d_b_security_group_name;
@@ -12291,7 +12299,7 @@ module PurchaseReservedDBInstancesOfferingMessage =
       reserved_d_b_instance_id: String.t option;
       d_b_instance_count: Integer.t option;
       tags: TagList.t;}
-    let make ~reserved_d_b_instances_offering_id  ?reserved_d_b_instance_id 
+    let make ~reserved_d_b_instances_offering_id  ?reserved_d_b_instance_id
       ?d_b_instance_count  ?(tags= [])  () =
       {
         reserved_d_b_instances_offering_id;
@@ -12563,7 +12571,7 @@ module CreateDBParameterGroupMessage =
       d_b_parameter_group_family: String.t;
       description: String.t;
       tags: TagList.t;}
-    let make ~d_b_parameter_group_name  ~d_b_parameter_group_family 
+    let make ~d_b_parameter_group_name  ~d_b_parameter_group_family
       ~description  ?(tags= [])  () =
       {
         d_b_parameter_group_name;
@@ -12736,7 +12744,7 @@ module DescribeOrderableDBInstanceOptionsMessage =
       filters: FilterList.t;
       max_records: Integer.t option;
       marker: String.t option;}
-    let make ~engine  ?engine_version  ?d_b_instance_class  ?license_model 
+    let make ~engine  ?engine_version  ?d_b_instance_class  ?license_model
       ?vpc  ?(filters= [])  ?max_records  ?marker  () =
       {
         engine;
@@ -12913,8 +12921,8 @@ module RestoreDBClusterToPointInTimeMessage =
       option_group_name: String.t option;
       vpc_security_group_ids: VpcSecurityGroupIdList.t;
       tags: TagList.t;}
-    let make ~d_b_cluster_identifier  ~source_d_b_cluster_identifier 
-      ?restore_to_time  ?use_latest_restorable_time  ?port 
+    let make ~d_b_cluster_identifier  ~source_d_b_cluster_identifier
+      ?restore_to_time  ?use_latest_restorable_time  ?port
       ?d_b_subnet_group_name  ?option_group_name  ?(vpc_security_group_ids=
       [])  ?(tags= [])  () =
       {
@@ -13073,7 +13081,7 @@ module DescribeEngineDefaultParametersMessage =
       filters: FilterList.t;
       max_records: Integer.t option;
       marker: String.t option;}
-    let make ~d_b_parameter_group_family  ?(filters= [])  ?max_records 
+    let make ~d_b_parameter_group_family  ?(filters= [])  ?max_records
       ?marker  () =
       { d_b_parameter_group_family; filters; max_records; marker }
     let parse xml =
@@ -13255,7 +13263,7 @@ module DescribeDBSnapshotsMessage =
       filters: FilterList.t;
       max_records: Integer.t option;
       marker: String.t option;}
-    let make ?d_b_instance_identifier  ?d_b_snapshot_identifier 
+    let make ?d_b_instance_identifier  ?d_b_snapshot_identifier
       ?snapshot_type  ?(filters= [])  ?max_records  ?marker  () =
       {
         d_b_instance_identifier;
@@ -13374,7 +13382,7 @@ module CreateEventSubscriptionMessage =
       source_ids: SourceIdsList.t;
       enabled: Boolean.t option;
       tags: TagList.t;}
-    let make ~subscription_name  ~sns_topic_arn  ?source_type 
+    let make ~subscription_name  ~sns_topic_arn  ?source_type
       ?(event_categories= [])  ?(source_ids= [])  ?enabled  ?(tags= [])  () =
       {
         subscription_name;
@@ -13472,7 +13480,7 @@ module CopyDBClusterSnapshotMessage =
       source_d_b_cluster_snapshot_identifier: String.t;
       target_d_b_cluster_snapshot_identifier: String.t;
       tags: TagList.t;}
-    let make ~source_d_b_cluster_snapshot_identifier 
+    let make ~source_d_b_cluster_snapshot_identifier
       ~target_d_b_cluster_snapshot_identifier  ?(tags= [])  () =
       {
         source_d_b_cluster_snapshot_identifier;
@@ -13569,7 +13577,7 @@ module DescribeDBClustersMessage =
       filters: FilterList.t;
       max_records: Integer.t option;
       marker: String.t option;}
-    let make ?d_b_cluster_identifier  ?(filters= [])  ?max_records  ?marker 
+    let make ?d_b_cluster_identifier  ?(filters= [])  ?max_records  ?marker
       () = { d_b_cluster_identifier; filters; max_records; marker }
     let parse xml =
       Some

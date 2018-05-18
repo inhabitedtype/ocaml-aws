@@ -312,7 +312,7 @@ module BaseTypes = struct
       match String.parse b with
       | None   -> None
       | Some s ->
-        begin match String.lowercase s with
+        begin match String.lowercase_ascii s with
         | "false" -> Some false
         | "true"  -> Some true
         | _       -> None
