@@ -10,9 +10,8 @@ output/
 aws.docdir
 libraries/**/_build
 *.tar.gz
-<<<<<<< HEAD
-=======
+*.install
 libraries/**/.merlin
+libraries/**/*.install
 lib/**/.merlin
 .envrc
->>>>>>> Add .envrc to gitignore.

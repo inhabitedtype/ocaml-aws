@@ -15,7 +15,7 @@ let to_http req =
                (Query.render
                   (DeleteSpotDatafeedSubscriptionRequest.to_query req))))) in
   (`POST, uri, [])
-let of_http body = `Ok ()
+let of_http _body = `Ok ()
 let parse_error code err =
   let errors = [] @ Errors.common in
   match Errors.of_string err with

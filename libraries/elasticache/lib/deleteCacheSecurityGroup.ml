@@ -14,7 +14,7 @@ let to_http req =
             (Uri.query_of_encoded
                (Query.render (DeleteCacheSecurityGroupMessage.to_query req))))) in
   (`POST, uri, [])
-let of_http body = `Ok ()
+let of_http _body = `Ok ()
 let parse_error code err =
   let errors =
     [Errors.InvalidParameterCombination;

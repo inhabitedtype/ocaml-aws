@@ -2,6 +2,7 @@
 
 (executable
  ((name        aws_gen)
+  (flags (:standard w))         ; Temp disable of unused variable warnings.
   (libraries ("yojson" "cmdliner" "ppx_tools" "ocaml-migrate-parsetree"))))
 
 (rule (with-stdout-to structures.ml
