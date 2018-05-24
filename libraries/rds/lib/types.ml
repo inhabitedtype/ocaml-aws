@@ -5,7 +5,7 @@ type calendar = Calendar.t
 module AvailabilityZone =
   struct
     type t = {
-      name: String.t option;}
+      name: String.t option }
     let make ?name  () = { name }
     let parse xml =
       Some { name = (Util.option_bind (Xml.member "Name" xml) String.parse) }
@@ -14,10 +14,12 @@ module AvailabilityZone =
         (Util.list_filter_opt
            [Util.option_map v.name
               (fun f  -> Query.Pair ("Name", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.name (fun f  -> ("name", (String.to_json f)))])
+
     let of_json j =
       { name = (Util.option_map (Json.lookup j "name") String.of_json) }
   end
@@ -25,8 +27,8 @@ module DBSecurityGroupMembership =
   struct
     type t =
       {
-      d_b_security_group_name: String.t option;
-      status: String.t option;}
+      d_b_security_group_name: String.t option ;
+      status: String.t option }
     let make ?d_b_security_group_name  ?status  () =
       { d_b_security_group_name; status }
     let parse xml =
@@ -37,6 +39,7 @@ module DBSecurityGroupMembership =
                String.parse);
           status = (Util.option_bind (Xml.member "Status" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -45,6 +48,7 @@ module DBSecurityGroupMembership =
            Util.option_map v.d_b_security_group_name
              (fun f  ->
                 Query.Pair ("DBSecurityGroupName", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -52,6 +56,7 @@ module DBSecurityGroupMembership =
               (fun f  -> ("status", (String.to_json f)));
            Util.option_map v.d_b_security_group_name
              (fun f  -> ("d_b_security_group_name", (String.to_json f)))])
+
     let of_json j =
       {
         d_b_security_group_name =
@@ -64,15 +69,15 @@ module OptionSetting =
   struct
     type t =
       {
-      name: String.t option;
-      value: String.t option;
-      default_value: String.t option;
-      description: String.t option;
-      apply_type: String.t option;
-      data_type: String.t option;
-      allowed_values: String.t option;
-      is_modifiable: Boolean.t option;
-      is_collection: Boolean.t option;}
+      name: String.t option ;
+      value: String.t option ;
+      default_value: String.t option ;
+      description: String.t option ;
+      apply_type: String.t option ;
+      data_type: String.t option ;
+      allowed_values: String.t option ;
+      is_modifiable: Boolean.t option ;
+      is_collection: Boolean.t option }
     let make ?name  ?value  ?default_value  ?description  ?apply_type
       ?data_type  ?allowed_values  ?is_modifiable  ?is_collection  () =
       {
@@ -106,6 +111,7 @@ module OptionSetting =
           is_collection =
             (Util.option_bind (Xml.member "IsCollection" xml) Boolean.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -127,6 +133,7 @@ module OptionSetting =
              (fun f  -> Query.Pair ("Value", (String.to_query f)));
            Util.option_map v.name
              (fun f  -> Query.Pair ("Name", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -146,6 +153,7 @@ module OptionSetting =
              (fun f  -> ("default_value", (String.to_json f)));
            Util.option_map v.value (fun f  -> ("value", (String.to_json f)));
            Util.option_map v.name (fun f  -> ("name", (String.to_json f)))])
+
     let of_json j =
       {
         name = (Util.option_map (Json.lookup j "name") String.of_json);
@@ -170,8 +178,8 @@ module VpcSecurityGroupMembership =
   struct
     type t =
       {
-      vpc_security_group_id: String.t option;
-      status: String.t option;}
+      vpc_security_group_id: String.t option ;
+      status: String.t option }
     let make ?vpc_security_group_id  ?status  () =
       { vpc_security_group_id; status }
     let parse xml =
@@ -182,6 +190,7 @@ module VpcSecurityGroupMembership =
                String.parse);
           status = (Util.option_bind (Xml.member "Status" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -190,6 +199,7 @@ module VpcSecurityGroupMembership =
            Util.option_map v.vpc_security_group_id
              (fun f  ->
                 Query.Pair ("VpcSecurityGroupId", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -197,6 +207,7 @@ module VpcSecurityGroupMembership =
               (fun f  -> ("status", (String.to_json f)));
            Util.option_map v.vpc_security_group_id
              (fun f  -> ("vpc_security_group_id", (String.to_json f)))])
+
     let of_json j =
       {
         vpc_security_group_id =
@@ -209,9 +220,9 @@ module Subnet =
   struct
     type t =
       {
-      subnet_identifier: String.t option;
-      subnet_availability_zone: AvailabilityZone.t option;
-      subnet_status: String.t option;}
+      subnet_identifier: String.t option ;
+      subnet_availability_zone: AvailabilityZone.t option ;
+      subnet_status: String.t option }
     let make ?subnet_identifier  ?subnet_availability_zone  ?subnet_status
       () = { subnet_identifier; subnet_availability_zone; subnet_status }
     let parse xml =
@@ -226,6 +237,7 @@ module Subnet =
           subnet_status =
             (Util.option_bind (Xml.member "SubnetStatus" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -237,6 +249,7 @@ module Subnet =
                   ("SubnetAvailabilityZone", (AvailabilityZone.to_query f)));
            Util.option_map v.subnet_identifier
              (fun f  -> Query.Pair ("SubnetIdentifier", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -247,6 +260,7 @@ module Subnet =
                 ("subnet_availability_zone", (AvailabilityZone.to_json f)));
            Util.option_map v.subnet_identifier
              (fun f  -> ("subnet_identifier", (String.to_json f)))])
+
     let of_json j =
       {
         subnet_identifier =
@@ -266,6 +280,7 @@ module DBSecurityGroupMembershipList =
       Util.option_all
         (List.map DBSecurityGroupMembership.parse
            (Xml.members "DBSecurityGroup" xml))
+
     let to_query v = Query.to_query_list DBSecurityGroupMembership.to_query v
     let to_json v = `List (List.map DBSecurityGroupMembership.to_json v)
     let of_json j = Json.to_list DBSecurityGroupMembership.of_json j
@@ -277,6 +292,7 @@ module OptionSettingConfigurationList =
     let parse xml =
       Util.option_all
         (List.map OptionSetting.parse (Xml.members "OptionSetting" xml))
+
     let to_query v = Query.to_query_list OptionSetting.to_query v
     let to_json v = `List (List.map OptionSetting.to_json v)
     let of_json j = Json.to_list OptionSetting.of_json j
@@ -289,6 +305,7 @@ module VpcSecurityGroupMembershipList =
       Util.option_all
         (List.map VpcSecurityGroupMembership.parse
            (Xml.members "VpcSecurityGroupMembership" xml))
+
     let to_query v =
       Query.to_query_list VpcSecurityGroupMembership.to_query v
     let to_json v = `List (List.map VpcSecurityGroupMembership.to_json v)
@@ -298,12 +315,12 @@ module OptionGroupOptionSetting =
   struct
     type t =
       {
-      setting_name: String.t option;
-      setting_description: String.t option;
-      default_value: String.t option;
-      apply_type: String.t option;
-      allowed_values: String.t option;
-      is_modifiable: Boolean.t option;}
+      setting_name: String.t option ;
+      setting_description: String.t option ;
+      default_value: String.t option ;
+      apply_type: String.t option ;
+      allowed_values: String.t option ;
+      is_modifiable: Boolean.t option }
     let make ?setting_name  ?setting_description  ?default_value  ?apply_type
        ?allowed_values  ?is_modifiable  () =
       {
@@ -331,6 +348,7 @@ module OptionGroupOptionSetting =
           is_modifiable =
             (Util.option_bind (Xml.member "IsModifiable" xml) Boolean.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -347,6 +365,7 @@ module OptionGroupOptionSetting =
                 Query.Pair ("SettingDescription", (String.to_query f)));
            Util.option_map v.setting_name
              (fun f  -> Query.Pair ("SettingName", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -362,6 +381,7 @@ module OptionGroupOptionSetting =
              (fun f  -> ("setting_description", (String.to_json f)));
            Util.option_map v.setting_name
              (fun f  -> ("setting_name", (String.to_json f)))])
+
     let of_json j =
       {
         setting_name =
@@ -392,6 +412,7 @@ module ApplyMethod =
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+
     let to_query v =
       Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
     let to_json v =
@@ -403,10 +424,10 @@ module DBInstanceStatusInfo =
   struct
     type t =
       {
-      status_type: String.t option;
-      normal: Boolean.t option;
-      status: String.t option;
-      message: String.t option;}
+      status_type: String.t option ;
+      normal: Boolean.t option ;
+      status: String.t option ;
+      message: String.t option }
     let make ?status_type  ?normal  ?status  ?message  () =
       { status_type; normal; status; message }
     let parse xml =
@@ -419,6 +440,7 @@ module DBInstanceStatusInfo =
           message =
             (Util.option_bind (Xml.member "Message" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -430,6 +452,7 @@ module DBInstanceStatusInfo =
              (fun f  -> Query.Pair ("Normal", (Boolean.to_query f)));
            Util.option_map v.status_type
              (fun f  -> Query.Pair ("StatusType", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -441,6 +464,7 @@ module DBInstanceStatusInfo =
              (fun f  -> ("normal", (Boolean.to_json f)));
            Util.option_map v.status_type
              (fun f  -> ("status_type", (String.to_json f)))])
+
     let of_json j =
       {
         status_type =
@@ -454,8 +478,8 @@ module DBParameterGroupStatus =
   struct
     type t =
       {
-      d_b_parameter_group_name: String.t option;
-      parameter_apply_status: String.t option;}
+      d_b_parameter_group_name: String.t option ;
+      parameter_apply_status: String.t option }
     let make ?d_b_parameter_group_name  ?parameter_apply_status  () =
       { d_b_parameter_group_name; parameter_apply_status }
     let parse xml =
@@ -468,6 +492,7 @@ module DBParameterGroupStatus =
             (Util.option_bind (Xml.member "ParameterApplyStatus" xml)
                String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -477,6 +502,7 @@ module DBParameterGroupStatus =
            Util.option_map v.d_b_parameter_group_name
              (fun f  ->
                 Query.Pair ("DBParameterGroupName", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -484,6 +510,7 @@ module DBParameterGroupStatus =
               (fun f  -> ("parameter_apply_status", (String.to_json f)));
            Util.option_map v.d_b_parameter_group_name
              (fun f  -> ("d_b_parameter_group_name", (String.to_json f)))])
+
     let of_json j =
       {
         d_b_parameter_group_name =
@@ -508,9 +535,9 @@ module DomainMembership =
   struct
     type t =
       {
-      domain: String.t option;
-      status: String.t option;
-      connectivity: String.t option;}
+      domain: String.t option ;
+      status: String.t option ;
+      connectivity: String.t option }
     let make ?domain  ?status  ?connectivity  () =
       { domain; status; connectivity }
     let parse xml =
@@ -521,6 +548,7 @@ module DomainMembership =
           connectivity =
             (Util.option_bind (Xml.member "Connectivity" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -530,6 +558,7 @@ module DomainMembership =
              (fun f  -> Query.Pair ("Status", (String.to_query f)));
            Util.option_map v.domain
              (fun f  -> Query.Pair ("Domain", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -539,6 +568,7 @@ module DomainMembership =
              (fun f  -> ("status", (String.to_json f)));
            Util.option_map v.domain
              (fun f  -> ("domain", (String.to_json f)))])
+
     let of_json j =
       {
         domain = (Util.option_map (Json.lookup j "domain") String.of_json);
@@ -550,8 +580,8 @@ module DomainMembership =
 module OptionGroupMembership =
   struct
     type t = {
-      option_group_name: String.t option;
-      status: String.t option;}
+      option_group_name: String.t option ;
+      status: String.t option }
     let make ?option_group_name  ?status  () = { option_group_name; status }
     let parse xml =
       Some
@@ -560,6 +590,7 @@ module OptionGroupMembership =
             (Util.option_bind (Xml.member "OptionGroupName" xml) String.parse);
           status = (Util.option_bind (Xml.member "Status" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -567,6 +598,7 @@ module OptionGroupMembership =
               (fun f  -> Query.Pair ("Status", (String.to_query f)));
            Util.option_map v.option_group_name
              (fun f  -> Query.Pair ("OptionGroupName", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -574,6 +606,7 @@ module OptionGroupMembership =
               (fun f  -> ("status", (String.to_json f)));
            Util.option_map v.option_group_name
              (fun f  -> ("option_group_name", (String.to_json f)))])
+
     let of_json j =
       {
         option_group_name =
@@ -585,8 +618,8 @@ module RecurringCharge =
   struct
     type t =
       {
-      recurring_charge_amount: Double.t option;
-      recurring_charge_frequency: String.t option;}
+      recurring_charge_amount: Double.t option ;
+      recurring_charge_frequency: String.t option }
     let make ?recurring_charge_amount  ?recurring_charge_frequency  () =
       { recurring_charge_amount; recurring_charge_frequency }
     let parse xml =
@@ -599,6 +632,7 @@ module RecurringCharge =
             (Util.option_bind (Xml.member "RecurringChargeFrequency" xml)
                String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -608,6 +642,7 @@ module RecurringCharge =
            Util.option_map v.recurring_charge_amount
              (fun f  ->
                 Query.Pair ("RecurringChargeAmount", (Double.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -615,6 +650,7 @@ module RecurringCharge =
               (fun f  -> ("recurring_charge_frequency", (String.to_json f)));
            Util.option_map v.recurring_charge_amount
              (fun f  -> ("recurring_charge_amount", (Double.to_json f)))])
+
     let of_json j =
       {
         recurring_charge_amount =
@@ -629,12 +665,12 @@ module PendingMaintenanceAction =
   struct
     type t =
       {
-      action: String.t option;
-      auto_applied_after_date: DateTime.t option;
-      forced_apply_date: DateTime.t option;
-      opt_in_status: String.t option;
-      current_apply_date: DateTime.t option;
-      description: String.t option;}
+      action: String.t option ;
+      auto_applied_after_date: DateTime.t option ;
+      forced_apply_date: DateTime.t option ;
+      opt_in_status: String.t option ;
+      current_apply_date: DateTime.t option ;
+      description: String.t option }
     let make ?action  ?auto_applied_after_date  ?forced_apply_date
       ?opt_in_status  ?current_apply_date  ?description  () =
       {
@@ -663,6 +699,7 @@ module PendingMaintenanceAction =
           description =
             (Util.option_bind (Xml.member "Description" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -680,6 +717,7 @@ module PendingMaintenanceAction =
                 Query.Pair ("AutoAppliedAfterDate", (DateTime.to_query f)));
            Util.option_map v.action
              (fun f  -> Query.Pair ("Action", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -695,6 +733,7 @@ module PendingMaintenanceAction =
              (fun f  -> ("auto_applied_after_date", (DateTime.to_json f)));
            Util.option_map v.action
              (fun f  -> ("action", (String.to_json f)))])
+
     let of_json j =
       {
         action = (Util.option_map (Json.lookup j "action") String.of_json);
@@ -717,14 +756,14 @@ module Option =
   struct
     type t =
       {
-      option_name: String.t option;
-      option_description: String.t option;
-      persistent: Boolean.t option;
-      permanent: Boolean.t option;
-      port: Integer.t option;
-      option_settings: OptionSettingConfigurationList.t;
-      d_b_security_group_memberships: DBSecurityGroupMembershipList.t;
-      vpc_security_group_memberships: VpcSecurityGroupMembershipList.t;}
+      option_name: String.t option ;
+      option_description: String.t option ;
+      persistent: Boolean.t option ;
+      permanent: Boolean.t option ;
+      port: Integer.t option ;
+      option_settings: OptionSettingConfigurationList.t ;
+      d_b_security_group_memberships: DBSecurityGroupMembershipList.t ;
+      vpc_security_group_memberships: VpcSecurityGroupMembershipList.t }
     let make ?option_name  ?option_description  ?persistent  ?permanent
       ?port  ?(option_settings= [])  ?(d_b_security_group_memberships= [])
       ?(vpc_security_group_memberships= [])  () =
@@ -766,6 +805,7 @@ module Option =
                   (Xml.member "VpcSecurityGroupMemberships" xml)
                   VpcSecurityGroupMembershipList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -793,6 +833,7 @@ module Option =
              (fun f  -> Query.Pair ("OptionDescription", (String.to_query f)));
            Util.option_map v.option_name
              (fun f  -> Query.Pair ("OptionName", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -816,6 +857,7 @@ module Option =
              (fun f  -> ("option_description", (String.to_json f)));
            Util.option_map v.option_name
              (fun f  -> ("option_name", (String.to_json f)))])
+
     let of_json j =
       {
         option_name =
@@ -845,8 +887,8 @@ module CharacterSet =
   struct
     type t =
       {
-      character_set_name: String.t option;
-      character_set_description: String.t option;}
+      character_set_name: String.t option ;
+      character_set_description: String.t option }
     let make ?character_set_name  ?character_set_description  () =
       { character_set_name; character_set_description }
     let parse xml =
@@ -859,6 +901,7 @@ module CharacterSet =
             (Util.option_bind (Xml.member "CharacterSetDescription" xml)
                String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -867,6 +910,7 @@ module CharacterSet =
                  Query.Pair ("CharacterSetDescription", (String.to_query f)));
            Util.option_map v.character_set_name
              (fun f  -> Query.Pair ("CharacterSetName", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -874,6 +918,7 @@ module CharacterSet =
               (fun f  -> ("character_set_description", (String.to_json f)));
            Util.option_map v.character_set_name
              (fun f  -> ("character_set_name", (String.to_json f)))])
+
     let of_json j =
       {
         character_set_name =
@@ -888,9 +933,9 @@ module DBClusterMember =
   struct
     type t =
       {
-      d_b_instance_identifier: String.t option;
-      is_cluster_writer: Boolean.t option;
-      d_b_cluster_parameter_group_status: String.t option;}
+      d_b_instance_identifier: String.t option ;
+      is_cluster_writer: Boolean.t option ;
+      d_b_cluster_parameter_group_status: String.t option }
     let make ?d_b_instance_identifier  ?is_cluster_writer
       ?d_b_cluster_parameter_group_status  () =
       {
@@ -911,6 +956,7 @@ module DBClusterMember =
             (Util.option_bind
                (Xml.member "DBClusterParameterGroupStatus" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -923,6 +969,7 @@ module DBClusterMember =
            Util.option_map v.d_b_instance_identifier
              (fun f  ->
                 Query.Pair ("DBInstanceIdentifier", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -933,6 +980,7 @@ module DBClusterMember =
              (fun f  -> ("is_cluster_writer", (Boolean.to_json f)));
            Util.option_map v.d_b_instance_identifier
              (fun f  -> ("d_b_instance_identifier", (String.to_json f)))])
+
     let of_json j =
       {
         d_b_instance_identifier =
@@ -951,8 +999,8 @@ module DBClusterOptionGroupStatus =
   struct
     type t =
       {
-      d_b_cluster_option_group_name: String.t option;
-      status: String.t option;}
+      d_b_cluster_option_group_name: String.t option ;
+      status: String.t option }
     let make ?d_b_cluster_option_group_name  ?status  () =
       { d_b_cluster_option_group_name; status }
     let parse xml =
@@ -963,6 +1011,7 @@ module DBClusterOptionGroupStatus =
                String.parse);
           status = (Util.option_bind (Xml.member "Status" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -971,6 +1020,7 @@ module DBClusterOptionGroupStatus =
            Util.option_map v.d_b_cluster_option_group_name
              (fun f  ->
                 Query.Pair ("DBClusterOptionGroupName", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -978,6 +1028,7 @@ module DBClusterOptionGroupStatus =
               (fun f  -> ("status", (String.to_json f)));
            Util.option_map v.d_b_cluster_option_group_name
              (fun f  -> ("d_b_cluster_option_group_name", (String.to_json f)))])
+
     let of_json j =
       {
         d_b_cluster_option_group_name =
@@ -990,10 +1041,10 @@ module EC2SecurityGroup =
   struct
     type t =
       {
-      status: String.t option;
-      e_c2_security_group_name: String.t option;
-      e_c2_security_group_id: String.t option;
-      e_c2_security_group_owner_id: String.t option;}
+      status: String.t option ;
+      e_c2_security_group_name: String.t option ;
+      e_c2_security_group_id: String.t option ;
+      e_c2_security_group_owner_id: String.t option }
     let make ?status  ?e_c2_security_group_name  ?e_c2_security_group_id
       ?e_c2_security_group_owner_id  () =
       {
@@ -1016,6 +1067,7 @@ module EC2SecurityGroup =
             (Util.option_bind (Xml.member "EC2SecurityGroupOwnerId" xml)
                String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -1030,6 +1082,7 @@ module EC2SecurityGroup =
                 Query.Pair ("EC2SecurityGroupName", (String.to_query f)));
            Util.option_map v.status
              (fun f  -> Query.Pair ("Status", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -1041,6 +1094,7 @@ module EC2SecurityGroup =
              (fun f  -> ("e_c2_security_group_name", (String.to_json f)));
            Util.option_map v.status
              (fun f  -> ("status", (String.to_json f)))])
+
     let of_json j =
       {
         status = (Util.option_map (Json.lookup j "status") String.of_json);
@@ -1058,8 +1112,8 @@ module EC2SecurityGroup =
 module IPRange =
   struct
     type t = {
-      status: String.t option;
-      c_i_d_r_i_p: String.t option;}
+      status: String.t option ;
+      c_i_d_r_i_p: String.t option }
     let make ?status  ?c_i_d_r_i_p  () = { status; c_i_d_r_i_p }
     let parse xml =
       Some
@@ -1068,6 +1122,7 @@ module IPRange =
           c_i_d_r_i_p =
             (Util.option_bind (Xml.member "CIDRIP" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -1075,6 +1130,7 @@ module IPRange =
               (fun f  -> Query.Pair ("CIDRIP", (String.to_query f)));
            Util.option_map v.status
              (fun f  -> Query.Pair ("Status", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -1082,6 +1138,7 @@ module IPRange =
               (fun f  -> ("c_i_d_r_i_p", (String.to_json f)));
            Util.option_map v.status
              (fun f  -> ("status", (String.to_json f)))])
+
     let of_json j =
       {
         status = (Util.option_map (Json.lookup j "status") String.of_json);
@@ -1107,6 +1164,7 @@ module OptionGroupOptionSettingsList =
       Util.option_all
         (List.map OptionGroupOptionSetting.parse
            (Xml.members "OptionGroupOptionSetting" xml))
+
     let to_query v = Query.to_query_list OptionGroupOptionSetting.to_query v
     let to_json v = `List (List.map OptionGroupOptionSetting.to_json v)
     let of_json j = Json.to_list OptionGroupOptionSetting.of_json j
@@ -1125,16 +1183,16 @@ module Parameter =
   struct
     type t =
       {
-      parameter_name: String.t option;
-      parameter_value: String.t option;
-      description: String.t option;
-      source: String.t option;
-      apply_type: String.t option;
-      data_type: String.t option;
-      allowed_values: String.t option;
-      is_modifiable: Boolean.t option;
-      minimum_engine_version: String.t option;
-      apply_method: ApplyMethod.t option;}
+      parameter_name: String.t option ;
+      parameter_value: String.t option ;
+      description: String.t option ;
+      source: String.t option ;
+      apply_type: String.t option ;
+      data_type: String.t option ;
+      allowed_values: String.t option ;
+      is_modifiable: Boolean.t option ;
+      minimum_engine_version: String.t option ;
+      apply_method: ApplyMethod.t option }
     let make ?parameter_name  ?parameter_value  ?description  ?source
       ?apply_type  ?data_type  ?allowed_values  ?is_modifiable
       ?minimum_engine_version  ?apply_method  () =
@@ -1175,6 +1233,7 @@ module Parameter =
             (Util.option_bind (Xml.member "ApplyMethod" xml)
                ApplyMethod.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -1199,6 +1258,7 @@ module Parameter =
              (fun f  -> Query.Pair ("ParameterValue", (String.to_query f)));
            Util.option_map v.parameter_name
              (fun f  -> Query.Pair ("ParameterName", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -1222,6 +1282,7 @@ module Parameter =
              (fun f  -> ("parameter_value", (String.to_json f)));
            Util.option_map v.parameter_name
              (fun f  -> ("parameter_name", (String.to_json f)))])
+
     let of_json j =
       {
         parameter_name =
@@ -1254,6 +1315,7 @@ module DBInstanceStatusInfoList =
       Util.option_all
         (List.map DBInstanceStatusInfo.parse
            (Xml.members "DBInstanceStatusInfo" xml))
+
     let to_query v = Query.to_query_list DBInstanceStatusInfo.to_query v
     let to_json v = `List (List.map DBInstanceStatusInfo.to_json v)
     let of_json j = Json.to_list DBInstanceStatusInfo.of_json j
@@ -1266,6 +1328,7 @@ module DBParameterGroupStatusList =
       Util.option_all
         (List.map DBParameterGroupStatus.parse
            (Xml.members "DBParameterGroup" xml))
+
     let to_query v = Query.to_query_list DBParameterGroupStatus.to_query v
     let to_json v = `List (List.map DBParameterGroupStatus.to_json v)
     let of_json j = Json.to_list DBParameterGroupStatus.of_json j
@@ -1274,11 +1337,11 @@ module DBSubnetGroup =
   struct
     type t =
       {
-      d_b_subnet_group_name: String.t option;
-      d_b_subnet_group_description: String.t option;
-      vpc_id: String.t option;
-      subnet_group_status: String.t option;
-      subnets: SubnetList.t;}
+      d_b_subnet_group_name: String.t option ;
+      d_b_subnet_group_description: String.t option ;
+      vpc_id: String.t option ;
+      subnet_group_status: String.t option ;
+      subnets: SubnetList.t }
     let make ?d_b_subnet_group_name  ?d_b_subnet_group_description  ?vpc_id
       ?subnet_group_status  ?(subnets= [])  () =
       {
@@ -1305,6 +1368,7 @@ module DBSubnetGroup =
             (Util.of_option []
                (Util.option_bind (Xml.member "Subnets" xml) SubnetList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -1319,6 +1383,7 @@ module DBSubnetGroup =
                 Query.Pair ("DBSubnetGroupDescription", (String.to_query f)));
            Util.option_map v.d_b_subnet_group_name
              (fun f  -> Query.Pair ("DBSubnetGroupName", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -1331,6 +1396,7 @@ module DBSubnetGroup =
              (fun f  -> ("d_b_subnet_group_description", (String.to_json f)));
            Util.option_map v.d_b_subnet_group_name
              (fun f  -> ("d_b_subnet_group_name", (String.to_json f)))])
+
     let of_json j =
       {
         d_b_subnet_group_name =
@@ -1354,6 +1420,7 @@ module DomainMembershipList =
     let parse xml =
       Util.option_all
         (List.map DomainMembership.parse (Xml.members "DomainMembership" xml))
+
     let to_query v = Query.to_query_list DomainMembership.to_query v
     let to_json v = `List (List.map DomainMembership.to_json v)
     let of_json j = Json.to_list DomainMembership.of_json j
@@ -1361,8 +1428,8 @@ module DomainMembershipList =
 module Endpoint =
   struct
     type t = {
-      address: String.t option;
-      port: Integer.t option;}
+      address: String.t option ;
+      port: Integer.t option }
     let make ?address  ?port  () = { address; port }
     let parse xml =
       Some
@@ -1371,6 +1438,7 @@ module Endpoint =
             (Util.option_bind (Xml.member "Address" xml) String.parse);
           port = (Util.option_bind (Xml.member "Port" xml) Integer.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -1378,12 +1446,14 @@ module Endpoint =
               (fun f  -> Query.Pair ("Port", (Integer.to_query f)));
            Util.option_map v.address
              (fun f  -> Query.Pair ("Address", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.port (fun f  -> ("port", (Integer.to_json f)));
            Util.option_map v.address
              (fun f  -> ("address", (String.to_json f)))])
+
     let of_json j =
       {
         address = (Util.option_map (Json.lookup j "address") String.of_json);
@@ -1398,6 +1468,7 @@ module OptionGroupMembershipList =
       Util.option_all
         (List.map OptionGroupMembership.parse
            (Xml.members "OptionGroupMembership" xml))
+
     let to_query v = Query.to_query_list OptionGroupMembership.to_query v
     let to_json v = `List (List.map OptionGroupMembership.to_json v)
     let of_json j = Json.to_list OptionGroupMembership.of_json j
@@ -1406,17 +1477,17 @@ module PendingModifiedValues =
   struct
     type t =
       {
-      d_b_instance_class: String.t option;
-      allocated_storage: Integer.t option;
-      master_user_password: String.t option;
-      port: Integer.t option;
-      backup_retention_period: Integer.t option;
-      multi_a_z: Boolean.t option;
-      engine_version: String.t option;
-      iops: Integer.t option;
-      d_b_instance_identifier: String.t option;
-      storage_type: String.t option;
-      c_a_certificate_identifier: String.t option;}
+      d_b_instance_class: String.t option ;
+      allocated_storage: Integer.t option ;
+      master_user_password: String.t option ;
+      port: Integer.t option ;
+      backup_retention_period: Integer.t option ;
+      multi_a_z: Boolean.t option ;
+      engine_version: String.t option ;
+      iops: Integer.t option ;
+      d_b_instance_identifier: String.t option ;
+      storage_type: String.t option ;
+      c_a_certificate_identifier: String.t option }
     let make ?d_b_instance_class  ?allocated_storage  ?master_user_password
       ?port  ?backup_retention_period  ?multi_a_z  ?engine_version  ?iops
       ?d_b_instance_identifier  ?storage_type  ?c_a_certificate_identifier
@@ -1463,6 +1534,7 @@ module PendingModifiedValues =
             (Util.option_bind (Xml.member "CACertificateIdentifier" xml)
                String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -1492,6 +1564,7 @@ module PendingModifiedValues =
              (fun f  -> Query.Pair ("AllocatedStorage", (Integer.to_query f)));
            Util.option_map v.d_b_instance_class
              (fun f  -> Query.Pair ("DBInstanceClass", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -1515,6 +1588,7 @@ module PendingModifiedValues =
              (fun f  -> ("allocated_storage", (Integer.to_json f)));
            Util.option_map v.d_b_instance_class
              (fun f  -> ("d_b_instance_class", (String.to_json f)))])
+
     let of_json j =
       {
         d_b_instance_class =
@@ -1553,6 +1627,7 @@ module ReadReplicaDBInstanceIdentifierList =
       Util.option_all
         (List.map String.parse
            (Xml.members "ReadReplicaDBInstanceIdentifier" xml))
+
     let to_query v = Query.to_query_list String.to_query v
     let to_json v = `List (List.map String.to_json v)
     let of_json j = Json.to_list String.of_json j
@@ -1564,6 +1639,7 @@ module EventCategoriesList =
     let parse xml =
       Util.option_all
         (List.map String.parse (Xml.members "EventCategory" xml))
+
     let to_query v = Query.to_query_list String.to_query v
     let to_json v = `List (List.map String.to_json v)
     let of_json j = Json.to_list String.of_json j
@@ -1585,6 +1661,7 @@ module DBSecurityGroupNameList =
     let parse xml =
       Util.option_all
         (List.map String.parse (Xml.members "DBSecurityGroupName" xml))
+
     let to_query v = Query.to_query_list String.to_query v
     let to_json v = `List (List.map String.to_json v)
     let of_json j = Json.to_list String.of_json j
@@ -1596,6 +1673,7 @@ module OptionSettingsList =
     let parse xml =
       Util.option_all
         (List.map OptionSetting.parse (Xml.members "OptionSetting" xml))
+
     let to_query v = Query.to_query_list OptionSetting.to_query v
     let to_json v = `List (List.map OptionSetting.to_json v)
     let of_json j = Json.to_list OptionSetting.of_json j
@@ -1607,6 +1685,7 @@ module VpcSecurityGroupIdList =
     let parse xml =
       Util.option_all
         (List.map String.parse (Xml.members "VpcSecurityGroupId" xml))
+
     let to_query v = Query.to_query_list String.to_query v
     let to_json v = `List (List.map String.to_json v)
     let of_json j = Json.to_list String.of_json j
@@ -1618,6 +1697,7 @@ module RecurringChargeList =
     let parse xml =
       Util.option_all
         (List.map RecurringCharge.parse (Xml.members "RecurringCharge" xml))
+
     let to_query v = Query.to_query_list RecurringCharge.to_query v
     let to_json v = `List (List.map RecurringCharge.to_json v)
     let of_json j = Json.to_list RecurringCharge.of_json j
@@ -1630,6 +1710,7 @@ module PendingMaintenanceActionDetails =
       Util.option_all
         (List.map PendingMaintenanceAction.parse
            (Xml.members "PendingMaintenanceAction" xml))
+
     let to_query v = Query.to_query_list PendingMaintenanceAction.to_query v
     let to_json v = `List (List.map PendingMaintenanceAction.to_json v)
     let of_json j = Json.to_list PendingMaintenanceAction.of_json j
@@ -1655,6 +1736,7 @@ module SourceType =
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+
     let to_query v =
       Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
     let to_json v =
@@ -1679,6 +1761,7 @@ module AvailabilityZoneList =
     let parse xml =
       Util.option_all
         (List.map AvailabilityZone.parse (Xml.members "AvailabilityZone" xml))
+
     let to_query v = Query.to_query_list AvailabilityZone.to_query v
     let to_json v = `List (List.map AvailabilityZone.to_json v)
     let of_json j = Json.to_list AvailabilityZone.of_json j
@@ -1690,6 +1773,7 @@ module SupportedCharacterSetsList =
     let parse xml =
       Util.option_all
         (List.map CharacterSet.parse (Xml.members "CharacterSet" xml))
+
     let to_query v = Query.to_query_list CharacterSet.to_query v
     let to_json v = `List (List.map CharacterSet.to_json v)
     let of_json j = Json.to_list CharacterSet.of_json j
@@ -1701,6 +1785,7 @@ module AvailabilityZones =
     let parse xml =
       Util.option_all
         (List.map String.parse (Xml.members "AvailabilityZone" xml))
+
     let to_query v = Query.to_query_list String.to_query v
     let to_json v = `List (List.map String.to_json v)
     let of_json j = Json.to_list String.of_json j
@@ -1712,6 +1797,7 @@ module DBClusterMemberList =
     let parse xml =
       Util.option_all
         (List.map DBClusterMember.parse (Xml.members "DBClusterMember" xml))
+
     let to_query v = Query.to_query_list DBClusterMember.to_query v
     let to_json v = `List (List.map DBClusterMember.to_json v)
     let of_json j = Json.to_list DBClusterMember.of_json j
@@ -1724,6 +1810,7 @@ module DBClusterOptionGroupMemberships =
       Util.option_all
         (List.map DBClusterOptionGroupStatus.parse
            (Xml.members "DBClusterOptionGroup" xml))
+
     let to_query v =
       Query.to_query_list DBClusterOptionGroupStatus.to_query v
     let to_json v = `List (List.map DBClusterOptionGroupStatus.to_json v)
@@ -1736,6 +1823,7 @@ module EC2SecurityGroupList =
     let parse xml =
       Util.option_all
         (List.map EC2SecurityGroup.parse (Xml.members "EC2SecurityGroup" xml))
+
     let to_query v = Query.to_query_list EC2SecurityGroup.to_query v
     let to_json v = `List (List.map EC2SecurityGroup.to_json v)
     let of_json j = Json.to_list EC2SecurityGroup.of_json j
@@ -1753,8 +1841,8 @@ module IPRangeList =
 module Tag =
   struct
     type t = {
-      key: String.t option;
-      value: String.t option;}
+      key: String.t option ;
+      value: String.t option }
     let make ?key  ?value  () = { key; value }
     let parse xml =
       Some
@@ -1762,6 +1850,7 @@ module Tag =
           key = (Util.option_bind (Xml.member "Key" xml) String.parse);
           value = (Util.option_bind (Xml.member "Value" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -1769,11 +1858,13 @@ module Tag =
               (fun f  -> Query.Pair ("Value", (String.to_query f)));
            Util.option_map v.key
              (fun f  -> Query.Pair ("Key", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.value (fun f  -> ("value", (String.to_json f)));
            Util.option_map v.key (fun f  -> ("key", (String.to_json f)))])
+
     let of_json j =
       {
         key = (Util.option_map (Json.lookup j "key") String.of_json);
@@ -1783,8 +1874,8 @@ module Tag =
 module Filter =
   struct
     type t = {
-      name: String.t;
-      values: FilterValueList.t;}
+      name: String.t ;
+      values: FilterValueList.t }
     let make ~name  ~values  () = { name; values }
     let parse xml =
       Some
@@ -1797,6 +1888,7 @@ module Filter =
                (Util.option_bind (Xml.member "Values" xml)
                   FilterValueList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -1804,11 +1896,13 @@ module Filter =
               (Query.Pair
                  ("Values.member", (FilterValueList.to_query v.values)));
            Some (Query.Pair ("Name", (String.to_query v.name)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("values", (FilterValueList.to_json v.values));
            Some ("name", (String.to_json v.name))])
+
     let of_json j =
       {
         name = (String.of_json (Util.of_option_exn (Json.lookup j "name")));
@@ -1821,17 +1915,17 @@ module OptionGroupOption =
   struct
     type t =
       {
-      name: String.t option;
-      description: String.t option;
-      engine_name: String.t option;
-      major_engine_version: String.t option;
-      minimum_required_minor_engine_version: String.t option;
-      port_required: Boolean.t option;
-      default_port: Integer.t option;
-      options_depended_on: OptionsDependedOn.t;
-      persistent: Boolean.t option;
-      permanent: Boolean.t option;
-      option_group_option_settings: OptionGroupOptionSettingsList.t;}
+      name: String.t option ;
+      description: String.t option ;
+      engine_name: String.t option ;
+      major_engine_version: String.t option ;
+      minimum_required_minor_engine_version: String.t option ;
+      port_required: Boolean.t option ;
+      default_port: Integer.t option ;
+      options_depended_on: OptionsDependedOn.t ;
+      persistent: Boolean.t option ;
+      permanent: Boolean.t option ;
+      option_group_option_settings: OptionGroupOptionSettingsList.t }
     let make ?name  ?description  ?engine_name  ?major_engine_version
       ?minimum_required_minor_engine_version  ?port_required  ?default_port
       ?(options_depended_on= [])  ?persistent  ?permanent
@@ -1881,6 +1975,7 @@ module OptionGroupOption =
                (Util.option_bind (Xml.member "OptionGroupOptionSettings" xml)
                   OptionGroupOptionSettingsList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -1914,6 +2009,7 @@ module OptionGroupOption =
              (fun f  -> Query.Pair ("Description", (String.to_query f)));
            Util.option_map v.name
              (fun f  -> Query.Pair ("Name", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -1942,6 +2038,7 @@ module OptionGroupOption =
            Util.option_map v.description
              (fun f  -> ("description", (String.to_json f)));
            Util.option_map v.name (fun f  -> ("name", (String.to_json f)))])
+
     let of_json j =
       {
         name = (Util.option_map (Json.lookup j "name") String.of_json);
@@ -1980,6 +2077,7 @@ module ParametersList =
     let parse xml =
       Util.option_all
         (List.map Parameter.parse (Xml.members "Parameter" xml))
+
     let to_query v = Query.to_query_list Parameter.to_query v
     let to_json v = `List (List.map Parameter.to_json v)
     let of_json j = Json.to_list Parameter.of_json j
@@ -1988,48 +2086,48 @@ module DBInstance =
   struct
     type t =
       {
-      d_b_instance_identifier: String.t option;
-      d_b_instance_class: String.t option;
-      engine: String.t option;
-      d_b_instance_status: String.t option;
-      master_username: String.t option;
-      d_b_name: String.t option;
-      endpoint: Endpoint.t option;
-      allocated_storage: Integer.t option;
-      instance_create_time: DateTime.t option;
-      preferred_backup_window: String.t option;
-      backup_retention_period: Integer.t option;
-      d_b_security_groups: DBSecurityGroupMembershipList.t;
-      vpc_security_groups: VpcSecurityGroupMembershipList.t;
-      d_b_parameter_groups: DBParameterGroupStatusList.t;
-      availability_zone: String.t option;
-      d_b_subnet_group: DBSubnetGroup.t option;
-      preferred_maintenance_window: String.t option;
-      pending_modified_values: PendingModifiedValues.t option;
-      latest_restorable_time: DateTime.t option;
-      multi_a_z: Boolean.t option;
-      engine_version: String.t option;
-      auto_minor_version_upgrade: Boolean.t option;
-      read_replica_source_d_b_instance_identifier: String.t option;
+      d_b_instance_identifier: String.t option ;
+      d_b_instance_class: String.t option ;
+      engine: String.t option ;
+      d_b_instance_status: String.t option ;
+      master_username: String.t option ;
+      d_b_name: String.t option ;
+      endpoint: Endpoint.t option ;
+      allocated_storage: Integer.t option ;
+      instance_create_time: DateTime.t option ;
+      preferred_backup_window: String.t option ;
+      backup_retention_period: Integer.t option ;
+      d_b_security_groups: DBSecurityGroupMembershipList.t ;
+      vpc_security_groups: VpcSecurityGroupMembershipList.t ;
+      d_b_parameter_groups: DBParameterGroupStatusList.t ;
+      availability_zone: String.t option ;
+      d_b_subnet_group: DBSubnetGroup.t option ;
+      preferred_maintenance_window: String.t option ;
+      pending_modified_values: PendingModifiedValues.t option ;
+      latest_restorable_time: DateTime.t option ;
+      multi_a_z: Boolean.t option ;
+      engine_version: String.t option ;
+      auto_minor_version_upgrade: Boolean.t option ;
+      read_replica_source_d_b_instance_identifier: String.t option ;
       read_replica_d_b_instance_identifiers:
-        ReadReplicaDBInstanceIdentifierList.t;
-      license_model: String.t option;
-      iops: Integer.t option;
-      option_group_memberships: OptionGroupMembershipList.t;
-      character_set_name: String.t option;
-      secondary_availability_zone: String.t option;
-      publicly_accessible: Boolean.t option;
-      status_infos: DBInstanceStatusInfoList.t;
-      storage_type: String.t option;
-      tde_credential_arn: String.t option;
-      db_instance_port: Integer.t option;
-      d_b_cluster_identifier: String.t option;
-      storage_encrypted: Boolean.t option;
-      kms_key_id: String.t option;
-      dbi_resource_id: String.t option;
-      c_a_certificate_identifier: String.t option;
-      domain_memberships: DomainMembershipList.t;
-      copy_tags_to_snapshot: Boolean.t option;}
+        ReadReplicaDBInstanceIdentifierList.t ;
+      license_model: String.t option ;
+      iops: Integer.t option ;
+      option_group_memberships: OptionGroupMembershipList.t ;
+      character_set_name: String.t option ;
+      secondary_availability_zone: String.t option ;
+      publicly_accessible: Boolean.t option ;
+      status_infos: DBInstanceStatusInfoList.t ;
+      storage_type: String.t option ;
+      tde_credential_arn: String.t option ;
+      db_instance_port: Integer.t option ;
+      d_b_cluster_identifier: String.t option ;
+      storage_encrypted: Boolean.t option ;
+      kms_key_id: String.t option ;
+      dbi_resource_id: String.t option ;
+      c_a_certificate_identifier: String.t option ;
+      domain_memberships: DomainMembershipList.t ;
+      copy_tags_to_snapshot: Boolean.t option }
     let make ?d_b_instance_identifier  ?d_b_instance_class  ?engine
       ?d_b_instance_status  ?master_username  ?d_b_name  ?endpoint
       ?allocated_storage  ?instance_create_time  ?preferred_backup_window
@@ -2210,6 +2308,7 @@ module DBInstance =
             (Util.option_bind (Xml.member "CopyTagsToSnapshot" xml)
                Boolean.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -2333,6 +2432,7 @@ module DBInstance =
            Util.option_map v.d_b_instance_identifier
              (fun f  ->
                 Query.Pair ("DBInstanceIdentifier", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -2429,6 +2529,7 @@ module DBInstance =
              (fun f  -> ("d_b_instance_class", (String.to_json f)));
            Util.option_map v.d_b_instance_identifier
              (fun f  -> ("d_b_instance_identifier", (String.to_json f)))])
+
     let of_json j =
       {
         d_b_instance_identifier =
@@ -2547,9 +2648,9 @@ module AccountQuota =
   struct
     type t =
       {
-      account_quota_name: String.t option;
-      used: Long.t option;
-      max: Long.t option;}
+      account_quota_name: String.t option ;
+      used: Long.t option ;
+      max: Long.t option }
     let make ?account_quota_name  ?used  ?max  () =
       { account_quota_name; used; max }
     let parse xml =
@@ -2561,6 +2662,7 @@ module AccountQuota =
           used = (Util.option_bind (Xml.member "Used" xml) Long.parse);
           max = (Util.option_bind (Xml.member "Max" xml) Long.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -2570,6 +2672,7 @@ module AccountQuota =
              (fun f  -> Query.Pair ("Used", (Long.to_query f)));
            Util.option_map v.account_quota_name
              (fun f  -> Query.Pair ("AccountQuotaName", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -2577,6 +2680,7 @@ module AccountQuota =
            Util.option_map v.used (fun f  -> ("used", (Long.to_json f)));
            Util.option_map v.account_quota_name
              (fun f  -> ("account_quota_name", (String.to_json f)))])
+
     let of_json j =
       {
         account_quota_name =
@@ -2590,9 +2694,9 @@ module DBClusterParameterGroup =
   struct
     type t =
       {
-      d_b_cluster_parameter_group_name: String.t option;
-      d_b_parameter_group_family: String.t option;
-      description: String.t option;}
+      d_b_cluster_parameter_group_name: String.t option ;
+      d_b_parameter_group_family: String.t option ;
+      description: String.t option }
     let make ?d_b_cluster_parameter_group_name  ?d_b_parameter_group_family
       ?description  () =
       {
@@ -2612,6 +2716,7 @@ module DBClusterParameterGroup =
           description =
             (Util.option_bind (Xml.member "Description" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -2624,6 +2729,7 @@ module DBClusterParameterGroup =
              (fun f  ->
                 Query.Pair
                   ("DBClusterParameterGroupName", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -2634,6 +2740,7 @@ module DBClusterParameterGroup =
            Util.option_map v.d_b_cluster_parameter_group_name
              (fun f  ->
                 ("d_b_cluster_parameter_group_name", (String.to_json f)))])
+
     let of_json j =
       {
         d_b_cluster_parameter_group_name =
@@ -2650,9 +2757,9 @@ module DescribeDBLogFilesDetails =
   struct
     type t =
       {
-      log_file_name: String.t option;
-      last_written: Long.t option;
-      size: Long.t option;}
+      log_file_name: String.t option ;
+      last_written: Long.t option ;
+      size: Long.t option }
     let make ?log_file_name  ?last_written  ?size  () =
       { log_file_name; last_written; size }
     let parse xml =
@@ -2664,6 +2771,7 @@ module DescribeDBLogFilesDetails =
             (Util.option_bind (Xml.member "LastWritten" xml) Long.parse);
           size = (Util.option_bind (Xml.member "Size" xml) Long.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -2673,6 +2781,7 @@ module DescribeDBLogFilesDetails =
              (fun f  -> Query.Pair ("LastWritten", (Long.to_query f)));
            Util.option_map v.log_file_name
              (fun f  -> Query.Pair ("LogFileName", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -2681,6 +2790,7 @@ module DescribeDBLogFilesDetails =
              (fun f  -> ("last_written", (Long.to_json f)));
            Util.option_map v.log_file_name
              (fun f  -> ("log_file_name", (String.to_json f)))])
+
     let of_json j =
       {
         log_file_name =
@@ -2694,15 +2804,15 @@ module EventSubscription =
   struct
     type t =
       {
-      customer_aws_id: String.t option;
-      cust_subscription_id: String.t option;
-      sns_topic_arn: String.t option;
-      status: String.t option;
-      subscription_creation_time: String.t option;
-      source_type: String.t option;
-      source_ids_list: SourceIdsList.t;
-      event_categories_list: EventCategoriesList.t;
-      enabled: Boolean.t option;}
+      customer_aws_id: String.t option ;
+      cust_subscription_id: String.t option ;
+      sns_topic_arn: String.t option ;
+      status: String.t option ;
+      subscription_creation_time: String.t option ;
+      source_type: String.t option ;
+      source_ids_list: SourceIdsList.t ;
+      event_categories_list: EventCategoriesList.t ;
+      enabled: Boolean.t option }
     let make ?customer_aws_id  ?cust_subscription_id  ?sns_topic_arn  ?status
        ?subscription_creation_time  ?source_type  ?(source_ids_list= [])
       ?(event_categories_list= [])  ?enabled  () =
@@ -2744,6 +2854,7 @@ module EventSubscription =
           enabled =
             (Util.option_bind (Xml.member "Enabled" xml) Boolean.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -2771,6 +2882,7 @@ module EventSubscription =
                 Query.Pair ("CustSubscriptionId", (String.to_query f)));
            Util.option_map v.customer_aws_id
              (fun f  -> Query.Pair ("CustomerAwsId", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -2793,6 +2905,7 @@ module EventSubscription =
              (fun f  -> ("cust_subscription_id", (String.to_json f)));
            Util.option_map v.customer_aws_id
              (fun f  -> ("customer_aws_id", (String.to_json f)))])
+
     let of_json j =
       {
         customer_aws_id =
@@ -2821,11 +2934,11 @@ module OptionConfiguration =
   struct
     type t =
       {
-      option_name: String.t;
-      port: Integer.t option;
-      d_b_security_group_memberships: DBSecurityGroupNameList.t;
-      vpc_security_group_memberships: VpcSecurityGroupIdList.t;
-      option_settings: OptionSettingsList.t;}
+      option_name: String.t ;
+      port: Integer.t option ;
+      d_b_security_group_memberships: DBSecurityGroupNameList.t ;
+      vpc_security_group_memberships: VpcSecurityGroupIdList.t ;
+      option_settings: OptionSettingsList.t }
     let make ~option_name  ?port  ?(d_b_security_group_memberships= [])
       ?(vpc_security_group_memberships= [])  ?(option_settings= [])  () =
       {
@@ -2857,6 +2970,7 @@ module OptionConfiguration =
                (Util.option_bind (Xml.member "OptionSettings" xml)
                   OptionSettingsList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -2877,6 +2991,7 @@ module OptionConfiguration =
            Util.option_map v.port
              (fun f  -> Query.Pair ("Port", (Integer.to_query f)));
            Some (Query.Pair ("OptionName", (String.to_query v.option_name)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -2893,6 +3008,7 @@ module OptionConfiguration =
                   v.d_b_security_group_memberships));
            Util.option_map v.port (fun f  -> ("port", (Integer.to_json f)));
            Some ("option_name", (String.to_json v.option_name))])
+
     let of_json j =
       {
         option_name =
@@ -2915,20 +3031,20 @@ module ReservedDBInstance =
   struct
     type t =
       {
-      reserved_d_b_instance_id: String.t option;
-      reserved_d_b_instances_offering_id: String.t option;
-      d_b_instance_class: String.t option;
-      start_time: DateTime.t option;
-      duration: Integer.t option;
-      fixed_price: Double.t option;
-      usage_price: Double.t option;
-      currency_code: String.t option;
-      d_b_instance_count: Integer.t option;
-      product_description: String.t option;
-      offering_type: String.t option;
-      multi_a_z: Boolean.t option;
-      state: String.t option;
-      recurring_charges: RecurringChargeList.t;}
+      reserved_d_b_instance_id: String.t option ;
+      reserved_d_b_instances_offering_id: String.t option ;
+      d_b_instance_class: String.t option ;
+      start_time: DateTime.t option ;
+      duration: Integer.t option ;
+      fixed_price: Double.t option ;
+      usage_price: Double.t option ;
+      currency_code: String.t option ;
+      d_b_instance_count: Integer.t option ;
+      product_description: String.t option ;
+      offering_type: String.t option ;
+      multi_a_z: Boolean.t option ;
+      state: String.t option ;
+      recurring_charges: RecurringChargeList.t }
     let make ?reserved_d_b_instance_id  ?reserved_d_b_instances_offering_id
       ?d_b_instance_class  ?start_time  ?duration  ?fixed_price  ?usage_price
        ?currency_code  ?d_b_instance_count  ?product_description
@@ -2986,6 +3102,7 @@ module ReservedDBInstance =
                (Util.option_bind (Xml.member "RecurringCharges" xml)
                   RecurringChargeList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3023,6 +3140,7 @@ module ReservedDBInstance =
            Util.option_map v.reserved_d_b_instance_id
              (fun f  ->
                 Query.Pair ("ReservedDBInstanceId", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -3055,6 +3173,7 @@ module ReservedDBInstance =
                 ("reserved_d_b_instances_offering_id", (String.to_json f)));
            Util.option_map v.reserved_d_b_instance_id
              (fun f  -> ("reserved_d_b_instance_id", (String.to_json f)))])
+
     let of_json j =
       {
         reserved_d_b_instance_id =
@@ -3097,8 +3216,8 @@ module ResourcePendingMaintenanceActions =
   struct
     type t =
       {
-      resource_identifier: String.t option;
-      pending_maintenance_action_details: PendingMaintenanceActionDetails.t;}
+      resource_identifier: String.t option ;
+      pending_maintenance_action_details: PendingMaintenanceActionDetails.t }
     let make ?resource_identifier  ?(pending_maintenance_action_details= [])
       () = { resource_identifier; pending_maintenance_action_details }
     let parse xml =
@@ -3113,6 +3232,7 @@ module ResourcePendingMaintenanceActions =
                   (Xml.member "PendingMaintenanceActionDetails" xml)
                   PendingMaintenanceActionDetails.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3124,6 +3244,7 @@ module ResourcePendingMaintenanceActions =
            Util.option_map v.resource_identifier
              (fun f  ->
                 Query.Pair ("ResourceIdentifier", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -3133,6 +3254,7 @@ module ResourcePendingMaintenanceActions =
                    v.pending_maintenance_action_details));
            Util.option_map v.resource_identifier
              (fun f  -> ("resource_identifier", (String.to_json f)))])
+
     let of_json j =
       {
         resource_identifier =
@@ -3148,9 +3270,9 @@ module DBParameterGroup =
   struct
     type t =
       {
-      d_b_parameter_group_name: String.t option;
-      d_b_parameter_group_family: String.t option;
-      description: String.t option;}
+      d_b_parameter_group_name: String.t option ;
+      d_b_parameter_group_family: String.t option ;
+      description: String.t option }
     let make ?d_b_parameter_group_name  ?d_b_parameter_group_family
       ?description  () =
       { d_b_parameter_group_name; d_b_parameter_group_family; description }
@@ -3166,6 +3288,7 @@ module DBParameterGroup =
           description =
             (Util.option_bind (Xml.member "Description" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3177,6 +3300,7 @@ module DBParameterGroup =
            Util.option_map v.d_b_parameter_group_name
              (fun f  ->
                 Query.Pair ("DBParameterGroupName", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -3186,6 +3310,7 @@ module DBParameterGroup =
              (fun f  -> ("d_b_parameter_group_family", (String.to_json f)));
            Util.option_map v.d_b_parameter_group_name
              (fun f  -> ("d_b_parameter_group_name", (String.to_json f)))])
+
     let of_json j =
       {
         d_b_parameter_group_name =
@@ -3202,11 +3327,11 @@ module Event =
   struct
     type t =
       {
-      source_identifier: String.t option;
-      source_type: SourceType.t option;
-      message: String.t option;
-      event_categories: EventCategoriesList.t;
-      date: DateTime.t option;}
+      source_identifier: String.t option ;
+      source_type: SourceType.t option ;
+      message: String.t option ;
+      event_categories: EventCategoriesList.t ;
+      date: DateTime.t option }
     let make ?source_identifier  ?source_type  ?message  ?(event_categories=
       [])  ?date  () =
       { source_identifier; source_type; message; event_categories; date }
@@ -3226,6 +3351,7 @@ module Event =
                   EventCategoriesList.parse));
           date = (Util.option_bind (Xml.member "Date" xml) DateTime.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3241,6 +3367,7 @@ module Event =
              (fun f  -> Query.Pair ("SourceType", (SourceType.to_query f)));
            Util.option_map v.source_identifier
              (fun f  -> Query.Pair ("SourceIdentifier", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -3254,6 +3381,7 @@ module Event =
              (fun f  -> ("source_type", (SourceType.to_json f)));
            Util.option_map v.source_identifier
              (fun f  -> ("source_identifier", (String.to_json f)))])
+
     let of_json j =
       {
         source_identifier =
@@ -3271,11 +3399,11 @@ module Certificate =
   struct
     type t =
       {
-      certificate_identifier: String.t option;
-      certificate_type: String.t option;
-      thumbprint: String.t option;
-      valid_from: DateTime.t option;
-      valid_till: DateTime.t option;}
+      certificate_identifier: String.t option ;
+      certificate_type: String.t option ;
+      thumbprint: String.t option ;
+      valid_from: DateTime.t option ;
+      valid_till: DateTime.t option }
     let make ?certificate_identifier  ?certificate_type  ?thumbprint
       ?valid_from  ?valid_till  () =
       {
@@ -3300,6 +3428,7 @@ module Certificate =
           valid_till =
             (Util.option_bind (Xml.member "ValidTill" xml) DateTime.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3314,6 +3443,7 @@ module Certificate =
            Util.option_map v.certificate_identifier
              (fun f  ->
                 Query.Pair ("CertificateIdentifier", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -3327,6 +3457,7 @@ module Certificate =
              (fun f  -> ("certificate_type", (String.to_json f)));
            Util.option_map v.certificate_identifier
              (fun f  -> ("certificate_identifier", (String.to_json f)))])
+
     let of_json j =
       {
         certificate_identifier =
@@ -3346,13 +3477,13 @@ module OptionGroup =
   struct
     type t =
       {
-      option_group_name: String.t option;
-      option_group_description: String.t option;
-      engine_name: String.t option;
-      major_engine_version: String.t option;
-      options: OptionsList.t;
-      allows_vpc_and_non_vpc_instance_memberships: Boolean.t option;
-      vpc_id: String.t option;}
+      option_group_name: String.t option ;
+      option_group_description: String.t option ;
+      engine_name: String.t option ;
+      major_engine_version: String.t option ;
+      options: OptionsList.t ;
+      allows_vpc_and_non_vpc_instance_memberships: Boolean.t option ;
+      vpc_id: String.t option }
     let make ?option_group_name  ?option_group_description  ?engine_name
       ?major_engine_version  ?(options= [])
       ?allows_vpc_and_non_vpc_instance_memberships  ?vpc_id  () =
@@ -3387,6 +3518,7 @@ module OptionGroup =
                Boolean.parse);
           vpc_id = (Util.option_bind (Xml.member "VpcId" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3409,6 +3541,7 @@ module OptionGroup =
                 Query.Pair ("OptionGroupDescription", (String.to_query f)));
            Util.option_map v.option_group_name
              (fun f  -> Query.Pair ("OptionGroupName", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -3427,6 +3560,7 @@ module OptionGroup =
              (fun f  -> ("option_group_description", (String.to_json f)));
            Util.option_map v.option_group_name
              (fun f  -> ("option_group_name", (String.to_json f)))])
+
     let of_json j =
       {
         option_group_name =
@@ -3452,17 +3586,17 @@ module OrderableDBInstanceOption =
   struct
     type t =
       {
-      engine: String.t option;
-      engine_version: String.t option;
-      d_b_instance_class: String.t option;
-      license_model: String.t option;
-      availability_zones: AvailabilityZoneList.t;
-      multi_a_z_capable: Boolean.t option;
-      read_replica_capable: Boolean.t option;
-      vpc: Boolean.t option;
-      supports_storage_encryption: Boolean.t option;
-      storage_type: String.t option;
-      supports_iops: Boolean.t option;}
+      engine: String.t option ;
+      engine_version: String.t option ;
+      d_b_instance_class: String.t option ;
+      license_model: String.t option ;
+      availability_zones: AvailabilityZoneList.t ;
+      multi_a_z_capable: Boolean.t option ;
+      read_replica_capable: Boolean.t option ;
+      vpc: Boolean.t option ;
+      supports_storage_encryption: Boolean.t option ;
+      storage_type: String.t option ;
+      supports_iops: Boolean.t option }
     let make ?engine  ?engine_version  ?d_b_instance_class  ?license_model
       ?(availability_zones= [])  ?multi_a_z_capable  ?read_replica_capable
       ?vpc  ?supports_storage_encryption  ?storage_type  ?supports_iops  () =
@@ -3507,6 +3641,7 @@ module OrderableDBInstanceOption =
           supports_iops =
             (Util.option_bind (Xml.member "SupportsIops" xml) Boolean.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3537,6 +3672,7 @@ module OrderableDBInstanceOption =
              (fun f  -> Query.Pair ("EngineVersion", (String.to_query f)));
            Util.option_map v.engine
              (fun f  -> Query.Pair ("Engine", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -3562,6 +3698,7 @@ module OrderableDBInstanceOption =
              (fun f  -> ("engine_version", (String.to_json f)));
            Util.option_map v.engine
              (fun f  -> ("engine", (String.to_json f)))])
+
     let of_json j =
       {
         engine = (Util.option_map (Json.lookup j "engine") String.of_json);
@@ -3595,13 +3732,13 @@ module DBEngineVersion =
   struct
     type t =
       {
-      engine: String.t option;
-      engine_version: String.t option;
-      d_b_parameter_group_family: String.t option;
-      d_b_engine_description: String.t option;
-      d_b_engine_version_description: String.t option;
-      default_character_set: CharacterSet.t option;
-      supported_character_sets: SupportedCharacterSetsList.t;}
+      engine: String.t option ;
+      engine_version: String.t option ;
+      d_b_parameter_group_family: String.t option ;
+      d_b_engine_description: String.t option ;
+      d_b_engine_version_description: String.t option ;
+      default_character_set: CharacterSet.t option ;
+      supported_character_sets: SupportedCharacterSetsList.t }
     let make ?engine  ?engine_version  ?d_b_parameter_group_family
       ?d_b_engine_description  ?d_b_engine_version_description
       ?default_character_set  ?(supported_character_sets= [])  () =
@@ -3637,6 +3774,7 @@ module DBEngineVersion =
                (Util.option_bind (Xml.member "SupportedCharacterSets" xml)
                   SupportedCharacterSetsList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3662,6 +3800,7 @@ module DBEngineVersion =
              (fun f  -> Query.Pair ("EngineVersion", (String.to_query f)));
            Util.option_map v.engine
              (fun f  -> Query.Pair ("Engine", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -3682,6 +3821,7 @@ module DBEngineVersion =
              (fun f  -> ("engine_version", (String.to_json f)));
            Util.option_map v.engine
              (fun f  -> ("engine", (String.to_json f)))])
+
     let of_json j =
       {
         engine = (Util.option_map (Json.lookup j "engine") String.of_json);
@@ -3708,29 +3848,29 @@ module DBSnapshot =
   struct
     type t =
       {
-      d_b_snapshot_identifier: String.t option;
-      d_b_instance_identifier: String.t option;
-      snapshot_create_time: DateTime.t option;
-      engine: String.t option;
-      allocated_storage: Integer.t option;
-      status: String.t option;
-      port: Integer.t option;
-      availability_zone: String.t option;
-      vpc_id: String.t option;
-      instance_create_time: DateTime.t option;
-      master_username: String.t option;
-      engine_version: String.t option;
-      license_model: String.t option;
-      snapshot_type: String.t option;
-      iops: Integer.t option;
-      option_group_name: String.t option;
-      percent_progress: Integer.t option;
-      source_region: String.t option;
-      source_d_b_snapshot_identifier: String.t option;
-      storage_type: String.t option;
-      tde_credential_arn: String.t option;
-      encrypted: Boolean.t option;
-      kms_key_id: String.t option;}
+      d_b_snapshot_identifier: String.t option ;
+      d_b_instance_identifier: String.t option ;
+      snapshot_create_time: DateTime.t option ;
+      engine: String.t option ;
+      allocated_storage: Integer.t option ;
+      status: String.t option ;
+      port: Integer.t option ;
+      availability_zone: String.t option ;
+      vpc_id: String.t option ;
+      instance_create_time: DateTime.t option ;
+      master_username: String.t option ;
+      engine_version: String.t option ;
+      license_model: String.t option ;
+      snapshot_type: String.t option ;
+      iops: Integer.t option ;
+      option_group_name: String.t option ;
+      percent_progress: Integer.t option ;
+      source_region: String.t option ;
+      source_d_b_snapshot_identifier: String.t option ;
+      storage_type: String.t option ;
+      tde_credential_arn: String.t option ;
+      encrypted: Boolean.t option ;
+      kms_key_id: String.t option }
     let make ?d_b_snapshot_identifier  ?d_b_instance_identifier
       ?snapshot_create_time  ?engine  ?allocated_storage  ?status  ?port
       ?availability_zone  ?vpc_id  ?instance_create_time  ?master_username
@@ -3817,6 +3957,7 @@ module DBSnapshot =
           kms_key_id =
             (Util.option_bind (Xml.member "KmsKeyId" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3872,6 +4013,7 @@ module DBSnapshot =
            Util.option_map v.d_b_snapshot_identifier
              (fun f  ->
                 Query.Pair ("DBSnapshotIdentifier", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -3920,6 +4062,7 @@ module DBSnapshot =
              (fun f  -> ("d_b_instance_identifier", (String.to_json f)));
            Util.option_map v.d_b_snapshot_identifier
              (fun f  -> ("d_b_snapshot_identifier", (String.to_json f)))])
+
     let of_json j =
       {
         d_b_snapshot_identifier =
@@ -3976,21 +4119,21 @@ module DBClusterSnapshot =
   struct
     type t =
       {
-      availability_zones: AvailabilityZones.t;
-      d_b_cluster_snapshot_identifier: String.t option;
-      d_b_cluster_identifier: String.t option;
-      snapshot_create_time: DateTime.t option;
-      engine: String.t option;
-      allocated_storage: Integer.t option;
-      status: String.t option;
-      port: Integer.t option;
-      vpc_id: String.t option;
-      cluster_create_time: DateTime.t option;
-      master_username: String.t option;
-      engine_version: String.t option;
-      license_model: String.t option;
-      snapshot_type: String.t option;
-      percent_progress: Integer.t option;}
+      availability_zones: AvailabilityZones.t ;
+      d_b_cluster_snapshot_identifier: String.t option ;
+      d_b_cluster_identifier: String.t option ;
+      snapshot_create_time: DateTime.t option ;
+      engine: String.t option ;
+      allocated_storage: Integer.t option ;
+      status: String.t option ;
+      port: Integer.t option ;
+      vpc_id: String.t option ;
+      cluster_create_time: DateTime.t option ;
+      master_username: String.t option ;
+      engine_version: String.t option ;
+      license_model: String.t option ;
+      snapshot_type: String.t option ;
+      percent_progress: Integer.t option }
     let make ?(availability_zones= [])  ?d_b_cluster_snapshot_identifier
       ?d_b_cluster_identifier  ?snapshot_create_time  ?engine
       ?allocated_storage  ?status  ?port  ?vpc_id  ?cluster_create_time
@@ -4051,6 +4194,7 @@ module DBClusterSnapshot =
             (Util.option_bind (Xml.member "PercentProgress" xml)
                Integer.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -4091,6 +4235,7 @@ module DBClusterSnapshot =
              (Query.Pair
                 ("AvailabilityZones.member",
                   (AvailabilityZones.to_query v.availability_zones)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -4125,6 +4270,7 @@ module DBClusterSnapshot =
            Some
              ("availability_zones",
                (AvailabilityZones.to_json v.availability_zones))])
+
     let of_json j =
       {
         availability_zones =
@@ -4165,8 +4311,8 @@ module EventCategoriesMap =
   struct
     type t =
       {
-      source_type: String.t option;
-      event_categories: EventCategoriesList.t;}
+      source_type: String.t option ;
+      event_categories: EventCategoriesList.t }
     let make ?source_type  ?(event_categories= [])  () =
       { source_type; event_categories }
     let parse xml =
@@ -4179,6 +4325,7 @@ module EventCategoriesMap =
                (Util.option_bind (Xml.member "EventCategories" xml)
                   EventCategoriesList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -4188,6 +4335,7 @@ module EventCategoriesMap =
                    (EventCategoriesList.to_query v.event_categories)));
            Util.option_map v.source_type
              (fun f  -> Query.Pair ("SourceType", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -4196,6 +4344,7 @@ module EventCategoriesMap =
                 (EventCategoriesList.to_json v.event_categories));
            Util.option_map v.source_type
              (fun f  -> ("source_type", (String.to_json f)))])
+
     let of_json j =
       {
         source_type =
@@ -4209,16 +4358,16 @@ module ReservedDBInstancesOffering =
   struct
     type t =
       {
-      reserved_d_b_instances_offering_id: String.t option;
-      d_b_instance_class: String.t option;
-      duration: Integer.t option;
-      fixed_price: Double.t option;
-      usage_price: Double.t option;
-      currency_code: String.t option;
-      product_description: String.t option;
-      offering_type: String.t option;
-      multi_a_z: Boolean.t option;
-      recurring_charges: RecurringChargeList.t;}
+      reserved_d_b_instances_offering_id: String.t option ;
+      d_b_instance_class: String.t option ;
+      duration: Integer.t option ;
+      fixed_price: Double.t option ;
+      usage_price: Double.t option ;
+      currency_code: String.t option ;
+      product_description: String.t option ;
+      offering_type: String.t option ;
+      multi_a_z: Boolean.t option ;
+      recurring_charges: RecurringChargeList.t }
     let make ?reserved_d_b_instances_offering_id  ?d_b_instance_class
       ?duration  ?fixed_price  ?usage_price  ?currency_code
       ?product_description  ?offering_type  ?multi_a_z  ?(recurring_charges=
@@ -4263,6 +4412,7 @@ module ReservedDBInstancesOffering =
                (Util.option_bind (Xml.member "RecurringCharges" xml)
                   RecurringChargeList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -4291,6 +4441,7 @@ module ReservedDBInstancesOffering =
              (fun f  ->
                 Query.Pair
                   ("ReservedDBInstancesOfferingId", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -4316,6 +4467,7 @@ module ReservedDBInstancesOffering =
            Util.option_map v.reserved_d_b_instances_offering_id
              (fun f  ->
                 ("reserved_d_b_instances_offering_id", (String.to_json f)))])
+
     let of_json j =
       {
         reserved_d_b_instances_offering_id =
@@ -4349,29 +4501,28 @@ module DBCluster =
   struct
     type t =
       {
-      allocated_storage: Integer.t option;
-      availability_zones: AvailabilityZones.t;
-      backup_retention_period: Integer.t option;
-      character_set_name: String.t option;
-      database_name: String.t option;
-      d_b_cluster_identifier: String.t option;
-      d_b_cluster_parameter_group: String.t option;
-      d_b_subnet_group: String.t option;
-      status: String.t option;
-      percent_progress: String.t option;
-      earliest_restorable_time: DateTime.t option;
-      endpoint: String.t option;
-      engine: String.t option;
-      engine_version: String.t option;
-      latest_restorable_time: DateTime.t option;
-      port: Integer.t option;
-      master_username: String.t option;
-      d_b_cluster_option_group_memberships:
-        DBClusterOptionGroupMemberships.t;
-      preferred_backup_window: String.t option;
-      preferred_maintenance_window: String.t option;
-      d_b_cluster_members: DBClusterMemberList.t;
-      vpc_security_groups: VpcSecurityGroupMembershipList.t;}
+      allocated_storage: Integer.t option ;
+      availability_zones: AvailabilityZones.t ;
+      backup_retention_period: Integer.t option ;
+      character_set_name: String.t option ;
+      database_name: String.t option ;
+      d_b_cluster_identifier: String.t option ;
+      d_b_cluster_parameter_group: String.t option ;
+      d_b_subnet_group: String.t option ;
+      status: String.t option ;
+      percent_progress: String.t option ;
+      earliest_restorable_time: DateTime.t option ;
+      endpoint: String.t option ;
+      engine: String.t option ;
+      engine_version: String.t option ;
+      latest_restorable_time: DateTime.t option ;
+      port: Integer.t option ;
+      master_username: String.t option ;
+      d_b_cluster_option_group_memberships: DBClusterOptionGroupMemberships.t ;
+      preferred_backup_window: String.t option ;
+      preferred_maintenance_window: String.t option ;
+      d_b_cluster_members: DBClusterMemberList.t ;
+      vpc_security_groups: VpcSecurityGroupMembershipList.t }
     let make ?allocated_storage  ?(availability_zones= [])
       ?backup_retention_period  ?character_set_name  ?database_name
       ?d_b_cluster_identifier  ?d_b_cluster_parameter_group
@@ -4468,6 +4619,7 @@ module DBCluster =
                (Util.option_bind (Xml.member "VpcSecurityGroups" xml)
                   VpcSecurityGroupMembershipList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -4533,6 +4685,7 @@ module DBCluster =
                   (AvailabilityZones.to_query v.availability_zones)));
            Util.option_map v.allocated_storage
              (fun f  -> Query.Pair ("AllocatedStorage", (Integer.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -4584,6 +4737,7 @@ module DBCluster =
                (AvailabilityZones.to_json v.availability_zones));
            Util.option_map v.allocated_storage
              (fun f  -> ("allocated_storage", (Integer.to_json f)))])
+
     let of_json j =
       {
         allocated_storage =
@@ -4647,12 +4801,12 @@ module DBSecurityGroup =
   struct
     type t =
       {
-      owner_id: String.t option;
-      d_b_security_group_name: String.t option;
-      d_b_security_group_description: String.t option;
-      vpc_id: String.t option;
-      e_c2_security_groups: EC2SecurityGroupList.t;
-      i_p_ranges: IPRangeList.t;}
+      owner_id: String.t option ;
+      d_b_security_group_name: String.t option ;
+      d_b_security_group_description: String.t option ;
+      vpc_id: String.t option ;
+      e_c2_security_groups: EC2SecurityGroupList.t ;
+      i_p_ranges: IPRangeList.t }
     let make ?owner_id  ?d_b_security_group_name
       ?d_b_security_group_description  ?vpc_id  ?(e_c2_security_groups= [])
       ?(i_p_ranges= [])  () =
@@ -4685,6 +4839,7 @@ module DBSecurityGroup =
                (Util.option_bind (Xml.member "IPRanges" xml)
                   IPRangeList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -4706,6 +4861,7 @@ module DBSecurityGroup =
                 Query.Pair ("DBSecurityGroupName", (String.to_query f)));
            Util.option_map v.owner_id
              (fun f  -> Query.Pair ("OwnerId", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -4722,6 +4878,7 @@ module DBSecurityGroup =
              (fun f  -> ("d_b_security_group_name", (String.to_json f)));
            Util.option_map v.owner_id
              (fun f  -> ("owner_id", (String.to_json f)))])
+
     let of_json j =
       {
         owner_id =
@@ -4769,6 +4926,7 @@ module OptionGroupOptionsList =
       Util.option_all
         (List.map OptionGroupOption.parse
            (Xml.members "OptionGroupOption" xml))
+
     let to_query v = Query.to_query_list OptionGroupOption.to_query v
     let to_json v = `List (List.map OptionGroupOption.to_json v)
     let of_json j = Json.to_list OptionGroupOption.of_json j
@@ -4777,9 +4935,9 @@ module EngineDefaults =
   struct
     type t =
       {
-      d_b_parameter_group_family: String.t option;
-      marker: String.t option;
-      parameters: ParametersList.t;}
+      d_b_parameter_group_family: String.t option ;
+      marker: String.t option ;
+      parameters: ParametersList.t }
     let make ?d_b_parameter_group_family  ?marker  ?(parameters= [])  () =
       { d_b_parameter_group_family; marker; parameters }
     let parse xml =
@@ -4794,6 +4952,7 @@ module EngineDefaults =
                (Util.option_bind (Xml.member "Parameters" xml)
                   ParametersList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -4806,6 +4965,7 @@ module EngineDefaults =
            Util.option_map v.d_b_parameter_group_family
              (fun f  ->
                 Query.Pair ("DBParameterGroupFamily", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -4814,6 +4974,7 @@ module EngineDefaults =
              (fun f  -> ("marker", (String.to_json f)));
            Util.option_map v.d_b_parameter_group_family
              (fun f  -> ("d_b_parameter_group_family", (String.to_json f)))])
+
     let of_json j =
       {
         d_b_parameter_group_family =
@@ -4832,6 +4993,7 @@ module SubnetIdentifierList =
     let parse xml =
       Util.option_all
         (List.map String.parse (Xml.members "SubnetIdentifier" xml))
+
     let to_query v = Query.to_query_list String.to_query v
     let to_json v = `List (List.map String.to_json v)
     let of_json j = Json.to_list String.of_json j
@@ -4843,6 +5005,7 @@ module DBInstanceList =
     let parse xml =
       Util.option_all
         (List.map DBInstance.parse (Xml.members "DBInstance" xml))
+
     let to_query v = Query.to_query_list DBInstance.to_query v
     let to_json v = `List (List.map DBInstance.to_json v)
     let of_json j = Json.to_list DBInstance.of_json j
@@ -4854,6 +5017,7 @@ module AccountQuotaList =
     let parse xml =
       Util.option_all
         (List.map AccountQuota.parse (Xml.members "AccountQuota" xml))
+
     let to_query v = Query.to_query_list AccountQuota.to_query v
     let to_json v = `List (List.map AccountQuota.to_json v)
     let of_json j = Json.to_list AccountQuota.of_json j
@@ -4866,6 +5030,7 @@ module DBClusterParameterGroupList =
       Util.option_all
         (List.map DBClusterParameterGroup.parse
            (Xml.members "DBClusterParameterGroup" xml))
+
     let to_query v = Query.to_query_list DBClusterParameterGroup.to_query v
     let to_json v = `List (List.map DBClusterParameterGroup.to_json v)
     let of_json j = Json.to_list DBClusterParameterGroup.of_json j
@@ -4878,6 +5043,7 @@ module DescribeDBLogFilesList =
       Util.option_all
         (List.map DescribeDBLogFilesDetails.parse
            (Xml.members "DescribeDBLogFilesDetails" xml))
+
     let to_query v = Query.to_query_list DescribeDBLogFilesDetails.to_query v
     let to_json v = `List (List.map DescribeDBLogFilesDetails.to_json v)
     let of_json j = Json.to_list DescribeDBLogFilesDetails.of_json j
@@ -4890,6 +5056,7 @@ module EventSubscriptionsList =
       Util.option_all
         (List.map EventSubscription.parse
            (Xml.members "EventSubscription" xml))
+
     let to_query v = Query.to_query_list EventSubscription.to_query v
     let to_json v = `List (List.map EventSubscription.to_json v)
     let of_json j = Json.to_list EventSubscription.of_json j
@@ -4902,6 +5069,7 @@ module OptionConfigurationList =
       Util.option_all
         (List.map OptionConfiguration.parse
            (Xml.members "OptionConfiguration" xml))
+
     let to_query v = Query.to_query_list OptionConfiguration.to_query v
     let to_json v = `List (List.map OptionConfiguration.to_json v)
     let of_json j = Json.to_list OptionConfiguration.of_json j
@@ -4924,6 +5092,7 @@ module ReservedDBInstanceList =
       Util.option_all
         (List.map ReservedDBInstance.parse
            (Xml.members "ReservedDBInstance" xml))
+
     let to_query v = Query.to_query_list ReservedDBInstance.to_query v
     let to_json v = `List (List.map ReservedDBInstance.to_json v)
     let of_json j = Json.to_list ReservedDBInstance.of_json j
@@ -4936,6 +5105,7 @@ module PendingMaintenanceActions =
       Util.option_all
         (List.map ResourcePendingMaintenanceActions.parse
            (Xml.members "ResourcePendingMaintenanceActions" xml))
+
     let to_query v =
       Query.to_query_list ResourcePendingMaintenanceActions.to_query v
     let to_json v =
@@ -4949,6 +5119,7 @@ module DBParameterGroupList =
     let parse xml =
       Util.option_all
         (List.map DBParameterGroup.parse (Xml.members "DBParameterGroup" xml))
+
     let to_query v = Query.to_query_list DBParameterGroup.to_query v
     let to_json v = `List (List.map DBParameterGroup.to_json v)
     let of_json j = Json.to_list DBParameterGroup.of_json j
@@ -4960,6 +5131,7 @@ module DBSubnetGroups =
     let parse xml =
       Util.option_all
         (List.map DBSubnetGroup.parse (Xml.members "DBSubnetGroup" xml))
+
     let to_query v = Query.to_query_list DBSubnetGroup.to_query v
     let to_json v = `List (List.map DBSubnetGroup.to_json v)
     let of_json j = Json.to_list DBSubnetGroup.of_json j
@@ -4981,6 +5153,7 @@ module CertificateList =
     let parse xml =
       Util.option_all
         (List.map Certificate.parse (Xml.members "Certificate" xml))
+
     let to_query v = Query.to_query_list Certificate.to_query v
     let to_json v = `List (List.map Certificate.to_json v)
     let of_json j = Json.to_list Certificate.of_json j
@@ -4992,6 +5165,7 @@ module OptionGroupsList =
     let parse xml =
       Util.option_all
         (List.map OptionGroup.parse (Xml.members "OptionGroup" xml))
+
     let to_query v = Query.to_query_list OptionGroup.to_query v
     let to_json v = `List (List.map OptionGroup.to_json v)
     let of_json j = Json.to_list OptionGroup.of_json j
@@ -5004,6 +5178,7 @@ module OrderableDBInstanceOptionsList =
       Util.option_all
         (List.map OrderableDBInstanceOption.parse
            (Xml.members "OrderableDBInstanceOption" xml))
+
     let to_query v = Query.to_query_list OrderableDBInstanceOption.to_query v
     let to_json v = `List (List.map OrderableDBInstanceOption.to_json v)
     let of_json j = Json.to_list OrderableDBInstanceOption.of_json j
@@ -5025,6 +5200,7 @@ module DBEngineVersionList =
     let parse xml =
       Util.option_all
         (List.map DBEngineVersion.parse (Xml.members "DBEngineVersion" xml))
+
     let to_query v = Query.to_query_list DBEngineVersion.to_query v
     let to_json v = `List (List.map DBEngineVersion.to_json v)
     let of_json j = Json.to_list DBEngineVersion.of_json j
@@ -5036,6 +5212,7 @@ module DBSnapshotList =
     let parse xml =
       Util.option_all
         (List.map DBSnapshot.parse (Xml.members "DBSnapshot" xml))
+
     let to_query v = Query.to_query_list DBSnapshot.to_query v
     let to_json v = `List (List.map DBSnapshot.to_json v)
     let of_json j = Json.to_list DBSnapshot.of_json j
@@ -5048,6 +5225,7 @@ module DBClusterSnapshotList =
       Util.option_all
         (List.map DBClusterSnapshot.parse
            (Xml.members "DBClusterSnapshot" xml))
+
     let to_query v = Query.to_query_list DBClusterSnapshot.to_query v
     let to_json v = `List (List.map DBClusterSnapshot.to_json v)
     let of_json j = Json.to_list DBClusterSnapshot.of_json j
@@ -5060,6 +5238,7 @@ module EventCategoriesMapList =
       Util.option_all
         (List.map EventCategoriesMap.parse
            (Xml.members "EventCategoriesMap" xml))
+
     let to_query v = Query.to_query_list EventCategoriesMap.to_query v
     let to_json v = `List (List.map EventCategoriesMap.to_json v)
     let of_json j = Json.to_list EventCategoriesMap.of_json j
@@ -5072,6 +5251,7 @@ module ReservedDBInstancesOfferingList =
       Util.option_all
         (List.map ReservedDBInstancesOffering.parse
            (Xml.members "ReservedDBInstancesOffering" xml))
+
     let to_query v =
       Query.to_query_list ReservedDBInstancesOffering.to_query v
     let to_json v = `List (List.map ReservedDBInstancesOffering.to_json v)
@@ -5084,6 +5264,7 @@ module DBClusterList =
     let parse xml =
       Util.option_all
         (List.map DBCluster.parse (Xml.members "DBCluster" xml))
+
     let to_query v = Query.to_query_list DBCluster.to_query v
     let to_json v = `List (List.map DBCluster.to_json v)
     let of_json j = Json.to_list DBCluster.of_json j
@@ -5095,6 +5276,7 @@ module DBSecurityGroups =
     let parse xml =
       Util.option_all
         (List.map DBSecurityGroup.parse (Xml.members "DBSecurityGroup" xml))
+
     let to_query v = Query.to_query_list DBSecurityGroup.to_query v
     let to_json v = `List (List.map DBSecurityGroup.to_json v)
     let of_json j = Json.to_list DBSecurityGroup.of_json j
@@ -5103,23 +5285,23 @@ module CreateDBClusterMessage =
   struct
     type t =
       {
-      availability_zones: AvailabilityZones.t;
-      backup_retention_period: Integer.t option;
-      character_set_name: String.t option;
-      database_name: String.t option;
-      d_b_cluster_identifier: String.t option;
-      d_b_cluster_parameter_group_name: String.t option;
-      vpc_security_group_ids: VpcSecurityGroupIdList.t;
-      d_b_subnet_group_name: String.t option;
-      engine: String.t option;
-      engine_version: String.t option;
-      port: Integer.t option;
-      master_username: String.t option;
-      master_user_password: String.t option;
-      option_group_name: String.t option;
-      preferred_backup_window: String.t option;
-      preferred_maintenance_window: String.t option;
-      tags: TagList.t;}
+      availability_zones: AvailabilityZones.t ;
+      backup_retention_period: Integer.t option ;
+      character_set_name: String.t option ;
+      database_name: String.t option ;
+      d_b_cluster_identifier: String.t option ;
+      d_b_cluster_parameter_group_name: String.t option ;
+      vpc_security_group_ids: VpcSecurityGroupIdList.t ;
+      d_b_subnet_group_name: String.t option ;
+      engine: String.t option ;
+      engine_version: String.t option ;
+      port: Integer.t option ;
+      master_username: String.t option ;
+      master_user_password: String.t option ;
+      option_group_name: String.t option ;
+      preferred_backup_window: String.t option ;
+      preferred_maintenance_window: String.t option ;
+      tags: TagList.t }
     let make ?(availability_zones= [])  ?backup_retention_period
       ?character_set_name  ?database_name  ?d_b_cluster_identifier
       ?d_b_cluster_parameter_group_name  ?(vpc_security_group_ids= [])
@@ -5195,6 +5377,7 @@ module CreateDBClusterMessage =
             (Util.of_option []
                (Util.option_bind (Xml.member "Tags" xml) TagList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -5243,6 +5426,7 @@ module CreateDBClusterMessage =
              (Query.Pair
                 ("AvailabilityZones.member",
                   (AvailabilityZones.to_query v.availability_zones)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -5281,6 +5465,7 @@ module CreateDBClusterMessage =
            Some
              ("availability_zones",
                (AvailabilityZones.to_json v.availability_zones))])
+
     let of_json j =
       {
         availability_zones =
@@ -5330,8 +5515,8 @@ module ModifyDBClusterParameterGroupMessage =
   struct
     type t =
       {
-      d_b_cluster_parameter_group_name: String.t;
-      parameters: ParametersList.t;}
+      d_b_cluster_parameter_group_name: String.t ;
+      parameters: ParametersList.t }
     let make ~d_b_cluster_parameter_group_name  ~parameters  () =
       { d_b_cluster_parameter_group_name; parameters }
     let parse xml =
@@ -5346,6 +5531,7 @@ module ModifyDBClusterParameterGroupMessage =
                (Util.option_bind (Xml.member "Parameters" xml)
                   ParametersList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -5357,6 +5543,7 @@ module ModifyDBClusterParameterGroupMessage =
              (Query.Pair
                 ("DBClusterParameterGroupName",
                   (String.to_query v.d_b_cluster_parameter_group_name)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -5364,6 +5551,7 @@ module ModifyDBClusterParameterGroupMessage =
            Some
              ("d_b_cluster_parameter_group_name",
                (String.to_json v.d_b_cluster_parameter_group_name))])
+
     let of_json j =
       {
         d_b_cluster_parameter_group_name =
@@ -5378,7 +5566,7 @@ module ModifyDBClusterParameterGroupMessage =
 module ModifyOptionGroupResult =
   struct
     type t = {
-      option_group: OptionGroup.t option;}
+      option_group: OptionGroup.t option }
     let make ?option_group  () = { option_group }
     let parse xml =
       Some
@@ -5387,16 +5575,19 @@ module ModifyOptionGroupResult =
             (Util.option_bind (Xml.member "OptionGroup" xml)
                OptionGroup.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.option_group
               (fun f  -> Query.Pair ("OptionGroup", (OptionGroup.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.option_group
               (fun f  -> ("option_group", (OptionGroup.to_json f)))])
+
     let of_json j =
       {
         option_group =
@@ -5407,30 +5598,30 @@ module ModifyDBInstanceMessage =
   struct
     type t =
       {
-      d_b_instance_identifier: String.t;
-      allocated_storage: Integer.t option;
-      d_b_instance_class: String.t option;
-      d_b_security_groups: DBSecurityGroupNameList.t;
-      vpc_security_group_ids: VpcSecurityGroupIdList.t;
-      apply_immediately: Boolean.t option;
-      master_user_password: String.t option;
-      d_b_parameter_group_name: String.t option;
-      backup_retention_period: Integer.t option;
-      preferred_backup_window: String.t option;
-      preferred_maintenance_window: String.t option;
-      multi_a_z: Boolean.t option;
-      engine_version: String.t option;
-      allow_major_version_upgrade: Boolean.t option;
-      auto_minor_version_upgrade: Boolean.t option;
-      iops: Integer.t option;
-      option_group_name: String.t option;
-      new_d_b_instance_identifier: String.t option;
-      storage_type: String.t option;
-      tde_credential_arn: String.t option;
-      tde_credential_password: String.t option;
-      c_a_certificate_identifier: String.t option;
-      domain: String.t option;
-      copy_tags_to_snapshot: Boolean.t option;}
+      d_b_instance_identifier: String.t ;
+      allocated_storage: Integer.t option ;
+      d_b_instance_class: String.t option ;
+      d_b_security_groups: DBSecurityGroupNameList.t ;
+      vpc_security_group_ids: VpcSecurityGroupIdList.t ;
+      apply_immediately: Boolean.t option ;
+      master_user_password: String.t option ;
+      d_b_parameter_group_name: String.t option ;
+      backup_retention_period: Integer.t option ;
+      preferred_backup_window: String.t option ;
+      preferred_maintenance_window: String.t option ;
+      multi_a_z: Boolean.t option ;
+      engine_version: String.t option ;
+      allow_major_version_upgrade: Boolean.t option ;
+      auto_minor_version_upgrade: Boolean.t option ;
+      iops: Integer.t option ;
+      option_group_name: String.t option ;
+      new_d_b_instance_identifier: String.t option ;
+      storage_type: String.t option ;
+      tde_credential_arn: String.t option ;
+      tde_credential_password: String.t option ;
+      c_a_certificate_identifier: String.t option ;
+      domain: String.t option ;
+      copy_tags_to_snapshot: Boolean.t option }
     let make ~d_b_instance_identifier  ?allocated_storage
       ?d_b_instance_class  ?(d_b_security_groups= [])
       ?(vpc_security_group_ids= [])  ?apply_immediately
@@ -5537,6 +5728,7 @@ module ModifyDBInstanceMessage =
             (Util.option_bind (Xml.member "CopyTagsToSnapshot" xml)
                Boolean.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -5606,6 +5798,7 @@ module ModifyDBInstanceMessage =
              (Query.Pair
                 ("DBInstanceIdentifier",
                   (String.to_query v.d_b_instance_identifier)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -5659,6 +5852,7 @@ module ModifyDBInstanceMessage =
            Some
              ("d_b_instance_identifier",
                (String.to_json v.d_b_instance_identifier))])
+
     let of_json j =
       {
         d_b_instance_identifier =
@@ -5730,7 +5924,7 @@ module ModifyDBInstanceMessage =
 module ModifyDBClusterResult =
   struct
     type t = {
-      d_b_cluster: DBCluster.t option;}
+      d_b_cluster: DBCluster.t option }
     let make ?d_b_cluster  () = { d_b_cluster }
     let parse xml =
       Some
@@ -5738,16 +5932,19 @@ module ModifyDBClusterResult =
           d_b_cluster =
             (Util.option_bind (Xml.member "DBCluster" xml) DBCluster.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.d_b_cluster
               (fun f  -> Query.Pair ("DBCluster", (DBCluster.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.d_b_cluster
               (fun f  -> ("d_b_cluster", (DBCluster.to_json f)))])
+
     let of_json j =
       {
         d_b_cluster =
@@ -5758,10 +5955,10 @@ module CopyOptionGroupMessage =
   struct
     type t =
       {
-      source_option_group_identifier: String.t;
-      target_option_group_identifier: String.t;
-      target_option_group_description: String.t;
-      tags: TagList.t;}
+      source_option_group_identifier: String.t ;
+      target_option_group_identifier: String.t ;
+      target_option_group_description: String.t ;
+      tags: TagList.t }
     let make ~source_option_group_identifier  ~target_option_group_identifier
        ~target_option_group_description  ?(tags= [])  () =
       {
@@ -5790,6 +5987,7 @@ module CopyOptionGroupMessage =
             (Util.of_option []
                (Util.option_bind (Xml.member "Tags" xml) TagList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -5806,6 +6004,7 @@ module CopyOptionGroupMessage =
              (Query.Pair
                 ("SourceOptionGroupIdentifier",
                   (String.to_query v.source_option_group_identifier)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -5819,6 +6018,7 @@ module CopyOptionGroupMessage =
            Some
              ("source_option_group_identifier",
                (String.to_json v.source_option_group_identifier))])
+
     let of_json j =
       {
         source_option_group_identifier =
@@ -5840,15 +6040,15 @@ module DescribeReservedDBInstancesOfferingsMessage =
   struct
     type t =
       {
-      reserved_d_b_instances_offering_id: String.t option;
-      d_b_instance_class: String.t option;
-      duration: String.t option;
-      product_description: String.t option;
-      offering_type: String.t option;
-      multi_a_z: Boolean.t option;
-      filters: FilterList.t;
-      max_records: Integer.t option;
-      marker: String.t option;}
+      reserved_d_b_instances_offering_id: String.t option ;
+      d_b_instance_class: String.t option ;
+      duration: String.t option ;
+      product_description: String.t option ;
+      offering_type: String.t option ;
+      multi_a_z: Boolean.t option ;
+      filters: FilterList.t ;
+      max_records: Integer.t option ;
+      marker: String.t option }
     let make ?reserved_d_b_instances_offering_id  ?d_b_instance_class
       ?duration  ?product_description  ?offering_type  ?multi_a_z  ?(filters=
       [])  ?max_records  ?marker  () =
@@ -5887,6 +6087,7 @@ module DescribeReservedDBInstancesOfferingsMessage =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse);
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -5911,6 +6112,7 @@ module DescribeReservedDBInstancesOfferingsMessage =
              (fun f  ->
                 Query.Pair
                   ("ReservedDBInstancesOfferingId", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -5932,6 +6134,7 @@ module DescribeReservedDBInstancesOfferingsMessage =
            Util.option_map v.reserved_d_b_instances_offering_id
              (fun f  ->
                 ("reserved_d_b_instances_offering_id", (String.to_json f)))])
+
     let of_json j =
       {
         reserved_d_b_instances_offering_id =
@@ -5961,9 +6164,9 @@ module ResetDBClusterParameterGroupMessage =
   struct
     type t =
       {
-      d_b_cluster_parameter_group_name: String.t;
-      reset_all_parameters: Boolean.t option;
-      parameters: ParametersList.t;}
+      d_b_cluster_parameter_group_name: String.t ;
+      reset_all_parameters: Boolean.t option ;
+      parameters: ParametersList.t }
     let make ~d_b_cluster_parameter_group_name  ?reset_all_parameters
       ?(parameters= [])  () =
       { d_b_cluster_parameter_group_name; reset_all_parameters; parameters }
@@ -5982,6 +6185,7 @@ module ResetDBClusterParameterGroupMessage =
                (Util.option_bind (Xml.member "Parameters" xml)
                   ParametersList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -5996,6 +6200,7 @@ module ResetDBClusterParameterGroupMessage =
              (Query.Pair
                 ("DBClusterParameterGroupName",
                   (String.to_query v.d_b_cluster_parameter_group_name)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -6005,6 +6210,7 @@ module ResetDBClusterParameterGroupMessage =
            Some
              ("d_b_cluster_parameter_group_name",
                (String.to_json v.d_b_cluster_parameter_group_name))])
+
     let of_json j =
       {
         d_b_cluster_parameter_group_name =
@@ -6023,9 +6229,9 @@ module DeleteDBInstanceMessage =
   struct
     type t =
       {
-      d_b_instance_identifier: String.t;
-      skip_final_snapshot: Boolean.t option;
-      final_d_b_snapshot_identifier: String.t option;}
+      d_b_instance_identifier: String.t ;
+      skip_final_snapshot: Boolean.t option ;
+      final_d_b_snapshot_identifier: String.t option }
     let make ~d_b_instance_identifier  ?skip_final_snapshot
       ?final_d_b_snapshot_identifier  () =
       {
@@ -6047,6 +6253,7 @@ module DeleteDBInstanceMessage =
             (Util.option_bind (Xml.member "FinalDBSnapshotIdentifier" xml)
                String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -6061,6 +6268,7 @@ module DeleteDBInstanceMessage =
              (Query.Pair
                 ("DBInstanceIdentifier",
                   (String.to_query v.d_b_instance_identifier)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -6072,6 +6280,7 @@ module DeleteDBInstanceMessage =
            Some
              ("d_b_instance_identifier",
                (String.to_json v.d_b_instance_identifier))])
+
     let of_json j =
       {
         d_b_instance_identifier =
@@ -6089,9 +6298,9 @@ module PromoteReadReplicaMessage =
   struct
     type t =
       {
-      d_b_instance_identifier: String.t;
-      backup_retention_period: Integer.t option;
-      preferred_backup_window: String.t option;}
+      d_b_instance_identifier: String.t ;
+      backup_retention_period: Integer.t option ;
+      preferred_backup_window: String.t option }
     let make ~d_b_instance_identifier  ?backup_retention_period
       ?preferred_backup_window  () =
       {
@@ -6113,6 +6322,7 @@ module PromoteReadReplicaMessage =
             (Util.option_bind (Xml.member "PreferredBackupWindow" xml)
                String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -6126,6 +6336,7 @@ module PromoteReadReplicaMessage =
              (Query.Pair
                 ("DBInstanceIdentifier",
                   (String.to_query v.d_b_instance_identifier)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -6136,6 +6347,7 @@ module PromoteReadReplicaMessage =
            Some
              ("d_b_instance_identifier",
                (String.to_json v.d_b_instance_identifier))])
+
     let of_json j =
       {
         d_b_instance_identifier =
@@ -6152,7 +6364,7 @@ module PromoteReadReplicaMessage =
 module RestoreDBClusterFromSnapshotResult =
   struct
     type t = {
-      d_b_cluster: DBCluster.t option;}
+      d_b_cluster: DBCluster.t option }
     let make ?d_b_cluster  () = { d_b_cluster }
     let parse xml =
       Some
@@ -6160,16 +6372,19 @@ module RestoreDBClusterFromSnapshotResult =
           d_b_cluster =
             (Util.option_bind (Xml.member "DBCluster" xml) DBCluster.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.d_b_cluster
               (fun f  -> Query.Pair ("DBCluster", (DBCluster.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.d_b_cluster
               (fun f  -> ("d_b_cluster", (DBCluster.to_json f)))])
+
     let of_json j =
       {
         d_b_cluster =
@@ -6179,7 +6394,7 @@ module RestoreDBClusterFromSnapshotResult =
 module ModifyEventSubscriptionResult =
   struct
     type t = {
-      event_subscription: EventSubscription.t option;}
+      event_subscription: EventSubscription.t option }
     let make ?event_subscription  () = { event_subscription }
     let parse xml =
       Some
@@ -6188,6 +6403,7 @@ module ModifyEventSubscriptionResult =
             (Util.option_bind (Xml.member "EventSubscription" xml)
                EventSubscription.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -6195,12 +6411,14 @@ module ModifyEventSubscriptionResult =
               (fun f  ->
                  Query.Pair
                    ("EventSubscription", (EventSubscription.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.event_subscription
               (fun f  ->
                  ("event_subscription", (EventSubscription.to_json f)))])
+
     let of_json j =
       {
         event_subscription =
@@ -6211,7 +6429,7 @@ module ModifyEventSubscriptionResult =
 module RestoreDBInstanceFromDBSnapshotResult =
   struct
     type t = {
-      d_b_instance: DBInstance.t option;}
+      d_b_instance: DBInstance.t option }
     let make ?d_b_instance  () = { d_b_instance }
     let parse xml =
       Some
@@ -6219,16 +6437,19 @@ module RestoreDBInstanceFromDBSnapshotResult =
           d_b_instance =
             (Util.option_bind (Xml.member "DBInstance" xml) DBInstance.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.d_b_instance
               (fun f  -> Query.Pair ("DBInstance", (DBInstance.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.d_b_instance
               (fun f  -> ("d_b_instance", (DBInstance.to_json f)))])
+
     let of_json j =
       {
         d_b_instance =
@@ -6238,7 +6459,7 @@ module RestoreDBInstanceFromDBSnapshotResult =
 module FailoverDBClusterResult =
   struct
     type t = {
-      d_b_cluster: DBCluster.t option;}
+      d_b_cluster: DBCluster.t option }
     let make ?d_b_cluster  () = { d_b_cluster }
     let parse xml =
       Some
@@ -6246,16 +6467,19 @@ module FailoverDBClusterResult =
           d_b_cluster =
             (Util.option_bind (Xml.member "DBCluster" xml) DBCluster.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.d_b_cluster
               (fun f  -> Query.Pair ("DBCluster", (DBCluster.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.d_b_cluster
               (fun f  -> ("d_b_cluster", (DBCluster.to_json f)))])
+
     let of_json j =
       {
         d_b_cluster =
@@ -6266,8 +6490,8 @@ module OptionGroupOptionsMessage =
   struct
     type t =
       {
-      option_group_options: OptionGroupOptionsList.t;
-      marker: String.t option;}
+      option_group_options: OptionGroupOptionsList.t ;
+      marker: String.t option }
     let make ?(option_group_options= [])  ?marker  () =
       { option_group_options; marker }
     let parse xml =
@@ -6279,6 +6503,7 @@ module OptionGroupOptionsMessage =
                   OptionGroupOptionsList.parse));
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -6288,6 +6513,7 @@ module OptionGroupOptionsMessage =
              (Query.Pair
                 ("OptionGroupOptions.member",
                   (OptionGroupOptionsList.to_query v.option_group_options)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -6296,6 +6522,7 @@ module OptionGroupOptionsMessage =
            Some
              ("option_group_options",
                (OptionGroupOptionsList.to_json v.option_group_options))])
+
     let of_json j =
       {
         option_group_options =
@@ -6308,17 +6535,17 @@ module RestoreDBClusterFromSnapshotMessage =
   struct
     type t =
       {
-      availability_zones: AvailabilityZones.t;
-      d_b_cluster_identifier: String.t;
-      snapshot_identifier: String.t;
-      engine: String.t;
-      engine_version: String.t option;
-      port: Integer.t option;
-      d_b_subnet_group_name: String.t option;
-      database_name: String.t option;
-      option_group_name: String.t option;
-      vpc_security_group_ids: VpcSecurityGroupIdList.t;
-      tags: TagList.t;}
+      availability_zones: AvailabilityZones.t ;
+      d_b_cluster_identifier: String.t ;
+      snapshot_identifier: String.t ;
+      engine: String.t ;
+      engine_version: String.t option ;
+      port: Integer.t option ;
+      d_b_subnet_group_name: String.t option ;
+      database_name: String.t option ;
+      option_group_name: String.t option ;
+      vpc_security_group_ids: VpcSecurityGroupIdList.t ;
+      tags: TagList.t }
     let make ?(availability_zones= [])  ~d_b_cluster_identifier
       ~snapshot_identifier  ~engine  ?engine_version  ?port
       ?d_b_subnet_group_name  ?database_name  ?option_group_name
@@ -6372,6 +6599,7 @@ module RestoreDBClusterFromSnapshotMessage =
             (Util.of_option []
                (Util.option_bind (Xml.member "Tags" xml) TagList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -6403,6 +6631,7 @@ module RestoreDBClusterFromSnapshotMessage =
              (Query.Pair
                 ("AvailabilityZones.member",
                   (AvailabilityZones.to_query v.availability_zones)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -6428,6 +6657,7 @@ module RestoreDBClusterFromSnapshotMessage =
            Some
              ("availability_zones",
                (AvailabilityZones.to_json v.availability_zones))])
+
     let of_json j =
       {
         availability_zones =
@@ -6461,10 +6691,10 @@ module DescribeDBInstancesMessage =
   struct
     type t =
       {
-      d_b_instance_identifier: String.t option;
-      filters: FilterList.t;
-      max_records: Integer.t option;
-      marker: String.t option;}
+      d_b_instance_identifier: String.t option ;
+      filters: FilterList.t ;
+      max_records: Integer.t option ;
+      marker: String.t option }
     let make ?d_b_instance_identifier  ?(filters= [])  ?max_records  ?marker
       () = { d_b_instance_identifier; filters; max_records; marker }
     let parse xml =
@@ -6480,6 +6710,7 @@ module DescribeDBInstancesMessage =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse);
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -6492,6 +6723,7 @@ module DescribeDBInstancesMessage =
            Util.option_map v.d_b_instance_identifier
              (fun f  ->
                 Query.Pair ("DBInstanceIdentifier", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -6502,6 +6734,7 @@ module DescribeDBInstancesMessage =
            Some ("filters", (FilterList.to_json v.filters));
            Util.option_map v.d_b_instance_identifier
              (fun f  -> ("d_b_instance_identifier", (String.to_json f)))])
+
     let of_json j =
       {
         d_b_instance_identifier =
@@ -6518,13 +6751,13 @@ module DescribeDBLogFilesMessage =
   struct
     type t =
       {
-      d_b_instance_identifier: String.t;
-      filename_contains: String.t option;
-      file_last_written: Long.t option;
-      file_size: Long.t option;
-      filters: FilterList.t;
-      max_records: Integer.t option;
-      marker: String.t option;}
+      d_b_instance_identifier: String.t ;
+      filename_contains: String.t option ;
+      file_last_written: Long.t option ;
+      file_size: Long.t option ;
+      filters: FilterList.t ;
+      max_records: Integer.t option ;
+      marker: String.t option }
     let make ~d_b_instance_identifier  ?filename_contains  ?file_last_written
        ?file_size  ?(filters= [])  ?max_records  ?marker  () =
       {
@@ -6557,6 +6790,7 @@ module DescribeDBLogFilesMessage =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse);
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -6576,6 +6810,7 @@ module DescribeDBLogFilesMessage =
              (Query.Pair
                 ("DBInstanceIdentifier",
                   (String.to_query v.d_b_instance_identifier)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -6593,6 +6828,7 @@ module DescribeDBLogFilesMessage =
            Some
              ("d_b_instance_identifier",
                (String.to_json v.d_b_instance_identifier))])
+
     let of_json j =
       {
         d_b_instance_identifier =
@@ -6614,7 +6850,7 @@ module DescribeDBLogFilesMessage =
 module DeleteDBClusterResult =
   struct
     type t = {
-      d_b_cluster: DBCluster.t option;}
+      d_b_cluster: DBCluster.t option }
     let make ?d_b_cluster  () = { d_b_cluster }
     let parse xml =
       Some
@@ -6622,16 +6858,19 @@ module DeleteDBClusterResult =
           d_b_cluster =
             (Util.option_bind (Xml.member "DBCluster" xml) DBCluster.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.d_b_cluster
               (fun f  -> Query.Pair ("DBCluster", (DBCluster.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.d_b_cluster
               (fun f  -> ("d_b_cluster", (DBCluster.to_json f)))])
+
     let of_json j =
       {
         d_b_cluster =
@@ -6642,10 +6881,10 @@ module DescribeDBSecurityGroupsMessage =
   struct
     type t =
       {
-      d_b_security_group_name: String.t option;
-      filters: FilterList.t;
-      max_records: Integer.t option;
-      marker: String.t option;}
+      d_b_security_group_name: String.t option ;
+      filters: FilterList.t ;
+      max_records: Integer.t option ;
+      marker: String.t option }
     let make ?d_b_security_group_name  ?(filters= [])  ?max_records  ?marker
       () = { d_b_security_group_name; filters; max_records; marker }
     let parse xml =
@@ -6661,6 +6900,7 @@ module DescribeDBSecurityGroupsMessage =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse);
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -6673,6 +6913,7 @@ module DescribeDBSecurityGroupsMessage =
            Util.option_map v.d_b_security_group_name
              (fun f  ->
                 Query.Pair ("DBSecurityGroupName", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -6683,6 +6924,7 @@ module DescribeDBSecurityGroupsMessage =
            Some ("filters", (FilterList.to_json v.filters));
            Util.option_map v.d_b_security_group_name
              (fun f  -> ("d_b_security_group_name", (String.to_json f)))])
+
     let of_json j =
       {
         d_b_security_group_name =
@@ -6698,7 +6940,7 @@ module DescribeDBSecurityGroupsMessage =
 module ModifyDBInstanceResult =
   struct
     type t = {
-      d_b_instance: DBInstance.t option;}
+      d_b_instance: DBInstance.t option }
     let make ?d_b_instance  () = { d_b_instance }
     let parse xml =
       Some
@@ -6706,16 +6948,19 @@ module ModifyDBInstanceResult =
           d_b_instance =
             (Util.option_bind (Xml.member "DBInstance" xml) DBInstance.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.d_b_instance
               (fun f  -> Query.Pair ("DBInstance", (DBInstance.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.d_b_instance
               (fun f  -> ("d_b_instance", (DBInstance.to_json f)))])
+
     let of_json j =
       {
         d_b_instance =
@@ -6725,7 +6970,7 @@ module ModifyDBInstanceResult =
 module DescribeEngineDefaultClusterParametersResult =
   struct
     type t = {
-      engine_defaults: EngineDefaults.t option;}
+      engine_defaults: EngineDefaults.t option }
     let make ?engine_defaults  () = { engine_defaults }
     let parse xml =
       Some
@@ -6734,17 +6979,20 @@ module DescribeEngineDefaultClusterParametersResult =
             (Util.option_bind (Xml.member "EngineDefaults" xml)
                EngineDefaults.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.engine_defaults
               (fun f  ->
                  Query.Pair ("EngineDefaults", (EngineDefaults.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.engine_defaults
               (fun f  -> ("engine_defaults", (EngineDefaults.to_json f)))])
+
     let of_json j =
       {
         engine_defaults =
@@ -6756,9 +7004,9 @@ module CreateDBSnapshotMessage =
   struct
     type t =
       {
-      d_b_snapshot_identifier: String.t;
-      d_b_instance_identifier: String.t;
-      tags: TagList.t;}
+      d_b_snapshot_identifier: String.t ;
+      d_b_instance_identifier: String.t ;
+      tags: TagList.t }
     let make ~d_b_snapshot_identifier  ~d_b_instance_identifier  ?(tags= [])
       () = { d_b_snapshot_identifier; d_b_instance_identifier; tags }
     let parse xml =
@@ -6776,6 +7024,7 @@ module CreateDBSnapshotMessage =
             (Util.of_option []
                (Util.option_bind (Xml.member "Tags" xml) TagList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -6788,6 +7037,7 @@ module CreateDBSnapshotMessage =
              (Query.Pair
                 ("DBSnapshotIdentifier",
                   (String.to_query v.d_b_snapshot_identifier)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -6798,6 +7048,7 @@ module CreateDBSnapshotMessage =
            Some
              ("d_b_snapshot_identifier",
                (String.to_json v.d_b_snapshot_identifier))])
+
     let of_json j =
       {
         d_b_snapshot_identifier =
@@ -6812,7 +7063,7 @@ module CreateDBSnapshotMessage =
 module CreateDBSnapshotResult =
   struct
     type t = {
-      d_b_snapshot: DBSnapshot.t option;}
+      d_b_snapshot: DBSnapshot.t option }
     let make ?d_b_snapshot  () = { d_b_snapshot }
     let parse xml =
       Some
@@ -6820,16 +7071,19 @@ module CreateDBSnapshotResult =
           d_b_snapshot =
             (Util.option_bind (Xml.member "DBSnapshot" xml) DBSnapshot.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.d_b_snapshot
               (fun f  -> Query.Pair ("DBSnapshot", (DBSnapshot.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.d_b_snapshot
               (fun f  -> ("d_b_snapshot", (DBSnapshot.to_json f)))])
+
     let of_json j =
       {
         d_b_snapshot =
@@ -6840,10 +7094,10 @@ module CreateDBSubnetGroupMessage =
   struct
     type t =
       {
-      d_b_subnet_group_name: String.t;
-      d_b_subnet_group_description: String.t;
-      subnet_ids: SubnetIdentifierList.t;
-      tags: TagList.t;}
+      d_b_subnet_group_name: String.t ;
+      d_b_subnet_group_description: String.t ;
+      subnet_ids: SubnetIdentifierList.t ;
+      tags: TagList.t }
     let make ~d_b_subnet_group_name  ~d_b_subnet_group_description
       ~subnet_ids  ?(tags= [])  () =
       { d_b_subnet_group_name; d_b_subnet_group_description; subnet_ids; tags
@@ -6867,6 +7121,7 @@ module CreateDBSubnetGroupMessage =
             (Util.of_option []
                (Util.option_bind (Xml.member "Tags" xml) TagList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -6883,6 +7138,7 @@ module CreateDBSubnetGroupMessage =
              (Query.Pair
                 ("DBSubnetGroupName",
                   (String.to_query v.d_b_subnet_group_name)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -6894,6 +7150,7 @@ module CreateDBSubnetGroupMessage =
            Some
              ("d_b_subnet_group_name",
                (String.to_json v.d_b_subnet_group_name))])
+
     let of_json j =
       {
         d_b_subnet_group_name =
@@ -6913,10 +7170,10 @@ module CopyDBParameterGroupMessage =
   struct
     type t =
       {
-      source_d_b_parameter_group_identifier: String.t;
-      target_d_b_parameter_group_identifier: String.t;
-      target_d_b_parameter_group_description: String.t;
-      tags: TagList.t;}
+      source_d_b_parameter_group_identifier: String.t ;
+      target_d_b_parameter_group_identifier: String.t ;
+      target_d_b_parameter_group_description: String.t ;
+      tags: TagList.t }
     let make ~source_d_b_parameter_group_identifier
       ~target_d_b_parameter_group_identifier
       ~target_d_b_parameter_group_description  ?(tags= [])  () =
@@ -6948,6 +7205,7 @@ module CopyDBParameterGroupMessage =
             (Util.of_option []
                (Util.option_bind (Xml.member "Tags" xml) TagList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -6964,6 +7222,7 @@ module CopyDBParameterGroupMessage =
              (Query.Pair
                 ("SourceDBParameterGroupIdentifier",
                   (String.to_query v.source_d_b_parameter_group_identifier)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -6977,6 +7236,7 @@ module CopyDBParameterGroupMessage =
            Some
              ("source_d_b_parameter_group_identifier",
                (String.to_json v.source_d_b_parameter_group_identifier))])
+
     let of_json j =
       {
         source_d_b_parameter_group_identifier =
@@ -6997,7 +7257,7 @@ module CopyDBParameterGroupMessage =
 module DeleteDBSnapshotMessage =
   struct
     type t = {
-      d_b_snapshot_identifier: String.t;}
+      d_b_snapshot_identifier: String.t }
     let make ~d_b_snapshot_identifier  () = { d_b_snapshot_identifier }
     let parse xml =
       Some
@@ -7007,6 +7267,7 @@ module DeleteDBSnapshotMessage =
                (Util.option_bind (Xml.member "DBSnapshotIdentifier" xml)
                   String.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -7014,12 +7275,14 @@ module DeleteDBSnapshotMessage =
               (Query.Pair
                  ("DBSnapshotIdentifier",
                    (String.to_query v.d_b_snapshot_identifier)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("d_b_snapshot_identifier",
                 (String.to_json v.d_b_snapshot_identifier))])
+
     let of_json j =
       {
         d_b_snapshot_identifier =
@@ -7030,7 +7293,7 @@ module DeleteDBSnapshotMessage =
 module DeleteEventSubscriptionResult =
   struct
     type t = {
-      event_subscription: EventSubscription.t option;}
+      event_subscription: EventSubscription.t option }
     let make ?event_subscription  () = { event_subscription }
     let parse xml =
       Some
@@ -7039,6 +7302,7 @@ module DeleteEventSubscriptionResult =
             (Util.option_bind (Xml.member "EventSubscription" xml)
                EventSubscription.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -7046,12 +7310,14 @@ module DeleteEventSubscriptionResult =
               (fun f  ->
                  Query.Pair
                    ("EventSubscription", (EventSubscription.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.event_subscription
               (fun f  ->
                  ("event_subscription", (EventSubscription.to_json f)))])
+
     let of_json j =
       {
         event_subscription =
@@ -7062,7 +7328,7 @@ module DeleteEventSubscriptionResult =
 module CreateDBInstanceReadReplicaResult =
   struct
     type t = {
-      d_b_instance: DBInstance.t option;}
+      d_b_instance: DBInstance.t option }
     let make ?d_b_instance  () = { d_b_instance }
     let parse xml =
       Some
@@ -7070,16 +7336,19 @@ module CreateDBInstanceReadReplicaResult =
           d_b_instance =
             (Util.option_bind (Xml.member "DBInstance" xml) DBInstance.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.d_b_instance
               (fun f  -> Query.Pair ("DBInstance", (DBInstance.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.d_b_instance
               (fun f  -> ("d_b_instance", (DBInstance.to_json f)))])
+
     let of_json j =
       {
         d_b_instance =
@@ -7089,8 +7358,8 @@ module CreateDBInstanceReadReplicaResult =
 module DBInstanceMessage =
   struct
     type t = {
-      marker: String.t option;
-      d_b_instances: DBInstanceList.t;}
+      marker: String.t option ;
+      d_b_instances: DBInstanceList.t }
     let make ?marker  ?(d_b_instances= [])  () = { marker; d_b_instances }
     let parse xml =
       Some
@@ -7101,6 +7370,7 @@ module DBInstanceMessage =
                (Util.option_bind (Xml.member "DBInstances" xml)
                   DBInstanceList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -7110,12 +7380,14 @@ module DBInstanceMessage =
                    (DBInstanceList.to_query v.d_b_instances)));
            Util.option_map v.marker
              (fun f  -> Query.Pair ("Marker", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("d_b_instances", (DBInstanceList.to_json v.d_b_instances));
            Util.option_map v.marker
              (fun f  -> ("marker", (String.to_json f)))])
+
     let of_json j =
       {
         marker = (Util.option_map (Json.lookup j "marker") String.of_json);
@@ -7128,10 +7400,10 @@ module DescribeDBSubnetGroupsMessage =
   struct
     type t =
       {
-      d_b_subnet_group_name: String.t option;
-      filters: FilterList.t;
-      max_records: Integer.t option;
-      marker: String.t option;}
+      d_b_subnet_group_name: String.t option ;
+      filters: FilterList.t ;
+      max_records: Integer.t option ;
+      marker: String.t option }
     let make ?d_b_subnet_group_name  ?(filters= [])  ?max_records  ?marker
       () = { d_b_subnet_group_name; filters; max_records; marker }
     let parse xml =
@@ -7147,6 +7419,7 @@ module DescribeDBSubnetGroupsMessage =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse);
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -7158,6 +7431,7 @@ module DescribeDBSubnetGroupsMessage =
              (Query.Pair ("Filters.member", (FilterList.to_query v.filters)));
            Util.option_map v.d_b_subnet_group_name
              (fun f  -> Query.Pair ("DBSubnetGroupName", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -7168,6 +7442,7 @@ module DescribeDBSubnetGroupsMessage =
            Some ("filters", (FilterList.to_json v.filters));
            Util.option_map v.d_b_subnet_group_name
              (fun f  -> ("d_b_subnet_group_name", (String.to_json f)))])
+
     let of_json j =
       {
         d_b_subnet_group_name =
@@ -7183,7 +7458,7 @@ module DescribeDBSubnetGroupsMessage =
 module DeleteDBSubnetGroupMessage =
   struct
     type t = {
-      d_b_subnet_group_name: String.t;}
+      d_b_subnet_group_name: String.t }
     let make ~d_b_subnet_group_name  () = { d_b_subnet_group_name }
     let parse xml =
       Some
@@ -7193,6 +7468,7 @@ module DeleteDBSubnetGroupMessage =
                (Util.option_bind (Xml.member "DBSubnetGroupName" xml)
                   String.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -7200,12 +7476,14 @@ module DeleteDBSubnetGroupMessage =
               (Query.Pair
                  ("DBSubnetGroupName",
                    (String.to_query v.d_b_subnet_group_name)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("d_b_subnet_group_name",
                 (String.to_json v.d_b_subnet_group_name))])
+
     let of_json j =
       {
         d_b_subnet_group_name =
@@ -7216,7 +7494,7 @@ module DeleteDBSubnetGroupMessage =
 module CopyDBSnapshotResult =
   struct
     type t = {
-      d_b_snapshot: DBSnapshot.t option;}
+      d_b_snapshot: DBSnapshot.t option }
     let make ?d_b_snapshot  () = { d_b_snapshot }
     let parse xml =
       Some
@@ -7224,16 +7502,19 @@ module CopyDBSnapshotResult =
           d_b_snapshot =
             (Util.option_bind (Xml.member "DBSnapshot" xml) DBSnapshot.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.d_b_snapshot
               (fun f  -> Query.Pair ("DBSnapshot", (DBSnapshot.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.d_b_snapshot
               (fun f  -> ("d_b_snapshot", (DBSnapshot.to_json f)))])
+
     let of_json j =
       {
         d_b_snapshot =
@@ -7243,7 +7524,7 @@ module CopyDBSnapshotResult =
 module AddSourceIdentifierToSubscriptionResult =
   struct
     type t = {
-      event_subscription: EventSubscription.t option;}
+      event_subscription: EventSubscription.t option }
     let make ?event_subscription  () = { event_subscription }
     let parse xml =
       Some
@@ -7252,6 +7533,7 @@ module AddSourceIdentifierToSubscriptionResult =
             (Util.option_bind (Xml.member "EventSubscription" xml)
                EventSubscription.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -7259,12 +7541,14 @@ module AddSourceIdentifierToSubscriptionResult =
               (fun f  ->
                  Query.Pair
                    ("EventSubscription", (EventSubscription.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.event_subscription
               (fun f  ->
                  ("event_subscription", (EventSubscription.to_json f)))])
+
     let of_json j =
       {
         event_subscription =
@@ -7275,7 +7559,7 @@ module AddSourceIdentifierToSubscriptionResult =
 module CreateOptionGroupResult =
   struct
     type t = {
-      option_group: OptionGroup.t option;}
+      option_group: OptionGroup.t option }
     let make ?option_group  () = { option_group }
     let parse xml =
       Some
@@ -7284,16 +7568,19 @@ module CreateOptionGroupResult =
             (Util.option_bind (Xml.member "OptionGroup" xml)
                OptionGroup.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.option_group
               (fun f  -> Query.Pair ("OptionGroup", (OptionGroup.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.option_group
               (fun f  -> ("option_group", (OptionGroup.to_json f)))])
+
     let of_json j =
       {
         option_group =
@@ -7304,10 +7591,10 @@ module DescribeCertificatesMessage =
   struct
     type t =
       {
-      certificate_identifier: String.t option;
-      filters: FilterList.t;
-      max_records: Integer.t option;
-      marker: String.t option;}
+      certificate_identifier: String.t option ;
+      filters: FilterList.t ;
+      max_records: Integer.t option ;
+      marker: String.t option }
     let make ?certificate_identifier  ?(filters= [])  ?max_records  ?marker
       () = { certificate_identifier; filters; max_records; marker }
     let parse xml =
@@ -7323,6 +7610,7 @@ module DescribeCertificatesMessage =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse);
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -7335,6 +7623,7 @@ module DescribeCertificatesMessage =
            Util.option_map v.certificate_identifier
              (fun f  ->
                 Query.Pair ("CertificateIdentifier", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -7345,6 +7634,7 @@ module DescribeCertificatesMessage =
            Some ("filters", (FilterList.to_json v.filters));
            Util.option_map v.certificate_identifier
              (fun f  -> ("certificate_identifier", (String.to_json f)))])
+
     let of_json j =
       {
         certificate_identifier =
@@ -7361,10 +7651,10 @@ module DescribeEventSubscriptionsMessage =
   struct
     type t =
       {
-      subscription_name: String.t option;
-      filters: FilterList.t;
-      max_records: Integer.t option;
-      marker: String.t option;}
+      subscription_name: String.t option ;
+      filters: FilterList.t ;
+      max_records: Integer.t option ;
+      marker: String.t option }
     let make ?subscription_name  ?(filters= [])  ?max_records  ?marker  () =
       { subscription_name; filters; max_records; marker }
     let parse xml =
@@ -7380,6 +7670,7 @@ module DescribeEventSubscriptionsMessage =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse);
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -7391,6 +7682,7 @@ module DescribeEventSubscriptionsMessage =
              (Query.Pair ("Filters.member", (FilterList.to_query v.filters)));
            Util.option_map v.subscription_name
              (fun f  -> Query.Pair ("SubscriptionName", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -7401,6 +7693,7 @@ module DescribeEventSubscriptionsMessage =
            Some ("filters", (FilterList.to_json v.filters));
            Util.option_map v.subscription_name
              (fun f  -> ("subscription_name", (String.to_json f)))])
+
     let of_json j =
       {
         subscription_name =
@@ -7415,7 +7708,7 @@ module DescribeEventSubscriptionsMessage =
 module CreateDBSecurityGroupResult =
   struct
     type t = {
-      d_b_security_group: DBSecurityGroup.t option;}
+      d_b_security_group: DBSecurityGroup.t option }
     let make ?d_b_security_group  () = { d_b_security_group }
     let parse xml =
       Some
@@ -7424,17 +7717,20 @@ module CreateDBSecurityGroupResult =
             (Util.option_bind (Xml.member "DBSecurityGroup" xml)
                DBSecurityGroup.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.d_b_security_group
               (fun f  ->
                  Query.Pair ("DBSecurityGroup", (DBSecurityGroup.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.d_b_security_group
               (fun f  -> ("d_b_security_group", (DBSecurityGroup.to_json f)))])
+
     let of_json j =
       {
         d_b_security_group =
@@ -7442,18 +7738,10 @@ module CreateDBSecurityGroupResult =
              DBSecurityGroup.of_json)
       }
   end
-
-module DescribeAccountAttributesMessage =
-  struct
-    type t = ()
-
-    let to_query _v = Query.List []
-  end
-
 module AccountAttributesMessage =
   struct
     type t = {
-      account_quotas: AccountQuotaList.t;}
+      account_quotas: AccountQuotaList.t }
     let make ?(account_quotas= [])  () = { account_quotas }
     let parse xml =
       Some
@@ -7463,6 +7751,7 @@ module AccountAttributesMessage =
                (Util.option_bind (Xml.member "AccountQuotas" xml)
                   AccountQuotaList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -7470,11 +7759,13 @@ module AccountAttributesMessage =
               (Query.Pair
                  ("AccountQuotas.member",
                    (AccountQuotaList.to_query v.account_quotas)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("account_quotas", (AccountQuotaList.to_json v.account_quotas))])
+
     let of_json j =
       {
         account_quotas =
@@ -7485,7 +7776,7 @@ module AccountAttributesMessage =
 module RestoreDBClusterToPointInTimeResult =
   struct
     type t = {
-      d_b_cluster: DBCluster.t option;}
+      d_b_cluster: DBCluster.t option }
     let make ?d_b_cluster  () = { d_b_cluster }
     let parse xml =
       Some
@@ -7493,16 +7784,19 @@ module RestoreDBClusterToPointInTimeResult =
           d_b_cluster =
             (Util.option_bind (Xml.member "DBCluster" xml) DBCluster.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.d_b_cluster
               (fun f  -> Query.Pair ("DBCluster", (DBCluster.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.d_b_cluster
               (fun f  -> ("d_b_cluster", (DBCluster.to_json f)))])
+
     let of_json j =
       {
         d_b_cluster =
@@ -7512,7 +7806,7 @@ module RestoreDBClusterToPointInTimeResult =
 module RebootDBInstanceResult =
   struct
     type t = {
-      d_b_instance: DBInstance.t option;}
+      d_b_instance: DBInstance.t option }
     let make ?d_b_instance  () = { d_b_instance }
     let parse xml =
       Some
@@ -7520,16 +7814,19 @@ module RebootDBInstanceResult =
           d_b_instance =
             (Util.option_bind (Xml.member "DBInstance" xml) DBInstance.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.d_b_instance
               (fun f  -> Query.Pair ("DBInstance", (DBInstance.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.d_b_instance
               (fun f  -> ("d_b_instance", (DBInstance.to_json f)))])
+
     let of_json j =
       {
         d_b_instance =
@@ -7539,7 +7836,7 @@ module RebootDBInstanceResult =
 module TagListMessage =
   struct
     type t = {
-      tag_list: TagList.t;}
+      tag_list: TagList.t }
     let make ?(tag_list= [])  () = { tag_list }
     let parse xml =
       Some
@@ -7548,15 +7845,18 @@ module TagListMessage =
             (Util.of_option []
                (Util.option_bind (Xml.member "TagList" xml) TagList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some
               (Query.Pair ("TagList.member", (TagList.to_query v.tag_list)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("tag_list", (TagList.to_json v.tag_list))])
+
     let of_json j =
       {
         tag_list =
@@ -7567,9 +7867,9 @@ module ResetDBParameterGroupMessage =
   struct
     type t =
       {
-      d_b_parameter_group_name: String.t;
-      reset_all_parameters: Boolean.t option;
-      parameters: ParametersList.t;}
+      d_b_parameter_group_name: String.t ;
+      reset_all_parameters: Boolean.t option ;
+      parameters: ParametersList.t }
     let make ~d_b_parameter_group_name  ?reset_all_parameters  ?(parameters=
       [])  () =
       { d_b_parameter_group_name; reset_all_parameters; parameters }
@@ -7588,6 +7888,7 @@ module ResetDBParameterGroupMessage =
                (Util.option_bind (Xml.member "Parameters" xml)
                   ParametersList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -7602,6 +7903,7 @@ module ResetDBParameterGroupMessage =
              (Query.Pair
                 ("DBParameterGroupName",
                   (String.to_query v.d_b_parameter_group_name)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -7611,6 +7913,7 @@ module ResetDBParameterGroupMessage =
            Some
              ("d_b_parameter_group_name",
                (String.to_json v.d_b_parameter_group_name))])
+
     let of_json j =
       {
         d_b_parameter_group_name =
@@ -7628,12 +7931,12 @@ module DescribeOptionGroupsMessage =
   struct
     type t =
       {
-      option_group_name: String.t option;
-      filters: FilterList.t;
-      marker: String.t option;
-      max_records: Integer.t option;
-      engine_name: String.t option;
-      major_engine_version: String.t option;}
+      option_group_name: String.t option ;
+      filters: FilterList.t ;
+      marker: String.t option ;
+      max_records: Integer.t option ;
+      engine_name: String.t option ;
+      major_engine_version: String.t option }
     let make ?option_group_name  ?(filters= [])  ?marker  ?max_records
       ?engine_name  ?major_engine_version  () =
       {
@@ -7661,6 +7964,7 @@ module DescribeOptionGroupsMessage =
             (Util.option_bind (Xml.member "MajorEngineVersion" xml)
                String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -7677,6 +7981,7 @@ module DescribeOptionGroupsMessage =
              (Query.Pair ("Filters.member", (FilterList.to_query v.filters)));
            Util.option_map v.option_group_name
              (fun f  -> Query.Pair ("OptionGroupName", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -7691,6 +7996,7 @@ module DescribeOptionGroupsMessage =
            Some ("filters", (FilterList.to_json v.filters));
            Util.option_map v.option_group_name
              (fun f  -> ("option_group_name", (String.to_json f)))])
+
     let of_json j =
       {
         option_group_name =
@@ -7710,7 +8016,7 @@ module DescribeOptionGroupsMessage =
 module DeleteEventSubscriptionMessage =
   struct
     type t = {
-      subscription_name: String.t;}
+      subscription_name: String.t }
     let make ~subscription_name  () = { subscription_name }
     let parse xml =
       Some
@@ -7720,16 +8026,19 @@ module DeleteEventSubscriptionMessage =
                (Util.option_bind (Xml.member "SubscriptionName" xml)
                   String.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some
               (Query.Pair
                  ("SubscriptionName", (String.to_query v.subscription_name)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("subscription_name", (String.to_json v.subscription_name))])
+
     let of_json j =
       {
         subscription_name =
@@ -7741,8 +8050,8 @@ module RebootDBInstanceMessage =
   struct
     type t =
       {
-      d_b_instance_identifier: String.t;
-      force_failover: Boolean.t option;}
+      d_b_instance_identifier: String.t ;
+      force_failover: Boolean.t option }
     let make ~d_b_instance_identifier  ?force_failover  () =
       { d_b_instance_identifier; force_failover }
     let parse xml =
@@ -7755,6 +8064,7 @@ module RebootDBInstanceMessage =
           force_failover =
             (Util.option_bind (Xml.member "ForceFailover" xml) Boolean.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -7764,6 +8074,7 @@ module RebootDBInstanceMessage =
              (Query.Pair
                 ("DBInstanceIdentifier",
                   (String.to_query v.d_b_instance_identifier)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -7772,6 +8083,7 @@ module RebootDBInstanceMessage =
            Some
              ("d_b_instance_identifier",
                (String.to_json v.d_b_instance_identifier))])
+
     let of_json j =
       {
         d_b_instance_identifier =
@@ -7784,7 +8096,7 @@ module RebootDBInstanceMessage =
 module DeleteDBClusterSnapshotResult =
   struct
     type t = {
-      d_b_cluster_snapshot: DBClusterSnapshot.t option;}
+      d_b_cluster_snapshot: DBClusterSnapshot.t option }
     let make ?d_b_cluster_snapshot  () = { d_b_cluster_snapshot }
     let parse xml =
       Some
@@ -7793,6 +8105,7 @@ module DeleteDBClusterSnapshotResult =
             (Util.option_bind (Xml.member "DBClusterSnapshot" xml)
                DBClusterSnapshot.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -7800,12 +8113,14 @@ module DeleteDBClusterSnapshotResult =
               (fun f  ->
                  Query.Pair
                    ("DBClusterSnapshot", (DBClusterSnapshot.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.d_b_cluster_snapshot
               (fun f  ->
                  ("d_b_cluster_snapshot", (DBClusterSnapshot.to_json f)))])
+
     let of_json j =
       {
         d_b_cluster_snapshot =
@@ -7816,7 +8131,7 @@ module DeleteDBClusterSnapshotResult =
 module DeleteDBSecurityGroupMessage =
   struct
     type t = {
-      d_b_security_group_name: String.t;}
+      d_b_security_group_name: String.t }
     let make ~d_b_security_group_name  () = { d_b_security_group_name }
     let parse xml =
       Some
@@ -7826,6 +8141,7 @@ module DeleteDBSecurityGroupMessage =
                (Util.option_bind (Xml.member "DBSecurityGroupName" xml)
                   String.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -7833,12 +8149,14 @@ module DeleteDBSecurityGroupMessage =
               (Query.Pair
                  ("DBSecurityGroupName",
                    (String.to_query v.d_b_security_group_name)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("d_b_security_group_name",
                 (String.to_json v.d_b_security_group_name))])
+
     let of_json j =
       {
         d_b_security_group_name =
@@ -7850,17 +8168,17 @@ module ModifyDBClusterMessage =
   struct
     type t =
       {
-      d_b_cluster_identifier: String.t option;
-      new_d_b_cluster_identifier: String.t option;
-      apply_immediately: Boolean.t option;
-      backup_retention_period: Integer.t option;
-      d_b_cluster_parameter_group_name: String.t option;
-      vpc_security_group_ids: VpcSecurityGroupIdList.t;
-      port: Integer.t option;
-      master_user_password: String.t option;
-      option_group_name: String.t option;
-      preferred_backup_window: String.t option;
-      preferred_maintenance_window: String.t option;}
+      d_b_cluster_identifier: String.t option ;
+      new_d_b_cluster_identifier: String.t option ;
+      apply_immediately: Boolean.t option ;
+      backup_retention_period: Integer.t option ;
+      d_b_cluster_parameter_group_name: String.t option ;
+      vpc_security_group_ids: VpcSecurityGroupIdList.t ;
+      port: Integer.t option ;
+      master_user_password: String.t option ;
+      option_group_name: String.t option ;
+      preferred_backup_window: String.t option ;
+      preferred_maintenance_window: String.t option }
     let make ?d_b_cluster_identifier  ?new_d_b_cluster_identifier
       ?apply_immediately  ?backup_retention_period
       ?d_b_cluster_parameter_group_name  ?(vpc_security_group_ids= [])  ?port
@@ -7914,6 +8232,7 @@ module ModifyDBClusterMessage =
             (Util.option_bind (Xml.member "PreferredMaintenanceWindow" xml)
                String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -7950,6 +8269,7 @@ module ModifyDBClusterMessage =
            Util.option_map v.d_b_cluster_identifier
              (fun f  ->
                 Query.Pair ("DBClusterIdentifier", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -7976,6 +8296,7 @@ module ModifyDBClusterMessage =
              (fun f  -> ("new_d_b_cluster_identifier", (String.to_json f)));
            Util.option_map v.d_b_cluster_identifier
              (fun f  -> ("d_b_cluster_identifier", (String.to_json f)))])
+
     let of_json j =
       {
         d_b_cluster_identifier =
@@ -8013,7 +8334,7 @@ module ModifyDBClusterMessage =
 module CreateDBInstanceResult =
   struct
     type t = {
-      d_b_instance: DBInstance.t option;}
+      d_b_instance: DBInstance.t option }
     let make ?d_b_instance  () = { d_b_instance }
     let parse xml =
       Some
@@ -8021,16 +8342,19 @@ module CreateDBInstanceResult =
           d_b_instance =
             (Util.option_bind (Xml.member "DBInstance" xml) DBInstance.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.d_b_instance
               (fun f  -> Query.Pair ("DBInstance", (DBInstance.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.d_b_instance
               (fun f  -> ("d_b_instance", (DBInstance.to_json f)))])
+
     let of_json j =
       {
         d_b_instance =
@@ -8040,7 +8364,7 @@ module CreateDBInstanceResult =
 module DBClusterParameterGroupNameMessage =
   struct
     type t = {
-      d_b_cluster_parameter_group_name: String.t option;}
+      d_b_cluster_parameter_group_name: String.t option }
     let make ?d_b_cluster_parameter_group_name  () =
       { d_b_cluster_parameter_group_name }
     let parse xml =
@@ -8050,6 +8374,7 @@ module DBClusterParameterGroupNameMessage =
             (Util.option_bind (Xml.member "DBClusterParameterGroupName" xml)
                String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -8057,12 +8382,14 @@ module DBClusterParameterGroupNameMessage =
               (fun f  ->
                  Query.Pair
                    ("DBClusterParameterGroupName", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.d_b_cluster_parameter_group_name
               (fun f  ->
                  ("d_b_cluster_parameter_group_name", (String.to_json f)))])
+
     let of_json j =
       {
         d_b_cluster_parameter_group_name =
@@ -8074,11 +8401,11 @@ module RevokeDBSecurityGroupIngressMessage =
   struct
     type t =
       {
-      d_b_security_group_name: String.t;
-      c_i_d_r_i_p: String.t option;
-      e_c2_security_group_name: String.t option;
-      e_c2_security_group_id: String.t option;
-      e_c2_security_group_owner_id: String.t option;}
+      d_b_security_group_name: String.t ;
+      c_i_d_r_i_p: String.t option ;
+      e_c2_security_group_name: String.t option ;
+      e_c2_security_group_id: String.t option ;
+      e_c2_security_group_owner_id: String.t option }
     let make ~d_b_security_group_name  ?c_i_d_r_i_p
       ?e_c2_security_group_name  ?e_c2_security_group_id
       ?e_c2_security_group_owner_id  () =
@@ -8108,6 +8435,7 @@ module RevokeDBSecurityGroupIngressMessage =
             (Util.option_bind (Xml.member "EC2SecurityGroupOwnerId" xml)
                String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -8126,6 +8454,7 @@ module RevokeDBSecurityGroupIngressMessage =
              (Query.Pair
                 ("DBSecurityGroupName",
                   (String.to_query v.d_b_security_group_name)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -8140,6 +8469,7 @@ module RevokeDBSecurityGroupIngressMessage =
            Some
              ("d_b_security_group_name",
                (String.to_json v.d_b_security_group_name))])
+
     let of_json j =
       {
         d_b_security_group_name =
@@ -8161,7 +8491,7 @@ module RevokeDBSecurityGroupIngressMessage =
 module DeleteDBClusterSnapshotMessage =
   struct
     type t = {
-      d_b_cluster_snapshot_identifier: String.t;}
+      d_b_cluster_snapshot_identifier: String.t }
     let make ~d_b_cluster_snapshot_identifier  () =
       { d_b_cluster_snapshot_identifier }
     let parse xml =
@@ -8172,6 +8502,7 @@ module DeleteDBClusterSnapshotMessage =
                (Util.option_bind
                   (Xml.member "DBClusterSnapshotIdentifier" xml) String.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -8179,12 +8510,14 @@ module DeleteDBClusterSnapshotMessage =
               (Query.Pair
                  ("DBClusterSnapshotIdentifier",
                    (String.to_query v.d_b_cluster_snapshot_identifier)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("d_b_cluster_snapshot_identifier",
                 (String.to_json v.d_b_cluster_snapshot_identifier))])
+
     let of_json j =
       {
         d_b_cluster_snapshot_identifier =
@@ -8197,8 +8530,8 @@ module DBClusterParameterGroupsMessage =
   struct
     type t =
       {
-      marker: String.t option;
-      d_b_cluster_parameter_groups: DBClusterParameterGroupList.t;}
+      marker: String.t option ;
+      d_b_cluster_parameter_groups: DBClusterParameterGroupList.t }
     let make ?marker  ?(d_b_cluster_parameter_groups= [])  () =
       { marker; d_b_cluster_parameter_groups }
     let parse xml =
@@ -8210,6 +8543,7 @@ module DBClusterParameterGroupsMessage =
                (Util.option_bind (Xml.member "DBClusterParameterGroups" xml)
                   DBClusterParameterGroupList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -8220,6 +8554,7 @@ module DBClusterParameterGroupsMessage =
                       v.d_b_cluster_parameter_groups)));
            Util.option_map v.marker
              (fun f  -> Query.Pair ("Marker", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -8229,6 +8564,7 @@ module DBClusterParameterGroupsMessage =
                    v.d_b_cluster_parameter_groups));
            Util.option_map v.marker
              (fun f  -> ("marker", (String.to_json f)))])
+
     let of_json j =
       {
         marker = (Util.option_map (Json.lookup j "marker") String.of_json);
@@ -8242,10 +8578,10 @@ module CopyDBSnapshotMessage =
   struct
     type t =
       {
-      source_d_b_snapshot_identifier: String.t;
-      target_d_b_snapshot_identifier: String.t;
-      tags: TagList.t;
-      copy_tags: Boolean.t option;}
+      source_d_b_snapshot_identifier: String.t ;
+      target_d_b_snapshot_identifier: String.t ;
+      tags: TagList.t ;
+      copy_tags: Boolean.t option }
     let make ~source_d_b_snapshot_identifier  ~target_d_b_snapshot_identifier
        ?(tags= [])  ?copy_tags  () =
       {
@@ -8271,6 +8607,7 @@ module CopyDBSnapshotMessage =
           copy_tags =
             (Util.option_bind (Xml.member "CopyTags" xml) Boolean.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -8285,6 +8622,7 @@ module CopyDBSnapshotMessage =
              (Query.Pair
                 ("SourceDBSnapshotIdentifier",
                   (String.to_query v.source_d_b_snapshot_identifier)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -8297,6 +8635,7 @@ module CopyDBSnapshotMessage =
            Some
              ("source_d_b_snapshot_identifier",
                (String.to_json v.source_d_b_snapshot_identifier))])
+
     let of_json j =
       {
         source_d_b_snapshot_identifier =
@@ -8315,7 +8654,7 @@ module CopyDBSnapshotMessage =
 module RevokeDBSecurityGroupIngressResult =
   struct
     type t = {
-      d_b_security_group: DBSecurityGroup.t option;}
+      d_b_security_group: DBSecurityGroup.t option }
     let make ?d_b_security_group  () = { d_b_security_group }
     let parse xml =
       Some
@@ -8324,17 +8663,20 @@ module RevokeDBSecurityGroupIngressResult =
             (Util.option_bind (Xml.member "DBSecurityGroup" xml)
                DBSecurityGroup.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.d_b_security_group
               (fun f  ->
                  Query.Pair ("DBSecurityGroup", (DBSecurityGroup.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.d_b_security_group
               (fun f  -> ("d_b_security_group", (DBSecurityGroup.to_json f)))])
+
     let of_json j =
       {
         d_b_security_group =
@@ -8346,8 +8688,8 @@ module DescribeDBLogFilesResponse =
   struct
     type t =
       {
-      describe_d_b_log_files: DescribeDBLogFilesList.t;
-      marker: String.t option;}
+      describe_d_b_log_files: DescribeDBLogFilesList.t ;
+      marker: String.t option }
     let make ?(describe_d_b_log_files= [])  ?marker  () =
       { describe_d_b_log_files; marker }
     let parse xml =
@@ -8359,6 +8701,7 @@ module DescribeDBLogFilesResponse =
                   DescribeDBLogFilesList.parse));
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -8368,6 +8711,7 @@ module DescribeDBLogFilesResponse =
              (Query.Pair
                 ("DescribeDBLogFiles.member",
                   (DescribeDBLogFilesList.to_query v.describe_d_b_log_files)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -8376,6 +8720,7 @@ module DescribeDBLogFilesResponse =
            Some
              ("describe_d_b_log_files",
                (DescribeDBLogFilesList.to_json v.describe_d_b_log_files))])
+
     let of_json j =
       {
         describe_d_b_log_files =
@@ -8388,15 +8733,15 @@ module DescribeEventsMessage =
   struct
     type t =
       {
-      source_identifier: String.t option;
-      source_type: SourceType.t option;
-      start_time: DateTime.t option;
-      end_time: DateTime.t option;
-      duration: Integer.t option;
-      event_categories: EventCategoriesList.t;
-      filters: FilterList.t;
-      max_records: Integer.t option;
-      marker: String.t option;}
+      source_identifier: String.t option ;
+      source_type: SourceType.t option ;
+      start_time: DateTime.t option ;
+      end_time: DateTime.t option ;
+      duration: Integer.t option ;
+      event_categories: EventCategoriesList.t ;
+      filters: FilterList.t ;
+      max_records: Integer.t option ;
+      marker: String.t option }
     let make ?source_identifier  ?source_type  ?start_time  ?end_time
       ?duration  ?(event_categories= [])  ?(filters= [])  ?max_records
       ?marker  () =
@@ -8436,6 +8781,7 @@ module DescribeEventsMessage =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse);
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -8459,6 +8805,7 @@ module DescribeEventsMessage =
              (fun f  -> Query.Pair ("SourceType", (SourceType.to_query f)));
            Util.option_map v.source_identifier
              (fun f  -> Query.Pair ("SourceIdentifier", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -8480,6 +8827,7 @@ module DescribeEventsMessage =
              (fun f  -> ("source_type", (SourceType.to_json f)));
            Util.option_map v.source_identifier
              (fun f  -> ("source_identifier", (String.to_json f)))])
+
     let of_json j =
       {
         source_identifier =
@@ -8506,9 +8854,9 @@ module DeleteDBClusterMessage =
   struct
     type t =
       {
-      d_b_cluster_identifier: String.t option;
-      skip_final_snapshot: Boolean.t option;
-      final_d_b_snapshot_identifier: String.t option;}
+      d_b_cluster_identifier: String.t option ;
+      skip_final_snapshot: Boolean.t option ;
+      final_d_b_snapshot_identifier: String.t option }
     let make ?d_b_cluster_identifier  ?skip_final_snapshot
       ?final_d_b_snapshot_identifier  () =
       {
@@ -8529,6 +8877,7 @@ module DeleteDBClusterMessage =
             (Util.option_bind (Xml.member "FinalDBSnapshotIdentifier" xml)
                String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -8542,6 +8891,7 @@ module DeleteDBClusterMessage =
            Util.option_map v.d_b_cluster_identifier
              (fun f  ->
                 Query.Pair ("DBClusterIdentifier", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -8552,6 +8902,7 @@ module DeleteDBClusterMessage =
              (fun f  -> ("skip_final_snapshot", (Boolean.to_json f)));
            Util.option_map v.d_b_cluster_identifier
              (fun f  -> ("d_b_cluster_identifier", (String.to_json f)))])
+
     let of_json j =
       {
         d_b_cluster_identifier =
@@ -8568,7 +8919,7 @@ module DeleteDBClusterMessage =
 module CreateDBClusterResult =
   struct
     type t = {
-      d_b_cluster: DBCluster.t option;}
+      d_b_cluster: DBCluster.t option }
     let make ?d_b_cluster  () = { d_b_cluster }
     let parse xml =
       Some
@@ -8576,16 +8927,19 @@ module CreateDBClusterResult =
           d_b_cluster =
             (Util.option_bind (Xml.member "DBCluster" xml) DBCluster.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.d_b_cluster
               (fun f  -> Query.Pair ("DBCluster", (DBCluster.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.d_b_cluster
               (fun f  -> ("d_b_cluster", (DBCluster.to_json f)))])
+
     let of_json j =
       {
         d_b_cluster =
@@ -8595,7 +8949,7 @@ module CreateDBClusterResult =
 module DescribeEngineDefaultParametersResult =
   struct
     type t = {
-      engine_defaults: EngineDefaults.t;}
+      engine_defaults: EngineDefaults.t }
     let make ~engine_defaults  () = { engine_defaults }
     let parse xml =
       Some
@@ -8605,6 +8959,7 @@ module DescribeEngineDefaultParametersResult =
                (Util.option_bind (Xml.member "EngineDefaults" xml)
                   EngineDefaults.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -8612,11 +8967,13 @@ module DescribeEngineDefaultParametersResult =
               (Query.Pair
                  ("EngineDefaults",
                    (EngineDefaults.to_query v.engine_defaults)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("engine_defaults", (EngineDefaults.to_json v.engine_defaults))])
+
     let of_json j =
       {
         engine_defaults =
@@ -8628,11 +8985,11 @@ module DescribeDBClusterParametersMessage =
   struct
     type t =
       {
-      d_b_cluster_parameter_group_name: String.t;
-      source: String.t option;
-      filters: FilterList.t;
-      max_records: Integer.t option;
-      marker: String.t option;}
+      d_b_cluster_parameter_group_name: String.t ;
+      source: String.t option ;
+      filters: FilterList.t ;
+      max_records: Integer.t option ;
+      marker: String.t option }
     let make ~d_b_cluster_parameter_group_name  ?source  ?(filters= [])
       ?max_records  ?marker  () =
       {
@@ -8657,6 +9014,7 @@ module DescribeDBClusterParametersMessage =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse);
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -8672,6 +9030,7 @@ module DescribeDBClusterParametersMessage =
              (Query.Pair
                 ("DBClusterParameterGroupName",
                   (String.to_query v.d_b_cluster_parameter_group_name)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -8685,6 +9044,7 @@ module DescribeDBClusterParametersMessage =
            Some
              ("d_b_cluster_parameter_group_name",
                (String.to_json v.d_b_cluster_parameter_group_name))])
+
     let of_json j =
       {
         d_b_cluster_parameter_group_name =
@@ -8703,8 +9063,8 @@ module EventSubscriptionsMessage =
   struct
     type t =
       {
-      marker: String.t option;
-      event_subscriptions_list: EventSubscriptionsList.t;}
+      marker: String.t option ;
+      event_subscriptions_list: EventSubscriptionsList.t }
     let make ?marker  ?(event_subscriptions_list= [])  () =
       { marker; event_subscriptions_list }
     let parse xml =
@@ -8716,6 +9076,7 @@ module EventSubscriptionsMessage =
                (Util.option_bind (Xml.member "EventSubscriptionsList" xml)
                   EventSubscriptionsList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -8726,6 +9087,7 @@ module EventSubscriptionsMessage =
                       v.event_subscriptions_list)));
            Util.option_map v.marker
              (fun f  -> Query.Pair ("Marker", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -8734,6 +9096,7 @@ module EventSubscriptionsMessage =
                 (EventSubscriptionsList.to_json v.event_subscriptions_list));
            Util.option_map v.marker
              (fun f  -> ("marker", (String.to_json f)))])
+
     let of_json j =
       {
         marker = (Util.option_map (Json.lookup j "marker") String.of_json);
@@ -8746,10 +9109,10 @@ module DescribeEngineDefaultClusterParametersMessage =
   struct
     type t =
       {
-      d_b_parameter_group_family: String.t;
-      filters: FilterList.t;
-      max_records: Integer.t option;
-      marker: String.t option;}
+      d_b_parameter_group_family: String.t ;
+      filters: FilterList.t ;
+      max_records: Integer.t option ;
+      marker: String.t option }
     let make ~d_b_parameter_group_family  ?(filters= [])  ?max_records
       ?marker  () =
       { d_b_parameter_group_family; filters; max_records; marker }
@@ -8767,6 +9130,7 @@ module DescribeEngineDefaultClusterParametersMessage =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse);
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -8780,6 +9144,7 @@ module DescribeEngineDefaultClusterParametersMessage =
              (Query.Pair
                 ("DBParameterGroupFamily",
                   (String.to_query v.d_b_parameter_group_family)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -8791,6 +9156,7 @@ module DescribeEngineDefaultClusterParametersMessage =
            Some
              ("d_b_parameter_group_family",
                (String.to_json v.d_b_parameter_group_family))])
+
     let of_json j =
       {
         d_b_parameter_group_family =
@@ -8806,8 +9172,8 @@ module DescribeEngineDefaultClusterParametersMessage =
 module AddSourceIdentifierToSubscriptionMessage =
   struct
     type t = {
-      subscription_name: String.t;
-      source_identifier: String.t;}
+      subscription_name: String.t ;
+      source_identifier: String.t }
     let make ~subscription_name  ~source_identifier  () =
       { subscription_name; source_identifier }
     let parse xml =
@@ -8822,6 +9188,7 @@ module AddSourceIdentifierToSubscriptionMessage =
                (Util.option_bind (Xml.member "SourceIdentifier" xml)
                   String.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -8831,11 +9198,13 @@ module AddSourceIdentifierToSubscriptionMessage =
            Some
              (Query.Pair
                 ("SubscriptionName", (String.to_query v.subscription_name)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("source_identifier", (String.to_json v.source_identifier));
            Some ("subscription_name", (String.to_json v.subscription_name))])
+
     let of_json j =
       {
         subscription_name =
@@ -8850,16 +9219,16 @@ module DescribeReservedDBInstancesMessage =
   struct
     type t =
       {
-      reserved_d_b_instance_id: String.t option;
-      reserved_d_b_instances_offering_id: String.t option;
-      d_b_instance_class: String.t option;
-      duration: String.t option;
-      product_description: String.t option;
-      offering_type: String.t option;
-      multi_a_z: Boolean.t option;
-      filters: FilterList.t;
-      max_records: Integer.t option;
-      marker: String.t option;}
+      reserved_d_b_instance_id: String.t option ;
+      reserved_d_b_instances_offering_id: String.t option ;
+      d_b_instance_class: String.t option ;
+      duration: String.t option ;
+      product_description: String.t option ;
+      offering_type: String.t option ;
+      multi_a_z: Boolean.t option ;
+      filters: FilterList.t ;
+      max_records: Integer.t option ;
+      marker: String.t option }
     let make ?reserved_d_b_instance_id  ?reserved_d_b_instances_offering_id
       ?d_b_instance_class  ?duration  ?product_description  ?offering_type
       ?multi_a_z  ?(filters= [])  ?max_records  ?marker  () =
@@ -8902,6 +9271,7 @@ module DescribeReservedDBInstancesMessage =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse);
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -8929,6 +9299,7 @@ module DescribeReservedDBInstancesMessage =
            Util.option_map v.reserved_d_b_instance_id
              (fun f  ->
                 Query.Pair ("ReservedDBInstanceId", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -8952,6 +9323,7 @@ module DescribeReservedDBInstancesMessage =
                 ("reserved_d_b_instances_offering_id", (String.to_json f)));
            Util.option_map v.reserved_d_b_instance_id
              (fun f  -> ("reserved_d_b_instance_id", (String.to_json f)))])
+
     let of_json j =
       {
         reserved_d_b_instance_id =
@@ -8984,10 +9356,10 @@ module DescribePendingMaintenanceActionsMessage =
   struct
     type t =
       {
-      resource_identifier: String.t option;
-      filters: FilterList.t;
-      marker: String.t option;
-      max_records: Integer.t option;}
+      resource_identifier: String.t option ;
+      filters: FilterList.t ;
+      marker: String.t option ;
+      max_records: Integer.t option }
     let make ?resource_identifier  ?(filters= [])  ?marker  ?max_records  ()
       = { resource_identifier; filters; marker; max_records }
     let parse xml =
@@ -9003,6 +9375,7 @@ module DescribePendingMaintenanceActionsMessage =
           max_records =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -9015,6 +9388,7 @@ module DescribePendingMaintenanceActionsMessage =
            Util.option_map v.resource_identifier
              (fun f  ->
                 Query.Pair ("ResourceIdentifier", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -9025,6 +9399,7 @@ module DescribePendingMaintenanceActionsMessage =
            Some ("filters", (FilterList.to_json v.filters));
            Util.option_map v.resource_identifier
              (fun f  -> ("resource_identifier", (String.to_json f)))])
+
     let of_json j =
       {
         resource_identifier =
@@ -9041,10 +9416,10 @@ module ModifyOptionGroupMessage =
   struct
     type t =
       {
-      option_group_name: String.t;
-      options_to_include: OptionConfigurationList.t;
-      options_to_remove: OptionNamesList.t;
-      apply_immediately: Boolean.t option;}
+      option_group_name: String.t ;
+      options_to_include: OptionConfigurationList.t ;
+      options_to_remove: OptionNamesList.t ;
+      apply_immediately: Boolean.t option }
     let make ~option_group_name  ?(options_to_include= [])
       ?(options_to_remove= [])  ?apply_immediately  () =
       {
@@ -9072,6 +9447,7 @@ module ModifyOptionGroupMessage =
             (Util.option_bind (Xml.member "ApplyImmediately" xml)
                Boolean.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -9089,6 +9465,7 @@ module ModifyOptionGroupMessage =
            Some
              (Query.Pair
                 ("OptionGroupName", (String.to_query v.option_group_name)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -9101,6 +9478,7 @@ module ModifyOptionGroupMessage =
              ("options_to_include",
                (OptionConfigurationList.to_json v.options_to_include));
            Some ("option_group_name", (String.to_json v.option_group_name))])
+
     let of_json j =
       {
         option_group_name =
@@ -9121,8 +9499,8 @@ module ReservedDBInstanceMessage =
   struct
     type t =
       {
-      marker: String.t option;
-      reserved_d_b_instances: ReservedDBInstanceList.t;}
+      marker: String.t option ;
+      reserved_d_b_instances: ReservedDBInstanceList.t }
     let make ?marker  ?(reserved_d_b_instances= [])  () =
       { marker; reserved_d_b_instances }
     let parse xml =
@@ -9134,6 +9512,7 @@ module ReservedDBInstanceMessage =
                (Util.option_bind (Xml.member "ReservedDBInstances" xml)
                   ReservedDBInstanceList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -9143,6 +9522,7 @@ module ReservedDBInstanceMessage =
                    (ReservedDBInstanceList.to_query v.reserved_d_b_instances)));
            Util.option_map v.marker
              (fun f  -> Query.Pair ("Marker", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -9151,6 +9531,7 @@ module ReservedDBInstanceMessage =
                 (ReservedDBInstanceList.to_json v.reserved_d_b_instances));
            Util.option_map v.marker
              (fun f  -> ("marker", (String.to_json f)))])
+
     let of_json j =
       {
         marker = (Util.option_map (Json.lookup j "marker") String.of_json);
@@ -9162,8 +9543,8 @@ module ReservedDBInstanceMessage =
 module DBClusterParameterGroupDetails =
   struct
     type t = {
-      parameters: ParametersList.t;
-      marker: String.t option;}
+      parameters: ParametersList.t ;
+      marker: String.t option }
     let make ?(parameters= [])  ?marker  () = { parameters; marker }
     let parse xml =
       Some
@@ -9174,6 +9555,7 @@ module DBClusterParameterGroupDetails =
                   ParametersList.parse));
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -9182,12 +9564,14 @@ module DBClusterParameterGroupDetails =
            Some
              (Query.Pair
                 ("Parameters.member", (ParametersList.to_query v.parameters)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.marker
               (fun f  -> ("marker", (String.to_json f)));
            Some ("parameters", (ParametersList.to_json v.parameters))])
+
     let of_json j =
       {
         parameters =
@@ -9199,8 +9583,8 @@ module DBClusterParameterGroupDetails =
 module DBParameterGroupDetails =
   struct
     type t = {
-      parameters: ParametersList.t;
-      marker: String.t option;}
+      parameters: ParametersList.t ;
+      marker: String.t option }
     let make ?(parameters= [])  ?marker  () = { parameters; marker }
     let parse xml =
       Some
@@ -9211,6 +9595,7 @@ module DBParameterGroupDetails =
                   ParametersList.parse));
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -9219,12 +9604,14 @@ module DBParameterGroupDetails =
            Some
              (Query.Pair
                 ("Parameters.member", (ParametersList.to_query v.parameters)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.marker
               (fun f  -> ("marker", (String.to_json f)));
            Some ("parameters", (ParametersList.to_json v.parameters))])
+
     let of_json j =
       {
         parameters =
@@ -9237,10 +9624,10 @@ module DescribeDBClusterParameterGroupsMessage =
   struct
     type t =
       {
-      d_b_cluster_parameter_group_name: String.t option;
-      filters: FilterList.t;
-      max_records: Integer.t option;
-      marker: String.t option;}
+      d_b_cluster_parameter_group_name: String.t option ;
+      filters: FilterList.t ;
+      max_records: Integer.t option ;
+      marker: String.t option }
     let make ?d_b_cluster_parameter_group_name  ?(filters= [])  ?max_records
       ?marker  () =
       { d_b_cluster_parameter_group_name; filters; max_records; marker }
@@ -9257,6 +9644,7 @@ module DescribeDBClusterParameterGroupsMessage =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse);
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -9270,6 +9658,7 @@ module DescribeDBClusterParameterGroupsMessage =
              (fun f  ->
                 Query.Pair
                   ("DBClusterParameterGroupName", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -9281,6 +9670,7 @@ module DescribeDBClusterParameterGroupsMessage =
            Util.option_map v.d_b_cluster_parameter_group_name
              (fun f  ->
                 ("d_b_cluster_parameter_group_name", (String.to_json f)))])
+
     let of_json j =
       {
         d_b_cluster_parameter_group_name =
@@ -9296,7 +9686,7 @@ module DescribeDBClusterParameterGroupsMessage =
 module PromoteReadReplicaResult =
   struct
     type t = {
-      d_b_instance: DBInstance.t option;}
+      d_b_instance: DBInstance.t option }
     let make ?d_b_instance  () = { d_b_instance }
     let parse xml =
       Some
@@ -9304,16 +9694,19 @@ module PromoteReadReplicaResult =
           d_b_instance =
             (Util.option_bind (Xml.member "DBInstance" xml) DBInstance.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.d_b_instance
               (fun f  -> Query.Pair ("DBInstance", (DBInstance.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.d_b_instance
               (fun f  -> ("d_b_instance", (DBInstance.to_json f)))])
+
     let of_json j =
       {
         d_b_instance =
@@ -9323,8 +9716,8 @@ module PromoteReadReplicaResult =
 module AddTagsToResourceMessage =
   struct
     type t = {
-      resource_name: String.t;
-      tags: TagList.t;}
+      resource_name: String.t ;
+      tags: TagList.t }
     let make ~resource_name  ~tags  () = { resource_name; tags }
     let parse xml =
       Some
@@ -9336,17 +9729,20 @@ module AddTagsToResourceMessage =
             (Xml.required "Tags"
                (Util.option_bind (Xml.member "Tags" xml) TagList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("Tags.member", (TagList.to_query v.tags)));
            Some
              (Query.Pair ("ResourceName", (String.to_query v.resource_name)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("tags", (TagList.to_json v.tags));
            Some ("resource_name", (String.to_json v.resource_name))])
+
     let of_json j =
       {
         resource_name =
@@ -9360,7 +9756,7 @@ module ApplyPendingMaintenanceActionResult =
     type t =
       {
       resource_pending_maintenance_actions:
-        ResourcePendingMaintenanceActions.t option;}
+        ResourcePendingMaintenanceActions.t option }
     let make ?resource_pending_maintenance_actions  () =
       { resource_pending_maintenance_actions }
     let parse xml =
@@ -9371,6 +9767,7 @@ module ApplyPendingMaintenanceActionResult =
                (Xml.member "ResourcePendingMaintenanceActions" xml)
                ResourcePendingMaintenanceActions.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -9379,6 +9776,7 @@ module ApplyPendingMaintenanceActionResult =
                  Query.Pair
                    ("ResourcePendingMaintenanceActions",
                      (ResourcePendingMaintenanceActions.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -9386,6 +9784,7 @@ module ApplyPendingMaintenanceActionResult =
               (fun f  ->
                  ("resource_pending_maintenance_actions",
                    (ResourcePendingMaintenanceActions.to_json f)))])
+
     let of_json j =
       {
         resource_pending_maintenance_actions =
@@ -9397,7 +9796,7 @@ module ApplyPendingMaintenanceActionResult =
 module ModifyDBSubnetGroupResult =
   struct
     type t = {
-      d_b_subnet_group: DBSubnetGroup.t option;}
+      d_b_subnet_group: DBSubnetGroup.t option }
     let make ?d_b_subnet_group  () = { d_b_subnet_group }
     let parse xml =
       Some
@@ -9406,17 +9805,20 @@ module ModifyDBSubnetGroupResult =
             (Util.option_bind (Xml.member "DBSubnetGroup" xml)
                DBSubnetGroup.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.d_b_subnet_group
               (fun f  ->
                  Query.Pair ("DBSubnetGroup", (DBSubnetGroup.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.d_b_subnet_group
               (fun f  -> ("d_b_subnet_group", (DBSubnetGroup.to_json f)))])
+
     let of_json j =
       {
         d_b_subnet_group =
@@ -9427,7 +9829,7 @@ module ModifyDBSubnetGroupResult =
 module CopyOptionGroupResult =
   struct
     type t = {
-      option_group: OptionGroup.t option;}
+      option_group: OptionGroup.t option }
     let make ?option_group  () = { option_group }
     let parse xml =
       Some
@@ -9436,16 +9838,19 @@ module CopyOptionGroupResult =
             (Util.option_bind (Xml.member "OptionGroup" xml)
                OptionGroup.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.option_group
               (fun f  -> Query.Pair ("OptionGroup", (OptionGroup.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.option_group
               (fun f  -> ("option_group", (OptionGroup.to_json f)))])
+
     let of_json j =
       {
         option_group =
@@ -9456,39 +9861,39 @@ module CreateDBInstanceMessage =
   struct
     type t =
       {
-      d_b_name: String.t option;
-      d_b_instance_identifier: String.t;
-      allocated_storage: Integer.t option;
-      d_b_instance_class: String.t;
-      engine: String.t;
-      master_username: String.t option;
-      master_user_password: String.t option;
-      d_b_security_groups: DBSecurityGroupNameList.t;
-      vpc_security_group_ids: VpcSecurityGroupIdList.t;
-      availability_zone: String.t option;
-      d_b_subnet_group_name: String.t option;
-      preferred_maintenance_window: String.t option;
-      d_b_parameter_group_name: String.t option;
-      backup_retention_period: Integer.t option;
-      preferred_backup_window: String.t option;
-      port: Integer.t option;
-      multi_a_z: Boolean.t option;
-      engine_version: String.t option;
-      auto_minor_version_upgrade: Boolean.t option;
-      license_model: String.t option;
-      iops: Integer.t option;
-      option_group_name: String.t option;
-      character_set_name: String.t option;
-      publicly_accessible: Boolean.t option;
-      tags: TagList.t;
-      d_b_cluster_identifier: String.t option;
-      storage_type: String.t option;
-      tde_credential_arn: String.t option;
-      tde_credential_password: String.t option;
-      storage_encrypted: Boolean.t option;
-      kms_key_id: String.t option;
-      domain: String.t option;
-      copy_tags_to_snapshot: Boolean.t option;}
+      d_b_name: String.t option ;
+      d_b_instance_identifier: String.t ;
+      allocated_storage: Integer.t option ;
+      d_b_instance_class: String.t ;
+      engine: String.t ;
+      master_username: String.t option ;
+      master_user_password: String.t option ;
+      d_b_security_groups: DBSecurityGroupNameList.t ;
+      vpc_security_group_ids: VpcSecurityGroupIdList.t ;
+      availability_zone: String.t option ;
+      d_b_subnet_group_name: String.t option ;
+      preferred_maintenance_window: String.t option ;
+      d_b_parameter_group_name: String.t option ;
+      backup_retention_period: Integer.t option ;
+      preferred_backup_window: String.t option ;
+      port: Integer.t option ;
+      multi_a_z: Boolean.t option ;
+      engine_version: String.t option ;
+      auto_minor_version_upgrade: Boolean.t option ;
+      license_model: String.t option ;
+      iops: Integer.t option ;
+      option_group_name: String.t option ;
+      character_set_name: String.t option ;
+      publicly_accessible: Boolean.t option ;
+      tags: TagList.t ;
+      d_b_cluster_identifier: String.t option ;
+      storage_type: String.t option ;
+      tde_credential_arn: String.t option ;
+      tde_credential_password: String.t option ;
+      storage_encrypted: Boolean.t option ;
+      kms_key_id: String.t option ;
+      domain: String.t option ;
+      copy_tags_to_snapshot: Boolean.t option }
     let make ?d_b_name  ~d_b_instance_identifier  ?allocated_storage
       ~d_b_instance_class  ~engine  ?master_username  ?master_user_password
       ?(d_b_security_groups= [])  ?(vpc_security_group_ids= [])
@@ -9628,6 +10033,7 @@ module CreateDBInstanceMessage =
             (Util.option_bind (Xml.member "CopyTagsToSnapshot" xml)
                Boolean.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -9713,6 +10119,7 @@ module CreateDBInstanceMessage =
                   (String.to_query v.d_b_instance_identifier)));
            Util.option_map v.d_b_name
              (fun f  -> Query.Pair ("DBName", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -9780,6 +10187,7 @@ module CreateDBInstanceMessage =
                (String.to_json v.d_b_instance_identifier));
            Util.option_map v.d_b_name
              (fun f  -> ("d_b_name", (String.to_json f)))])
+
     let of_json j =
       {
         d_b_name =
@@ -9868,7 +10276,7 @@ module CreateDBInstanceMessage =
 module RemoveSourceIdentifierFromSubscriptionResult =
   struct
     type t = {
-      event_subscription: EventSubscription.t option;}
+      event_subscription: EventSubscription.t option }
     let make ?event_subscription  () = { event_subscription }
     let parse xml =
       Some
@@ -9877,6 +10285,7 @@ module RemoveSourceIdentifierFromSubscriptionResult =
             (Util.option_bind (Xml.member "EventSubscription" xml)
                EventSubscription.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -9884,12 +10293,14 @@ module RemoveSourceIdentifierFromSubscriptionResult =
               (fun f  ->
                  Query.Pair
                    ("EventSubscription", (EventSubscription.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.event_subscription
               (fun f  ->
                  ("event_subscription", (EventSubscription.to_json f)))])
+
     let of_json j =
       {
         event_subscription =
@@ -9900,7 +10311,7 @@ module RemoveSourceIdentifierFromSubscriptionResult =
 module CreateDBClusterSnapshotResult =
   struct
     type t = {
-      d_b_cluster_snapshot: DBClusterSnapshot.t option;}
+      d_b_cluster_snapshot: DBClusterSnapshot.t option }
     let make ?d_b_cluster_snapshot  () = { d_b_cluster_snapshot }
     let parse xml =
       Some
@@ -9909,6 +10320,7 @@ module CreateDBClusterSnapshotResult =
             (Util.option_bind (Xml.member "DBClusterSnapshot" xml)
                DBClusterSnapshot.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -9916,12 +10328,14 @@ module CreateDBClusterSnapshotResult =
               (fun f  ->
                  Query.Pair
                    ("DBClusterSnapshot", (DBClusterSnapshot.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.d_b_cluster_snapshot
               (fun f  ->
                  ("d_b_cluster_snapshot", (DBClusterSnapshot.to_json f)))])
+
     let of_json j =
       {
         d_b_cluster_snapshot =
@@ -9933,11 +10347,11 @@ module CreateOptionGroupMessage =
   struct
     type t =
       {
-      option_group_name: String.t;
-      engine_name: String.t;
-      major_engine_version: String.t;
-      option_group_description: String.t;
-      tags: TagList.t;}
+      option_group_name: String.t ;
+      engine_name: String.t ;
+      major_engine_version: String.t ;
+      option_group_description: String.t ;
+      tags: TagList.t }
     let make ~option_group_name  ~engine_name  ~major_engine_version
       ~option_group_description  ?(tags= [])  () =
       {
@@ -9969,6 +10383,7 @@ module CreateOptionGroupMessage =
             (Util.of_option []
                (Util.option_bind (Xml.member "Tags" xml) TagList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -9985,6 +10400,7 @@ module CreateOptionGroupMessage =
            Some
              (Query.Pair
                 ("OptionGroupName", (String.to_query v.option_group_name)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -9997,6 +10413,7 @@ module CreateOptionGroupMessage =
                (String.to_json v.major_engine_version));
            Some ("engine_name", (String.to_json v.engine_name));
            Some ("option_group_name", (String.to_json v.option_group_name))])
+
     let of_json j =
       {
         option_group_name =
@@ -10017,28 +10434,28 @@ module RestoreDBInstanceFromDBSnapshotMessage =
   struct
     type t =
       {
-      d_b_instance_identifier: String.t;
-      d_b_snapshot_identifier: String.t;
-      d_b_instance_class: String.t option;
-      port: Integer.t option;
-      availability_zone: String.t option;
-      d_b_subnet_group_name: String.t option;
-      multi_a_z: Boolean.t option;
-      publicly_accessible: Boolean.t option;
-      auto_minor_version_upgrade: Boolean.t option;
-      license_model: String.t option;
-      d_b_name: String.t option;
-      engine: String.t option;
-      iops: Integer.t option;
-      option_group_name: String.t option;
-      tags: TagList.t;
-      storage_type: String.t option;
-      tde_credential_arn: String.t option;
-      tde_credential_password: String.t option;
-      vpc_security_group_ids: VpcSecurityGroupIdList.t;
-      d_b_security_groups: DBSecurityGroupNameList.t;
-      domain: String.t option;
-      copy_tags_to_snapshot: Boolean.t option;}
+      d_b_instance_identifier: String.t ;
+      d_b_snapshot_identifier: String.t ;
+      d_b_instance_class: String.t option ;
+      port: Integer.t option ;
+      availability_zone: String.t option ;
+      d_b_subnet_group_name: String.t option ;
+      multi_a_z: Boolean.t option ;
+      publicly_accessible: Boolean.t option ;
+      auto_minor_version_upgrade: Boolean.t option ;
+      license_model: String.t option ;
+      d_b_name: String.t option ;
+      engine: String.t option ;
+      iops: Integer.t option ;
+      option_group_name: String.t option ;
+      tags: TagList.t ;
+      storage_type: String.t option ;
+      tde_credential_arn: String.t option ;
+      tde_credential_password: String.t option ;
+      vpc_security_group_ids: VpcSecurityGroupIdList.t ;
+      d_b_security_groups: DBSecurityGroupNameList.t ;
+      domain: String.t option ;
+      copy_tags_to_snapshot: Boolean.t option }
     let make ~d_b_instance_identifier  ~d_b_snapshot_identifier
       ?d_b_instance_class  ?port  ?availability_zone  ?d_b_subnet_group_name
       ?multi_a_z  ?publicly_accessible  ?auto_minor_version_upgrade
@@ -10130,6 +10547,7 @@ module RestoreDBInstanceFromDBSnapshotMessage =
             (Util.option_bind (Xml.member "CopyTagsToSnapshot" xml)
                Boolean.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -10188,6 +10606,7 @@ module RestoreDBInstanceFromDBSnapshotMessage =
              (Query.Pair
                 ("DBInstanceIdentifier",
                   (String.to_query v.d_b_instance_identifier)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -10236,6 +10655,7 @@ module RestoreDBInstanceFromDBSnapshotMessage =
            Some
              ("d_b_instance_identifier",
                (String.to_json v.d_b_instance_identifier))])
+
     let of_json j =
       {
         d_b_instance_identifier =
@@ -10294,9 +10714,9 @@ module CreateDBSecurityGroupMessage =
   struct
     type t =
       {
-      d_b_security_group_name: String.t;
-      d_b_security_group_description: String.t;
-      tags: TagList.t;}
+      d_b_security_group_name: String.t ;
+      d_b_security_group_description: String.t ;
+      tags: TagList.t }
     let make ~d_b_security_group_name  ~d_b_security_group_description
       ?(tags= [])  () =
       { d_b_security_group_name; d_b_security_group_description; tags }
@@ -10315,6 +10735,7 @@ module CreateDBSecurityGroupMessage =
             (Util.of_option []
                (Util.option_bind (Xml.member "Tags" xml) TagList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -10327,6 +10748,7 @@ module CreateDBSecurityGroupMessage =
              (Query.Pair
                 ("DBSecurityGroupName",
                   (String.to_query v.d_b_security_group_name)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -10337,6 +10759,7 @@ module CreateDBSecurityGroupMessage =
            Some
              ("d_b_security_group_name",
                (String.to_json v.d_b_security_group_name))])
+
     let of_json j =
       {
         d_b_security_group_name =
@@ -10352,7 +10775,7 @@ module CreateDBSecurityGroupMessage =
 module FailoverDBClusterMessage =
   struct
     type t = {
-      d_b_cluster_identifier: String.t option;}
+      d_b_cluster_identifier: String.t option }
     let make ?d_b_cluster_identifier  () = { d_b_cluster_identifier }
     let parse xml =
       Some
@@ -10361,17 +10784,20 @@ module FailoverDBClusterMessage =
             (Util.option_bind (Xml.member "DBClusterIdentifier" xml)
                String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.d_b_cluster_identifier
               (fun f  ->
                  Query.Pair ("DBClusterIdentifier", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.d_b_cluster_identifier
               (fun f  -> ("d_b_cluster_identifier", (String.to_json f)))])
+
     let of_json j =
       {
         d_b_cluster_identifier =
@@ -10383,8 +10809,8 @@ module PendingMaintenanceActionsMessage =
   struct
     type t =
       {
-      pending_maintenance_actions: PendingMaintenanceActions.t;
-      marker: String.t option;}
+      pending_maintenance_actions: PendingMaintenanceActions.t ;
+      marker: String.t option }
     let make ?(pending_maintenance_actions= [])  ?marker  () =
       { pending_maintenance_actions; marker }
     let parse xml =
@@ -10396,6 +10822,7 @@ module PendingMaintenanceActionsMessage =
                   PendingMaintenanceActions.parse));
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -10406,6 +10833,7 @@ module PendingMaintenanceActionsMessage =
                 ("PendingMaintenanceActions.member",
                   (PendingMaintenanceActions.to_query
                      v.pending_maintenance_actions)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -10415,6 +10843,7 @@ module PendingMaintenanceActionsMessage =
              ("pending_maintenance_actions",
                (PendingMaintenanceActions.to_json
                   v.pending_maintenance_actions))])
+
     let of_json j =
       {
         pending_maintenance_actions =
@@ -10427,7 +10856,7 @@ module PendingMaintenanceActionsMessage =
 module PurchaseReservedDBInstancesOfferingResult =
   struct
     type t = {
-      reserved_d_b_instance: ReservedDBInstance.t option;}
+      reserved_d_b_instance: ReservedDBInstance.t option }
     let make ?reserved_d_b_instance  () = { reserved_d_b_instance }
     let parse xml =
       Some
@@ -10436,6 +10865,7 @@ module PurchaseReservedDBInstancesOfferingResult =
             (Util.option_bind (Xml.member "ReservedDBInstance" xml)
                ReservedDBInstance.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -10443,12 +10873,14 @@ module PurchaseReservedDBInstancesOfferingResult =
               (fun f  ->
                  Query.Pair
                    ("ReservedDBInstance", (ReservedDBInstance.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.reserved_d_b_instance
               (fun f  ->
                  ("reserved_d_b_instance", (ReservedDBInstance.to_json f)))])
+
     let of_json j =
       {
         reserved_d_b_instance =
@@ -10460,30 +10892,30 @@ module RestoreDBInstanceToPointInTimeMessage =
   struct
     type t =
       {
-      source_d_b_instance_identifier: String.t;
-      target_d_b_instance_identifier: String.t;
-      restore_time: DateTime.t option;
-      use_latest_restorable_time: Boolean.t option;
-      d_b_instance_class: String.t option;
-      port: Integer.t option;
-      availability_zone: String.t option;
-      d_b_subnet_group_name: String.t option;
-      multi_a_z: Boolean.t option;
-      publicly_accessible: Boolean.t option;
-      auto_minor_version_upgrade: Boolean.t option;
-      license_model: String.t option;
-      d_b_name: String.t option;
-      engine: String.t option;
-      iops: Integer.t option;
-      option_group_name: String.t option;
-      copy_tags_to_snapshot: Boolean.t option;
-      tags: TagList.t;
-      storage_type: String.t option;
-      tde_credential_arn: String.t option;
-      tde_credential_password: String.t option;
-      vpc_security_group_ids: VpcSecurityGroupIdList.t;
-      d_b_security_groups: DBSecurityGroupNameList.t;
-      domain: String.t option;}
+      source_d_b_instance_identifier: String.t ;
+      target_d_b_instance_identifier: String.t ;
+      restore_time: DateTime.t option ;
+      use_latest_restorable_time: Boolean.t option ;
+      d_b_instance_class: String.t option ;
+      port: Integer.t option ;
+      availability_zone: String.t option ;
+      d_b_subnet_group_name: String.t option ;
+      multi_a_z: Boolean.t option ;
+      publicly_accessible: Boolean.t option ;
+      auto_minor_version_upgrade: Boolean.t option ;
+      license_model: String.t option ;
+      d_b_name: String.t option ;
+      engine: String.t option ;
+      iops: Integer.t option ;
+      option_group_name: String.t option ;
+      copy_tags_to_snapshot: Boolean.t option ;
+      tags: TagList.t ;
+      storage_type: String.t option ;
+      tde_credential_arn: String.t option ;
+      tde_credential_password: String.t option ;
+      vpc_security_group_ids: VpcSecurityGroupIdList.t ;
+      d_b_security_groups: DBSecurityGroupNameList.t ;
+      domain: String.t option }
     let make ~source_d_b_instance_identifier  ~target_d_b_instance_identifier
        ?restore_time  ?use_latest_restorable_time  ?d_b_instance_class  ?port
        ?availability_zone  ?d_b_subnet_group_name  ?multi_a_z
@@ -10583,6 +11015,7 @@ module RestoreDBInstanceToPointInTimeMessage =
                   DBSecurityGroupNameList.parse));
           domain = (Util.option_bind (Xml.member "Domain" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -10646,6 +11079,7 @@ module RestoreDBInstanceToPointInTimeMessage =
              (Query.Pair
                 ("SourceDBInstanceIdentifier",
                   (String.to_query v.source_d_b_instance_identifier)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -10698,6 +11132,7 @@ module RestoreDBInstanceToPointInTimeMessage =
            Some
              ("source_d_b_instance_identifier",
                (String.to_json v.source_d_b_instance_identifier))])
+
     let of_json j =
       {
         source_d_b_instance_identifier =
@@ -10762,7 +11197,7 @@ module RestoreDBInstanceToPointInTimeMessage =
 module RestoreDBInstanceToPointInTimeResult =
   struct
     type t = {
-      d_b_instance: DBInstance.t option;}
+      d_b_instance: DBInstance.t option }
     let make ?d_b_instance  () = { d_b_instance }
     let parse xml =
       Some
@@ -10770,16 +11205,19 @@ module RestoreDBInstanceToPointInTimeResult =
           d_b_instance =
             (Util.option_bind (Xml.member "DBInstance" xml) DBInstance.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.d_b_instance
               (fun f  -> Query.Pair ("DBInstance", (DBInstance.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.d_b_instance
               (fun f  -> ("d_b_instance", (DBInstance.to_json f)))])
+
     let of_json j =
       {
         d_b_instance =
@@ -10790,9 +11228,9 @@ module ApplyPendingMaintenanceActionMessage =
   struct
     type t =
       {
-      resource_identifier: String.t;
-      apply_action: String.t;
-      opt_in_type: String.t;}
+      resource_identifier: String.t ;
+      apply_action: String.t ;
+      opt_in_type: String.t }
     let make ~resource_identifier  ~apply_action  ~opt_in_type  () =
       { resource_identifier; apply_action; opt_in_type }
     let parse xml =
@@ -10809,6 +11247,7 @@ module ApplyPendingMaintenanceActionMessage =
             (Xml.required "OptInType"
                (Util.option_bind (Xml.member "OptInType" xml) String.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -10819,6 +11258,7 @@ module ApplyPendingMaintenanceActionMessage =
              (Query.Pair
                 ("ResourceIdentifier",
                   (String.to_query v.resource_identifier)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -10826,6 +11266,7 @@ module ApplyPendingMaintenanceActionMessage =
            Some ("apply_action", (String.to_json v.apply_action));
            Some
              ("resource_identifier", (String.to_json v.resource_identifier))])
+
     let of_json j =
       {
         resource_identifier =
@@ -10841,10 +11282,10 @@ module CreateDBClusterParameterGroupMessage =
   struct
     type t =
       {
-      d_b_cluster_parameter_group_name: String.t;
-      d_b_parameter_group_family: String.t;
-      description: String.t;
-      tags: TagList.t;}
+      d_b_cluster_parameter_group_name: String.t ;
+      d_b_parameter_group_family: String.t ;
+      description: String.t ;
+      tags: TagList.t }
     let make ~d_b_cluster_parameter_group_name  ~d_b_parameter_group_family
       ~description  ?(tags= [])  () =
       {
@@ -10871,6 +11312,7 @@ module CreateDBClusterParameterGroupMessage =
             (Util.of_option []
                (Util.option_bind (Xml.member "Tags" xml) TagList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -10884,6 +11326,7 @@ module CreateDBClusterParameterGroupMessage =
              (Query.Pair
                 ("DBClusterParameterGroupName",
                   (String.to_query v.d_b_cluster_parameter_group_name)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -10895,6 +11338,7 @@ module CreateDBClusterParameterGroupMessage =
            Some
              ("d_b_cluster_parameter_group_name",
                (String.to_json v.d_b_cluster_parameter_group_name))])
+
     let of_json j =
       {
         d_b_cluster_parameter_group_name =
@@ -10912,7 +11356,7 @@ module CreateDBClusterParameterGroupMessage =
 module DeleteOptionGroupMessage =
   struct
     type t = {
-      option_group_name: String.t;}
+      option_group_name: String.t }
     let make ~option_group_name  () = { option_group_name }
     let parse xml =
       Some
@@ -10922,16 +11366,19 @@ module DeleteOptionGroupMessage =
                (Util.option_bind (Xml.member "OptionGroupName" xml)
                   String.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some
               (Query.Pair
                  ("OptionGroupName", (String.to_query v.option_group_name)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("option_group_name", (String.to_json v.option_group_name))])
+
     let of_json j =
       {
         option_group_name =
@@ -10939,18 +11386,24 @@ module DeleteOptionGroupMessage =
              (Util.of_option_exn (Json.lookup j "option_group_name")))
       }
   end
+module DescribeAccountAttributesMessage =
+struct
+  type t = unit
+
+  let to_query _v = Query.List []
+end
 module DescribeDBEngineVersionsMessage =
   struct
     type t =
       {
-      engine: String.t option;
-      engine_version: String.t option;
-      d_b_parameter_group_family: String.t option;
-      filters: FilterList.t;
-      max_records: Integer.t option;
-      marker: String.t option;
-      default_only: Boolean.t option;
-      list_supported_character_sets: Boolean.t option;}
+      engine: String.t option ;
+      engine_version: String.t option ;
+      d_b_parameter_group_family: String.t option ;
+      filters: FilterList.t ;
+      max_records: Integer.t option ;
+      marker: String.t option ;
+      default_only: Boolean.t option ;
+      list_supported_character_sets: Boolean.t option }
     let make ?engine  ?engine_version  ?d_b_parameter_group_family
       ?(filters= [])  ?max_records  ?marker  ?default_only
       ?list_supported_character_sets  () =
@@ -10985,6 +11438,7 @@ module DescribeDBEngineVersionsMessage =
             (Util.option_bind (Xml.member "ListSupportedCharacterSets" xml)
                Boolean.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -11007,6 +11461,7 @@ module DescribeDBEngineVersionsMessage =
              (fun f  -> Query.Pair ("EngineVersion", (String.to_query f)));
            Util.option_map v.engine
              (fun f  -> Query.Pair ("Engine", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -11026,6 +11481,7 @@ module DescribeDBEngineVersionsMessage =
              (fun f  -> ("engine_version", (String.to_json f)));
            Util.option_map v.engine
              (fun f  -> ("engine", (String.to_json f)))])
+
     let of_json j =
       {
         engine = (Util.option_map (Json.lookup j "engine") String.of_json);
@@ -11050,8 +11506,8 @@ module ModifyDBParameterGroupMessage =
   struct
     type t =
       {
-      d_b_parameter_group_name: String.t;
-      parameters: ParametersList.t;}
+      d_b_parameter_group_name: String.t ;
+      parameters: ParametersList.t }
     let make ~d_b_parameter_group_name  ~parameters  () =
       { d_b_parameter_group_name; parameters }
     let parse xml =
@@ -11066,6 +11522,7 @@ module ModifyDBParameterGroupMessage =
                (Util.option_bind (Xml.member "Parameters" xml)
                   ParametersList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -11077,6 +11534,7 @@ module ModifyDBParameterGroupMessage =
              (Query.Pair
                 ("DBParameterGroupName",
                   (String.to_query v.d_b_parameter_group_name)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -11084,6 +11542,7 @@ module ModifyDBParameterGroupMessage =
            Some
              ("d_b_parameter_group_name",
                (String.to_json v.d_b_parameter_group_name))])
+
     let of_json j =
       {
         d_b_parameter_group_name =
@@ -11098,8 +11557,8 @@ module DBParameterGroupsMessage =
   struct
     type t =
       {
-      marker: String.t option;
-      d_b_parameter_groups: DBParameterGroupList.t;}
+      marker: String.t option ;
+      d_b_parameter_groups: DBParameterGroupList.t }
     let make ?marker  ?(d_b_parameter_groups= [])  () =
       { marker; d_b_parameter_groups }
     let parse xml =
@@ -11111,6 +11570,7 @@ module DBParameterGroupsMessage =
                (Util.option_bind (Xml.member "DBParameterGroups" xml)
                   DBParameterGroupList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -11120,6 +11580,7 @@ module DBParameterGroupsMessage =
                    (DBParameterGroupList.to_query v.d_b_parameter_groups)));
            Util.option_map v.marker
              (fun f  -> Query.Pair ("Marker", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -11128,6 +11589,7 @@ module DBParameterGroupsMessage =
                 (DBParameterGroupList.to_json v.d_b_parameter_groups));
            Util.option_map v.marker
              (fun f  -> ("marker", (String.to_json f)))])
+
     let of_json j =
       {
         marker = (Util.option_map (Json.lookup j "marker") String.of_json);
@@ -11139,8 +11601,8 @@ module DBParameterGroupsMessage =
 module DBSubnetGroupMessage =
   struct
     type t = {
-      marker: String.t option;
-      d_b_subnet_groups: DBSubnetGroups.t;}
+      marker: String.t option ;
+      d_b_subnet_groups: DBSubnetGroups.t }
     let make ?marker  ?(d_b_subnet_groups= [])  () =
       { marker; d_b_subnet_groups }
     let parse xml =
@@ -11152,6 +11614,7 @@ module DBSubnetGroupMessage =
                (Util.option_bind (Xml.member "DBSubnetGroups" xml)
                   DBSubnetGroups.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -11161,6 +11624,7 @@ module DBSubnetGroupMessage =
                    (DBSubnetGroups.to_query v.d_b_subnet_groups)));
            Util.option_map v.marker
              (fun f  -> Query.Pair ("Marker", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -11169,6 +11633,7 @@ module DBSubnetGroupMessage =
                 (DBSubnetGroups.to_json v.d_b_subnet_groups));
            Util.option_map v.marker
              (fun f  -> ("marker", (String.to_json f)))])
+
     let of_json j =
       {
         marker = (Util.option_map (Json.lookup j "marker") String.of_json);
@@ -11180,7 +11645,7 @@ module DBSubnetGroupMessage =
 module CopyDBParameterGroupResult =
   struct
     type t = {
-      d_b_parameter_group: DBParameterGroup.t option;}
+      d_b_parameter_group: DBParameterGroup.t option }
     let make ?d_b_parameter_group  () = { d_b_parameter_group }
     let parse xml =
       Some
@@ -11189,6 +11654,7 @@ module CopyDBParameterGroupResult =
             (Util.option_bind (Xml.member "DBParameterGroup" xml)
                DBParameterGroup.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -11196,12 +11662,14 @@ module CopyDBParameterGroupResult =
               (fun f  ->
                  Query.Pair
                    ("DBParameterGroup", (DBParameterGroup.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.d_b_parameter_group
               (fun f  ->
                  ("d_b_parameter_group", (DBParameterGroup.to_json f)))])
+
     let of_json j =
       {
         d_b_parameter_group =
@@ -11213,9 +11681,9 @@ module CreateDBClusterSnapshotMessage =
   struct
     type t =
       {
-      d_b_cluster_snapshot_identifier: String.t;
-      d_b_cluster_identifier: String.t;
-      tags: TagList.t;}
+      d_b_cluster_snapshot_identifier: String.t ;
+      d_b_cluster_identifier: String.t ;
+      tags: TagList.t }
     let make ~d_b_cluster_snapshot_identifier  ~d_b_cluster_identifier
       ?(tags= [])  () =
       { d_b_cluster_snapshot_identifier; d_b_cluster_identifier; tags }
@@ -11234,6 +11702,7 @@ module CreateDBClusterSnapshotMessage =
             (Util.of_option []
                (Util.option_bind (Xml.member "Tags" xml) TagList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -11246,6 +11715,7 @@ module CreateDBClusterSnapshotMessage =
              (Query.Pair
                 ("DBClusterSnapshotIdentifier",
                   (String.to_query v.d_b_cluster_snapshot_identifier)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -11256,6 +11726,7 @@ module CreateDBClusterSnapshotMessage =
            Some
              ("d_b_cluster_snapshot_identifier",
                (String.to_json v.d_b_cluster_snapshot_identifier))])
+
     let of_json j =
       {
         d_b_cluster_snapshot_identifier =
@@ -11272,11 +11743,11 @@ module DescribeOptionGroupOptionsMessage =
   struct
     type t =
       {
-      engine_name: String.t;
-      major_engine_version: String.t option;
-      filters: FilterList.t;
-      max_records: Integer.t option;
-      marker: String.t option;}
+      engine_name: String.t ;
+      major_engine_version: String.t option ;
+      filters: FilterList.t ;
+      max_records: Integer.t option ;
+      marker: String.t option }
     let make ~engine_name  ?major_engine_version  ?(filters= [])
       ?max_records  ?marker  () =
       { engine_name; major_engine_version; filters; max_records; marker }
@@ -11296,6 +11767,7 @@ module DescribeOptionGroupOptionsMessage =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse);
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -11309,6 +11781,7 @@ module DescribeOptionGroupOptionsMessage =
              (fun f  ->
                 Query.Pair ("MajorEngineVersion", (String.to_query f)));
            Some (Query.Pair ("EngineName", (String.to_query v.engine_name)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -11320,6 +11793,7 @@ module DescribeOptionGroupOptionsMessage =
            Util.option_map v.major_engine_version
              (fun f  -> ("major_engine_version", (String.to_json f)));
            Some ("engine_name", (String.to_json v.engine_name))])
+
     let of_json j =
       {
         engine_name =
@@ -11337,8 +11811,8 @@ module DescribeOptionGroupOptionsMessage =
 module EventsMessage =
   struct
     type t = {
-      marker: String.t option;
-      events: EventList.t;}
+      marker: String.t option ;
+      events: EventList.t }
     let make ?marker  ?(events= [])  () = { marker; events }
     let parse xml =
       Some
@@ -11348,6 +11822,7 @@ module EventsMessage =
             (Util.of_option []
                (Util.option_bind (Xml.member "Events" xml) EventList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -11355,12 +11830,14 @@ module EventsMessage =
               (Query.Pair ("Events.member", (EventList.to_query v.events)));
            Util.option_map v.marker
              (fun f  -> Query.Pair ("Marker", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("events", (EventList.to_json v.events));
            Util.option_map v.marker
              (fun f  -> ("marker", (String.to_json f)))])
+
     let of_json j =
       {
         marker = (Util.option_map (Json.lookup j "marker") String.of_json);
@@ -11371,7 +11848,7 @@ module EventsMessage =
 module CreateDBParameterGroupResult =
   struct
     type t = {
-      d_b_parameter_group: DBParameterGroup.t option;}
+      d_b_parameter_group: DBParameterGroup.t option }
     let make ?d_b_parameter_group  () = { d_b_parameter_group }
     let parse xml =
       Some
@@ -11380,6 +11857,7 @@ module CreateDBParameterGroupResult =
             (Util.option_bind (Xml.member "DBParameterGroup" xml)
                DBParameterGroup.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -11387,12 +11865,14 @@ module CreateDBParameterGroupResult =
               (fun f  ->
                  Query.Pair
                    ("DBParameterGroup", (DBParameterGroup.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.d_b_parameter_group
               (fun f  ->
                  ("d_b_parameter_group", (DBParameterGroup.to_json f)))])
+
     let of_json j =
       {
         d_b_parameter_group =
@@ -11404,9 +11884,9 @@ module ModifyDBSubnetGroupMessage =
   struct
     type t =
       {
-      d_b_subnet_group_name: String.t;
-      d_b_subnet_group_description: String.t option;
-      subnet_ids: SubnetIdentifierList.t;}
+      d_b_subnet_group_name: String.t ;
+      d_b_subnet_group_description: String.t option ;
+      subnet_ids: SubnetIdentifierList.t }
     let make ~d_b_subnet_group_name  ?d_b_subnet_group_description
       ~subnet_ids  () =
       { d_b_subnet_group_name; d_b_subnet_group_description; subnet_ids }
@@ -11425,6 +11905,7 @@ module ModifyDBSubnetGroupMessage =
                (Util.option_bind (Xml.member "SubnetIds" xml)
                   SubnetIdentifierList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -11439,6 +11920,7 @@ module ModifyDBSubnetGroupMessage =
              (Query.Pair
                 ("DBSubnetGroupName",
                   (String.to_query v.d_b_subnet_group_name)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -11448,6 +11930,7 @@ module ModifyDBSubnetGroupMessage =
            Some
              ("d_b_subnet_group_name",
                (String.to_json v.d_b_subnet_group_name))])
+
     let of_json j =
       {
         d_b_subnet_group_name =
@@ -11464,8 +11947,8 @@ module ModifyDBSubnetGroupMessage =
 module CertificateMessage =
   struct
     type t = {
-      certificates: CertificateList.t;
-      marker: String.t option;}
+      certificates: CertificateList.t ;
+      marker: String.t option }
     let make ?(certificates= [])  ?marker  () = { certificates; marker }
     let parse xml =
       Some
@@ -11476,6 +11959,7 @@ module CertificateMessage =
                   CertificateList.parse));
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -11485,12 +11969,14 @@ module CertificateMessage =
              (Query.Pair
                 ("Certificates.member",
                   (CertificateList.to_query v.certificates)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.marker
               (fun f  -> ("marker", (String.to_json f)));
            Some ("certificates", (CertificateList.to_json v.certificates))])
+
     let of_json j =
       {
         certificates =
@@ -11503,19 +11989,19 @@ module CreateDBInstanceReadReplicaMessage =
   struct
     type t =
       {
-      d_b_instance_identifier: String.t;
-      source_d_b_instance_identifier: String.t;
-      d_b_instance_class: String.t option;
-      availability_zone: String.t option;
-      port: Integer.t option;
-      auto_minor_version_upgrade: Boolean.t option;
-      iops: Integer.t option;
-      option_group_name: String.t option;
-      publicly_accessible: Boolean.t option;
-      tags: TagList.t;
-      d_b_subnet_group_name: String.t option;
-      storage_type: String.t option;
-      copy_tags_to_snapshot: Boolean.t option;}
+      d_b_instance_identifier: String.t ;
+      source_d_b_instance_identifier: String.t ;
+      d_b_instance_class: String.t option ;
+      availability_zone: String.t option ;
+      port: Integer.t option ;
+      auto_minor_version_upgrade: Boolean.t option ;
+      iops: Integer.t option ;
+      option_group_name: String.t option ;
+      publicly_accessible: Boolean.t option ;
+      tags: TagList.t ;
+      d_b_subnet_group_name: String.t option ;
+      storage_type: String.t option ;
+      copy_tags_to_snapshot: Boolean.t option }
     let make ~d_b_instance_identifier  ~source_d_b_instance_identifier
       ?d_b_instance_class  ?availability_zone  ?port
       ?auto_minor_version_upgrade  ?iops  ?option_group_name
@@ -11574,6 +12060,7 @@ module CreateDBInstanceReadReplicaMessage =
             (Util.option_bind (Xml.member "CopyTagsToSnapshot" xml)
                Boolean.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -11609,6 +12096,7 @@ module CreateDBInstanceReadReplicaMessage =
              (Query.Pair
                 ("DBInstanceIdentifier",
                   (String.to_query v.d_b_instance_identifier)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -11637,6 +12125,7 @@ module CreateDBInstanceReadReplicaMessage =
            Some
              ("d_b_instance_identifier",
                (String.to_json v.d_b_instance_identifier))])
+
     let of_json j =
       {
         d_b_instance_identifier =
@@ -11675,7 +12164,7 @@ module CreateDBInstanceReadReplicaMessage =
 module AuthorizeDBSecurityGroupIngressResult =
   struct
     type t = {
-      d_b_security_group: DBSecurityGroup.t option;}
+      d_b_security_group: DBSecurityGroup.t option }
     let make ?d_b_security_group  () = { d_b_security_group }
     let parse xml =
       Some
@@ -11684,17 +12173,20 @@ module AuthorizeDBSecurityGroupIngressResult =
             (Util.option_bind (Xml.member "DBSecurityGroup" xml)
                DBSecurityGroup.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.d_b_security_group
               (fun f  ->
                  Query.Pair ("DBSecurityGroup", (DBSecurityGroup.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.d_b_security_group
               (fun f  -> ("d_b_security_group", (DBSecurityGroup.to_json f)))])
+
     let of_json j =
       {
         d_b_security_group =
@@ -11706,8 +12198,8 @@ module OptionGroups =
   struct
     type t =
       {
-      option_groups_list: OptionGroupsList.t;
-      marker: String.t option;}
+      option_groups_list: OptionGroupsList.t ;
+      marker: String.t option }
     let make ?(option_groups_list= [])  ?marker  () =
       { option_groups_list; marker }
     let parse xml =
@@ -11719,6 +12211,7 @@ module OptionGroups =
                   OptionGroupsList.parse));
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -11728,6 +12221,7 @@ module OptionGroups =
              (Query.Pair
                 ("OptionGroupsList.member",
                   (OptionGroupsList.to_query v.option_groups_list)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -11736,6 +12230,7 @@ module OptionGroups =
            Some
              ("option_groups_list",
                (OptionGroupsList.to_json v.option_groups_list))])
+
     let of_json j =
       {
         option_groups_list =
@@ -11747,7 +12242,7 @@ module OptionGroups =
 module DeleteDBSnapshotResult =
   struct
     type t = {
-      d_b_snapshot: DBSnapshot.t option;}
+      d_b_snapshot: DBSnapshot.t option }
     let make ?d_b_snapshot  () = { d_b_snapshot }
     let parse xml =
       Some
@@ -11755,16 +12250,19 @@ module DeleteDBSnapshotResult =
           d_b_snapshot =
             (Util.option_bind (Xml.member "DBSnapshot" xml) DBSnapshot.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.d_b_snapshot
               (fun f  -> Query.Pair ("DBSnapshot", (DBSnapshot.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.d_b_snapshot
               (fun f  -> ("d_b_snapshot", (DBSnapshot.to_json f)))])
+
     let of_json j =
       {
         d_b_snapshot =
@@ -11775,10 +12273,10 @@ module DownloadDBLogFilePortionMessage =
   struct
     type t =
       {
-      d_b_instance_identifier: String.t;
-      log_file_name: String.t;
-      marker: String.t option;
-      number_of_lines: Integer.t option;}
+      d_b_instance_identifier: String.t ;
+      log_file_name: String.t ;
+      marker: String.t option ;
+      number_of_lines: Integer.t option }
     let make ~d_b_instance_identifier  ~log_file_name  ?marker
       ?number_of_lines  () =
       { d_b_instance_identifier; log_file_name; marker; number_of_lines }
@@ -11796,6 +12294,7 @@ module DownloadDBLogFilePortionMessage =
           number_of_lines =
             (Util.option_bind (Xml.member "NumberOfLines" xml) Integer.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -11809,6 +12308,7 @@ module DownloadDBLogFilePortionMessage =
              (Query.Pair
                 ("DBInstanceIdentifier",
                   (String.to_query v.d_b_instance_identifier)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -11820,6 +12320,7 @@ module DownloadDBLogFilePortionMessage =
            Some
              ("d_b_instance_identifier",
                (String.to_json v.d_b_instance_identifier))])
+
     let of_json j =
       {
         d_b_instance_identifier =
@@ -11837,10 +12338,10 @@ module DescribeDBParameterGroupsMessage =
   struct
     type t =
       {
-      d_b_parameter_group_name: String.t option;
-      filters: FilterList.t;
-      max_records: Integer.t option;
-      marker: String.t option;}
+      d_b_parameter_group_name: String.t option ;
+      filters: FilterList.t ;
+      max_records: Integer.t option ;
+      marker: String.t option }
     let make ?d_b_parameter_group_name  ?(filters= [])  ?max_records  ?marker
        () = { d_b_parameter_group_name; filters; max_records; marker }
     let parse xml =
@@ -11856,6 +12357,7 @@ module DescribeDBParameterGroupsMessage =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse);
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -11868,6 +12370,7 @@ module DescribeDBParameterGroupsMessage =
            Util.option_map v.d_b_parameter_group_name
              (fun f  ->
                 Query.Pair ("DBParameterGroupName", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -11878,6 +12381,7 @@ module DescribeDBParameterGroupsMessage =
            Some ("filters", (FilterList.to_json v.filters));
            Util.option_map v.d_b_parameter_group_name
              (fun f  -> ("d_b_parameter_group_name", (String.to_json f)))])
+
     let of_json j =
       {
         d_b_parameter_group_name =
@@ -11893,7 +12397,7 @@ module DescribeDBParameterGroupsMessage =
 module DeleteDBClusterParameterGroupMessage =
   struct
     type t = {
-      d_b_cluster_parameter_group_name: String.t;}
+      d_b_cluster_parameter_group_name: String.t }
     let make ~d_b_cluster_parameter_group_name  () =
       { d_b_cluster_parameter_group_name }
     let parse xml =
@@ -11904,6 +12408,7 @@ module DeleteDBClusterParameterGroupMessage =
                (Util.option_bind
                   (Xml.member "DBClusterParameterGroupName" xml) String.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -11911,12 +12416,14 @@ module DeleteDBClusterParameterGroupMessage =
               (Query.Pair
                  ("DBClusterParameterGroupName",
                    (String.to_query v.d_b_cluster_parameter_group_name)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("d_b_cluster_parameter_group_name",
                 (String.to_json v.d_b_cluster_parameter_group_name))])
+
     let of_json j =
       {
         d_b_cluster_parameter_group_name =
@@ -11929,8 +12436,8 @@ module OrderableDBInstanceOptionsMessage =
   struct
     type t =
       {
-      orderable_d_b_instance_options: OrderableDBInstanceOptionsList.t;
-      marker: String.t option;}
+      orderable_d_b_instance_options: OrderableDBInstanceOptionsList.t ;
+      marker: String.t option }
     let make ?(orderable_d_b_instance_options= [])  ?marker  () =
       { orderable_d_b_instance_options; marker }
     let parse xml =
@@ -11943,6 +12450,7 @@ module OrderableDBInstanceOptionsMessage =
                   OrderableDBInstanceOptionsList.parse));
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -11953,6 +12461,7 @@ module OrderableDBInstanceOptionsMessage =
                 ("OrderableDBInstanceOptions.member",
                   (OrderableDBInstanceOptionsList.to_query
                      v.orderable_d_b_instance_options)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -11962,6 +12471,7 @@ module OrderableDBInstanceOptionsMessage =
              ("orderable_d_b_instance_options",
                (OrderableDBInstanceOptionsList.to_json
                   v.orderable_d_b_instance_options))])
+
     let of_json j =
       {
         orderable_d_b_instance_options =
@@ -11974,7 +12484,7 @@ module OrderableDBInstanceOptionsMessage =
 module DeleteDBInstanceResult =
   struct
     type t = {
-      d_b_instance: DBInstance.t option;}
+      d_b_instance: DBInstance.t option }
     let make ?d_b_instance  () = { d_b_instance }
     let parse xml =
       Some
@@ -11982,16 +12492,19 @@ module DeleteDBInstanceResult =
           d_b_instance =
             (Util.option_bind (Xml.member "DBInstance" xml) DBInstance.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.d_b_instance
               (fun f  -> Query.Pair ("DBInstance", (DBInstance.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.d_b_instance
               (fun f  -> ("d_b_instance", (DBInstance.to_json f)))])
+
     let of_json j =
       {
         d_b_instance =
@@ -12002,12 +12515,12 @@ module DescribeDBClusterSnapshotsMessage =
   struct
     type t =
       {
-      d_b_cluster_identifier: String.t option;
-      d_b_cluster_snapshot_identifier: String.t option;
-      snapshot_type: String.t option;
-      filters: FilterList.t;
-      max_records: Integer.t option;
-      marker: String.t option;}
+      d_b_cluster_identifier: String.t option ;
+      d_b_cluster_snapshot_identifier: String.t option ;
+      snapshot_type: String.t option ;
+      filters: FilterList.t ;
+      max_records: Integer.t option ;
+      marker: String.t option }
     let make ?d_b_cluster_identifier  ?d_b_cluster_snapshot_identifier
       ?snapshot_type  ?(filters= [])  ?max_records  ?marker  () =
       {
@@ -12036,6 +12549,7 @@ module DescribeDBClusterSnapshotsMessage =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse);
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -12054,6 +12568,7 @@ module DescribeDBClusterSnapshotsMessage =
            Util.option_map v.d_b_cluster_identifier
              (fun f  ->
                 Query.Pair ("DBClusterIdentifier", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -12069,6 +12584,7 @@ module DescribeDBClusterSnapshotsMessage =
                 ("d_b_cluster_snapshot_identifier", (String.to_json f)));
            Util.option_map v.d_b_cluster_identifier
              (fun f  -> ("d_b_cluster_identifier", (String.to_json f)))])
+
     let of_json j =
       {
         d_b_cluster_identifier =
@@ -12090,11 +12606,11 @@ module ModifyEventSubscriptionMessage =
   struct
     type t =
       {
-      subscription_name: String.t;
-      sns_topic_arn: String.t option;
-      source_type: String.t option;
-      event_categories: EventCategoriesList.t;
-      enabled: Boolean.t option;}
+      subscription_name: String.t ;
+      sns_topic_arn: String.t option ;
+      source_type: String.t option ;
+      event_categories: EventCategoriesList.t ;
+      enabled: Boolean.t option }
     let make ~subscription_name  ?sns_topic_arn  ?source_type
       ?(event_categories= [])  ?enabled  () =
       {
@@ -12122,6 +12638,7 @@ module ModifyEventSubscriptionMessage =
           enabled =
             (Util.option_bind (Xml.member "Enabled" xml) Boolean.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -12138,6 +12655,7 @@ module ModifyEventSubscriptionMessage =
            Some
              (Query.Pair
                 ("SubscriptionName", (String.to_query v.subscription_name)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -12151,6 +12669,7 @@ module ModifyEventSubscriptionMessage =
            Util.option_map v.sns_topic_arn
              (fun f  -> ("sns_topic_arn", (String.to_json f)));
            Some ("subscription_name", (String.to_json v.subscription_name))])
+
     let of_json j =
       {
         subscription_name =
@@ -12169,8 +12688,8 @@ module ModifyEventSubscriptionMessage =
 module RemoveTagsFromResourceMessage =
   struct
     type t = {
-      resource_name: String.t;
-      tag_keys: KeyList.t;}
+      resource_name: String.t ;
+      tag_keys: KeyList.t }
     let make ~resource_name  ~tag_keys  () = { resource_name; tag_keys }
     let parse xml =
       Some
@@ -12182,6 +12701,7 @@ module RemoveTagsFromResourceMessage =
             (Xml.required "TagKeys"
                (Util.option_bind (Xml.member "TagKeys" xml) KeyList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -12189,11 +12709,13 @@ module RemoveTagsFromResourceMessage =
               (Query.Pair ("TagKeys.member", (KeyList.to_query v.tag_keys)));
            Some
              (Query.Pair ("ResourceName", (String.to_query v.resource_name)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("tag_keys", (KeyList.to_json v.tag_keys));
            Some ("resource_name", (String.to_json v.resource_name))])
+
     let of_json j =
       {
         resource_name =
@@ -12207,11 +12729,11 @@ module AuthorizeDBSecurityGroupIngressMessage =
   struct
     type t =
       {
-      d_b_security_group_name: String.t;
-      c_i_d_r_i_p: String.t option;
-      e_c2_security_group_name: String.t option;
-      e_c2_security_group_id: String.t option;
-      e_c2_security_group_owner_id: String.t option;}
+      d_b_security_group_name: String.t ;
+      c_i_d_r_i_p: String.t option ;
+      e_c2_security_group_name: String.t option ;
+      e_c2_security_group_id: String.t option ;
+      e_c2_security_group_owner_id: String.t option }
     let make ~d_b_security_group_name  ?c_i_d_r_i_p
       ?e_c2_security_group_name  ?e_c2_security_group_id
       ?e_c2_security_group_owner_id  () =
@@ -12241,6 +12763,7 @@ module AuthorizeDBSecurityGroupIngressMessage =
             (Util.option_bind (Xml.member "EC2SecurityGroupOwnerId" xml)
                String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -12259,6 +12782,7 @@ module AuthorizeDBSecurityGroupIngressMessage =
              (Query.Pair
                 ("DBSecurityGroupName",
                   (String.to_query v.d_b_security_group_name)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -12273,6 +12797,7 @@ module AuthorizeDBSecurityGroupIngressMessage =
            Some
              ("d_b_security_group_name",
                (String.to_json v.d_b_security_group_name))])
+
     let of_json j =
       {
         d_b_security_group_name =
@@ -12295,10 +12820,10 @@ module PurchaseReservedDBInstancesOfferingMessage =
   struct
     type t =
       {
-      reserved_d_b_instances_offering_id: String.t;
-      reserved_d_b_instance_id: String.t option;
-      d_b_instance_count: Integer.t option;
-      tags: TagList.t;}
+      reserved_d_b_instances_offering_id: String.t ;
+      reserved_d_b_instance_id: String.t option ;
+      d_b_instance_count: Integer.t option ;
+      tags: TagList.t }
     let make ~reserved_d_b_instances_offering_id  ?reserved_d_b_instance_id
       ?d_b_instance_count  ?(tags= [])  () =
       {
@@ -12325,6 +12850,7 @@ module PurchaseReservedDBInstancesOfferingMessage =
             (Util.of_option []
                (Util.option_bind (Xml.member "Tags" xml) TagList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -12338,6 +12864,7 @@ module PurchaseReservedDBInstancesOfferingMessage =
              (Query.Pair
                 ("ReservedDBInstancesOfferingId",
                   (String.to_query v.reserved_d_b_instances_offering_id)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -12349,6 +12876,7 @@ module PurchaseReservedDBInstancesOfferingMessage =
            Some
              ("reserved_d_b_instances_offering_id",
                (String.to_json v.reserved_d_b_instances_offering_id))])
+
     let of_json j =
       {
         reserved_d_b_instances_offering_id =
@@ -12368,8 +12896,8 @@ module DBEngineVersionMessage =
   struct
     type t =
       {
-      marker: String.t option;
-      d_b_engine_versions: DBEngineVersionList.t;}
+      marker: String.t option ;
+      d_b_engine_versions: DBEngineVersionList.t }
     let make ?marker  ?(d_b_engine_versions= [])  () =
       { marker; d_b_engine_versions }
     let parse xml =
@@ -12381,6 +12909,7 @@ module DBEngineVersionMessage =
                (Util.option_bind (Xml.member "DBEngineVersions" xml)
                   DBEngineVersionList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -12390,6 +12919,7 @@ module DBEngineVersionMessage =
                    (DBEngineVersionList.to_query v.d_b_engine_versions)));
            Util.option_map v.marker
              (fun f  -> Query.Pair ("Marker", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -12398,6 +12928,7 @@ module DBEngineVersionMessage =
                 (DBEngineVersionList.to_json v.d_b_engine_versions));
            Util.option_map v.marker
              (fun f  -> ("marker", (String.to_json f)))])
+
     let of_json j =
       {
         marker = (Util.option_map (Json.lookup j "marker") String.of_json);
@@ -12409,7 +12940,7 @@ module DBEngineVersionMessage =
 module CreateDBClusterParameterGroupResult =
   struct
     type t = {
-      d_b_cluster_parameter_group: DBClusterParameterGroup.t option;}
+      d_b_cluster_parameter_group: DBClusterParameterGroup.t option }
     let make ?d_b_cluster_parameter_group  () =
       { d_b_cluster_parameter_group }
     let parse xml =
@@ -12419,6 +12950,7 @@ module CreateDBClusterParameterGroupResult =
             (Util.option_bind (Xml.member "DBClusterParameterGroup" xml)
                DBClusterParameterGroup.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -12427,6 +12959,7 @@ module CreateDBClusterParameterGroupResult =
                  Query.Pair
                    ("DBClusterParameterGroup",
                      (DBClusterParameterGroup.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -12434,6 +12967,7 @@ module CreateDBClusterParameterGroupResult =
               (fun f  ->
                  ("d_b_cluster_parameter_group",
                    (DBClusterParameterGroup.to_json f)))])
+
     let of_json j =
       {
         d_b_cluster_parameter_group =
@@ -12444,8 +12978,8 @@ module CreateDBClusterParameterGroupResult =
 module DBSnapshotMessage =
   struct
     type t = {
-      marker: String.t option;
-      d_b_snapshots: DBSnapshotList.t;}
+      marker: String.t option ;
+      d_b_snapshots: DBSnapshotList.t }
     let make ?marker  ?(d_b_snapshots= [])  () = { marker; d_b_snapshots }
     let parse xml =
       Some
@@ -12456,6 +12990,7 @@ module DBSnapshotMessage =
                (Util.option_bind (Xml.member "DBSnapshots" xml)
                   DBSnapshotList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -12465,12 +13000,14 @@ module DBSnapshotMessage =
                    (DBSnapshotList.to_query v.d_b_snapshots)));
            Util.option_map v.marker
              (fun f  -> Query.Pair ("Marker", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("d_b_snapshots", (DBSnapshotList.to_json v.d_b_snapshots));
            Util.option_map v.marker
              (fun f  -> ("marker", (String.to_json f)))])
+
     let of_json j =
       {
         marker = (Util.option_map (Json.lookup j "marker") String.of_json);
@@ -12483,9 +13020,9 @@ module DownloadDBLogFilePortionDetails =
   struct
     type t =
       {
-      log_file_data: String.t option;
-      marker: String.t option;
-      additional_data_pending: Boolean.t option;}
+      log_file_data: String.t option ;
+      marker: String.t option ;
+      additional_data_pending: Boolean.t option }
     let make ?log_file_data  ?marker  ?additional_data_pending  () =
       { log_file_data; marker; additional_data_pending }
     let parse xml =
@@ -12498,6 +13035,7 @@ module DownloadDBLogFilePortionDetails =
             (Util.option_bind (Xml.member "AdditionalDataPending" xml)
                Boolean.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -12508,6 +13046,7 @@ module DownloadDBLogFilePortionDetails =
              (fun f  -> Query.Pair ("Marker", (String.to_query f)));
            Util.option_map v.log_file_data
              (fun f  -> Query.Pair ("LogFileData", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -12517,6 +13056,7 @@ module DownloadDBLogFilePortionDetails =
              (fun f  -> ("marker", (String.to_json f)));
            Util.option_map v.log_file_data
              (fun f  -> ("log_file_data", (String.to_json f)))])
+
     let of_json j =
       {
         log_file_data =
@@ -12530,8 +13070,8 @@ module DownloadDBLogFilePortionDetails =
 module DescribeEventCategoriesMessage =
   struct
     type t = {
-      source_type: String.t option;
-      filters: FilterList.t;}
+      source_type: String.t option ;
+      filters: FilterList.t }
     let make ?source_type  ?(filters= [])  () = { source_type; filters }
     let parse xml =
       Some
@@ -12542,6 +13082,7 @@ module DescribeEventCategoriesMessage =
             (Util.of_option []
                (Util.option_bind (Xml.member "Filters" xml) FilterList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -12549,12 +13090,14 @@ module DescribeEventCategoriesMessage =
               (Query.Pair ("Filters.member", (FilterList.to_query v.filters)));
            Util.option_map v.source_type
              (fun f  -> Query.Pair ("SourceType", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("filters", (FilterList.to_json v.filters));
            Util.option_map v.source_type
              (fun f  -> ("source_type", (String.to_json f)))])
+
     let of_json j =
       {
         source_type =
@@ -12567,10 +13110,10 @@ module CreateDBParameterGroupMessage =
   struct
     type t =
       {
-      d_b_parameter_group_name: String.t;
-      d_b_parameter_group_family: String.t;
-      description: String.t;
-      tags: TagList.t;}
+      d_b_parameter_group_name: String.t ;
+      d_b_parameter_group_family: String.t ;
+      description: String.t ;
+      tags: TagList.t }
     let make ~d_b_parameter_group_name  ~d_b_parameter_group_family
       ~description  ?(tags= [])  () =
       {
@@ -12597,6 +13140,7 @@ module CreateDBParameterGroupMessage =
             (Util.of_option []
                (Util.option_bind (Xml.member "Tags" xml) TagList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -12610,6 +13154,7 @@ module CreateDBParameterGroupMessage =
              (Query.Pair
                 ("DBParameterGroupName",
                   (String.to_query v.d_b_parameter_group_name)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -12621,6 +13166,7 @@ module CreateDBParameterGroupMessage =
            Some
              ("d_b_parameter_group_name",
                (String.to_json v.d_b_parameter_group_name))])
+
     let of_json j =
       {
         d_b_parameter_group_name =
@@ -12638,11 +13184,11 @@ module DescribeDBParametersMessage =
   struct
     type t =
       {
-      d_b_parameter_group_name: String.t;
-      source: String.t option;
-      filters: FilterList.t;
-      max_records: Integer.t option;
-      marker: String.t option;}
+      d_b_parameter_group_name: String.t ;
+      source: String.t option ;
+      filters: FilterList.t ;
+      max_records: Integer.t option ;
+      marker: String.t option }
     let make ~d_b_parameter_group_name  ?source  ?(filters= [])  ?max_records
        ?marker  () =
       { d_b_parameter_group_name; source; filters; max_records; marker }
@@ -12661,6 +13207,7 @@ module DescribeDBParametersMessage =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse);
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -12676,6 +13223,7 @@ module DescribeDBParametersMessage =
              (Query.Pair
                 ("DBParameterGroupName",
                   (String.to_query v.d_b_parameter_group_name)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -12689,6 +13237,7 @@ module DescribeDBParametersMessage =
            Some
              ("d_b_parameter_group_name",
                (String.to_json v.d_b_parameter_group_name))])
+
     let of_json j =
       {
         d_b_parameter_group_name =
@@ -12705,7 +13254,7 @@ module DescribeDBParametersMessage =
 module DBParameterGroupNameMessage =
   struct
     type t = {
-      d_b_parameter_group_name: String.t option;}
+      d_b_parameter_group_name: String.t option }
     let make ?d_b_parameter_group_name  () = { d_b_parameter_group_name }
     let parse xml =
       Some
@@ -12714,17 +13263,20 @@ module DBParameterGroupNameMessage =
             (Util.option_bind (Xml.member "DBParameterGroupName" xml)
                String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.d_b_parameter_group_name
               (fun f  ->
                  Query.Pair ("DBParameterGroupName", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.d_b_parameter_group_name
               (fun f  -> ("d_b_parameter_group_name", (String.to_json f)))])
+
     let of_json j =
       {
         d_b_parameter_group_name =
@@ -12736,14 +13288,14 @@ module DescribeOrderableDBInstanceOptionsMessage =
   struct
     type t =
       {
-      engine: String.t;
-      engine_version: String.t option;
-      d_b_instance_class: String.t option;
-      license_model: String.t option;
-      vpc: Boolean.t option;
-      filters: FilterList.t;
-      max_records: Integer.t option;
-      marker: String.t option;}
+      engine: String.t ;
+      engine_version: String.t option ;
+      d_b_instance_class: String.t option ;
+      license_model: String.t option ;
+      vpc: Boolean.t option ;
+      filters: FilterList.t ;
+      max_records: Integer.t option ;
+      marker: String.t option }
     let make ~engine  ?engine_version  ?d_b_instance_class  ?license_model
       ?vpc  ?(filters= [])  ?max_records  ?marker  () =
       {
@@ -12776,6 +13328,7 @@ module DescribeOrderableDBInstanceOptionsMessage =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse);
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -12794,6 +13347,7 @@ module DescribeOrderableDBInstanceOptionsMessage =
            Util.option_map v.engine_version
              (fun f  -> Query.Pair ("EngineVersion", (String.to_query f)));
            Some (Query.Pair ("Engine", (String.to_query v.engine)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -12810,6 +13364,7 @@ module DescribeOrderableDBInstanceOptionsMessage =
            Util.option_map v.engine_version
              (fun f  -> ("engine_version", (String.to_json f)));
            Some ("engine", (String.to_json v.engine))])
+
     let of_json j =
       {
         engine =
@@ -12833,8 +13388,8 @@ module DBClusterSnapshotMessage =
   struct
     type t =
       {
-      marker: String.t option;
-      d_b_cluster_snapshots: DBClusterSnapshotList.t;}
+      marker: String.t option ;
+      d_b_cluster_snapshots: DBClusterSnapshotList.t }
     let make ?marker  ?(d_b_cluster_snapshots= [])  () =
       { marker; d_b_cluster_snapshots }
     let parse xml =
@@ -12846,6 +13401,7 @@ module DBClusterSnapshotMessage =
                (Util.option_bind (Xml.member "DBClusterSnapshots" xml)
                   DBClusterSnapshotList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -12855,6 +13411,7 @@ module DBClusterSnapshotMessage =
                    (DBClusterSnapshotList.to_query v.d_b_cluster_snapshots)));
            Util.option_map v.marker
              (fun f  -> Query.Pair ("Marker", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -12863,6 +13420,7 @@ module DBClusterSnapshotMessage =
                 (DBClusterSnapshotList.to_json v.d_b_cluster_snapshots));
            Util.option_map v.marker
              (fun f  -> ("marker", (String.to_json f)))])
+
     let of_json j =
       {
         marker = (Util.option_map (Json.lookup j "marker") String.of_json);
@@ -12874,8 +13432,8 @@ module DBClusterSnapshotMessage =
 module ListTagsForResourceMessage =
   struct
     type t = {
-      resource_name: String.t;
-      filters: FilterList.t;}
+      resource_name: String.t ;
+      filters: FilterList.t }
     let make ~resource_name  ?(filters= [])  () = { resource_name; filters }
     let parse xml =
       Some
@@ -12887,6 +13445,7 @@ module ListTagsForResourceMessage =
             (Util.of_option []
                (Util.option_bind (Xml.member "Filters" xml) FilterList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -12894,11 +13453,13 @@ module ListTagsForResourceMessage =
               (Query.Pair ("Filters.member", (FilterList.to_query v.filters)));
            Some
              (Query.Pair ("ResourceName", (String.to_query v.resource_name)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("filters", (FilterList.to_json v.filters));
            Some ("resource_name", (String.to_json v.resource_name))])
+
     let of_json j =
       {
         resource_name =
@@ -12912,15 +13473,15 @@ module RestoreDBClusterToPointInTimeMessage =
   struct
     type t =
       {
-      d_b_cluster_identifier: String.t;
-      source_d_b_cluster_identifier: String.t;
-      restore_to_time: DateTime.t option;
-      use_latest_restorable_time: Boolean.t option;
-      port: Integer.t option;
-      d_b_subnet_group_name: String.t option;
-      option_group_name: String.t option;
-      vpc_security_group_ids: VpcSecurityGroupIdList.t;
-      tags: TagList.t;}
+      d_b_cluster_identifier: String.t ;
+      source_d_b_cluster_identifier: String.t ;
+      restore_to_time: DateTime.t option ;
+      use_latest_restorable_time: Boolean.t option ;
+      port: Integer.t option ;
+      d_b_subnet_group_name: String.t option ;
+      option_group_name: String.t option ;
+      vpc_security_group_ids: VpcSecurityGroupIdList.t ;
+      tags: TagList.t }
     let make ~d_b_cluster_identifier  ~source_d_b_cluster_identifier
       ?restore_to_time  ?use_latest_restorable_time  ?port
       ?d_b_subnet_group_name  ?option_group_name  ?(vpc_security_group_ids=
@@ -12966,6 +13527,7 @@ module RestoreDBClusterToPointInTimeMessage =
             (Util.of_option []
                (Util.option_bind (Xml.member "Tags" xml) TagList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -12993,6 +13555,7 @@ module RestoreDBClusterToPointInTimeMessage =
              (Query.Pair
                 ("DBClusterIdentifier",
                   (String.to_query v.d_b_cluster_identifier)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -13015,6 +13578,7 @@ module RestoreDBClusterToPointInTimeMessage =
            Some
              ("d_b_cluster_identifier",
                (String.to_json v.d_b_cluster_identifier))])
+
     let of_json j =
       {
         d_b_cluster_identifier =
@@ -13044,7 +13608,7 @@ module RestoreDBClusterToPointInTimeMessage =
 module CreateEventSubscriptionResult =
   struct
     type t = {
-      event_subscription: EventSubscription.t option;}
+      event_subscription: EventSubscription.t option }
     let make ?event_subscription  () = { event_subscription }
     let parse xml =
       Some
@@ -13053,6 +13617,7 @@ module CreateEventSubscriptionResult =
             (Util.option_bind (Xml.member "EventSubscription" xml)
                EventSubscription.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -13060,12 +13625,14 @@ module CreateEventSubscriptionResult =
               (fun f  ->
                  Query.Pair
                    ("EventSubscription", (EventSubscription.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.event_subscription
               (fun f  ->
                  ("event_subscription", (EventSubscription.to_json f)))])
+
     let of_json j =
       {
         event_subscription =
@@ -13077,10 +13644,10 @@ module DescribeEngineDefaultParametersMessage =
   struct
     type t =
       {
-      d_b_parameter_group_family: String.t;
-      filters: FilterList.t;
-      max_records: Integer.t option;
-      marker: String.t option;}
+      d_b_parameter_group_family: String.t ;
+      filters: FilterList.t ;
+      max_records: Integer.t option ;
+      marker: String.t option }
     let make ~d_b_parameter_group_family  ?(filters= [])  ?max_records
       ?marker  () =
       { d_b_parameter_group_family; filters; max_records; marker }
@@ -13098,6 +13665,7 @@ module DescribeEngineDefaultParametersMessage =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse);
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -13111,6 +13679,7 @@ module DescribeEngineDefaultParametersMessage =
              (Query.Pair
                 ("DBParameterGroupFamily",
                   (String.to_query v.d_b_parameter_group_family)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -13122,6 +13691,7 @@ module DescribeEngineDefaultParametersMessage =
            Some
              ("d_b_parameter_group_family",
                (String.to_json v.d_b_parameter_group_family))])
+
     let of_json j =
       {
         d_b_parameter_group_family =
@@ -13137,7 +13707,7 @@ module DescribeEngineDefaultParametersMessage =
 module EventCategoriesMessage =
   struct
     type t = {
-      event_categories_map_list: EventCategoriesMapList.t;}
+      event_categories_map_list: EventCategoriesMapList.t }
     let make ?(event_categories_map_list= [])  () =
       { event_categories_map_list }
     let parse xml =
@@ -13148,6 +13718,7 @@ module EventCategoriesMessage =
                (Util.option_bind (Xml.member "EventCategoriesMapList" xml)
                   EventCategoriesMapList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -13156,12 +13727,14 @@ module EventCategoriesMessage =
                  ("EventCategoriesMapList.member",
                    (EventCategoriesMapList.to_query
                       v.event_categories_map_list)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("event_categories_map_list",
                 (EventCategoriesMapList.to_json v.event_categories_map_list))])
+
     let of_json j =
       {
         event_categories_map_list =
@@ -13173,8 +13746,8 @@ module ReservedDBInstancesOfferingMessage =
   struct
     type t =
       {
-      marker: String.t option;
-      reserved_d_b_instances_offerings: ReservedDBInstancesOfferingList.t;}
+      marker: String.t option ;
+      reserved_d_b_instances_offerings: ReservedDBInstancesOfferingList.t }
     let make ?marker  ?(reserved_d_b_instances_offerings= [])  () =
       { marker; reserved_d_b_instances_offerings }
     let parse xml =
@@ -13187,6 +13760,7 @@ module ReservedDBInstancesOfferingMessage =
                   (Xml.member "ReservedDBInstancesOfferings" xml)
                   ReservedDBInstancesOfferingList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -13197,6 +13771,7 @@ module ReservedDBInstancesOfferingMessage =
                       v.reserved_d_b_instances_offerings)));
            Util.option_map v.marker
              (fun f  -> Query.Pair ("Marker", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -13206,6 +13781,7 @@ module ReservedDBInstancesOfferingMessage =
                    v.reserved_d_b_instances_offerings));
            Util.option_map v.marker
              (fun f  -> ("marker", (String.to_json f)))])
+
     let of_json j =
       {
         marker = (Util.option_map (Json.lookup j "marker") String.of_json);
@@ -13218,8 +13794,8 @@ module ReservedDBInstancesOfferingMessage =
 module DBClusterMessage =
   struct
     type t = {
-      marker: String.t option;
-      d_b_clusters: DBClusterList.t;}
+      marker: String.t option ;
+      d_b_clusters: DBClusterList.t }
     let make ?marker  ?(d_b_clusters= [])  () = { marker; d_b_clusters }
     let parse xml =
       Some
@@ -13230,6 +13806,7 @@ module DBClusterMessage =
                (Util.option_bind (Xml.member "DBClusters" xml)
                   DBClusterList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -13239,12 +13816,14 @@ module DBClusterMessage =
                    (DBClusterList.to_query v.d_b_clusters)));
            Util.option_map v.marker
              (fun f  -> Query.Pair ("Marker", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("d_b_clusters", (DBClusterList.to_json v.d_b_clusters));
            Util.option_map v.marker
              (fun f  -> ("marker", (String.to_json f)))])
+
     let of_json j =
       {
         marker = (Util.option_map (Json.lookup j "marker") String.of_json);
@@ -13257,12 +13836,12 @@ module DescribeDBSnapshotsMessage =
   struct
     type t =
       {
-      d_b_instance_identifier: String.t option;
-      d_b_snapshot_identifier: String.t option;
-      snapshot_type: String.t option;
-      filters: FilterList.t;
-      max_records: Integer.t option;
-      marker: String.t option;}
+      d_b_instance_identifier: String.t option ;
+      d_b_snapshot_identifier: String.t option ;
+      snapshot_type: String.t option ;
+      filters: FilterList.t ;
+      max_records: Integer.t option ;
+      marker: String.t option }
     let make ?d_b_instance_identifier  ?d_b_snapshot_identifier
       ?snapshot_type  ?(filters= [])  ?max_records  ?marker  () =
       {
@@ -13291,6 +13870,7 @@ module DescribeDBSnapshotsMessage =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse);
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -13308,6 +13888,7 @@ module DescribeDBSnapshotsMessage =
            Util.option_map v.d_b_instance_identifier
              (fun f  ->
                 Query.Pair ("DBInstanceIdentifier", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -13322,6 +13903,7 @@ module DescribeDBSnapshotsMessage =
              (fun f  -> ("d_b_snapshot_identifier", (String.to_json f)));
            Util.option_map v.d_b_instance_identifier
              (fun f  -> ("d_b_instance_identifier", (String.to_json f)))])
+
     let of_json j =
       {
         d_b_instance_identifier =
@@ -13342,7 +13924,7 @@ module DescribeDBSnapshotsMessage =
 module CopyDBClusterSnapshotResult =
   struct
     type t = {
-      d_b_cluster_snapshot: DBClusterSnapshot.t option;}
+      d_b_cluster_snapshot: DBClusterSnapshot.t option }
     let make ?d_b_cluster_snapshot  () = { d_b_cluster_snapshot }
     let parse xml =
       Some
@@ -13351,6 +13933,7 @@ module CopyDBClusterSnapshotResult =
             (Util.option_bind (Xml.member "DBClusterSnapshot" xml)
                DBClusterSnapshot.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -13358,12 +13941,14 @@ module CopyDBClusterSnapshotResult =
               (fun f  ->
                  Query.Pair
                    ("DBClusterSnapshot", (DBClusterSnapshot.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.d_b_cluster_snapshot
               (fun f  ->
                  ("d_b_cluster_snapshot", (DBClusterSnapshot.to_json f)))])
+
     let of_json j =
       {
         d_b_cluster_snapshot =
@@ -13375,13 +13960,13 @@ module CreateEventSubscriptionMessage =
   struct
     type t =
       {
-      subscription_name: String.t;
-      sns_topic_arn: String.t;
-      source_type: String.t option;
-      event_categories: EventCategoriesList.t;
-      source_ids: SourceIdsList.t;
-      enabled: Boolean.t option;
-      tags: TagList.t;}
+      subscription_name: String.t ;
+      sns_topic_arn: String.t ;
+      source_type: String.t option ;
+      event_categories: EventCategoriesList.t ;
+      source_ids: SourceIdsList.t ;
+      enabled: Boolean.t option ;
+      tags: TagList.t }
     let make ~subscription_name  ~sns_topic_arn  ?source_type
       ?(event_categories= [])  ?(source_ids= [])  ?enabled  ?(tags= [])  () =
       {
@@ -13419,6 +14004,7 @@ module CreateEventSubscriptionMessage =
             (Util.of_option []
                (Util.option_bind (Xml.member "Tags" xml) TagList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -13439,6 +14025,7 @@ module CreateEventSubscriptionMessage =
            Some
              (Query.Pair
                 ("SubscriptionName", (String.to_query v.subscription_name)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -13453,6 +14040,7 @@ module CreateEventSubscriptionMessage =
              (fun f  -> ("source_type", (String.to_json f)));
            Some ("sns_topic_arn", (String.to_json v.sns_topic_arn));
            Some ("subscription_name", (String.to_json v.subscription_name))])
+
     let of_json j =
       {
         subscription_name =
@@ -13477,9 +14065,9 @@ module CopyDBClusterSnapshotMessage =
   struct
     type t =
       {
-      source_d_b_cluster_snapshot_identifier: String.t;
-      target_d_b_cluster_snapshot_identifier: String.t;
-      tags: TagList.t;}
+      source_d_b_cluster_snapshot_identifier: String.t ;
+      target_d_b_cluster_snapshot_identifier: String.t ;
+      tags: TagList.t }
     let make ~source_d_b_cluster_snapshot_identifier
       ~target_d_b_cluster_snapshot_identifier  ?(tags= [])  () =
       {
@@ -13504,6 +14092,7 @@ module CopyDBClusterSnapshotMessage =
             (Util.of_option []
                (Util.option_bind (Xml.member "Tags" xml) TagList.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -13516,6 +14105,7 @@ module CopyDBClusterSnapshotMessage =
              (Query.Pair
                 ("SourceDBClusterSnapshotIdentifier",
                   (String.to_query v.source_d_b_cluster_snapshot_identifier)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -13526,6 +14116,7 @@ module CopyDBClusterSnapshotMessage =
            Some
              ("source_d_b_cluster_snapshot_identifier",
                (String.to_json v.source_d_b_cluster_snapshot_identifier))])
+
     let of_json j =
       {
         source_d_b_cluster_snapshot_identifier =
@@ -13542,7 +14133,7 @@ module CopyDBClusterSnapshotMessage =
 module CreateDBSubnetGroupResult =
   struct
     type t = {
-      d_b_subnet_group: DBSubnetGroup.t option;}
+      d_b_subnet_group: DBSubnetGroup.t option }
     let make ?d_b_subnet_group  () = { d_b_subnet_group }
     let parse xml =
       Some
@@ -13551,17 +14142,20 @@ module CreateDBSubnetGroupResult =
             (Util.option_bind (Xml.member "DBSubnetGroup" xml)
                DBSubnetGroup.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.d_b_subnet_group
               (fun f  ->
                  Query.Pair ("DBSubnetGroup", (DBSubnetGroup.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.d_b_subnet_group
               (fun f  -> ("d_b_subnet_group", (DBSubnetGroup.to_json f)))])
+
     let of_json j =
       {
         d_b_subnet_group =
@@ -13573,10 +14167,10 @@ module DescribeDBClustersMessage =
   struct
     type t =
       {
-      d_b_cluster_identifier: String.t option;
-      filters: FilterList.t;
-      max_records: Integer.t option;
-      marker: String.t option;}
+      d_b_cluster_identifier: String.t option ;
+      filters: FilterList.t ;
+      max_records: Integer.t option ;
+      marker: String.t option }
     let make ?d_b_cluster_identifier  ?(filters= [])  ?max_records  ?marker
       () = { d_b_cluster_identifier; filters; max_records; marker }
     let parse xml =
@@ -13592,6 +14186,7 @@ module DescribeDBClustersMessage =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse);
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -13604,6 +14199,7 @@ module DescribeDBClustersMessage =
            Util.option_map v.d_b_cluster_identifier
              (fun f  ->
                 Query.Pair ("DBClusterIdentifier", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -13614,6 +14210,7 @@ module DescribeDBClustersMessage =
            Some ("filters", (FilterList.to_json v.filters));
            Util.option_map v.d_b_cluster_identifier
              (fun f  -> ("d_b_cluster_identifier", (String.to_json f)))])
+
     let of_json j =
       {
         d_b_cluster_identifier =
@@ -13629,8 +14226,8 @@ module DescribeDBClustersMessage =
 module RemoveSourceIdentifierFromSubscriptionMessage =
   struct
     type t = {
-      subscription_name: String.t;
-      source_identifier: String.t;}
+      subscription_name: String.t ;
+      source_identifier: String.t }
     let make ~subscription_name  ~source_identifier  () =
       { subscription_name; source_identifier }
     let parse xml =
@@ -13645,6 +14242,7 @@ module RemoveSourceIdentifierFromSubscriptionMessage =
                (Util.option_bind (Xml.member "SourceIdentifier" xml)
                   String.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -13654,11 +14252,13 @@ module RemoveSourceIdentifierFromSubscriptionMessage =
            Some
              (Query.Pair
                 ("SubscriptionName", (String.to_query v.subscription_name)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("source_identifier", (String.to_json v.source_identifier));
            Some ("subscription_name", (String.to_json v.subscription_name))])
+
     let of_json j =
       {
         subscription_name =
@@ -13673,8 +14273,8 @@ module DBSecurityGroupMessage =
   struct
     type t =
       {
-      marker: String.t option;
-      d_b_security_groups: DBSecurityGroups.t;}
+      marker: String.t option ;
+      d_b_security_groups: DBSecurityGroups.t }
     let make ?marker  ?(d_b_security_groups= [])  () =
       { marker; d_b_security_groups }
     let parse xml =
@@ -13686,6 +14286,7 @@ module DBSecurityGroupMessage =
                (Util.option_bind (Xml.member "DBSecurityGroups" xml)
                   DBSecurityGroups.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -13695,6 +14296,7 @@ module DBSecurityGroupMessage =
                    (DBSecurityGroups.to_query v.d_b_security_groups)));
            Util.option_map v.marker
              (fun f  -> Query.Pair ("Marker", (String.to_query f)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -13703,6 +14305,7 @@ module DBSecurityGroupMessage =
                 (DBSecurityGroups.to_json v.d_b_security_groups));
            Util.option_map v.marker
              (fun f  -> ("marker", (String.to_json f)))])
+
     let of_json j =
       {
         marker = (Util.option_map (Json.lookup j "marker") String.of_json);
@@ -13714,7 +14317,7 @@ module DBSecurityGroupMessage =
 module DeleteDBParameterGroupMessage =
   struct
     type t = {
-      d_b_parameter_group_name: String.t;}
+      d_b_parameter_group_name: String.t }
     let make ~d_b_parameter_group_name  () = { d_b_parameter_group_name }
     let parse xml =
       Some
@@ -13724,6 +14327,7 @@ module DeleteDBParameterGroupMessage =
                (Util.option_bind (Xml.member "DBParameterGroupName" xml)
                   String.parse))
         }
+
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -13731,12 +14335,14 @@ module DeleteDBParameterGroupMessage =
               (Query.Pair
                  ("DBParameterGroupName",
                    (String.to_query v.d_b_parameter_group_name)))])
+
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("d_b_parameter_group_name",
                 (String.to_json v.d_b_parameter_group_name))])
+
     let of_json j =
       {
         d_b_parameter_group_name =

@@ -172,7 +172,7 @@ let sinclude_ nm with_ = Sig.include_ { pincl_mod =
                                       }
 
 (* with nm0 := nm1 (in .mli; for use in include) *)
-let withty nm0 nm1 = Pwith_typesubst (Type.mk ~manifest:(ty0 nm1) (strloc nm1))
+let withty _nm0 nm1 = Pwith_typesubst (Type.mk ~manifest:(ty0 nm1) (strloc nm1))
 
 (* if cond then thn else els *)
 let ifthen cond thn els = Exp.ifthenelse cond thn (Some els)

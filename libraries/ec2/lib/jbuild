@@ -1,0 +1,8 @@
+(jbuild_version 1)
+
+(library
+ ((name        aws_ec2)
+  (public_name aws_ec2)
+  (synopsis "aws-Amazon Elastic Compute Cloud")
+  (flags (:standard -w -27))
+  (libraries (aws))))

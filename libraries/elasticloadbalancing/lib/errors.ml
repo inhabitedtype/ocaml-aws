@@ -1,50 +1,50 @@
 type t =
-  | LoadBalancerNotFound
-  | AuthFailure
-  | Blocked
-  | CertificateNotFound
-  | DryRunOperation
-  | DuplicateLoadBalancerName
-  | DuplicateListener
-  | DuplicatePolicyName
-  | DuplicateTagKeys
-  | IdempotentParameterMismatch
-  | IncompleteSignature
-  | InternalFailure
-  | InvalidAction
-  | InvalidClientTokenId
-  | InvalidConfigurationRequest
-  | InvalidInstance
-  | InvalidParameter
-  | InvalidParameterCombination
-  | InvalidParameterValue
-  | InvalidQueryParameter
-  | InvalidScheme
-  | InvalidSecurityGroup
-  | InvalidSubnet
-  | ListenerNotFound
-  | LoadBalancerAttributeNotFound
-  | MalformedQueryString
-  | MissingAction
-  | MissingAuthenticationToken
-  | MissingParameter
-  | OptInRequired
-  | PendingVerification
-  | PolicyNotFound
-  | PolicyTypeNotFound
-  | RequestExpired
-  | RequestLimitExceeded
-  | ServiceUnavailable
-  | SubnetNotFound
-  | Throttling
-  | TooManyLoadBalancers
-  | TooManyPolicies
-  | TooManyTags
-  | UnauthorizedOperation
-  | UnknownParameter
-  | UnsupportedProtocol
-  | ValidationError
-  | Uninhabited
+  | LoadBalancerNotFound 
+  | AuthFailure 
+  | Blocked 
+  | CertificateNotFound 
+  | DryRunOperation 
+  | DuplicateLoadBalancerName 
+  | DuplicateListener 
+  | DuplicatePolicyName 
+  | DuplicateTagKeys 
+  | IdempotentParameterMismatch 
+  | IncompleteSignature 
+  | InternalFailure 
+  | InvalidAction 
+  | InvalidClientTokenId 
+  | InvalidConfigurationRequest 
+  | InvalidInstance 
+  | InvalidParameter 
+  | InvalidParameterCombination 
+  | InvalidParameterValue 
+  | InvalidQueryParameter 
+  | InvalidScheme 
+  | InvalidSecurityGroup 
+  | InvalidSubnet 
+  | ListenerNotFound 
+  | LoadBalancerAttributeNotFound 
+  | MalformedQueryString 
+  | MissingAction 
+  | MissingAuthenticationToken 
+  | MissingParameter 
+  | OptInRequired 
+  | PendingVerification 
+  | PolicyNotFound 
+  | PolicyTypeNotFound 
+  | RequestExpired 
+  | RequestLimitExceeded 
+  | ServiceUnavailable 
+  | SubnetNotFound 
+  | Throttling 
+  | TooManyLoadBalancers 
+  | TooManyPolicies 
+  | TooManyTags 
+  | UnauthorizedOperation 
+  | UnknownParameter 
+  | UnsupportedProtocol 
+  | ValidationError 
+  | Uninhabited 
 let common =
   [UnsupportedProtocol;
   UnknownParameter;
@@ -71,7 +71,7 @@ let common =
   InvalidClientTokenId;
   InvalidAction;
   InternalFailure;
-  IncompleteSignature]
+  IncompleteSignature] 
 let to_http_code e =
   match e with
   | LoadBalancerNotFound  -> Some 400
@@ -119,7 +119,7 @@ let to_http_code e =
   | UnknownParameter  -> None
   | UnsupportedProtocol  -> None
   | ValidationError  -> Some 400
-  | Uninhabited  -> None
+  | Uninhabited  -> None 
 let to_string e =
   match e with
   | LoadBalancerNotFound  -> "LoadBalancerNotFound"
@@ -167,7 +167,7 @@ let to_string e =
   | UnknownParameter  -> "UnknownParameter"
   | UnsupportedProtocol  -> "UnsupportedProtocol"
   | ValidationError  -> "ValidationError"
-  | Uninhabited  -> "Uninhabited"
+  | Uninhabited  -> "Uninhabited" 
 let of_string e =
   match e with
   | "LoadBalancerNotFound" -> Some LoadBalancerNotFound
@@ -216,4 +216,4 @@ let of_string e =
   | "UnsupportedProtocol" -> Some UnsupportedProtocol
   | "ValidationError" -> Some ValidationError
   | "Uninhabited" -> Some Uninhabited
-  | _ -> None
+  | _ -> None 

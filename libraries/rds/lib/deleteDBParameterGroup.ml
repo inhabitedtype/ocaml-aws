@@ -3,7 +3,7 @@ open Aws
 type input = DeleteDBParameterGroupMessage.t
 type output = unit
 type error = Errors.t
-let service = "rds"
+let service = "rds" 
 let to_http req =
   let uri =
     Uri.add_query_params (Uri.of_string "https://rds.amazonaws.com")
@@ -12,13 +12,15 @@ let to_http req =
          ("Action", ["DeleteDBParameterGroup"])]
          (Util.drop_empty
             (Uri.query_of_encoded
-               (Query.render (DeleteDBParameterGroupMessage.to_query req))))) in
-  (`POST, uri, [])
-let of_http _body = `Ok ()
+               (Query.render (DeleteDBParameterGroupMessage.to_query req)))))
+     in
+  (`POST, uri, []) 
+let of_http body = `Ok () 
 let parse_error code err =
   let errors =
     [Errors.DBParameterGroupNotFound; Errors.InvalidDBParameterGroupState] @
-      Errors.common in
+      Errors.common
+     in
   match Errors.of_string err with
   | Some var ->
       if
@@ -28,4 +30,4 @@ let parse_error code err =
             | None  -> true))
       then Some var
       else None
-  | None  -> None
+  | None  -> None 

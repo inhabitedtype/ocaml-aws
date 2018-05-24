@@ -1,46 +1,46 @@
 type t =
-  | AttributeDoesNotExist
-  | AuthFailure
-  | Blocked
-  | DryRunOperation
-  | DuplicateItemName
-  | IdempotentParameterMismatch
-  | IncompleteSignature
-  | InternalFailure
-  | InvalidAction
-  | InvalidClientTokenId
-  | InvalidNextToken
-  | InvalidNumberPredicates
-  | InvalidNumberValueTests
-  | InvalidParameter
-  | InvalidParameterCombination
-  | InvalidParameterValue
-  | InvalidQueryExpression
-  | InvalidQueryParameter
-  | MalformedQueryString
-  | MissingAction
-  | MissingAuthenticationToken
-  | MissingParameter
-  | NoSuchDomain
-  | NumberDomainAttributesExceeded
-  | NumberDomainBytesExceeded
-  | NumberDomainsExceeded
-  | NumberItemAttributesExceeded
-  | NumberSubmittedAttributesExceeded
-  | NumberSubmittedItemsExceeded
-  | OptInRequired
-  | PendingVerification
-  | RequestExpired
-  | RequestLimitExceeded
-  | RequestTimeout
-  | ServiceUnavailable
-  | Throttling
-  | TooManyRequestedAttributes
-  | UnauthorizedOperation
-  | UnknownParameter
-  | UnsupportedProtocol
-  | ValidationError
-  | Uninhabited
+  | AttributeDoesNotExist 
+  | AuthFailure 
+  | Blocked 
+  | DryRunOperation 
+  | DuplicateItemName 
+  | IdempotentParameterMismatch 
+  | IncompleteSignature 
+  | InternalFailure 
+  | InvalidAction 
+  | InvalidClientTokenId 
+  | InvalidNextToken 
+  | InvalidNumberPredicates 
+  | InvalidNumberValueTests 
+  | InvalidParameter 
+  | InvalidParameterCombination 
+  | InvalidParameterValue 
+  | InvalidQueryExpression 
+  | InvalidQueryParameter 
+  | MalformedQueryString 
+  | MissingAction 
+  | MissingAuthenticationToken 
+  | MissingParameter 
+  | NoSuchDomain 
+  | NumberDomainAttributesExceeded 
+  | NumberDomainBytesExceeded 
+  | NumberDomainsExceeded 
+  | NumberItemAttributesExceeded 
+  | NumberSubmittedAttributesExceeded 
+  | NumberSubmittedItemsExceeded 
+  | OptInRequired 
+  | PendingVerification 
+  | RequestExpired 
+  | RequestLimitExceeded 
+  | RequestTimeout 
+  | ServiceUnavailable 
+  | Throttling 
+  | TooManyRequestedAttributes 
+  | UnauthorizedOperation 
+  | UnknownParameter 
+  | UnsupportedProtocol 
+  | ValidationError 
+  | Uninhabited 
 let common =
   [UnsupportedProtocol;
   UnknownParameter;
@@ -67,7 +67,7 @@ let common =
   InvalidClientTokenId;
   InvalidAction;
   InternalFailure;
-  IncompleteSignature]
+  IncompleteSignature] 
 let to_http_code e =
   match e with
   | AttributeDoesNotExist  -> Some 404
@@ -111,7 +111,7 @@ let to_http_code e =
   | UnknownParameter  -> None
   | UnsupportedProtocol  -> None
   | ValidationError  -> Some 400
-  | Uninhabited  -> None
+  | Uninhabited  -> None 
 let to_string e =
   match e with
   | AttributeDoesNotExist  -> "AttributeDoesNotExist"
@@ -155,7 +155,7 @@ let to_string e =
   | UnknownParameter  -> "UnknownParameter"
   | UnsupportedProtocol  -> "UnsupportedProtocol"
   | ValidationError  -> "ValidationError"
-  | Uninhabited  -> "Uninhabited"
+  | Uninhabited  -> "Uninhabited" 
 let of_string e =
   match e with
   | "AttributeDoesNotExist" -> Some AttributeDoesNotExist
@@ -201,4 +201,4 @@ let of_string e =
   | "UnsupportedProtocol" -> Some UnsupportedProtocol
   | "ValidationError" -> Some ValidationError
   | "Uninhabited" -> Some Uninhabited
-  | _ -> None
+  | _ -> None 

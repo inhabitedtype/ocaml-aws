@@ -40,7 +40,7 @@ let uncapitalize s =
   let at_start = ref true in
   String.map (fun c ->
     if !at_start then
-      begin at_start := false; Char.lowercase c end
+      begin at_start := false; Char.lowercase_ascii c end
     else c)
   s
 
@@ -132,7 +132,7 @@ let main input override errors_path outdir is_ec2 =
   let ops_json = Json.(member_exn "operations"     desc |> to_assoc) in
   let shp_json = Json.(member_exn "shapes"         desc |> to_assoc) in
   let lib_name      = Json.(member_exn "endpointPrefix" meta |> to_string) in
-  let lib_version   = Json.(member_exn "libraryVersion" overrides |> to_string) in
+  (* let lib_version   = Json.(member_exn "libraryVersion" overrides |> to_string) in *)
   let service_name  = Json.(member_exn "serviceFullName" meta |> to_string) in
   let api_version   = Json.(member_exn "apiVersion"     meta |> to_string) in
   let parsed_ops  = List.map Reading.op ops_json in
@@ -185,6 +185,7 @@ let main input override errors_path outdir is_ec2 =
   Printing.write_structure (lib_dir </> "types.ml") (Generate.types is_ec2 shapes);
   log "## Wrote %d/%d shape modules..."
     (StringTable.cardinal shapes) (List.length shp_json);
+  (* TODO Fix generation of error types such that duplicate constructors don't exist. *)
   Printing.write_structure (lib_dir </> "errors.ml") (Generate.errors errors common_errors);
   log "## Wrote %d error variants..." (List.length errors);
   List.iter (fun op ->
@@ -195,14 +196,14 @@ let main input override errors_path outdir is_ec2 =
   ops;
   log "## Wrote %d/%d ops modules..."
     (List.length ops) (List.length ops_json);
-  let modules = List.map (fun op -> op.Operation.name) ops in
+  (* let modules = List.map (fun op -> op.Operation.name) ops in *)
   (* let append =
    *   try
    *     let in_ = open_in (dir </> "_oasis_append") in
    *     really_input_string in_ (in_channel_length in_)
    *   with Sys_error _ -> ""
    * in *)
-  Printing.write_all (lib_dir </> "jbuild")
+  Printing.write_all ~filename:(lib_dir </> "jbuild")
     (Templates.jbuild ~lib_name ~service_name);
   log "## Wrote jbuild file.";
 

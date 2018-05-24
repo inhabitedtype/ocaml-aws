@@ -1,0 +1,36 @@
+opam-version: "1.3"
+maintainer: "Spiros Eliopoulos <spiros@inhabitedtype.com>"
+authors: [ "Spiros Eliopoulos <spiros@inhabitedtype.com>"
+           "Daniel Patterson <dbp@dbpmail.net>" ]
+version: "1.0.3"
+license: "BSD-3-clause"
+homepage: "https://github.com/inhabitedtype/ocaml-aws"
+dev-repo: "https://github.com/inhabitedtype/ocaml-aws.git"
+bug-reports: "https://github.com/inhabitedtype/ocaml-aws/issues"
+build: [
+  ["jbuilder" "subst"] {pinned}
+  ["jbuilder" "build" "-p" name "-j" jobs]
+]
+build-test: [
+  ["jbuilder" "runtest" "-p" name]
+]
+depends: [
+  "calendar"
+  "ezxmlm"
+  "nocrypto"
+  "ocamlfind" {build}
+  "uri" {>= "1.4.0"}
+]
+depopts: [
+  "async"
+  "async_ssl"
+  "base-threads"
+  "base-unix"
+  "cohttp"
+  "lwt"
+  "ssl"
+]
+conflicts: [
+  "cohttp" {< "0.17.0"}
+  "cohttp" {>="0.99"}
+]

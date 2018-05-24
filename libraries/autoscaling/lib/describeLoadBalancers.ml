@@ -3,7 +3,7 @@ open Aws
 type input = DescribeLoadBalancersRequest.t
 type output = DescribeLoadBalancersResponse.t
 type error = Errors.t
-let service = "autoscaling"
+let service = "autoscaling" 
 let to_http req =
   let uri =
     Uri.add_query_params (Uri.of_string "https://autoscaling.amazonaws.com")
@@ -11,14 +11,16 @@ let to_http req =
          [("Version", ["2011-01-01"]); ("Action", ["DescribeLoadBalancers"])]
          (Util.drop_empty
             (Uri.query_of_encoded
-               (Query.render (DescribeLoadBalancersRequest.to_query req))))) in
-  (`POST, uri, [])
+               (Query.render (DescribeLoadBalancersRequest.to_query req)))))
+     in
+  (`POST, uri, []) 
 let of_http body =
   try
-    let xml = Ezxmlm.from_string body in
+    let xml = Ezxmlm.from_string body  in
     let resp =
       Util.option_bind (Xml.member "DescribeLoadBalancersResponse" (snd xml))
-        (Xml.member "DescribeLoadBalancersResult") in
+        (Xml.member "DescribeLoadBalancersResult")
+       in
     try
       Util.or_error
         (Util.option_bind resp DescribeLoadBalancersResponse.parse)
@@ -45,8 +47,9 @@ let of_http body =
       `Error
         (let open Error in
            BadResponse { body; message = ("Error parsing xml: " ^ msg) })
+  
 let parse_error code err =
-  let errors = [Errors.ResourceContention] @ Errors.common in
+  let errors = [Errors.ResourceContention] @ Errors.common  in
   match Errors.of_string err with
   | Some var ->
       if
@@ -56,4 +59,4 @@ let parse_error code err =
             | None  -> true))
       then Some var
       else None
-  | None  -> None
+  | None  -> None 

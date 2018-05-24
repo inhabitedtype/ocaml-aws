@@ -1,0 +1,22 @@
+opam-version: "1.2"
+maintainer: "Spiros Eliopoulos <spiros@inhabitedtype.com>"
+authors: [ "Spiros Eliopoulos <spiros@inhabitedtype.com>"
+           "Daniel Patterson <dbp@dbpmail.net>" ]
+license: "BSD-3-clause"
+homepage: "https://github.com/inhabitedtype/ocaml-aws"
+dev-repo: "https://github.com/inhabitedtype/ocaml-aws.git"
+bug-reports: "https://github.com/inhabitedtype/ocaml-aws/issues"
+build: [
+  ["jbuilder" "subst"] {pinned}
+  ["jbuilder" "build" "-p" name "-j" jobs]
+]
+  build-test: [
+  ["jbuilder" "runtest" "-p" name]
+]
+depends: [
+  "yojson"
+  "cmdliner"
+  "ppx_tools"
+  "ocaml-migrate-parsetree"
+]
+available: [ ocaml-version >= "4.02" ]

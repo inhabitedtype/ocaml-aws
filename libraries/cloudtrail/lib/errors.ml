@@ -1,48 +1,48 @@
 type t =
-  | AuthFailure
-  | Blocked
-  | CloudWatchLogsDeliveryUnavailable
-  | DryRunOperation
-  | IdempotentParameterMismatch
-  | IncompleteSignature
-  | InsufficientS3BucketPolicy
-  | InsufficientSnsTopicPolicy
-  | InternalFailure
-  | InvalidAction
-  | InvalidClientTokenId
-  | InvalidCloudWatchLogsLogGroupArn
-  | InvalidCloudWatchLogsRoleArn
-  | InvalidLookupAttributes
-  | InvalidMaxResults
-  | InvalidNextToken
-  | InvalidParameter
-  | InvalidParameterCombination
-  | InvalidParameterValue
-  | InvalidQueryParameter
-  | InvalidS3BucketName
-  | InvalidS3Prefix
-  | InvalidSnsTopicName
-  | InvalidTimeRange
-  | InvalidTrailName
-  | MalformedQueryString
-  | MaximumNumberOfTrailsExceeded
-  | MissingAction
-  | MissingAuthenticationToken
-  | MissingParameter
-  | OptInRequired
-  | PendingVerification
-  | RequestExpired
-  | RequestLimitExceeded
-  | S3BucketDoesNotExist
-  | ServiceUnavailable
-  | Throttling
-  | TrailAlreadyExists
-  | TrailNotFound
-  | UnauthorizedOperation
-  | UnknownParameter
-  | UnsupportedProtocol
-  | ValidationError
-  | Uninhabited
+  | AuthFailure 
+  | Blocked 
+  | CloudWatchLogsDeliveryUnavailable 
+  | DryRunOperation 
+  | IdempotentParameterMismatch 
+  | IncompleteSignature 
+  | InsufficientS3BucketPolicy 
+  | InsufficientSnsTopicPolicy 
+  | InternalFailure 
+  | InvalidAction 
+  | InvalidClientTokenId 
+  | InvalidCloudWatchLogsLogGroupArn 
+  | InvalidCloudWatchLogsRoleArn 
+  | InvalidLookupAttributes 
+  | InvalidMaxResults 
+  | InvalidNextToken 
+  | InvalidParameter 
+  | InvalidParameterCombination 
+  | InvalidParameterValue 
+  | InvalidQueryParameter 
+  | InvalidS3BucketName 
+  | InvalidS3Prefix 
+  | InvalidSnsTopicName 
+  | InvalidTimeRange 
+  | InvalidTrailName 
+  | MalformedQueryString 
+  | MaximumNumberOfTrailsExceeded 
+  | MissingAction 
+  | MissingAuthenticationToken 
+  | MissingParameter 
+  | OptInRequired 
+  | PendingVerification 
+  | RequestExpired 
+  | RequestLimitExceeded 
+  | S3BucketDoesNotExist 
+  | ServiceUnavailable 
+  | Throttling 
+  | TrailAlreadyExists 
+  | TrailNotFound 
+  | UnauthorizedOperation 
+  | UnknownParameter 
+  | UnsupportedProtocol 
+  | ValidationError 
+  | Uninhabited 
 let common =
   [UnsupportedProtocol;
   UnknownParameter;
@@ -69,7 +69,7 @@ let common =
   InvalidClientTokenId;
   InvalidAction;
   InternalFailure;
-  IncompleteSignature]
+  IncompleteSignature] 
 let to_http_code e =
   match e with
   | AuthFailure  -> None
@@ -115,7 +115,7 @@ let to_http_code e =
   | UnknownParameter  -> None
   | UnsupportedProtocol  -> None
   | ValidationError  -> Some 400
-  | Uninhabited  -> None
+  | Uninhabited  -> None 
 let to_string e =
   match e with
   | AuthFailure  -> "AuthFailure"
@@ -161,7 +161,7 @@ let to_string e =
   | UnknownParameter  -> "UnknownParameter"
   | UnsupportedProtocol  -> "UnsupportedProtocol"
   | ValidationError  -> "ValidationError"
-  | Uninhabited  -> "Uninhabited"
+  | Uninhabited  -> "Uninhabited" 
 let of_string e =
   match e with
   | "AuthFailure" -> Some AuthFailure
@@ -210,4 +210,4 @@ let of_string e =
   | "UnsupportedProtocol" -> Some UnsupportedProtocol
   | "ValidationError" -> Some ValidationError
   | "Uninhabited" -> Some Uninhabited
-  | _ -> None
+  | _ -> None 

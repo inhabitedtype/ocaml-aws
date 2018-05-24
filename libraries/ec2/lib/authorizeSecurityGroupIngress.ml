@@ -3,7 +3,7 @@ open Aws
 type input = AuthorizeSecurityGroupIngressRequest.t
 type output = unit
 type error = Errors.t
-let service = "ec2"
+let service = "ec2" 
 let to_http req =
   let uri =
     Uri.add_query_params (Uri.of_string "https://ec2.amazonaws.com")
@@ -13,11 +13,12 @@ let to_http req =
          (Util.drop_empty
             (Uri.query_of_encoded
                (Query.render
-                  (AuthorizeSecurityGroupIngressRequest.to_query req))))) in
-  (`POST, uri, [])
-let of_http _body = `Ok ()
+                  (AuthorizeSecurityGroupIngressRequest.to_query req)))))
+     in
+  (`POST, uri, []) 
+let of_http body = `Ok () 
 let parse_error code err =
-  let errors = [] @ Errors.common in
+  let errors = [] @ Errors.common  in
   match Errors.of_string err with
   | Some var ->
       if
@@ -27,4 +28,4 @@ let parse_error code err =
             | None  -> true))
       then Some var
       else None
-  | None  -> None
+  | None  -> None 

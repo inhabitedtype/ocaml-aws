@@ -51,7 +51,7 @@ module Error : sig
       a non-2xx code. *)
   type 'a error_response =
     | BadResponse of bad_response
-    (** A DadResponse is an error response that could not be parsed
+    (** A BadResponse is an error response that could not be parsed
         into AWS error data structures. *)
     | AwsError of ('a code * string) list
     (** An AwsError is a list of errors parsed out of XML returned in

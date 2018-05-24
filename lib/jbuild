@@ -1,0 +1,7 @@
+(jbuild_version 1)
+
+(library
+ ((name        aws)
+  (public_name aws)
+  (wrapped true)
+  (libraries (uri calendar ezxmlm nocrypto))))

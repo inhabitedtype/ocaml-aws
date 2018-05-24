@@ -3,7 +3,7 @@ open Aws
 type input = GetSessionTokenRequest.t
 type output = GetSessionTokenResponse.t
 type error = Errors.t
-let service = "sts"
+let service = "sts" 
 let to_http req =
   let uri =
     Uri.add_query_params (Uri.of_string "https://sts.amazonaws.com")
@@ -11,14 +11,16 @@ let to_http req =
          [("Version", ["2011-06-15"]); ("Action", ["GetSessionToken"])]
          (Util.drop_empty
             (Uri.query_of_encoded
-               (Query.render (GetSessionTokenRequest.to_query req))))) in
-  (`POST, uri, [])
+               (Query.render (GetSessionTokenRequest.to_query req)))))
+     in
+  (`POST, uri, []) 
 let of_http body =
   try
-    let xml = Ezxmlm.from_string body in
+    let xml = Ezxmlm.from_string body  in
     let resp =
       Util.option_bind (Xml.member "GetSessionTokenResponse" (snd xml))
-        (Xml.member "GetSessionTokenResult") in
+        (Xml.member "GetSessionTokenResult")
+       in
     try
       Util.or_error (Util.option_bind resp GetSessionTokenResponse.parse)
         (let open Error in
@@ -44,8 +46,9 @@ let of_http body =
       `Error
         (let open Error in
            BadResponse { body; message = ("Error parsing xml: " ^ msg) })
+  
 let parse_error code err =
-  let errors = [] @ Errors.common in
+  let errors = [] @ Errors.common  in
   match Errors.of_string err with
   | Some var ->
       if
@@ -55,4 +58,4 @@ let parse_error code err =
             | None  -> true))
       then Some var
       else None
-  | None  -> None
+  | None  -> None 

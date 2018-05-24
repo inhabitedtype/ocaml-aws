@@ -3,7 +3,7 @@ open Aws
 type input = UpdateAssociationStatusRequest.t
 type output = UpdateAssociationStatusResult.t
 type error = Errors.t
-let service = "ssm"
+let service = "ssm" 
 let to_http req =
   let uri =
     Uri.add_query_params (Uri.of_string "https://ssm.amazonaws.com")
@@ -12,12 +12,13 @@ let to_http req =
          ("Action", ["UpdateAssociationStatus"])]
          (Util.drop_empty
             (Uri.query_of_encoded
-               (Query.render (UpdateAssociationStatusRequest.to_query req))))) in
-  (`POST, uri, [])
+               (Query.render (UpdateAssociationStatusRequest.to_query req)))))
+     in
+  (`POST, uri, []) 
 let of_http body =
   try
-    let xml = Ezxmlm.from_string body in
-    let resp = Xml.member "UpdateAssociationStatusResponse" (snd xml) in
+    let xml = Ezxmlm.from_string body  in
+    let resp = Xml.member "UpdateAssociationStatusResponse" (snd xml)  in
     try
       Util.or_error
         (Util.option_bind resp UpdateAssociationStatusResult.parse)
@@ -44,6 +45,7 @@ let of_http body =
       `Error
         (let open Error in
            BadResponse { body; message = ("Error parsing xml: " ^ msg) })
+  
 let parse_error code err =
   let errors =
     [Errors.TooManyUpdates;
@@ -51,7 +53,7 @@ let parse_error code err =
     Errors.AssociationDoesNotExist;
     Errors.InvalidDocument;
     Errors.InvalidInstanceId;
-    Errors.InternalServerError] @ Errors.common in
+    Errors.InternalServerError] @ Errors.common  in
   match Errors.of_string err with
   | Some var ->
       if
@@ -61,4 +63,4 @@ let parse_error code err =
             | None  -> true))
       then Some var
       else None
-  | None  -> None
+  | None  -> None 
