@@ -1,0 +1,8 @@
+(jbuild_version 1)
+
+(library
+ ((name        aws_rds)
+  (public_name aws_rds)
+  (synopsis "aws-Amazon Relational Database Service")
+  (flags (:standard -w -27))
+  (libraries (aws))))

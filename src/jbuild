@@ -1,11 +1,10 @@
 (jbuild_version 1)
 
 (executable
- ((name        aws_gen)
-  (libraries ("yojson" "cmdliner" "ppx_tools" "ocaml-migrate-parsetree"))))
-
-(rule (with-stdout-to structures.ml
-       (progn
-        (echo "[@@@warning \"-a\"]\nmodule rec HACK : sig\n")
-        (cat structures.mli)
-        (echo "\nend = HACK\ninclude HACK\n"))))
+  (public_name aws_gen)
+  (modules_without_implementation (structures))
+  (package aws_gen)
+  (preprocess (per_module
+               ((action
+                 (run ocamlfind ppx_tools/rewriter -ppx ~/.opam/4.03.0-aws/lib/ppx_tools/ppx_metaquot ${<})) (generate))))
+  (libraries (yojson cmdliner ppx_tools ppx_tools.metaquot ocaml-migrate-parsetree ocamlgraph unix))))

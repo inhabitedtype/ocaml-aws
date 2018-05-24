@@ -3,7 +3,7 @@ open Aws
 type input = ModifyEventSubscriptionMessage.t
 type output = ModifyEventSubscriptionResult.t
 type error = Errors.t
-let service = "rds"
+let service = "rds" 
 let to_http req =
   let uri =
     Uri.add_query_params (Uri.of_string "https://rds.amazonaws.com")
@@ -12,15 +12,17 @@ let to_http req =
          ("Action", ["ModifyEventSubscription"])]
          (Util.drop_empty
             (Uri.query_of_encoded
-               (Query.render (ModifyEventSubscriptionMessage.to_query req))))) in
-  (`POST, uri, [])
+               (Query.render (ModifyEventSubscriptionMessage.to_query req)))))
+     in
+  (`POST, uri, []) 
 let of_http body =
   try
-    let xml = Ezxmlm.from_string body in
+    let xml = Ezxmlm.from_string body  in
     let resp =
       Util.option_bind
         (Xml.member "ModifyEventSubscriptionResponse" (snd xml))
-        (Xml.member "ModifyEventSubscriptionResult") in
+        (Xml.member "ModifyEventSubscriptionResult")
+       in
     try
       Util.or_error
         (Util.option_bind resp ModifyEventSubscriptionResult.parse)
@@ -47,6 +49,7 @@ let of_http body =
       `Error
         (let open Error in
            BadResponse { body; message = ("Error parsing xml: " ^ msg) })
+  
 let parse_error code err =
   let errors =
     [Errors.SubscriptionCategoryNotFound;
@@ -54,7 +57,7 @@ let parse_error code err =
     Errors.SNSNoAuthorization;
     Errors.SNSInvalidTopic;
     Errors.SubscriptionNotFound;
-    Errors.EventSubscriptionQuotaExceeded] @ Errors.common in
+    Errors.EventSubscriptionQuotaExceeded] @ Errors.common  in
   match Errors.of_string err with
   | Some var ->
       if
@@ -64,4 +67,4 @@ let parse_error code err =
             | None  -> true))
       then Some var
       else None
-  | None  -> None
+  | None  -> None 

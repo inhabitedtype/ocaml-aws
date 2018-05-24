@@ -42,3 +42,4 @@ val oasis
 val jbuild
   :  lib_name:string
   -> service_name:string
+  -> string

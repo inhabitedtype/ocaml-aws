@@ -84,7 +84,7 @@ let shape ((nm, j) : (string * Yojson.Basic.json)) : Shape.parsed =
       (nm, ty, None)
   | _ -> failwith (Printf.sprintf "Couldn't find 'type' on shape with name '%s'" nm)
 
-let op (nm, j) : Operation.t =
+let op (_nm, j) : Operation.t =
   let name = Json.(member_exn "name" j |> to_string) in
   let http = Json.member_exn "http" j in
   let http_meth = Json.(member_exn "method" http |> to_string) in

@@ -90,3 +90,9 @@ export LDFLAGS=-L/usr/local/lib
 ## License
 
 BSD3, see LICENSE file for its text.
+
+
+## Porting
+To generate the code for `generate.ml`:
+
+`ocamlfind ppx_tools/rewriter -ppx ~/.opam/4.03.0-aws/lib/ppx_tools/ppx_metaquot src/generate.ml > test.ml`

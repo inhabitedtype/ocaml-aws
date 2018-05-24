@@ -3,7 +3,7 @@ open Aws
 type input = CreateCacheClusterMessage.t
 type output = CreateCacheClusterResult.t
 type error = Errors.t
-let service = "elasticache"
+let service = "elasticache" 
 let to_http req =
   let uri =
     Uri.add_query_params (Uri.of_string "https://elasticache.amazonaws.com")
@@ -11,14 +11,16 @@ let to_http req =
          [("Version", ["2015-02-02"]); ("Action", ["CreateCacheCluster"])]
          (Util.drop_empty
             (Uri.query_of_encoded
-               (Query.render (CreateCacheClusterMessage.to_query req))))) in
-  (`POST, uri, [])
+               (Query.render (CreateCacheClusterMessage.to_query req)))))
+     in
+  (`POST, uri, []) 
 let of_http body =
   try
-    let xml = Ezxmlm.from_string body in
+    let xml = Ezxmlm.from_string body  in
     let resp =
       Util.option_bind (Xml.member "CreateCacheClusterResponse" (snd xml))
-        (Xml.member "CreateCacheClusterResult") in
+        (Xml.member "CreateCacheClusterResult")
+       in
     try
       Util.or_error (Util.option_bind resp CreateCacheClusterResult.parse)
         (let open Error in
@@ -44,6 +46,7 @@ let of_http body =
       `Error
         (let open Error in
            BadResponse { body; message = ("Error parsing xml: " ^ msg) })
+  
 let parse_error code err =
   let errors =
     [Errors.InvalidParameterCombination;
@@ -59,7 +62,7 @@ let parse_error code err =
     Errors.InsufficientCacheClusterCapacity;
     Errors.CacheClusterAlreadyExists;
     Errors.InvalidReplicationGroupState;
-    Errors.ReplicationGroupNotFoundFault] @ Errors.common in
+    Errors.ReplicationGroupNotFoundFault] @ Errors.common  in
   match Errors.of_string err with
   | Some var ->
       if
@@ -69,4 +72,4 @@ let parse_error code err =
             | None  -> true))
       then Some var
       else None
-  | None  -> None
+  | None  -> None 

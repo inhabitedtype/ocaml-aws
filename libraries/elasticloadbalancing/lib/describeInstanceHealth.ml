@@ -3,7 +3,7 @@ open Aws
 type input = DescribeEndPointStateInput.t
 type output = DescribeEndPointStateOutput.t
 type error = Errors.t
-let service = "elasticloadbalancing"
+let service = "elasticloadbalancing" 
 let to_http req =
   let uri =
     Uri.add_query_params
@@ -13,15 +13,17 @@ let to_http req =
          ("Action", ["DescribeInstanceHealth"])]
          (Util.drop_empty
             (Uri.query_of_encoded
-               (Query.render (DescribeEndPointStateInput.to_query req))))) in
-  (`POST, uri, [])
+               (Query.render (DescribeEndPointStateInput.to_query req)))))
+     in
+  (`POST, uri, []) 
 let of_http body =
   try
-    let xml = Ezxmlm.from_string body in
+    let xml = Ezxmlm.from_string body  in
     let resp =
       Util.option_bind
         (Xml.member "DescribeInstanceHealthResponse" (snd xml))
-        (Xml.member "DescribeInstanceHealthResult") in
+        (Xml.member "DescribeInstanceHealthResult")
+       in
     try
       Util.or_error (Util.option_bind resp DescribeEndPointStateOutput.parse)
         (let open Error in
@@ -47,9 +49,10 @@ let of_http body =
       `Error
         (let open Error in
            BadResponse { body; message = ("Error parsing xml: " ^ msg) })
+  
 let parse_error code err =
   let errors =
-    [Errors.InvalidInstance; Errors.LoadBalancerNotFound] @ Errors.common in
+    [Errors.InvalidInstance; Errors.LoadBalancerNotFound] @ Errors.common  in
   match Errors.of_string err with
   | Some var ->
       if
@@ -59,4 +62,4 @@ let parse_error code err =
             | None  -> true))
       then Some var
       else None
-  | None  -> None
+  | None  -> None 

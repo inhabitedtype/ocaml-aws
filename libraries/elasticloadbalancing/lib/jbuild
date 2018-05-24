@@ -1,0 +1,8 @@
+(jbuild_version 1)
+
+(library
+ ((name        aws_elasticloadbalancing)
+  (public_name aws_elasticloadbalancing)
+  (synopsis "aws-Elastic Load Balancing")
+  (flags (:standard -w -27))
+  (libraries (aws))))

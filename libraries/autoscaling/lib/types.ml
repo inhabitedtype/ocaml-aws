@@ -5,19 +5,19 @@ type calendar = Calendar.t
 module LifecycleState =
   struct
     type t =
-      | Pending
-      | Pending_Wait
-      | Pending_Proceed
-      | Quarantined
-      | InService
-      | Terminating
-      | Terminating_Wait
-      | Terminating_Proceed
-      | Terminated
-      | Detaching
-      | Detached
-      | EnteringStandby
-      | Standby
+      | Pending 
+      | Pending_Wait 
+      | Pending_Proceed 
+      | Quarantined 
+      | InService 
+      | Terminating 
+      | Terminating_Wait 
+      | Terminating_Proceed 
+      | Terminated 
+      | Detaching 
+      | Detached 
+      | EnteringStandby 
+      | Standby 
     let str_to_t =
       [("Standby", Standby);
       ("EnteringStandby", EnteringStandby);
@@ -31,7 +31,7 @@ module LifecycleState =
       ("Quarantined", Quarantined);
       ("Pending:Proceed", Pending_Proceed);
       ("Pending:Wait", Pending_Wait);
-      ("Pending", Pending)]
+      ("Pending", Pending)] 
     let t_to_str =
       [(Standby, "Standby");
       (EnteringStandby, "EnteringStandby");
@@ -45,30 +45,31 @@ module LifecycleState =
       (Quarantined, "Quarantined");
       (Pending_Proceed, "Pending:Proceed");
       (Pending_Wait, "Pending:Wait");
-      (Pending, "Pending")]
-    let make v () = v
+      (Pending, "Pending")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module Ebs =
   struct
     type t =
       {
-      snapshot_id: String.t option;
-      volume_size: Integer.t option;
-      volume_type: String.t option;
-      delete_on_termination: Boolean.t option;
-      iops: Integer.t option;}
+      snapshot_id: String.t option ;
+      volume_size: Integer.t option ;
+      volume_type: String.t option ;
+      delete_on_termination: Boolean.t option ;
+      iops: Integer.t option }
     let make ?snapshot_id  ?volume_size  ?volume_type  ?delete_on_termination
        ?iops  () =
-      { snapshot_id; volume_size; volume_type; delete_on_termination; iops }
+      { snapshot_id; volume_size; volume_type; delete_on_termination; iops } 
     let parse xml =
       Some
         {
@@ -83,6 +84,7 @@ module Ebs =
                Boolean.parse);
           iops = (Util.option_bind (Xml.member "Iops" xml) Integer.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -97,6 +99,7 @@ module Ebs =
              (fun f  -> Query.Pair ("VolumeSize", (Integer.to_query f)));
            Util.option_map v.snapshot_id
              (fun f  -> Query.Pair ("SnapshotId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -109,6 +112,7 @@ module Ebs =
              (fun f  -> ("volume_size", (Integer.to_json f)));
            Util.option_map v.snapshot_id
              (fun f  -> ("snapshot_id", (String.to_json f)))])
+      
     let of_json j =
       {
         snapshot_id =
@@ -121,14 +125,14 @@ module Ebs =
           (Util.option_map (Json.lookup j "delete_on_termination")
              Boolean.of_json);
         iops = (Util.option_map (Json.lookup j "iops") Integer.of_json)
-      }
+      } 
   end
 module Alarm =
   struct
     type t = {
-      alarm_name: String.t option;
-      alarm_a_r_n: String.t option;}
-    let make ?alarm_name  ?alarm_a_r_n  () = { alarm_name; alarm_a_r_n }
+      alarm_name: String.t option ;
+      alarm_a_r_n: String.t option }
+    let make ?alarm_name  ?alarm_a_r_n  () = { alarm_name; alarm_a_r_n } 
     let parse xml =
       Some
         {
@@ -137,6 +141,7 @@ module Alarm =
           alarm_a_r_n =
             (Util.option_bind (Xml.member "AlarmARN" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -144,6 +149,7 @@ module Alarm =
               (fun f  -> Query.Pair ("AlarmARN", (String.to_query f)));
            Util.option_map v.alarm_name
              (fun f  -> Query.Pair ("AlarmName", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -151,28 +157,29 @@ module Alarm =
               (fun f  -> ("alarm_a_r_n", (String.to_json f)));
            Util.option_map v.alarm_name
              (fun f  -> ("alarm_name", (String.to_json f)))])
+      
     let of_json j =
       {
         alarm_name =
           (Util.option_map (Json.lookup j "alarm_name") String.of_json);
         alarm_a_r_n =
           (Util.option_map (Json.lookup j "alarm_a_r_n") String.of_json)
-      }
+      } 
   end
 module StepAdjustment =
   struct
     type t =
       {
-      metric_interval_lower_bound: Double.t option;
-      metric_interval_upper_bound: Double.t option;
-      scaling_adjustment: Integer.t;}
+      metric_interval_lower_bound: Double.t option ;
+      metric_interval_upper_bound: Double.t option ;
+      scaling_adjustment: Integer.t }
     let make ?metric_interval_lower_bound  ?metric_interval_upper_bound 
       ~scaling_adjustment  () =
       {
         metric_interval_lower_bound;
         metric_interval_upper_bound;
         scaling_adjustment
-      }
+      } 
     let parse xml =
       Some
         {
@@ -187,6 +194,7 @@ module StepAdjustment =
                (Util.option_bind (Xml.member "ScalingAdjustment" xml)
                   Integer.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -200,6 +208,7 @@ module StepAdjustment =
            Util.option_map v.metric_interval_lower_bound
              (fun f  ->
                 Query.Pair ("MetricIntervalLowerBound", (Double.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -209,6 +218,7 @@ module StepAdjustment =
              (fun f  -> ("metric_interval_upper_bound", (Double.to_json f)));
            Util.option_map v.metric_interval_lower_bound
              (fun f  -> ("metric_interval_lower_bound", (Double.to_json f)))])
+      
     let of_json j =
       {
         metric_interval_lower_bound =
@@ -220,14 +230,14 @@ module StepAdjustment =
         scaling_adjustment =
           (Integer.of_json
              (Util.of_option_exn (Json.lookup j "scaling_adjustment")))
-      }
+      } 
   end
 module EnabledMetric =
   struct
     type t = {
-      metric: String.t option;
-      granularity: String.t option;}
-    let make ?metric  ?granularity  () = { metric; granularity }
+      metric: String.t option ;
+      granularity: String.t option }
+    let make ?metric  ?granularity  () = { metric; granularity } 
     let parse xml =
       Some
         {
@@ -235,6 +245,7 @@ module EnabledMetric =
           granularity =
             (Util.option_bind (Xml.member "Granularity" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -242,6 +253,7 @@ module EnabledMetric =
               (fun f  -> Query.Pair ("Granularity", (String.to_query f)));
            Util.option_map v.metric
              (fun f  -> Query.Pair ("Metric", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -249,22 +261,23 @@ module EnabledMetric =
               (fun f  -> ("granularity", (String.to_json f)));
            Util.option_map v.metric
              (fun f  -> ("metric", (String.to_json f)))])
+      
     let of_json j =
       {
         metric = (Util.option_map (Json.lookup j "metric") String.of_json);
         granularity =
           (Util.option_map (Json.lookup j "granularity") String.of_json)
-      }
+      } 
   end
 module Instance =
   struct
     type t =
       {
-      instance_id: String.t;
-      availability_zone: String.t;
-      lifecycle_state: LifecycleState.t;
-      health_status: String.t;
-      launch_configuration_name: String.t option;}
+      instance_id: String.t ;
+      availability_zone: String.t ;
+      lifecycle_state: LifecycleState.t ;
+      health_status: String.t ;
+      launch_configuration_name: String.t option }
     let make ~instance_id  ~availability_zone  ~lifecycle_state 
       ~health_status  ?launch_configuration_name  () =
       {
@@ -273,7 +286,7 @@ module Instance =
         lifecycle_state;
         health_status;
         launch_configuration_name
-      }
+      } 
     let parse xml =
       Some
         {
@@ -295,6 +308,7 @@ module Instance =
             (Util.option_bind (Xml.member "LaunchConfigurationName" xml)
                String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -311,6 +325,7 @@ module Instance =
              (Query.Pair
                 ("AvailabilityZone", (String.to_query v.availability_zone)));
            Some (Query.Pair ("InstanceId", (String.to_query v.instance_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -321,6 +336,7 @@ module Instance =
              ("lifecycle_state", (LifecycleState.to_json v.lifecycle_state));
            Some ("availability_zone", (String.to_json v.availability_zone));
            Some ("instance_id", (String.to_json v.instance_id))])
+      
     let of_json j =
       {
         instance_id =
@@ -337,16 +353,16 @@ module Instance =
         launch_configuration_name =
           (Util.option_map (Json.lookup j "launch_configuration_name")
              String.of_json)
-      }
+      } 
   end
 module SuspendedProcess =
   struct
     type t =
       {
-      process_name: String.t option;
-      suspension_reason: String.t option;}
+      process_name: String.t option ;
+      suspension_reason: String.t option }
     let make ?process_name  ?suspension_reason  () =
-      { process_name; suspension_reason }
+      { process_name; suspension_reason } 
     let parse xml =
       Some
         {
@@ -356,6 +372,7 @@ module SuspendedProcess =
             (Util.option_bind (Xml.member "SuspensionReason" xml)
                String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -363,6 +380,7 @@ module SuspendedProcess =
               (fun f  -> Query.Pair ("SuspensionReason", (String.to_query f)));
            Util.option_map v.process_name
              (fun f  -> Query.Pair ("ProcessName", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -370,25 +388,26 @@ module SuspendedProcess =
               (fun f  -> ("suspension_reason", (String.to_json f)));
            Util.option_map v.process_name
              (fun f  -> ("process_name", (String.to_json f)))])
+      
     let of_json j =
       {
         process_name =
           (Util.option_map (Json.lookup j "process_name") String.of_json);
         suspension_reason =
           (Util.option_map (Json.lookup j "suspension_reason") String.of_json)
-      }
+      } 
   end
 module TagDescription =
   struct
     type t =
       {
-      resource_id: String.t;
-      resource_type: String.t;
-      key: String.t;
-      value: String.t;
-      propagate_at_launch: Boolean.t;}
+      resource_id: String.t ;
+      resource_type: String.t ;
+      key: String.t ;
+      value: String.t ;
+      propagate_at_launch: Boolean.t }
     let make ~resource_id  ~resource_type  ~key  ~value  ~propagate_at_launch
-       () = { resource_id; resource_type; key; value; propagate_at_launch }
+       () = { resource_id; resource_type; key; value; propagate_at_launch } 
     let parse xml =
       Some
         {
@@ -409,6 +428,7 @@ module TagDescription =
                (Util.option_bind (Xml.member "PropagateAtLaunch" xml)
                   Boolean.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -421,6 +441,7 @@ module TagDescription =
            Some
              (Query.Pair ("ResourceType", (String.to_query v.resource_type)));
            Some (Query.Pair ("ResourceId", (String.to_query v.resource_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -431,6 +452,7 @@ module TagDescription =
            Some ("key", (String.to_json v.key));
            Some ("resource_type", (String.to_json v.resource_type));
            Some ("resource_id", (String.to_json v.resource_id))])
+      
     let of_json j =
       {
         resource_id =
@@ -443,18 +465,18 @@ module TagDescription =
         propagate_at_launch =
           (Boolean.of_json
              (Util.of_option_exn (Json.lookup j "propagate_at_launch")))
-      }
+      } 
   end
 module BlockDeviceMapping =
   struct
     type t =
       {
-      virtual_name: String.t option;
-      device_name: String.t;
-      ebs: Ebs.t option;
-      no_device: Boolean.t option;}
+      virtual_name: String.t option ;
+      device_name: String.t ;
+      ebs: Ebs.t option ;
+      no_device: Boolean.t option }
     let make ?virtual_name  ~device_name  ?ebs  ?no_device  () =
-      { virtual_name; device_name; ebs; no_device }
+      { virtual_name; device_name; ebs; no_device } 
     let parse xml =
       Some
         {
@@ -467,6 +489,7 @@ module BlockDeviceMapping =
           no_device =
             (Util.option_bind (Xml.member "NoDevice" xml) Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -477,6 +500,7 @@ module BlockDeviceMapping =
            Some (Query.Pair ("DeviceName", (String.to_query v.device_name)));
            Util.option_map v.virtual_name
              (fun f  -> Query.Pair ("VirtualName", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -486,6 +510,7 @@ module BlockDeviceMapping =
            Some ("device_name", (String.to_json v.device_name));
            Util.option_map v.virtual_name
              (fun f  -> ("virtual_name", (String.to_json f)))])
+      
     let of_json j =
       {
         virtual_name =
@@ -495,53 +520,54 @@ module BlockDeviceMapping =
         ebs = (Util.option_map (Json.lookup j "ebs") Ebs.of_json);
         no_device =
           (Util.option_map (Json.lookup j "no_device") Boolean.of_json)
-      }
+      } 
   end
 module Values =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "member" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module Alarms =
   struct
     type t = Alarm.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map Alarm.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list Alarm.to_query v
-    let to_json v = `List (List.map Alarm.to_json v)
-    let of_json j = Json.to_list Alarm.of_json j
+      Util.option_all (List.map Alarm.parse (Xml.members "member" xml)) 
+    let to_query v = Query.to_query_list Alarm.to_query v 
+    let to_json v = `List (List.map Alarm.to_json v) 
+    let of_json j = Json.to_list Alarm.of_json j 
   end
 module StepAdjustments =
   struct
     type t = StepAdjustment.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map StepAdjustment.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list StepAdjustment.to_query v
-    let to_json v = `List (List.map StepAdjustment.to_json v)
-    let of_json j = Json.to_list StepAdjustment.of_json j
+      
+    let to_query v = Query.to_query_list StepAdjustment.to_query v 
+    let to_json v = `List (List.map StepAdjustment.to_json v) 
+    let of_json j = Json.to_list StepAdjustment.of_json j 
   end
 module ScalingActivityStatusCode =
   struct
     type t =
-      | WaitingForSpotInstanceRequestId
-      | WaitingForSpotInstanceId
-      | WaitingForInstanceId
-      | PreInService
-      | InProgress
-      | WaitingForELBConnectionDraining
-      | MidLifecycleAction
-      | WaitingForInstanceWarmup
-      | Successful
-      | Failed
-      | Cancelled
+      | WaitingForSpotInstanceRequestId 
+      | WaitingForSpotInstanceId 
+      | WaitingForInstanceId 
+      | PreInService 
+      | InProgress 
+      | WaitingForELBConnectionDraining 
+      | MidLifecycleAction 
+      | WaitingForInstanceWarmup 
+      | Successful 
+      | Failed 
+      | Cancelled 
     let str_to_t =
       [("Cancelled", Cancelled);
       ("Failed", Failed);
@@ -553,7 +579,7 @@ module ScalingActivityStatusCode =
       ("PreInService", PreInService);
       ("WaitingForInstanceId", WaitingForInstanceId);
       ("WaitingForSpotInstanceId", WaitingForSpotInstanceId);
-      ("WaitingForSpotInstanceRequestId", WaitingForSpotInstanceRequestId)]
+      ("WaitingForSpotInstanceRequestId", WaitingForSpotInstanceRequestId)] 
     let t_to_str =
       [(Cancelled, "Cancelled");
       (Failed, "Failed");
@@ -565,153 +591,161 @@ module ScalingActivityStatusCode =
       (PreInService, "PreInService");
       (WaitingForInstanceId, "WaitingForInstanceId");
       (WaitingForSpotInstanceId, "WaitingForSpotInstanceId");
-      (WaitingForSpotInstanceRequestId, "WaitingForSpotInstanceRequestId")]
-    let make v () = v
+      (WaitingForSpotInstanceRequestId, "WaitingForSpotInstanceRequestId")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module AvailabilityZones =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "member" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module EnabledMetrics =
   struct
     type t = EnabledMetric.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map EnabledMetric.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list EnabledMetric.to_query v
-    let to_json v = `List (List.map EnabledMetric.to_json v)
-    let of_json j = Json.to_list EnabledMetric.of_json j
+      
+    let to_query v = Query.to_query_list EnabledMetric.to_query v 
+    let to_json v = `List (List.map EnabledMetric.to_json v) 
+    let of_json j = Json.to_list EnabledMetric.of_json j 
   end
 module Instances =
   struct
     type t = Instance.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map Instance.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list Instance.to_query v
-    let to_json v = `List (List.map Instance.to_json v)
-    let of_json j = Json.to_list Instance.of_json j
+      Util.option_all (List.map Instance.parse (Xml.members "member" xml)) 
+    let to_query v = Query.to_query_list Instance.to_query v 
+    let to_json v = `List (List.map Instance.to_json v) 
+    let of_json j = Json.to_list Instance.of_json j 
   end
 module LoadBalancerNames =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "member" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module SuspendedProcesses =
   struct
     type t = SuspendedProcess.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map SuspendedProcess.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list SuspendedProcess.to_query v
-    let to_json v = `List (List.map SuspendedProcess.to_json v)
-    let of_json j = Json.to_list SuspendedProcess.of_json j
+      
+    let to_query v = Query.to_query_list SuspendedProcess.to_query v 
+    let to_json v = `List (List.map SuspendedProcess.to_json v) 
+    let of_json j = Json.to_list SuspendedProcess.of_json j 
   end
 module TagDescriptionList =
   struct
     type t = TagDescription.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map TagDescription.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list TagDescription.to_query v
-    let to_json v = `List (List.map TagDescription.to_json v)
-    let of_json j = Json.to_list TagDescription.of_json j
+      
+    let to_query v = Query.to_query_list TagDescription.to_query v 
+    let to_json v = `List (List.map TagDescription.to_json v) 
+    let of_json j = Json.to_list TagDescription.of_json j 
   end
 module TerminationPolicies =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "member" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module BlockDeviceMappings =
   struct
     type t = BlockDeviceMapping.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map BlockDeviceMapping.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list BlockDeviceMapping.to_query v
-    let to_json v = `List (List.map BlockDeviceMapping.to_json v)
-    let of_json j = Json.to_list BlockDeviceMapping.of_json j
+      
+    let to_query v = Query.to_query_list BlockDeviceMapping.to_query v 
+    let to_json v = `List (List.map BlockDeviceMapping.to_json v) 
+    let of_json j = Json.to_list BlockDeviceMapping.of_json j 
   end
 module ClassicLinkVPCSecurityGroups =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "member" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module InstanceMonitoring =
   struct
     type t = {
-      enabled: Boolean.t option;}
-    let make ?enabled  () = { enabled }
+      enabled: Boolean.t option }
+    let make ?enabled  () = { enabled } 
     let parse xml =
       Some
         {
           enabled =
             (Util.option_bind (Xml.member "Enabled" xml) Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.enabled
               (fun f  -> Query.Pair ("Enabled", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.enabled
               (fun f  -> ("enabled", (Boolean.to_json f)))])
+      
     let of_json j =
       { enabled = (Util.option_map (Json.lookup j "enabled") Boolean.of_json)
-      }
+      } 
   end
 module SecurityGroups =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "member" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module Filter =
   struct
     type t = {
-      name: String.t;
-      values: Values.t;}
-    let make ~name  ?(values= [])  () = { name; values }
+      name: String.t ;
+      values: Values.t }
+    let make ~name  ?(values= [])  () = { name; values } 
     let parse xml =
       Some
         {
@@ -722,33 +756,36 @@ module Filter =
             (Util.of_option []
                (Util.option_bind (Xml.member "Values" xml) Values.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("Values.member", (Values.to_query v.values)));
            Some (Query.Pair ("Name", (String.to_query v.name)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("values", (Values.to_json v.values));
            Some ("name", (String.to_json v.name))])
+      
     let of_json j =
       {
         name = (String.of_json (Util.of_option_exn (Json.lookup j "name")));
         values =
           (Values.of_json (Util.of_option_exn (Json.lookup j "values")))
-      }
+      } 
   end
 module AutoScalingInstanceDetails =
   struct
     type t =
       {
-      instance_id: String.t;
-      auto_scaling_group_name: String.t;
-      availability_zone: String.t;
-      lifecycle_state: String.t;
-      health_status: String.t;
-      launch_configuration_name: String.t;}
+      instance_id: String.t ;
+      auto_scaling_group_name: String.t ;
+      availability_zone: String.t ;
+      lifecycle_state: String.t ;
+      health_status: String.t ;
+      launch_configuration_name: String.t }
     let make ~instance_id  ~auto_scaling_group_name  ~availability_zone 
       ~lifecycle_state  ~health_status  ~launch_configuration_name  () =
       {
@@ -758,7 +795,7 @@ module AutoScalingInstanceDetails =
         lifecycle_state;
         health_status;
         launch_configuration_name
-      }
+      } 
     let parse xml =
       Some
         {
@@ -785,6 +822,7 @@ module AutoScalingInstanceDetails =
                (Util.option_bind (Xml.member "LaunchConfigurationName" xml)
                   String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -805,6 +843,7 @@ module AutoScalingInstanceDetails =
                 ("AutoScalingGroupName",
                   (String.to_query v.auto_scaling_group_name)));
            Some (Query.Pair ("InstanceId", (String.to_query v.instance_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -818,6 +857,7 @@ module AutoScalingInstanceDetails =
              ("auto_scaling_group_name",
                (String.to_json v.auto_scaling_group_name));
            Some ("instance_id", (String.to_json v.instance_id))])
+      
     let of_json j =
       {
         instance_id =
@@ -837,25 +877,25 @@ module AutoScalingInstanceDetails =
         launch_configuration_name =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "launch_configuration_name")))
-      }
+      } 
   end
 module ScalingPolicy =
   struct
     type t =
       {
-      auto_scaling_group_name: String.t option;
-      policy_name: String.t option;
-      policy_a_r_n: String.t option;
-      policy_type: String.t option;
-      adjustment_type: String.t option;
-      min_adjustment_step: Integer.t option;
-      min_adjustment_magnitude: Integer.t option;
-      scaling_adjustment: Integer.t option;
-      cooldown: Integer.t option;
-      step_adjustments: StepAdjustments.t;
-      metric_aggregation_type: String.t option;
-      estimated_instance_warmup: Integer.t option;
-      alarms: Alarms.t;}
+      auto_scaling_group_name: String.t option ;
+      policy_name: String.t option ;
+      policy_a_r_n: String.t option ;
+      policy_type: String.t option ;
+      adjustment_type: String.t option ;
+      min_adjustment_step: Integer.t option ;
+      min_adjustment_magnitude: Integer.t option ;
+      scaling_adjustment: Integer.t option ;
+      cooldown: Integer.t option ;
+      step_adjustments: StepAdjustments.t ;
+      metric_aggregation_type: String.t option ;
+      estimated_instance_warmup: Integer.t option ;
+      alarms: Alarms.t }
     let make ?auto_scaling_group_name  ?policy_name  ?policy_a_r_n 
       ?policy_type  ?adjustment_type  ?min_adjustment_step 
       ?min_adjustment_magnitude  ?scaling_adjustment  ?cooldown 
@@ -875,7 +915,7 @@ module ScalingPolicy =
         metric_aggregation_type;
         estimated_instance_warmup;
         alarms
-      }
+      } 
     let parse xml =
       Some
         {
@@ -915,6 +955,7 @@ module ScalingPolicy =
             (Util.of_option []
                (Util.option_bind (Xml.member "Alarms" xml) Alarms.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -951,6 +992,7 @@ module ScalingPolicy =
            Util.option_map v.auto_scaling_group_name
              (fun f  ->
                 Query.Pair ("AutoScalingGroupName", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -980,6 +1022,7 @@ module ScalingPolicy =
              (fun f  -> ("policy_name", (String.to_json f)));
            Util.option_map v.auto_scaling_group_name
              (fun f  -> ("auto_scaling_group_name", (String.to_json f)))])
+      
     let of_json j =
       {
         auto_scaling_group_name =
@@ -1015,19 +1058,19 @@ module ScalingPolicy =
              Integer.of_json);
         alarms =
           (Alarms.of_json (Util.of_option_exn (Json.lookup j "alarms")))
-      }
+      } 
   end
 module Tag =
   struct
     type t =
       {
-      resource_id: String.t;
-      resource_type: String.t;
-      key: String.t;
-      value: String.t;
-      propagate_at_launch: Boolean.t;}
+      resource_id: String.t ;
+      resource_type: String.t ;
+      key: String.t ;
+      value: String.t ;
+      propagate_at_launch: Boolean.t }
     let make ~resource_id  ~resource_type  ~key  ~value  ~propagate_at_launch
-       () = { resource_id; resource_type; key; value; propagate_at_launch }
+       () = { resource_id; resource_type; key; value; propagate_at_launch } 
     let parse xml =
       Some
         {
@@ -1048,6 +1091,7 @@ module Tag =
                (Util.option_bind (Xml.member "PropagateAtLaunch" xml)
                   Boolean.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -1060,6 +1104,7 @@ module Tag =
            Some
              (Query.Pair ("ResourceType", (String.to_query v.resource_type)));
            Some (Query.Pair ("ResourceId", (String.to_query v.resource_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -1070,6 +1115,7 @@ module Tag =
            Some ("key", (String.to_json v.key));
            Some ("resource_type", (String.to_json v.resource_type));
            Some ("resource_id", (String.to_json v.resource_id))])
+      
     let of_json j =
       {
         resource_id =
@@ -1082,21 +1128,21 @@ module Tag =
         propagate_at_launch =
           (Boolean.of_json
              (Util.of_option_exn (Json.lookup j "propagate_at_launch")))
-      }
+      } 
   end
 module LifecycleHook =
   struct
     type t =
       {
-      lifecycle_hook_name: String.t option;
-      auto_scaling_group_name: String.t option;
-      lifecycle_transition: String.t option;
-      notification_target_a_r_n: String.t option;
-      role_a_r_n: String.t option;
-      notification_metadata: String.t option;
-      heartbeat_timeout: Integer.t option;
-      global_timeout: Integer.t option;
-      default_result: String.t option;}
+      lifecycle_hook_name: String.t option ;
+      auto_scaling_group_name: String.t option ;
+      lifecycle_transition: String.t option ;
+      notification_target_a_r_n: String.t option ;
+      role_a_r_n: String.t option ;
+      notification_metadata: String.t option ;
+      heartbeat_timeout: Integer.t option ;
+      global_timeout: Integer.t option ;
+      default_result: String.t option }
     let make ?lifecycle_hook_name  ?auto_scaling_group_name 
       ?lifecycle_transition  ?notification_target_a_r_n  ?role_a_r_n 
       ?notification_metadata  ?heartbeat_timeout  ?global_timeout 
@@ -1111,7 +1157,7 @@ module LifecycleHook =
         heartbeat_timeout;
         global_timeout;
         default_result
-      }
+      } 
     let parse xml =
       Some
         {
@@ -1140,6 +1186,7 @@ module LifecycleHook =
           default_result =
             (Util.option_bind (Xml.member "DefaultResult" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -1165,6 +1212,7 @@ module LifecycleHook =
                 Query.Pair ("AutoScalingGroupName", (String.to_query f)));
            Util.option_map v.lifecycle_hook_name
              (fun f  -> Query.Pair ("LifecycleHookName", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -1186,6 +1234,7 @@ module LifecycleHook =
              (fun f  -> ("auto_scaling_group_name", (String.to_json f)));
            Util.option_map v.lifecycle_hook_name
              (fun f  -> ("lifecycle_hook_name", (String.to_json f)))])
+      
     let of_json j =
       {
         lifecycle_hook_name =
@@ -1212,22 +1261,22 @@ module LifecycleHook =
           (Util.option_map (Json.lookup j "global_timeout") Integer.of_json);
         default_result =
           (Util.option_map (Json.lookup j "default_result") String.of_json)
-      }
+      } 
   end
 module Activity =
   struct
     type t =
       {
-      activity_id: String.t;
-      auto_scaling_group_name: String.t;
-      description: String.t option;
-      cause: String.t;
-      start_time: DateTime.t;
-      end_time: DateTime.t option;
-      status_code: ScalingActivityStatusCode.t;
-      status_message: String.t option;
-      progress: Integer.t option;
-      details: String.t option;}
+      activity_id: String.t ;
+      auto_scaling_group_name: String.t ;
+      description: String.t option ;
+      cause: String.t ;
+      start_time: DateTime.t ;
+      end_time: DateTime.t option ;
+      status_code: ScalingActivityStatusCode.t ;
+      status_message: String.t option ;
+      progress: Integer.t option ;
+      details: String.t option }
     let make ~activity_id  ~auto_scaling_group_name  ?description  ~cause 
       ~start_time  ?end_time  ~status_code  ?status_message  ?progress 
       ?details  () =
@@ -1242,7 +1291,7 @@ module Activity =
         status_message;
         progress;
         details
-      }
+      } 
     let parse xml =
       Some
         {
@@ -1274,6 +1323,7 @@ module Activity =
           details =
             (Util.option_bind (Xml.member "Details" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -1298,6 +1348,7 @@ module Activity =
                 ("AutoScalingGroupName",
                   (String.to_query v.auto_scaling_group_name)));
            Some (Query.Pair ("ActivityId", (String.to_query v.activity_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -1320,6 +1371,7 @@ module Activity =
              ("auto_scaling_group_name",
                (String.to_json v.auto_scaling_group_name));
            Some ("activity_id", (String.to_json v.activity_id))])
+      
     let of_json j =
       {
         activity_id =
@@ -1342,59 +1394,62 @@ module Activity =
         progress =
           (Util.option_map (Json.lookup j "progress") Integer.of_json);
         details = (Util.option_map (Json.lookup j "details") String.of_json)
-      }
+      } 
   end
 module AdjustmentType =
   struct
     type t = {
-      adjustment_type: String.t option;}
-    let make ?adjustment_type  () = { adjustment_type }
+      adjustment_type: String.t option }
+    let make ?adjustment_type  () = { adjustment_type } 
     let parse xml =
       Some
         {
           adjustment_type =
             (Util.option_bind (Xml.member "AdjustmentType" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.adjustment_type
               (fun f  -> Query.Pair ("AdjustmentType", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.adjustment_type
               (fun f  -> ("adjustment_type", (String.to_json f)))])
+      
     let of_json j =
       {
         adjustment_type =
           (Util.option_map (Json.lookup j "adjustment_type") String.of_json)
-      }
+      } 
   end
 module AutoScalingGroup =
   struct
     type t =
       {
-      auto_scaling_group_name: String.t;
-      auto_scaling_group_a_r_n: String.t option;
-      launch_configuration_name: String.t option;
-      min_size: Integer.t;
-      max_size: Integer.t;
-      desired_capacity: Integer.t;
-      default_cooldown: Integer.t;
-      availability_zones: AvailabilityZones.t;
-      load_balancer_names: LoadBalancerNames.t;
-      health_check_type: String.t;
-      health_check_grace_period: Integer.t option;
-      instances: Instances.t;
-      created_time: DateTime.t;
-      suspended_processes: SuspendedProcesses.t;
-      placement_group: String.t option;
-      v_p_c_zone_identifier: String.t option;
-      enabled_metrics: EnabledMetrics.t;
-      status: String.t option;
-      tags: TagDescriptionList.t;
-      termination_policies: TerminationPolicies.t;}
+      auto_scaling_group_name: String.t ;
+      auto_scaling_group_a_r_n: String.t option ;
+      launch_configuration_name: String.t option ;
+      min_size: Integer.t ;
+      max_size: Integer.t ;
+      desired_capacity: Integer.t ;
+      default_cooldown: Integer.t ;
+      availability_zones: AvailabilityZones.t ;
+      load_balancer_names: LoadBalancerNames.t ;
+      health_check_type: String.t ;
+      health_check_grace_period: Integer.t option ;
+      instances: Instances.t ;
+      created_time: DateTime.t ;
+      suspended_processes: SuspendedProcesses.t ;
+      placement_group: String.t option ;
+      v_p_c_zone_identifier: String.t option ;
+      enabled_metrics: EnabledMetrics.t ;
+      status: String.t option ;
+      tags: TagDescriptionList.t ;
+      termination_policies: TerminationPolicies.t }
     let make ~auto_scaling_group_name  ?auto_scaling_group_a_r_n 
       ?launch_configuration_name  ~min_size  ~max_size  ~desired_capacity 
       ~default_cooldown  ~availability_zones  ?(load_balancer_names= []) 
@@ -1423,7 +1478,7 @@ module AutoScalingGroup =
         status;
         tags;
         termination_policies
-      }
+      } 
     let parse xml =
       Some
         {
@@ -1496,6 +1551,7 @@ module AutoScalingGroup =
                (Util.option_bind (Xml.member "TerminationPolicies" xml)
                   TerminationPolicies.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -1557,6 +1613,7 @@ module AutoScalingGroup =
              (Query.Pair
                 ("AutoScalingGroupName",
                   (String.to_query v.auto_scaling_group_name)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -1597,6 +1654,7 @@ module AutoScalingGroup =
            Some
              ("auto_scaling_group_name",
                (String.to_json v.auto_scaling_group_name))])
+      
     let of_json j =
       {
         auto_scaling_group_name =
@@ -1653,17 +1711,17 @@ module AutoScalingGroup =
         termination_policies =
           (TerminationPolicies.of_json
              (Util.of_option_exn (Json.lookup j "termination_policies")))
-      }
+      } 
   end
 module NotificationConfiguration =
   struct
     type t =
       {
-      auto_scaling_group_name: String.t option;
-      topic_a_r_n: String.t option;
-      notification_type: String.t option;}
+      auto_scaling_group_name: String.t option ;
+      topic_a_r_n: String.t option ;
+      notification_type: String.t option }
     let make ?auto_scaling_group_name  ?topic_a_r_n  ?notification_type  () =
-      { auto_scaling_group_name; topic_a_r_n; notification_type }
+      { auto_scaling_group_name; topic_a_r_n; notification_type } 
     let parse xml =
       Some
         {
@@ -1676,6 +1734,7 @@ module NotificationConfiguration =
             (Util.option_bind (Xml.member "NotificationType" xml)
                String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -1686,6 +1745,7 @@ module NotificationConfiguration =
            Util.option_map v.auto_scaling_group_name
              (fun f  ->
                 Query.Pair ("AutoScalingGroupName", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -1695,6 +1755,7 @@ module NotificationConfiguration =
              (fun f  -> ("topic_a_r_n", (String.to_json f)));
            Util.option_map v.auto_scaling_group_name
              (fun f  -> ("auto_scaling_group_name", (String.to_json f)))])
+      
     let of_json j =
       {
         auto_scaling_group_name =
@@ -1704,31 +1765,31 @@ module NotificationConfiguration =
           (Util.option_map (Json.lookup j "topic_a_r_n") String.of_json);
         notification_type =
           (Util.option_map (Json.lookup j "notification_type") String.of_json)
-      }
+      } 
   end
 module LaunchConfiguration =
   struct
     type t =
       {
-      launch_configuration_name: String.t;
-      launch_configuration_a_r_n: String.t option;
-      image_id: String.t;
-      key_name: String.t option;
-      security_groups: SecurityGroups.t;
-      classic_link_v_p_c_id: String.t option;
-      classic_link_v_p_c_security_groups: ClassicLinkVPCSecurityGroups.t;
-      user_data: String.t option;
-      instance_type: String.t;
-      kernel_id: String.t option;
-      ramdisk_id: String.t option;
-      block_device_mappings: BlockDeviceMappings.t;
-      instance_monitoring: InstanceMonitoring.t option;
-      spot_price: String.t option;
-      iam_instance_profile: String.t option;
-      created_time: DateTime.t;
-      ebs_optimized: Boolean.t option;
-      associate_public_ip_address: Boolean.t option;
-      placement_tenancy: String.t option;}
+      launch_configuration_name: String.t ;
+      launch_configuration_a_r_n: String.t option ;
+      image_id: String.t ;
+      key_name: String.t option ;
+      security_groups: SecurityGroups.t ;
+      classic_link_v_p_c_id: String.t option ;
+      classic_link_v_p_c_security_groups: ClassicLinkVPCSecurityGroups.t ;
+      user_data: String.t option ;
+      instance_type: String.t ;
+      kernel_id: String.t option ;
+      ramdisk_id: String.t option ;
+      block_device_mappings: BlockDeviceMappings.t ;
+      instance_monitoring: InstanceMonitoring.t option ;
+      spot_price: String.t option ;
+      iam_instance_profile: String.t option ;
+      created_time: DateTime.t ;
+      ebs_optimized: Boolean.t option ;
+      associate_public_ip_address: Boolean.t option ;
+      placement_tenancy: String.t option }
     let make ~launch_configuration_name  ?launch_configuration_a_r_n 
       ~image_id  ?key_name  ?(security_groups= [])  ?classic_link_v_p_c_id 
       ?(classic_link_v_p_c_security_groups= [])  ?user_data  ~instance_type 
@@ -1755,7 +1816,7 @@ module LaunchConfiguration =
         ebs_optimized;
         associate_public_ip_address;
         placement_tenancy
-      }
+      } 
     let parse xml =
       Some
         {
@@ -1817,6 +1878,7 @@ module LaunchConfiguration =
             (Util.option_bind (Xml.member "PlacementTenancy" xml)
                String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -1871,6 +1933,7 @@ module LaunchConfiguration =
              (Query.Pair
                 ("LaunchConfigurationName",
                   (String.to_query v.launch_configuration_name)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -1914,6 +1977,7 @@ module LaunchConfiguration =
            Some
              ("launch_configuration_name",
                (String.to_json v.launch_configuration_name))])
+      
     let of_json j =
       {
         launch_configuration_name =
@@ -1966,22 +2030,22 @@ module LaunchConfiguration =
              Boolean.of_json);
         placement_tenancy =
           (Util.option_map (Json.lookup j "placement_tenancy") String.of_json)
-      }
+      } 
   end
 module ScheduledUpdateGroupAction =
   struct
     type t =
       {
-      auto_scaling_group_name: String.t option;
-      scheduled_action_name: String.t option;
-      scheduled_action_a_r_n: String.t option;
-      time: DateTime.t option;
-      start_time: DateTime.t option;
-      end_time: DateTime.t option;
-      recurrence: String.t option;
-      min_size: Integer.t option;
-      max_size: Integer.t option;
-      desired_capacity: Integer.t option;}
+      auto_scaling_group_name: String.t option ;
+      scheduled_action_name: String.t option ;
+      scheduled_action_a_r_n: String.t option ;
+      time: DateTime.t option ;
+      start_time: DateTime.t option ;
+      end_time: DateTime.t option ;
+      recurrence: String.t option ;
+      min_size: Integer.t option ;
+      max_size: Integer.t option ;
+      desired_capacity: Integer.t option }
     let make ?auto_scaling_group_name  ?scheduled_action_name 
       ?scheduled_action_a_r_n  ?time  ?start_time  ?end_time  ?recurrence 
       ?min_size  ?max_size  ?desired_capacity  () =
@@ -1996,7 +2060,7 @@ module ScheduledUpdateGroupAction =
         min_size;
         max_size;
         desired_capacity
-      }
+      } 
     let parse xml =
       Some
         {
@@ -2024,6 +2088,7 @@ module ScheduledUpdateGroupAction =
             (Util.option_bind (Xml.member "DesiredCapacity" xml)
                Integer.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -2050,6 +2115,7 @@ module ScheduledUpdateGroupAction =
            Util.option_map v.auto_scaling_group_name
              (fun f  ->
                 Query.Pair ("AutoScalingGroupName", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -2072,6 +2138,7 @@ module ScheduledUpdateGroupAction =
              (fun f  -> ("scheduled_action_name", (String.to_json f)));
            Util.option_map v.auto_scaling_group_name
              (fun f  -> ("auto_scaling_group_name", (String.to_json f)))])
+      
     let of_json j =
       {
         auto_scaling_group_name =
@@ -2096,14 +2163,14 @@ module ScheduledUpdateGroupAction =
           (Util.option_map (Json.lookup j "max_size") Integer.of_json);
         desired_capacity =
           (Util.option_map (Json.lookup j "desired_capacity") Integer.of_json)
-      }
+      } 
   end
 module LoadBalancerState =
   struct
     type t = {
-      load_balancer_name: String.t option;
-      state: String.t option;}
-    let make ?load_balancer_name  ?state  () = { load_balancer_name; state }
+      load_balancer_name: String.t option ;
+      state: String.t option }
+    let make ?load_balancer_name  ?state  () = { load_balancer_name; state } 
     let parse xml =
       Some
         {
@@ -2112,6 +2179,7 @@ module LoadBalancerState =
                String.parse);
           state = (Util.option_bind (Xml.member "State" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -2119,74 +2187,82 @@ module LoadBalancerState =
               (fun f  -> Query.Pair ("State", (String.to_query f)));
            Util.option_map v.load_balancer_name
              (fun f  -> Query.Pair ("LoadBalancerName", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.state (fun f  -> ("state", (String.to_json f)));
            Util.option_map v.load_balancer_name
              (fun f  -> ("load_balancer_name", (String.to_json f)))])
+      
     let of_json j =
       {
         load_balancer_name =
           (Util.option_map (Json.lookup j "load_balancer_name")
              String.of_json);
         state = (Util.option_map (Json.lookup j "state") String.of_json)
-      }
+      } 
   end
 module MetricCollectionType =
   struct
     type t = {
-      metric: String.t option;}
-    let make ?metric  () = { metric }
+      metric: String.t option }
+    let make ?metric  () = { metric } 
     let parse xml =
       Some
         { metric = (Util.option_bind (Xml.member "Metric" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.metric
               (fun f  -> Query.Pair ("Metric", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.metric
               (fun f  -> ("metric", (String.to_json f)))])
+      
     let of_json j =
-      { metric = (Util.option_map (Json.lookup j "metric") String.of_json) }
+      { metric = (Util.option_map (Json.lookup j "metric") String.of_json) } 
   end
 module MetricGranularityType =
   struct
     type t = {
-      granularity: String.t option;}
-    let make ?granularity  () = { granularity }
+      granularity: String.t option }
+    let make ?granularity  () = { granularity } 
     let parse xml =
       Some
         {
           granularity =
             (Util.option_bind (Xml.member "Granularity" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.granularity
               (fun f  -> Query.Pair ("Granularity", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.granularity
               (fun f  -> ("granularity", (String.to_json f)))])
+      
     let of_json j =
       {
         granularity =
           (Util.option_map (Json.lookup j "granularity") String.of_json)
-      }
+      } 
   end
 module ProcessType =
   struct
     type t = {
-      process_name: String.t;}
-    let make ~process_name  () = { process_name }
+      process_name: String.t }
+    let make ~process_name  () = { process_name } 
     let parse xml =
       Some
         {
@@ -2194,301 +2270,316 @@ module ProcessType =
             (Xml.required "ProcessName"
                (Util.option_bind (Xml.member "ProcessName" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some
               (Query.Pair ("ProcessName", (String.to_query v.process_name)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("process_name", (String.to_json v.process_name))])
+      
     let of_json j =
       {
         process_name =
           (String.of_json (Util.of_option_exn (Json.lookup j "process_name")))
-      }
+      } 
   end
 module InstanceIds =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "member" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module Filters =
   struct
     type t = Filter.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map Filter.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list Filter.to_query v
-    let to_json v = `List (List.map Filter.to_json v)
-    let of_json j = Json.to_list Filter.of_json j
+      Util.option_all (List.map Filter.parse (Xml.members "member" xml)) 
+    let to_query v = Query.to_query_list Filter.to_query v 
+    let to_json v = `List (List.map Filter.to_json v) 
+    let of_json j = Json.to_list Filter.of_json j 
   end
 module ProcessNames =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "member" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module AutoScalingInstances =
   struct
     type t = AutoScalingInstanceDetails.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map AutoScalingInstanceDetails.parse (Xml.members "member" xml))
+      
     let to_query v =
-      Query.to_query_list AutoScalingInstanceDetails.to_query v
-    let to_json v = `List (List.map AutoScalingInstanceDetails.to_json v)
-    let of_json j = Json.to_list AutoScalingInstanceDetails.of_json j
+      Query.to_query_list AutoScalingInstanceDetails.to_query v 
+    let to_json v = `List (List.map AutoScalingInstanceDetails.to_json v) 
+    let of_json j = Json.to_list AutoScalingInstanceDetails.of_json j 
   end
 module AutoScalingNotificationTypes =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "member" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module ScalingPolicies =
   struct
     type t = ScalingPolicy.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map ScalingPolicy.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list ScalingPolicy.to_query v
-    let to_json v = `List (List.map ScalingPolicy.to_json v)
-    let of_json j = Json.to_list ScalingPolicy.of_json j
+      
+    let to_query v = Query.to_query_list ScalingPolicy.to_query v 
+    let to_json v = `List (List.map ScalingPolicy.to_json v) 
+    let of_json j = Json.to_list ScalingPolicy.of_json j 
   end
 module Tags =
   struct
     type t = Tag.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map Tag.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list Tag.to_query v
-    let to_json v = `List (List.map Tag.to_json v)
-    let of_json j = Json.to_list Tag.of_json j
+      Util.option_all (List.map Tag.parse (Xml.members "member" xml)) 
+    let to_query v = Query.to_query_list Tag.to_query v 
+    let to_json v = `List (List.map Tag.to_json v) 
+    let of_json j = Json.to_list Tag.of_json j 
   end
 module ActivityIds =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "member" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module LifecycleHooks =
   struct
     type t = LifecycleHook.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map LifecycleHook.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list LifecycleHook.to_query v
-    let to_json v = `List (List.map LifecycleHook.to_json v)
-    let of_json j = Json.to_list LifecycleHook.of_json j
+      
+    let to_query v = Query.to_query_list LifecycleHook.to_query v 
+    let to_json v = `List (List.map LifecycleHook.to_json v) 
+    let of_json j = Json.to_list LifecycleHook.of_json j 
   end
 module Activities =
   struct
     type t = Activity.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map Activity.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list Activity.to_query v
-    let to_json v = `List (List.map Activity.to_json v)
-    let of_json j = Json.to_list Activity.of_json j
+      Util.option_all (List.map Activity.parse (Xml.members "member" xml)) 
+    let to_query v = Query.to_query_list Activity.to_query v 
+    let to_json v = `List (List.map Activity.to_json v) 
+    let of_json j = Json.to_list Activity.of_json j 
   end
 module LaunchConfigurationNames =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "member" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module AdjustmentTypes =
   struct
     type t = AdjustmentType.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map AdjustmentType.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list AdjustmentType.to_query v
-    let to_json v = `List (List.map AdjustmentType.to_json v)
-    let of_json j = Json.to_list AdjustmentType.of_json j
+      
+    let to_query v = Query.to_query_list AdjustmentType.to_query v 
+    let to_json v = `List (List.map AdjustmentType.to_json v) 
+    let of_json j = Json.to_list AdjustmentType.of_json j 
   end
 module AutoScalingGroups =
   struct
     type t = AutoScalingGroup.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map AutoScalingGroup.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list AutoScalingGroup.to_query v
-    let to_json v = `List (List.map AutoScalingGroup.to_json v)
-    let of_json j = Json.to_list AutoScalingGroup.of_json j
+      
+    let to_query v = Query.to_query_list AutoScalingGroup.to_query v 
+    let to_json v = `List (List.map AutoScalingGroup.to_json v) 
+    let of_json j = Json.to_list AutoScalingGroup.of_json j 
   end
 module Metrics =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "member" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module PolicyNames =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "member" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module PolicyTypes =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "member" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module NotificationConfigurations =
   struct
     type t = NotificationConfiguration.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map NotificationConfiguration.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list NotificationConfiguration.to_query v
-    let to_json v = `List (List.map NotificationConfiguration.to_json v)
-    let of_json j = Json.to_list NotificationConfiguration.of_json j
+      
+    let to_query v = Query.to_query_list NotificationConfiguration.to_query v 
+    let to_json v = `List (List.map NotificationConfiguration.to_json v) 
+    let of_json j = Json.to_list NotificationConfiguration.of_json j 
   end
 module AutoScalingGroupNames =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "member" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module LaunchConfigurations =
   struct
     type t = LaunchConfiguration.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map LaunchConfiguration.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list LaunchConfiguration.to_query v
-    let to_json v = `List (List.map LaunchConfiguration.to_json v)
-    let of_json j = Json.to_list LaunchConfiguration.of_json j
+      
+    let to_query v = Query.to_query_list LaunchConfiguration.to_query v 
+    let to_json v = `List (List.map LaunchConfiguration.to_json v) 
+    let of_json j = Json.to_list LaunchConfiguration.of_json j 
   end
 module ScheduledUpdateGroupActions =
   struct
     type t = ScheduledUpdateGroupAction.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map ScheduledUpdateGroupAction.parse (Xml.members "member" xml))
+      
     let to_query v =
-      Query.to_query_list ScheduledUpdateGroupAction.to_query v
-    let to_json v = `List (List.map ScheduledUpdateGroupAction.to_json v)
-    let of_json j = Json.to_list ScheduledUpdateGroupAction.of_json j
+      Query.to_query_list ScheduledUpdateGroupAction.to_query v 
+    let to_json v = `List (List.map ScheduledUpdateGroupAction.to_json v) 
+    let of_json j = Json.to_list ScheduledUpdateGroupAction.of_json j 
   end
 module LoadBalancerStates =
   struct
     type t = LoadBalancerState.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map LoadBalancerState.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list LoadBalancerState.to_query v
-    let to_json v = `List (List.map LoadBalancerState.to_json v)
-    let of_json j = Json.to_list LoadBalancerState.of_json j
+      
+    let to_query v = Query.to_query_list LoadBalancerState.to_query v 
+    let to_json v = `List (List.map LoadBalancerState.to_json v) 
+    let of_json j = Json.to_list LoadBalancerState.of_json j 
   end
 module MetricCollectionTypes =
   struct
     type t = MetricCollectionType.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map MetricCollectionType.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list MetricCollectionType.to_query v
-    let to_json v = `List (List.map MetricCollectionType.to_json v)
-    let of_json j = Json.to_list MetricCollectionType.of_json j
+      
+    let to_query v = Query.to_query_list MetricCollectionType.to_query v 
+    let to_json v = `List (List.map MetricCollectionType.to_json v) 
+    let of_json j = Json.to_list MetricCollectionType.of_json j 
   end
 module MetricGranularityTypes =
   struct
     type t = MetricGranularityType.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map MetricGranularityType.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list MetricGranularityType.to_query v
-    let to_json v = `List (List.map MetricGranularityType.to_json v)
-    let of_json j = Json.to_list MetricGranularityType.of_json j
+      
+    let to_query v = Query.to_query_list MetricGranularityType.to_query v 
+    let to_json v = `List (List.map MetricGranularityType.to_json v) 
+    let of_json j = Json.to_list MetricGranularityType.of_json j 
   end
 module LifecycleHookNames =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "member" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module Processes =
   struct
     type t = ProcessType.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map ProcessType.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list ProcessType.to_query v
-    let to_json v = `List (List.map ProcessType.to_json v)
-    let of_json j = Json.to_list ProcessType.of_json j
+      Util.option_all (List.map ProcessType.parse (Xml.members "member" xml)) 
+    let to_query v = Query.to_query_list ProcessType.to_query v 
+    let to_json v = `List (List.map ProcessType.to_json v) 
+    let of_json j = Json.to_list ProcessType.of_json j 
   end
 module ScheduledActionNames =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "member" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module ExitStandbyQuery =
   struct
-    type t = {
-      instance_ids: InstanceIds.t;
-      auto_scaling_group_name: String.t;}
+    type t =
+      {
+      instance_ids: InstanceIds.t ;
+      auto_scaling_group_name: String.t }
     let make ?(instance_ids= [])  ~auto_scaling_group_name  () =
-      { instance_ids; auto_scaling_group_name }
+      { instance_ids; auto_scaling_group_name } 
     let parse xml =
       Some
         {
@@ -2501,6 +2592,7 @@ module ExitStandbyQuery =
                (Util.option_bind (Xml.member "AutoScalingGroupName" xml)
                   String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -2511,6 +2603,7 @@ module ExitStandbyQuery =
            Some
              (Query.Pair
                 ("InstanceIds.member", (InstanceIds.to_query v.instance_ids)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -2518,6 +2611,7 @@ module ExitStandbyQuery =
               ("auto_scaling_group_name",
                 (String.to_json v.auto_scaling_group_name));
            Some ("instance_ids", (InstanceIds.to_json v.instance_ids))])
+      
     let of_json j =
       {
         instance_ids =
@@ -2526,43 +2620,46 @@ module ExitStandbyQuery =
         auto_scaling_group_name =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "auto_scaling_group_name")))
-      }
+      } 
   end
 module ActivityType =
   struct
     type t = {
-      activity: Activity.t option;}
-    let make ?activity  () = { activity }
+      activity: Activity.t option }
+    let make ?activity  () = { activity } 
     let parse xml =
       Some
         {
           activity =
             (Util.option_bind (Xml.member "Activity" xml) Activity.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.activity
               (fun f  -> Query.Pair ("Activity", (Activity.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.activity
               (fun f  -> ("activity", (Activity.to_json f)))])
+      
     let of_json j =
       {
         activity =
           (Util.option_map (Json.lookup j "activity") Activity.of_json)
-      }
+      } 
   end
 module DeleteAutoScalingGroupType =
   struct
     type t =
       {
-      auto_scaling_group_name: String.t;
-      force_delete: Boolean.t option;}
+      auto_scaling_group_name: String.t ;
+      force_delete: Boolean.t option }
     let make ~auto_scaling_group_name  ?force_delete  () =
-      { auto_scaling_group_name; force_delete }
+      { auto_scaling_group_name; force_delete } 
     let parse xml =
       Some
         {
@@ -2573,6 +2670,7 @@ module DeleteAutoScalingGroupType =
           force_delete =
             (Util.option_bind (Xml.member "ForceDelete" xml) Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -2582,6 +2680,7 @@ module DeleteAutoScalingGroupType =
              (Query.Pair
                 ("AutoScalingGroupName",
                   (String.to_query v.auto_scaling_group_name)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -2590,6 +2689,7 @@ module DeleteAutoScalingGroupType =
            Some
              ("auto_scaling_group_name",
                (String.to_json v.auto_scaling_group_name))])
+      
     let of_json j =
       {
         auto_scaling_group_name =
@@ -2597,17 +2697,17 @@ module DeleteAutoScalingGroupType =
              (Util.of_option_exn (Json.lookup j "auto_scaling_group_name")));
         force_delete =
           (Util.option_map (Json.lookup j "force_delete") Boolean.of_json)
-      }
+      } 
   end
 module DescribeTagsType =
   struct
     type t =
       {
-      filters: Filters.t;
-      next_token: String.t option;
-      max_records: Integer.t option;}
+      filters: Filters.t ;
+      next_token: String.t option ;
+      max_records: Integer.t option }
     let make ?(filters= [])  ?next_token  ?max_records  () =
-      { filters; next_token; max_records }
+      { filters; next_token; max_records } 
     let parse xml =
       Some
         {
@@ -2619,6 +2719,7 @@ module DescribeTagsType =
           max_records =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -2627,6 +2728,7 @@ module DescribeTagsType =
            Util.option_map v.next_token
              (fun f  -> Query.Pair ("NextToken", (String.to_query f)));
            Some (Query.Pair ("Filters.member", (Filters.to_query v.filters)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -2635,6 +2737,7 @@ module DescribeTagsType =
            Util.option_map v.next_token
              (fun f  -> ("next_token", (String.to_json f)));
            Some ("filters", (Filters.to_json v.filters))])
+      
     let of_json j =
       {
         filters =
@@ -2643,20 +2746,20 @@ module DescribeTagsType =
           (Util.option_map (Json.lookup j "next_token") String.of_json);
         max_records =
           (Util.option_map (Json.lookup j "max_records") Integer.of_json)
-      }
+      } 
   end
 module PutLifecycleHookType =
   struct
     type t =
       {
-      lifecycle_hook_name: String.t;
-      auto_scaling_group_name: String.t;
-      lifecycle_transition: String.t option;
-      role_a_r_n: String.t option;
-      notification_target_a_r_n: String.t option;
-      notification_metadata: String.t option;
-      heartbeat_timeout: Integer.t option;
-      default_result: String.t option;}
+      lifecycle_hook_name: String.t ;
+      auto_scaling_group_name: String.t ;
+      lifecycle_transition: String.t option ;
+      role_a_r_n: String.t option ;
+      notification_target_a_r_n: String.t option ;
+      notification_metadata: String.t option ;
+      heartbeat_timeout: Integer.t option ;
+      default_result: String.t option }
     let make ~lifecycle_hook_name  ~auto_scaling_group_name 
       ?lifecycle_transition  ?role_a_r_n  ?notification_target_a_r_n 
       ?notification_metadata  ?heartbeat_timeout  ?default_result  () =
@@ -2669,7 +2772,7 @@ module PutLifecycleHookType =
         notification_metadata;
         heartbeat_timeout;
         default_result
-      }
+      } 
     let parse xml =
       Some
         {
@@ -2698,6 +2801,7 @@ module PutLifecycleHookType =
           default_result =
             (Util.option_bind (Xml.member "DefaultResult" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -2724,6 +2828,7 @@ module PutLifecycleHookType =
              (Query.Pair
                 ("LifecycleHookName",
                   (String.to_query v.lifecycle_hook_name)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -2744,6 +2849,7 @@ module PutLifecycleHookType =
                (String.to_json v.auto_scaling_group_name));
            Some
              ("lifecycle_hook_name", (String.to_json v.lifecycle_hook_name))])
+      
     let of_json j =
       {
         lifecycle_hook_name =
@@ -2768,16 +2874,16 @@ module PutLifecycleHookType =
              Integer.of_json);
         default_result =
           (Util.option_map (Json.lookup j "default_result") String.of_json)
-      }
+      } 
   end
 module DeleteLifecycleHookType =
   struct
     type t =
       {
-      lifecycle_hook_name: String.t;
-      auto_scaling_group_name: String.t;}
+      lifecycle_hook_name: String.t ;
+      auto_scaling_group_name: String.t }
     let make ~lifecycle_hook_name  ~auto_scaling_group_name  () =
-      { lifecycle_hook_name; auto_scaling_group_name }
+      { lifecycle_hook_name; auto_scaling_group_name } 
     let parse xml =
       Some
         {
@@ -2790,6 +2896,7 @@ module DeleteLifecycleHookType =
                (Util.option_bind (Xml.member "AutoScalingGroupName" xml)
                   String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -2801,6 +2908,7 @@ module DeleteLifecycleHookType =
              (Query.Pair
                 ("LifecycleHookName",
                   (String.to_query v.lifecycle_hook_name)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -2809,6 +2917,7 @@ module DeleteLifecycleHookType =
                 (String.to_json v.auto_scaling_group_name));
            Some
              ("lifecycle_hook_name", (String.to_json v.lifecycle_hook_name))])
+      
     let of_json j =
       {
         lifecycle_hook_name =
@@ -2817,22 +2926,22 @@ module DeleteLifecycleHookType =
         auto_scaling_group_name =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "auto_scaling_group_name")))
-      }
+      } 
   end
 module DetachInstancesQuery =
   struct
     type t =
       {
-      instance_ids: InstanceIds.t;
-      auto_scaling_group_name: String.t;
-      should_decrement_desired_capacity: Boolean.t;}
+      instance_ids: InstanceIds.t ;
+      auto_scaling_group_name: String.t ;
+      should_decrement_desired_capacity: Boolean.t }
     let make ?(instance_ids= [])  ~auto_scaling_group_name 
       ~should_decrement_desired_capacity  () =
       {
         instance_ids;
         auto_scaling_group_name;
         should_decrement_desired_capacity
-      }
+      } 
     let parse xml =
       Some
         {
@@ -2850,6 +2959,7 @@ module DetachInstancesQuery =
                   (Xml.member "ShouldDecrementDesiredCapacity" xml)
                   Boolean.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -2864,6 +2974,7 @@ module DetachInstancesQuery =
            Some
              (Query.Pair
                 ("InstanceIds.member", (InstanceIds.to_query v.instance_ids)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -2874,6 +2985,7 @@ module DetachInstancesQuery =
              ("auto_scaling_group_name",
                (String.to_json v.auto_scaling_group_name));
            Some ("instance_ids", (InstanceIds.to_json v.instance_ids))])
+      
     let of_json j =
       {
         instance_ids =
@@ -2886,16 +2998,16 @@ module DetachInstancesQuery =
           (Boolean.of_json
              (Util.of_option_exn
                 (Json.lookup j "should_decrement_desired_capacity")))
-      }
+      } 
   end
 module ScalingProcessQuery =
   struct
     type t =
       {
-      auto_scaling_group_name: String.t;
-      scaling_processes: ProcessNames.t;}
+      auto_scaling_group_name: String.t ;
+      scaling_processes: ProcessNames.t }
     let make ~auto_scaling_group_name  ?(scaling_processes= [])  () =
-      { auto_scaling_group_name; scaling_processes }
+      { auto_scaling_group_name; scaling_processes } 
     let parse xml =
       Some
         {
@@ -2908,6 +3020,7 @@ module ScalingProcessQuery =
                (Util.option_bind (Xml.member "ScalingProcesses" xml)
                   ProcessNames.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -2919,6 +3032,7 @@ module ScalingProcessQuery =
              (Query.Pair
                 ("AutoScalingGroupName",
                   (String.to_query v.auto_scaling_group_name)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -2928,6 +3042,7 @@ module ScalingProcessQuery =
            Some
              ("auto_scaling_group_name",
                (String.to_json v.auto_scaling_group_name))])
+      
     let of_json j =
       {
         auto_scaling_group_name =
@@ -2936,16 +3051,16 @@ module ScalingProcessQuery =
         scaling_processes =
           (ProcessNames.of_json
              (Util.of_option_exn (Json.lookup j "scaling_processes")))
-      }
+      } 
   end
 module DetachLoadBalancersType =
   struct
     type t =
       {
-      auto_scaling_group_name: String.t option;
-      load_balancer_names: LoadBalancerNames.t;}
+      auto_scaling_group_name: String.t option ;
+      load_balancer_names: LoadBalancerNames.t }
     let make ?auto_scaling_group_name  ?(load_balancer_names= [])  () =
-      { auto_scaling_group_name; load_balancer_names }
+      { auto_scaling_group_name; load_balancer_names } 
     let parse xml =
       Some
         {
@@ -2957,6 +3072,7 @@ module DetachLoadBalancersType =
                (Util.option_bind (Xml.member "LoadBalancerNames" xml)
                   LoadBalancerNames.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -2967,6 +3083,7 @@ module DetachLoadBalancersType =
            Util.option_map v.auto_scaling_group_name
              (fun f  ->
                 Query.Pair ("AutoScalingGroupName", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -2975,6 +3092,7 @@ module DetachLoadBalancersType =
                 (LoadBalancerNames.to_json v.load_balancer_names));
            Util.option_map v.auto_scaling_group_name
              (fun f  -> ("auto_scaling_group_name", (String.to_json f)))])
+      
     let of_json j =
       {
         auto_scaling_group_name =
@@ -2983,42 +3101,45 @@ module DetachLoadBalancersType =
         load_balancer_names =
           (LoadBalancerNames.of_json
              (Util.of_option_exn (Json.lookup j "load_balancer_names")))
-      }
+      } 
   end
 module ResourceInUseFault =
   struct
     type t = {
-      message: String.t option;}
-    let make ?message  () = { message }
+      message: String.t option }
+    let make ?message  () = { message } 
     let parse xml =
       Some
         {
           message =
             (Util.option_bind (Xml.member "message" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.message
               (fun f  -> Query.Pair ("message", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.message
               (fun f  -> ("message", (String.to_json f)))])
+      
     let of_json j =
       { message = (Util.option_map (Json.lookup j "message") String.of_json)
-      }
+      } 
   end
 module DescribeLoadBalancersRequest =
   struct
     type t =
       {
-      auto_scaling_group_name: String.t;
-      next_token: String.t option;
-      max_records: Integer.t option;}
+      auto_scaling_group_name: String.t ;
+      next_token: String.t option ;
+      max_records: Integer.t option }
     let make ~auto_scaling_group_name  ?next_token  ?max_records  () =
-      { auto_scaling_group_name; next_token; max_records }
+      { auto_scaling_group_name; next_token; max_records } 
     let parse xml =
       Some
         {
@@ -3031,6 +3152,7 @@ module DescribeLoadBalancersRequest =
           max_records =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3042,6 +3164,7 @@ module DescribeLoadBalancersRequest =
              (Query.Pair
                 ("AutoScalingGroupName",
                   (String.to_query v.auto_scaling_group_name)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -3052,6 +3175,7 @@ module DescribeLoadBalancersRequest =
            Some
              ("auto_scaling_group_name",
                (String.to_json v.auto_scaling_group_name))])
+      
     let of_json j =
       {
         auto_scaling_group_name =
@@ -3061,16 +3185,16 @@ module DescribeLoadBalancersRequest =
           (Util.option_map (Json.lookup j "next_token") String.of_json);
         max_records =
           (Util.option_map (Json.lookup j "max_records") Integer.of_json)
-      }
+      } 
   end
 module AttachLoadBalancersType =
   struct
     type t =
       {
-      auto_scaling_group_name: String.t option;
-      load_balancer_names: LoadBalancerNames.t;}
+      auto_scaling_group_name: String.t option ;
+      load_balancer_names: LoadBalancerNames.t }
     let make ?auto_scaling_group_name  ?(load_balancer_names= [])  () =
-      { auto_scaling_group_name; load_balancer_names }
+      { auto_scaling_group_name; load_balancer_names } 
     let parse xml =
       Some
         {
@@ -3082,6 +3206,7 @@ module AttachLoadBalancersType =
                (Util.option_bind (Xml.member "LoadBalancerNames" xml)
                   LoadBalancerNames.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3092,6 +3217,7 @@ module AttachLoadBalancersType =
            Util.option_map v.auto_scaling_group_name
              (fun f  ->
                 Query.Pair ("AutoScalingGroupName", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -3100,6 +3226,7 @@ module AttachLoadBalancersType =
                 (LoadBalancerNames.to_json v.load_balancer_names));
            Util.option_map v.auto_scaling_group_name
              (fun f  -> ("auto_scaling_group_name", (String.to_json f)))])
+      
     let of_json j =
       {
         auto_scaling_group_name =
@@ -3108,19 +3235,19 @@ module AttachLoadBalancersType =
         load_balancer_names =
           (LoadBalancerNames.of_json
              (Util.of_option_exn (Json.lookup j "load_balancer_names")))
-      }
+      } 
   end
 module RecordLifecycleActionHeartbeatType =
   struct
     type t =
       {
-      lifecycle_hook_name: String.t;
-      auto_scaling_group_name: String.t;
-      lifecycle_action_token: String.t;}
+      lifecycle_hook_name: String.t ;
+      auto_scaling_group_name: String.t ;
+      lifecycle_action_token: String.t }
     let make ~lifecycle_hook_name  ~auto_scaling_group_name 
       ~lifecycle_action_token  () =
       { lifecycle_hook_name; auto_scaling_group_name; lifecycle_action_token
-      }
+      } 
     let parse xml =
       Some
         {
@@ -3137,6 +3264,7 @@ module RecordLifecycleActionHeartbeatType =
                (Util.option_bind (Xml.member "LifecycleActionToken" xml)
                   String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3152,6 +3280,7 @@ module RecordLifecycleActionHeartbeatType =
              (Query.Pair
                 ("LifecycleHookName",
                   (String.to_query v.lifecycle_hook_name)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -3163,6 +3292,7 @@ module RecordLifecycleActionHeartbeatType =
                (String.to_json v.auto_scaling_group_name));
            Some
              ("lifecycle_hook_name", (String.to_json v.lifecycle_hook_name))])
+      
     let of_json j =
       {
         lifecycle_hook_name =
@@ -3174,16 +3304,16 @@ module RecordLifecycleActionHeartbeatType =
         lifecycle_action_token =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "lifecycle_action_token")))
-      }
+      } 
   end
 module AutoScalingInstancesType =
   struct
     type t =
       {
-      auto_scaling_instances: AutoScalingInstances.t;
-      next_token: String.t option;}
+      auto_scaling_instances: AutoScalingInstances.t ;
+      next_token: String.t option }
     let make ?(auto_scaling_instances= [])  ?next_token  () =
-      { auto_scaling_instances; next_token }
+      { auto_scaling_instances; next_token } 
     let parse xml =
       Some
         {
@@ -3194,6 +3324,7 @@ module AutoScalingInstancesType =
           next_token =
             (Util.option_bind (Xml.member "NextToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3203,6 +3334,7 @@ module AutoScalingInstancesType =
              (Query.Pair
                 ("AutoScalingInstances.member",
                   (AutoScalingInstances.to_query v.auto_scaling_instances)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -3211,6 +3343,7 @@ module AutoScalingInstancesType =
            Some
              ("auto_scaling_instances",
                (AutoScalingInstances.to_json v.auto_scaling_instances))])
+      
     let of_json j =
       {
         auto_scaling_instances =
@@ -3218,17 +3351,17 @@ module AutoScalingInstancesType =
              (Util.of_option_exn (Json.lookup j "auto_scaling_instances")));
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      }
+      } 
   end
 module PutNotificationConfigurationType =
   struct
     type t =
       {
-      auto_scaling_group_name: String.t;
-      topic_a_r_n: String.t;
-      notification_types: AutoScalingNotificationTypes.t;}
+      auto_scaling_group_name: String.t ;
+      topic_a_r_n: String.t ;
+      notification_types: AutoScalingNotificationTypes.t }
     let make ~auto_scaling_group_name  ~topic_a_r_n  ~notification_types  ()
-      = { auto_scaling_group_name; topic_a_r_n; notification_types }
+      = { auto_scaling_group_name; topic_a_r_n; notification_types } 
     let parse xml =
       Some
         {
@@ -3244,6 +3377,7 @@ module PutNotificationConfigurationType =
                (Util.option_bind (Xml.member "NotificationTypes" xml)
                   AutoScalingNotificationTypes.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3257,6 +3391,7 @@ module PutNotificationConfigurationType =
              (Query.Pair
                 ("AutoScalingGroupName",
                   (String.to_query v.auto_scaling_group_name)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -3267,6 +3402,7 @@ module PutNotificationConfigurationType =
            Some
              ("auto_scaling_group_name",
                (String.to_json v.auto_scaling_group_name))])
+      
     let of_json j =
       {
         auto_scaling_group_name =
@@ -3277,16 +3413,16 @@ module PutNotificationConfigurationType =
         notification_types =
           (AutoScalingNotificationTypes.of_json
              (Util.of_option_exn (Json.lookup j "notification_types")))
-      }
+      } 
   end
 module PoliciesType =
   struct
     type t =
       {
-      scaling_policies: ScalingPolicies.t;
-      next_token: String.t option;}
+      scaling_policies: ScalingPolicies.t ;
+      next_token: String.t option }
     let make ?(scaling_policies= [])  ?next_token  () =
-      { scaling_policies; next_token }
+      { scaling_policies; next_token } 
     let parse xml =
       Some
         {
@@ -3297,6 +3433,7 @@ module PoliciesType =
           next_token =
             (Util.option_bind (Xml.member "NextToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3306,6 +3443,7 @@ module PoliciesType =
              (Query.Pair
                 ("ScalingPolicies.member",
                   (ScalingPolicies.to_query v.scaling_policies)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -3314,6 +3452,7 @@ module PoliciesType =
            Some
              ("scaling_policies",
                (ScalingPolicies.to_json v.scaling_policies))])
+      
     let of_json j =
       {
         scaling_policies =
@@ -3321,24 +3460,24 @@ module PoliciesType =
              (Util.of_option_exn (Json.lookup j "scaling_policies")));
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      }
+      } 
   end
 module UpdateAutoScalingGroupType =
   struct
     type t =
       {
-      auto_scaling_group_name: String.t;
-      launch_configuration_name: String.t option;
-      min_size: Integer.t option;
-      max_size: Integer.t option;
-      desired_capacity: Integer.t option;
-      default_cooldown: Integer.t option;
-      availability_zones: AvailabilityZones.t;
-      health_check_type: String.t option;
-      health_check_grace_period: Integer.t option;
-      placement_group: String.t option;
-      v_p_c_zone_identifier: String.t option;
-      termination_policies: TerminationPolicies.t;}
+      auto_scaling_group_name: String.t ;
+      launch_configuration_name: String.t option ;
+      min_size: Integer.t option ;
+      max_size: Integer.t option ;
+      desired_capacity: Integer.t option ;
+      default_cooldown: Integer.t option ;
+      availability_zones: AvailabilityZones.t ;
+      health_check_type: String.t option ;
+      health_check_grace_period: Integer.t option ;
+      placement_group: String.t option ;
+      v_p_c_zone_identifier: String.t option ;
+      termination_policies: TerminationPolicies.t }
     let make ~auto_scaling_group_name  ?launch_configuration_name  ?min_size 
       ?max_size  ?desired_capacity  ?default_cooldown  ?(availability_zones=
       [])  ?health_check_type  ?health_check_grace_period  ?placement_group 
@@ -3356,7 +3495,7 @@ module UpdateAutoScalingGroupType =
         placement_group;
         v_p_c_zone_identifier;
         termination_policies
-      }
+      } 
     let parse xml =
       Some
         {
@@ -3396,6 +3535,7 @@ module UpdateAutoScalingGroupType =
                (Util.option_bind (Xml.member "TerminationPolicies" xml)
                   TerminationPolicies.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3431,6 +3571,7 @@ module UpdateAutoScalingGroupType =
              (Query.Pair
                 ("AutoScalingGroupName",
                   (String.to_query v.auto_scaling_group_name)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -3461,6 +3602,7 @@ module UpdateAutoScalingGroupType =
            Some
              ("auto_scaling_group_name",
                (String.to_json v.auto_scaling_group_name))])
+      
     let of_json j =
       {
         auto_scaling_group_name =
@@ -3493,27 +3635,27 @@ module UpdateAutoScalingGroupType =
         termination_policies =
           (TerminationPolicies.of_json
              (Util.of_option_exn (Json.lookup j "termination_policies")))
-      }
+      } 
   end
 module CreateAutoScalingGroupType =
   struct
     type t =
       {
-      auto_scaling_group_name: String.t;
-      launch_configuration_name: String.t option;
-      instance_id: String.t option;
-      min_size: Integer.t;
-      max_size: Integer.t;
-      desired_capacity: Integer.t option;
-      default_cooldown: Integer.t option;
-      availability_zones: AvailabilityZones.t;
-      load_balancer_names: LoadBalancerNames.t;
-      health_check_type: String.t option;
-      health_check_grace_period: Integer.t option;
-      placement_group: String.t option;
-      v_p_c_zone_identifier: String.t option;
-      termination_policies: TerminationPolicies.t;
-      tags: Tags.t;}
+      auto_scaling_group_name: String.t ;
+      launch_configuration_name: String.t option ;
+      instance_id: String.t option ;
+      min_size: Integer.t ;
+      max_size: Integer.t ;
+      desired_capacity: Integer.t option ;
+      default_cooldown: Integer.t option ;
+      availability_zones: AvailabilityZones.t ;
+      load_balancer_names: LoadBalancerNames.t ;
+      health_check_type: String.t option ;
+      health_check_grace_period: Integer.t option ;
+      placement_group: String.t option ;
+      v_p_c_zone_identifier: String.t option ;
+      termination_policies: TerminationPolicies.t ;
+      tags: Tags.t }
     let make ~auto_scaling_group_name  ?launch_configuration_name 
       ?instance_id  ~min_size  ~max_size  ?desired_capacity 
       ?default_cooldown  ?(availability_zones= [])  ?(load_balancer_names=
@@ -3535,7 +3677,7 @@ module CreateAutoScalingGroupType =
         v_p_c_zone_identifier;
         termination_policies;
         tags
-      }
+      } 
     let parse xml =
       Some
         {
@@ -3586,6 +3728,7 @@ module CreateAutoScalingGroupType =
             (Util.of_option []
                (Util.option_bind (Xml.member "Tags" xml) Tags.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3626,6 +3769,7 @@ module CreateAutoScalingGroupType =
              (Query.Pair
                 ("AutoScalingGroupName",
                   (String.to_query v.auto_scaling_group_name)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -3660,6 +3804,7 @@ module CreateAutoScalingGroupType =
            Some
              ("auto_scaling_group_name",
                (String.to_json v.auto_scaling_group_name))])
+      
     let of_json j =
       {
         auto_scaling_group_name =
@@ -3698,14 +3843,14 @@ module CreateAutoScalingGroupType =
           (TerminationPolicies.of_json
              (Util.of_option_exn (Json.lookup j "termination_policies")));
         tags = (Tags.of_json (Util.of_option_exn (Json.lookup j "tags")))
-      }
+      } 
   end
 module TagsType =
   struct
     type t = {
-      tags: TagDescriptionList.t;
-      next_token: String.t option;}
-    let make ?(tags= [])  ?next_token  () = { tags; next_token }
+      tags: TagDescriptionList.t ;
+      next_token: String.t option }
+    let make ?(tags= [])  ?next_token  () = { tags; next_token } 
     let parse xml =
       Some
         {
@@ -3716,6 +3861,7 @@ module TagsType =
           next_token =
             (Util.option_bind (Xml.member "NextToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3724,12 +3870,14 @@ module TagsType =
            Some
              (Query.Pair
                 ("Tags.member", (TagDescriptionList.to_query v.tags)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.next_token
               (fun f  -> ("next_token", (String.to_json f)));
            Some ("tags", (TagDescriptionList.to_json v.tags))])
+      
     let of_json j =
       {
         tags =
@@ -3737,19 +3885,19 @@ module TagsType =
              (Util.of_option_exn (Json.lookup j "tags")));
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      }
+      } 
   end
 module DescribeScalingActivitiesType =
   struct
     type t =
       {
-      activity_ids: ActivityIds.t;
-      auto_scaling_group_name: String.t option;
-      max_records: Integer.t option;
-      next_token: String.t option;}
+      activity_ids: ActivityIds.t ;
+      auto_scaling_group_name: String.t option ;
+      max_records: Integer.t option ;
+      next_token: String.t option }
     let make ?(activity_ids= [])  ?auto_scaling_group_name  ?max_records 
       ?next_token  () =
-      { activity_ids; auto_scaling_group_name; max_records; next_token }
+      { activity_ids; auto_scaling_group_name; max_records; next_token } 
     let parse xml =
       Some
         {
@@ -3765,6 +3913,7 @@ module DescribeScalingActivitiesType =
           next_token =
             (Util.option_bind (Xml.member "NextToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3778,6 +3927,7 @@ module DescribeScalingActivitiesType =
            Some
              (Query.Pair
                 ("ActivityIds.member", (ActivityIds.to_query v.activity_ids)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -3788,6 +3938,7 @@ module DescribeScalingActivitiesType =
            Util.option_map v.auto_scaling_group_name
              (fun f  -> ("auto_scaling_group_name", (String.to_json f)));
            Some ("activity_ids", (ActivityIds.to_json v.activity_ids))])
+      
     let of_json j =
       {
         activity_ids =
@@ -3800,16 +3951,16 @@ module DescribeScalingActivitiesType =
           (Util.option_map (Json.lookup j "max_records") Integer.of_json);
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      }
+      } 
   end
 module DeleteScheduledActionType =
   struct
     type t =
       {
-      auto_scaling_group_name: String.t option;
-      scheduled_action_name: String.t;}
+      auto_scaling_group_name: String.t option ;
+      scheduled_action_name: String.t }
     let make ?auto_scaling_group_name  ~scheduled_action_name  () =
-      { auto_scaling_group_name; scheduled_action_name }
+      { auto_scaling_group_name; scheduled_action_name } 
     let parse xml =
       Some
         {
@@ -3821,6 +3972,7 @@ module DeleteScheduledActionType =
                (Util.option_bind (Xml.member "ScheduledActionName" xml)
                   String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3831,6 +3983,7 @@ module DeleteScheduledActionType =
            Util.option_map v.auto_scaling_group_name
              (fun f  ->
                 Query.Pair ("AutoScalingGroupName", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -3839,6 +3992,7 @@ module DeleteScheduledActionType =
                 (String.to_json v.scheduled_action_name));
            Util.option_map v.auto_scaling_group_name
              (fun f  -> ("auto_scaling_group_name", (String.to_json f)))])
+      
     let of_json j =
       {
         auto_scaling_group_name =
@@ -3847,13 +4001,13 @@ module DeleteScheduledActionType =
         scheduled_action_name =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "scheduled_action_name")))
-      }
+      } 
   end
 module DescribeLifecycleHooksAnswer =
   struct
     type t = {
-      lifecycle_hooks: LifecycleHooks.t;}
-    let make ?(lifecycle_hooks= [])  () = { lifecycle_hooks }
+      lifecycle_hooks: LifecycleHooks.t }
+    let make ?(lifecycle_hooks= [])  () = { lifecycle_hooks } 
     let parse xml =
       Some
         {
@@ -3862,6 +4016,7 @@ module DescribeLifecycleHooksAnswer =
                (Util.option_bind (Xml.member "LifecycleHooks" xml)
                   LifecycleHooks.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3869,27 +4024,29 @@ module DescribeLifecycleHooksAnswer =
               (Query.Pair
                  ("LifecycleHooks.member",
                    (LifecycleHooks.to_query v.lifecycle_hooks)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("lifecycle_hooks", (LifecycleHooks.to_json v.lifecycle_hooks))])
+      
     let of_json j =
       {
         lifecycle_hooks =
           (LifecycleHooks.of_json
              (Util.of_option_exn (Json.lookup j "lifecycle_hooks")))
-      }
+      } 
   end
 module SetDesiredCapacityType =
   struct
     type t =
       {
-      auto_scaling_group_name: String.t;
-      desired_capacity: Integer.t;
-      honor_cooldown: Boolean.t option;}
+      auto_scaling_group_name: String.t ;
+      desired_capacity: Integer.t ;
+      honor_cooldown: Boolean.t option }
     let make ~auto_scaling_group_name  ~desired_capacity  ?honor_cooldown  ()
-      = { auto_scaling_group_name; desired_capacity; honor_cooldown }
+      = { auto_scaling_group_name; desired_capacity; honor_cooldown } 
     let parse xml =
       Some
         {
@@ -3904,6 +4061,7 @@ module SetDesiredCapacityType =
           honor_cooldown =
             (Util.option_bind (Xml.member "HonorCooldown" xml) Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3916,6 +4074,7 @@ module SetDesiredCapacityType =
              (Query.Pair
                 ("AutoScalingGroupName",
                   (String.to_query v.auto_scaling_group_name)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -3925,6 +4084,7 @@ module SetDesiredCapacityType =
            Some
              ("auto_scaling_group_name",
                (String.to_json v.auto_scaling_group_name))])
+      
     let of_json j =
       {
         auto_scaling_group_name =
@@ -3935,13 +4095,13 @@ module SetDesiredCapacityType =
              (Util.of_option_exn (Json.lookup j "desired_capacity")));
         honor_cooldown =
           (Util.option_map (Json.lookup j "honor_cooldown") Boolean.of_json)
-      }
+      } 
   end
 module DetachInstancesAnswer =
   struct
     type t = {
-      activities: Activities.t;}
-    let make ?(activities= [])  () = { activities }
+      activities: Activities.t }
+    let make ?(activities= [])  () = { activities } 
     let parse xml =
       Some
         {
@@ -3950,32 +4110,35 @@ module DetachInstancesAnswer =
                (Util.option_bind (Xml.member "Activities" xml)
                   Activities.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some
               (Query.Pair
                  ("Activities.member", (Activities.to_query v.activities)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("activities", (Activities.to_json v.activities))])
+      
     let of_json j =
       {
         activities =
           (Activities.of_json
              (Util.of_option_exn (Json.lookup j "activities")))
-      }
+      } 
   end
 module LaunchConfigurationNamesType =
   struct
     type t =
       {
-      launch_configuration_names: LaunchConfigurationNames.t;
-      next_token: String.t option;
-      max_records: Integer.t option;}
+      launch_configuration_names: LaunchConfigurationNames.t ;
+      next_token: String.t option ;
+      max_records: Integer.t option }
     let make ?(launch_configuration_names= [])  ?next_token  ?max_records  ()
-      = { launch_configuration_names; next_token; max_records }
+      = { launch_configuration_names; next_token; max_records } 
     let parse xml =
       Some
         {
@@ -3988,6 +4151,7 @@ module LaunchConfigurationNamesType =
           max_records =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -4000,6 +4164,7 @@ module LaunchConfigurationNamesType =
                 ("LaunchConfigurationNames.member",
                   (LaunchConfigurationNames.to_query
                      v.launch_configuration_names)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -4010,6 +4175,7 @@ module LaunchConfigurationNamesType =
            Some
              ("launch_configuration_names",
                (LaunchConfigurationNames.to_json v.launch_configuration_names))])
+      
     let of_json j =
       {
         launch_configuration_names =
@@ -4019,38 +4185,41 @@ module LaunchConfigurationNamesType =
           (Util.option_map (Json.lookup j "next_token") String.of_json);
         max_records =
           (Util.option_map (Json.lookup j "max_records") Integer.of_json)
-      }
+      } 
   end
 module LimitExceededFault =
   struct
     type t = {
-      message: String.t option;}
-    let make ?message  () = { message }
+      message: String.t option }
+    let make ?message  () = { message } 
     let parse xml =
       Some
         {
           message =
             (Util.option_bind (Xml.member "message" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.message
               (fun f  -> Query.Pair ("message", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.message
               (fun f  -> ("message", (String.to_json f)))])
+      
     let of_json j =
       { message = (Util.option_map (Json.lookup j "message") String.of_json)
-      }
+      } 
   end
 module DescribeLifecycleHookTypesAnswer =
   struct
     type t = {
-      lifecycle_hook_types: AutoScalingNotificationTypes.t;}
-    let make ?(lifecycle_hook_types= [])  () = { lifecycle_hook_types }
+      lifecycle_hook_types: AutoScalingNotificationTypes.t }
+    let make ?(lifecycle_hook_types= [])  () = { lifecycle_hook_types } 
     let parse xml =
       Some
         {
@@ -4059,6 +4228,7 @@ module DescribeLifecycleHookTypesAnswer =
                (Util.option_bind (Xml.member "LifecycleHookTypes" xml)
                   AutoScalingNotificationTypes.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -4067,41 +4237,43 @@ module DescribeLifecycleHookTypesAnswer =
                  ("LifecycleHookTypes.member",
                    (AutoScalingNotificationTypes.to_query
                       v.lifecycle_hook_types)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("lifecycle_hook_types",
                 (AutoScalingNotificationTypes.to_json v.lifecycle_hook_types))])
+      
     let of_json j =
       {
         lifecycle_hook_types =
           (AutoScalingNotificationTypes.of_json
              (Util.of_option_exn (Json.lookup j "lifecycle_hook_types")))
-      }
+      } 
   end
 module CreateLaunchConfigurationType =
   struct
     type t =
       {
-      launch_configuration_name: String.t;
-      image_id: String.t option;
-      key_name: String.t option;
-      security_groups: SecurityGroups.t;
-      classic_link_v_p_c_id: String.t option;
-      classic_link_v_p_c_security_groups: ClassicLinkVPCSecurityGroups.t;
-      user_data: String.t option;
-      instance_id: String.t option;
-      instance_type: String.t option;
-      kernel_id: String.t option;
-      ramdisk_id: String.t option;
-      block_device_mappings: BlockDeviceMappings.t;
-      instance_monitoring: InstanceMonitoring.t option;
-      spot_price: String.t option;
-      iam_instance_profile: String.t option;
-      ebs_optimized: Boolean.t option;
-      associate_public_ip_address: Boolean.t option;
-      placement_tenancy: String.t option;}
+      launch_configuration_name: String.t ;
+      image_id: String.t option ;
+      key_name: String.t option ;
+      security_groups: SecurityGroups.t ;
+      classic_link_v_p_c_id: String.t option ;
+      classic_link_v_p_c_security_groups: ClassicLinkVPCSecurityGroups.t ;
+      user_data: String.t option ;
+      instance_id: String.t option ;
+      instance_type: String.t option ;
+      kernel_id: String.t option ;
+      ramdisk_id: String.t option ;
+      block_device_mappings: BlockDeviceMappings.t ;
+      instance_monitoring: InstanceMonitoring.t option ;
+      spot_price: String.t option ;
+      iam_instance_profile: String.t option ;
+      ebs_optimized: Boolean.t option ;
+      associate_public_ip_address: Boolean.t option ;
+      placement_tenancy: String.t option }
     let make ~launch_configuration_name  ?image_id  ?key_name 
       ?(security_groups= [])  ?classic_link_v_p_c_id 
       ?(classic_link_v_p_c_security_groups= [])  ?user_data  ?instance_id 
@@ -4127,7 +4299,7 @@ module CreateLaunchConfigurationType =
         ebs_optimized;
         associate_public_ip_address;
         placement_tenancy
-      }
+      } 
     let parse xml =
       Some
         {
@@ -4182,6 +4354,7 @@ module CreateLaunchConfigurationType =
             (Util.option_bind (Xml.member "PlacementTenancy" xml)
                String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -4234,6 +4407,7 @@ module CreateLaunchConfigurationType =
              (Query.Pair
                 ("LaunchConfigurationName",
                   (String.to_query v.launch_configuration_name)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -4278,6 +4452,7 @@ module CreateLaunchConfigurationType =
            Some
              ("launch_configuration_name",
                (String.to_json v.launch_configuration_name))])
+      
     let of_json j =
       {
         launch_configuration_name =
@@ -4325,21 +4500,21 @@ module CreateLaunchConfigurationType =
              Boolean.of_json);
         placement_tenancy =
           (Util.option_map (Json.lookup j "placement_tenancy") String.of_json)
-      }
+      } 
   end
 module PutScheduledUpdateGroupActionType =
   struct
     type t =
       {
-      auto_scaling_group_name: String.t;
-      scheduled_action_name: String.t;
-      time: DateTime.t option;
-      start_time: DateTime.t option;
-      end_time: DateTime.t option;
-      recurrence: String.t option;
-      min_size: Integer.t option;
-      max_size: Integer.t option;
-      desired_capacity: Integer.t option;}
+      auto_scaling_group_name: String.t ;
+      scheduled_action_name: String.t ;
+      time: DateTime.t option ;
+      start_time: DateTime.t option ;
+      end_time: DateTime.t option ;
+      recurrence: String.t option ;
+      min_size: Integer.t option ;
+      max_size: Integer.t option ;
+      desired_capacity: Integer.t option }
     let make ~auto_scaling_group_name  ~scheduled_action_name  ?time 
       ?start_time  ?end_time  ?recurrence  ?min_size  ?max_size 
       ?desired_capacity  () =
@@ -4353,7 +4528,7 @@ module PutScheduledUpdateGroupActionType =
         min_size;
         max_size;
         desired_capacity
-      }
+      } 
     let parse xml =
       Some
         {
@@ -4380,6 +4555,7 @@ module PutScheduledUpdateGroupActionType =
             (Util.option_bind (Xml.member "DesiredCapacity" xml)
                Integer.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -4405,6 +4581,7 @@ module PutScheduledUpdateGroupActionType =
              (Query.Pair
                 ("AutoScalingGroupName",
                   (String.to_query v.auto_scaling_group_name)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -4427,6 +4604,7 @@ module PutScheduledUpdateGroupActionType =
            Some
              ("auto_scaling_group_name",
                (String.to_json v.auto_scaling_group_name))])
+      
     let of_json j =
       {
         auto_scaling_group_name =
@@ -4448,40 +4626,43 @@ module PutScheduledUpdateGroupActionType =
           (Util.option_map (Json.lookup j "max_size") Integer.of_json);
         desired_capacity =
           (Util.option_map (Json.lookup j "desired_capacity") Integer.of_json)
-      }
+      } 
   end
 module AlreadyExistsFault =
   struct
     type t = {
-      message: String.t option;}
-    let make ?message  () = { message }
+      message: String.t option }
+    let make ?message  () = { message } 
     let parse xml =
       Some
         {
           message =
             (Util.option_bind (Xml.member "message" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.message
               (fun f  -> Query.Pair ("message", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.message
               (fun f  -> ("message", (String.to_json f)))])
+      
     let of_json j =
       { message = (Util.option_map (Json.lookup j "message") String.of_json)
-      }
+      } 
   end
 module DeleteNotificationConfigurationType =
   struct
     type t = {
-      auto_scaling_group_name: String.t;
-      topic_a_r_n: String.t;}
+      auto_scaling_group_name: String.t ;
+      topic_a_r_n: String.t }
     let make ~auto_scaling_group_name  ~topic_a_r_n  () =
-      { auto_scaling_group_name; topic_a_r_n }
+      { auto_scaling_group_name; topic_a_r_n } 
     let parse xml =
       Some
         {
@@ -4493,6 +4674,7 @@ module DeleteNotificationConfigurationType =
             (Xml.required "TopicARN"
                (Util.option_bind (Xml.member "TopicARN" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -4501,6 +4683,7 @@ module DeleteNotificationConfigurationType =
              (Query.Pair
                 ("AutoScalingGroupName",
                   (String.to_query v.auto_scaling_group_name)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -4508,6 +4691,7 @@ module DeleteNotificationConfigurationType =
            Some
              ("auto_scaling_group_name",
                (String.to_json v.auto_scaling_group_name))])
+      
     let of_json j =
       {
         auto_scaling_group_name =
@@ -4515,20 +4699,20 @@ module DeleteNotificationConfigurationType =
              (Util.of_option_exn (Json.lookup j "auto_scaling_group_name")));
         topic_a_r_n =
           (String.of_json (Util.of_option_exn (Json.lookup j "topic_a_r_n")))
-      }
+      } 
   end
 module DescribeAccountLimitsAnswer =
   struct
     type t =
       {
-      max_number_of_auto_scaling_groups: Integer.t option;
-      max_number_of_launch_configurations: Integer.t option;}
+      max_number_of_auto_scaling_groups: Integer.t option ;
+      max_number_of_launch_configurations: Integer.t option }
     let make ?max_number_of_auto_scaling_groups 
       ?max_number_of_launch_configurations  () =
       {
         max_number_of_auto_scaling_groups;
         max_number_of_launch_configurations
-      }
+      } 
     let parse xml =
       Some
         {
@@ -4540,6 +4724,7 @@ module DescribeAccountLimitsAnswer =
                (Xml.member "MaxNumberOfLaunchConfigurations" xml)
                Integer.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -4551,6 +4736,7 @@ module DescribeAccountLimitsAnswer =
              (fun f  ->
                 Query.Pair
                   ("MaxNumberOfAutoScalingGroups", (Integer.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -4560,6 +4746,7 @@ module DescribeAccountLimitsAnswer =
            Util.option_map v.max_number_of_auto_scaling_groups
              (fun f  ->
                 ("max_number_of_auto_scaling_groups", (Integer.to_json f)))])
+      
     let of_json j =
       {
         max_number_of_auto_scaling_groups =
@@ -4570,13 +4757,13 @@ module DescribeAccountLimitsAnswer =
           (Util.option_map
              (Json.lookup j "max_number_of_launch_configurations")
              Integer.of_json)
-      }
+      } 
   end
 module DeleteTagsType =
   struct
     type t = {
-      tags: Tags.t;}
-    let make ~tags  () = { tags }
+      tags: Tags.t }
+    let make ~tags  () = { tags } 
     let parse xml =
       Some
         {
@@ -4584,21 +4771,23 @@ module DeleteTagsType =
             (Xml.required "Tags"
                (Util.option_bind (Xml.member "Tags" xml) Tags.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("Tags.member", (Tags.to_query v.tags)))])
+      
     let to_json v =
-      `Assoc (Util.list_filter_opt [Some ("tags", (Tags.to_json v.tags))])
+      `Assoc (Util.list_filter_opt [Some ("tags", (Tags.to_json v.tags))]) 
     let of_json j =
-      { tags = (Tags.of_json (Util.of_option_exn (Json.lookup j "tags"))) }
+      { tags = (Tags.of_json (Util.of_option_exn (Json.lookup j "tags"))) } 
   end
 module DescribeTerminationPolicyTypesAnswer =
   struct
     type t = {
-      termination_policy_types: TerminationPolicies.t;}
+      termination_policy_types: TerminationPolicies.t }
     let make ?(termination_policy_types= [])  () =
-      { termination_policy_types }
+      { termination_policy_types } 
     let parse xml =
       Some
         {
@@ -4607,6 +4796,7 @@ module DescribeTerminationPolicyTypesAnswer =
                (Util.option_bind (Xml.member "TerminationPolicyTypes" xml)
                   TerminationPolicies.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -4614,24 +4804,26 @@ module DescribeTerminationPolicyTypesAnswer =
               (Query.Pair
                  ("TerminationPolicyTypes.member",
                    (TerminationPolicies.to_query v.termination_policy_types)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("termination_policy_types",
                 (TerminationPolicies.to_json v.termination_policy_types))])
+      
     let of_json j =
       {
         termination_policy_types =
           (TerminationPolicies.of_json
              (Util.of_option_exn (Json.lookup j "termination_policy_types")))
-      }
+      } 
   end
 module DescribeAdjustmentTypesAnswer =
   struct
     type t = {
-      adjustment_types: AdjustmentTypes.t;}
-    let make ?(adjustment_types= [])  () = { adjustment_types }
+      adjustment_types: AdjustmentTypes.t }
+    let make ?(adjustment_types= [])  () = { adjustment_types } 
     let parse xml =
       Some
         {
@@ -4640,6 +4832,7 @@ module DescribeAdjustmentTypesAnswer =
                (Util.option_bind (Xml.member "AdjustmentTypes" xml)
                   AdjustmentTypes.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -4647,27 +4840,29 @@ module DescribeAdjustmentTypesAnswer =
               (Query.Pair
                  ("AdjustmentTypes.member",
                    (AdjustmentTypes.to_query v.adjustment_types)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("adjustment_types",
                 (AdjustmentTypes.to_json v.adjustment_types))])
+      
     let of_json j =
       {
         adjustment_types =
           (AdjustmentTypes.of_json
              (Util.of_option_exn (Json.lookup j "adjustment_types")))
-      }
+      } 
   end
 module AutoScalingGroupsType =
   struct
     type t =
       {
-      auto_scaling_groups: AutoScalingGroups.t;
-      next_token: String.t option;}
+      auto_scaling_groups: AutoScalingGroups.t ;
+      next_token: String.t option }
     let make ~auto_scaling_groups  ?next_token  () =
-      { auto_scaling_groups; next_token }
+      { auto_scaling_groups; next_token } 
     let parse xml =
       Some
         {
@@ -4678,6 +4873,7 @@ module AutoScalingGroupsType =
           next_token =
             (Util.option_bind (Xml.member "NextToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -4687,6 +4883,7 @@ module AutoScalingGroupsType =
              (Query.Pair
                 ("AutoScalingGroups.member",
                   (AutoScalingGroups.to_query v.auto_scaling_groups)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -4695,6 +4892,7 @@ module AutoScalingGroupsType =
            Some
              ("auto_scaling_groups",
                (AutoScalingGroups.to_json v.auto_scaling_groups))])
+      
     let of_json j =
       {
         auto_scaling_groups =
@@ -4702,17 +4900,17 @@ module AutoScalingGroupsType =
              (Util.of_option_exn (Json.lookup j "auto_scaling_groups")));
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      }
+      } 
   end
 module ExecutePolicyType =
   struct
     type t =
       {
-      auto_scaling_group_name: String.t option;
-      policy_name: String.t;
-      honor_cooldown: Boolean.t option;
-      metric_value: Double.t option;
-      breach_threshold: Double.t option;}
+      auto_scaling_group_name: String.t option ;
+      policy_name: String.t ;
+      honor_cooldown: Boolean.t option ;
+      metric_value: Double.t option ;
+      breach_threshold: Double.t option }
     let make ?auto_scaling_group_name  ~policy_name  ?honor_cooldown 
       ?metric_value  ?breach_threshold  () =
       {
@@ -4721,7 +4919,7 @@ module ExecutePolicyType =
         honor_cooldown;
         metric_value;
         breach_threshold
-      }
+      } 
     let parse xml =
       Some
         {
@@ -4738,6 +4936,7 @@ module ExecutePolicyType =
           breach_threshold =
             (Util.option_bind (Xml.member "BreachThreshold" xml) Double.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -4751,6 +4950,7 @@ module ExecutePolicyType =
            Util.option_map v.auto_scaling_group_name
              (fun f  ->
                 Query.Pair ("AutoScalingGroupName", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -4763,6 +4963,7 @@ module ExecutePolicyType =
            Some ("policy_name", (String.to_json v.policy_name));
            Util.option_map v.auto_scaling_group_name
              (fun f  -> ("auto_scaling_group_name", (String.to_json f)))])
+      
     let of_json j =
       {
         auto_scaling_group_name =
@@ -4776,17 +4977,17 @@ module ExecutePolicyType =
           (Util.option_map (Json.lookup j "metric_value") Double.of_json);
         breach_threshold =
           (Util.option_map (Json.lookup j "breach_threshold") Double.of_json)
-      }
+      } 
   end
 module SetInstanceHealthQuery =
   struct
     type t =
       {
-      instance_id: String.t;
-      health_status: String.t;
-      should_respect_grace_period: Boolean.t option;}
+      instance_id: String.t ;
+      health_status: String.t ;
+      should_respect_grace_period: Boolean.t option }
     let make ~instance_id  ~health_status  ?should_respect_grace_period  () =
-      { instance_id; health_status; should_respect_grace_period }
+      { instance_id; health_status; should_respect_grace_period } 
     let parse xml =
       Some
         {
@@ -4800,6 +5001,7 @@ module SetInstanceHealthQuery =
             (Util.option_bind (Xml.member "ShouldRespectGracePeriod" xml)
                Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -4810,6 +5012,7 @@ module SetInstanceHealthQuery =
            Some
              (Query.Pair ("HealthStatus", (String.to_query v.health_status)));
            Some (Query.Pair ("InstanceId", (String.to_query v.instance_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -4817,6 +5020,7 @@ module SetInstanceHealthQuery =
               (fun f  -> ("should_respect_grace_period", (Boolean.to_json f)));
            Some ("health_status", (String.to_json v.health_status));
            Some ("instance_id", (String.to_json v.instance_id))])
+      
     let of_json j =
       {
         instance_id =
@@ -4827,23 +5031,23 @@ module SetInstanceHealthQuery =
         should_respect_grace_period =
           (Util.option_map (Json.lookup j "should_respect_grace_period")
              Boolean.of_json)
-      }
+      } 
   end
 module PutScalingPolicyType =
   struct
     type t =
       {
-      auto_scaling_group_name: String.t;
-      policy_name: String.t;
-      policy_type: String.t option;
-      adjustment_type: String.t;
-      min_adjustment_step: Integer.t option;
-      min_adjustment_magnitude: Integer.t option;
-      scaling_adjustment: Integer.t option;
-      cooldown: Integer.t option;
-      metric_aggregation_type: String.t option;
-      step_adjustments: StepAdjustments.t;
-      estimated_instance_warmup: Integer.t option;}
+      auto_scaling_group_name: String.t ;
+      policy_name: String.t ;
+      policy_type: String.t option ;
+      adjustment_type: String.t ;
+      min_adjustment_step: Integer.t option ;
+      min_adjustment_magnitude: Integer.t option ;
+      scaling_adjustment: Integer.t option ;
+      cooldown: Integer.t option ;
+      metric_aggregation_type: String.t option ;
+      step_adjustments: StepAdjustments.t ;
+      estimated_instance_warmup: Integer.t option }
     let make ~auto_scaling_group_name  ~policy_name  ?policy_type 
       ~adjustment_type  ?min_adjustment_step  ?min_adjustment_magnitude 
       ?scaling_adjustment  ?cooldown  ?metric_aggregation_type 
@@ -4860,7 +5064,7 @@ module PutScalingPolicyType =
         metric_aggregation_type;
         step_adjustments;
         estimated_instance_warmup
-      }
+      } 
     let parse xml =
       Some
         {
@@ -4899,6 +5103,7 @@ module PutScalingPolicyType =
             (Util.option_bind (Xml.member "EstimatedInstanceWarmup" xml)
                Integer.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -4933,6 +5138,7 @@ module PutScalingPolicyType =
              (Query.Pair
                 ("AutoScalingGroupName",
                   (String.to_query v.auto_scaling_group_name)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -4958,6 +5164,7 @@ module PutScalingPolicyType =
            Some
              ("auto_scaling_group_name",
                (String.to_json v.auto_scaling_group_name))])
+      
     let of_json j =
       {
         auto_scaling_group_name =
@@ -4990,17 +5197,17 @@ module PutScalingPolicyType =
         estimated_instance_warmup =
           (Util.option_map (Json.lookup j "estimated_instance_warmup")
              Integer.of_json)
-      }
+      } 
   end
 module EnableMetricsCollectionQuery =
   struct
     type t =
       {
-      auto_scaling_group_name: String.t;
-      metrics: Metrics.t;
-      granularity: String.t;}
+      auto_scaling_group_name: String.t ;
+      metrics: Metrics.t ;
+      granularity: String.t }
     let make ~auto_scaling_group_name  ?(metrics= [])  ~granularity  () =
-      { auto_scaling_group_name; metrics; granularity }
+      { auto_scaling_group_name; metrics; granularity } 
     let parse xml =
       Some
         {
@@ -5015,6 +5222,7 @@ module EnableMetricsCollectionQuery =
             (Xml.required "Granularity"
                (Util.option_bind (Xml.member "Granularity" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -5025,6 +5233,7 @@ module EnableMetricsCollectionQuery =
              (Query.Pair
                 ("AutoScalingGroupName",
                   (String.to_query v.auto_scaling_group_name)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -5033,6 +5242,7 @@ module EnableMetricsCollectionQuery =
            Some
              ("auto_scaling_group_name",
                (String.to_json v.auto_scaling_group_name))])
+      
     let of_json j =
       {
         auto_scaling_group_name =
@@ -5042,17 +5252,17 @@ module EnableMetricsCollectionQuery =
           (Metrics.of_json (Util.of_option_exn (Json.lookup j "metrics")));
         granularity =
           (String.of_json (Util.of_option_exn (Json.lookup j "granularity")))
-      }
+      } 
   end
 module DescribePoliciesType =
   struct
     type t =
       {
-      auto_scaling_group_name: String.t option;
-      policy_names: PolicyNames.t;
-      policy_types: PolicyTypes.t;
-      next_token: String.t option;
-      max_records: Integer.t option;}
+      auto_scaling_group_name: String.t option ;
+      policy_names: PolicyNames.t ;
+      policy_types: PolicyTypes.t ;
+      next_token: String.t option ;
+      max_records: Integer.t option }
     let make ?auto_scaling_group_name  ?(policy_names= [])  ?(policy_types=
       [])  ?next_token  ?max_records  () =
       {
@@ -5061,7 +5271,7 @@ module DescribePoliciesType =
         policy_types;
         next_token;
         max_records
-      }
+      } 
     let parse xml =
       Some
         {
@@ -5081,6 +5291,7 @@ module DescribePoliciesType =
           max_records =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -5097,6 +5308,7 @@ module DescribePoliciesType =
            Util.option_map v.auto_scaling_group_name
              (fun f  ->
                 Query.Pair ("AutoScalingGroupName", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -5108,6 +5320,7 @@ module DescribePoliciesType =
            Some ("policy_names", (PolicyNames.to_json v.policy_names));
            Util.option_map v.auto_scaling_group_name
              (fun f  -> ("auto_scaling_group_name", (String.to_json f)))])
+      
     let of_json j =
       {
         auto_scaling_group_name =
@@ -5123,15 +5336,16 @@ module DescribePoliciesType =
           (Util.option_map (Json.lookup j "next_token") String.of_json);
         max_records =
           (Util.option_map (Json.lookup j "max_records") Integer.of_json)
-      }
+      } 
   end
 module AttachInstancesQuery =
   struct
-    type t = {
-      instance_ids: InstanceIds.t;
-      auto_scaling_group_name: String.t;}
+    type t =
+      {
+      instance_ids: InstanceIds.t ;
+      auto_scaling_group_name: String.t }
     let make ?(instance_ids= [])  ~auto_scaling_group_name  () =
-      { instance_ids; auto_scaling_group_name }
+      { instance_ids; auto_scaling_group_name } 
     let parse xml =
       Some
         {
@@ -5144,6 +5358,7 @@ module AttachInstancesQuery =
                (Util.option_bind (Xml.member "AutoScalingGroupName" xml)
                   String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -5154,6 +5369,7 @@ module AttachInstancesQuery =
            Some
              (Query.Pair
                 ("InstanceIds.member", (InstanceIds.to_query v.instance_ids)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -5161,6 +5377,7 @@ module AttachInstancesQuery =
               ("auto_scaling_group_name",
                 (String.to_json v.auto_scaling_group_name));
            Some ("instance_ids", (InstanceIds.to_json v.instance_ids))])
+      
     let of_json j =
       {
         instance_ids =
@@ -5169,16 +5386,16 @@ module AttachInstancesQuery =
         auto_scaling_group_name =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "auto_scaling_group_name")))
-      }
+      } 
   end
 module DescribeNotificationConfigurationsAnswer =
   struct
     type t =
       {
-      notification_configurations: NotificationConfigurations.t;
-      next_token: String.t option;}
+      notification_configurations: NotificationConfigurations.t ;
+      next_token: String.t option }
     let make ~notification_configurations  ?next_token  () =
-      { notification_configurations; next_token }
+      { notification_configurations; next_token } 
     let parse xml =
       Some
         {
@@ -5190,6 +5407,7 @@ module DescribeNotificationConfigurationsAnswer =
           next_token =
             (Util.option_bind (Xml.member "NextToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -5200,6 +5418,7 @@ module DescribeNotificationConfigurationsAnswer =
                 ("NotificationConfigurations.member",
                   (NotificationConfigurations.to_query
                      v.notification_configurations)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -5209,6 +5428,7 @@ module DescribeNotificationConfigurationsAnswer =
              ("notification_configurations",
                (NotificationConfigurations.to_json
                   v.notification_configurations))])
+      
     let of_json j =
       {
         notification_configurations =
@@ -5217,16 +5437,16 @@ module DescribeNotificationConfigurationsAnswer =
                 (Json.lookup j "notification_configurations")));
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      }
+      } 
   end
 module TerminateInstanceInAutoScalingGroupType =
   struct
     type t =
       {
-      instance_id: String.t;
-      should_decrement_desired_capacity: Boolean.t;}
+      instance_id: String.t ;
+      should_decrement_desired_capacity: Boolean.t }
     let make ~instance_id  ~should_decrement_desired_capacity  () =
-      { instance_id; should_decrement_desired_capacity }
+      { instance_id; should_decrement_desired_capacity } 
     let parse xml =
       Some
         {
@@ -5239,6 +5459,7 @@ module TerminateInstanceInAutoScalingGroupType =
                   (Xml.member "ShouldDecrementDesiredCapacity" xml)
                   Boolean.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -5247,6 +5468,7 @@ module TerminateInstanceInAutoScalingGroupType =
                  ("ShouldDecrementDesiredCapacity",
                    (Boolean.to_query v.should_decrement_desired_capacity)));
            Some (Query.Pair ("InstanceId", (String.to_query v.instance_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -5254,6 +5476,7 @@ module TerminateInstanceInAutoScalingGroupType =
               ("should_decrement_desired_capacity",
                 (Boolean.to_json v.should_decrement_desired_capacity));
            Some ("instance_id", (String.to_json v.instance_id))])
+      
     let of_json j =
       {
         instance_id =
@@ -5262,13 +5485,13 @@ module TerminateInstanceInAutoScalingGroupType =
           (Boolean.of_json
              (Util.of_option_exn
                 (Json.lookup j "should_decrement_desired_capacity")))
-      }
+      } 
   end
 module CreateOrUpdateTagsType =
   struct
     type t = {
-      tags: Tags.t;}
-    let make ~tags  () = { tags }
+      tags: Tags.t }
+    let make ~tags  () = { tags } 
     let parse xml =
       Some
         {
@@ -5276,49 +5499,54 @@ module CreateOrUpdateTagsType =
             (Xml.required "Tags"
                (Util.option_bind (Xml.member "Tags" xml) Tags.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("Tags.member", (Tags.to_query v.tags)))])
+      
     let to_json v =
-      `Assoc (Util.list_filter_opt [Some ("tags", (Tags.to_json v.tags))])
+      `Assoc (Util.list_filter_opt [Some ("tags", (Tags.to_json v.tags))]) 
     let of_json j =
-      { tags = (Tags.of_json (Util.of_option_exn (Json.lookup j "tags"))) }
+      { tags = (Tags.of_json (Util.of_option_exn (Json.lookup j "tags"))) } 
   end
 module InvalidNextToken =
   struct
     type t = {
-      message: String.t option;}
-    let make ?message  () = { message }
+      message: String.t option }
+    let make ?message  () = { message } 
     let parse xml =
       Some
         {
           message =
             (Util.option_bind (Xml.member "message" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.message
               (fun f  -> Query.Pair ("message", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.message
               (fun f  -> ("message", (String.to_json f)))])
+      
     let of_json j =
       { message = (Util.option_map (Json.lookup j "message") String.of_json)
-      }
+      } 
   end
 module AutoScalingGroupNamesType =
   struct
     type t =
       {
-      auto_scaling_group_names: AutoScalingGroupNames.t;
-      next_token: String.t option;
-      max_records: Integer.t option;}
+      auto_scaling_group_names: AutoScalingGroupNames.t ;
+      next_token: String.t option ;
+      max_records: Integer.t option }
     let make ?(auto_scaling_group_names= [])  ?next_token  ?max_records  () =
-      { auto_scaling_group_names; next_token; max_records }
+      { auto_scaling_group_names; next_token; max_records } 
     let parse xml =
       Some
         {
@@ -5331,6 +5559,7 @@ module AutoScalingGroupNamesType =
           max_records =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -5342,6 +5571,7 @@ module AutoScalingGroupNamesType =
              (Query.Pair
                 ("AutoScalingGroupNames.member",
                   (AutoScalingGroupNames.to_query v.auto_scaling_group_names)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -5352,6 +5582,7 @@ module AutoScalingGroupNamesType =
            Some
              ("auto_scaling_group_names",
                (AutoScalingGroupNames.to_json v.auto_scaling_group_names))])
+      
     let of_json j =
       {
         auto_scaling_group_names =
@@ -5361,13 +5592,13 @@ module AutoScalingGroupNamesType =
           (Util.option_map (Json.lookup j "next_token") String.of_json);
         max_records =
           (Util.option_map (Json.lookup j "max_records") Integer.of_json)
-      }
+      } 
   end
 module LaunchConfigurationNameType =
   struct
     type t = {
-      launch_configuration_name: String.t;}
-    let make ~launch_configuration_name  () = { launch_configuration_name }
+      launch_configuration_name: String.t }
+    let make ~launch_configuration_name  () = { launch_configuration_name } 
     let parse xml =
       Some
         {
@@ -5376,6 +5607,7 @@ module LaunchConfigurationNameType =
                (Util.option_bind (Xml.member "LaunchConfigurationName" xml)
                   String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -5383,28 +5615,30 @@ module LaunchConfigurationNameType =
               (Query.Pair
                  ("LaunchConfigurationName",
                    (String.to_query v.launch_configuration_name)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("launch_configuration_name",
                 (String.to_json v.launch_configuration_name))])
+      
     let of_json j =
       {
         launch_configuration_name =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "launch_configuration_name")))
-      }
+      } 
   end
 module DescribeNotificationConfigurationsType =
   struct
     type t =
       {
-      auto_scaling_group_names: AutoScalingGroupNames.t;
-      next_token: String.t option;
-      max_records: Integer.t option;}
+      auto_scaling_group_names: AutoScalingGroupNames.t ;
+      next_token: String.t option ;
+      max_records: Integer.t option }
     let make ?(auto_scaling_group_names= [])  ?next_token  ?max_records  () =
-      { auto_scaling_group_names; next_token; max_records }
+      { auto_scaling_group_names; next_token; max_records } 
     let parse xml =
       Some
         {
@@ -5417,6 +5651,7 @@ module DescribeNotificationConfigurationsType =
           max_records =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -5428,6 +5663,7 @@ module DescribeNotificationConfigurationsType =
              (Query.Pair
                 ("AutoScalingGroupNames.member",
                   (AutoScalingGroupNames.to_query v.auto_scaling_group_names)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -5438,6 +5674,7 @@ module DescribeNotificationConfigurationsType =
            Some
              ("auto_scaling_group_names",
                (AutoScalingGroupNames.to_json v.auto_scaling_group_names))])
+      
     let of_json j =
       {
         auto_scaling_group_names =
@@ -5447,16 +5684,16 @@ module DescribeNotificationConfigurationsType =
           (Util.option_map (Json.lookup j "next_token") String.of_json);
         max_records =
           (Util.option_map (Json.lookup j "max_records") Integer.of_json)
-      }
+      } 
   end
 module LaunchConfigurationsType =
   struct
     type t =
       {
-      launch_configurations: LaunchConfigurations.t;
-      next_token: String.t option;}
+      launch_configurations: LaunchConfigurations.t ;
+      next_token: String.t option }
     let make ~launch_configurations  ?next_token  () =
-      { launch_configurations; next_token }
+      { launch_configurations; next_token } 
     let parse xml =
       Some
         {
@@ -5467,6 +5704,7 @@ module LaunchConfigurationsType =
           next_token =
             (Util.option_bind (Xml.member "NextToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -5476,6 +5714,7 @@ module LaunchConfigurationsType =
              (Query.Pair
                 ("LaunchConfigurations.member",
                   (LaunchConfigurations.to_query v.launch_configurations)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -5484,6 +5723,7 @@ module LaunchConfigurationsType =
            Some
              ("launch_configurations",
                (LaunchConfigurations.to_json v.launch_configurations))])
+      
     let of_json j =
       {
         launch_configurations =
@@ -5491,13 +5731,13 @@ module LaunchConfigurationsType =
              (Util.of_option_exn (Json.lookup j "launch_configurations")));
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      }
+      } 
   end
 module ExitStandbyAnswer =
   struct
     type t = {
-      activities: Activities.t;}
-    let make ?(activities= [])  () = { activities }
+      activities: Activities.t }
+    let make ?(activities= [])  () = { activities } 
     let parse xml =
       Some
         {
@@ -5506,31 +5746,34 @@ module ExitStandbyAnswer =
                (Util.option_bind (Xml.member "Activities" xml)
                   Activities.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some
               (Query.Pair
                  ("Activities.member", (Activities.to_query v.activities)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("activities", (Activities.to_json v.activities))])
+      
     let of_json j =
       {
         activities =
           (Activities.of_json
              (Util.of_option_exn (Json.lookup j "activities")))
-      }
+      } 
   end
 module ScheduledActionsType =
   struct
     type t =
       {
-      scheduled_update_group_actions: ScheduledUpdateGroupActions.t;
-      next_token: String.t option;}
+      scheduled_update_group_actions: ScheduledUpdateGroupActions.t ;
+      next_token: String.t option }
     let make ?(scheduled_update_group_actions= [])  ?next_token  () =
-      { scheduled_update_group_actions; next_token }
+      { scheduled_update_group_actions; next_token } 
     let parse xml =
       Some
         {
@@ -5542,6 +5785,7 @@ module ScheduledActionsType =
           next_token =
             (Util.option_bind (Xml.member "NextToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -5552,6 +5796,7 @@ module ScheduledActionsType =
                 ("ScheduledUpdateGroupActions.member",
                   (ScheduledUpdateGroupActions.to_query
                      v.scheduled_update_group_actions)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -5561,6 +5806,7 @@ module ScheduledActionsType =
              ("scheduled_update_group_actions",
                (ScheduledUpdateGroupActions.to_json
                   v.scheduled_update_group_actions))])
+      
     let of_json j =
       {
         scheduled_update_group_actions =
@@ -5569,15 +5815,15 @@ module ScheduledActionsType =
                 (Json.lookup j "scheduled_update_group_actions")));
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      }
+      } 
   end
 module DescribeAutoScalingNotificationTypesAnswer =
   struct
     type t =
       {
-      auto_scaling_notification_types: AutoScalingNotificationTypes.t;}
+      auto_scaling_notification_types: AutoScalingNotificationTypes.t }
     let make ?(auto_scaling_notification_types= [])  () =
-      { auto_scaling_notification_types }
+      { auto_scaling_notification_types } 
     let parse xml =
       Some
         {
@@ -5587,6 +5833,7 @@ module DescribeAutoScalingNotificationTypesAnswer =
                   (Xml.member "AutoScalingNotificationTypes" xml)
                   AutoScalingNotificationTypes.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -5595,6 +5842,7 @@ module DescribeAutoScalingNotificationTypesAnswer =
                  ("AutoScalingNotificationTypes.member",
                    (AutoScalingNotificationTypes.to_query
                       v.auto_scaling_notification_types)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -5602,22 +5850,23 @@ module DescribeAutoScalingNotificationTypesAnswer =
               ("auto_scaling_notification_types",
                 (AutoScalingNotificationTypes.to_json
                    v.auto_scaling_notification_types))])
+      
     let of_json j =
       {
         auto_scaling_notification_types =
           (AutoScalingNotificationTypes.of_json
              (Util.of_option_exn
                 (Json.lookup j "auto_scaling_notification_types")))
-      }
+      } 
   end
 module DescribeLoadBalancersResponse =
   struct
     type t =
       {
-      load_balancers: LoadBalancerStates.t;
-      next_token: String.t option;}
+      load_balancers: LoadBalancerStates.t ;
+      next_token: String.t option }
     let make ?(load_balancers= [])  ?next_token  () =
-      { load_balancers; next_token }
+      { load_balancers; next_token } 
     let parse xml =
       Some
         {
@@ -5628,6 +5877,7 @@ module DescribeLoadBalancersResponse =
           next_token =
             (Util.option_bind (Xml.member "NextToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -5637,6 +5887,7 @@ module DescribeLoadBalancersResponse =
              (Query.Pair
                 ("LoadBalancers.member",
                   (LoadBalancerStates.to_query v.load_balancers)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -5645,6 +5896,7 @@ module DescribeLoadBalancersResponse =
            Some
              ("load_balancers",
                (LoadBalancerStates.to_json v.load_balancers))])
+      
     let of_json j =
       {
         load_balancers =
@@ -5652,14 +5904,14 @@ module DescribeLoadBalancersResponse =
              (Util.of_option_exn (Json.lookup j "load_balancers")));
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      }
+      } 
   end
 module ActivitiesType =
   struct
     type t = {
-      activities: Activities.t;
-      next_token: String.t option;}
-    let make ~activities  ?next_token  () = { activities; next_token }
+      activities: Activities.t ;
+      next_token: String.t option }
+    let make ~activities  ?next_token  () = { activities; next_token } 
     let parse xml =
       Some
         {
@@ -5670,6 +5922,7 @@ module ActivitiesType =
           next_token =
             (Util.option_bind (Xml.member "NextToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -5678,12 +5931,14 @@ module ActivitiesType =
            Some
              (Query.Pair
                 ("Activities.member", (Activities.to_query v.activities)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.next_token
               (fun f  -> ("next_token", (String.to_json f)));
            Some ("activities", (Activities.to_json v.activities))])
+      
     let of_json j =
       {
         activities =
@@ -5691,41 +5946,44 @@ module ActivitiesType =
              (Util.of_option_exn (Json.lookup j "activities")));
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      }
+      } 
   end
 module ScalingActivityInProgressFault =
   struct
     type t = {
-      message: String.t option;}
-    let make ?message  () = { message }
+      message: String.t option }
+    let make ?message  () = { message } 
     let parse xml =
       Some
         {
           message =
             (Util.option_bind (Xml.member "message" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.message
               (fun f  -> Query.Pair ("message", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.message
               (fun f  -> ("message", (String.to_json f)))])
+      
     let of_json j =
       { message = (Util.option_map (Json.lookup j "message") String.of_json)
-      }
+      } 
   end
 module DeletePolicyType =
   struct
     type t =
       {
-      auto_scaling_group_name: String.t option;
-      policy_name: String.t;}
+      auto_scaling_group_name: String.t option ;
+      policy_name: String.t }
     let make ?auto_scaling_group_name  ~policy_name  () =
-      { auto_scaling_group_name; policy_name }
+      { auto_scaling_group_name; policy_name } 
     let parse xml =
       Some
         {
@@ -5736,6 +5994,7 @@ module DeletePolicyType =
             (Xml.required "PolicyName"
                (Util.option_bind (Xml.member "PolicyName" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -5743,12 +6002,14 @@ module DeletePolicyType =
            Util.option_map v.auto_scaling_group_name
              (fun f  ->
                 Query.Pair ("AutoScalingGroupName", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("policy_name", (String.to_json v.policy_name));
            Util.option_map v.auto_scaling_group_name
              (fun f  -> ("auto_scaling_group_name", (String.to_json f)))])
+      
     let of_json j =
       {
         auto_scaling_group_name =
@@ -5756,43 +6017,46 @@ module DeletePolicyType =
              String.of_json);
         policy_name =
           (String.of_json (Util.of_option_exn (Json.lookup j "policy_name")))
-      }
+      } 
   end
 module PolicyARNType =
   struct
     type t = {
-      policy_a_r_n: String.t option;}
-    let make ?policy_a_r_n  () = { policy_a_r_n }
+      policy_a_r_n: String.t option }
+    let make ?policy_a_r_n  () = { policy_a_r_n } 
     let parse xml =
       Some
         {
           policy_a_r_n =
             (Util.option_bind (Xml.member "PolicyARN" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.policy_a_r_n
               (fun f  -> Query.Pair ("PolicyARN", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.policy_a_r_n
               (fun f  -> ("policy_a_r_n", (String.to_json f)))])
+      
     let of_json j =
       {
         policy_a_r_n =
           (Util.option_map (Json.lookup j "policy_a_r_n") String.of_json)
-      }
+      } 
   end
 module DescribeMetricCollectionTypesAnswer =
   struct
     type t =
       {
-      metrics: MetricCollectionTypes.t;
-      granularities: MetricGranularityTypes.t;}
+      metrics: MetricCollectionTypes.t ;
+      granularities: MetricGranularityTypes.t }
     let make ?(metrics= [])  ?(granularities= [])  () =
-      { metrics; granularities }
+      { metrics; granularities } 
     let parse xml =
       Some
         {
@@ -5805,6 +6069,7 @@ module DescribeMetricCollectionTypesAnswer =
                (Util.option_bind (Xml.member "Granularities" xml)
                   MetricGranularityTypes.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -5816,6 +6081,7 @@ module DescribeMetricCollectionTypesAnswer =
              (Query.Pair
                 ("Metrics.member",
                   (MetricCollectionTypes.to_query v.metrics)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -5823,6 +6089,7 @@ module DescribeMetricCollectionTypesAnswer =
               ("granularities",
                 (MetricGranularityTypes.to_json v.granularities));
            Some ("metrics", (MetricCollectionTypes.to_json v.metrics))])
+      
     let of_json j =
       {
         metrics =
@@ -5831,13 +6098,13 @@ module DescribeMetricCollectionTypesAnswer =
         granularities =
           (MetricGranularityTypes.of_json
              (Util.of_option_exn (Json.lookup j "granularities")))
-      }
+      } 
   end
 module EnterStandbyAnswer =
   struct
     type t = {
-      activities: Activities.t;}
-    let make ?(activities= [])  () = { activities }
+      activities: Activities.t }
+    let make ?(activities= [])  () = { activities } 
     let parse xml =
       Some
         {
@@ -5846,31 +6113,34 @@ module EnterStandbyAnswer =
                (Util.option_bind (Xml.member "Activities" xml)
                   Activities.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some
               (Query.Pair
                  ("Activities.member", (Activities.to_query v.activities)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("activities", (Activities.to_json v.activities))])
+      
     let of_json j =
       {
         activities =
           (Activities.of_json
              (Util.of_option_exn (Json.lookup j "activities")))
-      }
+      } 
   end
 module DescribeLifecycleHooksType =
   struct
     type t =
       {
-      auto_scaling_group_name: String.t;
-      lifecycle_hook_names: LifecycleHookNames.t;}
+      auto_scaling_group_name: String.t ;
+      lifecycle_hook_names: LifecycleHookNames.t }
     let make ~auto_scaling_group_name  ?(lifecycle_hook_names= [])  () =
-      { auto_scaling_group_name; lifecycle_hook_names }
+      { auto_scaling_group_name; lifecycle_hook_names } 
     let parse xml =
       Some
         {
@@ -5883,6 +6153,7 @@ module DescribeLifecycleHooksType =
                (Util.option_bind (Xml.member "LifecycleHookNames" xml)
                   LifecycleHookNames.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -5894,6 +6165,7 @@ module DescribeLifecycleHooksType =
              (Query.Pair
                 ("AutoScalingGroupName",
                   (String.to_query v.auto_scaling_group_name)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -5903,6 +6175,7 @@ module DescribeLifecycleHooksType =
            Some
              ("auto_scaling_group_name",
                (String.to_json v.auto_scaling_group_name))])
+      
     let of_json j =
       {
         auto_scaling_group_name =
@@ -5911,15 +6184,15 @@ module DescribeLifecycleHooksType =
         lifecycle_hook_names =
           (LifecycleHookNames.of_json
              (Util.of_option_exn (Json.lookup j "lifecycle_hook_names")))
-      }
+      } 
   end
 module DisableMetricsCollectionQuery =
   struct
     type t = {
-      auto_scaling_group_name: String.t;
-      metrics: Metrics.t;}
+      auto_scaling_group_name: String.t ;
+      metrics: Metrics.t }
     let make ~auto_scaling_group_name  ?(metrics= [])  () =
-      { auto_scaling_group_name; metrics }
+      { auto_scaling_group_name; metrics } 
     let parse xml =
       Some
         {
@@ -5931,6 +6204,7 @@ module DisableMetricsCollectionQuery =
             (Util.of_option []
                (Util.option_bind (Xml.member "Metrics" xml) Metrics.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -5940,6 +6214,7 @@ module DisableMetricsCollectionQuery =
              (Query.Pair
                 ("AutoScalingGroupName",
                   (String.to_query v.auto_scaling_group_name)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -5947,6 +6222,7 @@ module DisableMetricsCollectionQuery =
            Some
              ("auto_scaling_group_name",
                (String.to_json v.auto_scaling_group_name))])
+      
     let of_json j =
       {
         auto_scaling_group_name =
@@ -5954,17 +6230,17 @@ module DisableMetricsCollectionQuery =
              (Util.of_option_exn (Json.lookup j "auto_scaling_group_name")));
         metrics =
           (Metrics.of_json (Util.of_option_exn (Json.lookup j "metrics")))
-      }
+      } 
   end
 module DescribeAutoScalingInstancesType =
   struct
     type t =
       {
-      instance_ids: InstanceIds.t;
-      max_records: Integer.t option;
-      next_token: String.t option;}
+      instance_ids: InstanceIds.t ;
+      max_records: Integer.t option ;
+      next_token: String.t option }
     let make ?(instance_ids= [])  ?max_records  ?next_token  () =
-      { instance_ids; max_records; next_token }
+      { instance_ids; max_records; next_token } 
     let parse xml =
       Some
         {
@@ -5977,6 +6253,7 @@ module DescribeAutoScalingInstancesType =
           next_token =
             (Util.option_bind (Xml.member "NextToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -5987,6 +6264,7 @@ module DescribeAutoScalingInstancesType =
            Some
              (Query.Pair
                 ("InstanceIds.member", (InstanceIds.to_query v.instance_ids)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -5995,6 +6273,7 @@ module DescribeAutoScalingInstancesType =
            Util.option_map v.max_records
              (fun f  -> ("max_records", (Integer.to_json f)));
            Some ("instance_ids", (InstanceIds.to_json v.instance_ids))])
+      
     let of_json j =
       {
         instance_ids =
@@ -6004,13 +6283,13 @@ module DescribeAutoScalingInstancesType =
           (Util.option_map (Json.lookup j "max_records") Integer.of_json);
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      }
+      } 
   end
 module ProcessesType =
   struct
     type t = {
-      processes: Processes.t;}
-    let make ?(processes= [])  () = { processes }
+      processes: Processes.t }
+    let make ?(processes= [])  () = { processes } 
     let parse xml =
       Some
         {
@@ -6018,30 +6297,33 @@ module ProcessesType =
             (Util.of_option []
                (Util.option_bind (Xml.member "Processes" xml) Processes.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some
               (Query.Pair
                  ("Processes.member", (Processes.to_query v.processes)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("processes", (Processes.to_json v.processes))])
+      
     let of_json j =
       {
         processes =
           (Processes.of_json (Util.of_option_exn (Json.lookup j "processes")))
-      }
+      } 
   end
 module CompleteLifecycleActionType =
   struct
     type t =
       {
-      lifecycle_hook_name: String.t;
-      auto_scaling_group_name: String.t;
-      lifecycle_action_token: String.t;
-      lifecycle_action_result: String.t;}
+      lifecycle_hook_name: String.t ;
+      auto_scaling_group_name: String.t ;
+      lifecycle_action_token: String.t ;
+      lifecycle_action_result: String.t }
     let make ~lifecycle_hook_name  ~auto_scaling_group_name 
       ~lifecycle_action_token  ~lifecycle_action_result  () =
       {
@@ -6049,7 +6331,7 @@ module CompleteLifecycleActionType =
         auto_scaling_group_name;
         lifecycle_action_token;
         lifecycle_action_result
-      }
+      } 
     let parse xml =
       Some
         {
@@ -6070,6 +6352,7 @@ module CompleteLifecycleActionType =
                (Util.option_bind (Xml.member "LifecycleActionResult" xml)
                   String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -6089,6 +6372,7 @@ module CompleteLifecycleActionType =
              (Query.Pair
                 ("LifecycleHookName",
                   (String.to_query v.lifecycle_hook_name)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -6103,6 +6387,7 @@ module CompleteLifecycleActionType =
                (String.to_json v.auto_scaling_group_name));
            Some
              ("lifecycle_hook_name", (String.to_json v.lifecycle_hook_name))])
+      
     let of_json j =
       {
         lifecycle_hook_name =
@@ -6117,22 +6402,22 @@ module CompleteLifecycleActionType =
         lifecycle_action_result =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "lifecycle_action_result")))
-      }
+      } 
   end
 module EnterStandbyQuery =
   struct
     type t =
       {
-      instance_ids: InstanceIds.t;
-      auto_scaling_group_name: String.t;
-      should_decrement_desired_capacity: Boolean.t;}
+      instance_ids: InstanceIds.t ;
+      auto_scaling_group_name: String.t ;
+      should_decrement_desired_capacity: Boolean.t }
     let make ?(instance_ids= [])  ~auto_scaling_group_name 
       ~should_decrement_desired_capacity  () =
       {
         instance_ids;
         auto_scaling_group_name;
         should_decrement_desired_capacity
-      }
+      } 
     let parse xml =
       Some
         {
@@ -6150,6 +6435,7 @@ module EnterStandbyQuery =
                   (Xml.member "ShouldDecrementDesiredCapacity" xml)
                   Boolean.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -6164,6 +6450,7 @@ module EnterStandbyQuery =
            Some
              (Query.Pair
                 ("InstanceIds.member", (InstanceIds.to_query v.instance_ids)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -6174,6 +6461,7 @@ module EnterStandbyQuery =
              ("auto_scaling_group_name",
                (String.to_json v.auto_scaling_group_name));
            Some ("instance_ids", (InstanceIds.to_json v.instance_ids))])
+      
     let of_json j =
       {
         instance_ids =
@@ -6186,18 +6474,18 @@ module EnterStandbyQuery =
           (Boolean.of_json
              (Util.of_option_exn
                 (Json.lookup j "should_decrement_desired_capacity")))
-      }
+      } 
   end
 module DescribeScheduledActionsType =
   struct
     type t =
       {
-      auto_scaling_group_name: String.t option;
-      scheduled_action_names: ScheduledActionNames.t;
-      start_time: DateTime.t option;
-      end_time: DateTime.t option;
-      next_token: String.t option;
-      max_records: Integer.t option;}
+      auto_scaling_group_name: String.t option ;
+      scheduled_action_names: ScheduledActionNames.t ;
+      start_time: DateTime.t option ;
+      end_time: DateTime.t option ;
+      next_token: String.t option ;
+      max_records: Integer.t option }
     let make ?auto_scaling_group_name  ?(scheduled_action_names= []) 
       ?start_time  ?end_time  ?next_token  ?max_records  () =
       {
@@ -6207,7 +6495,7 @@ module DescribeScheduledActionsType =
         end_time;
         next_token;
         max_records
-      }
+      } 
     let parse xml =
       Some
         {
@@ -6227,6 +6515,7 @@ module DescribeScheduledActionsType =
           max_records =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -6245,6 +6534,7 @@ module DescribeScheduledActionsType =
            Util.option_map v.auto_scaling_group_name
              (fun f  ->
                 Query.Pair ("AutoScalingGroupName", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -6261,6 +6551,7 @@ module DescribeScheduledActionsType =
                (ScheduledActionNames.to_json v.scheduled_action_names));
            Util.option_map v.auto_scaling_group_name
              (fun f  -> ("auto_scaling_group_name", (String.to_json f)))])
+      
     let of_json j =
       {
         auto_scaling_group_name =
@@ -6277,30 +6568,33 @@ module DescribeScheduledActionsType =
           (Util.option_map (Json.lookup j "next_token") String.of_json);
         max_records =
           (Util.option_map (Json.lookup j "max_records") Integer.of_json)
-      }
+      } 
   end
 module ResourceContentionFault =
   struct
     type t = {
-      message: String.t option;}
-    let make ?message  () = { message }
+      message: String.t option }
+    let make ?message  () = { message } 
     let parse xml =
       Some
         {
           message =
             (Util.option_bind (Xml.member "message" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.message
               (fun f  -> Query.Pair ("message", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.message
               (fun f  -> ("message", (String.to_json f)))])
+      
     let of_json j =
       { message = (Util.option_map (Json.lookup j "message") String.of_json)
-      }
+      } 
   end

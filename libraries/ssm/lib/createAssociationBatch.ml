@@ -3,7 +3,7 @@ open Aws
 type input = CreateAssociationBatchRequest.t
 type output = CreateAssociationBatchResult.t
 type error = Errors.t
-let service = "ssm"
+let service = "ssm" 
 let to_http req =
   let uri =
     Uri.add_query_params (Uri.of_string "https://ssm.amazonaws.com")
@@ -12,12 +12,13 @@ let to_http req =
          ("Action", ["CreateAssociationBatch"])]
          (Util.drop_empty
             (Uri.query_of_encoded
-               (Query.render (CreateAssociationBatchRequest.to_query req))))) in
-  (`POST, uri, [])
+               (Query.render (CreateAssociationBatchRequest.to_query req)))))
+     in
+  (`POST, uri, []) 
 let of_http body =
   try
-    let xml = Ezxmlm.from_string body in
-    let resp = Xml.member "CreateAssociationBatchResponse" (snd xml) in
+    let xml = Ezxmlm.from_string body  in
+    let resp = Xml.member "CreateAssociationBatchResponse" (snd xml)  in
     try
       Util.or_error
         (Util.option_bind resp CreateAssociationBatchResult.parse)
@@ -44,13 +45,14 @@ let of_http body =
       `Error
         (let open Error in
            BadResponse { body; message = ("Error parsing xml: " ^ msg) })
+  
 let parse_error code err =
   let errors =
     [Errors.AssociationLimitExceeded;
     Errors.DuplicateInstanceId;
     Errors.InvalidInstanceId;
     Errors.InvalidDocument;
-    Errors.InternalServerError] @ Errors.common in
+    Errors.InternalServerError] @ Errors.common  in
   match Errors.of_string err with
   | Some var ->
       if
@@ -60,4 +62,4 @@ let parse_error code err =
             | None  -> true))
       then Some var
       else None
-  | None  -> None
+  | None  -> None 

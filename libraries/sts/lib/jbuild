@@ -1,0 +1,8 @@
+(jbuild_version 1)
+
+(library
+ ((name        aws_sts)
+  (public_name aws_sts)
+  (synopsis "aws-AWS Security Token Service")
+  (flags (:standard -w -27))
+  (libraries (aws))))
