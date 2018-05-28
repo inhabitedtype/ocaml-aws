@@ -5,4 +5,4 @@
   (public_name aws_ec2_test)
   (package aws_ec2)
   (flags (:standard -w -27))
-  (libraries (aws aws_ec2 ounit yojson))))
+  (libraries (aws aws_ec2 oUnit yojson))))
