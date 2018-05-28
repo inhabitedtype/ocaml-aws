@@ -361,7 +361,7 @@ let errors errs common_errors =
   ; let_ "to_string"
       (fun_ "e"
          (matchvar (ident "e")
-            (List.map (fun e -> (e.Error.variant_name, str e.Error.string_name)) errs)))
+         (List.map (fun e -> (e.Error.variant_name, str e.Error.string_name)) errs)))
   ; let_ "of_string"
       (fun_ "e"
          (matchstrs (ident "e")

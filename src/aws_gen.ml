@@ -166,7 +166,7 @@ let main input override errors_path outdir is_ec2 =
       common @ specific
   in
   let errors =
-    List.sort_uniq Pervasives.compare (Util.filter_map shp_json ~f:(fun (nm, flds) ->
+    List.sort_uniq Structures.Error.compare (Util.filter_map shp_json ~f:(fun (nm, flds) ->
       match Json.member "exception" flds with
       | `Bool true -> Some(Reading.error nm flds)
       | `Null | `Bool false -> None
@@ -185,7 +185,6 @@ let main input override errors_path outdir is_ec2 =
   Printing.write_structure (lib_dir </> "types.ml") (Generate.types is_ec2 shapes);
   log "## Wrote %d/%d shape modules..."
     (StringTable.cardinal shapes) (List.length shp_json);
-  (* TODO Fix generation of error types such that duplicate constructors don't exist. *)
   Printing.write_structure (lib_dir </> "errors.ml") (Generate.errors errors common_errors);
   log "## Wrote %d error variants..." (List.length errors);
   List.iter (fun op ->
