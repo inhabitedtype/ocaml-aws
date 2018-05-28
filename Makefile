@@ -37,3 +37,9 @@ $(LIBRARIES): aws-%:
 	jbuilder exec aws_gen -- -i input/$*/latest/service-2.json -r input/$*/overrides.json -e input/errors.json -o libraries
 
 gen: all aws-ec2 $(LIBRARIES)
+
+compile-libraries:
+	for dir in libraries/*; \
+		do jbuilder build --root "$$dir/"; \
+	done;
+
