@@ -141,6 +141,8 @@ module Error : sig
     { shape_name : string
     ; string_name : string
     ; variant_name : string
-    ; http_code : int option
-    }
+    ; http_code : int option }
+
+  (** Ignores the legacy shape name to remove duplicates *)
+  val compare: t -> t -> int
 end

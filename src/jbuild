@@ -3,7 +3,6 @@
 (executable
  ((name        aws_gen)
   (public_name aws_gen)
-  (modules_without_implementation (structures))
   (package aws_gen)
   (preprocess (per_module
                ((action
