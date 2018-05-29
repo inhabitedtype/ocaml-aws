@@ -82,6 +82,9 @@ let types is_ec2 shapes =
     in
     let ty =
       match v.Shape.content with
+      | Shape.Structure [ ] ->
+        (* Hack for a unit type since empty records aren't yet valid *)
+        Syntax.tyunit "t"
       | Shape.Structure members ->
         mkrecty (List.map (fun m ->
             (m.Structure.field_name, m.Structure.shape ^ ".t", m.Structure.required || is_list ~shapes ~shp:m.Structure.shape))
@@ -92,9 +95,14 @@ let types is_ec2 shapes =
         Syntax.tyvariantlet "t" (List.map (fun t -> (Util.to_variant_name t, [])) opts)
     in
     let make = match v.Shape.content with
+      | Shape.Structure [ ] ->
+        let body =
+          Syntax.(fununit
+                   (unit ())) in
+        Syntax.let_ "make" body
       | Shape.Structure members ->
         let rec mkfun (args : Structure.member list) body = match args with
-          | [] -> body
+          | [ ] -> body
           | (x::xs) ->
             let fn = if x.Structure.required then Syntax.funlab else if is_list ~shapes ~shp:x.Structure.shape then Syntax.(funopt_def (list [])) else Syntax.funopt in
             fn x.Structure.field_name (mkfun xs body) in
@@ -115,6 +123,8 @@ let types is_ec2 shapes =
       | _ -> []
     in
     let parse = match v.Shape.content with
+      | Shape.Structure [ ] ->
+        Syntax.(let_ "parse" (fun_ "xml" (app1 "Some" (unit ()))))
       | Shape.Structure s ->
         let fields = List.map (fun (mem : Structure.member) ->
             let loc_name =
@@ -228,6 +238,9 @@ let types is_ec2 shapes =
         let_ "of_json"
           (fun_ "j"
              (match v.Shape.content with
+              | Shape.Structure [ ] ->
+                (* Hack for a unit type since empty records aren't yet valid *)
+                Syntax.unit ()
               | Shape.Structure s ->
                 record (List.map (fun mem ->
                     (mem.Structure.field_name,
@@ -271,8 +284,11 @@ let op service version _shapes op =
                   ])
             (app1 "Util.drop_empty"
                (app1 "Uri.query_of_encoded"
+                  (match op.Operation.input_shape with
+                  | None -> (ident {|""|})
+                  | Some input_shape ->
                   (app1 "Query.render"
-                     (app1 (op.Operation.input_shape ^ ".to_query") (ident "req")))))))
+                     (app1 (input_shape ^ ".to_query") (ident "req"))))))))
       (tuple [variant op.Operation.http_meth; ident "uri"; list []])
   in
   let of_body =
@@ -309,7 +325,7 @@ let op service version _shapes op =
                                                   )]))))
   in
   let op_error_parse =
-    letin "errors" (app2 "@" (list (List.map (fun name -> ident ("Errors." ^ name))
+    letin "errors" (app2 "@" (list (List.map (fun name -> ident ("Errors." ^ (Util.to_variant_name name)))
                                       op.Operation.errors))
                       (ident "Errors.common"))
       (matchoption (app1 "Errors.of_string" (ident "err"))
@@ -323,7 +339,7 @@ let op service version _shapes op =
          (ident "None"))
   in
   ([ sopen_ "Types"
-   ; stylet "input" (mkty (Some op.Operation.input_shape))
+   ; stylet "input" (mkty op.Operation.input_shape)
    ; stylet "output" (mkty op.Operation.output_shape)
    ; stylet "error" (ty0 "Errors.t")
    ; sinclude_ "Aws.Call" [withty "input" "input"
@@ -332,7 +348,7 @@ let op service version _shapes op =
    ],
    [ open_ "Types"
    ; open_ "Aws"
-   ; tylet "input" (mkty (Some op.Operation.input_shape))
+   ; tylet "input" (mkty op.Operation.input_shape)
    ; tylet "output" (mkty op.Operation.output_shape)
    ; tylet "error" (ty0 "Errors.t")
    ; let_ "service" (str service)

@@ -129,13 +129,6 @@ let inline_shapes (ops : Operation.t list) (shapes : Shape.parsed StringTable.t)
        tell from the examples, it is the same as DateTime. *)
     ;("timestamp","DateTime")
     ;("blob","Blob")] in
-  let is_empty_struct shp =
-    try
-      match StringTable.find shp shapes with
-      | (_, _, Some (Shape.Structure [])) -> true
-      | _                                 -> false
-    with Not_found -> false
-  in
   let replace_shape default =
     try
       let _, shptyp, _ = StringTable.find default shapes in
@@ -144,7 +137,7 @@ let inline_shapes (ops : Operation.t list) (shapes : Shape.parsed StringTable.t)
   in
   let new_shapes =
     StringTable.fold (fun key (nm, ty, contents) acc ->
-      if List.mem_assoc ty type_map || is_empty_struct nm then
+      if List.mem_assoc ty type_map then
         acc
       else
         let content =
@@ -161,14 +154,27 @@ let inline_shapes (ops : Operation.t list) (shapes : Shape.parsed StringTable.t)
         StringTable.add key { Shape.name = nm; content } acc)
     shapes StringTable.empty
   in
+  let is_empty_struct shp =
+    try
+      match StringTable.find shp shapes with
+      | (_, _, Some (Shape.Structure [])) -> true
+      | _                                 -> false
+    with Not_found -> false
+  in
   let new_ops =
     List.map (fun op ->
-      match op.Operation.output_shape with
-      | None -> op
-      | Some shp -> if is_empty_struct shp
-        then { op with Operation.output_shape = None }
-        else op)
-    ops
+        let input_shape =
+          match op.Operation.input_shape with
+          | Some shp when is_empty_struct shp -> None
+          | shp -> shp
+        and output_shape =
+          match op.Operation.output_shape with
+          | Some shp when is_empty_struct shp -> None
+          | shp -> shp
+        in
+        { op with Operation.input_shape ; output_shape }
+      )
+      ops
   in
   new_shapes, new_ops
 
