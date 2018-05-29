@@ -274,21 +274,24 @@ let op service version _shapes op =
     | None -> ty0 "unit"
     | Some shp -> ty0 (shp ^ ".t")
   in
+  let defaults =
+    (list [ pair (str "Action") (list [str op.Operation.name])
+          ; pair (str "Version") (list [str version])
+          ])
+  in
   let to_body =
     letin "uri"
       (app2 "Uri.add_query_params"
          (app1 "Uri.of_string" (str ("https://" ^ service ^ ".amazonaws.com")))
-         (app2 "List.append"
-            (list [ pair (str "Action") (list [str op.Operation.name])
-                  ; pair (str "Version") (list [str version])
-                  ])
-            (app1 "Util.drop_empty"
-               (app1 "Uri.query_of_encoded"
-                  (match op.Operation.input_shape with
-                  | None -> (ident {|""|})
-                  | Some input_shape ->
-                  (app1 "Query.render"
-                     (app1 (input_shape ^ ".to_query") (ident "req"))))))))
+         (match op.Operation.input_shape with
+          | None -> defaults
+          | Some input_shape ->
+            (app2 "List.append"
+               defaults
+               (app1 "Util.drop_empty"
+                  (app1 "Uri.query_of_encoded"
+                     (app1 "Query.render"
+                        (app1 (input_shape ^ ".to_query") (ident "req"))))))))
       (tuple [variant op.Operation.http_meth; ident "uri"; list []])
   in
   let of_body =
