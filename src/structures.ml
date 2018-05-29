@@ -27,7 +27,7 @@ module Operation = struct
     { name : string
     ; http_meth : string
     ; http_uri : string
-    ; input_shape : string
+    ; input_shape : string option
     ; output_shape : string option
     ; output_wrapper : string option
     ; errors : string list

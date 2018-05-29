@@ -63,6 +63,10 @@ let ty1 nm1 nm2 = Typ.constr (lid nm1) [ty0 nm2]
 let tyreclet nm fs =
   Str.type_ Recursive [Type.mk ~kind:(Ptype_record (List.map (fun (nm, ty) -> Type.field (strloc nm) ty) fs)) (strloc nm)]
 
+(* type nm = unit *)
+let tyunit nm =
+  Str.type_ Recursive [ Type.mk ~manifest:(ty0 "unit") (strloc nm) ]
+
 (* type nm = ty (in .ml) *)
 let tylet nm ty =
   Str.type_ Recursive [Type.mk ~manifest:ty (strloc nm)]
@@ -137,6 +141,7 @@ let int n = Exp.constant (Pconst_integer (string_of_int n, None))
 (* (a, b) *)
 let pair a b = Exp.tuple [a; b]
 let tuple = Exp.tuple
+let unit () = Exp.tuple []
 
 (* [x; ..] (the list of expressions) *)
 let list xs = List.fold_left (fun rest x -> Exp.construct (lid "::") (Some (pair x rest))) (Exp.construct (lid "[]") None) xs

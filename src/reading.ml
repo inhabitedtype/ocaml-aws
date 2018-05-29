@@ -98,8 +98,8 @@ let op (_nm, j) : Operation.t =
      * future.
      *)
     match Json.member "input" j with
-    | `Null -> "Aws.BaseTypes.Unit"
-    | input -> Json.(member_exn "shape" input |> to_string)
+    | `Null -> Some "Aws.BaseTypes.Unit"
+    | input -> Some Json.(member_exn "shape" input |> to_string)
   in
   let output_shape =
     try Some Json.(member "output" j |> member_exn "shape" |> to_string) with _ -> None

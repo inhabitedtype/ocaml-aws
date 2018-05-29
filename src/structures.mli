@@ -115,7 +115,7 @@ module Operation : sig
     { name : string
     ; http_meth : string
     ; http_uri : string
-    ; input_shape : string
+    ; input_shape : string option
     ; output_shape : string option
     ; output_wrapper : string option
     ; errors : string list
@@ -141,7 +141,8 @@ module Error : sig
     { shape_name : string
     ; string_name : string
     ; variant_name : string
-    ; http_code : int option }
+    ; http_code : int option
+    }
 
   (** Ignores the legacy shape name to remove duplicates *)
   val compare: t -> t -> int
