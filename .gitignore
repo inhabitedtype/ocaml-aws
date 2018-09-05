@@ -15,3 +15,4 @@ libraries/**/.merlin
 libraries/**/*.install
 lib/**/.merlin
 .envrc
+**/.merlin

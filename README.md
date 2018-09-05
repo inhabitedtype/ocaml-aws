@@ -29,16 +29,19 @@ opam update aws
 To generate service libaries during development and in preparation for release,
 first configure the build to enable code generation and run the `gen` target of
 the Makefile. Note that the code generation tool has its own set of
-dependencies that must be installed in order for the build to succeed. See the
-`_oasis` file for details. In addition, the Makefile is written for GNU make.
+dependencies that must be installed in order for the build to succeed.
+In addition, the Makefile is written for GNU make.
 Some platforms such as OS X and FreeBSD do not have a GNU-compatible make
 installed by default. If you get strage error messages at this stage of the
 build, check your make. The following commands will configure the build for
 code generation and regenrate the libraries from the current definitions:
 
 ```bash
-./configure --enable-gen
+# Compile code generator
 make gen
+
+# Compile generated libraries
+make compile-libraries
 ```
 
 ## Example

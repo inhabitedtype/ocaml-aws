@@ -1,24 +1,24 @@
 .PHONY: all build clean test
 
 build:
-	jbuilder build --dev @install
+	dune build --dev @install
 
 all: build
 
 test:
-	jbuilder runtest --dev
+	dune runtest --dev
 
 install:
-	jbuilder install --dev
+	dune install --dev
 
 uninstall:
-	jbuilder uninstall
+	dune uninstall
 
 clean:
 	rm -rf _build *.install
 
 aws-ec2:
-	jbuilder exec aws_gen -- --is-ec2 -i input/ec2/latest/service-2.json -r input/ec2/overrides.json -e input/errors.json -o libraries
+	dune exec aws_gen -- --is-ec2 -i input/ec2/latest/service-2.json -r input/ec2/overrides.json -e input/errors.json -o libraries
 
 # NOTE: This does not include aws-ec2, which is special-cased.
 LIBRARIES := \
@@ -34,12 +34,11 @@ LIBRARIES := \
 
 .PHONY: $(LIBRARIES)
 $(LIBRARIES): aws-%:
-	jbuilder exec aws_gen -- -i input/$*/latest/service-2.json -r input/$*/overrides.json -e input/errors.json -o libraries
+	dune exec aws_gen -- -i input/$*/latest/service-2.json -r input/$*/overrides.json -e input/errors.json -o libraries
 
 gen: all aws-ec2 $(LIBRARIES)
 
 compile-libraries:
 	for dir in libraries/*; \
-		do jbuilder build --root "$$dir/"; \
+		do dune build --root "$$dir/"; \
 	done;
-
