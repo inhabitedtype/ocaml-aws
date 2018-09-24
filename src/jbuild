@@ -1,9 +1,0 @@
-(jbuild_version 1)
-
-(executable
-  (public_name aws_gen)
-  (package aws_gen)
-  (preprocess (per_module
-               ((action
-                 (run ocamlfind ppx_tools/rewriter -ppx ~/.opam/4.03.0-aws/lib/ppx_tools/ppx_metaquot ${<})) (generate))))
-  (libraries (yojson cmdliner ppx_tools ppx_tools.metaquot ocaml-migrate-parsetree ocamlgraph unix))))

@@ -202,9 +202,9 @@ let main input override errors_path outdir is_ec2 =
    *     really_input_string in_ (in_channel_length in_)
    *   with Sys_error _ -> ""
    * in *)
-  Printing.write_all ~filename:(lib_dir </> "jbuild")
-    (Templates.jbuild ~lib_name ~service_name);
-  log "## Wrote jbuild file.";
+  Printing.write_all ~filename:(lib_dir </> "dune")
+    (Templates.dune ~lib_name ~service_name);
+  log "## Wrote dune file.";
 
 module CommandLine = struct
   let input =

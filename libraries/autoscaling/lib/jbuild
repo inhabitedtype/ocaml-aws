@@ -1,8 +1,0 @@
-(jbuild_version 1)
-
-(library
- ((name        aws_autoscaling)
-  (public_name aws_autoscaling)
-  (synopsis "aws-Auto Scaling")
-  (flags (:standard -w -27))
-  (libraries (aws))))

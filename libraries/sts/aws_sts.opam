@@ -1,6 +1,8 @@
 opam-version: "1.2"
 maintainer: "Spiros Eliopoulos <spiros@inhabitedtype.com>"
-authors: [ "Spiros Eliopoulos <spiros@inhabitedtype.com>" "Daniel Patterson <dbp@dbpmail.net>" ]
+authors: [ "Spiros Eliopoulos <spiros@inhabitedtype.com>"
+           "Daniel Patterson <dbp@dbpmail.net>" ]
+version: "1.0.3"
 license: "BSD-3-clause"
 homepage: "https://github.com/inhabitedtype/ocaml-aws"
 dev-repo: "https://github.com/inhabitedtype/ocaml-aws.git"
@@ -9,32 +11,12 @@ build: [
   ["dune" "subst"] {pinned}
   ["dune" "build" "-p" name "-j" jobs]
 ]
-  build-test: [
+build-test: [
   ["dune" "runtest" "-p" name]
 ]
-depends: [
-  "calendar"
-  "ezxmlm"
-  "nocrypto"
-  "jbuilder" {build}
-  "uri" {>= "1.3.0"}
-]
-depopts: [
-  "async"
-  "async_ssl"
-  "base-threads"
-  "base-unix"
-  "cohttp"
-  "lwt"
-  "ssl"
-  "cmdliner"
-  "ppx_tools"
-  "ppx-tools-versioned"
-  "ocaml-migrate-parsetree"
-]
-build-doc: [ "ocaml" "setup.ml" "-doc" ]
+build-doc: [ "dune" "build" "@doc" ]
 depends: [
   "aws" {>= "0.1.0"}
-  "ocamlfind" {build}
+  "dune" {build}
 ]
 available: [ ocaml-version >= "4.03" ]

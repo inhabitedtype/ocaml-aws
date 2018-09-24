@@ -1,7 +1,0 @@
-(jbuild_version 1)
-
-(library
- ((name        aws_async)
-  (public_name aws-async)
-  (wrapped true)
-  (libraries (async aws cohttp cohttp-async))))

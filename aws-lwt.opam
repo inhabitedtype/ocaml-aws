@@ -1,4 +1,4 @@
-opam-version: "1.3"
+opam-version: "1.2"
 maintainer: "Spiros Eliopoulos <spiros@inhabitedtype.com>"
 authors: [ "Spiros Eliopoulos <spiros@inhabitedtype.com>"
            "Daniel Patterson <dbp@dbpmail.net>" ]
@@ -14,8 +14,13 @@ build: [
 build-test: [
   ["dune" "runtest" "-p" name]
 ]
+build-doc: [ "dune" "build" "@doc" ]
 depends: [
   "aws"
   "lwt"
   "cohttp"
+  "cohttp-lwt"
+  "cohttp-lwt-unix"
+  "dune" {build}
 ]
+available: [ ocaml-version >= "4.03" ]
