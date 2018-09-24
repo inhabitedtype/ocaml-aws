@@ -1,8 +1,0 @@
-(jbuild_version 1)
-
-(library
- ((name        aws_ssm)
-  (public_name aws_ssm)
-  (synopsis "aws-Amazon Simple Systems Management Service")
-  (flags (:standard -w -27))
-  (libraries (aws))))

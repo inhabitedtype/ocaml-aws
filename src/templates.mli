@@ -39,7 +39,7 @@ val oasis
   -> modules:string list
   -> string
 
-val jbuild
+val dune
   :  lib_name:string
   -> service_name:string
   -> string

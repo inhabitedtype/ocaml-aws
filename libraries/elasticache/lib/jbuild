@@ -1,8 +1,0 @@
-(jbuild_version 1)
-
-(library
- ((name        aws_elasticache)
-  (public_name aws_elasticache)
-  (synopsis "aws-Amazon ElastiCache")
-  (flags (:standard -w -27))
-  (libraries (aws))))
