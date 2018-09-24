@@ -3,7 +3,7 @@ open Aws
 type input = CreateDBSecurityGroupMessage.t
 type output = CreateDBSecurityGroupResult.t
 type error = Errors.t
-let service = "rds"
+let service = "rds" 
 let to_http req =
   let uri =
     Uri.add_query_params (Uri.of_string "https://rds.amazonaws.com")
@@ -13,7 +13,7 @@ let to_http req =
             (Uri.query_of_encoded
                (Query.render (CreateDBSecurityGroupMessage.to_query req)))))
      in
-  (`POST, uri, [])
+  (`POST, uri, []) 
 let of_http body =
   try
     let xml = Ezxmlm.from_string body  in
@@ -46,7 +46,7 @@ let of_http body =
       `Error
         (let open Error in
            BadResponse { body; message = ("Error parsing xml: " ^ msg) })
-
+  
 let parse_error code err =
   let errors =
     [Errors.DBSecurityGroupNotSupported;
@@ -61,4 +61,4 @@ let parse_error code err =
             | None  -> true))
       then Some var
       else None
-  | None  -> None
+  | None  -> None 

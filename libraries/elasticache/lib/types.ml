@@ -3427,6 +3427,24 @@ module ModifyCacheSubnetGroupResult =
              CacheSubnetGroup.of_json)
       } 
   end
+module CacheParameterGroupAlreadyExistsFault =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module SnapshotNotFoundFault =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
 module DescribeReplicationGroupsMessage =
   struct
     type t =
@@ -3478,6 +3496,15 @@ module DescribeReplicationGroupsMessage =
         marker = (Util.option_map (Json.lookup j "marker") String.of_json)
       } 
   end
+module ReservedCacheNodesOfferingNotFoundFault =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
 module DeleteCacheClusterResult =
   struct
     type t = {
@@ -3510,6 +3537,24 @@ module DeleteCacheClusterResult =
           (Util.option_map (Json.lookup j "cache_cluster")
              CacheCluster.of_json)
       } 
+  end
+module AuthorizationNotFoundFault =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module ReservedCacheNodeAlreadyExistsFault =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
   end
 module CacheSubnetGroupMessage =
   struct
@@ -3555,6 +3600,15 @@ module CacheSubnetGroupMessage =
           (CacheSubnetGroups.of_json
              (Util.of_option_exn (Json.lookup j "cache_subnet_groups")))
       } 
+  end
+module CacheSecurityGroupNotFoundFault =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
   end
 module DeleteCacheParameterGroupMessage =
   struct
@@ -3665,6 +3719,15 @@ module AuthorizeCacheSecurityGroupIngressMessage =
              (Util.of_option_exn
                 (Json.lookup j "e_c2_security_group_owner_id")))
       } 
+  end
+module NodeQuotaForCustomerExceededFault =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
   end
 module DescribeReservedCacheNodesOfferingsMessage =
   struct
@@ -3797,6 +3860,15 @@ module TagListMessage =
           (TagList.of_json (Util.of_option_exn (Json.lookup j "tag_list")))
       } 
   end
+module CacheSecurityGroupQuotaExceededFault =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
 module PurchaseReservedCacheNodesOfferingMessage =
   struct
     type t =
@@ -3862,6 +3934,15 @@ module PurchaseReservedCacheNodesOfferingMessage =
         cache_node_count =
           (Util.option_map (Json.lookup j "cache_node_count") Integer.of_json)
       } 
+  end
+module AuthorizationAlreadyExistsFault =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
   end
 module DeleteReplicationGroupMessage =
   struct
@@ -3929,6 +4010,24 @@ module DeleteReplicationGroupMessage =
           (Util.option_map (Json.lookup j "final_snapshot_identifier")
              String.of_json)
       } 
+  end
+module ClusterQuotaForCustomerExceededFault =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module TagNotFoundFault =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
   end
 module CopySnapshotResult =
   struct
@@ -4011,6 +4110,15 @@ module DescribeCacheSecurityGroupsMessage =
         marker = (Util.option_map (Json.lookup j "marker") String.of_json)
       } 
   end
+module CacheSubnetGroupNotFoundFault =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
 module ResetCacheParameterGroupMessage =
   struct
     type t =
@@ -4080,6 +4188,15 @@ module ResetCacheParameterGroupMessage =
           (ParameterNameValueList.of_json
              (Util.of_option_exn (Json.lookup j "parameter_name_values")))
       } 
+  end
+module CacheSecurityGroupAlreadyExistsFault =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
   end
 module RevokeCacheSecurityGroupIngressResult =
   struct
@@ -4276,6 +4393,15 @@ module ModifyCacheSubnetGroupMessage =
              (Util.of_option_exn (Json.lookup j "subnet_ids")))
       } 
   end
+module ReservedCacheNodeNotFoundFault =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
 module RevokeCacheSecurityGroupIngressMessage =
   struct
     type t =
@@ -4349,6 +4475,24 @@ module RevokeCacheSecurityGroupIngressMessage =
              (Util.of_option_exn
                 (Json.lookup j "e_c2_security_group_owner_id")))
       } 
+  end
+module InvalidReplicationGroupStateFault =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module SnapshotAlreadyExistsFault =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
   end
 module CreateReplicationGroupMessage =
   struct
@@ -4660,6 +4804,24 @@ module CreateReplicationGroupMessage =
           (Util.option_map (Json.lookup j "snapshot_window") String.of_json)
       } 
   end
+module InvalidCacheClusterStateFault =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module ReplicationGroupNotFoundFault =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
 module CacheClusterMessage =
   struct
     type t = {
@@ -4701,6 +4863,24 @@ module CacheClusterMessage =
           (CacheClusterList.of_json
              (Util.of_option_exn (Json.lookup j "cache_clusters")))
       } 
+  end
+module CacheParameterGroupQuotaExceededFault =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module CacheSubnetGroupAlreadyExistsFault =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
   end
 module CreateCacheSubnetGroupMessage =
   struct
@@ -4883,6 +5063,15 @@ module InvalidParameterValueException =
       { message = (Util.option_map (Json.lookup j "message") String.of_json)
       } 
   end
+module TagQuotaPerResourceExceeded =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
 module DeleteSnapshotResult =
   struct
     type t = {
@@ -4912,6 +5101,42 @@ module DeleteSnapshotResult =
         snapshot =
           (Util.option_map (Json.lookup j "snapshot") Snapshot.of_json)
       } 
+  end
+module ReservedCacheNodeQuotaExceededFault =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module InsufficientCacheClusterCapacityFault =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module SnapshotQuotaExceededFault =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module InvalidSubnet =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
   end
 module CreateCacheParameterGroupResult =
   struct
@@ -5032,6 +5257,15 @@ module AddTagsToResourceMessage =
         tags = (TagList.of_json (Util.of_option_exn (Json.lookup j "tags")))
       } 
   end
+module CacheSubnetQuotaExceededFault =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
 module DescribeReservedCacheNodesMessage =
   struct
     type t =
@@ -5147,6 +5381,24 @@ module DescribeReservedCacheNodesMessage =
         marker = (Util.option_map (Json.lookup j "marker") String.of_json)
       } 
   end
+module SubnetInUse =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module InvalidVPCNetworkStateFault =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
 module CreateCacheClusterResult =
   struct
     type t = {
@@ -5243,6 +5495,33 @@ module InvalidParameterCombinationException =
       { message = (Util.option_map (Json.lookup j "message") String.of_json)
       } 
   end
+module CacheClusterNotFoundFault =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module SnapshotFeatureNotSupportedFault =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module CacheParameterGroupNotFoundFault =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
 module CreateSnapshotMessage =
   struct
     type t = {
@@ -5286,6 +5565,24 @@ module CreateSnapshotMessage =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "snapshot_name")))
       } 
+  end
+module InvalidARNFault =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module InvalidCacheParameterGroupStateFault =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
   end
 module DescribeSnapshotsMessage =
   struct
@@ -5561,6 +5858,15 @@ module CreateSnapshotResult =
         snapshot =
           (Util.option_map (Json.lookup j "snapshot") Snapshot.of_json)
       } 
+  end
+module ReplicationGroupAlreadyExistsFault =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
   end
 module CreateCacheClusterMessage =
   struct
@@ -5863,6 +6169,15 @@ module CreateCacheClusterMessage =
           (Util.option_map (Json.lookup j "snapshot_window") String.of_json)
       } 
   end
+module NodeQuotaForClusterExceededFault =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
 module DescribeCacheEngineVersionsMessage =
   struct
     type t =
@@ -5979,6 +6294,15 @@ module ModifyCacheClusterResult =
           (Util.option_map (Json.lookup j "cache_cluster")
              CacheCluster.of_json)
       } 
+  end
+module CacheSubnetGroupInUse =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
   end
 module RemoveTagsFromResourceMessage =
   struct
@@ -6188,6 +6512,24 @@ module CacheParameterGroupDetails =
              (Util.of_option_exn
                 (Json.lookup j "cache_node_type_specific_parameters")))
       } 
+  end
+module CacheSubnetGroupQuotaExceededFault =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module CacheClusterAlreadyExistsFault =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
   end
 module ModifyReplicationGroupMessage =
   struct
@@ -6498,6 +6840,15 @@ module CreateCacheParameterGroupMessage =
           (String.of_json (Util.of_option_exn (Json.lookup j "description")))
       } 
   end
+module InvalidCacheSecurityGroupStateFault =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
 module CacheEngineVersionMessage =
   struct
     type t =
@@ -6656,6 +7007,15 @@ module CacheSecurityGroupMessage =
           (CacheSecurityGroups.of_json
              (Util.of_option_exn (Json.lookup j "cache_security_groups")))
       } 
+  end
+module InvalidSnapshotStateFault =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
   end
 module ListTagsForResourceMessage =
   struct

@@ -3,7 +3,7 @@ open Aws
 type input = CreateCacheSecurityGroupMessage.t
 type output = CreateCacheSecurityGroupResult.t
 type error = Errors.t
-let service = "elasticache"
+let service = "elasticache" 
 let to_http req =
   let uri =
     Uri.add_query_params (Uri.of_string "https://elasticache.amazonaws.com")
@@ -14,7 +14,7 @@ let to_http req =
             (Uri.query_of_encoded
                (Query.render (CreateCacheSecurityGroupMessage.to_query req)))))
      in
-  (`POST, uri, [])
+  (`POST, uri, []) 
 let of_http body =
   try
     let xml = Ezxmlm.from_string body  in
@@ -49,7 +49,7 @@ let of_http body =
       `Error
         (let open Error in
            BadResponse { body; message = ("Error parsing xml: " ^ msg) })
-
+  
 let parse_error code err =
   let errors =
     [Errors.InvalidParameterCombination;
@@ -65,4 +65,4 @@ let parse_error code err =
             | None  -> true))
       then Some var
       else None
-  | None  -> None
+  | None  -> None 

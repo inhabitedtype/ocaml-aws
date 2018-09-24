@@ -20,7 +20,6 @@ type t =
   | DBSecurityGroupAlreadyExists 
   | DBSecurityGroupNotFound 
   | DBSecurityGroupNotSupported 
-  | QuotaExceeded_DBSecurityGroup 
   | DBSnapshotAlreadyExists 
   | DBSnapshotNotFound 
   | DBSubnetGroupAlreadyExists 
@@ -73,6 +72,7 @@ type t =
   | PendingVerification 
   | PointInTimeRestoreNotEnabled 
   | ProvisionedIopsNotAvailableInAZFault 
+  | QuotaExceeded_DBSecurityGroup 
   | RequestExpired 
   | RequestLimitExceeded 
   | ReservedDBInstanceAlreadyExists 
@@ -148,7 +148,6 @@ let to_http_code e =
   | DBSecurityGroupAlreadyExists  -> Some 400
   | DBSecurityGroupNotFound  -> Some 404
   | DBSecurityGroupNotSupported  -> Some 400
-  | QuotaExceeded_DBSecurityGroup  -> Some 400
   | DBSnapshotAlreadyExists  -> Some 400
   | DBSnapshotNotFound  -> Some 404
   | DBSubnetGroupAlreadyExists  -> Some 400
@@ -201,6 +200,7 @@ let to_http_code e =
   | PendingVerification  -> None
   | PointInTimeRestoreNotEnabled  -> Some 400
   | ProvisionedIopsNotAvailableInAZFault  -> Some 400
+  | QuotaExceeded_DBSecurityGroup  -> Some 400
   | RequestExpired  -> Some 400
   | RequestLimitExceeded  -> None
   | ReservedDBInstanceAlreadyExists  -> Some 404
@@ -250,7 +250,6 @@ let to_string e =
   | DBSecurityGroupAlreadyExists  -> "DBSecurityGroupAlreadyExists"
   | DBSecurityGroupNotFound  -> "DBSecurityGroupNotFound"
   | DBSecurityGroupNotSupported  -> "DBSecurityGroupNotSupported"
-  | QuotaExceeded_DBSecurityGroup  -> "QuotaExceeded.DBSecurityGroup"
   | DBSnapshotAlreadyExists  -> "DBSnapshotAlreadyExists"
   | DBSnapshotNotFound  -> "DBSnapshotNotFound"
   | DBSubnetGroupAlreadyExists  -> "DBSubnetGroupAlreadyExists"
@@ -308,6 +307,7 @@ let to_string e =
   | PointInTimeRestoreNotEnabled  -> "PointInTimeRestoreNotEnabled"
   | ProvisionedIopsNotAvailableInAZFault  ->
       "ProvisionedIopsNotAvailableInAZFault"
+  | QuotaExceeded_DBSecurityGroup  -> "QuotaExceeded.DBSecurityGroup"
   | RequestExpired  -> "RequestExpired"
   | RequestLimitExceeded  -> "RequestLimitExceeded"
   | ReservedDBInstanceAlreadyExists  -> "ReservedDBInstanceAlreadyExists"
@@ -358,7 +358,6 @@ let of_string e =
   | "DBSecurityGroupAlreadyExists" -> Some DBSecurityGroupAlreadyExists
   | "DBSecurityGroupNotFound" -> Some DBSecurityGroupNotFound
   | "DBSecurityGroupNotSupported" -> Some DBSecurityGroupNotSupported
-  | "QuotaExceeded.DBSecurityGroup" -> Some QuotaExceeded_DBSecurityGroup
   | "DBSnapshotAlreadyExists" -> Some DBSnapshotAlreadyExists
   | "DBSnapshotNotFound" -> Some DBSnapshotNotFound
   | "DBSubnetGroupAlreadyExists" -> Some DBSubnetGroupAlreadyExists
@@ -416,6 +415,7 @@ let of_string e =
   | "PointInTimeRestoreNotEnabled" -> Some PointInTimeRestoreNotEnabled
   | "ProvisionedIopsNotAvailableInAZFault" ->
       Some ProvisionedIopsNotAvailableInAZFault
+  | "QuotaExceeded.DBSecurityGroup" -> Some QuotaExceeded_DBSecurityGroup
   | "RequestExpired" -> Some RequestExpired
   | "RequestLimitExceeded" -> Some RequestLimitExceeded
   | "ReservedDBInstanceAlreadyExists" -> Some ReservedDBInstanceAlreadyExists

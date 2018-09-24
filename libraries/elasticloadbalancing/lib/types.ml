@@ -1815,6 +1815,15 @@ module ModifyLoadBalancerAttributesOutput =
              LoadBalancerAttributes.of_json)
       } 
   end
+module SetLoadBalancerPoliciesForBackendServerOutput =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
 module AddTagsInput =
   struct
     type t = {
@@ -1974,6 +1983,15 @@ module CreateLoadBalancerPolicyInput =
              (Util.of_option_exn (Json.lookup j "policy_attributes")))
       } 
   end
+module DuplicateTagKeysException =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
 module CreateAccessPointOutput =
   struct
     type t = {
@@ -2050,6 +2068,24 @@ module DescribeLoadBalancerPoliciesInput =
           (PolicyNames.of_json
              (Util.of_option_exn (Json.lookup j "policy_names")))
       } 
+  end
+module LoadBalancerAttributeNotFoundException =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module TooManyTagsException =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
   end
 module AttachLoadBalancerToSubnetsInput =
   struct
@@ -2174,6 +2210,42 @@ module AddAvailabilityZonesOutput =
              (Util.of_option_exn (Json.lookup j "availability_zones")))
       } 
   end
+module ListenerNotFoundException =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module CreateLoadBalancerPolicyOutput =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module InvalidEndPointException =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module SubnetNotFoundException =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
 module RemoveTagsInput =
   struct
     type t = {
@@ -2276,6 +2348,24 @@ module SetLoadBalancerPoliciesForBackendServerInput =
           (PolicyNames.of_json
              (Util.of_option_exn (Json.lookup j "policy_names")))
       } 
+  end
+module SetLoadBalancerListenerSSLCertificateOutput =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module TooManyAccessPointsException =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
   end
 module CreateAccessPointInput =
   struct
@@ -2436,6 +2526,42 @@ module DescribeAccessPointsInput =
           (Util.option_map (Json.lookup j "page_size") Integer.of_json)
       } 
   end
+module InvalidSchemeException =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module SetLoadBalancerPoliciesOfListenerOutput =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module InvalidSecurityGroupException =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module CreateLoadBalancerListenerOutput =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
 module DetachLoadBalancerFromSubnetsOutput =
   struct
     type t = {
@@ -2499,6 +2625,24 @@ module DescribeLoadBalancerAttributesInput =
              (Util.of_option_exn (Json.lookup j "load_balancer_name")))
       } 
   end
+module DuplicateListenerException =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module CertificateNotFoundException =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
 module DescribeLoadBalancerPoliciesOutput =
   struct
     type t = {
@@ -2534,6 +2678,15 @@ module DescribeLoadBalancerPoliciesOutput =
           (PolicyDescriptions.of_json
              (Util.of_option_exn (Json.lookup j "policy_descriptions")))
       } 
+  end
+module PolicyTypeNotFoundException =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
   end
 module RemoveAvailabilityZonesInput =
   struct
@@ -2584,6 +2737,15 @@ module RemoveAvailabilityZonesInput =
           (AvailabilityZones.of_json
              (Util.of_option_exn (Json.lookup j "availability_zones")))
       } 
+  end
+module InvalidSubnetException =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
   end
 module DeleteLoadBalancerPolicyInput =
   struct
@@ -2656,6 +2818,15 @@ module AttachLoadBalancerToSubnetsOutput =
           (Subnets.of_json (Util.of_option_exn (Json.lookup j "subnets")))
       } 
   end
+module CreateAppCookieStickinessPolicyOutput =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
 module DescribeEndPointStateOutput =
   struct
     type t = {
@@ -2690,6 +2861,33 @@ module DescribeEndPointStateOutput =
           (InstanceStates.of_json
              (Util.of_option_exn (Json.lookup j "instance_states")))
       } 
+  end
+module AddTagsOutput =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module DeleteAccessPointOutput =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module RemoveTagsOutput =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
   end
 module RemoveAvailabilityZonesOutput =
   struct
@@ -2924,6 +3122,42 @@ module DescribeTagsInput =
              (Util.of_option_exn (Json.lookup j "load_balancer_names")))
       } 
   end
+module DeleteLoadBalancerPolicyOutput =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module DuplicatePolicyNameException =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module DeleteLoadBalancerListenerOutput =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module TooManyPoliciesException =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
 module ModifyLoadBalancerAttributesInput =
   struct
     type t =
@@ -3110,6 +3344,15 @@ module ConfigureHealthCheckInput =
           (HealthCheck.of_json
              (Util.of_option_exn (Json.lookup j "health_check")))
       } 
+  end
+module DuplicateAccessPointNameException =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
   end
 module DescribeEndPointStateInput =
   struct
@@ -3321,6 +3564,15 @@ module SetLoadBalancerListenerSSLCertificateInput =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "s_s_l_certificate_id")))
       } 
+  end
+module CreateLBCookieStickinessPolicyOutput =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
   end
 module RegisterEndPointsInput =
   struct
@@ -3615,6 +3867,15 @@ module DescribeAccessPointsOutput =
           (Util.option_map (Json.lookup j "next_marker") String.of_json)
       } 
   end
+module AccessPointNotFoundException =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
 module DetachLoadBalancerFromSubnetsInput =
   struct
     type t = {
@@ -3657,4 +3918,22 @@ module DetachLoadBalancerFromSubnetsInput =
         subnets =
           (Subnets.of_json (Util.of_option_exn (Json.lookup j "subnets")))
       } 
+  end
+module InvalidConfigurationRequestException =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module PolicyNotFoundException =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
   end

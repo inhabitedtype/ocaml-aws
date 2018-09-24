@@ -1,11 +1,10 @@
 type t =
-  | LoadBalancerNotFound 
   | AuthFailure 
   | Blocked 
   | CertificateNotFound 
   | DryRunOperation 
-  | DuplicateLoadBalancerName 
   | DuplicateListener 
+  | DuplicateLoadBalancerName 
   | DuplicatePolicyName 
   | DuplicateTagKeys 
   | IdempotentParameterMismatch 
@@ -24,6 +23,7 @@ type t =
   | InvalidSubnet 
   | ListenerNotFound 
   | LoadBalancerAttributeNotFound 
+  | LoadBalancerNotFound 
   | MalformedQueryString 
   | MissingAction 
   | MissingAuthenticationToken 
@@ -74,13 +74,12 @@ let common =
   IncompleteSignature] 
 let to_http_code e =
   match e with
-  | LoadBalancerNotFound  -> Some 400
   | AuthFailure  -> None
   | Blocked  -> None
   | CertificateNotFound  -> Some 400
   | DryRunOperation  -> None
-  | DuplicateLoadBalancerName  -> Some 400
   | DuplicateListener  -> Some 400
+  | DuplicateLoadBalancerName  -> Some 400
   | DuplicatePolicyName  -> Some 400
   | DuplicateTagKeys  -> Some 400
   | IdempotentParameterMismatch  -> None
@@ -99,6 +98,7 @@ let to_http_code e =
   | InvalidSubnet  -> Some 400
   | ListenerNotFound  -> Some 400
   | LoadBalancerAttributeNotFound  -> Some 400
+  | LoadBalancerNotFound  -> Some 400
   | MalformedQueryString  -> Some 404
   | MissingAction  -> Some 400
   | MissingAuthenticationToken  -> Some 403
@@ -122,13 +122,12 @@ let to_http_code e =
   | Uninhabited  -> None 
 let to_string e =
   match e with
-  | LoadBalancerNotFound  -> "LoadBalancerNotFound"
   | AuthFailure  -> "AuthFailure"
   | Blocked  -> "Blocked"
   | CertificateNotFound  -> "CertificateNotFound"
   | DryRunOperation  -> "DryRunOperation"
-  | DuplicateLoadBalancerName  -> "DuplicateLoadBalancerName"
   | DuplicateListener  -> "DuplicateListener"
+  | DuplicateLoadBalancerName  -> "DuplicateLoadBalancerName"
   | DuplicatePolicyName  -> "DuplicatePolicyName"
   | DuplicateTagKeys  -> "DuplicateTagKeys"
   | IdempotentParameterMismatch  -> "IdempotentParameterMismatch"
@@ -147,6 +146,7 @@ let to_string e =
   | InvalidSubnet  -> "InvalidSubnet"
   | ListenerNotFound  -> "ListenerNotFound"
   | LoadBalancerAttributeNotFound  -> "LoadBalancerAttributeNotFound"
+  | LoadBalancerNotFound  -> "LoadBalancerNotFound"
   | MalformedQueryString  -> "MalformedQueryString"
   | MissingAction  -> "MissingAction"
   | MissingAuthenticationToken  -> "MissingAuthenticationToken"
@@ -170,13 +170,12 @@ let to_string e =
   | Uninhabited  -> "Uninhabited" 
 let of_string e =
   match e with
-  | "LoadBalancerNotFound" -> Some LoadBalancerNotFound
   | "AuthFailure" -> Some AuthFailure
   | "Blocked" -> Some Blocked
   | "CertificateNotFound" -> Some CertificateNotFound
   | "DryRunOperation" -> Some DryRunOperation
-  | "DuplicateLoadBalancerName" -> Some DuplicateLoadBalancerName
   | "DuplicateListener" -> Some DuplicateListener
+  | "DuplicateLoadBalancerName" -> Some DuplicateLoadBalancerName
   | "DuplicatePolicyName" -> Some DuplicatePolicyName
   | "DuplicateTagKeys" -> Some DuplicateTagKeys
   | "IdempotentParameterMismatch" -> Some IdempotentParameterMismatch
@@ -195,6 +194,7 @@ let of_string e =
   | "InvalidSubnet" -> Some InvalidSubnet
   | "ListenerNotFound" -> Some ListenerNotFound
   | "LoadBalancerAttributeNotFound" -> Some LoadBalancerAttributeNotFound
+  | "LoadBalancerNotFound" -> Some LoadBalancerNotFound
   | "MalformedQueryString" -> Some MalformedQueryString
   | "MissingAction" -> Some MissingAction
   | "MissingAuthenticationToken" -> Some MissingAuthenticationToken

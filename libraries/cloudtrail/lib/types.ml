@@ -369,6 +369,15 @@ module TrailList =
     let to_json v = `List (List.map Trail.to_json v) 
     let of_json j = Json.to_list Trail.of_json j 
   end
+module DeleteTrailResponse =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
 module StopLoggingRequest =
   struct
     type t = {
@@ -392,6 +401,15 @@ module StopLoggingRequest =
     let of_json j =
       { name = (String.of_json (Util.of_option_exn (Json.lookup j "name"))) } 
   end
+module TrailAlreadyExistsException =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
 module StartLoggingRequest =
   struct
     type t = {
@@ -414,6 +432,24 @@ module StartLoggingRequest =
       `Assoc (Util.list_filter_opt [Some ("name", (String.to_json v.name))]) 
     let of_json j =
       { name = (String.of_json (Util.of_option_exn (Json.lookup j "name"))) } 
+  end
+module InvalidS3BucketNameException =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module InvalidCloudWatchLogsRoleArnException =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
   end
 module LookupEventsRequest =
   struct
@@ -489,6 +525,15 @@ module LookupEventsRequest =
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
       } 
+  end
+module StopLoggingResponse =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
   end
 module GetTrailStatusResponse =
   struct
@@ -663,6 +708,15 @@ module DeleteTrailRequest =
       `Assoc (Util.list_filter_opt [Some ("name", (String.to_json v.name))]) 
     let of_json j =
       { name = (String.of_json (Util.of_option_exn (Json.lookup j "name"))) } 
+  end
+module TrailNotFoundException =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
   end
 module UpdateTrailResponse =
   struct
@@ -876,6 +930,15 @@ module CreateTrailRequest =
              String.of_json)
       } 
   end
+module StartLoggingResponse =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
 module GetTrailStatusRequest =
   struct
     type t = {
@@ -1005,6 +1068,33 @@ module UpdateTrailRequest =
              String.of_json)
       } 
   end
+module InvalidLookupAttributesException =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module InvalidTrailNameException =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module S3BucketDoesNotExistException =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
 module DescribeTrailsRequest =
   struct
     type t = {
@@ -1039,6 +1129,51 @@ module DescribeTrailsRequest =
           (TrailNameList.of_json
              (Util.of_option_exn (Json.lookup j "trail_name_list")))
       } 
+  end
+module CloudWatchLogsDeliveryUnavailableException =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module InvalidMaxResultsException =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module InvalidTimeRangeException =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module InsufficientSnsTopicPolicyException =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module InsufficientS3BucketPolicyException =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
   end
 module LookupEventsResponse =
   struct
@@ -1078,6 +1213,51 @@ module LookupEventsResponse =
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
       } 
+  end
+module InvalidCloudWatchLogsLogGroupArnException =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module InvalidS3PrefixException =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module InvalidNextTokenException =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module MaximumNumberOfTrailsExceededException =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module InvalidSnsTopicNameException =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
   end
 module CreateTrailResponse =
   struct

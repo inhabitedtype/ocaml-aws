@@ -1,0 +1,7 @@
+(jbuild_version 1)
+
+(library
+ ((name        aws_lwt)
+  (public_name aws-lwt)
+  (wrapped true)
+  (libraries (lwt aws cohttp cohttp-lwt cohttp-lwt-unix))))
