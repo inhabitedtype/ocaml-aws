@@ -1,71 +1,71 @@
 type t =
-  | AuthFailure
-  | AuthorizationAlreadyExists
-  | AuthorizationNotFound
-  | Blocked
-  | CacheClusterAlreadyExists
-  | CacheClusterNotFound
-  | CacheParameterGroupAlreadyExists
-  | CacheParameterGroupNotFound
-  | CacheParameterGroupQuotaExceeded
-  | CacheSecurityGroupAlreadyExists
-  | CacheSecurityGroupNotFound
-  | QuotaExceeded_CacheSecurityGroup
-  | CacheSubnetGroupAlreadyExists
-  | CacheSubnetGroupInUse
-  | CacheSubnetGroupNotFoundFault
-  | CacheSubnetGroupQuotaExceeded
-  | CacheSubnetQuotaExceededFault
-  | ClusterQuotaForCustomerExceeded
-  | DryRunOperation
-  | IdempotentParameterMismatch
-  | IncompleteSignature
-  | InsufficientCacheClusterCapacity
-  | InternalFailure
-  | InvalidARN
-  | InvalidAction
-  | InvalidCacheClusterState
-  | InvalidCacheParameterGroupState
-  | InvalidCacheSecurityGroupState
-  | InvalidClientTokenId
-  | InvalidParameter
-  | InvalidParameterCombination
-  | InvalidParameterValue
-  | InvalidQueryParameter
-  | InvalidReplicationGroupState
-  | InvalidSnapshotState
-  | InvalidSubnet
-  | InvalidVPCNetworkStateFault
-  | MalformedQueryString
-  | MissingAction
-  | MissingAuthenticationToken
-  | MissingParameter
-  | NodeQuotaForClusterExceeded
-  | NodeQuotaForCustomerExceeded
-  | OptInRequired
-  | PendingVerification
-  | ReplicationGroupAlreadyExists
-  | ReplicationGroupNotFoundFault
-  | RequestExpired
-  | RequestLimitExceeded
-  | ReservedCacheNodeAlreadyExists
-  | ReservedCacheNodeNotFound
-  | ReservedCacheNodeQuotaExceeded
-  | ReservedCacheNodesOfferingNotFound
-  | ServiceUnavailable
-  | SnapshotAlreadyExistsFault
-  | SnapshotFeatureNotSupportedFault
-  | SnapshotNotFoundFault
-  | SnapshotQuotaExceededFault
-  | SubnetInUse
-  | TagNotFound
-  | TagQuotaPerResourceExceeded
-  | Throttling
-  | UnauthorizedOperation
-  | UnknownParameter
-  | UnsupportedProtocol
-  | ValidationError
-  | Uninhabited
+  | AuthFailure 
+  | AuthorizationAlreadyExists 
+  | AuthorizationNotFound 
+  | Blocked 
+  | CacheClusterAlreadyExists 
+  | CacheClusterNotFound 
+  | CacheParameterGroupAlreadyExists 
+  | CacheParameterGroupNotFound 
+  | CacheParameterGroupQuotaExceeded 
+  | CacheSecurityGroupAlreadyExists 
+  | CacheSecurityGroupNotFound 
+  | CacheSubnetGroupAlreadyExists 
+  | CacheSubnetGroupInUse 
+  | CacheSubnetGroupNotFoundFault 
+  | CacheSubnetGroupQuotaExceeded 
+  | CacheSubnetQuotaExceededFault 
+  | ClusterQuotaForCustomerExceeded 
+  | DryRunOperation 
+  | IdempotentParameterMismatch 
+  | IncompleteSignature 
+  | InsufficientCacheClusterCapacity 
+  | InternalFailure 
+  | InvalidARN 
+  | InvalidAction 
+  | InvalidCacheClusterState 
+  | InvalidCacheParameterGroupState 
+  | InvalidCacheSecurityGroupState 
+  | InvalidClientTokenId 
+  | InvalidParameter 
+  | InvalidParameterCombination 
+  | InvalidParameterValue 
+  | InvalidQueryParameter 
+  | InvalidReplicationGroupState 
+  | InvalidSnapshotState 
+  | InvalidSubnet 
+  | InvalidVPCNetworkStateFault 
+  | MalformedQueryString 
+  | MissingAction 
+  | MissingAuthenticationToken 
+  | MissingParameter 
+  | NodeQuotaForClusterExceeded 
+  | NodeQuotaForCustomerExceeded 
+  | OptInRequired 
+  | PendingVerification 
+  | QuotaExceeded_CacheSecurityGroup 
+  | ReplicationGroupAlreadyExists 
+  | ReplicationGroupNotFoundFault 
+  | RequestExpired 
+  | RequestLimitExceeded 
+  | ReservedCacheNodeAlreadyExists 
+  | ReservedCacheNodeNotFound 
+  | ReservedCacheNodeQuotaExceeded 
+  | ReservedCacheNodesOfferingNotFound 
+  | ServiceUnavailable 
+  | SnapshotAlreadyExistsFault 
+  | SnapshotFeatureNotSupportedFault 
+  | SnapshotNotFoundFault 
+  | SnapshotQuotaExceededFault 
+  | SubnetInUse 
+  | TagNotFound 
+  | TagQuotaPerResourceExceeded 
+  | Throttling 
+  | UnauthorizedOperation 
+  | UnknownParameter 
+  | UnsupportedProtocol 
+  | ValidationError 
+  | Uninhabited 
 let common =
   [UnsupportedProtocol;
   UnknownParameter;
@@ -92,7 +92,7 @@ let common =
   InvalidClientTokenId;
   InvalidAction;
   InternalFailure;
-  IncompleteSignature]
+  IncompleteSignature] 
 let to_http_code e =
   match e with
   | AuthFailure  -> None
@@ -106,7 +106,6 @@ let to_http_code e =
   | CacheParameterGroupQuotaExceeded  -> Some 400
   | CacheSecurityGroupAlreadyExists  -> Some 400
   | CacheSecurityGroupNotFound  -> Some 404
-  | QuotaExceeded_CacheSecurityGroup  -> Some 400
   | CacheSubnetGroupAlreadyExists  -> Some 400
   | CacheSubnetGroupInUse  -> Some 400
   | CacheSubnetGroupNotFoundFault  -> Some 400
@@ -140,6 +139,7 @@ let to_http_code e =
   | NodeQuotaForCustomerExceeded  -> Some 400
   | OptInRequired  -> Some 403
   | PendingVerification  -> None
+  | QuotaExceeded_CacheSecurityGroup  -> Some 400
   | ReplicationGroupAlreadyExists  -> Some 400
   | ReplicationGroupNotFoundFault  -> Some 404
   | RequestExpired  -> Some 400
@@ -161,7 +161,7 @@ let to_http_code e =
   | UnknownParameter  -> None
   | UnsupportedProtocol  -> None
   | ValidationError  -> Some 400
-  | Uninhabited  -> None
+  | Uninhabited  -> None 
 let to_string e =
   match e with
   | AuthFailure  -> "AuthFailure"
@@ -175,7 +175,6 @@ let to_string e =
   | CacheParameterGroupQuotaExceeded  -> "CacheParameterGroupQuotaExceeded"
   | CacheSecurityGroupAlreadyExists  -> "CacheSecurityGroupAlreadyExists"
   | CacheSecurityGroupNotFound  -> "CacheSecurityGroupNotFound"
-  | QuotaExceeded_CacheSecurityGroup  -> "QuotaExceeded.CacheSecurityGroup"
   | CacheSubnetGroupAlreadyExists  -> "CacheSubnetGroupAlreadyExists"
   | CacheSubnetGroupInUse  -> "CacheSubnetGroupInUse"
   | CacheSubnetGroupNotFoundFault  -> "CacheSubnetGroupNotFoundFault"
@@ -209,6 +208,7 @@ let to_string e =
   | NodeQuotaForCustomerExceeded  -> "NodeQuotaForCustomerExceeded"
   | OptInRequired  -> "OptInRequired"
   | PendingVerification  -> "PendingVerification"
+  | QuotaExceeded_CacheSecurityGroup  -> "QuotaExceeded.CacheSecurityGroup"
   | ReplicationGroupAlreadyExists  -> "ReplicationGroupAlreadyExists"
   | ReplicationGroupNotFoundFault  -> "ReplicationGroupNotFoundFault"
   | RequestExpired  -> "RequestExpired"
@@ -231,7 +231,7 @@ let to_string e =
   | UnknownParameter  -> "UnknownParameter"
   | UnsupportedProtocol  -> "UnsupportedProtocol"
   | ValidationError  -> "ValidationError"
-  | Uninhabited  -> "Uninhabited"
+  | Uninhabited  -> "Uninhabited" 
 let of_string e =
   match e with
   | "AuthFailure" -> Some AuthFailure
@@ -247,8 +247,6 @@ let of_string e =
       Some CacheParameterGroupQuotaExceeded
   | "CacheSecurityGroupAlreadyExists" -> Some CacheSecurityGroupAlreadyExists
   | "CacheSecurityGroupNotFound" -> Some CacheSecurityGroupNotFound
-  | "QuotaExceeded.CacheSecurityGroup" ->
-      Some QuotaExceeded_CacheSecurityGroup
   | "CacheSubnetGroupAlreadyExists" -> Some CacheSubnetGroupAlreadyExists
   | "CacheSubnetGroupInUse" -> Some CacheSubnetGroupInUse
   | "CacheSubnetGroupNotFoundFault" -> Some CacheSubnetGroupNotFoundFault
@@ -283,6 +281,8 @@ let of_string e =
   | "NodeQuotaForCustomerExceeded" -> Some NodeQuotaForCustomerExceeded
   | "OptInRequired" -> Some OptInRequired
   | "PendingVerification" -> Some PendingVerification
+  | "QuotaExceeded.CacheSecurityGroup" ->
+      Some QuotaExceeded_CacheSecurityGroup
   | "ReplicationGroupAlreadyExists" -> Some ReplicationGroupAlreadyExists
   | "ReplicationGroupNotFoundFault" -> Some ReplicationGroupNotFoundFault
   | "RequestExpired" -> Some RequestExpired
@@ -307,4 +307,4 @@ let of_string e =
   | "UnsupportedProtocol" -> Some UnsupportedProtocol
   | "ValidationError" -> Some ValidationError
   | "Uninhabited" -> Some Uninhabited
-  | _ -> None
+  | _ -> None 

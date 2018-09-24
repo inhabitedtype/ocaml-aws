@@ -6,10 +6,12 @@ homepage: "https://github.com/inhabitedtype/ocaml-aws"
 dev-repo: "https://github.com/inhabitedtype/ocaml-aws.git"
 bug-reports: "https://github.com/inhabitedtype/ocaml-aws/issues"
 build: [
-  ["ocaml" "setup.ml" "-configure" "--prefix" prefix]
-  ["ocaml" "setup.ml" "-build"]
+  ["dune" "subst"] {pinned}
+  ["dune" "build" "-p" name "-j" jobs]
 ]
-install: ["ocaml" "setup.ml" "-install"]
+build-test: [
+  ["dune" "runtest" "-p" name]
+]
 remove: [
   ["ocamlfind" "remove" "aws-elasticache"]
 ]

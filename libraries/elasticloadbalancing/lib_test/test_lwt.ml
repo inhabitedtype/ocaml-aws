@@ -1,7 +1,6 @@
-open OUnit
-open Aws_elasticloadbalancing
+open Aws_elasticloadbalancing_test
 
-module T = Test.TestSuite(struct
+module T = TestSuite(struct
     type 'a m = 'a Lwt.t
 
     let access_key = Unix.getenv "AWS_ACCESS_KEY"

@@ -1,15 +1,13 @@
-.PHONY: all build clean test
+.PHONY: build clean test
 
 build:
-	dune build --dev @install
-
-all: build
+	dune build @install
 
 test:
-	dune runtest --dev
+	dune runtest
 
 install:
-	dune install --dev
+	dune install
 
 uninstall:
 	dune uninstall
@@ -30,7 +28,7 @@ LIBRARIES := \
 	aws-rds \
 	aws-sdb \
 	aws-ssm \
-	aws-sts \
+	aws-sts
 
 .PHONY: $(LIBRARIES)
 $(LIBRARIES): aws-%:
@@ -41,4 +39,10 @@ gen: all aws-ec2 $(LIBRARIES)
 compile-libraries:
 	for dir in libraries/*; \
 		do dune build --root "$$dir/"; \
+	done;
+
+test-libraries:
+	for dir in $LIBRARIES; \
+
+		do dune runtest -f ; \
 	done;

@@ -56,6 +56,9 @@ module TestSuite(Runtime : sig
       | `Error (TransportError msg) ->
         Printf.printf "Got Transport error: %s\n%!" msg;
         false
+      | `Error msg ->
+        Printf.printf "Other error: %s\n%!" (Aws.Error.format Errors.to_string msg);
+        false
     end
 
 

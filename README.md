@@ -99,3 +99,12 @@ BSD3, see LICENSE file for its text.
 To generate the code for `generate.ml`:
 
 `ocamlfind ppx_tools/rewriter -ppx ~/.opam/4.03.0-aws/lib/ppx_tools/ppx_metaquot src/generate.ml > test.ml`
+
+## TODO
+
+ * compiling async runtime wrapper
+   * do we put it into another package eg `aws.async`
+ * compiling lwt runtime wrapper
+   * same question about package
+ * compiling ec2 lib_test for both lwt and async
+ *

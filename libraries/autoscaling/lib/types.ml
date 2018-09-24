@@ -2622,6 +2622,15 @@ module ExitStandbyQuery =
              (Util.of_option_exn (Json.lookup j "auto_scaling_group_name")))
       } 
   end
+module RecordLifecycleActionHeartbeatAnswer =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
 module ActivityType =
   struct
     type t = {
@@ -2875,6 +2884,15 @@ module PutLifecycleHookType =
         default_result =
           (Util.option_map (Json.lookup j "default_result") String.of_json)
       } 
+  end
+module PutLifecycleHookAnswer =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
   end
 module DeleteLifecycleHookType =
   struct
@@ -3887,6 +3905,15 @@ module TagsType =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
       } 
   end
+module AttachLoadBalancersResultType =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
 module DescribeScalingActivitiesType =
   struct
     type t =
@@ -4186,6 +4213,15 @@ module LaunchConfigurationNamesType =
         max_records =
           (Util.option_map (Json.lookup j "max_records") Integer.of_json)
       } 
+  end
+module DetachLoadBalancersResultType =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
   end
 module LimitExceededFault =
   struct
@@ -5538,6 +5574,15 @@ module InvalidNextToken =
       { message = (Util.option_map (Json.lookup j "message") String.of_json)
       } 
   end
+module DeleteLifecycleHookAnswer =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
 module AutoScalingGroupNamesType =
   struct
     type t =
@@ -5947,6 +5992,15 @@ module ActivitiesType =
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
       } 
+  end
+module CompleteLifecycleActionAnswer =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
   end
 module ScalingActivityInProgressFault =
   struct

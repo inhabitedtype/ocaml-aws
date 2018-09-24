@@ -1,5 +1,5 @@
 open Types
-type input = DescribeAccountAttributesMessage.t
+type input = unit
 type output = AccountAttributesMessage.t
 type error = Errors.t
 include

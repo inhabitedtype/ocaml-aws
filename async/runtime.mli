@@ -36,4 +36,4 @@ val run_request :
   access_key:string ->
   secret_key:string ->
   ('input, 'output, 'error) Aws.call ->
-  'input -> [`Ok of 'output | `Error of 'error Aws.Error.t] Async.Std.Deferred.t
+  'input -> [`Ok of 'output | `Error of 'error Aws.Error.t] Async.Deferred.t

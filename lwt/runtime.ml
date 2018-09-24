@@ -52,7 +52,7 @@ let run_request
   let headers = Header.of_list headers in
   Lwt.catch (fun () ->
     Cohttp_lwt_unix.Client.call ~headers meth uri >>= fun (resp, body) ->
-    Cohttp_lwt_body.to_string body >|= fun body ->
+    Cohttp_lwt.Body.to_string body >|= fun body ->
     let code = Code.code_of_status (Response.status resp) in
     begin if code >= 300 then
       let open Aws.Error in

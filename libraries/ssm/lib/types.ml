@@ -673,6 +673,15 @@ module ListAssociationsRequest =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
       } 
   end
+module MaxDocumentSizeExceeded =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
 module UpdateAssociationStatusResult =
   struct
     type t = {
@@ -709,6 +718,15 @@ module UpdateAssociationStatusResult =
           (Util.option_map (Json.lookup j "association_description")
              AssociationDescription.of_json)
       } 
+  end
+module InvalidInstanceId =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
   end
 module ListAssociationsResult =
   struct
@@ -754,6 +772,15 @@ module ListAssociationsResult =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
       } 
   end
+module AssociatedInstances =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
 module DeleteDocumentRequest =
   struct
     type t = {
@@ -776,6 +803,15 @@ module DeleteDocumentRequest =
       `Assoc (Util.list_filter_opt [Some ("name", (String.to_json v.name))]) 
     let of_json j =
       { name = (String.of_json (Util.of_option_exn (Json.lookup j "name"))) } 
+  end
+module DocumentAlreadyExists =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
   end
 module DescribeAssociationResult =
   struct
@@ -897,6 +933,15 @@ module DescribeAssociationRequest =
           (String.of_json (Util.of_option_exn (Json.lookup j "instance_id")))
       } 
   end
+module AssociationDoesNotExist =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
 module DescribeDocumentRequest =
   struct
     type t = {
@@ -956,6 +1001,15 @@ module CreateAssociationRequest =
           (String.of_json (Util.of_option_exn (Json.lookup j "instance_id")))
       } 
   end
+module DeleteAssociationResult =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
 module ListDocumentsRequest =
   struct
     type t =
@@ -1011,6 +1065,24 @@ module ListDocumentsRequest =
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
       } 
+  end
+module InternalServerError =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module AssociationLimitExceeded =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
   end
 module DescribeDocumentResult =
   struct
@@ -1098,6 +1170,33 @@ module UpdateAssociationStatusRequest =
              (Util.of_option_exn (Json.lookup j "association_status")))
       } 
   end
+module InvalidNextToken =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module InvalidDocument =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module AssociationAlreadyExists =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
 module GetDocumentResult =
   struct
     type t = {
@@ -1132,6 +1231,15 @@ module GetDocumentResult =
         name = (Util.option_map (Json.lookup j "name") String.of_json);
         content = (Util.option_map (Json.lookup j "content") String.of_json)
       } 
+  end
+module TooManyUpdates =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
   end
 module CreateAssociationBatchResult =
   struct
@@ -1218,6 +1326,24 @@ module CreateDocumentResult =
              DocumentDescription.of_json)
       } 
   end
+module DocumentLimitExceeded =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
+module DeleteDocumentResult =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
+  end
 module CreateAssociationBatchRequest =
   struct
     type t = {
@@ -1276,6 +1402,15 @@ module GetDocumentRequest =
       `Assoc (Util.list_filter_opt [Some ("name", (String.to_json v.name))]) 
     let of_json j =
       { name = (String.of_json (Util.of_option_exn (Json.lookup j "name"))) } 
+  end
+module StatusUnchanged =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
   end
 module CreateAssociationResult =
   struct
@@ -1377,4 +1512,13 @@ module DeleteAssociationRequest =
         instance_id =
           (String.of_json (Util.of_option_exn (Json.lookup j "instance_id")))
       } 
+  end
+module DuplicateInstanceId =
+  struct
+    type t = unit
+    let make () = () 
+    let parse xml = Some () 
+    let to_query v = Query.List (Util.list_filter_opt []) 
+    let to_json v = `Assoc (Util.list_filter_opt []) 
+    let of_json j = () 
   end
