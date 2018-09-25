@@ -36,13 +36,9 @@ $(LIBRARIES): aws-%:
 
 gen: build aws-ec2 $(LIBRARIES)
 
-compile-libraries:
-	for dir in libraries/*; \
-		do dune build --root "$$dir/"; \
-	done;
-
-test-libraries:
-	for dir in $LIBRARIES; \
-
-		do dune runtest -f ; \
-	done;
+# Before this run `dune tag <VERSION>`
+opam-release:
+	dune-release distrib --skip-build --skip-lint --skip-tests
+	dune-release publish distrib --verbose
+	dune-release opam pkg
+	dune-release opam submit
