@@ -1,8 +1,7 @@
-opam-version: "1.2"
+opam-version: "2.0"
 maintainer: "Spiros Eliopoulos <spiros@inhabitedtype.com>"
 authors: [ "Spiros Eliopoulos <spiros@inhabitedtype.com>"
            "Daniel Patterson <dbp@dbpmail.net>" ]
-version: "1.0.3"
 license: "BSD-3-clause"
 homepage: "https://github.com/inhabitedtype/ocaml-aws"
 dev-repo: "https://github.com/inhabitedtype/ocaml-aws.git"
@@ -10,9 +9,6 @@ bug-reports: "https://github.com/inhabitedtype/ocaml-aws/issues"
 build: [
   ["dune" "subst"] {pinned}
   ["dune" "build" "-p" name "-j" jobs]
-]
-build-test: [
-  ["dune" "runtest" "-p" name]
 ]
 build-doc: [ "dune" "build" "@doc" ]
 depends: [
