@@ -18,5 +18,6 @@ depends: [
   "cmdliner"
   "ppx_tools"
   "ocaml-migrate-parsetree"
+  "dune" {build}
 ]
 available: [ ocaml-version >= "4.02" ]
