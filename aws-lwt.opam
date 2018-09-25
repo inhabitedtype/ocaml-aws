@@ -6,6 +6,7 @@ license: "BSD-3-clause"
 homepage: "https://github.com/inhabitedtype/ocaml-aws"
 dev-repo: "https://github.com/inhabitedtype/ocaml-aws.git"
 bug-reports: "https://github.com/inhabitedtype/ocaml-aws/issues"
+available: [ ocaml-version >= "4.03" ]
 build: [
   ["dune" "subst"] {pinned}
   ["dune" "build" "-p" name "-j" jobs]
@@ -19,4 +20,5 @@ depends: [
   "cohttp-lwt-unix"
   "dune" {build}
 ]
-available: [ ocaml-version >= "4.03" ]
+synopsis: "Amazon Web Services SDK bindings for lwt"
+description: "Amazon Web Services SDK bindings for lwt"

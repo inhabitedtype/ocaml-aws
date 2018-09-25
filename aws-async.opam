@@ -19,3 +19,5 @@ depends: [
   "dune" {build}
 ]
 available: [ ocaml-version >= "4.03" ]
+synopsis: "Amazon Web Services SDK bindings for async"
+description: "Amazon Web Services SDK bindings for async"
