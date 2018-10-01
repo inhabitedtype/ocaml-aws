@@ -1,11 +1,16 @@
 language: c
-sudo: required
-install: wget https://raw.githubusercontent.com/ocaml/ocaml-ci-scripts/master/.travis-opam.sh
-script: bash -ex .travis-opam.sh
+sudo: false
+services:
+  - docker
+install: wget https://raw.githubusercontent.com/ocaml/ocaml-travisci-skeleton/master/.travis-docker.sh
+script: bash -ex ./.travis-docker.sh
 env:
-  - OCAML_VERSION=4.02 DEPOPTS="lwt ssl async async_ssl cohttp"
-  - OCAML_VERSION=4.03 DEPOPTS="lwt ssl async async_ssl cohttp cohttp-lwt-unix cohttp-async"
-  - OCAML_VERSION=4.04 DEPOPTS="lwt ssl async async_ssl cohttp cohttp-lwt-unix cohttp-async"
-  - OCAML_VERSION=4.05 DEPOPTS="lwt ssl async async_ssl cohttp cohttp-lwt-unix cohttp-async"
+  global:
+  - PINS="aws:. aws-lwt:. aws-async:."
+  matrix:
+  - PACKAGE="aws"       DISTRO="ubuntu-18.04" OCAML_VERSION="4.04"
+  - PACKAGE="aws-lwt"   DISTRO="ubuntu-18.04" OCAML_VERSION="4.04"
+  - PACKAGE="aws-async" DISTRO="ubuntu-18.04" OCAML_VERSION="4.04"
+  # - PACKAGE="aws_gen"   DISTRO="ubuntu-18.04" OCAML_VERSION="4.04"
 os:
   - linux
