@@ -9,14 +9,15 @@ homepage: "https://github.com/inhabitedtype/ocaml-aws"
 dev-repo: "git+https://github.com/inhabitedtype/ocaml-aws.git"
 bug-reports: "https://github.com/inhabitedtype/ocaml-aws/issues"
 build: [
-  ["dune" "subst"] {pinned}
+  # ["dune" "subst"] {pinned}
   ["dune" "build" "-p" name "-j" jobs]
 ]
 depends: [
   "yojson"
   "cmdliner"
-  "ppx_tools"
+  "ppx_tools_versioned"
   "yojson"
   "ocaml-migrate-parsetree"
+  "ocamlgraph"
   "dune" {build}
 ]

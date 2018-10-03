@@ -43,7 +43,7 @@ module Printing = struct
     with_output filename (fun out ->
       output_string out contents)
 
-  let migration = Versions.migrate Versions.ocaml_405 Versions.ocaml_current
+  let migration = Versions.migrate Versions.ocaml_404 Versions.ocaml_current
 
   let write_structure filename es =
     write_all ~filename (Pprintast.string_of_structure (migration.Versions.copy_structure es))

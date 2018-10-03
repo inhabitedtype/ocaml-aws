@@ -34,7 +34,7 @@
 open Structures
 open Util
 open Migrate_parsetree
-open Ast_405
+open Ast_404
 
 let is_list ~shapes ~shp =
   try
