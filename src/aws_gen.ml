@@ -182,10 +182,10 @@ let main input override errors_path outdir is_ec2 =
   mkdir_p [outdir; lib_name; "lib"];
   let dir     = outdir </> lib_name in
   let lib_dir = dir    </> "lib" in
-  Printing.write_structure (lib_dir </> "types_internal.ml") (Generate.types is_ec2 shapes);
+  Printing.write_structure (lib_dir </> "types.ml") (Generate.types is_ec2 shapes);
   log "## Wrote %d/%d shape modules..."
     (StringTable.cardinal shapes) (List.length shp_json);
-  Printing.write_structure (lib_dir </> "errors_internal.ml") (Generate.errors errors common_errors);
+  Printing.write_structure (lib_dir </> "errors.ml") (Generate.errors errors common_errors);
   log "## Wrote %d error variants..." (List.length errors);
   List.iter (fun op ->
     let (mli, ml) = Generate.op lib_name api_version shapes op in
