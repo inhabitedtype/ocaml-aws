@@ -1,4 +1,4 @@
-open Aws_ec2_test
+open Aws_elasticache_test
 
 module T = TestSuite(struct
     type 'a m = 'a Lwt.t

@@ -51,7 +51,45 @@ module TestSuite(Runtime : sig
       end
   end
 
+  let create_security_group ()  =
+    let result = Runtime.(un_m (run_request
+                                  ~region:"us-east-1"
+                                  (module CreateSecurityGroup)
+                                  (Types.CreateSecurityGroupRequest.make
+                                     ~group_name:"aws-test-security_group"
+                                     ~description:"aws-test-security_group"
+                                     ()
+                                  )
+                               ))
+    in
+    (* let open Types.SecurityGroup in *)
+    match result with
+    | `Ok a -> Some a
+    | `Error e -> begin print_endline (Aws.Error.format Errors.to_string e); None end
 
+  let create_security_group_test () =
+    let result = create_security_group() in
+    "Creating security group succeeds"
+    @? begin match result with
+      | Some group -> true
+      | None -> false
+    end;
+    let group_id = match result with
+      | Some group -> group.group_id
+      | None -> assert false
+    in
+    Unix.sleep 3;
+    let result = Runtime.(un_m (run_request
+                                  ~region:"us-east-1"
+                               (module DeleteSecurityGroup)
+                               (Types.DeleteSecurityGroupRequest.make ~group_id:group_id ())))
+    in
+    "Creating security group and then deleting it succeeds"
+    @? begin match result with
+      | `Ok _ -> true
+      | `Error e -> begin print_endline (Aws.Error.format Errors.to_string e); false end
+    end
+  ;;
 
   let create_instance () =
     let result = Runtime.(un_m (run_request
@@ -71,7 +109,6 @@ module TestSuite(Runtime : sig
       end
     | `Error e -> begin print_endline (Aws.Error.format Errors.to_string e); None end
   ;;
-
 
   let create () =
     let result = create_instance () in
@@ -100,9 +137,10 @@ module TestSuite(Runtime : sig
   ;;
 
   let test_cases =
-    ["Describe Regions" >::  describe_regions_json
-     ;"Describe Regions Errors" >::  describe_regions_error
-    ;"Create Instance" >:: create
+    [ "Describe Regions" >::  describe_regions_json
+    ; "Describe Regions Errors" >::  describe_regions_error
+    ; "Create Instance" >:: create
+    ; "Find Security Group" >:: create_security_group_test
     ]
 
   let rec was_successful =
