@@ -41,7 +41,16 @@ code generation and regenrate the libraries from the current definitions:
 make gen
 
 # Compile generated libraries
-make compile-libraries
+make
+```
+
+### Release
+
+To generate a release to opam requires `dune-release` to be installed, then run:
+
+``` bash
+make opam-release
+
 ```
 
 ## Example
@@ -93,18 +102,3 @@ export LDFLAGS=-L/usr/local/lib
 ## License
 
 BSD3, see LICENSE file for its text.
-
-
-## Porting
-To generate the code for `generate.ml`:
-
-`ocamlfind ppx_tools/rewriter -ppx ~/.opam/4.03.0-aws/lib/ppx_tools/ppx_metaquot src/generate.ml > test.ml`
-
-## TODO
-
- * compiling async runtime wrapper
-   * do we put it into another package eg `aws.async`
- * compiling lwt runtime wrapper
-   * same question about package
- * compiling ec2 lib_test for both lwt and async
- *
