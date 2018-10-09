@@ -29,7 +29,7 @@ LIBRARIES := \
 	aws-sdb \
 	aws-ssm \
 	aws-sts \
-	aws-s3 \
+	aws-s3  \
 
 .PHONY: $(LIBRARIES)
 $(LIBRARIES): aws-%:

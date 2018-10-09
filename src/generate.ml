@@ -299,6 +299,7 @@ let op service version _shapes op =
           ])
   in
   let to_body =
+
     letin "uri"
       (app2 "Uri.add_query_params"
          (app1 "Uri.of_string" (str ("https://" ^ service ^ ".amazonaws.com")))
@@ -347,32 +348,33 @@ let op service version _shapes op =
                                                   )]))))
   in
     let op_error_parse =
-    letin "errors" (app2 "@" (list (List.map (fun name -> ident ("Errors." ^ name))
+    letin "errors" (app2 "@" (list (List.map (fun name -> ident ("Errors_internal." ^ (Util.to_variant_name name)))
                                       op.Operation.errors))
-                      (ident "Errors.common"))
-      (matchoption (app1 "Errors.of_string" (ident "err"))
+                      (ident "Errors_internal.common"))
+      (matchoption (app1 "Errors_internal.of_string" (ident "err"))
          (ifthen (app2 "&&"
                     (app2 "List.mem" (ident "var") (ident "errors"))
-                    (matchoption (app1 "Errors.to_http_code" (ident "var"))
+                    (matchoption (app1 "Errors_internal.to_http_code" (ident "var"))
                        (app2 "=" (ident "var") (ident "code"))
                        (ident "true")))
             (app1 "Some" (ident "var"))
             (ident "None"))
          (ident "None"))
   in
-  ([ sopen_ "Types"
+  (** Tuple corresponding to (mli, ml) *)
+  ([ sopen_ "Types_internal"
    ; stylet "input" (mkty op.Operation.input_shape)
    ; stylet "output" (mkty op.Operation.output_shape)
-   ; stylet "error" (ty0 "Errors.t")
+   ; stylet "error" (ty0 "Errors_internal.t")
    ; sinclude_ "Aws.Call" [withty "input" "input"
                           ; withty "output" "output"
                           ; withty "error" "error"]
    ],
-   [ open_ "Types"
+   [ open_ "Types_internal"
    ; open_ "Aws"
    ; tylet "input" (mkty op.Operation.input_shape)
    ; tylet "output" (mkty op.Operation.output_shape)
-   ; tylet "error" (ty0 "Errors.t")
+   ; tylet "error" (ty0 "Errors_internal.t")
    ; let_ "service" (str service)
    ; let_ "to_http" (fun_ "req" to_body)
    ; let_ "of_http" (fun_ "body" of_body)

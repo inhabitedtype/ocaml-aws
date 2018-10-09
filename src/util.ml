@@ -246,3 +246,8 @@ let rec filter_map l ~f =
     | Some x' -> x' :: filter_map xs ~f
     | None    -> filter_map xs ~f
     end
+
+let option_map l ~f =
+  match l with
+  | None -> None
+  | Some x -> Some (f ^ x)
