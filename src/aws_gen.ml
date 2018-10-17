@@ -195,13 +195,6 @@ let main input override errors_path outdir is_ec2 =
   ops;
   log "## Wrote %d/%d ops modules..."
     (List.length ops) (List.length ops_json);
-  (* let modules = List.map (fun op -> op.Operation.name) ops in *)
-  (* let append =
-   *   try
-   *     let in_ = open_in (dir </> "_oasis_append") in
-   *     really_input_string in_ (in_channel_length in_)
-   *   with Sys_error _ -> ""
-   * in *)
   Printing.write_all ~filename:(lib_dir </> "dune")
     (Templates.dune ~lib_name ~service_name);
   log "## Wrote dune file.";

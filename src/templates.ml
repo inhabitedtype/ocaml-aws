@@ -31,37 +31,6 @@
     POSSIBILITY OF SUCH DAMAGE.
   ----------------------------------------------------------------------------*)
 
-let oasis ~append ~lib_name ~lib_version ~service_name ~modules =
-  Printf.sprintf "OASISFormat: 0.4
-Name:        aws-%s
-Version:     %s
-Synopsis:    %s
-Authors:     Spiros Eliopoulos <spiros@inhabitedtype.com>, Daniel Patterson <dbp@dbpmail.net>
-Maintainers: Spiros Eliopoulos <spiros@inhabitedtype.com>
-Homepage:    https://github.com/inhabitedtype/ocaml-aws
-Copyrights:  (C) 2016 Inhabited Type LLC
-License:     BSD-3-Clause
-Plugins:     META (0.4), DevFiles (0.4)
-BuildTools: ocamlbuild
-
-Library \"aws_%s\"
-  Path:         lib
-  Findlibname:  aws-%s
-  Pack:         true
-  Modules:      Types, Errors, %s
-  BuildDepends: aws (>= 0.1.0)
-
-Document \"aws-%s\"
-  Title:                aws-%s Docs
-  Type:                 ocamlbuild (0.4)
-  BuildTools+:          ocamldoc
-  Install:              true
-  XOCamlbuildPath:      lib
-  XOCamlbuildLibraries: aws-%s
-
-%s" lib_name lib_version service_name lib_name lib_name (String.concat ", " modules) lib_name lib_name lib_name
-    append
-
 let dune ~lib_name ~service_name =
   Printf.sprintf
 "(library
