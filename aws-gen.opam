@@ -14,6 +14,7 @@ build: [
 ]
 depends: [
   "yojson"
+  "base-unix"
   "cmdliner"
   "ppx_tools_versioned"
   "yojson"
