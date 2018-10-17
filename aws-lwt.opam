@@ -13,10 +13,10 @@ build: [
   ["dune" "build" "-p" name "-j" jobs]
 ]
 depends: [
-  "aws"
-  "lwt"
+  "aws"             {>= "1.0.3"}
+  "lwt"             {>= "4.0.0"}
   "cohttp"
   "cohttp-lwt"
-  "cohttp-lwt-unix"
+  "cohttp-lwt-unix" {>= "0.99.0"}
   "dune" {build}
 ]
