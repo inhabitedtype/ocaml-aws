@@ -32,7 +32,7 @@
   ----------------------------------------------------------------------------*)
 
 open Migrate_parsetree
-open Ast_405
+open Ast_404
 
 module Printing : sig
   val write_all : filename:string -> string -> unit

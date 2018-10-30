@@ -43,7 +43,7 @@ module Printing = struct
     with_output filename (fun out ->
       output_string out contents)
 
-  let migration = Versions.migrate Versions.ocaml_405 Versions.ocaml_current
+  let migration = Versions.migrate Versions.ocaml_404 Versions.ocaml_current
 
   let write_structure filename es =
     write_all ~filename (Pprintast.string_of_structure (migration.Versions.copy_structure es))
@@ -83,14 +83,14 @@ end
 let to_variant_name s =
   String.map (fun c -> if Char.is_alphanum c then c else '_')
     (if Char.is_alpha (String.get s 0)
-     then String.capitalize s
+     then String.capitalize_ascii s
      else "N" ^ s)
 
 let to_field_name s =
   let add_underscore = ref false in
   let acc = ref [] in
   String.iter (fun c ->
-    let c' = Printf.sprintf "%c" Char.(lowercase c) in
+    let c' = Printf.sprintf "%c" Char.(lowercase_ascii c) in
     let s  = if Char.is_uppercase c && !add_underscore
       then "_" ^ c'
       else begin add_underscore := true; c' end
@@ -129,13 +129,6 @@ let inline_shapes (ops : Operation.t list) (shapes : Shape.parsed StringTable.t)
        tell from the examples, it is the same as DateTime. *)
     ;("timestamp","DateTime")
     ;("blob","Blob")] in
-  let is_empty_struct shp =
-    try
-      match StringTable.find shp shapes with
-      | (_, _, Some (Shape.Structure [])) -> true
-      | _                                 -> false
-    with Not_found -> false
-  in
   let replace_shape default =
     try
       let _, shptyp, _ = StringTable.find default shapes in
@@ -143,8 +136,8 @@ let inline_shapes (ops : Operation.t list) (shapes : Shape.parsed StringTable.t)
     with Not_found -> default
   in
   let new_shapes =
-    StringTable.fold (fun key (nm, ty, contents) acc -> 
-      if List.mem_assoc ty type_map || is_empty_struct nm then 
+    StringTable.fold (fun key (nm, ty, contents) acc ->
+      if List.mem_assoc ty type_map then
         acc
       else
         let content =
@@ -161,14 +154,27 @@ let inline_shapes (ops : Operation.t list) (shapes : Shape.parsed StringTable.t)
         StringTable.add key { Shape.name = nm; content } acc)
     shapes StringTable.empty
   in
+  let is_empty_struct shp =
+    try
+      match StringTable.find shp shapes with
+      | (_, _, Some (Shape.Structure [])) -> true
+      | _                                 -> false
+    with Not_found -> false
+  in
   let new_ops =
     List.map (fun op ->
-      match op.Operation.output_shape with
-      | None -> op
-      | Some shp -> if is_empty_struct shp
-        then { op with Operation.output_shape = None }
-        else op)
-    ops
+        let input_shape =
+          match op.Operation.input_shape with
+          | Some shp when is_empty_struct shp -> None
+          | shp -> shp
+        and output_shape =
+          match op.Operation.output_shape with
+          | Some shp when is_empty_struct shp -> None
+          | shp -> shp
+        in
+        { op with Operation.input_shape ; output_shape }
+      )
+      ops
   in
   new_shapes, new_ops
 

@@ -3,7 +3,7 @@ open Aws
 type input = ModifyDBParameterGroupMessage.t
 type output = DBParameterGroupNameMessage.t
 type error = Errors.t
-let service = "rds"
+let service = "rds" 
 let to_http req =
   let uri =
     Uri.add_query_params (Uri.of_string "https://rds.amazonaws.com")
@@ -12,15 +12,17 @@ let to_http req =
          ("Action", ["ModifyDBParameterGroup"])]
          (Util.drop_empty
             (Uri.query_of_encoded
-               (Query.render (ModifyDBParameterGroupMessage.to_query req))))) in
-  (`POST, uri, [])
+               (Query.render (ModifyDBParameterGroupMessage.to_query req)))))
+     in
+  (`POST, uri, []) 
 let of_http body =
   try
-    let xml = Ezxmlm.from_string body in
+    let xml = Ezxmlm.from_string body  in
     let resp =
       Util.option_bind
         (Xml.member "ModifyDBParameterGroupResponse" (snd xml))
-        (Xml.member "ModifyDBParameterGroupResult") in
+        (Xml.member "ModifyDBParameterGroupResult")
+       in
     try
       Util.or_error (Util.option_bind resp DBParameterGroupNameMessage.parse)
         (let open Error in
@@ -46,10 +48,12 @@ let of_http body =
       `Error
         (let open Error in
            BadResponse { body; message = ("Error parsing xml: " ^ msg) })
+  
 let parse_error code err =
   let errors =
     [Errors.InvalidDBParameterGroupState; Errors.DBParameterGroupNotFound] @
-      Errors.common in
+      Errors.common
+     in
   match Errors.of_string err with
   | Some var ->
       if
@@ -59,4 +63,4 @@ let parse_error code err =
             | None  -> true))
       then Some var
       else None
-  | None  -> None
+  | None  -> None 

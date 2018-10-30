@@ -32,11 +32,11 @@
   ----------------------------------------------------------------------------*)
 
 open Migrate_parsetree
-open Ast_405
+open Ast_404
 
 open Parsetree
 open Ast_helper
-open Ast_convenience
+open Ast_convenience_404
 open Asttypes
 
 let strloc txt = { txt; loc = !default_loc }
@@ -62,6 +62,10 @@ let ty1 nm1 nm2 = Typ.constr (lid nm1) [ty0 nm2]
 (* type nm = { fs.. } *)
 let tyreclet nm fs =
   Str.type_ Recursive [Type.mk ~kind:(Ptype_record (List.map (fun (nm, ty) -> Type.field (strloc nm) ty) fs)) (strloc nm)]
+
+(* type nm = unit *)
+let tyunit nm =
+  Str.type_ Recursive [ Type.mk ~manifest:(ty0 "unit") (strloc nm) ]
 
 (* type nm = ty (in .ml) *)
 let tylet nm ty =
@@ -137,6 +141,7 @@ let int n = Exp.constant (Pconst_integer (string_of_int n, None))
 (* (a, b) *)
 let pair a b = Exp.tuple [a; b]
 let tuple = Exp.tuple
+let unit () = Exp.tuple []
 
 (* [x; ..] (the list of expressions) *)
 let list xs = List.fold_left (fun rest x -> Exp.construct (lid "::") (Some (pair x rest))) (Exp.construct (lid "[]") None) xs
@@ -172,7 +177,7 @@ let sinclude_ nm with_ = Sig.include_ { pincl_mod =
                                       }
 
 (* with nm0 := nm1 (in .mli; for use in include) *)
-let withty nm0 nm1 = Pwith_typesubst (Type.mk ~manifest:(ty0 nm1) (strloc nm1))
+let withty _nm0 nm1 = Pwith_typesubst (Type.mk ~manifest:(ty0 nm1) (strloc nm1))
 
 (* if cond then thn else els *)
 let ifthen cond thn els = Exp.ifthenelse cond thn (Some els)

@@ -5,29 +5,30 @@ type calendar = Calendar.t
 module VolumeType =
   struct
     type t =
-      | Standard
-      | Io1
-      | Gp2
-    let str_to_t = [("gp2", Gp2); ("io1", Io1); ("standard", Standard)]
-    let t_to_str = [(Gp2, "gp2"); (Io1, "io1"); (Standard, "standard")]
-    let make v () = v
+      | Standard 
+      | Io1 
+      | Gp2 
+    let str_to_t = [("gp2", Gp2); ("io1", Io1); ("standard", Standard)] 
+    let t_to_str = [(Gp2, "gp2"); (Io1, "io1"); (Standard, "standard")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module PrivateIpAddressSpecification =
   struct
     type t = {
-      private_ip_address: String.t;
-      primary: Boolean.t option;}
+      private_ip_address: String.t ;
+      primary: Boolean.t option }
     let make ~private_ip_address  ?primary  () =
-      { private_ip_address; primary }
+      { private_ip_address; primary } 
     let parse xml =
       Some
         {
@@ -38,6 +39,7 @@ module PrivateIpAddressSpecification =
           primary =
             (Util.option_bind (Xml.member "primary" xml) Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -46,29 +48,31 @@ module PrivateIpAddressSpecification =
            Some
              (Query.Pair
                 ("PrivateIpAddress", (String.to_query v.private_ip_address)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.primary
               (fun f  -> ("primary", (Boolean.to_json f)));
            Some ("private_ip_address", (String.to_json v.private_ip_address))])
+      
     let of_json j =
       {
         private_ip_address =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "private_ip_address")));
         primary = (Util.option_map (Json.lookup j "primary") Boolean.of_json)
-      }
+      } 
   end
 module InstanceNetworkInterfaceAssociation =
   struct
     type t =
       {
-      public_ip: String.t option;
-      public_dns_name: String.t option;
-      ip_owner_id: String.t option;}
+      public_ip: String.t option ;
+      public_dns_name: String.t option ;
+      ip_owner_id: String.t option }
     let make ?public_ip  ?public_dns_name  ?ip_owner_id  () =
-      { public_ip; public_dns_name; ip_owner_id }
+      { public_ip; public_dns_name; ip_owner_id } 
     let parse xml =
       Some
         {
@@ -79,6 +83,7 @@ module InstanceNetworkInterfaceAssociation =
           ip_owner_id =
             (Util.option_bind (Xml.member "ipOwnerId" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -88,6 +93,7 @@ module InstanceNetworkInterfaceAssociation =
              (fun f  -> Query.Pair ("PublicDnsName", (String.to_query f)));
            Util.option_map v.public_ip
              (fun f  -> Query.Pair ("PublicIp", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -97,6 +103,7 @@ module InstanceNetworkInterfaceAssociation =
              (fun f  -> ("public_dns_name", (String.to_json f)));
            Util.option_map v.public_ip
              (fun f  -> ("public_ip", (String.to_json f)))])
+      
     let of_json j =
       {
         public_ip =
@@ -105,18 +112,18 @@ module InstanceNetworkInterfaceAssociation =
           (Util.option_map (Json.lookup j "public_dns_name") String.of_json);
         ip_owner_id =
           (Util.option_map (Json.lookup j "ip_owner_id") String.of_json)
-      }
+      } 
   end
 module EbsBlockDevice =
   struct
     type t =
       {
-      snapshot_id: String.t option;
-      volume_size: Integer.t option;
-      delete_on_termination: Boolean.t option;
-      volume_type: VolumeType.t option;
-      iops: Integer.t option;
-      encrypted: Boolean.t option;}
+      snapshot_id: String.t option ;
+      volume_size: Integer.t option ;
+      delete_on_termination: Boolean.t option ;
+      volume_type: VolumeType.t option ;
+      iops: Integer.t option ;
+      encrypted: Boolean.t option }
     let make ?snapshot_id  ?volume_size  ?delete_on_termination  ?volume_type
        ?iops  ?encrypted  () =
       {
@@ -126,7 +133,7 @@ module EbsBlockDevice =
         volume_type;
         iops;
         encrypted
-      }
+      } 
     let parse xml =
       Some
         {
@@ -143,6 +150,7 @@ module EbsBlockDevice =
           encrypted =
             (Util.option_bind (Xml.member "encrypted" xml) Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -159,6 +167,7 @@ module EbsBlockDevice =
              (fun f  -> Query.Pair ("VolumeSize", (Integer.to_query f)));
            Util.option_map v.snapshot_id
              (fun f  -> Query.Pair ("SnapshotId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -173,6 +182,7 @@ module EbsBlockDevice =
              (fun f  -> ("volume_size", (Integer.to_json f)));
            Util.option_map v.snapshot_id
              (fun f  -> ("snapshot_id", (String.to_json f)))])
+      
     let of_json j =
       {
         snapshot_id =
@@ -187,66 +197,69 @@ module EbsBlockDevice =
         iops = (Util.option_map (Json.lookup j "iops") Integer.of_json);
         encrypted =
           (Util.option_map (Json.lookup j "encrypted") Boolean.of_json)
-      }
+      } 
   end
 module PrivateIpAddressSpecificationList =
   struct
     type t = PrivateIpAddressSpecification.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map PrivateIpAddressSpecification.parse
            (Xml.members "item" xml))
+      
     let to_query v =
-      Query.to_query_list PrivateIpAddressSpecification.to_query v
-    let to_json v = `List (List.map PrivateIpAddressSpecification.to_json v)
-    let of_json j = Json.to_list PrivateIpAddressSpecification.of_json j
+      Query.to_query_list PrivateIpAddressSpecification.to_query v 
+    let to_json v = `List (List.map PrivateIpAddressSpecification.to_json v) 
+    let of_json j = Json.to_list PrivateIpAddressSpecification.of_json j 
   end
 module SecurityGroupIdStringList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map String.parse (Xml.members "SecurityGroupId" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module AttachmentStatus =
   struct
     type t =
-      | Attaching
-      | Attached
-      | Detaching
-      | Detached
+      | Attaching 
+      | Attached 
+      | Detaching 
+      | Detached 
     let str_to_t =
       [("detached", Detached);
       ("detaching", Detaching);
       ("attached", Attached);
-      ("attaching", Attaching)]
+      ("attaching", Attaching)] 
     let t_to_str =
       [(Detached, "detached");
       (Detaching, "detaching");
       (Attached, "attached");
-      (Attaching, "attaching")]
-    let make v () = v
+      (Attaching, "attaching")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module GroupIdentifier =
   struct
     type t = {
-      group_name: String.t option;
-      group_id: String.t option;}
-    let make ?group_name  ?group_id  () = { group_name; group_id }
+      group_name: String.t option ;
+      group_id: String.t option }
+    let make ?group_name  ?group_id  () = { group_name; group_id } 
     let parse xml =
       Some
         {
@@ -255,6 +268,7 @@ module GroupIdentifier =
           group_id =
             (Util.option_bind (Xml.member "groupId" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -262,6 +276,7 @@ module GroupIdentifier =
               (fun f  -> Query.Pair ("GroupId", (String.to_query f)));
            Util.option_map v.group_name
              (fun f  -> Query.Pair ("GroupName", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -269,24 +284,25 @@ module GroupIdentifier =
               (fun f  -> ("group_id", (String.to_json f)));
            Util.option_map v.group_name
              (fun f  -> ("group_name", (String.to_json f)))])
+      
     let of_json j =
       {
         group_name =
           (Util.option_map (Json.lookup j "group_name") String.of_json);
         group_id =
           (Util.option_map (Json.lookup j "group_id") String.of_json)
-      }
+      } 
   end
 module InstancePrivateIpAddress =
   struct
     type t =
       {
-      private_ip_address: String.t option;
-      private_dns_name: String.t option;
-      primary: Boolean.t option;
-      association: InstanceNetworkInterfaceAssociation.t option;}
+      private_ip_address: String.t option ;
+      private_dns_name: String.t option ;
+      primary: Boolean.t option ;
+      association: InstanceNetworkInterfaceAssociation.t option }
     let make ?private_ip_address  ?private_dns_name  ?primary  ?association 
-      () = { private_ip_address; private_dns_name; primary; association }
+      () = { private_ip_address; private_dns_name; primary; association } 
     let parse xml =
       Some
         {
@@ -301,6 +317,7 @@ module InstancePrivateIpAddress =
             (Util.option_bind (Xml.member "association" xml)
                InstanceNetworkInterfaceAssociation.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -315,6 +332,7 @@ module InstancePrivateIpAddress =
              (fun f  -> Query.Pair ("PrivateDnsName", (String.to_query f)));
            Util.option_map v.private_ip_address
              (fun f  -> Query.Pair ("PrivateIpAddress", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -328,6 +346,7 @@ module InstancePrivateIpAddress =
              (fun f  -> ("private_dns_name", (String.to_json f)));
            Util.option_map v.private_ip_address
              (fun f  -> ("private_ip_address", (String.to_json f)))])
+      
     let of_json j =
       {
         private_ip_address =
@@ -339,37 +358,38 @@ module InstancePrivateIpAddress =
         association =
           (Util.option_map (Json.lookup j "association")
              InstanceNetworkInterfaceAssociation.of_json)
-      }
+      } 
   end
 module DiskImageFormat =
   struct
     type t =
-      | VMDK
-      | RAW
-      | VHD
-    let str_to_t = [("VHD", VHD); ("RAW", RAW); ("VMDK", VMDK)]
-    let t_to_str = [(VHD, "VHD"); (RAW, "RAW"); (VMDK, "VMDK")]
-    let make v () = v
+      | VMDK 
+      | RAW 
+      | VHD 
+    let str_to_t = [("VHD", VHD); ("RAW", RAW); ("VMDK", VMDK)] 
+    let t_to_str = [(VHD, "VHD"); (RAW, "RAW"); (VMDK, "VMDK")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module BlockDeviceMapping =
   struct
     type t =
       {
-      virtual_name: String.t option;
-      device_name: String.t;
-      ebs: EbsBlockDevice.t option;
-      no_device: String.t option;}
+      virtual_name: String.t option ;
+      device_name: String.t ;
+      ebs: EbsBlockDevice.t option ;
+      no_device: String.t option }
     let make ?virtual_name  ~device_name  ?ebs  ?no_device  () =
-      { virtual_name; device_name; ebs; no_device }
+      { virtual_name; device_name; ebs; no_device } 
     let parse xml =
       Some
         {
@@ -383,6 +403,7 @@ module BlockDeviceMapping =
           no_device =
             (Util.option_bind (Xml.member "noDevice" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -393,6 +414,7 @@ module BlockDeviceMapping =
            Some (Query.Pair ("DeviceName", (String.to_query v.device_name)));
            Util.option_map v.virtual_name
              (fun f  -> Query.Pair ("VirtualName", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -403,6 +425,7 @@ module BlockDeviceMapping =
            Some ("device_name", (String.to_json v.device_name));
            Util.option_map v.virtual_name
              (fun f  -> ("virtual_name", (String.to_json f)))])
+      
     let of_json j =
       {
         virtual_name =
@@ -412,22 +435,22 @@ module BlockDeviceMapping =
         ebs = (Util.option_map (Json.lookup j "ebs") EbsBlockDevice.of_json);
         no_device =
           (Util.option_map (Json.lookup j "no_device") String.of_json)
-      }
+      } 
   end
 module InstanceNetworkInterfaceSpecification =
   struct
     type t =
       {
-      network_interface_id: String.t option;
-      device_index: Integer.t option;
-      subnet_id: String.t option;
-      description: String.t option;
-      private_ip_address: String.t option;
-      groups: SecurityGroupIdStringList.t;
-      delete_on_termination: Boolean.t option;
-      private_ip_addresses: PrivateIpAddressSpecificationList.t;
-      secondary_private_ip_address_count: Integer.t option;
-      associate_public_ip_address: Boolean.t option;}
+      network_interface_id: String.t option ;
+      device_index: Integer.t option ;
+      subnet_id: String.t option ;
+      description: String.t option ;
+      private_ip_address: String.t option ;
+      groups: SecurityGroupIdStringList.t ;
+      delete_on_termination: Boolean.t option ;
+      private_ip_addresses: PrivateIpAddressSpecificationList.t ;
+      secondary_private_ip_address_count: Integer.t option ;
+      associate_public_ip_address: Boolean.t option }
     let make ?network_interface_id  ?device_index  ?subnet_id  ?description 
       ?private_ip_address  ?(groups= [])  ?delete_on_termination 
       ?(private_ip_addresses= [])  ?secondary_private_ip_address_count 
@@ -443,7 +466,7 @@ module InstanceNetworkInterfaceSpecification =
         private_ip_addresses;
         secondary_private_ip_address_count;
         associate_public_ip_address
-      }
+      } 
     let parse xml =
       Some
         {
@@ -478,6 +501,7 @@ module InstanceNetworkInterfaceSpecification =
             (Util.option_bind (Xml.member "associatePublicIpAddress" xml)
                Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -512,6 +536,7 @@ module InstanceNetworkInterfaceSpecification =
            Util.option_map v.network_interface_id
              (fun f  ->
                 Query.Pair ("NetworkInterfaceId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -537,6 +562,7 @@ module InstanceNetworkInterfaceSpecification =
              (fun f  -> ("device_index", (Integer.to_json f)));
            Util.option_map v.network_interface_id
              (fun f  -> ("network_interface_id", (String.to_json f)))])
+      
     let of_json j =
       {
         network_interface_id =
@@ -567,18 +593,18 @@ module InstanceNetworkInterfaceSpecification =
         associate_public_ip_address =
           (Util.option_map (Json.lookup j "associate_public_ip_address")
              Boolean.of_json)
-      }
+      } 
   end
 module EbsInstanceBlockDevice =
   struct
     type t =
       {
-      volume_id: String.t option;
-      status: AttachmentStatus.t option;
-      attach_time: DateTime.t option;
-      delete_on_termination: Boolean.t option;}
+      volume_id: String.t option ;
+      status: AttachmentStatus.t option ;
+      attach_time: DateTime.t option ;
+      delete_on_termination: Boolean.t option }
     let make ?volume_id  ?status  ?attach_time  ?delete_on_termination  () =
-      { volume_id; status; attach_time; delete_on_termination }
+      { volume_id; status; attach_time; delete_on_termination } 
     let parse xml =
       Some
         {
@@ -593,6 +619,7 @@ module EbsInstanceBlockDevice =
             (Util.option_bind (Xml.member "deleteOnTermination" xml)
                Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -605,6 +632,7 @@ module EbsInstanceBlockDevice =
              (fun f  -> Query.Pair ("Status", (AttachmentStatus.to_query f)));
            Util.option_map v.volume_id
              (fun f  -> Query.Pair ("VolumeId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -616,6 +644,7 @@ module EbsInstanceBlockDevice =
              (fun f  -> ("status", (AttachmentStatus.to_json f)));
            Util.option_map v.volume_id
              (fun f  -> ("volume_id", (String.to_json f)))])
+      
     let of_json j =
       {
         volume_id =
@@ -627,28 +656,29 @@ module EbsInstanceBlockDevice =
         delete_on_termination =
           (Util.option_map (Json.lookup j "delete_on_termination")
              Boolean.of_json)
-      }
+      } 
   end
 module GroupIdentifierList =
   struct
     type t = GroupIdentifier.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map GroupIdentifier.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list GroupIdentifier.to_query v
-    let to_json v = `List (List.map GroupIdentifier.to_json v)
-    let of_json j = Json.to_list GroupIdentifier.of_json j
+      
+    let to_query v = Query.to_query_list GroupIdentifier.to_query v 
+    let to_json v = `List (List.map GroupIdentifier.to_json v) 
+    let of_json j = Json.to_list GroupIdentifier.of_json j 
   end
 module InstanceNetworkInterfaceAttachment =
   struct
     type t =
       {
-      attachment_id: String.t option;
-      device_index: Integer.t option;
-      status: AttachmentStatus.t option;
-      attach_time: DateTime.t option;
-      delete_on_termination: Boolean.t option;}
+      attachment_id: String.t option ;
+      device_index: Integer.t option ;
+      status: AttachmentStatus.t option ;
+      attach_time: DateTime.t option ;
+      delete_on_termination: Boolean.t option }
     let make ?attachment_id  ?device_index  ?status  ?attach_time 
       ?delete_on_termination  () =
       {
@@ -657,7 +687,7 @@ module InstanceNetworkInterfaceAttachment =
         status;
         attach_time;
         delete_on_termination
-      }
+      } 
     let parse xml =
       Some
         {
@@ -674,6 +704,7 @@ module InstanceNetworkInterfaceAttachment =
             (Util.option_bind (Xml.member "deleteOnTermination" xml)
                Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -688,6 +719,7 @@ module InstanceNetworkInterfaceAttachment =
              (fun f  -> Query.Pair ("DeviceIndex", (Integer.to_query f)));
            Util.option_map v.attachment_id
              (fun f  -> Query.Pair ("AttachmentId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -701,6 +733,7 @@ module InstanceNetworkInterfaceAttachment =
              (fun f  -> ("device_index", (Integer.to_json f)));
            Util.option_map v.attachment_id
              (fun f  -> ("attachment_id", (String.to_json f)))])
+      
     let of_json j =
       {
         attachment_id =
@@ -714,141 +747,147 @@ module InstanceNetworkInterfaceAttachment =
         delete_on_termination =
           (Util.option_map (Json.lookup j "delete_on_termination")
              Boolean.of_json)
-      }
+      } 
   end
 module InstancePrivateIpAddressList =
   struct
     type t = InstancePrivateIpAddress.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map InstancePrivateIpAddress.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list InstancePrivateIpAddress.to_query v
-    let to_json v = `List (List.map InstancePrivateIpAddress.to_json v)
-    let of_json j = Json.to_list InstancePrivateIpAddress.of_json j
+      
+    let to_query v = Query.to_query_list InstancePrivateIpAddress.to_query v 
+    let to_json v = `List (List.map InstancePrivateIpAddress.to_json v) 
+    let of_json j = Json.to_list InstancePrivateIpAddress.of_json j 
   end
 module NetworkInterfaceStatus =
   struct
     type t =
-      | Available
-      | Attaching
-      | In_use
-      | Detaching
+      | Available 
+      | Attaching 
+      | In_use 
+      | Detaching 
     let str_to_t =
       [("detaching", Detaching);
       ("in-use", In_use);
       ("attaching", Attaching);
-      ("available", Available)]
+      ("available", Available)] 
     let t_to_str =
       [(Detaching, "detaching");
       (In_use, "in-use");
       (Attaching, "attaching");
-      (Available, "available")]
-    let make v () = v
+      (Available, "available")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module ProductCodeValues =
   struct
     type t =
-      | Devpay
-      | Marketplace
-    let str_to_t = [("marketplace", Marketplace); ("devpay", Devpay)]
-    let t_to_str = [(Marketplace, "marketplace"); (Devpay, "devpay")]
-    let make v () = v
+      | Devpay 
+      | Marketplace 
+    let str_to_t = [("marketplace", Marketplace); ("devpay", Devpay)] 
+    let t_to_str = [(Marketplace, "marketplace"); (Devpay, "devpay")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module AttributeValue =
   struct
     type t = {
-      value: String.t option;}
-    let make ?value  () = { value }
+      value: String.t option }
+    let make ?value  () = { value } 
     let parse xml =
       Some
         { value = (Util.option_bind (Xml.member "value" xml) String.parse) }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.value
               (fun f  -> Query.Pair ("Value", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.value (fun f  -> ("value", (String.to_json f)))])
+      
     let of_json j =
-      { value = (Util.option_map (Json.lookup j "value") String.of_json) }
+      { value = (Util.option_map (Json.lookup j "value") String.of_json) } 
   end
 module InstanceType =
   struct
     type t =
-      | T1_micro
-      | M1_small
-      | M1_medium
-      | M1_large
-      | M1_xlarge
-      | M3_medium
-      | M3_large
-      | M3_xlarge
-      | M3_2xlarge
-      | M4_large
-      | M4_xlarge
-      | M4_2xlarge
-      | M4_4xlarge
-      | M4_10xlarge
-      | T2_micro
-      | T2_small
-      | T2_medium
-      | T2_large
-      | M2_xlarge
-      | M2_2xlarge
-      | M2_4xlarge
-      | Cr1_8xlarge
-      | I2_xlarge
-      | I2_2xlarge
-      | I2_4xlarge
-      | I2_8xlarge
-      | Hi1_4xlarge
-      | Hs1_8xlarge
-      | C1_medium
-      | C1_xlarge
-      | C3_large
-      | C3_xlarge
-      | C3_2xlarge
-      | C3_4xlarge
-      | C3_8xlarge
-      | C4_large
-      | C4_xlarge
-      | C4_2xlarge
-      | C4_4xlarge
-      | C4_8xlarge
-      | Cc1_4xlarge
-      | Cc2_8xlarge
-      | G2_2xlarge
-      | Cg1_4xlarge
-      | R3_large
-      | R3_xlarge
-      | R3_2xlarge
-      | R3_4xlarge
-      | R3_8xlarge
-      | D2_xlarge
-      | D2_2xlarge
-      | D2_4xlarge
-      | D2_8xlarge
+      | T1_micro 
+      | M1_small 
+      | M1_medium 
+      | M1_large 
+      | M1_xlarge 
+      | M3_medium 
+      | M3_large 
+      | M3_xlarge 
+      | M3_2xlarge 
+      | M4_large 
+      | M4_xlarge 
+      | M4_2xlarge 
+      | M4_4xlarge 
+      | M4_10xlarge 
+      | T2_micro 
+      | T2_small 
+      | T2_medium 
+      | T2_large 
+      | M2_xlarge 
+      | M2_2xlarge 
+      | M2_4xlarge 
+      | Cr1_8xlarge 
+      | I2_xlarge 
+      | I2_2xlarge 
+      | I2_4xlarge 
+      | I2_8xlarge 
+      | Hi1_4xlarge 
+      | Hs1_8xlarge 
+      | C1_medium 
+      | C1_xlarge 
+      | C3_large 
+      | C3_xlarge 
+      | C3_2xlarge 
+      | C3_4xlarge 
+      | C3_8xlarge 
+      | C4_large 
+      | C4_xlarge 
+      | C4_2xlarge 
+      | C4_4xlarge 
+      | C4_8xlarge 
+      | Cc1_4xlarge 
+      | Cc2_8xlarge 
+      | G2_2xlarge 
+      | Cg1_4xlarge 
+      | R3_large 
+      | R3_xlarge 
+      | R3_2xlarge 
+      | R3_4xlarge 
+      | R3_8xlarge 
+      | D2_xlarge 
+      | D2_2xlarge 
+      | D2_4xlarge 
+      | D2_8xlarge 
     let str_to_t =
       [("d2.8xlarge", D2_8xlarge);
       ("d2.4xlarge", D2_4xlarge);
@@ -902,7 +941,7 @@ module InstanceType =
       ("m1.large", M1_large);
       ("m1.medium", M1_medium);
       ("m1.small", M1_small);
-      ("t1.micro", T1_micro)]
+      ("t1.micro", T1_micro)] 
     let t_to_str =
       [(D2_8xlarge, "d2.8xlarge");
       (D2_4xlarge, "d2.4xlarge");
@@ -956,28 +995,29 @@ module InstanceType =
       (M1_large, "m1.large");
       (M1_medium, "m1.medium");
       (M1_small, "m1.small");
-      (T1_micro, "t1.micro")]
-    let make v () = v
+      (T1_micro, "t1.micro")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module DiskImageDescription =
   struct
     type t =
       {
-      format: DiskImageFormat.t;
-      size: Long.t;
-      import_manifest_url: String.t;
-      checksum: String.t option;}
+      format: DiskImageFormat.t ;
+      size: Long.t ;
+      import_manifest_url: String.t ;
+      checksum: String.t option }
     let make ~format  ~size  ~import_manifest_url  ?checksum  () =
-      { format; size; import_manifest_url; checksum }
+      { format; size; import_manifest_url; checksum } 
     let parse xml =
       Some
         {
@@ -995,6 +1035,7 @@ module DiskImageDescription =
           checksum =
             (Util.option_bind (Xml.member "checksum" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -1006,6 +1047,7 @@ module DiskImageDescription =
                   (String.to_query v.import_manifest_url)));
            Some (Query.Pair ("Size", (Long.to_query v.size)));
            Some (Query.Pair ("Format", (DiskImageFormat.to_query v.format)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -1015,6 +1057,7 @@ module DiskImageDescription =
              ("import_manifest_url", (String.to_json v.import_manifest_url));
            Some ("size", (Long.to_json v.size));
            Some ("format", (DiskImageFormat.to_json v.format))])
+      
     let of_json j =
       {
         format =
@@ -1026,14 +1069,14 @@ module DiskImageDescription =
              (Util.of_option_exn (Json.lookup j "import_manifest_url")));
         checksum =
           (Util.option_map (Json.lookup j "checksum") String.of_json)
-      }
+      } 
   end
 module DiskImageVolumeDescription =
   struct
     type t = {
-      size: Long.t option;
-      id: String.t;}
-    let make ?size  ~id  () = { size; id }
+      size: Long.t option ;
+      id: String.t }
+    let make ?size  ~id  () = { size; id } 
     let parse xml =
       Some
         {
@@ -1042,73 +1085,78 @@ module DiskImageVolumeDescription =
             (Xml.required "id"
                (Util.option_bind (Xml.member "id" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("Id", (String.to_query v.id)));
            Util.option_map v.size
              (fun f  -> Query.Pair ("Size", (Long.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("id", (String.to_json v.id));
            Util.option_map v.size (fun f  -> ("size", (Long.to_json f)))])
+      
     let of_json j =
       {
         size = (Util.option_map (Json.lookup j "size") Long.of_json);
         id = (String.of_json (Util.of_option_exn (Json.lookup j "id")))
-      }
+      } 
   end
 module StatusName =
   struct
     type t =
-      | Reachability
-    let str_to_t = [("reachability", Reachability)]
-    let t_to_str = [(Reachability, "reachability")]
-    let make v () = v
+      | Reachability 
+    let str_to_t = [("reachability", Reachability)] 
+    let t_to_str = [(Reachability, "reachability")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module StatusType =
   struct
     type t =
-      | Passed
-      | Failed
-      | Insufficient_data
-      | Initializing
+      | Passed 
+      | Failed 
+      | Insufficient_data 
+      | Initializing 
     let str_to_t =
       [("initializing", Initializing);
       ("insufficient-data", Insufficient_data);
       ("failed", Failed);
-      ("passed", Passed)]
+      ("passed", Passed)] 
     let t_to_str =
       [(Initializing, "initializing");
       (Insufficient_data, "insufficient-data");
       (Failed, "failed");
-      (Passed, "passed")]
-    let make v () = v
+      (Passed, "passed")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module IpRange =
   struct
     type t = {
-      cidr_ip: String.t;}
-    let make ~cidr_ip  () = { cidr_ip }
+      cidr_ip: String.t }
+    let make ~cidr_ip  () = { cidr_ip } 
     let parse xml =
       Some
         {
@@ -1116,55 +1164,61 @@ module IpRange =
             (Xml.required "cidrIp"
                (Util.option_bind (Xml.member "cidrIp" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("CidrIp", (String.to_query v.cidr_ip)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt [Some ("cidr_ip", (String.to_json v.cidr_ip))])
+      
     let of_json j =
       {
         cidr_ip =
           (String.of_json (Util.of_option_exn (Json.lookup j "cidr_ip")))
-      }
+      } 
   end
 module PrefixListId =
   struct
     type t = {
-      prefix_list_id: String.t option;}
-    let make ?prefix_list_id  () = { prefix_list_id }
+      prefix_list_id: String.t option }
+    let make ?prefix_list_id  () = { prefix_list_id } 
     let parse xml =
       Some
         {
           prefix_list_id =
             (Util.option_bind (Xml.member "prefixListId" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.prefix_list_id
               (fun f  -> Query.Pair ("PrefixListId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.prefix_list_id
               (fun f  -> ("prefix_list_id", (String.to_json f)))])
+      
     let of_json j =
       {
         prefix_list_id =
           (Util.option_map (Json.lookup j "prefix_list_id") String.of_json)
-      }
+      } 
   end
 module UserIdGroupPair =
   struct
     type t =
       {
-      user_id: String.t option;
-      group_name: String.t option;
-      group_id: String.t option;}
+      user_id: String.t option ;
+      group_name: String.t option ;
+      group_id: String.t option }
     let make ?user_id  ?group_name  ?group_id  () =
-      { user_id; group_name; group_id }
+      { user_id; group_name; group_id } 
     let parse xml =
       Some
         {
@@ -1174,6 +1228,7 @@ module UserIdGroupPair =
           group_id =
             (Util.option_bind (Xml.member "groupId" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -1183,6 +1238,7 @@ module UserIdGroupPair =
              (fun f  -> Query.Pair ("GroupName", (String.to_query f)));
            Util.option_map v.user_id
              (fun f  -> Query.Pair ("UserId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -1192,6 +1248,7 @@ module UserIdGroupPair =
              (fun f  -> ("group_name", (String.to_json f)));
            Util.option_map v.user_id
              (fun f  -> ("user_id", (String.to_json f)))])
+      
     let of_json j =
       {
         user_id = (Util.option_map (Json.lookup j "user_id") String.of_json);
@@ -1199,31 +1256,33 @@ module UserIdGroupPair =
           (Util.option_map (Json.lookup j "group_name") String.of_json);
         group_id =
           (Util.option_map (Json.lookup j "group_id") String.of_json)
-      }
+      } 
   end
 module BlockDeviceMappingList =
   struct
     type t = BlockDeviceMapping.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map BlockDeviceMapping.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list BlockDeviceMapping.to_query v
-    let to_json v = `List (List.map BlockDeviceMapping.to_json v)
-    let of_json j = Json.to_list BlockDeviceMapping.of_json j
+      
+    let to_query v = Query.to_query_list BlockDeviceMapping.to_query v 
+    let to_json v = `List (List.map BlockDeviceMapping.to_json v) 
+    let of_json j = Json.to_list BlockDeviceMapping.of_json j 
   end
 module IamInstanceProfileSpecification =
   struct
     type t = {
-      arn: String.t option;
-      name: String.t option;}
-    let make ?arn  ?name  () = { arn; name }
+      arn: String.t option ;
+      name: String.t option }
+    let make ?arn  ?name  () = { arn; name } 
     let parse xml =
       Some
         {
           arn = (Util.option_bind (Xml.member "arn" xml) String.parse);
           name = (Util.option_bind (Xml.member "name" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -1231,65 +1290,71 @@ module IamInstanceProfileSpecification =
               (fun f  -> Query.Pair ("Name", (String.to_query f)));
            Util.option_map v.arn
              (fun f  -> Query.Pair ("Arn", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.name (fun f  -> ("name", (String.to_json f)));
            Util.option_map v.arn (fun f  -> ("arn", (String.to_json f)))])
+      
     let of_json j =
       {
         arn = (Util.option_map (Json.lookup j "arn") String.of_json);
         name = (Util.option_map (Json.lookup j "name") String.of_json)
-      }
+      } 
   end
 module InstanceNetworkInterfaceSpecificationList =
   struct
     type t = InstanceNetworkInterfaceSpecification.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map InstanceNetworkInterfaceSpecification.parse
            (Xml.members "item" xml))
+      
     let to_query v =
-      Query.to_query_list InstanceNetworkInterfaceSpecification.to_query v
+      Query.to_query_list InstanceNetworkInterfaceSpecification.to_query v 
     let to_json v =
-      `List (List.map InstanceNetworkInterfaceSpecification.to_json v)
+      `List (List.map InstanceNetworkInterfaceSpecification.to_json v) 
     let of_json j =
-      Json.to_list InstanceNetworkInterfaceSpecification.of_json j
+      Json.to_list InstanceNetworkInterfaceSpecification.of_json j 
   end
 module SpotFleetMonitoring =
   struct
     type t = {
-      enabled: Boolean.t option;}
-    let make ?enabled  () = { enabled }
+      enabled: Boolean.t option }
+    let make ?enabled  () = { enabled } 
     let parse xml =
       Some
         {
           enabled =
             (Util.option_bind (Xml.member "enabled" xml) Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.enabled
               (fun f  -> Query.Pair ("Enabled", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.enabled
               (fun f  -> ("enabled", (Boolean.to_json f)))])
+      
     let of_json j =
       { enabled = (Util.option_map (Json.lookup j "enabled") Boolean.of_json)
-      }
+      } 
   end
 module SpotPlacement =
   struct
     type t =
       {
-      availability_zone: String.t option;
-      group_name: String.t option;}
+      availability_zone: String.t option ;
+      group_name: String.t option }
     let make ?availability_zone  ?group_name  () =
-      { availability_zone; group_name }
+      { availability_zone; group_name } 
     let parse xml =
       Some
         {
@@ -1299,6 +1364,7 @@ module SpotPlacement =
           group_name =
             (Util.option_bind (Xml.member "groupName" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -1306,6 +1372,7 @@ module SpotPlacement =
               (fun f  -> Query.Pair ("GroupName", (String.to_query f)));
            Util.option_map v.availability_zone
              (fun f  -> Query.Pair ("AvailabilityZone", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -1313,41 +1380,43 @@ module SpotPlacement =
               (fun f  -> ("group_name", (String.to_json f)));
            Util.option_map v.availability_zone
              (fun f  -> ("availability_zone", (String.to_json f)))])
+      
     let of_json j =
       {
         availability_zone =
           (Util.option_map (Json.lookup j "availability_zone") String.of_json);
         group_name =
           (Util.option_map (Json.lookup j "group_name") String.of_json)
-      }
+      } 
   end
 module VolumeStatusName =
   struct
     type t =
-      | Io_enabled
-      | Io_performance
+      | Io_enabled 
+      | Io_performance 
     let str_to_t =
-      [("io-performance", Io_performance); ("io-enabled", Io_enabled)]
+      [("io-performance", Io_performance); ("io-enabled", Io_enabled)] 
     let t_to_str =
-      [(Io_performance, "io-performance"); (Io_enabled, "io-enabled")]
-    let make v () = v
+      [(Io_performance, "io-performance"); (Io_enabled, "io-enabled")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module InstanceBlockDeviceMapping =
   struct
     type t =
       {
-      device_name: String.t option;
-      ebs: EbsInstanceBlockDevice.t option;}
-    let make ?device_name  ?ebs  () = { device_name; ebs }
+      device_name: String.t option ;
+      ebs: EbsInstanceBlockDevice.t option }
+    let make ?device_name  ?ebs  () = { device_name; ebs } 
     let parse xml =
       Some
         {
@@ -1357,6 +1426,7 @@ module InstanceBlockDeviceMapping =
             (Util.option_bind (Xml.member "ebs" xml)
                EbsInstanceBlockDevice.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -1365,6 +1435,7 @@ module InstanceBlockDeviceMapping =
                  Query.Pair ("Ebs", (EbsInstanceBlockDevice.to_query f)));
            Util.option_map v.device_name
              (fun f  -> Query.Pair ("DeviceName", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -1372,6 +1443,7 @@ module InstanceBlockDeviceMapping =
               (fun f  -> ("ebs", (EbsInstanceBlockDevice.to_json f)));
            Util.option_map v.device_name
              (fun f  -> ("device_name", (String.to_json f)))])
+      
     let of_json j =
       {
         device_name =
@@ -1379,26 +1451,26 @@ module InstanceBlockDeviceMapping =
         ebs =
           (Util.option_map (Json.lookup j "ebs")
              EbsInstanceBlockDevice.of_json)
-      }
+      } 
   end
 module InstanceNetworkInterface =
   struct
     type t =
       {
-      network_interface_id: String.t option;
-      subnet_id: String.t option;
-      vpc_id: String.t option;
-      description: String.t option;
-      owner_id: String.t option;
-      status: NetworkInterfaceStatus.t option;
-      mac_address: String.t option;
-      private_ip_address: String.t option;
-      private_dns_name: String.t option;
-      source_dest_check: Boolean.t option;
-      groups: GroupIdentifierList.t;
-      attachment: InstanceNetworkInterfaceAttachment.t option;
-      association: InstanceNetworkInterfaceAssociation.t option;
-      private_ip_addresses: InstancePrivateIpAddressList.t;}
+      network_interface_id: String.t option ;
+      subnet_id: String.t option ;
+      vpc_id: String.t option ;
+      description: String.t option ;
+      owner_id: String.t option ;
+      status: NetworkInterfaceStatus.t option ;
+      mac_address: String.t option ;
+      private_ip_address: String.t option ;
+      private_dns_name: String.t option ;
+      source_dest_check: Boolean.t option ;
+      groups: GroupIdentifierList.t ;
+      attachment: InstanceNetworkInterfaceAttachment.t option ;
+      association: InstanceNetworkInterfaceAssociation.t option ;
+      private_ip_addresses: InstancePrivateIpAddressList.t }
     let make ?network_interface_id  ?subnet_id  ?vpc_id  ?description 
       ?owner_id  ?status  ?mac_address  ?private_ip_address 
       ?private_dns_name  ?source_dest_check  ?(groups= [])  ?attachment 
@@ -1418,7 +1490,7 @@ module InstanceNetworkInterface =
         attachment;
         association;
         private_ip_addresses
-      }
+      } 
     let parse xml =
       Some
         {
@@ -1460,6 +1532,7 @@ module InstanceNetworkInterface =
                (Util.option_bind (Xml.member "privateIpAddressesSet" xml)
                   InstancePrivateIpAddressList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -1503,6 +1576,7 @@ module InstanceNetworkInterface =
            Util.option_map v.network_interface_id
              (fun f  ->
                 Query.Pair ("NetworkInterfaceId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -1538,6 +1612,7 @@ module InstanceNetworkInterface =
              (fun f  -> ("subnet_id", (String.to_json f)));
            Util.option_map v.network_interface_id
              (fun f  -> ("network_interface_id", (String.to_json f)))])
+      
     let of_json j =
       {
         network_interface_id =
@@ -1575,96 +1650,99 @@ module InstanceNetworkInterface =
         private_ip_addresses =
           (InstancePrivateIpAddressList.of_json
              (Util.of_option_exn (Json.lookup j "private_ip_addresses")))
-      }
+      } 
   end
 module InstanceStateName =
   struct
     type t =
-      | Pending
-      | Running
-      | Shutting_down
-      | Terminated
-      | Stopping
-      | Stopped
+      | Pending 
+      | Running 
+      | Shutting_down 
+      | Terminated 
+      | Stopping 
+      | Stopped 
     let str_to_t =
       [("stopped", Stopped);
       ("stopping", Stopping);
       ("terminated", Terminated);
       ("shutting-down", Shutting_down);
       ("running", Running);
-      ("pending", Pending)]
+      ("pending", Pending)] 
     let t_to_str =
       [(Stopped, "stopped");
       (Stopping, "stopping");
       (Terminated, "terminated");
       (Shutting_down, "shutting-down");
       (Running, "running");
-      (Pending, "pending")]
-    let make v () = v
+      (Pending, "pending")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module MonitoringState =
   struct
     type t =
-      | Disabled
-      | Disabling
-      | Enabled
-      | Pending
+      | Disabled 
+      | Disabling 
+      | Enabled 
+      | Pending 
     let str_to_t =
       [("pending", Pending);
       ("enabled", Enabled);
       ("disabling", Disabling);
-      ("disabled", Disabled)]
+      ("disabled", Disabled)] 
     let t_to_str =
       [(Pending, "pending");
       (Enabled, "enabled");
       (Disabling, "disabling");
-      (Disabled, "disabled")]
-    let make v () = v
+      (Disabled, "disabled")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module Tenancy =
   struct
     type t =
-      | Default
-      | Dedicated
-    let str_to_t = [("dedicated", Dedicated); ("default", Default)]
-    let t_to_str = [(Dedicated, "dedicated"); (Default, "default")]
-    let make v () = v
+      | Default 
+      | Dedicated 
+    let str_to_t = [("dedicated", Dedicated); ("default", Default)] 
+    let t_to_str = [(Dedicated, "dedicated"); (Default, "default")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module ProductCode =
   struct
     type t =
       {
-      product_code_id: String.t option;
-      product_code_type: ProductCodeValues.t option;}
+      product_code_id: String.t option ;
+      product_code_type: ProductCodeValues.t option }
     let make ?product_code_id  ?product_code_type  () =
-      { product_code_id; product_code_type }
+      { product_code_id; product_code_type } 
     let parse xml =
       Some
         {
@@ -1673,6 +1751,7 @@ module ProductCode =
           product_code_type =
             (Util.option_bind (Xml.member "type" xml) ProductCodeValues.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -1680,6 +1759,7 @@ module ProductCode =
               (fun f  -> Query.Pair ("Type", (ProductCodeValues.to_query f)));
            Util.option_map v.product_code_id
              (fun f  -> Query.Pair ("ProductCode", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -1687,6 +1767,7 @@ module ProductCode =
               (fun f  -> ("product_code_type", (ProductCodeValues.to_json f)));
            Util.option_map v.product_code_id
              (fun f  -> ("product_code_id", (String.to_json f)))])
+      
     let of_json j =
       {
         product_code_id =
@@ -1694,14 +1775,14 @@ module ProductCode =
         product_code_type =
           (Util.option_map (Json.lookup j "product_code_type")
              ProductCodeValues.of_json)
-      }
+      } 
   end
 module Tag =
   struct
     type t = {
-      key: String.t;
-      value: String.t;}
-    let make ~key  ~value  () = { key; value }
+      key: String.t ;
+      value: String.t }
+    let make ~key  ~value  () = { key; value } 
     let parse xml =
       Some
         {
@@ -1712,31 +1793,34 @@ module Tag =
             (Xml.required "value"
                (Util.option_bind (Xml.member "value" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("Value", (String.to_query v.value)));
            Some (Query.Pair ("Key", (String.to_query v.key)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("value", (String.to_json v.value));
            Some ("key", (String.to_json v.key))])
+      
     let of_json j =
       {
         key = (String.of_json (Util.of_option_exn (Json.lookup j "key")));
         value = (String.of_json (Util.of_option_exn (Json.lookup j "value")))
-      }
+      } 
   end
 module NetworkInterfaceAssociation =
   struct
     type t =
       {
-      public_ip: String.t option;
-      public_dns_name: String.t option;
-      ip_owner_id: String.t option;
-      allocation_id: String.t option;
-      association_id: String.t option;}
+      public_ip: String.t option ;
+      public_dns_name: String.t option ;
+      ip_owner_id: String.t option ;
+      allocation_id: String.t option ;
+      association_id: String.t option }
     let make ?public_ip  ?public_dns_name  ?ip_owner_id  ?allocation_id 
       ?association_id  () =
       {
@@ -1745,7 +1829,7 @@ module NetworkInterfaceAssociation =
         ip_owner_id;
         allocation_id;
         association_id
-      }
+      } 
     let parse xml =
       Some
         {
@@ -1760,6 +1844,7 @@ module NetworkInterfaceAssociation =
           association_id =
             (Util.option_bind (Xml.member "associationId" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -1773,6 +1858,7 @@ module NetworkInterfaceAssociation =
              (fun f  -> Query.Pair ("PublicDnsName", (String.to_query f)));
            Util.option_map v.public_ip
              (fun f  -> Query.Pair ("PublicIp", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -1786,6 +1872,7 @@ module NetworkInterfaceAssociation =
              (fun f  -> ("public_dns_name", (String.to_json f)));
            Util.option_map v.public_ip
              (fun f  -> ("public_ip", (String.to_json f)))])
+      
     let of_json j =
       {
         public_ip =
@@ -1798,29 +1885,30 @@ module NetworkInterfaceAssociation =
           (Util.option_map (Json.lookup j "allocation_id") String.of_json);
         association_id =
           (Util.option_map (Json.lookup j "association_id") String.of_json)
-      }
+      } 
   end
 module DhcpConfigurationValueList =
   struct
     type t = AttributeValue.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map AttributeValue.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list AttributeValue.to_query v
-    let to_json v = `List (List.map AttributeValue.to_json v)
-    let of_json j = Json.to_list AttributeValue.of_json j
+      
+    let to_query v = Query.to_query_list AttributeValue.to_query v 
+    let to_json v = `List (List.map AttributeValue.to_json v) 
+    let of_json j = Json.to_list AttributeValue.of_json j 
   end
 module ReservedInstancesConfiguration =
   struct
     type t =
       {
-      availability_zone: String.t option;
-      platform: String.t option;
-      instance_count: Integer.t option;
-      instance_type: InstanceType.t option;}
+      availability_zone: String.t option ;
+      platform: String.t option ;
+      instance_count: Integer.t option ;
+      instance_type: InstanceType.t option }
     let make ?availability_zone  ?platform  ?instance_count  ?instance_type 
-      () = { availability_zone; platform; instance_count; instance_type }
+      () = { availability_zone; platform; instance_count; instance_type } 
     let parse xml =
       Some
         {
@@ -1835,6 +1923,7 @@ module ReservedInstancesConfiguration =
             (Util.option_bind (Xml.member "instanceType" xml)
                InstanceType.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -1847,6 +1936,7 @@ module ReservedInstancesConfiguration =
              (fun f  -> Query.Pair ("Platform", (String.to_query f)));
            Util.option_map v.availability_zone
              (fun f  -> Query.Pair ("AvailabilityZone", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -1858,6 +1948,7 @@ module ReservedInstancesConfiguration =
              (fun f  -> ("platform", (String.to_json f)));
            Util.option_map v.availability_zone
              (fun f  -> ("availability_zone", (String.to_json f)))])
+      
     let of_json j =
       {
         availability_zone =
@@ -1869,36 +1960,37 @@ module ReservedInstancesConfiguration =
         instance_type =
           (Util.option_map (Json.lookup j "instance_type")
              InstanceType.of_json)
-      }
+      } 
   end
 module RecurringChargeFrequency =
   struct
     type t =
-      | Hourly
-    let str_to_t = [("Hourly", Hourly)]
-    let t_to_str = [(Hourly, "Hourly")]
-    let make v () = v
+      | Hourly 
+    let str_to_t = [("Hourly", Hourly)] 
+    let t_to_str = [(Hourly, "Hourly")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module ImportInstanceVolumeDetailItem =
   struct
     type t =
       {
-      bytes_converted: Long.t;
-      availability_zone: String.t;
-      image: DiskImageDescription.t;
-      volume: DiskImageVolumeDescription.t;
-      status: String.t;
-      status_message: String.t option;
-      description: String.t option;}
+      bytes_converted: Long.t ;
+      availability_zone: String.t ;
+      image: DiskImageDescription.t ;
+      volume: DiskImageVolumeDescription.t ;
+      status: String.t ;
+      status_message: String.t option ;
+      description: String.t option }
     let make ~bytes_converted  ~availability_zone  ~image  ~volume  ~status 
       ?status_message  ?description  () =
       {
@@ -1909,7 +2001,7 @@ module ImportInstanceVolumeDetailItem =
         status;
         status_message;
         description
-      }
+      } 
     let parse xml =
       Some
         {
@@ -1936,6 +2028,7 @@ module ImportInstanceVolumeDetailItem =
           description =
             (Util.option_bind (Xml.member "description" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -1955,6 +2048,7 @@ module ImportInstanceVolumeDetailItem =
            Some
              (Query.Pair
                 ("BytesConverted", (Long.to_query v.bytes_converted)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -1967,6 +2061,7 @@ module ImportInstanceVolumeDetailItem =
            Some ("image", (DiskImageDescription.to_json v.image));
            Some ("availability_zone", (String.to_json v.availability_zone));
            Some ("bytes_converted", (Long.to_json v.bytes_converted))])
+      
     let of_json j =
       {
         bytes_converted =
@@ -1987,136 +2082,141 @@ module ImportInstanceVolumeDetailItem =
           (Util.option_map (Json.lookup j "status_message") String.of_json);
         description =
           (Util.option_map (Json.lookup j "description") String.of_json)
-      }
+      } 
   end
 module RouteOrigin =
   struct
     type t =
-      | CreateRouteTable
-      | CreateRoute
-      | EnableVgwRoutePropagation
+      | CreateRouteTable 
+      | CreateRoute 
+      | EnableVgwRoutePropagation 
     let str_to_t =
       [("EnableVgwRoutePropagation", EnableVgwRoutePropagation);
       ("CreateRoute", CreateRoute);
-      ("CreateRouteTable", CreateRouteTable)]
+      ("CreateRouteTable", CreateRouteTable)] 
     let t_to_str =
       [(EnableVgwRoutePropagation, "EnableVgwRoutePropagation");
       (CreateRoute, "CreateRoute");
-      (CreateRouteTable, "CreateRouteTable")]
-    let make v () = v
+      (CreateRouteTable, "CreateRouteTable")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module RouteState =
   struct
     type t =
-      | Active
-      | Blackhole
-    let str_to_t = [("blackhole", Blackhole); ("active", Active)]
-    let t_to_str = [(Blackhole, "blackhole"); (Active, "active")]
-    let make v () = v
+      | Active 
+      | Blackhole 
+    let str_to_t = [("blackhole", Blackhole); ("active", Active)] 
+    let t_to_str = [(Blackhole, "blackhole"); (Active, "active")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module ListingState =
   struct
     type t =
-      | Available
-      | Sold
-      | Cancelled
-      | Pending
+      | Available 
+      | Sold 
+      | Cancelled 
+      | Pending 
     let str_to_t =
       [("pending", Pending);
       ("cancelled", Cancelled);
       ("sold", Sold);
-      ("available", Available)]
+      ("available", Available)] 
     let t_to_str =
       [(Pending, "pending");
       (Cancelled, "cancelled");
       (Sold, "sold");
-      (Available, "available")]
-    let make v () = v
+      (Available, "available")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module CurrencyCodeValues =
   struct
     type t =
-      | USD
-    let str_to_t = [("USD", USD)]
-    let t_to_str = [(USD, "USD")]
-    let make v () = v
+      | USD 
+    let str_to_t = [("USD", USD)] 
+    let t_to_str = [(USD, "USD")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module EventCode =
   struct
     type t =
-      | Instance_reboot
-      | System_reboot
-      | System_maintenance
-      | Instance_retirement
-      | Instance_stop
+      | Instance_reboot 
+      | System_reboot 
+      | System_maintenance 
+      | Instance_retirement 
+      | Instance_stop 
     let str_to_t =
       [("instance-stop", Instance_stop);
       ("instance-retirement", Instance_retirement);
       ("system-maintenance", System_maintenance);
       ("system-reboot", System_reboot);
-      ("instance-reboot", Instance_reboot)]
+      ("instance-reboot", Instance_reboot)] 
     let t_to_str =
       [(Instance_stop, "instance-stop");
       (Instance_retirement, "instance-retirement");
       (System_maintenance, "system-maintenance");
       (System_reboot, "system-reboot");
-      (Instance_reboot, "instance-reboot")]
-    let make v () = v
+      (Instance_reboot, "instance-reboot")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module InstanceStatusDetails =
   struct
     type t =
       {
-      name: StatusName.t option;
-      status: StatusType.t option;
-      impaired_since: DateTime.t option;}
+      name: StatusName.t option ;
+      status: StatusType.t option ;
+      impaired_since: DateTime.t option }
     let make ?name  ?status  ?impaired_since  () =
-      { name; status; impaired_since }
+      { name; status; impaired_since } 
     let parse xml =
       Some
         {
@@ -2126,6 +2226,7 @@ module InstanceStatusDetails =
           impaired_since =
             (Util.option_bind (Xml.member "impairedSince" xml) DateTime.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -2135,6 +2236,7 @@ module InstanceStatusDetails =
              (fun f  -> Query.Pair ("Status", (StatusType.to_query f)));
            Util.option_map v.name
              (fun f  -> Query.Pair ("Name", (StatusName.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -2144,6 +2246,7 @@ module InstanceStatusDetails =
              (fun f  -> ("status", (StatusType.to_json f)));
            Util.option_map v.name
              (fun f  -> ("name", (StatusName.to_json f)))])
+      
     let of_json j =
       {
         name = (Util.option_map (Json.lookup j "name") StatusName.of_json);
@@ -2151,60 +2254,61 @@ module InstanceStatusDetails =
           (Util.option_map (Json.lookup j "status") StatusType.of_json);
         impaired_since =
           (Util.option_map (Json.lookup j "impaired_since") DateTime.of_json)
-      }
+      } 
   end
 module IpRangeList =
   struct
     type t = IpRange.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map IpRange.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list IpRange.to_query v
-    let to_json v = `List (List.map IpRange.to_json v)
-    let of_json j = Json.to_list IpRange.of_json j
+      Util.option_all (List.map IpRange.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list IpRange.to_query v 
+    let to_json v = `List (List.map IpRange.to_json v) 
+    let of_json j = Json.to_list IpRange.of_json j 
   end
 module PrefixListIdList =
   struct
     type t = PrefixListId.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map PrefixListId.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list PrefixListId.to_query v
-    let to_json v = `List (List.map PrefixListId.to_json v)
-    let of_json j = Json.to_list PrefixListId.of_json j
+      Util.option_all (List.map PrefixListId.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list PrefixListId.to_query v 
+    let to_json v = `List (List.map PrefixListId.to_json v) 
+    let of_json j = Json.to_list PrefixListId.of_json j 
   end
 module UserIdGroupPairList =
   struct
     type t = UserIdGroupPair.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map UserIdGroupPair.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list UserIdGroupPair.to_query v
-    let to_json v = `List (List.map UserIdGroupPair.to_json v)
-    let of_json j = Json.to_list UserIdGroupPair.of_json j
+      
+    let to_query v = Query.to_query_list UserIdGroupPair.to_query v 
+    let to_json v = `List (List.map UserIdGroupPair.to_json v) 
+    let of_json j = Json.to_list UserIdGroupPair.of_json j 
   end
 module SpotFleetLaunchSpecification =
   struct
     type t =
       {
-      image_id: String.t option;
-      key_name: String.t option;
-      security_groups: GroupIdentifierList.t;
-      user_data: String.t option;
-      addressing_type: String.t option;
-      instance_type: InstanceType.t option;
-      placement: SpotPlacement.t option;
-      kernel_id: String.t option;
-      ramdisk_id: String.t option;
-      block_device_mappings: BlockDeviceMappingList.t;
-      monitoring: SpotFleetMonitoring.t option;
-      subnet_id: String.t option;
-      network_interfaces: InstanceNetworkInterfaceSpecificationList.t;
-      iam_instance_profile: IamInstanceProfileSpecification.t option;
-      ebs_optimized: Boolean.t option;
-      weighted_capacity: Double.t option;
-      spot_price: String.t option;}
+      image_id: String.t option ;
+      key_name: String.t option ;
+      security_groups: GroupIdentifierList.t ;
+      user_data: String.t option ;
+      addressing_type: String.t option ;
+      instance_type: InstanceType.t option ;
+      placement: SpotPlacement.t option ;
+      kernel_id: String.t option ;
+      ramdisk_id: String.t option ;
+      block_device_mappings: BlockDeviceMappingList.t ;
+      monitoring: SpotFleetMonitoring.t option ;
+      subnet_id: String.t option ;
+      network_interfaces: InstanceNetworkInterfaceSpecificationList.t ;
+      iam_instance_profile: IamInstanceProfileSpecification.t option ;
+      ebs_optimized: Boolean.t option ;
+      weighted_capacity: Double.t option ;
+      spot_price: String.t option }
     let make ?image_id  ?key_name  ?(security_groups= [])  ?user_data 
       ?addressing_type  ?instance_type  ?placement  ?kernel_id  ?ramdisk_id 
       ?(block_device_mappings= [])  ?monitoring  ?subnet_id 
@@ -2228,7 +2332,7 @@ module SpotFleetLaunchSpecification =
         ebs_optimized;
         weighted_capacity;
         spot_price
-      }
+      } 
     let parse xml =
       Some
         {
@@ -2278,6 +2382,7 @@ module SpotFleetLaunchSpecification =
           spot_price =
             (Util.option_bind (Xml.member "spotPrice" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -2327,6 +2432,7 @@ module SpotFleetLaunchSpecification =
              (fun f  -> Query.Pair ("KeyName", (String.to_query f)));
            Util.option_map v.image_id
              (fun f  -> Query.Pair ("ImageId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -2370,6 +2476,7 @@ module SpotFleetLaunchSpecification =
              (fun f  -> ("key_name", (String.to_json f)));
            Util.option_map v.image_id
              (fun f  -> ("image_id", (String.to_json f)))])
+      
     let of_json j =
       {
         image_id =
@@ -2412,14 +2519,14 @@ module SpotFleetLaunchSpecification =
           (Util.option_map (Json.lookup j "weighted_capacity") Double.of_json);
         spot_price =
           (Util.option_map (Json.lookup j "spot_price") String.of_json)
-      }
+      } 
   end
 module VolumeStatusDetails =
   struct
     type t = {
-      name: VolumeStatusName.t option;
-      status: String.t option;}
-    let make ?name  ?status  () = { name; status }
+      name: VolumeStatusName.t option ;
+      status: String.t option }
+    let make ?name  ?status  () = { name; status } 
     let parse xml =
       Some
         {
@@ -2427,6 +2534,7 @@ module VolumeStatusDetails =
             (Util.option_bind (Xml.member "name" xml) VolumeStatusName.parse);
           status = (Util.option_bind (Xml.member "status" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -2434,6 +2542,7 @@ module VolumeStatusDetails =
               (fun f  -> Query.Pair ("Status", (String.to_query f)));
            Util.option_map v.name
              (fun f  -> Query.Pair ("Name", (VolumeStatusName.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -2441,170 +2550,179 @@ module VolumeStatusDetails =
               (fun f  -> ("status", (String.to_json f)));
            Util.option_map v.name
              (fun f  -> ("name", (VolumeStatusName.to_json f)))])
+      
     let of_json j =
       {
         name =
           (Util.option_map (Json.lookup j "name") VolumeStatusName.of_json);
         status = (Util.option_map (Json.lookup j "status") String.of_json)
-      }
+      } 
   end
 module VolumeAttachmentState =
   struct
     type t =
-      | Attaching
-      | Attached
-      | Detaching
-      | Detached
+      | Attaching 
+      | Attached 
+      | Detaching 
+      | Detached 
     let str_to_t =
       [("detached", Detached);
       ("detaching", Detaching);
       ("attached", Attached);
-      ("attaching", Attaching)]
+      ("attaching", Attaching)] 
     let t_to_str =
       [(Detached, "detached");
       (Detaching, "detaching");
       (Attached, "attached");
-      (Attaching, "attaching")]
-    let make v () = v
+      (Attaching, "attaching")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module TelemetryStatus =
   struct
     type t =
-      | UP
-      | DOWN
-    let str_to_t = [("DOWN", DOWN); ("UP", UP)]
-    let t_to_str = [(DOWN, "DOWN"); (UP, "UP")]
-    let make v () = v
+      | UP 
+      | DOWN 
+    let str_to_t = [("DOWN", DOWN); ("UP", UP)] 
+    let t_to_str = [(DOWN, "DOWN"); (UP, "UP")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module VpnState =
   struct
     type t =
-      | Pending
-      | Available
-      | Deleting
-      | Deleted
+      | Pending 
+      | Available 
+      | Deleting 
+      | Deleted 
     let str_to_t =
       [("deleted", Deleted);
       ("deleting", Deleting);
       ("available", Available);
-      ("pending", Pending)]
+      ("pending", Pending)] 
     let t_to_str =
       [(Deleted, "deleted");
       (Deleting, "deleting");
       (Available, "available");
-      (Pending, "pending")]
-    let make v () = v
+      (Pending, "pending")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module VpnStaticRouteSource =
   struct
     type t =
-      | Static
-    let str_to_t = [("Static", Static)]
-    let t_to_str = [(Static, "Static")]
-    let make v () = v
+      | Static 
+    let str_to_t = [("Static", Static)] 
+    let t_to_str = [(Static, "Static")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module ArchitectureValues =
   struct
     type t =
-      | I386
-      | X86_64
-    let str_to_t = [("x86_64", X86_64); ("i386", I386)]
-    let t_to_str = [(X86_64, "x86_64"); (I386, "i386")]
-    let make v () = v
+      | I386 
+      | X86_64 
+    let str_to_t = [("x86_64", X86_64); ("i386", I386)] 
+    let t_to_str = [(X86_64, "x86_64"); (I386, "i386")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module DeviceType =
   struct
     type t =
-      | Ebs
-      | Instance_store
-    let str_to_t = [("instance-store", Instance_store); ("ebs", Ebs)]
-    let t_to_str = [(Instance_store, "instance-store"); (Ebs, "ebs")]
-    let make v () = v
+      | Ebs 
+      | Instance_store 
+    let str_to_t = [("instance-store", Instance_store); ("ebs", Ebs)] 
+    let t_to_str = [(Instance_store, "instance-store"); (Ebs, "ebs")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module HypervisorType =
   struct
     type t =
-      | Ovm
-      | Xen
-    let str_to_t = [("xen", Xen); ("ovm", Ovm)]
-    let t_to_str = [(Xen, "xen"); (Ovm, "ovm")]
-    let make v () = v
+      | Ovm 
+      | Xen 
+    let str_to_t = [("xen", Xen); ("ovm", Ovm)] 
+    let t_to_str = [(Xen, "xen"); (Ovm, "ovm")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module IamInstanceProfile =
   struct
     type t = {
-      arn: String.t option;
-      id: String.t option;}
-    let make ?arn  ?id  () = { arn; id }
+      arn: String.t option ;
+      id: String.t option }
+    let make ?arn  ?id  () = { arn; id } 
     let parse xml =
       Some
         {
           arn = (Util.option_bind (Xml.member "arn" xml) String.parse);
           id = (Util.option_bind (Xml.member "id" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -2612,63 +2730,68 @@ module IamInstanceProfile =
               (fun f  -> Query.Pair ("Id", (String.to_query f)));
            Util.option_map v.arn
              (fun f  -> Query.Pair ("Arn", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.id (fun f  -> ("id", (String.to_json f)));
            Util.option_map v.arn (fun f  -> ("arn", (String.to_json f)))])
+      
     let of_json j =
       {
         arn = (Util.option_map (Json.lookup j "arn") String.of_json);
         id = (Util.option_map (Json.lookup j "id") String.of_json)
-      }
+      } 
   end
 module InstanceBlockDeviceMappingList =
   struct
     type t = InstanceBlockDeviceMapping.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map InstanceBlockDeviceMapping.parse (Xml.members "item" xml))
+      
     let to_query v =
-      Query.to_query_list InstanceBlockDeviceMapping.to_query v
-    let to_json v = `List (List.map InstanceBlockDeviceMapping.to_json v)
-    let of_json j = Json.to_list InstanceBlockDeviceMapping.of_json j
+      Query.to_query_list InstanceBlockDeviceMapping.to_query v 
+    let to_json v = `List (List.map InstanceBlockDeviceMapping.to_json v) 
+    let of_json j = Json.to_list InstanceBlockDeviceMapping.of_json j 
   end
 module InstanceLifecycleType =
   struct
     type t =
-      | Spot
-    let str_to_t = [("spot", Spot)]
-    let t_to_str = [(Spot, "spot")]
-    let make v () = v
+      | Spot 
+    let str_to_t = [("spot", Spot)] 
+    let t_to_str = [(Spot, "spot")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module InstanceNetworkInterfaceList =
   struct
     type t = InstanceNetworkInterface.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map InstanceNetworkInterface.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list InstanceNetworkInterface.to_query v
-    let to_json v = `List (List.map InstanceNetworkInterface.to_json v)
-    let of_json j = Json.to_list InstanceNetworkInterface.of_json j
+      
+    let to_query v = Query.to_query_list InstanceNetworkInterface.to_query v 
+    let to_json v = `List (List.map InstanceNetworkInterface.to_json v) 
+    let of_json j = Json.to_list InstanceNetworkInterface.of_json j 
   end
 module InstanceState =
   struct
     type t = {
-      code: Integer.t;
-      name: InstanceStateName.t;}
-    let make ~code  ~name  () = { code; name }
+      code: Integer.t ;
+      name: InstanceStateName.t }
+    let make ~code  ~name  () = { code; name } 
     let parse xml =
       Some
         {
@@ -2680,60 +2803,66 @@ module InstanceState =
                (Util.option_bind (Xml.member "name" xml)
                   InstanceStateName.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("Name", (InstanceStateName.to_query v.name)));
            Some (Query.Pair ("Code", (Integer.to_query v.code)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("name", (InstanceStateName.to_json v.name));
            Some ("code", (Integer.to_json v.code))])
+      
     let of_json j =
       {
         code = (Integer.of_json (Util.of_option_exn (Json.lookup j "code")));
         name =
           (InstanceStateName.of_json
              (Util.of_option_exn (Json.lookup j "name")))
-      }
+      } 
   end
 module Monitoring =
   struct
     type t = {
-      state: MonitoringState.t option;}
-    let make ?state  () = { state }
+      state: MonitoringState.t option }
+    let make ?state  () = { state } 
     let parse xml =
       Some
         {
           state =
             (Util.option_bind (Xml.member "state" xml) MonitoringState.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.state
               (fun f  -> Query.Pair ("State", (MonitoringState.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.state
               (fun f  -> ("state", (MonitoringState.to_json f)))])
+      
     let of_json j =
       {
         state =
           (Util.option_map (Json.lookup j "state") MonitoringState.of_json)
-      }
+      } 
   end
 module Placement =
   struct
     type t =
       {
-      availability_zone: String.t option;
-      group_name: String.t option;
-      tenancy: Tenancy.t option;}
+      availability_zone: String.t option ;
+      group_name: String.t option ;
+      tenancy: Tenancy.t option }
     let make ?availability_zone  ?group_name  ?tenancy  () =
-      { availability_zone; group_name; tenancy }
+      { availability_zone; group_name; tenancy } 
     let parse xml =
       Some
         {
@@ -2745,6 +2874,7 @@ module Placement =
           tenancy =
             (Util.option_bind (Xml.member "tenancy" xml) Tenancy.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -2754,6 +2884,7 @@ module Placement =
              (fun f  -> Query.Pair ("GroupName", (String.to_query f)));
            Util.option_map v.availability_zone
              (fun f  -> Query.Pair ("AvailabilityZone", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -2763,6 +2894,7 @@ module Placement =
              (fun f  -> ("group_name", (String.to_json f)));
            Util.option_map v.availability_zone
              (fun f  -> ("availability_zone", (String.to_json f)))])
+      
     let of_json j =
       {
         availability_zone =
@@ -2770,41 +2902,42 @@ module Placement =
         group_name =
           (Util.option_map (Json.lookup j "group_name") String.of_json);
         tenancy = (Util.option_map (Json.lookup j "tenancy") Tenancy.of_json)
-      }
+      } 
   end
 module PlatformValues =
   struct
     type t =
-      | Windows
-    let str_to_t = [("Windows", Windows)]
-    let t_to_str = [(Windows, "Windows")]
-    let make v () = v
+      | Windows 
+    let str_to_t = [("Windows", Windows)] 
+    let t_to_str = [(Windows, "Windows")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module ProductCodeList =
   struct
     type t = ProductCode.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map ProductCode.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list ProductCode.to_query v
-    let to_json v = `List (List.map ProductCode.to_json v)
-    let of_json j = Json.to_list ProductCode.of_json j
+      Util.option_all (List.map ProductCode.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list ProductCode.to_query v 
+    let to_json v = `List (List.map ProductCode.to_json v) 
+    let of_json j = Json.to_list ProductCode.of_json j 
   end
 module StateReason =
   struct
     type t = {
-      code: String.t option;
-      message: String.t option;}
-    let make ?code  ?message  () = { code; message }
+      code: String.t option ;
+      message: String.t option }
+    let make ?code  ?message  () = { code; message } 
     let parse xml =
       Some
         {
@@ -2812,6 +2945,7 @@ module StateReason =
           message =
             (Util.option_bind (Xml.member "message" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -2819,58 +2953,62 @@ module StateReason =
               (fun f  -> Query.Pair ("Message", (String.to_query f)));
            Util.option_map v.code
              (fun f  -> Query.Pair ("Code", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.message
               (fun f  -> ("message", (String.to_json f)));
            Util.option_map v.code (fun f  -> ("code", (String.to_json f)))])
+      
     let of_json j =
       {
         code = (Util.option_map (Json.lookup j "code") String.of_json);
         message = (Util.option_map (Json.lookup j "message") String.of_json)
-      }
+      } 
   end
 module TagList =
   struct
     type t = Tag.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map Tag.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list Tag.to_query v
-    let to_json v = `List (List.map Tag.to_json v)
-    let of_json j = Json.to_list Tag.of_json j
+      Util.option_all (List.map Tag.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list Tag.to_query v 
+    let to_json v = `List (List.map Tag.to_json v) 
+    let of_json j = Json.to_list Tag.of_json j 
   end
 module VirtualizationType =
   struct
     type t =
-      | Hvm
-      | Paravirtual
-    let str_to_t = [("paravirtual", Paravirtual); ("hvm", Hvm)]
-    let t_to_str = [(Paravirtual, "paravirtual"); (Hvm, "hvm")]
-    let make v () = v
+      | Hvm 
+      | Paravirtual 
+    let str_to_t = [("paravirtual", Paravirtual); ("hvm", Hvm)] 
+    let t_to_str = [(Paravirtual, "paravirtual"); (Hvm, "hvm")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module IcmpTypeCode =
   struct
     type t = {
-      type_: Integer.t option;
-      code: Integer.t option;}
-    let make ?type_  ?code  () = { type_; code }
+      type_: Integer.t option ;
+      code: Integer.t option }
+    let make ?type_  ?code  () = { type_; code } 
     let parse xml =
       Some
         {
           type_ = (Util.option_bind (Xml.member "type" xml) Integer.parse);
           code = (Util.option_bind (Xml.member "code" xml) Integer.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -2878,29 +3016,32 @@ module IcmpTypeCode =
               (fun f  -> Query.Pair ("Code", (Integer.to_query f)));
            Util.option_map v.type_
              (fun f  -> Query.Pair ("Type", (Integer.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.code (fun f  -> ("code", (Integer.to_json f)));
            Util.option_map v.type_ (fun f  -> ("type_", (Integer.to_json f)))])
+      
     let of_json j =
       {
         type_ = (Util.option_map (Json.lookup j "type_") Integer.of_json);
         code = (Util.option_map (Json.lookup j "code") Integer.of_json)
-      }
+      } 
   end
 module PortRange =
   struct
     type t = {
-      from: Integer.t option;
-      to_: Integer.t option;}
-    let make ?from  ?to_  () = { from; to_ }
+      from: Integer.t option ;
+      to_: Integer.t option }
+    let make ?from  ?to_  () = { from; to_ } 
     let parse xml =
       Some
         {
           from = (Util.option_bind (Xml.member "from" xml) Integer.parse);
           to_ = (Util.option_bind (Xml.member "to" xml) Integer.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -2908,41 +3049,44 @@ module PortRange =
               (fun f  -> Query.Pair ("To", (Integer.to_query f)));
            Util.option_map v.from
              (fun f  -> Query.Pair ("From", (Integer.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.to_ (fun f  -> ("to_", (Integer.to_json f)));
            Util.option_map v.from (fun f  -> ("from", (Integer.to_json f)))])
+      
     let of_json j =
       {
         from = (Util.option_map (Json.lookup j "from") Integer.of_json);
         to_ = (Util.option_map (Json.lookup j "to_") Integer.of_json)
-      }
+      } 
   end
 module RuleAction =
   struct
     type t =
-      | Allow
-      | Deny
-    let str_to_t = [("deny", Deny); ("allow", Allow)]
-    let t_to_str = [(Deny, "deny"); (Allow, "allow")]
-    let make v () = v
+      | Allow 
+      | Deny 
+    let str_to_t = [("deny", Deny); ("allow", Allow)] 
+    let t_to_str = [(Deny, "deny"); (Allow, "allow")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module UserBucketDetails =
   struct
     type t = {
-      s3_bucket: String.t option;
-      s3_key: String.t option;}
-    let make ?s3_bucket  ?s3_key  () = { s3_bucket; s3_key }
+      s3_bucket: String.t option ;
+      s3_key: String.t option }
+    let make ?s3_bucket  ?s3_key  () = { s3_bucket; s3_key } 
     let parse xml =
       Some
         {
@@ -2950,6 +3094,7 @@ module UserBucketDetails =
             (Util.option_bind (Xml.member "s3Bucket" xml) String.parse);
           s3_key = (Util.option_bind (Xml.member "s3Key" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -2957,6 +3102,7 @@ module UserBucketDetails =
               (fun f  -> Query.Pair ("S3Key", (String.to_query f)));
            Util.option_map v.s3_bucket
              (fun f  -> Query.Pair ("S3Bucket", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -2964,23 +3110,24 @@ module UserBucketDetails =
               (fun f  -> ("s3_key", (String.to_json f)));
            Util.option_map v.s3_bucket
              (fun f  -> ("s3_bucket", (String.to_json f)))])
+      
     let of_json j =
       {
         s3_bucket =
           (Util.option_map (Json.lookup j "s3_bucket") String.of_json);
         s3_key = (Util.option_map (Json.lookup j "s3_key") String.of_json)
-      }
+      } 
   end
 module NetworkInterfacePrivateIpAddress =
   struct
     type t =
       {
-      private_ip_address: String.t option;
-      private_dns_name: String.t option;
-      primary: Boolean.t option;
-      association: NetworkInterfaceAssociation.t option;}
+      private_ip_address: String.t option ;
+      private_dns_name: String.t option ;
+      primary: Boolean.t option ;
+      association: NetworkInterfaceAssociation.t option }
     let make ?private_ip_address  ?private_dns_name  ?primary  ?association 
-      () = { private_ip_address; private_dns_name; primary; association }
+      () = { private_ip_address; private_dns_name; primary; association } 
     let parse xml =
       Some
         {
@@ -2995,6 +3142,7 @@ module NetworkInterfacePrivateIpAddress =
             (Util.option_bind (Xml.member "association" xml)
                NetworkInterfaceAssociation.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3008,6 +3156,7 @@ module NetworkInterfacePrivateIpAddress =
              (fun f  -> Query.Pair ("PrivateDnsName", (String.to_query f)));
            Util.option_map v.private_ip_address
              (fun f  -> Query.Pair ("PrivateIpAddress", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -3020,6 +3169,7 @@ module NetworkInterfacePrivateIpAddress =
              (fun f  -> ("private_dns_name", (String.to_json f)));
            Util.option_map v.private_ip_address
              (fun f  -> ("private_ip_address", (String.to_json f)))])
+      
     let of_json j =
       {
         private_ip_address =
@@ -3031,14 +3181,14 @@ module NetworkInterfacePrivateIpAddress =
         association =
           (Util.option_map (Json.lookup j "association")
              NetworkInterfaceAssociation.of_json)
-      }
+      } 
   end
 module DhcpConfiguration =
   struct
     type t = {
-      key: String.t option;
-      values: DhcpConfigurationValueList.t;}
-    let make ?key  ?(values= [])  () = { key; values }
+      key: String.t option ;
+      values: DhcpConfigurationValueList.t }
+    let make ?key  ?(values= [])  () = { key; values } 
     let parse xml =
       Some
         {
@@ -3048,6 +3198,7 @@ module DhcpConfiguration =
                (Util.option_bind (Xml.member "valueSet" xml)
                   DhcpConfigurationValueList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3056,25 +3207,27 @@ module DhcpConfiguration =
                  ("ValueSet", (DhcpConfigurationValueList.to_query v.values)));
            Util.option_map v.key
              (fun f  -> Query.Pair ("Key", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("values", (DhcpConfigurationValueList.to_json v.values));
            Util.option_map v.key (fun f  -> ("key", (String.to_json f)))])
+      
     let of_json j =
       {
         key = (Util.option_map (Json.lookup j "key") String.of_json);
         values =
           (DhcpConfigurationValueList.of_json
              (Util.of_option_exn (Json.lookup j "values")))
-      }
+      } 
   end
 module VpcAttachment =
   struct
     type t = {
-      vpc_id: String.t option;
-      state: AttachmentStatus.t option;}
-    let make ?vpc_id  ?state  () = { vpc_id; state }
+      vpc_id: String.t option ;
+      state: AttachmentStatus.t option }
+    let make ?vpc_id  ?state  () = { vpc_id; state } 
     let parse xml =
       Some
         {
@@ -3082,6 +3235,7 @@ module VpcAttachment =
           state =
             (Util.option_bind (Xml.member "state" xml) AttachmentStatus.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3089,6 +3243,7 @@ module VpcAttachment =
               (fun f  -> Query.Pair ("State", (AttachmentStatus.to_query f)));
            Util.option_map v.vpc_id
              (fun f  -> Query.Pair ("VpcId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -3096,21 +3251,22 @@ module VpcAttachment =
               (fun f  -> ("state", (AttachmentStatus.to_json f)));
            Util.option_map v.vpc_id
              (fun f  -> ("vpc_id", (String.to_json f)))])
+      
     let of_json j =
       {
         vpc_id = (Util.option_map (Json.lookup j "vpc_id") String.of_json);
         state =
           (Util.option_map (Json.lookup j "state") AttachmentStatus.of_json)
-      }
+      } 
   end
 module ReservedInstancesModificationResult =
   struct
     type t =
       {
-      reserved_instances_id: String.t option;
-      target_configuration: ReservedInstancesConfiguration.t option;}
+      reserved_instances_id: String.t option ;
+      target_configuration: ReservedInstancesConfiguration.t option }
     let make ?reserved_instances_id  ?target_configuration  () =
-      { reserved_instances_id; target_configuration }
+      { reserved_instances_id; target_configuration } 
     let parse xml =
       Some
         {
@@ -3121,6 +3277,7 @@ module ReservedInstancesModificationResult =
             (Util.option_bind (Xml.member "targetConfiguration" xml)
                ReservedInstancesConfiguration.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3132,6 +3289,7 @@ module ReservedInstancesModificationResult =
            Util.option_map v.reserved_instances_id
              (fun f  ->
                 Query.Pair ("ReservedInstancesId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -3141,6 +3299,7 @@ module ReservedInstancesModificationResult =
                    (ReservedInstancesConfiguration.to_json f)));
            Util.option_map v.reserved_instances_id
              (fun f  -> ("reserved_instances_id", (String.to_json f)))])
+      
     let of_json j =
       {
         reserved_instances_id =
@@ -3149,13 +3308,13 @@ module ReservedInstancesModificationResult =
         target_configuration =
           (Util.option_map (Json.lookup j "target_configuration")
              ReservedInstancesConfiguration.of_json)
-      }
+      } 
   end
 module ReservedInstancesId =
   struct
     type t = {
-      reserved_instances_id: String.t option;}
-    let make ?reserved_instances_id  () = { reserved_instances_id }
+      reserved_instances_id: String.t option }
+    let make ?reserved_instances_id  () = { reserved_instances_id } 
     let parse xml =
       Some
         {
@@ -3163,31 +3322,34 @@ module ReservedInstancesId =
             (Util.option_bind (Xml.member "reservedInstancesId" xml)
                String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.reserved_instances_id
               (fun f  ->
                  Query.Pair ("ReservedInstancesId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.reserved_instances_id
               (fun f  -> ("reserved_instances_id", (String.to_json f)))])
+      
     let of_json j =
       {
         reserved_instances_id =
           (Util.option_map (Json.lookup j "reserved_instances_id")
              String.of_json)
-      }
+      } 
   end
 module RecurringCharge =
   struct
     type t =
       {
-      frequency: RecurringChargeFrequency.t option;
-      amount: Double.t option;}
-    let make ?frequency  ?amount  () = { frequency; amount }
+      frequency: RecurringChargeFrequency.t option ;
+      amount: Double.t option }
+    let make ?frequency  ?amount  () = { frequency; amount } 
     let parse xml =
       Some
         {
@@ -3196,6 +3358,7 @@ module RecurringCharge =
                RecurringChargeFrequency.parse);
           amount = (Util.option_bind (Xml.member "amount" xml) Double.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3205,6 +3368,7 @@ module RecurringCharge =
              (fun f  ->
                 Query.Pair
                   ("Frequency", (RecurringChargeFrequency.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -3212,84 +3376,90 @@ module RecurringCharge =
               (fun f  -> ("amount", (Double.to_json f)));
            Util.option_map v.frequency
              (fun f  -> ("frequency", (RecurringChargeFrequency.to_json f)))])
+      
     let of_json j =
       {
         frequency =
           (Util.option_map (Json.lookup j "frequency")
              RecurringChargeFrequency.of_json);
         amount = (Util.option_map (Json.lookup j "amount") Double.of_json)
-      }
+      } 
   end
 module PermissionGroup =
   struct
     type t =
-      | All
-    let str_to_t = [("all", All)]
-    let t_to_str = [(All, "all")]
-    let make v () = v
+      | All 
+    let str_to_t = [("all", All)] 
+    let t_to_str = [(All, "all")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module ImportInstanceVolumeDetailSet =
   struct
     type t = ImportInstanceVolumeDetailItem.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map ImportInstanceVolumeDetailItem.parse
            (Xml.members "item" xml))
+      
     let to_query v =
-      Query.to_query_list ImportInstanceVolumeDetailItem.to_query v
-    let to_json v = `List (List.map ImportInstanceVolumeDetailItem.to_json v)
-    let of_json j = Json.to_list ImportInstanceVolumeDetailItem.of_json j
+      Query.to_query_list ImportInstanceVolumeDetailItem.to_query v 
+    let to_json v = `List (List.map ImportInstanceVolumeDetailItem.to_json v) 
+    let of_json j = Json.to_list ImportInstanceVolumeDetailItem.of_json j 
   end
 module PropagatingVgw =
   struct
     type t = {
-      gateway_id: String.t option;}
-    let make ?gateway_id  () = { gateway_id }
+      gateway_id: String.t option }
+    let make ?gateway_id  () = { gateway_id } 
     let parse xml =
       Some
         {
           gateway_id =
             (Util.option_bind (Xml.member "gatewayId" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.gateway_id
               (fun f  -> Query.Pair ("GatewayId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.gateway_id
               (fun f  -> ("gateway_id", (String.to_json f)))])
+      
     let of_json j =
       {
         gateway_id =
           (Util.option_map (Json.lookup j "gateway_id") String.of_json)
-      }
+      } 
   end
 module Route =
   struct
     type t =
       {
-      destination_cidr_block: String.t option;
-      destination_prefix_list_id: String.t option;
-      gateway_id: String.t option;
-      instance_id: String.t option;
-      instance_owner_id: String.t option;
-      network_interface_id: String.t option;
-      vpc_peering_connection_id: String.t option;
-      state: RouteState.t option;
-      origin: RouteOrigin.t option;}
+      destination_cidr_block: String.t option ;
+      destination_prefix_list_id: String.t option ;
+      gateway_id: String.t option ;
+      instance_id: String.t option ;
+      instance_owner_id: String.t option ;
+      network_interface_id: String.t option ;
+      vpc_peering_connection_id: String.t option ;
+      state: RouteState.t option ;
+      origin: RouteOrigin.t option }
     let make ?destination_cidr_block  ?destination_prefix_list_id 
       ?gateway_id  ?instance_id  ?instance_owner_id  ?network_interface_id 
       ?vpc_peering_connection_id  ?state  ?origin  () =
@@ -3303,7 +3473,7 @@ module Route =
         vpc_peering_connection_id;
         state;
         origin
-      }
+      } 
     let parse xml =
       Some
         {
@@ -3330,6 +3500,7 @@ module Route =
           origin =
             (Util.option_bind (Xml.member "origin" xml) RouteOrigin.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3355,6 +3526,7 @@ module Route =
            Util.option_map v.destination_cidr_block
              (fun f  ->
                 Query.Pair ("DestinationCidrBlock", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -3376,6 +3548,7 @@ module Route =
              (fun f  -> ("destination_prefix_list_id", (String.to_json f)));
            Util.option_map v.destination_cidr_block
              (fun f  -> ("destination_cidr_block", (String.to_json f)))])
+      
     let of_json j =
       {
         destination_cidr_block =
@@ -3399,18 +3572,18 @@ module Route =
         state = (Util.option_map (Json.lookup j "state") RouteState.of_json);
         origin =
           (Util.option_map (Json.lookup j "origin") RouteOrigin.of_json)
-      }
+      } 
   end
 module RouteTableAssociation =
   struct
     type t =
       {
-      route_table_association_id: String.t option;
-      route_table_id: String.t option;
-      subnet_id: String.t option;
-      main: Boolean.t option;}
+      route_table_association_id: String.t option ;
+      route_table_id: String.t option ;
+      subnet_id: String.t option ;
+      main: Boolean.t option }
     let make ?route_table_association_id  ?route_table_id  ?subnet_id  ?main 
-      () = { route_table_association_id; route_table_id; subnet_id; main }
+      () = { route_table_association_id; route_table_id; subnet_id; main } 
     let parse xml =
       Some
         {
@@ -3423,6 +3596,7 @@ module RouteTableAssociation =
             (Util.option_bind (Xml.member "subnetId" xml) String.parse);
           main = (Util.option_bind (Xml.member "main" xml) Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3435,6 +3609,7 @@ module RouteTableAssociation =
            Util.option_map v.route_table_association_id
              (fun f  ->
                 Query.Pair ("RouteTableAssociationId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -3445,6 +3620,7 @@ module RouteTableAssociation =
              (fun f  -> ("route_table_id", (String.to_json f)));
            Util.option_map v.route_table_association_id
              (fun f  -> ("route_table_association_id", (String.to_json f)))])
+      
     let of_json j =
       {
         route_table_association_id =
@@ -3455,14 +3631,15 @@ module RouteTableAssociation =
         subnet_id =
           (Util.option_map (Json.lookup j "subnet_id") String.of_json);
         main = (Util.option_map (Json.lookup j "main") Boolean.of_json)
-      }
+      } 
   end
 module InstanceCount =
   struct
-    type t = {
-      state: ListingState.t option;
-      instance_count: Integer.t option;}
-    let make ?state  ?instance_count  () = { state; instance_count }
+    type t =
+      {
+      state: ListingState.t option ;
+      instance_count: Integer.t option }
+    let make ?state  ?instance_count  () = { state; instance_count } 
     let parse xml =
       Some
         {
@@ -3471,6 +3648,7 @@ module InstanceCount =
           instance_count =
             (Util.option_bind (Xml.member "instanceCount" xml) Integer.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3478,6 +3656,7 @@ module InstanceCount =
               (fun f  -> Query.Pair ("InstanceCount", (Integer.to_query f)));
            Util.option_map v.state
              (fun f  -> Query.Pair ("State", (ListingState.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -3485,24 +3664,25 @@ module InstanceCount =
               (fun f  -> ("instance_count", (Integer.to_json f)));
            Util.option_map v.state
              (fun f  -> ("state", (ListingState.to_json f)))])
+      
     let of_json j =
       {
         state =
           (Util.option_map (Json.lookup j "state") ListingState.of_json);
         instance_count =
           (Util.option_map (Json.lookup j "instance_count") Integer.of_json)
-      }
+      } 
   end
 module PriceSchedule =
   struct
     type t =
       {
-      term: Long.t option;
-      price: Double.t option;
-      currency_code: CurrencyCodeValues.t option;
-      active: Boolean.t option;}
+      term: Long.t option ;
+      price: Double.t option ;
+      currency_code: CurrencyCodeValues.t option ;
+      active: Boolean.t option }
     let make ?term  ?price  ?currency_code  ?active  () =
-      { term; price; currency_code; active }
+      { term; price; currency_code; active } 
     let parse xml =
       Some
         {
@@ -3513,6 +3693,7 @@ module PriceSchedule =
                CurrencyCodeValues.parse);
           active = (Util.option_bind (Xml.member "active" xml) Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3525,6 +3706,7 @@ module PriceSchedule =
              (fun f  -> Query.Pair ("Price", (Double.to_query f)));
            Util.option_map v.term
              (fun f  -> Query.Pair ("Term", (Long.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -3534,6 +3716,7 @@ module PriceSchedule =
              (fun f  -> ("currency_code", (CurrencyCodeValues.to_json f)));
            Util.option_map v.price (fun f  -> ("price", (Double.to_json f)));
            Util.option_map v.term (fun f  -> ("term", (Long.to_json f)))])
+      
     let of_json j =
       {
         term = (Util.option_map (Json.lookup j "term") Long.of_json);
@@ -3542,18 +3725,18 @@ module PriceSchedule =
           (Util.option_map (Json.lookup j "currency_code")
              CurrencyCodeValues.of_json);
         active = (Util.option_map (Json.lookup j "active") Boolean.of_json)
-      }
+      } 
   end
 module InstanceStatusEvent =
   struct
     type t =
       {
-      code: EventCode.t option;
-      description: String.t option;
-      not_before: DateTime.t option;
-      not_after: DateTime.t option;}
+      code: EventCode.t option ;
+      description: String.t option ;
+      not_before: DateTime.t option ;
+      not_after: DateTime.t option }
     let make ?code  ?description  ?not_before  ?not_after  () =
-      { code; description; not_before; not_after }
+      { code; description; not_before; not_after } 
     let parse xml =
       Some
         {
@@ -3565,6 +3748,7 @@ module InstanceStatusEvent =
           not_after =
             (Util.option_bind (Xml.member "notAfter" xml) DateTime.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3576,6 +3760,7 @@ module InstanceStatusEvent =
              (fun f  -> Query.Pair ("Description", (String.to_query f)));
            Util.option_map v.code
              (fun f  -> Query.Pair ("Code", (EventCode.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -3586,6 +3771,7 @@ module InstanceStatusEvent =
            Util.option_map v.description
              (fun f  -> ("description", (String.to_json f)));
            Util.option_map v.code (fun f  -> ("code", (EventCode.to_json f)))])
+      
     let of_json j =
       {
         code = (Util.option_map (Json.lookup j "code") EventCode.of_json);
@@ -3595,55 +3781,57 @@ module InstanceStatusEvent =
           (Util.option_map (Json.lookup j "not_before") DateTime.of_json);
         not_after =
           (Util.option_map (Json.lookup j "not_after") DateTime.of_json)
-      }
+      } 
   end
 module InstanceStatusDetailsList =
   struct
     type t = InstanceStatusDetails.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map InstanceStatusDetails.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list InstanceStatusDetails.to_query v
-    let to_json v = `List (List.map InstanceStatusDetails.to_json v)
-    let of_json j = Json.to_list InstanceStatusDetails.of_json j
+      
+    let to_query v = Query.to_query_list InstanceStatusDetails.to_query v 
+    let to_json v = `List (List.map InstanceStatusDetails.to_json v) 
+    let of_json j = Json.to_list InstanceStatusDetails.of_json j 
   end
 module SummaryStatus =
   struct
     type t =
-      | Ok
-      | Impaired
-      | Insufficient_data
-      | Not_applicable
-      | Initializing
+      | Ok 
+      | Impaired 
+      | Insufficient_data 
+      | Not_applicable 
+      | Initializing 
     let str_to_t =
       [("initializing", Initializing);
       ("not-applicable", Not_applicable);
       ("insufficient-data", Insufficient_data);
       ("impaired", Impaired);
-      ("ok", Ok)]
+      ("ok", Ok)] 
     let t_to_str =
       [(Initializing, "initializing");
       (Not_applicable, "not-applicable");
       (Insufficient_data, "insufficient-data");
       (Impaired, "impaired");
-      (Ok, "ok")]
-    let make v () = v
+      (Ok, "ok")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module RunInstancesMonitoringEnabled =
   struct
     type t = {
-      enabled: Boolean.t;}
-    let make ~enabled  () = { enabled }
+      enabled: Boolean.t }
+    let make ~enabled  () = { enabled } 
     let parse xml =
       Some
         {
@@ -3651,67 +3839,72 @@ module RunInstancesMonitoringEnabled =
             (Xml.required "enabled"
                (Util.option_bind (Xml.member "enabled" xml) Boolean.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("Enabled", (Boolean.to_query v.enabled)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt [Some ("enabled", (Boolean.to_json v.enabled))])
+      
     let of_json j =
       {
         enabled =
           (Boolean.of_json (Util.of_option_exn (Json.lookup j "enabled")))
-      }
+      } 
   end
 module ContainerFormat =
   struct
     type t =
-      | Ova
-    let str_to_t = [("ova", Ova)]
-    let t_to_str = [(Ova, "ova")]
-    let make v () = v
+      | Ova 
+    let str_to_t = [("ova", Ova)] 
+    let t_to_str = [(Ova, "ova")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module ExportEnvironment =
   struct
     type t =
-      | Citrix
-      | Vmware
-      | Microsoft
+      | Citrix 
+      | Vmware 
+      | Microsoft 
     let str_to_t =
-      [("microsoft", Microsoft); ("vmware", Vmware); ("citrix", Citrix)]
+      [("microsoft", Microsoft); ("vmware", Vmware); ("citrix", Citrix)] 
     let t_to_str =
-      [(Microsoft, "microsoft"); (Vmware, "vmware"); (Citrix, "citrix")]
-    let make v () = v
+      [(Microsoft, "microsoft"); (Vmware, "vmware"); (Citrix, "citrix")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module IpPermission =
   struct
     type t =
       {
-      ip_protocol: String.t;
-      from_port: Integer.t option;
-      to_port: Integer.t option;
-      user_id_group_pairs: UserIdGroupPairList.t;
-      ip_ranges: IpRangeList.t;
-      prefix_list_ids: PrefixListIdList.t;}
+      ip_protocol: String.t ;
+      from_port: Integer.t option ;
+      to_port: Integer.t option ;
+      user_id_group_pairs: UserIdGroupPairList.t ;
+      ip_ranges: IpRangeList.t ;
+      prefix_list_ids: PrefixListIdList.t }
     let make ~ip_protocol  ?from_port  ?to_port  ?(user_id_group_pairs= []) 
       ?(ip_ranges= [])  ?(prefix_list_ids= [])  () =
       {
@@ -3721,7 +3914,7 @@ module IpPermission =
         user_id_group_pairs;
         ip_ranges;
         prefix_list_ids
-      }
+      } 
     let parse xml =
       Some
         {
@@ -3745,6 +3938,7 @@ module IpPermission =
                (Util.option_bind (Xml.member "prefixListIds" xml)
                   PrefixListIdList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3762,6 +3956,7 @@ module IpPermission =
            Util.option_map v.from_port
              (fun f  -> Query.Pair ("FromPort", (Integer.to_query f)));
            Some (Query.Pair ("IpProtocol", (String.to_query v.ip_protocol)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -3777,6 +3972,7 @@ module IpPermission =
            Util.option_map v.from_port
              (fun f  -> ("from_port", (Integer.to_json f)));
            Some ("ip_protocol", (String.to_json v.ip_protocol))])
+      
     let of_json j =
       {
         ip_protocol =
@@ -3793,14 +3989,14 @@ module IpPermission =
         prefix_list_ids =
           (PrefixListIdList.of_json
              (Util.of_option_exn (Json.lookup j "prefix_list_ids")))
-      }
+      } 
   end
 module InternetGatewayAttachment =
   struct
     type t = {
-      vpc_id: String.t;
-      state: AttachmentStatus.t;}
-    let make ~vpc_id  ~state  () = { vpc_id; state }
+      vpc_id: String.t ;
+      state: AttachmentStatus.t }
+    let make ~vpc_id  ~state  () = { vpc_id; state } 
     let parse xml =
       Some
         {
@@ -3812,16 +4008,19 @@ module InternetGatewayAttachment =
                (Util.option_bind (Xml.member "state" xml)
                   AttachmentStatus.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("State", (AttachmentStatus.to_query v.state)));
            Some (Query.Pair ("VpcId", (String.to_query v.vpc_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("state", (AttachmentStatus.to_json v.state));
            Some ("vpc_id", (String.to_json v.vpc_id))])
+      
     let of_json j =
       {
         vpc_id =
@@ -3829,54 +4028,58 @@ module InternetGatewayAttachment =
         state =
           (AttachmentStatus.of_json
              (Util.of_option_exn (Json.lookup j "state")))
-      }
+      } 
   end
 module LaunchSpecsList =
   struct
     type t = SpotFleetLaunchSpecification.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map SpotFleetLaunchSpecification.parse (Xml.members "item" xml))
+      
     let to_query v =
-      Query.to_query_list SpotFleetLaunchSpecification.to_query v
-    let to_json v = `List (List.map SpotFleetLaunchSpecification.to_json v)
-    let of_json j = Json.to_list SpotFleetLaunchSpecification.of_json j
+      Query.to_query_list SpotFleetLaunchSpecification.to_query v 
+    let to_json v = `List (List.map SpotFleetLaunchSpecification.to_json v) 
+    let of_json j = Json.to_list SpotFleetLaunchSpecification.of_json j 
   end
 module AvailabilityZoneMessage =
   struct
     type t = {
-      message: String.t option;}
-    let make ?message  () = { message }
+      message: String.t option }
+    let make ?message  () = { message } 
     let parse xml =
       Some
         {
           message =
             (Util.option_bind (Xml.member "message" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.message
               (fun f  -> Query.Pair ("Message", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.message
               (fun f  -> ("message", (String.to_json f)))])
+      
     let of_json j =
       { message = (Util.option_map (Json.lookup j "message") String.of_json)
-      }
+      } 
   end
 module S3Storage =
   struct
     type t =
       {
-      bucket: String.t option;
-      prefix: String.t option;
-      a_w_s_access_key_id: String.t option;
-      upload_policy: Blob.t option;
-      upload_policy_signature: String.t option;}
+      bucket: String.t option ;
+      prefix: String.t option ;
+      a_w_s_access_key_id: String.t option ;
+      upload_policy: Blob.t option ;
+      upload_policy_signature: String.t option }
     let make ?bucket  ?prefix  ?a_w_s_access_key_id  ?upload_policy 
       ?upload_policy_signature  () =
       {
@@ -3885,7 +4088,7 @@ module S3Storage =
         a_w_s_access_key_id;
         upload_policy;
         upload_policy_signature
-      }
+      } 
     let parse xml =
       Some
         {
@@ -3899,6 +4102,7 @@ module S3Storage =
             (Util.option_bind (Xml.member "uploadPolicySignature" xml)
                String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3913,6 +4117,7 @@ module S3Storage =
              (fun f  -> Query.Pair ("Prefix", (String.to_query f)));
            Util.option_map v.bucket
              (fun f  -> Query.Pair ("Bucket", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -3926,6 +4131,7 @@ module S3Storage =
              (fun f  -> ("prefix", (String.to_json f)));
            Util.option_map v.bucket
              (fun f  -> ("bucket", (String.to_json f)))])
+      
     let of_json j =
       {
         bucket = (Util.option_map (Json.lookup j "bucket") String.of_json);
@@ -3938,18 +4144,18 @@ module S3Storage =
         upload_policy_signature =
           (Util.option_map (Json.lookup j "upload_policy_signature")
              String.of_json)
-      }
+      } 
   end
 module VolumeStatusAction =
   struct
     type t =
       {
-      code: String.t option;
-      description: String.t option;
-      event_type: String.t option;
-      event_id: String.t option;}
+      code: String.t option ;
+      description: String.t option ;
+      event_type: String.t option ;
+      event_id: String.t option }
     let make ?code  ?description  ?event_type  ?event_id  () =
-      { code; description; event_type; event_id }
+      { code; description; event_type; event_id } 
     let parse xml =
       Some
         {
@@ -3961,6 +4167,7 @@ module VolumeStatusAction =
           event_id =
             (Util.option_bind (Xml.member "eventId" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3972,6 +4179,7 @@ module VolumeStatusAction =
              (fun f  -> Query.Pair ("Description", (String.to_query f)));
            Util.option_map v.code
              (fun f  -> Query.Pair ("Code", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -3982,6 +4190,7 @@ module VolumeStatusAction =
            Util.option_map v.description
              (fun f  -> ("description", (String.to_json f)));
            Util.option_map v.code (fun f  -> ("code", (String.to_json f)))])
+      
     let of_json j =
       {
         code = (Util.option_map (Json.lookup j "code") String.of_json);
@@ -3991,19 +4200,19 @@ module VolumeStatusAction =
           (Util.option_map (Json.lookup j "event_type") String.of_json);
         event_id =
           (Util.option_map (Json.lookup j "event_id") String.of_json)
-      }
+      } 
   end
 module VolumeStatusEvent =
   struct
     type t =
       {
-      event_type: String.t option;
-      description: String.t option;
-      not_before: DateTime.t option;
-      not_after: DateTime.t option;
-      event_id: String.t option;}
+      event_type: String.t option ;
+      description: String.t option ;
+      not_before: DateTime.t option ;
+      not_after: DateTime.t option ;
+      event_id: String.t option }
     let make ?event_type  ?description  ?not_before  ?not_after  ?event_id 
-      () = { event_type; description; not_before; not_after; event_id }
+      () = { event_type; description; not_before; not_after; event_id } 
     let parse xml =
       Some
         {
@@ -4018,6 +4227,7 @@ module VolumeStatusEvent =
           event_id =
             (Util.option_bind (Xml.member "eventId" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -4031,6 +4241,7 @@ module VolumeStatusEvent =
              (fun f  -> Query.Pair ("Description", (String.to_query f)));
            Util.option_map v.event_type
              (fun f  -> Query.Pair ("EventType", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -4044,6 +4255,7 @@ module VolumeStatusEvent =
              (fun f  -> ("description", (String.to_json f)));
            Util.option_map v.event_type
              (fun f  -> ("event_type", (String.to_json f)))])
+      
     let of_json j =
       {
         event_type =
@@ -4056,54 +4268,56 @@ module VolumeStatusEvent =
           (Util.option_map (Json.lookup j "not_after") DateTime.of_json);
         event_id =
           (Util.option_map (Json.lookup j "event_id") String.of_json)
-      }
+      } 
   end
 module VolumeStatusDetailsList =
   struct
     type t = VolumeStatusDetails.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map VolumeStatusDetails.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list VolumeStatusDetails.to_query v
-    let to_json v = `List (List.map VolumeStatusDetails.to_json v)
-    let of_json j = Json.to_list VolumeStatusDetails.of_json j
+      
+    let to_query v = Query.to_query_list VolumeStatusDetails.to_query v 
+    let to_json v = `List (List.map VolumeStatusDetails.to_json v) 
+    let of_json j = Json.to_list VolumeStatusDetails.of_json j 
   end
 module VolumeStatusInfoStatus =
   struct
     type t =
-      | Ok
-      | Impaired
-      | Insufficient_data
+      | Ok 
+      | Impaired 
+      | Insufficient_data 
     let str_to_t =
       [("insufficient-data", Insufficient_data);
       ("impaired", Impaired);
-      ("ok", Ok)]
+      ("ok", Ok)] 
     let t_to_str =
       [(Insufficient_data, "insufficient-data");
       (Impaired, "impaired");
-      (Ok, "ok")]
-    let make v () = v
+      (Ok, "ok")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module VolumeAttachment =
   struct
     type t =
       {
-      volume_id: String.t option;
-      instance_id: String.t option;
-      device: String.t option;
-      state: VolumeAttachmentState.t option;
-      attach_time: DateTime.t option;
-      delete_on_termination: Boolean.t option;}
+      volume_id: String.t option ;
+      instance_id: String.t option ;
+      device: String.t option ;
+      state: VolumeAttachmentState.t option ;
+      attach_time: DateTime.t option ;
+      delete_on_termination: Boolean.t option }
     let make ?volume_id  ?instance_id  ?device  ?state  ?attach_time 
       ?delete_on_termination  () =
       {
@@ -4113,7 +4327,7 @@ module VolumeAttachment =
         state;
         attach_time;
         delete_on_termination
-      }
+      } 
     let parse xml =
       Some
         {
@@ -4131,6 +4345,7 @@ module VolumeAttachment =
             (Util.option_bind (Xml.member "deleteOnTermination" xml)
                Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -4148,6 +4363,7 @@ module VolumeAttachment =
              (fun f  -> Query.Pair ("InstanceId", (String.to_query f)));
            Util.option_map v.volume_id
              (fun f  -> Query.Pair ("VolumeId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -4163,6 +4379,7 @@ module VolumeAttachment =
              (fun f  -> ("instance_id", (String.to_json f)));
            Util.option_map v.volume_id
              (fun f  -> ("volume_id", (String.to_json f)))])
+      
     let of_json j =
       {
         volume_id =
@@ -4178,17 +4395,17 @@ module VolumeAttachment =
         delete_on_termination =
           (Util.option_map (Json.lookup j "delete_on_termination")
              Boolean.of_json)
-      }
+      } 
   end
 module VgwTelemetry =
   struct
     type t =
       {
-      outside_ip_address: String.t option;
-      status: TelemetryStatus.t option;
-      last_status_change: DateTime.t option;
-      status_message: String.t option;
-      accepted_route_count: Integer.t option;}
+      outside_ip_address: String.t option ;
+      status: TelemetryStatus.t option ;
+      last_status_change: DateTime.t option ;
+      status_message: String.t option ;
+      accepted_route_count: Integer.t option }
     let make ?outside_ip_address  ?status  ?last_status_change 
       ?status_message  ?accepted_route_count  () =
       {
@@ -4197,7 +4414,7 @@ module VgwTelemetry =
         last_status_change;
         status_message;
         accepted_route_count
-      }
+      } 
     let parse xml =
       Some
         {
@@ -4215,6 +4432,7 @@ module VgwTelemetry =
             (Util.option_bind (Xml.member "acceptedRouteCount" xml)
                Integer.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -4230,6 +4448,7 @@ module VgwTelemetry =
              (fun f  -> Query.Pair ("Status", (TelemetryStatus.to_query f)));
            Util.option_map v.outside_ip_address
              (fun f  -> Query.Pair ("OutsideIpAddress", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -4243,6 +4462,7 @@ module VgwTelemetry =
              (fun f  -> ("status", (TelemetryStatus.to_json f)));
            Util.option_map v.outside_ip_address
              (fun f  -> ("outside_ip_address", (String.to_json f)))])
+      
     let of_json j =
       {
         outside_ip_address =
@@ -4258,17 +4478,17 @@ module VgwTelemetry =
         accepted_route_count =
           (Util.option_map (Json.lookup j "accepted_route_count")
              Integer.of_json)
-      }
+      } 
   end
 module VpnStaticRoute =
   struct
     type t =
       {
-      destination_cidr_block: String.t option;
-      source: VpnStaticRouteSource.t option;
-      state: VpnState.t option;}
+      destination_cidr_block: String.t option ;
+      source: VpnStaticRouteSource.t option ;
+      state: VpnState.t option }
     let make ?destination_cidr_block  ?source  ?state  () =
-      { destination_cidr_block; source; state }
+      { destination_cidr_block; source; state } 
     let parse xml =
       Some
         {
@@ -4280,6 +4500,7 @@ module VpnStaticRoute =
                VpnStaticRouteSource.parse);
           state = (Util.option_bind (Xml.member "state" xml) VpnState.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -4291,6 +4512,7 @@ module VpnStaticRoute =
            Util.option_map v.destination_cidr_block
              (fun f  ->
                 Query.Pair ("DestinationCidrBlock", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -4300,6 +4522,7 @@ module VpnStaticRoute =
              (fun f  -> ("source", (VpnStaticRouteSource.to_json f)));
            Util.option_map v.destination_cidr_block
              (fun f  -> ("destination_cidr_block", (String.to_json f)))])
+      
     let of_json j =
       {
         destination_cidr_block =
@@ -4309,20 +4532,21 @@ module VpnStaticRoute =
           (Util.option_map (Json.lookup j "source")
              VpnStaticRouteSource.of_json);
         state = (Util.option_map (Json.lookup j "state") VpnState.of_json)
-      }
+      } 
   end
 module PricingDetail =
   struct
     type t = {
-      price: Double.t option;
-      count: Integer.t option;}
-    let make ?price  ?count  () = { price; count }
+      price: Double.t option ;
+      count: Integer.t option }
+    let make ?price  ?count  () = { price; count } 
     let parse xml =
       Some
         {
           price = (Util.option_bind (Xml.member "price" xml) Double.parse);
           count = (Util.option_bind (Xml.member "count" xml) Integer.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -4330,59 +4554,61 @@ module PricingDetail =
               (fun f  -> Query.Pair ("Count", (Integer.to_query f)));
            Util.option_map v.price
              (fun f  -> Query.Pair ("Price", (Double.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.count
               (fun f  -> ("count", (Integer.to_json f)));
            Util.option_map v.price (fun f  -> ("price", (Double.to_json f)))])
+      
     let of_json j =
       {
         price = (Util.option_map (Json.lookup j "price") Double.of_json);
         count = (Util.option_map (Json.lookup j "count") Integer.of_json)
-      }
+      } 
   end
 module Instance =
   struct
     type t =
       {
-      instance_id: String.t;
-      image_id: String.t;
-      state: InstanceState.t;
-      private_dns_name: String.t option;
-      public_dns_name: String.t option;
-      state_transition_reason: String.t option;
-      key_name: String.t option;
-      ami_launch_index: Integer.t;
-      product_codes: ProductCodeList.t;
-      instance_type: InstanceType.t;
-      launch_time: DateTime.t;
-      placement: Placement.t;
-      kernel_id: String.t option;
-      ramdisk_id: String.t option;
-      platform: PlatformValues.t option;
-      monitoring: Monitoring.t;
-      subnet_id: String.t option;
-      vpc_id: String.t option;
-      private_ip_address: String.t option;
-      public_ip_address: String.t option;
-      state_reason: StateReason.t option;
-      architecture: ArchitectureValues.t;
-      root_device_type: DeviceType.t;
-      root_device_name: String.t option;
-      block_device_mappings: InstanceBlockDeviceMappingList.t;
-      virtualization_type: VirtualizationType.t;
-      instance_lifecycle: InstanceLifecycleType.t option;
-      spot_instance_request_id: String.t option;
-      client_token: String.t option;
-      tags: TagList.t;
-      security_groups: GroupIdentifierList.t;
-      source_dest_check: Boolean.t option;
-      hypervisor: HypervisorType.t;
-      network_interfaces: InstanceNetworkInterfaceList.t;
-      iam_instance_profile: IamInstanceProfile.t option;
-      ebs_optimized: Boolean.t option;
-      sriov_net_support: String.t option;}
+      instance_id: String.t ;
+      image_id: String.t ;
+      state: InstanceState.t ;
+      private_dns_name: String.t option ;
+      public_dns_name: String.t option ;
+      state_transition_reason: String.t option ;
+      key_name: String.t option ;
+      ami_launch_index: Integer.t ;
+      product_codes: ProductCodeList.t ;
+      instance_type: InstanceType.t ;
+      launch_time: DateTime.t ;
+      placement: Placement.t ;
+      kernel_id: String.t option ;
+      ramdisk_id: String.t option ;
+      platform: PlatformValues.t option ;
+      monitoring: Monitoring.t ;
+      subnet_id: String.t option ;
+      vpc_id: String.t option ;
+      private_ip_address: String.t option ;
+      public_ip_address: String.t option ;
+      state_reason: StateReason.t option ;
+      architecture: ArchitectureValues.t ;
+      root_device_type: DeviceType.t ;
+      root_device_name: String.t option ;
+      block_device_mappings: InstanceBlockDeviceMappingList.t ;
+      virtualization_type: VirtualizationType.t ;
+      instance_lifecycle: InstanceLifecycleType.t option ;
+      spot_instance_request_id: String.t option ;
+      client_token: String.t option ;
+      tags: TagList.t ;
+      security_groups: GroupIdentifierList.t ;
+      source_dest_check: Boolean.t option ;
+      hypervisor: HypervisorType.t ;
+      network_interfaces: InstanceNetworkInterfaceList.t ;
+      iam_instance_profile: IamInstanceProfile.t option ;
+      ebs_optimized: Boolean.t option ;
+      sriov_net_support: String.t option }
     let make ~instance_id  ~image_id  ~state  ?private_dns_name 
       ?public_dns_name  ?state_transition_reason  ?key_name 
       ~ami_launch_index  ?(product_codes= [])  ~instance_type  ~launch_time 
@@ -4432,7 +4658,7 @@ module Instance =
         iam_instance_profile;
         ebs_optimized;
         sriov_net_support
-      }
+      } 
     let parse xml =
       Some
         {
@@ -4546,6 +4772,7 @@ module Instance =
           sriov_net_support =
             (Util.option_bind (Xml.member "sriovNetSupport" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -4640,6 +4867,7 @@ module Instance =
              (Query.Pair ("InstanceState", (InstanceState.to_query v.state)));
            Some (Query.Pair ("ImageId", (String.to_query v.image_id)));
            Some (Query.Pair ("InstanceId", (String.to_query v.instance_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -4711,6 +4939,7 @@ module Instance =
            Some ("state", (InstanceState.to_json v.state));
            Some ("image_id", (String.to_json v.image_id));
            Some ("instance_id", (String.to_json v.instance_id))])
+      
     let of_json j =
       {
         instance_id =
@@ -4803,20 +5032,20 @@ module Instance =
           (Util.option_map (Json.lookup j "ebs_optimized") Boolean.of_json);
         sriov_net_support =
           (Util.option_map (Json.lookup j "sriov_net_support") String.of_json)
-      }
+      } 
   end
 module VpcPeeringConnectionStateReasonCode =
   struct
     type t =
-      | Initiating_request
-      | Pending_acceptance
-      | Active
-      | Deleted
-      | Rejected
-      | Failed
-      | Expired
-      | Provisioning
-      | Deleting
+      | Initiating_request 
+      | Pending_acceptance 
+      | Active 
+      | Deleted 
+      | Rejected 
+      | Failed 
+      | Expired 
+      | Provisioning 
+      | Deleting 
     let str_to_t =
       [("deleting", Deleting);
       ("provisioning", Provisioning);
@@ -4826,7 +5055,7 @@ module VpcPeeringConnectionStateReasonCode =
       ("deleted", Deleted);
       ("active", Active);
       ("pending-acceptance", Pending_acceptance);
-      ("initiating-request", Initiating_request)]
+      ("initiating-request", Initiating_request)] 
     let t_to_str =
       [(Deleting, "deleting");
       (Provisioning, "provisioning");
@@ -4836,27 +5065,28 @@ module VpcPeeringConnectionStateReasonCode =
       (Deleted, "deleted");
       (Active, "active");
       (Pending_acceptance, "pending-acceptance");
-      (Initiating_request, "initiating-request")]
-    let make v () = v
+      (Initiating_request, "initiating-request")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module NetworkAclAssociation =
   struct
     type t =
       {
-      network_acl_association_id: String.t option;
-      network_acl_id: String.t option;
-      subnet_id: String.t option;}
+      network_acl_association_id: String.t option ;
+      network_acl_id: String.t option ;
+      subnet_id: String.t option }
     let make ?network_acl_association_id  ?network_acl_id  ?subnet_id  () =
-      { network_acl_association_id; network_acl_id; subnet_id }
+      { network_acl_association_id; network_acl_id; subnet_id } 
     let parse xml =
       Some
         {
@@ -4868,6 +5098,7 @@ module NetworkAclAssociation =
           subnet_id =
             (Util.option_bind (Xml.member "subnetId" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -4878,6 +5109,7 @@ module NetworkAclAssociation =
            Util.option_map v.network_acl_association_id
              (fun f  ->
                 Query.Pair ("NetworkAclAssociationId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -4887,6 +5119,7 @@ module NetworkAclAssociation =
              (fun f  -> ("network_acl_id", (String.to_json f)));
            Util.option_map v.network_acl_association_id
              (fun f  -> ("network_acl_association_id", (String.to_json f)))])
+      
     let of_json j =
       {
         network_acl_association_id =
@@ -4896,19 +5129,19 @@ module NetworkAclAssociation =
           (Util.option_map (Json.lookup j "network_acl_id") String.of_json);
         subnet_id =
           (Util.option_map (Json.lookup j "subnet_id") String.of_json)
-      }
+      } 
   end
 module NetworkAclEntry =
   struct
     type t =
       {
-      rule_number: Integer.t option;
-      protocol: String.t option;
-      rule_action: RuleAction.t option;
-      egress: Boolean.t option;
-      cidr_block: String.t option;
-      icmp_type_code: IcmpTypeCode.t option;
-      port_range: PortRange.t option;}
+      rule_number: Integer.t option ;
+      protocol: String.t option ;
+      rule_action: RuleAction.t option ;
+      egress: Boolean.t option ;
+      cidr_block: String.t option ;
+      icmp_type_code: IcmpTypeCode.t option ;
+      port_range: PortRange.t option }
     let make ?rule_number  ?protocol  ?rule_action  ?egress  ?cidr_block 
       ?icmp_type_code  ?port_range  () =
       {
@@ -4919,7 +5152,7 @@ module NetworkAclEntry =
         cidr_block;
         icmp_type_code;
         port_range
-      }
+      } 
     let parse xml =
       Some
         {
@@ -4938,6 +5171,7 @@ module NetworkAclEntry =
           port_range =
             (Util.option_bind (Xml.member "portRange" xml) PortRange.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -4956,6 +5190,7 @@ module NetworkAclEntry =
              (fun f  -> Query.Pair ("Protocol", (String.to_query f)));
            Util.option_map v.rule_number
              (fun f  -> Query.Pair ("RuleNumber", (Integer.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -4973,6 +5208,7 @@ module NetworkAclEntry =
              (fun f  -> ("protocol", (String.to_json f)));
            Util.option_map v.rule_number
              (fun f  -> ("rule_number", (Integer.to_json f)))])
+      
     let of_json j =
       {
         rule_number =
@@ -4989,22 +5225,22 @@ module NetworkAclEntry =
              IcmpTypeCode.of_json);
         port_range =
           (Util.option_map (Json.lookup j "port_range") PortRange.of_json)
-      }
+      } 
   end
 module SnapshotDetail =
   struct
     type t =
       {
-      disk_image_size: Double.t option;
-      description: String.t option;
-      format: String.t option;
-      url: String.t option;
-      user_bucket: UserBucketDetails.t option;
-      device_name: String.t option;
-      snapshot_id: String.t option;
-      progress: String.t option;
-      status_message: String.t option;
-      status: String.t option;}
+      disk_image_size: Double.t option ;
+      description: String.t option ;
+      format: String.t option ;
+      url: String.t option ;
+      user_bucket: UserBucketDetails.t option ;
+      device_name: String.t option ;
+      snapshot_id: String.t option ;
+      progress: String.t option ;
+      status_message: String.t option ;
+      status: String.t option }
     let make ?disk_image_size  ?description  ?format  ?url  ?user_bucket 
       ?device_name  ?snapshot_id  ?progress  ?status_message  ?status  () =
       {
@@ -5018,7 +5254,7 @@ module SnapshotDetail =
         progress;
         status_message;
         status
-      }
+      } 
     let parse xml =
       Some
         {
@@ -5041,6 +5277,7 @@ module SnapshotDetail =
             (Util.option_bind (Xml.member "statusMessage" xml) String.parse);
           status = (Util.option_bind (Xml.member "status" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -5065,6 +5302,7 @@ module SnapshotDetail =
              (fun f  -> Query.Pair ("Description", (String.to_query f)));
            Util.option_map v.disk_image_size
              (fun f  -> Query.Pair ("DiskImageSize", (Double.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -5087,6 +5325,7 @@ module SnapshotDetail =
              (fun f  -> ("description", (String.to_json f)));
            Util.option_map v.disk_image_size
              (fun f  -> ("disk_image_size", (Double.to_json f)))])
+      
     let of_json j =
       {
         disk_image_size =
@@ -5107,76 +5346,80 @@ module SnapshotDetail =
         status_message =
           (Util.option_map (Json.lookup j "status_message") String.of_json);
         status = (Util.option_map (Json.lookup j "status") String.of_json)
-      }
+      } 
   end
 module CancelBatchErrorCode =
   struct
     type t =
-      | FleetRequestIdDoesNotExist
-      | FleetRequestIdMalformed
-      | FleetRequestNotInCancellableState
-      | UnexpectedError
+      | FleetRequestIdDoesNotExist 
+      | FleetRequestIdMalformed 
+      | FleetRequestNotInCancellableState 
+      | UnexpectedError 
     let str_to_t =
       [("unexpectedError", UnexpectedError);
       ("fleetRequestNotInCancellableState",
         FleetRequestNotInCancellableState);
       ("fleetRequestIdMalformed", FleetRequestIdMalformed);
-      ("fleetRequestIdDoesNotExist", FleetRequestIdDoesNotExist)]
+      ("fleetRequestIdDoesNotExist", FleetRequestIdDoesNotExist)] 
     let t_to_str =
       [(UnexpectedError, "unexpectedError");
       (FleetRequestNotInCancellableState,
         "fleetRequestNotInCancellableState");
       (FleetRequestIdMalformed, "fleetRequestIdMalformed");
-      (FleetRequestIdDoesNotExist, "fleetRequestIdDoesNotExist")]
-    let make v () = v
+      (FleetRequestIdDoesNotExist, "fleetRequestIdDoesNotExist")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module AccountAttributeValue =
   struct
     type t = {
-      attribute_value: String.t option;}
-    let make ?attribute_value  () = { attribute_value }
+      attribute_value: String.t option }
+    let make ?attribute_value  () = { attribute_value } 
     let parse xml =
       Some
         {
           attribute_value =
             (Util.option_bind (Xml.member "attributeValue" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.attribute_value
               (fun f  -> Query.Pair ("AttributeValue", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.attribute_value
               (fun f  -> ("attribute_value", (String.to_json f)))])
+      
     let of_json j =
       {
         attribute_value =
           (Util.option_map (Json.lookup j "attribute_value") String.of_json)
-      }
+      } 
   end
 module NetworkInterfaceAttachment =
   struct
     type t =
       {
-      attachment_id: String.t option;
-      instance_id: String.t option;
-      instance_owner_id: String.t option;
-      device_index: Integer.t option;
-      status: AttachmentStatus.t option;
-      attach_time: DateTime.t option;
-      delete_on_termination: Boolean.t option;}
+      attachment_id: String.t option ;
+      instance_id: String.t option ;
+      instance_owner_id: String.t option ;
+      device_index: Integer.t option ;
+      status: AttachmentStatus.t option ;
+      attach_time: DateTime.t option ;
+      delete_on_termination: Boolean.t option }
     let make ?attachment_id  ?instance_id  ?instance_owner_id  ?device_index 
       ?status  ?attach_time  ?delete_on_termination  () =
       {
@@ -5187,7 +5430,7 @@ module NetworkInterfaceAttachment =
         status;
         attach_time;
         delete_on_termination
-      }
+      } 
     let parse xml =
       Some
         {
@@ -5208,6 +5451,7 @@ module NetworkInterfaceAttachment =
             (Util.option_bind (Xml.member "deleteOnTermination" xml)
                Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -5226,6 +5470,7 @@ module NetworkInterfaceAttachment =
              (fun f  -> Query.Pair ("InstanceId", (String.to_query f)));
            Util.option_map v.attachment_id
              (fun f  -> Query.Pair ("AttachmentId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -5243,6 +5488,7 @@ module NetworkInterfaceAttachment =
              (fun f  -> ("instance_id", (String.to_json f)));
            Util.option_map v.attachment_id
              (fun f  -> ("attachment_id", (String.to_json f)))])
+      
     let of_json j =
       {
         attachment_id =
@@ -5260,42 +5506,43 @@ module NetworkInterfaceAttachment =
         delete_on_termination =
           (Util.option_map (Json.lookup j "delete_on_termination")
              Boolean.of_json)
-      }
+      } 
   end
 module NetworkInterfacePrivateIpAddressList =
   struct
     type t = NetworkInterfacePrivateIpAddress.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map NetworkInterfacePrivateIpAddress.parse
            (Xml.members "item" xml))
+      
     let to_query v =
-      Query.to_query_list NetworkInterfacePrivateIpAddress.to_query v
+      Query.to_query_list NetworkInterfacePrivateIpAddress.to_query v 
     let to_json v =
-      `List (List.map NetworkInterfacePrivateIpAddress.to_json v)
-    let of_json j = Json.to_list NetworkInterfacePrivateIpAddress.of_json j
+      `List (List.map NetworkInterfacePrivateIpAddress.to_json v) 
+    let of_json j = Json.to_list NetworkInterfacePrivateIpAddress.of_json j 
   end
 module ResourceType =
   struct
     type t =
-      | Customer_gateway
-      | Dhcp_options
-      | Image
-      | Instance
-      | Internet_gateway
-      | Network_acl
-      | Network_interface
-      | Reserved_instances
-      | Route_table
-      | Snapshot
-      | Spot_instances_request
-      | Subnet
-      | Security_group
-      | Volume
-      | Vpc
-      | Vpn_connection
-      | Vpn_gateway
+      | Customer_gateway 
+      | Dhcp_options 
+      | Image 
+      | Instance 
+      | Internet_gateway 
+      | Network_acl 
+      | Network_interface 
+      | Reserved_instances 
+      | Route_table 
+      | Snapshot 
+      | Spot_instances_request 
+      | Subnet 
+      | Security_group 
+      | Volume 
+      | Vpc 
+      | Vpn_connection 
+      | Vpn_gateway 
     let str_to_t =
       [("vpn-gateway", Vpn_gateway);
       ("vpn-connection", Vpn_connection);
@@ -5313,7 +5560,7 @@ module ResourceType =
       ("instance", Instance);
       ("image", Image);
       ("dhcp-options", Dhcp_options);
-      ("customer-gateway", Customer_gateway)]
+      ("customer-gateway", Customer_gateway)] 
     let t_to_str =
       [(Vpn_gateway, "vpn-gateway");
       (Vpn_connection, "vpn-connection");
@@ -5331,275 +5578,287 @@ module ResourceType =
       (Instance, "instance");
       (Image, "image");
       (Dhcp_options, "dhcp-options");
-      (Customer_gateway, "customer-gateway")]
-    let make v () = v
+      (Customer_gateway, "customer-gateway")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module DhcpConfigurationList =
   struct
     type t = DhcpConfiguration.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map DhcpConfiguration.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list DhcpConfiguration.to_query v
-    let to_json v = `List (List.map DhcpConfiguration.to_json v)
-    let of_json j = Json.to_list DhcpConfiguration.of_json j
+      
+    let to_query v = Query.to_query_list DhcpConfiguration.to_query v 
+    let to_json v = `List (List.map DhcpConfiguration.to_json v) 
+    let of_json j = Json.to_list DhcpConfiguration.of_json j 
   end
 module GatewayType =
   struct
     type t =
-      | Ipsec_1
-    let str_to_t = [("ipsec.1", Ipsec_1)]
-    let t_to_str = [(Ipsec_1, "ipsec.1")]
-    let make v () = v
+      | Ipsec_1 
+    let str_to_t = [("ipsec.1", Ipsec_1)] 
+    let t_to_str = [(Ipsec_1, "ipsec.1")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module VpcAttachmentList =
   struct
     type t = VpcAttachment.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map VpcAttachment.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list VpcAttachment.to_query v
-    let to_json v = `List (List.map VpcAttachment.to_json v)
-    let of_json j = Json.to_list VpcAttachment.of_json j
+      Util.option_all (List.map VpcAttachment.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list VpcAttachment.to_query v 
+    let to_json v = `List (List.map VpcAttachment.to_json v) 
+    let of_json j = Json.to_list VpcAttachment.of_json j 
   end
 module ReservedInstancesModificationResultList =
   struct
     type t = ReservedInstancesModificationResult.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map ReservedInstancesModificationResult.parse
            (Xml.members "item" xml))
+      
     let to_query v =
-      Query.to_query_list ReservedInstancesModificationResult.to_query v
+      Query.to_query_list ReservedInstancesModificationResult.to_query v 
     let to_json v =
-      `List (List.map ReservedInstancesModificationResult.to_json v)
+      `List (List.map ReservedInstancesModificationResult.to_json v) 
     let of_json j =
-      Json.to_list ReservedInstancesModificationResult.of_json j
+      Json.to_list ReservedInstancesModificationResult.of_json j 
   end
 module ReservedIntancesIds =
   struct
     type t = ReservedInstancesId.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map ReservedInstancesId.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list ReservedInstancesId.to_query v
-    let to_json v = `List (List.map ReservedInstancesId.to_json v)
-    let of_json j = Json.to_list ReservedInstancesId.of_json j
+      
+    let to_query v = Query.to_query_list ReservedInstancesId.to_query v 
+    let to_json v = `List (List.map ReservedInstancesId.to_json v) 
+    let of_json j = Json.to_list ReservedInstancesId.of_json j 
   end
 module OfferingTypeValues =
   struct
     type t =
-      | Heavy_Utilization
-      | Medium_Utilization
-      | Light_Utilization
-      | No_Upfront
-      | Partial_Upfront
-      | All_Upfront
+      | Heavy_Utilization 
+      | Medium_Utilization 
+      | Light_Utilization 
+      | No_Upfront 
+      | Partial_Upfront 
+      | All_Upfront 
     let str_to_t =
       [("All Upfront", All_Upfront);
       ("Partial Upfront", Partial_Upfront);
       ("No Upfront", No_Upfront);
       ("Light Utilization", Light_Utilization);
       ("Medium Utilization", Medium_Utilization);
-      ("Heavy Utilization", Heavy_Utilization)]
+      ("Heavy Utilization", Heavy_Utilization)] 
     let t_to_str =
       [(All_Upfront, "All Upfront");
       (Partial_Upfront, "Partial Upfront");
       (No_Upfront, "No Upfront");
       (Light_Utilization, "Light Utilization");
       (Medium_Utilization, "Medium Utilization");
-      (Heavy_Utilization, "Heavy Utilization")]
-    let make v () = v
+      (Heavy_Utilization, "Heavy Utilization")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module RIProductDescription =
   struct
     type t =
-      | Linux_UNIX
-      | Linux_UNIX__Amazon_VPC_
-      | Windows
-      | Windows__Amazon_VPC_
+      | Linux_UNIX 
+      | Linux_UNIX__Amazon_VPC_ 
+      | Windows 
+      | Windows__Amazon_VPC_ 
     let str_to_t =
       [("Windows (Amazon VPC)", Windows__Amazon_VPC_);
       ("Windows", Windows);
       ("Linux/UNIX (Amazon VPC)", Linux_UNIX__Amazon_VPC_);
-      ("Linux/UNIX", Linux_UNIX)]
+      ("Linux/UNIX", Linux_UNIX)] 
     let t_to_str =
       [(Windows__Amazon_VPC_, "Windows (Amazon VPC)");
       (Windows, "Windows");
       (Linux_UNIX__Amazon_VPC_, "Linux/UNIX (Amazon VPC)");
-      (Linux_UNIX, "Linux/UNIX")]
-    let make v () = v
+      (Linux_UNIX, "Linux/UNIX")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module RecurringChargesList =
   struct
     type t = RecurringCharge.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map RecurringCharge.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list RecurringCharge.to_query v
-    let to_json v = `List (List.map RecurringCharge.to_json v)
-    let of_json j = Json.to_list RecurringCharge.of_json j
+      
+    let to_query v = Query.to_query_list RecurringCharge.to_query v 
+    let to_json v = `List (List.map RecurringCharge.to_json v) 
+    let of_json j = Json.to_list RecurringCharge.of_json j 
   end
 module ReservedInstanceState =
   struct
     type t =
-      | Payment_pending
-      | Active
-      | Payment_failed
-      | Retired
+      | Payment_pending 
+      | Active 
+      | Payment_failed 
+      | Retired 
     let str_to_t =
       [("retired", Retired);
       ("payment-failed", Payment_failed);
       ("active", Active);
-      ("payment-pending", Payment_pending)]
+      ("payment-pending", Payment_pending)] 
     let t_to_str =
       [(Retired, "retired");
       (Payment_failed, "payment-failed");
       (Active, "active");
-      (Payment_pending, "payment-pending")]
-    let make v () = v
+      (Payment_pending, "payment-pending")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module ValueStringList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module PlacementGroupState =
   struct
     type t =
-      | Pending
-      | Available
-      | Deleting
-      | Deleted
+      | Pending 
+      | Available 
+      | Deleting 
+      | Deleted 
     let str_to_t =
       [("deleted", Deleted);
       ("deleting", Deleting);
       ("available", Available);
-      ("pending", Pending)]
+      ("pending", Pending)] 
     let t_to_str =
       [(Deleted, "deleted");
       (Deleting, "deleting");
       (Available, "available");
-      (Pending, "pending")]
-    let make v () = v
+      (Pending, "pending")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module PlacementStrategy =
   struct
     type t =
-      | Cluster
-    let str_to_t = [("cluster", Cluster)]
-    let t_to_str = [(Cluster, "cluster")]
-    let make v () = v
+      | Cluster 
+    let str_to_t = [("cluster", Cluster)] 
+    let t_to_str = [(Cluster, "cluster")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module CancelSpotInstanceRequestState =
   struct
     type t =
-      | Active
-      | Open
-      | Closed
-      | Cancelled
-      | Completed
+      | Active 
+      | Open 
+      | Closed 
+      | Cancelled 
+      | Completed 
     let str_to_t =
       [("completed", Completed);
       ("cancelled", Cancelled);
       ("closed", Closed);
       ("open", Open);
-      ("active", Active)]
+      ("active", Active)] 
     let t_to_str =
       [(Completed, "completed");
       (Cancelled, "cancelled");
       (Closed, "closed");
       (Open, "open");
-      (Active, "active")]
-    let make v () = v
+      (Active, "active")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module LaunchPermission =
   struct
     type t = {
-      user_id: String.t option;
-      group: PermissionGroup.t option;}
-    let make ?user_id  ?group  () = { user_id; group }
+      user_id: String.t option ;
+      group: PermissionGroup.t option }
+    let make ?user_id  ?group  () = { user_id; group } 
     let parse xml =
       Some
         {
@@ -5607,6 +5866,7 @@ module LaunchPermission =
           group =
             (Util.option_bind (Xml.member "group" xml) PermissionGroup.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -5614,6 +5874,7 @@ module LaunchPermission =
               (fun f  -> Query.Pair ("Group", (PermissionGroup.to_query f)));
            Util.option_map v.user_id
              (fun f  -> Query.Pair ("UserId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -5621,51 +5882,53 @@ module LaunchPermission =
               (fun f  -> ("group", (PermissionGroup.to_json f)));
            Util.option_map v.user_id
              (fun f  -> ("user_id", (String.to_json f)))])
+      
     let of_json j =
       {
         user_id = (Util.option_map (Json.lookup j "user_id") String.of_json);
         group =
           (Util.option_map (Json.lookup j "group") PermissionGroup.of_json)
-      }
+      } 
   end
 module ConversionTaskState =
   struct
     type t =
-      | Active
-      | Cancelling
-      | Cancelled
-      | Completed
+      | Active 
+      | Cancelling 
+      | Cancelled 
+      | Completed 
     let str_to_t =
       [("completed", Completed);
       ("cancelled", Cancelled);
       ("cancelling", Cancelling);
-      ("active", Active)]
+      ("active", Active)] 
     let t_to_str =
       [(Completed, "completed");
       (Cancelled, "cancelled");
       (Cancelling, "cancelling");
-      (Active, "active")]
-    let make v () = v
+      (Active, "active")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module ImportInstanceTaskDetails =
   struct
     type t =
       {
-      volumes: ImportInstanceVolumeDetailSet.t;
-      instance_id: String.t option;
-      platform: PlatformValues.t option;
-      description: String.t option;}
+      volumes: ImportInstanceVolumeDetailSet.t ;
+      instance_id: String.t option ;
+      platform: PlatformValues.t option ;
+      description: String.t option }
     let make ~volumes  ?instance_id  ?platform  ?description  () =
-      { volumes; instance_id; platform; description }
+      { volumes; instance_id; platform; description } 
     let parse xml =
       Some
         {
@@ -5681,6 +5944,7 @@ module ImportInstanceTaskDetails =
           description =
             (Util.option_bind (Xml.member "description" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -5694,6 +5958,7 @@ module ImportInstanceTaskDetails =
              (Query.Pair
                 ("Volumes",
                   (ImportInstanceVolumeDetailSet.to_query v.volumes)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -5705,6 +5970,7 @@ module ImportInstanceTaskDetails =
              (fun f  -> ("instance_id", (String.to_json f)));
            Some
              ("volumes", (ImportInstanceVolumeDetailSet.to_json v.volumes))])
+      
     let of_json j =
       {
         volumes =
@@ -5716,20 +5982,20 @@ module ImportInstanceTaskDetails =
           (Util.option_map (Json.lookup j "platform") PlatformValues.of_json);
         description =
           (Util.option_map (Json.lookup j "description") String.of_json)
-      }
+      } 
   end
 module ImportVolumeTaskDetails =
   struct
     type t =
       {
-      bytes_converted: Long.t;
-      availability_zone: String.t;
-      description: String.t option;
-      image: DiskImageDescription.t;
-      volume: DiskImageVolumeDescription.t;}
+      bytes_converted: Long.t ;
+      availability_zone: String.t ;
+      description: String.t option ;
+      image: DiskImageDescription.t ;
+      volume: DiskImageVolumeDescription.t }
     let make ~bytes_converted  ~availability_zone  ?description  ~image 
       ~volume  () =
-      { bytes_converted; availability_zone; description; image; volume }
+      { bytes_converted; availability_zone; description; image; volume } 
     let parse xml =
       Some
         {
@@ -5751,6 +6017,7 @@ module ImportVolumeTaskDetails =
                (Util.option_bind (Xml.member "volume" xml)
                   DiskImageVolumeDescription.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -5767,6 +6034,7 @@ module ImportVolumeTaskDetails =
            Some
              (Query.Pair
                 ("BytesConverted", (Long.to_query v.bytes_converted)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -5776,6 +6044,7 @@ module ImportVolumeTaskDetails =
              (fun f  -> ("description", (String.to_json f)));
            Some ("availability_zone", (String.to_json v.availability_zone));
            Some ("bytes_converted", (Long.to_json v.bytes_converted))])
+      
     let of_json j =
       {
         bytes_converted =
@@ -5792,17 +6061,17 @@ module ImportVolumeTaskDetails =
         volume =
           (DiskImageVolumeDescription.of_json
              (Util.of_option_exn (Json.lookup j "volume")))
-      }
+      } 
   end
 module EventInformation =
   struct
     type t =
       {
-      instance_id: String.t option;
-      event_sub_type: String.t option;
-      event_description: String.t option;}
+      instance_id: String.t option ;
+      event_sub_type: String.t option ;
+      event_description: String.t option }
     let make ?instance_id  ?event_sub_type  ?event_description  () =
-      { instance_id; event_sub_type; event_description }
+      { instance_id; event_sub_type; event_description } 
     let parse xml =
       Some
         {
@@ -5814,6 +6083,7 @@ module EventInformation =
             (Util.option_bind (Xml.member "eventDescription" xml)
                String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -5823,6 +6093,7 @@ module EventInformation =
              (fun f  -> Query.Pair ("EventSubType", (String.to_query f)));
            Util.option_map v.instance_id
              (fun f  -> Query.Pair ("InstanceId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -5832,6 +6103,7 @@ module EventInformation =
              (fun f  -> ("event_sub_type", (String.to_json f)));
            Util.option_map v.instance_id
              (fun f  -> ("instance_id", (String.to_json f)))])
+      
     let of_json j =
       {
         instance_id =
@@ -5840,39 +6112,40 @@ module EventInformation =
           (Util.option_map (Json.lookup j "event_sub_type") String.of_json);
         event_description =
           (Util.option_map (Json.lookup j "event_description") String.of_json)
-      }
+      } 
   end
 module EventType =
   struct
     type t =
-      | InstanceChange
-      | FleetRequestChange
-      | Error
+      | InstanceChange 
+      | FleetRequestChange 
+      | Error 
     let str_to_t =
       [("error", Error);
       ("fleetRequestChange", FleetRequestChange);
-      ("instanceChange", InstanceChange)]
+      ("instanceChange", InstanceChange)] 
     let t_to_str =
       [(Error, "error");
       (FleetRequestChange, "fleetRequestChange");
-      (InstanceChange, "instanceChange")]
-    let make v () = v
+      (InstanceChange, "instanceChange")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module UnsuccessfulItemError =
   struct
     type t = {
-      code: String.t;
-      message: String.t;}
-    let make ~code  ~message  () = { code; message }
+      code: String.t ;
+      message: String.t }
+    let make ~code  ~message  () = { code; message } 
     let parse xml =
       Some
         {
@@ -5883,142 +6156,150 @@ module UnsuccessfulItemError =
             (Xml.required "message"
                (Util.option_bind (Xml.member "message" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("Message", (String.to_query v.message)));
            Some (Query.Pair ("Code", (String.to_query v.code)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("message", (String.to_json v.message));
            Some ("code", (String.to_json v.code))])
+      
     let of_json j =
       {
         code = (String.of_json (Util.of_option_exn (Json.lookup j "code")));
         message =
           (String.of_json (Util.of_option_exn (Json.lookup j "message")))
-      }
+      } 
   end
 module PropagatingVgwList =
   struct
     type t = PropagatingVgw.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map PropagatingVgw.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list PropagatingVgw.to_query v
-    let to_json v = `List (List.map PropagatingVgw.to_json v)
-    let of_json j = Json.to_list PropagatingVgw.of_json j
+      
+    let to_query v = Query.to_query_list PropagatingVgw.to_query v 
+    let to_json v = `List (List.map PropagatingVgw.to_json v) 
+    let of_json j = Json.to_list PropagatingVgw.of_json j 
   end
 module RouteList =
   struct
     type t = Route.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map Route.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list Route.to_query v
-    let to_json v = `List (List.map Route.to_json v)
-    let of_json j = Json.to_list Route.of_json j
+      Util.option_all (List.map Route.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list Route.to_query v 
+    let to_json v = `List (List.map Route.to_json v) 
+    let of_json j = Json.to_list Route.of_json j 
   end
 module RouteTableAssociationList =
   struct
     type t = RouteTableAssociation.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map RouteTableAssociation.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list RouteTableAssociation.to_query v
-    let to_json v = `List (List.map RouteTableAssociation.to_json v)
-    let of_json j = Json.to_list RouteTableAssociation.of_json j
+      
+    let to_query v = Query.to_query_list RouteTableAssociation.to_query v 
+    let to_json v = `List (List.map RouteTableAssociation.to_json v) 
+    let of_json j = Json.to_list RouteTableAssociation.of_json j 
   end
 module InstanceCountList =
   struct
     type t = InstanceCount.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map InstanceCount.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list InstanceCount.to_query v
-    let to_json v = `List (List.map InstanceCount.to_json v)
-    let of_json j = Json.to_list InstanceCount.of_json j
+      Util.option_all (List.map InstanceCount.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list InstanceCount.to_query v 
+    let to_json v = `List (List.map InstanceCount.to_json v) 
+    let of_json j = Json.to_list InstanceCount.of_json j 
   end
 module ListingStatus =
   struct
     type t =
-      | Active
-      | Pending
-      | Cancelled
-      | Closed
+      | Active 
+      | Pending 
+      | Cancelled 
+      | Closed 
     let str_to_t =
       [("closed", Closed);
       ("cancelled", Cancelled);
       ("pending", Pending);
-      ("active", Active)]
+      ("active", Active)] 
     let t_to_str =
       [(Closed, "closed");
       (Cancelled, "cancelled");
       (Pending, "pending");
-      (Active, "active")]
-    let make v () = v
+      (Active, "active")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module PriceScheduleList =
   struct
     type t = PriceSchedule.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map PriceSchedule.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list PriceSchedule.to_query v
-    let to_json v = `List (List.map PriceSchedule.to_json v)
-    let of_json j = Json.to_list PriceSchedule.of_json j
+      Util.option_all (List.map PriceSchedule.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list PriceSchedule.to_query v 
+    let to_json v = `List (List.map PriceSchedule.to_json v) 
+    let of_json j = Json.to_list PriceSchedule.of_json j 
   end
 module MoveStatus =
   struct
     type t =
-      | MovingToVpc
-      | RestoringToClassic
+      | MovingToVpc 
+      | RestoringToClassic 
     let str_to_t =
       [("restoringToClassic", RestoringToClassic);
-      ("movingToVpc", MovingToVpc)]
+      ("movingToVpc", MovingToVpc)] 
     let t_to_str =
       [(RestoringToClassic, "restoringToClassic");
-      (MovingToVpc, "movingToVpc")]
-    let make v () = v
+      (MovingToVpc, "movingToVpc")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module InstanceStatusEventList =
   struct
     type t = InstanceStatusEvent.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map InstanceStatusEvent.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list InstanceStatusEvent.to_query v
-    let to_json v = `List (List.map InstanceStatusEvent.to_json v)
-    let of_json j = Json.to_list InstanceStatusEvent.of_json j
+      
+    let to_query v = Query.to_query_list InstanceStatusEvent.to_query v 
+    let to_json v = `List (List.map InstanceStatusEvent.to_json v) 
+    let of_json j = Json.to_list InstanceStatusEvent.of_json j 
   end
 module InstanceStatusSummary =
   struct
     type t = {
-      status: SummaryStatus.t;
-      details: InstanceStatusDetailsList.t;}
-    let make ~status  ?(details= [])  () = { status; details }
+      status: SummaryStatus.t ;
+      details: InstanceStatusDetailsList.t }
+    let make ~status  ?(details= [])  () = { status; details } 
     let parse xml =
       Some
         {
@@ -6031,6 +6312,7 @@ module InstanceStatusSummary =
                (Util.option_bind (Xml.member "details" xml)
                   InstanceStatusDetailsList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -6038,11 +6320,13 @@ module InstanceStatusSummary =
               (Query.Pair
                  ("Details", (InstanceStatusDetailsList.to_query v.details)));
            Some (Query.Pair ("Status", (SummaryStatus.to_query v.status)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("details", (InstanceStatusDetailsList.to_json v.details));
            Some ("status", (SummaryStatus.to_json v.status))])
+      
     let of_json j =
       {
         status =
@@ -6051,18 +6335,18 @@ module InstanceStatusSummary =
         details =
           (InstanceStatusDetailsList.of_json
              (Util.of_option_exn (Json.lookup j "details")))
-      }
+      } 
   end
 module ImageState =
   struct
     type t =
-      | Pending
-      | Available
-      | Invalid
-      | Deregistered
-      | Transient
-      | Failed
-      | Error
+      | Pending 
+      | Available 
+      | Invalid 
+      | Deregistered 
+      | Transient 
+      | Failed 
+      | Error 
     let str_to_t =
       [("error", Error);
       ("failed", Failed);
@@ -6070,7 +6354,7 @@ module ImageState =
       ("deregistered", Deregistered);
       ("invalid", Invalid);
       ("available", Available);
-      ("pending", Pending)]
+      ("pending", Pending)] 
     let t_to_str =
       [(Error, "error");
       (Failed, "failed");
@@ -6078,52 +6362,54 @@ module ImageState =
       (Deregistered, "deregistered");
       (Invalid, "invalid");
       (Available, "available");
-      (Pending, "pending")]
-    let make v () = v
+      (Pending, "pending")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module ImageTypeValues =
   struct
     type t =
-      | Machine
-      | Kernel
-      | Ramdisk
+      | Machine 
+      | Kernel 
+      | Ramdisk 
     let str_to_t =
-      [("ramdisk", Ramdisk); ("kernel", Kernel); ("machine", Machine)]
+      [("ramdisk", Ramdisk); ("kernel", Kernel); ("machine", Machine)] 
     let t_to_str =
-      [(Ramdisk, "ramdisk"); (Kernel, "kernel"); (Machine, "machine")]
-    let make v () = v
+      [(Ramdisk, "ramdisk"); (Kernel, "kernel"); (Machine, "machine")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module SnapshotTaskDetail =
   struct
     type t =
       {
-      disk_image_size: Double.t option;
-      description: String.t option;
-      format: String.t option;
-      url: String.t option;
-      user_bucket: UserBucketDetails.t option;
-      snapshot_id: String.t option;
-      progress: String.t option;
-      status_message: String.t option;
-      status: String.t option;}
+      disk_image_size: Double.t option ;
+      description: String.t option ;
+      format: String.t option ;
+      url: String.t option ;
+      user_bucket: UserBucketDetails.t option ;
+      snapshot_id: String.t option ;
+      progress: String.t option ;
+      status_message: String.t option ;
+      status: String.t option }
     let make ?disk_image_size  ?description  ?format  ?url  ?user_bucket 
       ?snapshot_id  ?progress  ?status_message  ?status  () =
       {
@@ -6136,7 +6422,7 @@ module SnapshotTaskDetail =
         progress;
         status_message;
         status
-      }
+      } 
     let parse xml =
       Some
         {
@@ -6157,6 +6443,7 @@ module SnapshotTaskDetail =
             (Util.option_bind (Xml.member "statusMessage" xml) String.parse);
           status = (Util.option_bind (Xml.member "status" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -6179,6 +6466,7 @@ module SnapshotTaskDetail =
              (fun f  -> Query.Pair ("Description", (String.to_query f)));
            Util.option_map v.disk_image_size
              (fun f  -> Query.Pair ("DiskImageSize", (Double.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -6199,6 +6487,7 @@ module SnapshotTaskDetail =
              (fun f  -> ("description", (String.to_json f)));
            Util.option_map v.disk_image_size
              (fun f  -> ("disk_image_size", (Double.to_json f)))])
+      
     let of_json j =
       {
         disk_image_size =
@@ -6217,27 +6506,27 @@ module SnapshotTaskDetail =
         status_message =
           (Util.option_map (Json.lookup j "status_message") String.of_json);
         status = (Util.option_map (Json.lookup j "status") String.of_json)
-      }
+      } 
   end
 module LaunchSpecification =
   struct
     type t =
       {
-      image_id: String.t option;
-      key_name: String.t option;
-      security_groups: GroupIdentifierList.t;
-      user_data: String.t option;
-      addressing_type: String.t option;
-      instance_type: InstanceType.t option;
-      placement: SpotPlacement.t option;
-      kernel_id: String.t option;
-      ramdisk_id: String.t option;
-      block_device_mappings: BlockDeviceMappingList.t;
-      subnet_id: String.t option;
-      network_interfaces: InstanceNetworkInterfaceSpecificationList.t;
-      iam_instance_profile: IamInstanceProfileSpecification.t option;
-      ebs_optimized: Boolean.t option;
-      monitoring: RunInstancesMonitoringEnabled.t option;}
+      image_id: String.t option ;
+      key_name: String.t option ;
+      security_groups: GroupIdentifierList.t ;
+      user_data: String.t option ;
+      addressing_type: String.t option ;
+      instance_type: InstanceType.t option ;
+      placement: SpotPlacement.t option ;
+      kernel_id: String.t option ;
+      ramdisk_id: String.t option ;
+      block_device_mappings: BlockDeviceMappingList.t ;
+      subnet_id: String.t option ;
+      network_interfaces: InstanceNetworkInterfaceSpecificationList.t ;
+      iam_instance_profile: IamInstanceProfileSpecification.t option ;
+      ebs_optimized: Boolean.t option ;
+      monitoring: RunInstancesMonitoringEnabled.t option }
     let make ?image_id  ?key_name  ?(security_groups= [])  ?user_data 
       ?addressing_type  ?instance_type  ?placement  ?kernel_id  ?ramdisk_id 
       ?(block_device_mappings= [])  ?subnet_id  ?(network_interfaces= []) 
@@ -6258,7 +6547,7 @@ module LaunchSpecification =
         iam_instance_profile;
         ebs_optimized;
         monitoring
-      }
+      } 
     let parse xml =
       Some
         {
@@ -6303,6 +6592,7 @@ module LaunchSpecification =
             (Util.option_bind (Xml.member "monitoring" xml)
                RunInstancesMonitoringEnabled.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -6349,6 +6639,7 @@ module LaunchSpecification =
              (fun f  -> Query.Pair ("KeyName", (String.to_query f)));
            Util.option_map v.image_id
              (fun f  -> Query.Pair ("ImageId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -6389,6 +6680,7 @@ module LaunchSpecification =
              (fun f  -> ("key_name", (String.to_json f)));
            Util.option_map v.image_id
              (fun f  -> ("image_id", (String.to_json f)))])
+      
     let of_json j =
       {
         image_id =
@@ -6427,45 +6719,46 @@ module LaunchSpecification =
         monitoring =
           (Util.option_map (Json.lookup j "monitoring")
              RunInstancesMonitoringEnabled.of_json)
-      }
+      } 
   end
 module SpotInstanceState =
   struct
     type t =
-      | Open
-      | Active
-      | Closed
-      | Cancelled
-      | Failed
+      | Open 
+      | Active 
+      | Closed 
+      | Cancelled 
+      | Failed 
     let str_to_t =
       [("failed", Failed);
       ("cancelled", Cancelled);
       ("closed", Closed);
       ("active", Active);
-      ("open", Open)]
+      ("open", Open)] 
     let t_to_str =
       [(Failed, "failed");
       (Cancelled, "cancelled");
       (Closed, "closed");
       (Active, "active");
-      (Open, "open")]
-    let make v () = v
+      (Open, "open")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module SpotInstanceStateFault =
   struct
     type t = {
-      code: String.t option;
-      message: String.t option;}
-    let make ?code  ?message  () = { code; message }
+      code: String.t option ;
+      message: String.t option }
+    let make ?code  ?message  () = { code; message } 
     let parse xml =
       Some
         {
@@ -6473,6 +6766,7 @@ module SpotInstanceStateFault =
           message =
             (Util.option_bind (Xml.member "message" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -6480,27 +6774,29 @@ module SpotInstanceStateFault =
               (fun f  -> Query.Pair ("Message", (String.to_query f)));
            Util.option_map v.code
              (fun f  -> Query.Pair ("Code", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.message
               (fun f  -> ("message", (String.to_json f)));
            Util.option_map v.code (fun f  -> ("code", (String.to_json f)))])
+      
     let of_json j =
       {
         code = (Util.option_map (Json.lookup j "code") String.of_json);
         message = (Util.option_map (Json.lookup j "message") String.of_json)
-      }
+      } 
   end
 module SpotInstanceStatus =
   struct
     type t =
       {
-      code: String.t option;
-      update_time: DateTime.t option;
-      message: String.t option;}
+      code: String.t option ;
+      update_time: DateTime.t option ;
+      message: String.t option }
     let make ?code  ?update_time  ?message  () =
-      { code; update_time; message }
+      { code; update_time; message } 
     let parse xml =
       Some
         {
@@ -6510,6 +6806,7 @@ module SpotInstanceStatus =
           message =
             (Util.option_bind (Xml.member "message" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -6519,6 +6816,7 @@ module SpotInstanceStatus =
              (fun f  -> Query.Pair ("UpdateTime", (DateTime.to_query f)));
            Util.option_map v.code
              (fun f  -> Query.Pair ("Code", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -6527,70 +6825,73 @@ module SpotInstanceStatus =
            Util.option_map v.update_time
              (fun f  -> ("update_time", (DateTime.to_json f)));
            Util.option_map v.code (fun f  -> ("code", (String.to_json f)))])
+      
     let of_json j =
       {
         code = (Util.option_map (Json.lookup j "code") String.of_json);
         update_time =
           (Util.option_map (Json.lookup j "update_time") DateTime.of_json);
         message = (Util.option_map (Json.lookup j "message") String.of_json)
-      }
+      } 
   end
 module SpotInstanceType =
   struct
     type t =
-      | One_time
-      | Persistent
-    let str_to_t = [("persistent", Persistent); ("one-time", One_time)]
-    let t_to_str = [(Persistent, "persistent"); (One_time, "one-time")]
-    let make v () = v
+      | One_time 
+      | Persistent 
+    let str_to_t = [("persistent", Persistent); ("one-time", One_time)] 
+    let t_to_str = [(Persistent, "persistent"); (One_time, "one-time")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module ExportTaskState =
   struct
     type t =
-      | Active
-      | Cancelling
-      | Cancelled
-      | Completed
+      | Active 
+      | Cancelling 
+      | Cancelled 
+      | Completed 
     let str_to_t =
       [("completed", Completed);
       ("cancelled", Cancelled);
       ("cancelling", Cancelling);
-      ("active", Active)]
+      ("active", Active)] 
     let t_to_str =
       [(Completed, "completed");
       (Cancelled, "cancelled");
       (Cancelling, "cancelling");
-      (Active, "active")]
-    let make v () = v
+      (Active, "active")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module ExportToS3Task =
   struct
     type t =
       {
-      disk_image_format: DiskImageFormat.t option;
-      container_format: ContainerFormat.t option;
-      s3_bucket: String.t option;
-      s3_key: String.t option;}
+      disk_image_format: DiskImageFormat.t option ;
+      container_format: ContainerFormat.t option ;
+      s3_bucket: String.t option ;
+      s3_key: String.t option }
     let make ?disk_image_format  ?container_format  ?s3_bucket  ?s3_key  () =
-      { disk_image_format; container_format; s3_bucket; s3_key }
+      { disk_image_format; container_format; s3_bucket; s3_key } 
     let parse xml =
       Some
         {
@@ -6604,6 +6905,7 @@ module ExportToS3Task =
             (Util.option_bind (Xml.member "s3Bucket" xml) String.parse);
           s3_key = (Util.option_bind (Xml.member "s3Key" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -6617,6 +6919,7 @@ module ExportToS3Task =
            Util.option_map v.disk_image_format
              (fun f  ->
                 Query.Pair ("DiskImageFormat", (DiskImageFormat.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -6628,6 +6931,7 @@ module ExportToS3Task =
              (fun f  -> ("container_format", (ContainerFormat.to_json f)));
            Util.option_map v.disk_image_format
              (fun f  -> ("disk_image_format", (DiskImageFormat.to_json f)))])
+      
     let of_json j =
       {
         disk_image_format =
@@ -6639,16 +6943,16 @@ module ExportToS3Task =
         s3_bucket =
           (Util.option_map (Json.lookup j "s3_bucket") String.of_json);
         s3_key = (Util.option_map (Json.lookup j "s3_key") String.of_json)
-      }
+      } 
   end
 module InstanceExportDetails =
   struct
     type t =
       {
-      instance_id: String.t option;
-      target_environment: ExportEnvironment.t option;}
+      instance_id: String.t option ;
+      target_environment: ExportEnvironment.t option }
     let make ?instance_id  ?target_environment  () =
-      { instance_id; target_environment }
+      { instance_id; target_environment } 
     let parse xml =
       Some
         {
@@ -6658,6 +6962,7 @@ module InstanceExportDetails =
             (Util.option_bind (Xml.member "targetEnvironment" xml)
                ExportEnvironment.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -6667,6 +6972,7 @@ module InstanceExportDetails =
                    ("TargetEnvironment", (ExportEnvironment.to_query f)));
            Util.option_map v.instance_id
              (fun f  -> Query.Pair ("InstanceId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -6675,6 +6981,7 @@ module InstanceExportDetails =
                  ("target_environment", (ExportEnvironment.to_json f)));
            Util.option_map v.instance_id
              (fun f  -> ("instance_id", (String.to_json f)))])
+      
     let of_json j =
       {
         instance_id =
@@ -6682,26 +6989,26 @@ module InstanceExportDetails =
         target_environment =
           (Util.option_map (Json.lookup j "target_environment")
              ExportEnvironment.of_json)
-      }
+      } 
   end
 module IpPermissionList =
   struct
     type t = IpPermission.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map IpPermission.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list IpPermission.to_query v
-    let to_json v = `List (List.map IpPermission.to_json v)
-    let of_json j = Json.to_list IpPermission.of_json j
+      Util.option_all (List.map IpPermission.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list IpPermission.to_query v 
+    let to_json v = `List (List.map IpPermission.to_json v) 
+    let of_json j = Json.to_list IpPermission.of_json j 
   end
 module EbsInstanceBlockDeviceSpecification =
   struct
     type t =
       {
-      volume_id: String.t option;
-      delete_on_termination: Boolean.t option;}
+      volume_id: String.t option ;
+      delete_on_termination: Boolean.t option }
     let make ?volume_id  ?delete_on_termination  () =
-      { volume_id; delete_on_termination }
+      { volume_id; delete_on_termination } 
     let parse xml =
       Some
         {
@@ -6711,6 +7018,7 @@ module EbsInstanceBlockDeviceSpecification =
             (Util.option_bind (Xml.member "deleteOnTermination" xml)
                Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -6719,6 +7027,7 @@ module EbsInstanceBlockDeviceSpecification =
                  Query.Pair ("DeleteOnTermination", (Boolean.to_query f)));
            Util.option_map v.volume_id
              (fun f  -> Query.Pair ("VolumeId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -6726,6 +7035,7 @@ module EbsInstanceBlockDeviceSpecification =
               (fun f  -> ("delete_on_termination", (Boolean.to_json f)));
            Util.option_map v.volume_id
              (fun f  -> ("volume_id", (String.to_json f)))])
+      
     let of_json j =
       {
         volume_id =
@@ -6733,65 +7043,67 @@ module EbsInstanceBlockDeviceSpecification =
         delete_on_termination =
           (Util.option_map (Json.lookup j "delete_on_termination")
              Boolean.of_json)
-      }
+      } 
   end
 module InternetGatewayAttachmentList =
   struct
     type t = InternetGatewayAttachment.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map InternetGatewayAttachment.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list InternetGatewayAttachment.to_query v
-    let to_json v = `List (List.map InternetGatewayAttachment.to_json v)
-    let of_json j = Json.to_list InternetGatewayAttachment.of_json j
+      
+    let to_query v = Query.to_query_list InternetGatewayAttachment.to_query v 
+    let to_json v = `List (List.map InternetGatewayAttachment.to_json v) 
+    let of_json j = Json.to_list InternetGatewayAttachment.of_json j 
   end
 module BatchState =
   struct
     type t =
-      | Submitted
-      | Active
-      | Cancelled
-      | Failed
-      | Cancelled_running
-      | Cancelled_terminating
+      | Submitted 
+      | Active 
+      | Cancelled 
+      | Failed 
+      | Cancelled_running 
+      | Cancelled_terminating 
     let str_to_t =
       [("cancelled_terminating", Cancelled_terminating);
       ("cancelled_running", Cancelled_running);
       ("failed", Failed);
       ("cancelled", Cancelled);
       ("active", Active);
-      ("submitted", Submitted)]
+      ("submitted", Submitted)] 
     let t_to_str =
       [(Cancelled_terminating, "cancelled_terminating");
       (Cancelled_running, "cancelled_running");
       (Failed, "failed");
       (Cancelled, "cancelled");
       (Active, "active");
-      (Submitted, "submitted")]
-    let make v () = v
+      (Submitted, "submitted")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module SpotFleetRequestConfigData =
   struct
     type t =
       {
-      client_token: String.t option;
-      spot_price: String.t;
-      target_capacity: Integer.t;
-      valid_from: DateTime.t option;
-      valid_until: DateTime.t option;
-      terminate_instances_with_expiration: Boolean.t option;
-      iam_fleet_role: String.t;
-      launch_specifications: LaunchSpecsList.t;}
+      client_token: String.t option ;
+      spot_price: String.t ;
+      target_capacity: Integer.t ;
+      valid_from: DateTime.t option ;
+      valid_until: DateTime.t option ;
+      terminate_instances_with_expiration: Boolean.t option ;
+      iam_fleet_role: String.t ;
+      launch_specifications: LaunchSpecsList.t }
     let make ?client_token  ~spot_price  ~target_capacity  ?valid_from 
       ?valid_until  ?terminate_instances_with_expiration  ~iam_fleet_role 
       ~launch_specifications  () =
@@ -6804,7 +7116,7 @@ module SpotFleetRequestConfigData =
         terminate_instances_with_expiration;
         iam_fleet_role;
         launch_specifications
-      }
+      } 
     let parse xml =
       Some
         {
@@ -6833,6 +7145,7 @@ module SpotFleetRequestConfigData =
                (Util.option_bind (Xml.member "launchSpecifications" xml)
                   LaunchSpecsList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -6856,6 +7169,7 @@ module SpotFleetRequestConfigData =
            Some (Query.Pair ("SpotPrice", (String.to_query v.spot_price)));
            Util.option_map v.client_token
              (fun f  -> Query.Pair ("ClientToken", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -6874,6 +7188,7 @@ module SpotFleetRequestConfigData =
            Some ("spot_price", (String.to_json v.spot_price));
            Util.option_map v.client_token
              (fun f  -> ("client_token", (String.to_json f)))])
+      
     let of_json j =
       {
         client_token =
@@ -6897,61 +7212,64 @@ module SpotFleetRequestConfigData =
         launch_specifications =
           (LaunchSpecsList.of_json
              (Util.of_option_exn (Json.lookup j "launch_specifications")))
-      }
+      } 
   end
 module AvailabilityZoneMessageList =
   struct
     type t = AvailabilityZoneMessage.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map AvailabilityZoneMessage.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list AvailabilityZoneMessage.to_query v
-    let to_json v = `List (List.map AvailabilityZoneMessage.to_json v)
-    let of_json j = Json.to_list AvailabilityZoneMessage.of_json j
+      
+    let to_query v = Query.to_query_list AvailabilityZoneMessage.to_query v 
+    let to_json v = `List (List.map AvailabilityZoneMessage.to_json v) 
+    let of_json j = Json.to_list AvailabilityZoneMessage.of_json j 
   end
 module AvailabilityZoneState =
   struct
     type t =
-      | Available
-    let str_to_t = [("available", Available)]
-    let t_to_str = [(Available, "available")]
-    let make v () = v
+      | Available 
+    let str_to_t = [("available", Available)] 
+    let t_to_str = [(Available, "available")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module TrafficType =
   struct
     type t =
-      | ACCEPT
-      | REJECT
-      | ALL
-    let str_to_t = [("ALL", ALL); ("REJECT", REJECT); ("ACCEPT", ACCEPT)]
-    let t_to_str = [(ALL, "ALL"); (REJECT, "REJECT"); (ACCEPT, "ACCEPT")]
-    let make v () = v
+      | ACCEPT 
+      | REJECT 
+      | ALL 
+    let str_to_t = [("ALL", ALL); ("REJECT", REJECT); ("ACCEPT", ACCEPT)] 
+    let t_to_str = [(ALL, "ALL"); (REJECT, "REJECT"); (ACCEPT, "ACCEPT")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module BundleTaskError =
   struct
     type t = {
-      code: String.t option;
-      message: String.t option;}
-    let make ?code  ?message  () = { code; message }
+      code: String.t option ;
+      message: String.t option }
+    let make ?code  ?message  () = { code; message } 
     let parse xml =
       Some
         {
@@ -6959,6 +7277,7 @@ module BundleTaskError =
           message =
             (Util.option_bind (Xml.member "message" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -6966,28 +7285,30 @@ module BundleTaskError =
               (fun f  -> Query.Pair ("Message", (String.to_query f)));
            Util.option_map v.code
              (fun f  -> Query.Pair ("Code", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.message
               (fun f  -> ("message", (String.to_json f)));
            Util.option_map v.code (fun f  -> ("code", (String.to_json f)))])
+      
     let of_json j =
       {
         code = (Util.option_map (Json.lookup j "code") String.of_json);
         message = (Util.option_map (Json.lookup j "message") String.of_json)
-      }
+      } 
   end
 module BundleTaskState =
   struct
     type t =
-      | Pending
-      | Waiting_for_shutdown
-      | Bundling
-      | Storing
-      | Cancelling
-      | Complete
-      | Failed
+      | Pending 
+      | Waiting_for_shutdown 
+      | Bundling 
+      | Storing 
+      | Cancelling 
+      | Complete 
+      | Failed 
     let str_to_t =
       [("failed", Failed);
       ("complete", Complete);
@@ -6995,7 +7316,7 @@ module BundleTaskState =
       ("storing", Storing);
       ("bundling", Bundling);
       ("waiting-for-shutdown", Waiting_for_shutdown);
-      ("pending", Pending)]
+      ("pending", Pending)] 
     let t_to_str =
       [(Failed, "failed");
       (Complete, "complete");
@@ -7003,66 +7324,71 @@ module BundleTaskState =
       (Storing, "storing");
       (Bundling, "bundling");
       (Waiting_for_shutdown, "waiting-for-shutdown");
-      (Pending, "pending")]
-    let make v () = v
+      (Pending, "pending")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module Storage =
   struct
     type t = {
-      s3: S3Storage.t option;}
-    let make ?s3  () = { s3 }
+      s3: S3Storage.t option }
+    let make ?s3  () = { s3 } 
     let parse xml =
-      Some { s3 = (Util.option_bind (Xml.member "S3" xml) S3Storage.parse) }
+      Some { s3 = (Util.option_bind (Xml.member "S3" xml) S3Storage.parse) } 
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.s3
               (fun f  -> Query.Pair ("S3", (S3Storage.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.s3 (fun f  -> ("s3", (S3Storage.to_json f)))])
+      
     let of_json j =
-      { s3 = (Util.option_map (Json.lookup j "s3") S3Storage.of_json) }
+      { s3 = (Util.option_map (Json.lookup j "s3") S3Storage.of_json) } 
   end
 module VolumeStatusActionsList =
   struct
     type t = VolumeStatusAction.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map VolumeStatusAction.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list VolumeStatusAction.to_query v
-    let to_json v = `List (List.map VolumeStatusAction.to_json v)
-    let of_json j = Json.to_list VolumeStatusAction.of_json j
+      
+    let to_query v = Query.to_query_list VolumeStatusAction.to_query v 
+    let to_json v = `List (List.map VolumeStatusAction.to_json v) 
+    let of_json j = Json.to_list VolumeStatusAction.of_json j 
   end
 module VolumeStatusEventsList =
   struct
     type t = VolumeStatusEvent.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map VolumeStatusEvent.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list VolumeStatusEvent.to_query v
-    let to_json v = `List (List.map VolumeStatusEvent.to_json v)
-    let of_json j = Json.to_list VolumeStatusEvent.of_json j
+      
+    let to_query v = Query.to_query_list VolumeStatusEvent.to_query v 
+    let to_json v = `List (List.map VolumeStatusEvent.to_json v) 
+    let of_json j = Json.to_list VolumeStatusEvent.of_json j 
   end
 module VolumeStatusInfo =
   struct
     type t =
       {
-      status: VolumeStatusInfoStatus.t option;
-      details: VolumeStatusDetailsList.t;}
-    let make ?status  ?(details= [])  () = { status; details }
+      status: VolumeStatusInfoStatus.t option ;
+      details: VolumeStatusDetailsList.t }
+    let make ?status  ?(details= [])  () = { status; details } 
     let parse xml =
       Some
         {
@@ -7074,6 +7400,7 @@ module VolumeStatusInfo =
                (Util.option_bind (Xml.member "details" xml)
                   VolumeStatusDetailsList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -7083,12 +7410,14 @@ module VolumeStatusInfo =
            Util.option_map v.status
              (fun f  ->
                 Query.Pair ("Status", (VolumeStatusInfoStatus.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("details", (VolumeStatusDetailsList.to_json v.details));
            Util.option_map v.status
              (fun f  -> ("status", (VolumeStatusInfoStatus.to_json f)))])
+      
     let of_json j =
       {
         status =
@@ -7097,14 +7426,14 @@ module VolumeStatusInfo =
         details =
           (VolumeStatusDetailsList.of_json
              (Util.of_option_exn (Json.lookup j "details")))
-      }
+      } 
   end
 module CreateVolumePermission =
   struct
     type t = {
-      user_id: String.t option;
-      group: PermissionGroup.t option;}
-    let make ?user_id  ?group  () = { user_id; group }
+      user_id: String.t option ;
+      group: PermissionGroup.t option }
+    let make ?user_id  ?group  () = { user_id; group } 
     let parse xml =
       Some
         {
@@ -7112,6 +7441,7 @@ module CreateVolumePermission =
           group =
             (Util.option_bind (Xml.member "group" xml) PermissionGroup.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -7119,6 +7449,7 @@ module CreateVolumePermission =
               (fun f  -> Query.Pair ("Group", (PermissionGroup.to_query f)));
            Util.option_map v.user_id
              (fun f  -> Query.Pair ("UserId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -7126,91 +7457,95 @@ module CreateVolumePermission =
               (fun f  -> ("group", (PermissionGroup.to_json f)));
            Util.option_map v.user_id
              (fun f  -> ("user_id", (String.to_json f)))])
+      
     let of_json j =
       {
         user_id = (Util.option_map (Json.lookup j "user_id") String.of_json);
         group =
           (Util.option_map (Json.lookup j "group") PermissionGroup.of_json)
-      }
+      } 
   end
 module VolumeAttachmentList =
   struct
     type t = VolumeAttachment.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map VolumeAttachment.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list VolumeAttachment.to_query v
-    let to_json v = `List (List.map VolumeAttachment.to_json v)
-    let of_json j = Json.to_list VolumeAttachment.of_json j
+      
+    let to_query v = Query.to_query_list VolumeAttachment.to_query v 
+    let to_json v = `List (List.map VolumeAttachment.to_json v) 
+    let of_json j = Json.to_list VolumeAttachment.of_json j 
   end
 module VolumeState =
   struct
     type t =
-      | Creating
-      | Available
-      | In_use
-      | Deleting
-      | Deleted
-      | Error
+      | Creating 
+      | Available 
+      | In_use 
+      | Deleting 
+      | Deleted 
+      | Error 
     let str_to_t =
       [("error", Error);
       ("deleted", Deleted);
       ("deleting", Deleting);
       ("in-use", In_use);
       ("available", Available);
-      ("creating", Creating)]
+      ("creating", Creating)] 
     let t_to_str =
       [(Error, "error");
       (Deleted, "deleted");
       (Deleting, "deleting");
       (In_use, "in-use");
       (Available, "available");
-      (Creating, "creating")]
-    let make v () = v
+      (Creating, "creating")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module DomainType =
   struct
     type t =
-      | Vpc
-      | Standard
-    let str_to_t = [("standard", Standard); ("vpc", Vpc)]
-    let t_to_str = [(Standard, "standard"); (Vpc, "vpc")]
-    let make v () = v
+      | Vpc 
+      | Standard 
+    let str_to_t = [("standard", Standard); ("vpc", Vpc)] 
+    let t_to_str = [(Standard, "standard"); (Vpc, "vpc")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module VgwTelemetryList =
   struct
     type t = VgwTelemetry.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map VgwTelemetry.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list VgwTelemetry.to_query v
-    let to_json v = `List (List.map VgwTelemetry.to_json v)
-    let of_json j = Json.to_list VgwTelemetry.of_json j
+      Util.option_all (List.map VgwTelemetry.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list VgwTelemetry.to_query v 
+    let to_json v = `List (List.map VgwTelemetry.to_json v) 
+    let of_json j = Json.to_list VgwTelemetry.of_json j 
   end
 module VpnConnectionOptions =
   struct
     type t = {
-      static_routes_only: Boolean.t option;}
-    let make ?static_routes_only  () = { static_routes_only }
+      static_routes_only: Boolean.t option }
+    let make ?static_routes_only  () = { static_routes_only } 
     let parse xml =
       Some
         {
@@ -7218,62 +7553,66 @@ module VpnConnectionOptions =
             (Util.option_bind (Xml.member "staticRoutesOnly" xml)
                Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.static_routes_only
               (fun f  ->
                  Query.Pair ("StaticRoutesOnly", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.static_routes_only
               (fun f  -> ("static_routes_only", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         static_routes_only =
           (Util.option_map (Json.lookup j "static_routes_only")
              Boolean.of_json)
-      }
+      } 
   end
 module VpnStaticRouteList =
   struct
     type t = VpnStaticRoute.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map VpnStaticRoute.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list VpnStaticRoute.to_query v
-    let to_json v = `List (List.map VpnStaticRoute.to_json v)
-    let of_json j = Json.to_list VpnStaticRoute.of_json j
+      
+    let to_query v = Query.to_query_list VpnStaticRoute.to_query v 
+    let to_json v = `List (List.map VpnStaticRoute.to_json v) 
+    let of_json j = Json.to_list VpnStaticRoute.of_json j 
   end
 module PricingDetailsList =
   struct
     type t = PricingDetail.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map PricingDetail.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list PricingDetail.to_query v
-    let to_json v = `List (List.map PricingDetail.to_json v)
-    let of_json j = Json.to_list PricingDetail.of_json j
+      Util.option_all (List.map PricingDetail.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list PricingDetail.to_query v 
+    let to_json v = `List (List.map PricingDetail.to_json v) 
+    let of_json j = Json.to_list PricingDetail.of_json j 
   end
 module InstanceList =
   struct
     type t = Instance.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map Instance.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list Instance.to_query v
-    let to_json v = `List (List.map Instance.to_json v)
-    let of_json j = Json.to_list Instance.of_json j
+      Util.option_all (List.map Instance.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list Instance.to_query v 
+    let to_json v = `List (List.map Instance.to_json v) 
+    let of_json j = Json.to_list Instance.of_json j 
   end
 module VpcPeeringConnectionStateReason =
   struct
     type t =
       {
-      code: VpcPeeringConnectionStateReasonCode.t option;
-      message: String.t option;}
-    let make ?code  ?message  () = { code; message }
+      code: VpcPeeringConnectionStateReasonCode.t option ;
+      message: String.t option }
+    let make ?code  ?message  () = { code; message } 
     let parse xml =
       Some
         {
@@ -7283,6 +7622,7 @@ module VpcPeeringConnectionStateReason =
           message =
             (Util.option_bind (Xml.member "message" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -7292,6 +7632,7 @@ module VpcPeeringConnectionStateReason =
              (fun f  ->
                 Query.Pair
                   ("Code", (VpcPeeringConnectionStateReasonCode.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -7300,23 +7641,24 @@ module VpcPeeringConnectionStateReason =
            Util.option_map v.code
              (fun f  ->
                 ("code", (VpcPeeringConnectionStateReasonCode.to_json f)))])
+      
     let of_json j =
       {
         code =
           (Util.option_map (Json.lookup j "code")
              VpcPeeringConnectionStateReasonCode.of_json);
         message = (Util.option_map (Json.lookup j "message") String.of_json)
-      }
+      } 
   end
 module VpcPeeringConnectionVpcInfo =
   struct
     type t =
       {
-      cidr_block: String.t option;
-      owner_id: String.t option;
-      vpc_id: String.t option;}
+      cidr_block: String.t option ;
+      owner_id: String.t option ;
+      vpc_id: String.t option }
     let make ?cidr_block  ?owner_id  ?vpc_id  () =
-      { cidr_block; owner_id; vpc_id }
+      { cidr_block; owner_id; vpc_id } 
     let parse xml =
       Some
         {
@@ -7326,6 +7668,7 @@ module VpcPeeringConnectionVpcInfo =
             (Util.option_bind (Xml.member "ownerId" xml) String.parse);
           vpc_id = (Util.option_bind (Xml.member "vpcId" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -7335,6 +7678,7 @@ module VpcPeeringConnectionVpcInfo =
              (fun f  -> Query.Pair ("OwnerId", (String.to_query f)));
            Util.option_map v.cidr_block
              (fun f  -> Query.Pair ("CidrBlock", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -7344,6 +7688,7 @@ module VpcPeeringConnectionVpcInfo =
              (fun f  -> ("owner_id", (String.to_json f)));
            Util.option_map v.cidr_block
              (fun f  -> ("cidr_block", (String.to_json f)))])
+      
     let of_json j =
       {
         cidr_block =
@@ -7351,83 +7696,88 @@ module VpcPeeringConnectionVpcInfo =
         owner_id =
           (Util.option_map (Json.lookup j "owner_id") String.of_json);
         vpc_id = (Util.option_map (Json.lookup j "vpc_id") String.of_json)
-      }
+      } 
   end
 module VpcState =
   struct
     type t =
-      | Pending
-      | Available
-    let str_to_t = [("available", Available); ("pending", Pending)]
-    let t_to_str = [(Available, "available"); (Pending, "pending")]
-    let make v () = v
+      | Pending 
+      | Available 
+    let str_to_t = [("available", Available); ("pending", Pending)] 
+    let t_to_str = [(Available, "available"); (Pending, "pending")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module NetworkAclAssociationList =
   struct
     type t = NetworkAclAssociation.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map NetworkAclAssociation.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list NetworkAclAssociation.to_query v
-    let to_json v = `List (List.map NetworkAclAssociation.to_json v)
-    let of_json j = Json.to_list NetworkAclAssociation.of_json j
+      
+    let to_query v = Query.to_query_list NetworkAclAssociation.to_query v 
+    let to_json v = `List (List.map NetworkAclAssociation.to_json v) 
+    let of_json j = Json.to_list NetworkAclAssociation.of_json j 
   end
 module NetworkAclEntryList =
   struct
     type t = NetworkAclEntry.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map NetworkAclEntry.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list NetworkAclEntry.to_query v
-    let to_json v = `List (List.map NetworkAclEntry.to_json v)
-    let of_json j = Json.to_list NetworkAclEntry.of_json j
+      
+    let to_query v = Query.to_query_list NetworkAclEntry.to_query v 
+    let to_json v = `List (List.map NetworkAclEntry.to_json v) 
+    let of_json j = Json.to_list NetworkAclEntry.of_json j 
   end
 module SubnetState =
   struct
     type t =
-      | Pending
-      | Available
-    let str_to_t = [("available", Available); ("pending", Pending)]
-    let t_to_str = [(Available, "available"); (Pending, "pending")]
-    let make v () = v
+      | Pending 
+      | Available 
+    let str_to_t = [("available", Available); ("pending", Pending)] 
+    let t_to_str = [(Available, "available"); (Pending, "pending")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module SnapshotDetailList =
   struct
     type t = SnapshotDetail.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map SnapshotDetail.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list SnapshotDetail.to_query v
-    let to_json v = `List (List.map SnapshotDetail.to_json v)
-    let of_json j = Json.to_list SnapshotDetail.of_json j
+      
+    let to_query v = Query.to_query_list SnapshotDetail.to_query v 
+    let to_json v = `List (List.map SnapshotDetail.to_json v) 
+    let of_json j = Json.to_list SnapshotDetail.of_json j 
   end
 module CancelSpotFleetRequestsError =
   struct
     type t = {
-      code: CancelBatchErrorCode.t;
-      message: String.t;}
-    let make ~code  ~message  () = { code; message }
+      code: CancelBatchErrorCode.t ;
+      message: String.t }
+    let make ~code  ~message  () = { code; message } 
     let parse xml =
       Some
         {
@@ -7439,16 +7789,19 @@ module CancelSpotFleetRequestsError =
             (Xml.required "message"
                (Util.option_bind (Xml.member "message" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("Message", (String.to_query v.message)));
            Some (Query.Pair ("Code", (CancelBatchErrorCode.to_query v.code)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("message", (String.to_json v.message));
            Some ("code", (CancelBatchErrorCode.to_json v.code))])
+      
     let of_json j =
       {
         code =
@@ -7456,28 +7809,29 @@ module CancelSpotFleetRequestsError =
              (Util.of_option_exn (Json.lookup j "code")));
         message =
           (String.of_json (Util.of_option_exn (Json.lookup j "message")))
-      }
+      } 
   end
 module AccountAttributeValueList =
   struct
     type t = AccountAttributeValue.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map AccountAttributeValue.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list AccountAttributeValue.to_query v
-    let to_json v = `List (List.map AccountAttributeValue.to_json v)
-    let of_json j = Json.to_list AccountAttributeValue.of_json j
+      
+    let to_query v = Query.to_query_list AccountAttributeValue.to_query v 
+    let to_json v = `List (List.map AccountAttributeValue.to_json v) 
+    let of_json j = Json.to_list AccountAttributeValue.of_json j 
   end
 module DiskImageDetail =
   struct
     type t =
       {
-      format: DiskImageFormat.t;
-      bytes: Long.t;
-      import_manifest_url: String.t;}
+      format: DiskImageFormat.t ;
+      bytes: Long.t ;
+      import_manifest_url: String.t }
     let make ~format  ~bytes  ~import_manifest_url  () =
-      { format; bytes; import_manifest_url }
+      { format; bytes; import_manifest_url } 
     let parse xml =
       Some
         {
@@ -7493,6 +7847,7 @@ module DiskImageDetail =
                (Util.option_bind (Xml.member "importManifestUrl" xml)
                   String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -7502,6 +7857,7 @@ module DiskImageDetail =
                    (String.to_query v.import_manifest_url)));
            Some (Query.Pair ("Bytes", (Long.to_query v.bytes)));
            Some (Query.Pair ("Format", (DiskImageFormat.to_query v.format)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -7509,6 +7865,7 @@ module DiskImageDetail =
               ("import_manifest_url", (String.to_json v.import_manifest_url));
            Some ("bytes", (Long.to_json v.bytes));
            Some ("format", (DiskImageFormat.to_json v.format))])
+      
     let of_json j =
       {
         format =
@@ -7518,13 +7875,13 @@ module DiskImageDetail =
         import_manifest_url =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "import_manifest_url")))
-      }
+      } 
   end
 module VolumeDetail =
   struct
     type t = {
-      size: Long.t;}
-    let make ~size  () = { size }
+      size: Long.t }
+    let make ~size  () = { size } 
     let parse xml =
       Some
         {
@@ -7532,49 +7889,52 @@ module VolumeDetail =
             (Xml.required "size"
                (Util.option_bind (Xml.member "size" xml) Long.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("Size", (Long.to_query v.size)))])
+      
     let to_json v =
-      `Assoc (Util.list_filter_opt [Some ("size", (Long.to_json v.size))])
+      `Assoc (Util.list_filter_opt [Some ("size", (Long.to_json v.size))]) 
     let of_json j =
-      { size = (Long.of_json (Util.of_option_exn (Json.lookup j "size"))) }
+      { size = (Long.of_json (Util.of_option_exn (Json.lookup j "size"))) } 
   end
 module State =
   struct
     type t =
-      | Pending
-      | Available
-      | Deleting
-      | Deleted
+      | Pending 
+      | Available 
+      | Deleting 
+      | Deleted 
     let str_to_t =
       [("Deleted", Deleted);
       ("Deleting", Deleting);
       ("Available", Available);
-      ("Pending", Pending)]
+      ("Pending", Pending)] 
     let t_to_str =
       [(Deleted, "Deleted");
       (Deleting, "Deleting");
       (Available, "Available");
-      (Pending, "Pending")]
-    let make v () = v
+      (Pending, "Pending")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module UserBucket =
   struct
     type t = {
-      s3_bucket: String.t option;
-      s3_key: String.t option;}
-    let make ?s3_bucket  ?s3_key  () = { s3_bucket; s3_key }
+      s3_bucket: String.t option ;
+      s3_key: String.t option }
+    let make ?s3_bucket  ?s3_key  () = { s3_bucket; s3_key } 
     let parse xml =
       Some
         {
@@ -7582,6 +7942,7 @@ module UserBucket =
             (Util.option_bind (Xml.member "S3Bucket" xml) String.parse);
           s3_key = (Util.option_bind (Xml.member "S3Key" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -7589,6 +7950,7 @@ module UserBucket =
               (fun f  -> Query.Pair ("S3Key", (String.to_query f)));
            Util.option_map v.s3_bucket
              (fun f  -> Query.Pair ("S3Bucket", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -7596,56 +7958,58 @@ module UserBucket =
               (fun f  -> ("s3_key", (String.to_json f)));
            Util.option_map v.s3_bucket
              (fun f  -> ("s3_bucket", (String.to_json f)))])
+      
     let of_json j =
       {
         s3_bucket =
           (Util.option_map (Json.lookup j "s3_bucket") String.of_json);
         s3_key = (Util.option_map (Json.lookup j "s3_key") String.of_json)
-      }
+      } 
   end
 module SnapshotState =
   struct
     type t =
-      | Pending
-      | Completed
-      | Error
+      | Pending 
+      | Completed 
+      | Error 
     let str_to_t =
-      [("error", Error); ("completed", Completed); ("pending", Pending)]
+      [("error", Error); ("completed", Completed); ("pending", Pending)] 
     let t_to_str =
-      [(Error, "error"); (Completed, "completed"); (Pending, "pending")]
-    let make v () = v
+      [(Error, "error"); (Completed, "completed"); (Pending, "pending")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module NetworkInterface =
   struct
     type t =
       {
-      network_interface_id: String.t option;
-      subnet_id: String.t option;
-      vpc_id: String.t option;
-      availability_zone: String.t option;
-      description: String.t option;
-      owner_id: String.t option;
-      requester_id: String.t option;
-      requester_managed: Boolean.t option;
-      status: NetworkInterfaceStatus.t option;
-      mac_address: String.t option;
-      private_ip_address: String.t option;
-      private_dns_name: String.t option;
-      source_dest_check: Boolean.t option;
-      groups: GroupIdentifierList.t;
-      attachment: NetworkInterfaceAttachment.t option;
-      association: NetworkInterfaceAssociation.t option;
-      tag_set: TagList.t;
-      private_ip_addresses: NetworkInterfacePrivateIpAddressList.t;}
+      network_interface_id: String.t option ;
+      subnet_id: String.t option ;
+      vpc_id: String.t option ;
+      availability_zone: String.t option ;
+      description: String.t option ;
+      owner_id: String.t option ;
+      requester_id: String.t option ;
+      requester_managed: Boolean.t option ;
+      status: NetworkInterfaceStatus.t option ;
+      mac_address: String.t option ;
+      private_ip_address: String.t option ;
+      private_dns_name: String.t option ;
+      source_dest_check: Boolean.t option ;
+      groups: GroupIdentifierList.t ;
+      attachment: NetworkInterfaceAttachment.t option ;
+      association: NetworkInterfaceAssociation.t option ;
+      tag_set: TagList.t ;
+      private_ip_addresses: NetworkInterfacePrivateIpAddressList.t }
     let make ?network_interface_id  ?subnet_id  ?vpc_id  ?availability_zone 
       ?description  ?owner_id  ?requester_id  ?requester_managed  ?status 
       ?mac_address  ?private_ip_address  ?private_dns_name 
@@ -7670,7 +8034,7 @@ module NetworkInterface =
         association;
         tag_set;
         private_ip_addresses
-      }
+      } 
     let parse xml =
       Some
         {
@@ -7723,6 +8087,7 @@ module NetworkInterface =
                (Util.option_bind (Xml.member "privateIpAddressesSet" xml)
                   NetworkInterfacePrivateIpAddressList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -7771,6 +8136,7 @@ module NetworkInterface =
            Util.option_map v.network_interface_id
              (fun f  ->
                 Query.Pair ("NetworkInterfaceId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -7812,6 +8178,7 @@ module NetworkInterface =
              (fun f  -> ("subnet_id", (String.to_json f)));
            Util.option_map v.network_interface_id
              (fun f  -> ("network_interface_id", (String.to_json f)))])
+      
     let of_json j =
       {
         network_interface_id =
@@ -7858,18 +8225,18 @@ module NetworkInterface =
         private_ip_addresses =
           (NetworkInterfacePrivateIpAddressList.of_json
              (Util.of_option_exn (Json.lookup j "private_ip_addresses")))
-      }
+      } 
   end
 module TagDescription =
   struct
     type t =
       {
-      resource_id: String.t;
-      resource_type: ResourceType.t;
-      key: String.t;
-      value: String.t;}
+      resource_id: String.t ;
+      resource_type: ResourceType.t ;
+      key: String.t ;
+      value: String.t }
     let make ~resource_id  ~resource_type  ~key  ~value  () =
-      { resource_id; resource_type; key; value }
+      { resource_id; resource_type; key; value } 
     let parse xml =
       Some
         {
@@ -7887,6 +8254,7 @@ module TagDescription =
             (Xml.required "value"
                (Util.option_bind (Xml.member "value" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -7896,6 +8264,7 @@ module TagDescription =
              (Query.Pair
                 ("ResourceType", (ResourceType.to_query v.resource_type)));
            Some (Query.Pair ("ResourceId", (String.to_query v.resource_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -7903,6 +8272,7 @@ module TagDescription =
            Some ("key", (String.to_json v.key));
            Some ("resource_type", (ResourceType.to_json v.resource_type));
            Some ("resource_id", (String.to_json v.resource_id))])
+      
     let of_json j =
       {
         resource_id =
@@ -7912,17 +8282,17 @@ module TagDescription =
              (Util.of_option_exn (Json.lookup j "resource_type")));
         key = (String.of_json (Util.of_option_exn (Json.lookup j "key")));
         value = (String.of_json (Util.of_option_exn (Json.lookup j "value")))
-      }
+      } 
   end
 module DhcpOptions =
   struct
     type t =
       {
-      dhcp_options_id: String.t option;
-      dhcp_configurations: DhcpConfigurationList.t;
-      tags: TagList.t;}
+      dhcp_options_id: String.t option ;
+      dhcp_configurations: DhcpConfigurationList.t ;
+      tags: TagList.t }
     let make ?dhcp_options_id  ?(dhcp_configurations= [])  ?(tags= [])  () =
-      { dhcp_options_id; dhcp_configurations; tags }
+      { dhcp_options_id; dhcp_configurations; tags } 
     let parse xml =
       Some
         {
@@ -7936,6 +8306,7 @@ module DhcpOptions =
             (Util.of_option []
                (Util.option_bind (Xml.member "tagSet" xml) TagList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -7946,6 +8317,7 @@ module DhcpOptions =
                   (DhcpConfigurationList.to_query v.dhcp_configurations)));
            Util.option_map v.dhcp_options_id
              (fun f  -> Query.Pair ("DhcpOptionsId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -7955,6 +8327,7 @@ module DhcpOptions =
                (DhcpConfigurationList.to_json v.dhcp_configurations));
            Util.option_map v.dhcp_options_id
              (fun f  -> ("dhcp_options_id", (String.to_json f)))])
+      
     let of_json j =
       {
         dhcp_options_id =
@@ -7963,18 +8336,18 @@ module DhcpOptions =
           (DhcpConfigurationList.of_json
              (Util.of_option_exn (Json.lookup j "dhcp_configurations")));
         tags = (TagList.of_json (Util.of_option_exn (Json.lookup j "tags")))
-      }
+      } 
   end
 module VpnGateway =
   struct
     type t =
       {
-      vpn_gateway_id: String.t option;
-      state: VpnState.t option;
-      type_: GatewayType.t option;
-      availability_zone: String.t option;
-      vpc_attachments: VpcAttachmentList.t;
-      tags: TagList.t;}
+      vpn_gateway_id: String.t option ;
+      state: VpnState.t option ;
+      type_: GatewayType.t option ;
+      availability_zone: String.t option ;
+      vpc_attachments: VpcAttachmentList.t ;
+      tags: TagList.t }
     let make ?vpn_gateway_id  ?state  ?type_  ?availability_zone 
       ?(vpc_attachments= [])  ?(tags= [])  () =
       {
@@ -7984,7 +8357,7 @@ module VpnGateway =
         availability_zone;
         vpc_attachments;
         tags
-      }
+      } 
     let parse xml =
       Some
         {
@@ -8004,6 +8377,7 @@ module VpnGateway =
             (Util.of_option []
                (Util.option_bind (Xml.member "tagSet" xml) TagList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -8020,6 +8394,7 @@ module VpnGateway =
              (fun f  -> Query.Pair ("State", (VpnState.to_query f)));
            Util.option_map v.vpn_gateway_id
              (fun f  -> Query.Pair ("VpnGatewayId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -8035,6 +8410,7 @@ module VpnGateway =
              (fun f  -> ("state", (VpnState.to_json f)));
            Util.option_map v.vpn_gateway_id
              (fun f  -> ("vpn_gateway_id", (String.to_json f)))])
+      
     let of_json j =
       {
         vpn_gateway_id =
@@ -8047,21 +8423,21 @@ module VpnGateway =
           (VpcAttachmentList.of_json
              (Util.of_option_exn (Json.lookup j "vpc_attachments")));
         tags = (TagList.of_json (Util.of_option_exn (Json.lookup j "tags")))
-      }
+      } 
   end
 module ReservedInstancesModification =
   struct
     type t =
       {
-      reserved_instances_modification_id: String.t option;
-      reserved_instances_ids: ReservedIntancesIds.t;
-      modification_results: ReservedInstancesModificationResultList.t;
-      create_date: DateTime.t option;
-      update_date: DateTime.t option;
-      effective_date: DateTime.t option;
-      status: String.t option;
-      status_message: String.t option;
-      client_token: String.t option;}
+      reserved_instances_modification_id: String.t option ;
+      reserved_instances_ids: ReservedIntancesIds.t ;
+      modification_results: ReservedInstancesModificationResultList.t ;
+      create_date: DateTime.t option ;
+      update_date: DateTime.t option ;
+      effective_date: DateTime.t option ;
+      status: String.t option ;
+      status_message: String.t option ;
+      client_token: String.t option }
     let make ?reserved_instances_modification_id  ?(reserved_instances_ids=
       [])  ?(modification_results= [])  ?create_date  ?update_date 
       ?effective_date  ?status  ?status_message  ?client_token  () =
@@ -8075,7 +8451,7 @@ module ReservedInstancesModification =
         status;
         status_message;
         client_token
-      }
+      } 
     let parse xml =
       Some
         {
@@ -8103,6 +8479,7 @@ module ReservedInstancesModification =
           client_token =
             (Util.option_bind (Xml.member "clientToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -8131,6 +8508,7 @@ module ReservedInstancesModification =
              (fun f  ->
                 Query.Pair
                   ("ReservedInstancesModificationId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -8156,6 +8534,7 @@ module ReservedInstancesModification =
            Util.option_map v.reserved_instances_modification_id
              (fun f  ->
                 ("reserved_instances_modification_id", (String.to_json f)))])
+      
     let of_json j =
       {
         reserved_instances_modification_id =
@@ -8179,28 +8558,28 @@ module ReservedInstancesModification =
           (Util.option_map (Json.lookup j "status_message") String.of_json);
         client_token =
           (Util.option_map (Json.lookup j "client_token") String.of_json)
-      }
+      } 
   end
 module ReservedInstances =
   struct
     type t =
       {
-      reserved_instances_id: String.t option;
-      instance_type: InstanceType.t option;
-      availability_zone: String.t option;
-      start: DateTime.t option;
-      end_: DateTime.t option;
-      duration: Long.t option;
-      usage_price: Float.t option;
-      fixed_price: Float.t option;
-      instance_count: Integer.t option;
-      product_description: RIProductDescription.t option;
-      state: ReservedInstanceState.t option;
-      tags: TagList.t;
-      instance_tenancy: Tenancy.t option;
-      currency_code: CurrencyCodeValues.t option;
-      offering_type: OfferingTypeValues.t option;
-      recurring_charges: RecurringChargesList.t;}
+      reserved_instances_id: String.t option ;
+      instance_type: InstanceType.t option ;
+      availability_zone: String.t option ;
+      start: DateTime.t option ;
+      end_: DateTime.t option ;
+      duration: Long.t option ;
+      usage_price: Float.t option ;
+      fixed_price: Float.t option ;
+      instance_count: Integer.t option ;
+      product_description: RIProductDescription.t option ;
+      state: ReservedInstanceState.t option ;
+      tags: TagList.t ;
+      instance_tenancy: Tenancy.t option ;
+      currency_code: CurrencyCodeValues.t option ;
+      offering_type: OfferingTypeValues.t option ;
+      recurring_charges: RecurringChargesList.t }
     let make ?reserved_instances_id  ?instance_type  ?availability_zone 
       ?start  ?end_  ?duration  ?usage_price  ?fixed_price  ?instance_count 
       ?product_description  ?state  ?(tags= [])  ?instance_tenancy 
@@ -8222,7 +8601,7 @@ module ReservedInstances =
         currency_code;
         offering_type;
         recurring_charges
-      }
+      } 
     let parse xml =
       Some
         {
@@ -8268,6 +8647,7 @@ module ReservedInstances =
                (Util.option_bind (Xml.member "recurringCharges" xml)
                   RecurringChargesList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -8311,6 +8691,7 @@ module ReservedInstances =
            Util.option_map v.reserved_instances_id
              (fun f  ->
                 Query.Pair ("ReservedInstancesId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -8346,6 +8727,7 @@ module ReservedInstances =
              (fun f  -> ("instance_type", (InstanceType.to_json f)));
            Util.option_map v.reserved_instances_id
              (fun f  -> ("reserved_instances_id", (String.to_json f)))])
+      
     let of_json j =
       {
         reserved_instances_id =
@@ -8383,14 +8765,14 @@ module ReservedInstances =
         recurring_charges =
           (RecurringChargesList.of_json
              (Util.of_option_exn (Json.lookup j "recurring_charges")))
-      }
+      } 
   end
 module Filter =
   struct
     type t = {
-      name: String.t;
-      values: ValueStringList.t;}
-    let make ~name  ?(values= [])  () = { name; values }
+      name: String.t ;
+      values: ValueStringList.t }
+    let make ~name  ?(values= [])  () = { name; values } 
     let parse xml =
       Some
         {
@@ -8402,33 +8784,36 @@ module Filter =
                (Util.option_bind (Xml.member "Value" xml)
                   ValueStringList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("Value", (ValueStringList.to_query v.values)));
            Some (Query.Pair ("Name", (String.to_query v.name)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("values", (ValueStringList.to_json v.values));
            Some ("name", (String.to_json v.name))])
+      
     let of_json j =
       {
         name = (String.of_json (Util.of_option_exn (Json.lookup j "name")));
         values =
           (ValueStringList.of_json
              (Util.of_option_exn (Json.lookup j "values")))
-      }
+      } 
   end
 module PlacementGroup =
   struct
     type t =
       {
-      group_name: String.t option;
-      strategy: PlacementStrategy.t option;
-      state: PlacementGroupState.t option;}
+      group_name: String.t option ;
+      strategy: PlacementStrategy.t option ;
+      state: PlacementGroupState.t option }
     let make ?group_name  ?strategy  ?state  () =
-      { group_name; strategy; state }
+      { group_name; strategy; state } 
     let parse xml =
       Some
         {
@@ -8441,6 +8826,7 @@ module PlacementGroup =
             (Util.option_bind (Xml.member "state" xml)
                PlacementGroupState.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -8452,6 +8838,7 @@ module PlacementGroup =
                 Query.Pair ("Strategy", (PlacementStrategy.to_query f)));
            Util.option_map v.group_name
              (fun f  -> Query.Pair ("GroupName", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -8461,6 +8848,7 @@ module PlacementGroup =
              (fun f  -> ("strategy", (PlacementStrategy.to_json f)));
            Util.option_map v.group_name
              (fun f  -> ("group_name", (String.to_json f)))])
+      
     let of_json j =
       {
         group_name =
@@ -8471,14 +8859,14 @@ module PlacementGroup =
         state =
           (Util.option_map (Json.lookup j "state")
              PlacementGroupState.of_json)
-      }
+      } 
   end
 module KeyPairInfo =
   struct
     type t = {
-      key_name: String.t option;
-      key_fingerprint: String.t option;}
-    let make ?key_name  ?key_fingerprint  () = { key_name; key_fingerprint }
+      key_name: String.t option ;
+      key_fingerprint: String.t option }
+    let make ?key_name  ?key_fingerprint  () = { key_name; key_fingerprint } 
     let parse xml =
       Some
         {
@@ -8487,6 +8875,7 @@ module KeyPairInfo =
           key_fingerprint =
             (Util.option_bind (Xml.member "keyFingerprint" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -8494,6 +8883,7 @@ module KeyPairInfo =
               (fun f  -> Query.Pair ("KeyFingerprint", (String.to_query f)));
            Util.option_map v.key_name
              (fun f  -> Query.Pair ("KeyName", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -8501,22 +8891,23 @@ module KeyPairInfo =
               (fun f  -> ("key_fingerprint", (String.to_json f)));
            Util.option_map v.key_name
              (fun f  -> ("key_name", (String.to_json f)))])
+      
     let of_json j =
       {
         key_name =
           (Util.option_map (Json.lookup j "key_name") String.of_json);
         key_fingerprint =
           (Util.option_map (Json.lookup j "key_fingerprint") String.of_json)
-      }
+      } 
   end
 module CancelledSpotInstanceRequest =
   struct
     type t =
       {
-      spot_instance_request_id: String.t option;
-      state: CancelSpotInstanceRequestState.t option;}
+      spot_instance_request_id: String.t option ;
+      state: CancelSpotInstanceRequestState.t option }
     let make ?spot_instance_request_id  ?state  () =
-      { spot_instance_request_id; state }
+      { spot_instance_request_id; state } 
     let parse xml =
       Some
         {
@@ -8527,6 +8918,7 @@ module CancelledSpotInstanceRequest =
             (Util.option_bind (Xml.member "state" xml)
                CancelSpotInstanceRequestState.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -8537,6 +8929,7 @@ module CancelledSpotInstanceRequest =
            Util.option_map v.spot_instance_request_id
              (fun f  ->
                 Query.Pair ("SpotInstanceRequestId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -8545,6 +8938,7 @@ module CancelledSpotInstanceRequest =
                  ("state", (CancelSpotInstanceRequestState.to_json f)));
            Util.option_map v.spot_instance_request_id
              (fun f  -> ("spot_instance_request_id", (String.to_json f)))])
+      
     let of_json j =
       {
         spot_instance_request_id =
@@ -8553,48 +8947,50 @@ module CancelledSpotInstanceRequest =
         state =
           (Util.option_map (Json.lookup j "state")
              CancelSpotInstanceRequestState.of_json)
-      }
+      } 
   end
 module DatafeedSubscriptionState =
   struct
     type t =
-      | Active
-      | Inactive
-    let str_to_t = [("Inactive", Inactive); ("Active", Active)]
-    let t_to_str = [(Inactive, "Inactive"); (Active, "Active")]
-    let make v () = v
+      | Active 
+      | Inactive 
+    let str_to_t = [("Inactive", Inactive); ("Active", Active)] 
+    let t_to_str = [(Inactive, "Inactive"); (Active, "Active")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module LaunchPermissionList =
   struct
     type t = LaunchPermission.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map LaunchPermission.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list LaunchPermission.to_query v
-    let to_json v = `List (List.map LaunchPermission.to_json v)
-    let of_json j = Json.to_list LaunchPermission.of_json j
+      
+    let to_query v = Query.to_query_list LaunchPermission.to_query v 
+    let to_json v = `List (List.map LaunchPermission.to_json v) 
+    let of_json j = Json.to_list LaunchPermission.of_json j 
   end
 module ConversionTask =
   struct
     type t =
       {
-      conversion_task_id: String.t;
-      expiration_time: String.t option;
-      import_instance: ImportInstanceTaskDetails.t option;
-      import_volume: ImportVolumeTaskDetails.t option;
-      state: ConversionTaskState.t;
-      status_message: String.t option;
-      tags: TagList.t;}
+      conversion_task_id: String.t ;
+      expiration_time: String.t option ;
+      import_instance: ImportInstanceTaskDetails.t option ;
+      import_volume: ImportVolumeTaskDetails.t option ;
+      state: ConversionTaskState.t ;
+      status_message: String.t option ;
+      tags: TagList.t }
     let make ~conversion_task_id  ?expiration_time  ?import_instance 
       ?import_volume  ~state  ?status_message  ?(tags= [])  () =
       {
@@ -8605,7 +9001,7 @@ module ConversionTask =
         state;
         status_message;
         tags
-      }
+      } 
     let parse xml =
       Some
         {
@@ -8631,6 +9027,7 @@ module ConversionTask =
             (Util.of_option []
                (Util.option_bind (Xml.member "tagSet" xml) TagList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -8652,6 +9049,7 @@ module ConversionTask =
            Some
              (Query.Pair
                 ("ConversionTaskId", (String.to_query v.conversion_task_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -8668,6 +9066,7 @@ module ConversionTask =
            Util.option_map v.expiration_time
              (fun f  -> ("expiration_time", (String.to_json f)));
            Some ("conversion_task_id", (String.to_json v.conversion_task_id))])
+      
     let of_json j =
       {
         conversion_task_id =
@@ -8687,17 +9086,17 @@ module ConversionTask =
         status_message =
           (Util.option_map (Json.lookup j "status_message") String.of_json);
         tags = (TagList.of_json (Util.of_option_exn (Json.lookup j "tags")))
-      }
+      } 
   end
 module HistoryRecord =
   struct
     type t =
       {
-      timestamp: DateTime.t;
-      event_type: EventType.t;
-      event_information: EventInformation.t;}
+      timestamp: DateTime.t ;
+      event_type: EventType.t ;
+      event_information: EventInformation.t }
     let make ~timestamp  ~event_type  ~event_information  () =
-      { timestamp; event_type; event_information }
+      { timestamp; event_type; event_information } 
     let parse xml =
       Some
         {
@@ -8712,6 +9111,7 @@ module HistoryRecord =
                (Util.option_bind (Xml.member "eventInformation" xml)
                   EventInformation.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -8721,6 +9121,7 @@ module HistoryRecord =
                    (EventInformation.to_query v.event_information)));
            Some (Query.Pair ("EventType", (EventType.to_query v.event_type)));
            Some (Query.Pair ("Timestamp", (DateTime.to_query v.timestamp)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -8729,6 +9130,7 @@ module HistoryRecord =
                 (EventInformation.to_json v.event_information));
            Some ("event_type", (EventType.to_json v.event_type));
            Some ("timestamp", (DateTime.to_json v.timestamp))])
+      
     let of_json j =
       {
         timestamp =
@@ -8739,14 +9141,14 @@ module HistoryRecord =
         event_information =
           (EventInformation.of_json
              (Util.of_option_exn (Json.lookup j "event_information")))
-      }
+      } 
   end
 module UnsuccessfulItem =
   struct
     type t = {
-      resource_id: String.t option;
-      error: UnsuccessfulItemError.t;}
-    let make ?resource_id  ~error  () = { resource_id; error }
+      resource_id: String.t option ;
+      error: UnsuccessfulItemError.t }
+    let make ?resource_id  ~error  () = { resource_id; error } 
     let parse xml =
       Some
         {
@@ -8757,6 +9159,7 @@ module UnsuccessfulItem =
                (Util.option_bind (Xml.member "error" xml)
                   UnsuccessfulItemError.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -8764,12 +9167,14 @@ module UnsuccessfulItem =
               (Query.Pair ("Error", (UnsuccessfulItemError.to_query v.error)));
            Util.option_map v.resource_id
              (fun f  -> Query.Pair ("ResourceId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("error", (UnsuccessfulItemError.to_json v.error));
            Util.option_map v.resource_id
              (fun f  -> ("resource_id", (String.to_json f)))])
+      
     let of_json j =
       {
         resource_id =
@@ -8777,22 +9182,22 @@ module UnsuccessfulItem =
         error =
           (UnsuccessfulItemError.of_json
              (Util.of_option_exn (Json.lookup j "error")))
-      }
+      } 
   end
 module RouteTable =
   struct
     type t =
       {
-      route_table_id: String.t option;
-      vpc_id: String.t option;
-      routes: RouteList.t;
-      associations: RouteTableAssociationList.t;
-      tags: TagList.t;
-      propagating_vgws: PropagatingVgwList.t;}
+      route_table_id: String.t option ;
+      vpc_id: String.t option ;
+      routes: RouteList.t ;
+      associations: RouteTableAssociationList.t ;
+      tags: TagList.t ;
+      propagating_vgws: PropagatingVgwList.t }
     let make ?route_table_id  ?vpc_id  ?(routes= [])  ?(associations= []) 
       ?(tags= [])  ?(propagating_vgws= [])  () =
       { route_table_id; vpc_id; routes; associations; tags; propagating_vgws
-      }
+      } 
     let parse xml =
       Some
         {
@@ -8814,6 +9219,7 @@ module RouteTable =
                (Util.option_bind (Xml.member "propagatingVgwSet" xml)
                   PropagatingVgwList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -8831,6 +9237,7 @@ module RouteTable =
              (fun f  -> Query.Pair ("VpcId", (String.to_query f)));
            Util.option_map v.route_table_id
              (fun f  -> Query.Pair ("RouteTableId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -8846,6 +9253,7 @@ module RouteTable =
              (fun f  -> ("vpc_id", (String.to_json f)));
            Util.option_map v.route_table_id
              (fun f  -> ("route_table_id", (String.to_json f)))])
+      
     let of_json j =
       {
         route_table_id =
@@ -8860,22 +9268,22 @@ module RouteTable =
         propagating_vgws =
           (PropagatingVgwList.of_json
              (Util.of_option_exn (Json.lookup j "propagating_vgws")))
-      }
+      } 
   end
 module ReservedInstancesListing =
   struct
     type t =
       {
-      reserved_instances_listing_id: String.t option;
-      reserved_instances_id: String.t option;
-      create_date: DateTime.t option;
-      update_date: DateTime.t option;
-      status: ListingStatus.t option;
-      status_message: String.t option;
-      instance_counts: InstanceCountList.t;
-      price_schedules: PriceScheduleList.t;
-      tags: TagList.t;
-      client_token: String.t option;}
+      reserved_instances_listing_id: String.t option ;
+      reserved_instances_id: String.t option ;
+      create_date: DateTime.t option ;
+      update_date: DateTime.t option ;
+      status: ListingStatus.t option ;
+      status_message: String.t option ;
+      instance_counts: InstanceCountList.t ;
+      price_schedules: PriceScheduleList.t ;
+      tags: TagList.t ;
+      client_token: String.t option }
     let make ?reserved_instances_listing_id  ?reserved_instances_id 
       ?create_date  ?update_date  ?status  ?status_message 
       ?(instance_counts= [])  ?(price_schedules= [])  ?(tags= []) 
@@ -8891,7 +9299,7 @@ module ReservedInstancesListing =
         price_schedules;
         tags;
         client_token
-      }
+      } 
     let parse xml =
       Some
         {
@@ -8923,6 +9331,7 @@ module ReservedInstancesListing =
           client_token =
             (Util.option_bind (Xml.member "clientToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -8952,6 +9361,7 @@ module ReservedInstancesListing =
              (fun f  ->
                 Query.Pair
                   ("ReservedInstancesListingId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -8976,6 +9386,7 @@ module ReservedInstancesListing =
              (fun f  -> ("reserved_instances_id", (String.to_json f)));
            Util.option_map v.reserved_instances_listing_id
              (fun f  -> ("reserved_instances_listing_id", (String.to_json f)))])
+      
     let of_json j =
       {
         reserved_instances_listing_id =
@@ -9001,17 +9412,17 @@ module ReservedInstancesListing =
         tags = (TagList.of_json (Util.of_option_exn (Json.lookup j "tags")));
         client_token =
           (Util.option_map (Json.lookup j "client_token") String.of_json)
-      }
+      } 
   end
 module InstanceStateChange =
   struct
     type t =
       {
-      instance_id: String.t option;
-      current_state: InstanceState.t option;
-      previous_state: InstanceState.t option;}
+      instance_id: String.t option ;
+      current_state: InstanceState.t option ;
+      previous_state: InstanceState.t option }
     let make ?instance_id  ?current_state  ?previous_state  () =
-      { instance_id; current_state; previous_state }
+      { instance_id; current_state; previous_state } 
     let parse xml =
       Some
         {
@@ -9024,6 +9435,7 @@ module InstanceStateChange =
             (Util.option_bind (Xml.member "previousState" xml)
                InstanceState.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -9035,6 +9447,7 @@ module InstanceStateChange =
                 Query.Pair ("CurrentState", (InstanceState.to_query f)));
            Util.option_map v.instance_id
              (fun f  -> Query.Pair ("InstanceId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -9044,6 +9457,7 @@ module InstanceStateChange =
              (fun f  -> ("current_state", (InstanceState.to_json f)));
            Util.option_map v.instance_id
              (fun f  -> ("instance_id", (String.to_json f)))])
+      
     let of_json j =
       {
         instance_id =
@@ -9054,14 +9468,14 @@ module InstanceStateChange =
         previous_state =
           (Util.option_map (Json.lookup j "previous_state")
              InstanceState.of_json)
-      }
+      } 
   end
 module MovingAddressStatus =
   struct
     type t = {
-      public_ip: String.t option;
-      move_status: MoveStatus.t option;}
-    let make ?public_ip  ?move_status  () = { public_ip; move_status }
+      public_ip: String.t option ;
+      move_status: MoveStatus.t option }
+    let make ?public_ip  ?move_status  () = { public_ip; move_status } 
     let parse xml =
       Some
         {
@@ -9070,6 +9484,7 @@ module MovingAddressStatus =
           move_status =
             (Util.option_bind (Xml.member "moveStatus" xml) MoveStatus.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -9077,6 +9492,7 @@ module MovingAddressStatus =
               (fun f  -> Query.Pair ("MoveStatus", (MoveStatus.to_query f)));
            Util.option_map v.public_ip
              (fun f  -> Query.Pair ("PublicIp", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -9084,24 +9500,25 @@ module MovingAddressStatus =
               (fun f  -> ("move_status", (MoveStatus.to_json f)));
            Util.option_map v.public_ip
              (fun f  -> ("public_ip", (String.to_json f)))])
+      
     let of_json j =
       {
         public_ip =
           (Util.option_map (Json.lookup j "public_ip") String.of_json);
         move_status =
           (Util.option_map (Json.lookup j "move_status") MoveStatus.of_json)
-      }
+      } 
   end
 module InstanceStatus =
   struct
     type t =
       {
-      instance_id: String.t option;
-      availability_zone: String.t option;
-      events: InstanceStatusEventList.t;
-      instance_state: InstanceState.t option;
-      system_status: InstanceStatusSummary.t option;
-      instance_status: InstanceStatusSummary.t option;}
+      instance_id: String.t option ;
+      availability_zone: String.t option ;
+      events: InstanceStatusEventList.t ;
+      instance_state: InstanceState.t option ;
+      system_status: InstanceStatusSummary.t option ;
+      instance_status: InstanceStatusSummary.t option }
     let make ?instance_id  ?availability_zone  ?(events= [])  ?instance_state
        ?system_status  ?instance_status  () =
       {
@@ -9111,7 +9528,7 @@ module InstanceStatus =
         instance_state;
         system_status;
         instance_status
-      }
+      } 
     let parse xml =
       Some
         {
@@ -9134,6 +9551,7 @@ module InstanceStatus =
             (Util.option_bind (Xml.member "instanceStatus" xml)
                InstanceStatusSummary.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -9155,6 +9573,7 @@ module InstanceStatus =
              (fun f  -> Query.Pair ("AvailabilityZone", (String.to_query f)));
            Util.option_map v.instance_id
              (fun f  -> Query.Pair ("InstanceId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -9170,6 +9589,7 @@ module InstanceStatus =
              (fun f  -> ("availability_zone", (String.to_json f)));
            Util.option_map v.instance_id
              (fun f  -> ("instance_id", (String.to_json f)))])
+      
     let of_json j =
       {
         instance_id =
@@ -9188,35 +9608,35 @@ module InstanceStatus =
         instance_status =
           (Util.option_map (Json.lookup j "instance_status")
              InstanceStatusSummary.of_json)
-      }
+      } 
   end
 module Image =
   struct
     type t =
       {
-      image_id: String.t;
-      image_location: String.t;
-      state: ImageState.t;
-      owner_id: String.t;
-      creation_date: String.t option;
-      public: Boolean.t;
-      product_codes: ProductCodeList.t;
-      architecture: ArchitectureValues.t;
-      image_type: ImageTypeValues.t;
-      kernel_id: String.t option;
-      ramdisk_id: String.t option;
-      platform: PlatformValues.t option;
-      sriov_net_support: String.t option;
-      state_reason: StateReason.t option;
-      image_owner_alias: String.t option;
-      name: String.t option;
-      description: String.t option;
-      root_device_type: DeviceType.t;
-      root_device_name: String.t option;
-      block_device_mappings: BlockDeviceMappingList.t;
-      virtualization_type: VirtualizationType.t;
-      tags: TagList.t;
-      hypervisor: HypervisorType.t;}
+      image_id: String.t ;
+      image_location: String.t ;
+      state: ImageState.t ;
+      owner_id: String.t ;
+      creation_date: String.t option ;
+      public: Boolean.t ;
+      product_codes: ProductCodeList.t ;
+      architecture: ArchitectureValues.t ;
+      image_type: ImageTypeValues.t ;
+      kernel_id: String.t option ;
+      ramdisk_id: String.t option ;
+      platform: PlatformValues.t option ;
+      sriov_net_support: String.t option ;
+      state_reason: StateReason.t option ;
+      image_owner_alias: String.t option ;
+      name: String.t option ;
+      description: String.t option ;
+      root_device_type: DeviceType.t ;
+      root_device_name: String.t option ;
+      block_device_mappings: BlockDeviceMappingList.t ;
+      virtualization_type: VirtualizationType.t ;
+      tags: TagList.t ;
+      hypervisor: HypervisorType.t }
     let make ~image_id  ~image_location  ~state  ~owner_id  ?creation_date 
       ~public  ?(product_codes= [])  ~architecture  ~image_type  ?kernel_id 
       ?ramdisk_id  ?platform  ?sriov_net_support  ?state_reason 
@@ -9247,7 +9667,7 @@ module Image =
         virtualization_type;
         tags;
         hypervisor
-      }
+      } 
     let parse xml =
       Some
         {
@@ -9321,6 +9741,7 @@ module Image =
                (Util.option_bind (Xml.member "hypervisor" xml)
                   HypervisorType.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -9376,6 +9797,7 @@ module Image =
              (Query.Pair
                 ("ImageLocation", (String.to_query v.image_location)));
            Some (Query.Pair ("ImageId", (String.to_query v.image_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -9415,6 +9837,7 @@ module Image =
            Some ("state", (ImageState.to_json v.state));
            Some ("image_location", (String.to_json v.image_location));
            Some ("image_id", (String.to_json v.image_id))])
+      
     let of_json j =
       {
         image_id =
@@ -9469,17 +9892,17 @@ module Image =
         hypervisor =
           (HypervisorType.of_json
              (Util.of_option_exn (Json.lookup j "hypervisor")))
-      }
+      } 
   end
 module PriceScheduleSpecification =
   struct
     type t =
       {
-      term: Long.t option;
-      price: Double.t option;
-      currency_code: CurrencyCodeValues.t option;}
+      term: Long.t option ;
+      price: Double.t option ;
+      currency_code: CurrencyCodeValues.t option }
     let make ?term  ?price  ?currency_code  () =
-      { term; price; currency_code }
+      { term; price; currency_code } 
     let parse xml =
       Some
         {
@@ -9489,6 +9912,7 @@ module PriceScheduleSpecification =
             (Util.option_bind (Xml.member "currencyCode" xml)
                CurrencyCodeValues.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -9499,6 +9923,7 @@ module PriceScheduleSpecification =
              (fun f  -> Query.Pair ("Price", (Double.to_query f)));
            Util.option_map v.term
              (fun f  -> Query.Pair ("Term", (Long.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -9506,6 +9931,7 @@ module PriceScheduleSpecification =
               (fun f  -> ("currency_code", (CurrencyCodeValues.to_json f)));
            Util.option_map v.price (fun f  -> ("price", (Double.to_json f)));
            Util.option_map v.term (fun f  -> ("term", (Long.to_json f)))])
+      
     let of_json j =
       {
         term = (Util.option_map (Json.lookup j "term") Long.of_json);
@@ -9513,17 +9939,17 @@ module PriceScheduleSpecification =
         currency_code =
           (Util.option_map (Json.lookup j "currency_code")
              CurrencyCodeValues.of_json)
-      }
+      } 
   end
 module ImportSnapshotTask =
   struct
     type t =
       {
-      import_task_id: String.t option;
-      snapshot_task_detail: SnapshotTaskDetail.t option;
-      description: String.t option;}
+      import_task_id: String.t option ;
+      snapshot_task_detail: SnapshotTaskDetail.t option ;
+      description: String.t option }
     let make ?import_task_id  ?snapshot_task_detail  ?description  () =
-      { import_task_id; snapshot_task_detail; description }
+      { import_task_id; snapshot_task_detail; description } 
     let parse xml =
       Some
         {
@@ -9535,6 +9961,7 @@ module ImportSnapshotTask =
           description =
             (Util.option_bind (Xml.member "description" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -9546,6 +9973,7 @@ module ImportSnapshotTask =
                   ("SnapshotTaskDetail", (SnapshotTaskDetail.to_query f)));
            Util.option_map v.import_task_id
              (fun f  -> Query.Pair ("ImportTaskId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -9556,6 +9984,7 @@ module ImportSnapshotTask =
                 ("snapshot_task_detail", (SnapshotTaskDetail.to_json f)));
            Util.option_map v.import_task_id
              (fun f  -> ("import_task_id", (String.to_json f)))])
+      
     let of_json j =
       {
         import_task_id =
@@ -9565,28 +9994,28 @@ module ImportSnapshotTask =
              SnapshotTaskDetail.of_json);
         description =
           (Util.option_map (Json.lookup j "description") String.of_json)
-      }
+      } 
   end
 module SpotInstanceRequest =
   struct
     type t =
       {
-      spot_instance_request_id: String.t option;
-      spot_price: String.t option;
-      type_: SpotInstanceType.t option;
-      state: SpotInstanceState.t option;
-      fault: SpotInstanceStateFault.t option;
-      status: SpotInstanceStatus.t option;
-      valid_from: DateTime.t option;
-      valid_until: DateTime.t option;
-      launch_group: String.t option;
-      availability_zone_group: String.t option;
-      launch_specification: LaunchSpecification.t option;
-      instance_id: String.t option;
-      create_time: DateTime.t option;
-      product_description: RIProductDescription.t option;
-      tags: TagList.t;
-      launched_availability_zone: String.t option;}
+      spot_instance_request_id: String.t option ;
+      spot_price: String.t option ;
+      type_: SpotInstanceType.t option ;
+      state: SpotInstanceState.t option ;
+      fault: SpotInstanceStateFault.t option ;
+      status: SpotInstanceStatus.t option ;
+      valid_from: DateTime.t option ;
+      valid_until: DateTime.t option ;
+      launch_group: String.t option ;
+      availability_zone_group: String.t option ;
+      launch_specification: LaunchSpecification.t option ;
+      instance_id: String.t option ;
+      create_time: DateTime.t option ;
+      product_description: RIProductDescription.t option ;
+      tags: TagList.t ;
+      launched_availability_zone: String.t option }
     let make ?spot_instance_request_id  ?spot_price  ?type_  ?state  ?fault 
       ?status  ?valid_from  ?valid_until  ?launch_group 
       ?availability_zone_group  ?launch_specification  ?instance_id 
@@ -9609,7 +10038,7 @@ module SpotInstanceRequest =
         product_description;
         tags;
         launched_availability_zone
-      }
+      } 
     let parse xml =
       Some
         {
@@ -9655,6 +10084,7 @@ module SpotInstanceRequest =
             (Util.option_bind (Xml.member "launchedAvailabilityZone" xml)
                String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -9698,6 +10128,7 @@ module SpotInstanceRequest =
            Util.option_map v.spot_instance_request_id
              (fun f  ->
                 Query.Pair ("SpotInstanceRequestId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -9734,6 +10165,7 @@ module SpotInstanceRequest =
              (fun f  -> ("spot_price", (String.to_json f)));
            Util.option_map v.spot_instance_request_id
              (fun f  -> ("spot_instance_request_id", (String.to_json f)))])
+      
     let of_json j =
       {
         spot_instance_request_id =
@@ -9774,18 +10206,18 @@ module SpotInstanceRequest =
         launched_availability_zone =
           (Util.option_map (Json.lookup j "launched_availability_zone")
              String.of_json)
-      }
+      } 
   end
 module ExportTask =
   struct
     type t =
       {
-      export_task_id: String.t;
-      description: String.t;
-      state: ExportTaskState.t;
-      status_message: String.t;
-      instance_export_details: InstanceExportDetails.t;
-      export_to_s3_task: ExportToS3Task.t;}
+      export_task_id: String.t ;
+      description: String.t ;
+      state: ExportTaskState.t ;
+      status_message: String.t ;
+      instance_export_details: InstanceExportDetails.t ;
+      export_to_s3_task: ExportToS3Task.t }
     let make ~export_task_id  ~description  ~state  ~status_message 
       ~instance_export_details  ~export_to_s3_task  () =
       {
@@ -9795,7 +10227,7 @@ module ExportTask =
         status_message;
         instance_export_details;
         export_to_s3_task
-      }
+      } 
     let parse xml =
       Some
         {
@@ -9822,6 +10254,7 @@ module ExportTask =
                (Util.option_bind (Xml.member "exportToS3" xml)
                   ExportToS3Task.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -9840,6 +10273,7 @@ module ExportTask =
            Some (Query.Pair ("Description", (String.to_query v.description)));
            Some
              (Query.Pair ("ExportTaskId", (String.to_query v.export_task_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -9853,6 +10287,7 @@ module ExportTask =
            Some ("state", (ExportTaskState.to_json v.state));
            Some ("description", (String.to_json v.description));
            Some ("export_task_id", (String.to_json v.export_task_id))])
+      
     let of_json j =
       {
         export_task_id =
@@ -9872,17 +10307,17 @@ module ExportTask =
         export_to_s3_task =
           (ExportToS3Task.of_json
              (Util.of_option_exn (Json.lookup j "export_to_s3_task")))
-      }
+      } 
   end
 module PrefixList =
   struct
     type t =
       {
-      prefix_list_id: String.t option;
-      prefix_list_name: String.t option;
-      cidrs: ValueStringList.t;}
+      prefix_list_id: String.t option ;
+      prefix_list_name: String.t option ;
+      cidrs: ValueStringList.t }
     let make ?prefix_list_id  ?prefix_list_name  ?(cidrs= [])  () =
-      { prefix_list_id; prefix_list_name; cidrs }
+      { prefix_list_id; prefix_list_name; cidrs } 
     let parse xml =
       Some
         {
@@ -9895,6 +10330,7 @@ module PrefixList =
                (Util.option_bind (Xml.member "cidrSet" xml)
                   ValueStringList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -9903,6 +10339,7 @@ module PrefixList =
              (fun f  -> Query.Pair ("PrefixListName", (String.to_query f)));
            Util.option_map v.prefix_list_id
              (fun f  -> Query.Pair ("PrefixListId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -9911,6 +10348,7 @@ module PrefixList =
              (fun f  -> ("prefix_list_name", (String.to_json f)));
            Util.option_map v.prefix_list_id
              (fun f  -> ("prefix_list_id", (String.to_json f)))])
+      
     let of_json j =
       {
         prefix_list_id =
@@ -9920,14 +10358,14 @@ module PrefixList =
         cidrs =
           (ValueStringList.of_json
              (Util.of_option_exn (Json.lookup j "cidrs")))
-      }
+      } 
   end
 module InstanceMonitoring =
   struct
     type t = {
-      instance_id: String.t option;
-      monitoring: Monitoring.t option;}
-    let make ?instance_id  ?monitoring  () = { instance_id; monitoring }
+      instance_id: String.t option ;
+      monitoring: Monitoring.t option }
+    let make ?instance_id  ?monitoring  () = { instance_id; monitoring } 
     let parse xml =
       Some
         {
@@ -9936,6 +10374,7 @@ module InstanceMonitoring =
           monitoring =
             (Util.option_bind (Xml.member "monitoring" xml) Monitoring.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -9943,6 +10382,7 @@ module InstanceMonitoring =
               (fun f  -> Query.Pair ("Monitoring", (Monitoring.to_query f)));
            Util.option_map v.instance_id
              (fun f  -> Query.Pair ("InstanceId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -9950,26 +10390,27 @@ module InstanceMonitoring =
               (fun f  -> ("monitoring", (Monitoring.to_json f)));
            Util.option_map v.instance_id
              (fun f  -> ("instance_id", (String.to_json f)))])
+      
     let of_json j =
       {
         instance_id =
           (Util.option_map (Json.lookup j "instance_id") String.of_json);
         monitoring =
           (Util.option_map (Json.lookup j "monitoring") Monitoring.of_json)
-      }
+      } 
   end
 module SecurityGroup =
   struct
     type t =
       {
-      owner_id: String.t;
-      group_name: String.t;
-      group_id: String.t;
-      description: String.t;
-      ip_permissions: IpPermissionList.t;
-      ip_permissions_egress: IpPermissionList.t;
-      vpc_id: String.t option;
-      tags: TagList.t;}
+      owner_id: String.t ;
+      group_name: String.t ;
+      group_id: String.t ;
+      description: String.t ;
+      ip_permissions: IpPermissionList.t ;
+      ip_permissions_egress: IpPermissionList.t ;
+      vpc_id: String.t option ;
+      tags: TagList.t }
     let make ~owner_id  ~group_name  ~group_id  ~description 
       ?(ip_permissions= [])  ?(ip_permissions_egress= [])  ?vpc_id  ?(tags=
       [])  () =
@@ -9982,7 +10423,7 @@ module SecurityGroup =
         ip_permissions_egress;
         vpc_id;
         tags
-      }
+      } 
     let parse xml =
       Some
         {
@@ -10012,6 +10453,7 @@ module SecurityGroup =
             (Util.of_option []
                (Util.option_bind (Xml.member "tagSet" xml) TagList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -10032,6 +10474,7 @@ module SecurityGroup =
            Some (Query.Pair ("GroupId", (String.to_query v.group_id)));
            Some (Query.Pair ("GroupName", (String.to_query v.group_name)));
            Some (Query.Pair ("OwnerId", (String.to_query v.owner_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -10047,6 +10490,7 @@ module SecurityGroup =
            Some ("group_id", (String.to_json v.group_id));
            Some ("group_name", (String.to_json v.group_name));
            Some ("owner_id", (String.to_json v.owner_id))])
+      
     let of_json j =
       {
         owner_id =
@@ -10065,17 +10509,17 @@ module SecurityGroup =
              (Util.of_option_exn (Json.lookup j "ip_permissions_egress")));
         vpc_id = (Util.option_map (Json.lookup j "vpc_id") String.of_json);
         tags = (TagList.of_json (Util.of_option_exn (Json.lookup j "tags")))
-      }
+      } 
   end
 module ActiveInstance =
   struct
     type t =
       {
-      instance_type: String.t option;
-      instance_id: String.t option;
-      spot_instance_request_id: String.t option;}
+      instance_type: String.t option ;
+      instance_id: String.t option ;
+      spot_instance_request_id: String.t option }
     let make ?instance_type  ?instance_id  ?spot_instance_request_id  () =
-      { instance_type; instance_id; spot_instance_request_id }
+      { instance_type; instance_id; spot_instance_request_id } 
     let parse xml =
       Some
         {
@@ -10087,6 +10531,7 @@ module ActiveInstance =
             (Util.option_bind (Xml.member "spotInstanceRequestId" xml)
                String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -10097,6 +10542,7 @@ module ActiveInstance =
              (fun f  -> Query.Pair ("InstanceId", (String.to_query f)));
            Util.option_map v.instance_type
              (fun f  -> Query.Pair ("InstanceType", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -10106,6 +10552,7 @@ module ActiveInstance =
              (fun f  -> ("instance_id", (String.to_json f)));
            Util.option_map v.instance_type
              (fun f  -> ("instance_type", (String.to_json f)))])
+      
     let of_json j =
       {
         instance_type =
@@ -10115,18 +10562,18 @@ module ActiveInstance =
         spot_instance_request_id =
           (Util.option_map (Json.lookup j "spot_instance_request_id")
              String.of_json)
-      }
+      } 
   end
 module InstanceBlockDeviceMappingSpecification =
   struct
     type t =
       {
-      device_name: String.t option;
-      ebs: EbsInstanceBlockDeviceSpecification.t option;
-      virtual_name: String.t option;
-      no_device: String.t option;}
+      device_name: String.t option ;
+      ebs: EbsInstanceBlockDeviceSpecification.t option ;
+      virtual_name: String.t option ;
+      no_device: String.t option }
     let make ?device_name  ?ebs  ?virtual_name  ?no_device  () =
-      { device_name; ebs; virtual_name; no_device }
+      { device_name; ebs; virtual_name; no_device } 
     let parse xml =
       Some
         {
@@ -10140,6 +10587,7 @@ module InstanceBlockDeviceMappingSpecification =
           no_device =
             (Util.option_bind (Xml.member "noDevice" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -10153,6 +10601,7 @@ module InstanceBlockDeviceMappingSpecification =
                   ("Ebs", (EbsInstanceBlockDeviceSpecification.to_query f)));
            Util.option_map v.device_name
              (fun f  -> Query.Pair ("DeviceName", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -10165,6 +10614,7 @@ module InstanceBlockDeviceMappingSpecification =
                 ("ebs", (EbsInstanceBlockDeviceSpecification.to_json f)));
            Util.option_map v.device_name
              (fun f  -> ("device_name", (String.to_json f)))])
+      
     let of_json j =
       {
         device_name =
@@ -10176,17 +10626,17 @@ module InstanceBlockDeviceMappingSpecification =
           (Util.option_map (Json.lookup j "virtual_name") String.of_json);
         no_device =
           (Util.option_map (Json.lookup j "no_device") String.of_json)
-      }
+      } 
   end
 module InternetGateway =
   struct
     type t =
       {
-      internet_gateway_id: String.t;
-      attachments: InternetGatewayAttachmentList.t;
-      tags: TagList.t;}
+      internet_gateway_id: String.t ;
+      attachments: InternetGatewayAttachmentList.t ;
+      tags: TagList.t }
     let make ~internet_gateway_id  ?(attachments= [])  ?(tags= [])  () =
-      { internet_gateway_id; attachments; tags }
+      { internet_gateway_id; attachments; tags } 
     let parse xml =
       Some
         {
@@ -10202,6 +10652,7 @@ module InternetGateway =
             (Util.of_option []
                (Util.option_bind (Xml.member "tagSet" xml) TagList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -10214,6 +10665,7 @@ module InternetGateway =
              (Query.Pair
                 ("InternetGatewayId",
                   (String.to_query v.internet_gateway_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -10223,6 +10675,7 @@ module InternetGateway =
                (InternetGatewayAttachmentList.to_json v.attachments));
            Some
              ("internet_gateway_id", (String.to_json v.internet_gateway_id))])
+      
     let of_json j =
       {
         internet_gateway_id =
@@ -10232,44 +10685,45 @@ module InternetGateway =
           (InternetGatewayAttachmentList.of_json
              (Util.of_option_exn (Json.lookup j "attachments")));
         tags = (TagList.of_json (Util.of_option_exn (Json.lookup j "tags")))
-      }
+      } 
   end
 module AccountAttributeName =
   struct
     type t =
-      | Supported_platforms
-      | Default_vpc
+      | Supported_platforms 
+      | Default_vpc 
     let str_to_t =
       [("default-vpc", Default_vpc);
-      ("supported-platforms", Supported_platforms)]
+      ("supported-platforms", Supported_platforms)] 
     let t_to_str =
       [(Default_vpc, "default-vpc");
-      (Supported_platforms, "supported-platforms")]
-    let make v () = v
+      (Supported_platforms, "supported-platforms")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module SpotFleetRequestConfig =
   struct
     type t =
       {
-      spot_fleet_request_id: String.t;
-      spot_fleet_request_state: BatchState.t;
-      spot_fleet_request_config: SpotFleetRequestConfigData.t;}
+      spot_fleet_request_id: String.t ;
+      spot_fleet_request_state: BatchState.t ;
+      spot_fleet_request_config: SpotFleetRequestConfigData.t }
     let make ~spot_fleet_request_id  ~spot_fleet_request_state 
       ~spot_fleet_request_config  () =
       {
         spot_fleet_request_id;
         spot_fleet_request_state;
         spot_fleet_request_config
-      }
+      } 
     let parse xml =
       Some
         {
@@ -10286,6 +10740,7 @@ module SpotFleetRequestConfig =
                (Util.option_bind (Xml.member "spotFleetRequestConfig" xml)
                   SpotFleetRequestConfigData.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -10302,6 +10757,7 @@ module SpotFleetRequestConfig =
              (Query.Pair
                 ("SpotFleetRequestId",
                   (String.to_query v.spot_fleet_request_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -10315,6 +10771,7 @@ module SpotFleetRequestConfig =
            Some
              ("spot_fleet_request_id",
                (String.to_json v.spot_fleet_request_id))])
+      
     let of_json j =
       {
         spot_fleet_request_id =
@@ -10326,18 +10783,18 @@ module SpotFleetRequestConfig =
         spot_fleet_request_config =
           (SpotFleetRequestConfigData.of_json
              (Util.of_option_exn (Json.lookup j "spot_fleet_request_config")))
-      }
+      } 
   end
 module AvailabilityZone =
   struct
     type t =
       {
-      zone_name: String.t option;
-      state: AvailabilityZoneState.t option;
-      region_name: String.t option;
-      messages: AvailabilityZoneMessageList.t;}
+      zone_name: String.t option ;
+      state: AvailabilityZoneState.t option ;
+      region_name: String.t option ;
+      messages: AvailabilityZoneMessageList.t }
     let make ?zone_name  ?state  ?region_name  ?(messages= [])  () =
-      { zone_name; state; region_name; messages }
+      { zone_name; state; region_name; messages } 
     let parse xml =
       Some
         {
@@ -10353,6 +10810,7 @@ module AvailabilityZone =
                (Util.option_bind (Xml.member "messageSet" xml)
                   AvailabilityZoneMessageList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -10367,6 +10825,7 @@ module AvailabilityZone =
                 Query.Pair ("ZoneState", (AvailabilityZoneState.to_query f)));
            Util.option_map v.zone_name
              (fun f  -> Query.Pair ("ZoneName", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -10378,6 +10837,7 @@ module AvailabilityZone =
              (fun f  -> ("state", (AvailabilityZoneState.to_json f)));
            Util.option_map v.zone_name
              (fun f  -> ("zone_name", (String.to_json f)))])
+      
     let of_json j =
       {
         zone_name =
@@ -10390,21 +10850,21 @@ module AvailabilityZone =
         messages =
           (AvailabilityZoneMessageList.of_json
              (Util.of_option_exn (Json.lookup j "messages")))
-      }
+      } 
   end
 module CustomerGateway =
   struct
     type t =
       {
-      customer_gateway_id: String.t;
-      state: String.t;
-      type_: String.t;
-      ip_address: String.t;
-      bgp_asn: String.t;
-      tags: TagList.t;}
+      customer_gateway_id: String.t ;
+      state: String.t ;
+      type_: String.t ;
+      ip_address: String.t ;
+      bgp_asn: String.t ;
+      tags: TagList.t }
     let make ~customer_gateway_id  ~state  ~type_  ~ip_address  ~bgp_asn 
       ?(tags= [])  () =
-      { customer_gateway_id; state; type_; ip_address; bgp_asn; tags }
+      { customer_gateway_id; state; type_; ip_address; bgp_asn; tags } 
     let parse xml =
       Some
         {
@@ -10428,6 +10888,7 @@ module CustomerGateway =
             (Util.of_option []
                (Util.option_bind (Xml.member "tagSet" xml) TagList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -10440,6 +10901,7 @@ module CustomerGateway =
              (Query.Pair
                 ("CustomerGatewayId",
                   (String.to_query v.customer_gateway_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -10450,6 +10912,7 @@ module CustomerGateway =
            Some ("state", (String.to_json v.state));
            Some
              ("customer_gateway_id", (String.to_json v.customer_gateway_id))])
+      
     let of_json j =
       {
         customer_gateway_id =
@@ -10462,21 +10925,21 @@ module CustomerGateway =
         bgp_asn =
           (String.of_json (Util.of_option_exn (Json.lookup j "bgp_asn")));
         tags = (TagList.of_json (Util.of_option_exn (Json.lookup j "tags")))
-      }
+      } 
   end
 module FlowLog =
   struct
     type t =
       {
-      creation_time: DateTime.t option;
-      flow_log_id: String.t option;
-      flow_log_status: String.t option;
-      resource_id: String.t option;
-      traffic_type: TrafficType.t option;
-      log_group_name: String.t option;
-      deliver_logs_status: String.t option;
-      deliver_logs_error_message: String.t option;
-      deliver_logs_permission_arn: String.t option;}
+      creation_time: DateTime.t option ;
+      flow_log_id: String.t option ;
+      flow_log_status: String.t option ;
+      resource_id: String.t option ;
+      traffic_type: TrafficType.t option ;
+      log_group_name: String.t option ;
+      deliver_logs_status: String.t option ;
+      deliver_logs_error_message: String.t option ;
+      deliver_logs_permission_arn: String.t option }
     let make ?creation_time  ?flow_log_id  ?flow_log_status  ?resource_id 
       ?traffic_type  ?log_group_name  ?deliver_logs_status 
       ?deliver_logs_error_message  ?deliver_logs_permission_arn  () =
@@ -10490,7 +10953,7 @@ module FlowLog =
         deliver_logs_status;
         deliver_logs_error_message;
         deliver_logs_permission_arn
-      }
+      } 
     let parse xml =
       Some
         {
@@ -10517,6 +10980,7 @@ module FlowLog =
             (Util.option_bind (Xml.member "deliverLogsPermissionArn" xml)
                String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -10540,6 +11004,7 @@ module FlowLog =
              (fun f  -> Query.Pair ("FlowLogId", (String.to_query f)));
            Util.option_map v.creation_time
              (fun f  -> Query.Pair ("CreationTime", (DateTime.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -10561,6 +11026,7 @@ module FlowLog =
              (fun f  -> ("flow_log_id", (String.to_json f)));
            Util.option_map v.creation_time
              (fun f  -> ("creation_time", (DateTime.to_json f)))])
+      
     let of_json j =
       {
         creation_time =
@@ -10584,20 +11050,20 @@ module FlowLog =
         deliver_logs_permission_arn =
           (Util.option_map (Json.lookup j "deliver_logs_permission_arn")
              String.of_json)
-      }
+      } 
   end
 module BundleTask =
   struct
     type t =
       {
-      instance_id: String.t;
-      bundle_id: String.t;
-      state: BundleTaskState.t;
-      start_time: DateTime.t;
-      update_time: DateTime.t;
-      storage: Storage.t;
-      progress: String.t;
-      bundle_task_error: BundleTaskError.t option;}
+      instance_id: String.t ;
+      bundle_id: String.t ;
+      state: BundleTaskState.t ;
+      start_time: DateTime.t ;
+      update_time: DateTime.t ;
+      storage: Storage.t ;
+      progress: String.t ;
+      bundle_task_error: BundleTaskError.t option }
     let make ~instance_id  ~bundle_id  ~state  ~start_time  ~update_time 
       ~storage  ~progress  ?bundle_task_error  () =
       {
@@ -10609,7 +11075,7 @@ module BundleTask =
         storage;
         progress;
         bundle_task_error
-      }
+      } 
     let parse xml =
       Some
         {
@@ -10638,6 +11104,7 @@ module BundleTask =
           bundle_task_error =
             (Util.option_bind (Xml.member "error" xml) BundleTaskError.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -10651,6 +11118,7 @@ module BundleTask =
            Some (Query.Pair ("State", (BundleTaskState.to_query v.state)));
            Some (Query.Pair ("BundleId", (String.to_query v.bundle_id)));
            Some (Query.Pair ("InstanceId", (String.to_query v.instance_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -10663,6 +11131,7 @@ module BundleTask =
            Some ("state", (BundleTaskState.to_json v.state));
            Some ("bundle_id", (String.to_json v.bundle_id));
            Some ("instance_id", (String.to_json v.instance_id))])
+      
     let of_json j =
       {
         instance_id =
@@ -10684,20 +11153,20 @@ module BundleTask =
         bundle_task_error =
           (Util.option_map (Json.lookup j "bundle_task_error")
              BundleTaskError.of_json)
-      }
+      } 
   end
 module VolumeStatusItem =
   struct
     type t =
       {
-      volume_id: String.t option;
-      availability_zone: String.t option;
-      volume_status: VolumeStatusInfo.t option;
-      events: VolumeStatusEventsList.t;
-      actions: VolumeStatusActionsList.t;}
+      volume_id: String.t option ;
+      availability_zone: String.t option ;
+      volume_status: VolumeStatusInfo.t option ;
+      events: VolumeStatusEventsList.t ;
+      actions: VolumeStatusActionsList.t }
     let make ?volume_id  ?availability_zone  ?volume_status  ?(events= []) 
       ?(actions= [])  () =
-      { volume_id; availability_zone; volume_status; events; actions }
+      { volume_id; availability_zone; volume_status; events; actions } 
     let parse xml =
       Some
         {
@@ -10718,6 +11187,7 @@ module VolumeStatusItem =
                (Util.option_bind (Xml.member "actionsSet" xml)
                   VolumeStatusActionsList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -10734,6 +11204,7 @@ module VolumeStatusItem =
              (fun f  -> Query.Pair ("AvailabilityZone", (String.to_query f)));
            Util.option_map v.volume_id
              (fun f  -> Query.Pair ("VolumeId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -10745,6 +11216,7 @@ module VolumeStatusItem =
              (fun f  -> ("availability_zone", (String.to_json f)));
            Util.option_map v.volume_id
              (fun f  -> ("volume_id", (String.to_json f)))])
+      
     let of_json j =
       {
         volume_id =
@@ -10760,35 +11232,36 @@ module VolumeStatusItem =
         actions =
           (VolumeStatusActionsList.of_json
              (Util.of_option_exn (Json.lookup j "actions")))
-      }
+      } 
   end
 module CreateVolumePermissionList =
   struct
     type t = CreateVolumePermission.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map CreateVolumePermission.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list CreateVolumePermission.to_query v
-    let to_json v = `List (List.map CreateVolumePermission.to_json v)
-    let of_json j = Json.to_list CreateVolumePermission.of_json j
+      
+    let to_query v = Query.to_query_list CreateVolumePermission.to_query v 
+    let to_json v = `List (List.map CreateVolumePermission.to_json v) 
+    let of_json j = Json.to_list CreateVolumePermission.of_json j 
   end
 module Volume =
   struct
     type t =
       {
-      volume_id: String.t;
-      size: Integer.t;
-      snapshot_id: String.t;
-      availability_zone: String.t;
-      state: VolumeState.t;
-      create_time: DateTime.t;
-      attachments: VolumeAttachmentList.t;
-      tags: TagList.t;
-      volume_type: VolumeType.t;
-      iops: Integer.t option;
-      encrypted: Boolean.t;
-      kms_key_id: String.t option;}
+      volume_id: String.t ;
+      size: Integer.t ;
+      snapshot_id: String.t ;
+      availability_zone: String.t ;
+      state: VolumeState.t ;
+      create_time: DateTime.t ;
+      attachments: VolumeAttachmentList.t ;
+      tags: TagList.t ;
+      volume_type: VolumeType.t ;
+      iops: Integer.t option ;
+      encrypted: Boolean.t ;
+      kms_key_id: String.t option }
     let make ~volume_id  ~size  ~snapshot_id  ~availability_zone  ~state 
       ~create_time  ?(attachments= [])  ?(tags= [])  ~volume_type  ?iops 
       ~encrypted  ?kms_key_id  () =
@@ -10805,7 +11278,7 @@ module Volume =
         iops;
         encrypted;
         kms_key_id
-      }
+      } 
     let parse xml =
       Some
         {
@@ -10846,6 +11319,7 @@ module Volume =
           kms_key_id =
             (Util.option_bind (Xml.member "kmsKeyId" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -10870,6 +11344,7 @@ module Volume =
            Some (Query.Pair ("SnapshotId", (String.to_query v.snapshot_id)));
            Some (Query.Pair ("Size", (Integer.to_query v.size)));
            Some (Query.Pair ("VolumeId", (String.to_query v.volume_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -10886,6 +11361,7 @@ module Volume =
            Some ("snapshot_id", (String.to_json v.snapshot_id));
            Some ("size", (Integer.to_json v.size));
            Some ("volume_id", (String.to_json v.volume_id))])
+      
     let of_json j =
       {
         volume_id =
@@ -10913,14 +11389,14 @@ module Volume =
           (Boolean.of_json (Util.of_option_exn (Json.lookup j "encrypted")));
         kms_key_id =
           (Util.option_map (Json.lookup j "kms_key_id") String.of_json)
-      }
+      } 
   end
 module Region =
   struct
     type t = {
-      region_name: String.t option;
-      endpoint: String.t option;}
-    let make ?region_name  ?endpoint  () = { region_name; endpoint }
+      region_name: String.t option ;
+      endpoint: String.t option }
+    let make ?region_name  ?endpoint  () = { region_name; endpoint } 
     let parse xml =
       Some
         {
@@ -10929,6 +11405,7 @@ module Region =
           endpoint =
             (Util.option_bind (Xml.member "regionEndpoint" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -10936,6 +11413,7 @@ module Region =
               (fun f  -> Query.Pair ("RegionEndpoint", (String.to_query f)));
            Util.option_map v.region_name
              (fun f  -> Query.Pair ("RegionName", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -10943,26 +11421,27 @@ module Region =
               (fun f  -> ("endpoint", (String.to_json f)));
            Util.option_map v.region_name
              (fun f  -> ("region_name", (String.to_json f)))])
+      
     let of_json j =
       {
         region_name =
           (Util.option_map (Json.lookup j "region_name") String.of_json);
         endpoint =
           (Util.option_map (Json.lookup j "endpoint") String.of_json)
-      }
+      } 
   end
 module Address =
   struct
     type t =
       {
-      instance_id: String.t option;
-      public_ip: String.t option;
-      allocation_id: String.t option;
-      association_id: String.t option;
-      domain: DomainType.t option;
-      network_interface_id: String.t option;
-      network_interface_owner_id: String.t option;
-      private_ip_address: String.t option;}
+      instance_id: String.t option ;
+      public_ip: String.t option ;
+      allocation_id: String.t option ;
+      association_id: String.t option ;
+      domain: DomainType.t option ;
+      network_interface_id: String.t option ;
+      network_interface_owner_id: String.t option ;
+      private_ip_address: String.t option }
     let make ?instance_id  ?public_ip  ?allocation_id  ?association_id 
       ?domain  ?network_interface_id  ?network_interface_owner_id 
       ?private_ip_address  () =
@@ -10975,7 +11454,7 @@ module Address =
         network_interface_id;
         network_interface_owner_id;
         private_ip_address
-      }
+      } 
     let parse xml =
       Some
         {
@@ -10999,6 +11478,7 @@ module Address =
             (Util.option_bind (Xml.member "privateIpAddress" xml)
                String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -11020,6 +11500,7 @@ module Address =
              (fun f  -> Query.Pair ("PublicIp", (String.to_query f)));
            Util.option_map v.instance_id
              (fun f  -> Query.Pair ("InstanceId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -11039,6 +11520,7 @@ module Address =
              (fun f  -> ("public_ip", (String.to_json f)));
            Util.option_map v.instance_id
              (fun f  -> ("instance_id", (String.to_json f)))])
+      
     let of_json j =
       {
         instance_id =
@@ -11060,22 +11542,22 @@ module Address =
         private_ip_address =
           (Util.option_map (Json.lookup j "private_ip_address")
              String.of_json)
-      }
+      } 
   end
 module VpnConnection =
   struct
     type t =
       {
-      vpn_connection_id: String.t;
-      state: VpnState.t;
-      customer_gateway_configuration: String.t option;
-      type_: GatewayType.t;
-      customer_gateway_id: String.t;
-      vpn_gateway_id: String.t option;
-      tags: TagList.t;
-      vgw_telemetry: VgwTelemetryList.t;
-      options: VpnConnectionOptions.t option;
-      routes: VpnStaticRouteList.t;}
+      vpn_connection_id: String.t ;
+      state: VpnState.t ;
+      customer_gateway_configuration: String.t option ;
+      type_: GatewayType.t ;
+      customer_gateway_id: String.t ;
+      vpn_gateway_id: String.t option ;
+      tags: TagList.t ;
+      vgw_telemetry: VgwTelemetryList.t ;
+      options: VpnConnectionOptions.t option ;
+      routes: VpnStaticRouteList.t }
     let make ~vpn_connection_id  ~state  ?customer_gateway_configuration 
       ~type_  ~customer_gateway_id  ?vpn_gateway_id  ?(tags= []) 
       ?(vgw_telemetry= [])  ?options  ?(routes= [])  () =
@@ -11090,7 +11572,7 @@ module VpnConnection =
         vgw_telemetry;
         options;
         routes
-      }
+      } 
     let parse xml =
       Some
         {
@@ -11128,6 +11610,7 @@ module VpnConnection =
                (Util.option_bind (Xml.member "routes" xml)
                   VpnStaticRouteList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -11155,6 +11638,7 @@ module VpnConnection =
            Some
              (Query.Pair
                 ("VpnConnectionId", (String.to_query v.vpn_connection_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -11173,6 +11657,7 @@ module VpnConnection =
                 ("customer_gateway_configuration", (String.to_json f)));
            Some ("state", (VpnState.to_json v.state));
            Some ("vpn_connection_id", (String.to_json v.vpn_connection_id))])
+      
     let of_json j =
       {
         vpn_connection_id =
@@ -11200,25 +11685,25 @@ module VpnConnection =
         routes =
           (VpnStaticRouteList.of_json
              (Util.of_option_exn (Json.lookup j "routes")))
-      }
+      } 
   end
 module ReservedInstancesOffering =
   struct
     type t =
       {
-      reserved_instances_offering_id: String.t option;
-      instance_type: InstanceType.t option;
-      availability_zone: String.t option;
-      duration: Long.t option;
-      usage_price: Float.t option;
-      fixed_price: Float.t option;
-      product_description: RIProductDescription.t option;
-      instance_tenancy: Tenancy.t option;
-      currency_code: CurrencyCodeValues.t option;
-      offering_type: OfferingTypeValues.t option;
-      recurring_charges: RecurringChargesList.t;
-      marketplace: Boolean.t option;
-      pricing_details: PricingDetailsList.t;}
+      reserved_instances_offering_id: String.t option ;
+      instance_type: InstanceType.t option ;
+      availability_zone: String.t option ;
+      duration: Long.t option ;
+      usage_price: Float.t option ;
+      fixed_price: Float.t option ;
+      product_description: RIProductDescription.t option ;
+      instance_tenancy: Tenancy.t option ;
+      currency_code: CurrencyCodeValues.t option ;
+      offering_type: OfferingTypeValues.t option ;
+      recurring_charges: RecurringChargesList.t ;
+      marketplace: Boolean.t option ;
+      pricing_details: PricingDetailsList.t }
     let make ?reserved_instances_offering_id  ?instance_type 
       ?availability_zone  ?duration  ?usage_price  ?fixed_price 
       ?product_description  ?instance_tenancy  ?currency_code  ?offering_type
@@ -11237,7 +11722,7 @@ module ReservedInstancesOffering =
         recurring_charges;
         marketplace;
         pricing_details
-      }
+      } 
     let parse xml =
       Some
         {
@@ -11279,6 +11764,7 @@ module ReservedInstancesOffering =
                (Util.option_bind (Xml.member "pricingDetailsSet" xml)
                   PricingDetailsList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -11319,6 +11805,7 @@ module ReservedInstancesOffering =
              (fun f  ->
                 Query.Pair
                   ("ReservedInstancesOfferingId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -11352,6 +11839,7 @@ module ReservedInstancesOffering =
            Util.option_map v.reserved_instances_offering_id
              (fun f  ->
                 ("reserved_instances_offering_id", (String.to_json f)))])
+      
     let of_json j =
       {
         reserved_instances_offering_id =
@@ -11386,20 +11874,20 @@ module ReservedInstancesOffering =
         pricing_details =
           (PricingDetailsList.of_json
              (Util.of_option_exn (Json.lookup j "pricing_details")))
-      }
+      } 
   end
 module Reservation =
   struct
     type t =
       {
-      reservation_id: String.t;
-      owner_id: String.t;
-      requester_id: String.t option;
-      groups: GroupIdentifierList.t;
-      instances: InstanceList.t;}
+      reservation_id: String.t ;
+      owner_id: String.t ;
+      requester_id: String.t option ;
+      groups: GroupIdentifierList.t ;
+      instances: InstanceList.t }
     let make ~reservation_id  ~owner_id  ?requester_id  ?(groups= []) 
       ?(instances= [])  () =
-      { reservation_id; owner_id; requester_id; groups; instances }
+      { reservation_id; owner_id; requester_id; groups; instances } 
     let parse xml =
       Some
         {
@@ -11421,6 +11909,7 @@ module Reservation =
                (Util.option_bind (Xml.member "instancesSet" xml)
                   InstanceList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -11436,6 +11925,7 @@ module Reservation =
            Some
              (Query.Pair
                 ("ReservationId", (String.to_query v.reservation_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -11445,6 +11935,7 @@ module Reservation =
              (fun f  -> ("requester_id", (String.to_json f)));
            Some ("owner_id", (String.to_json v.owner_id));
            Some ("reservation_id", (String.to_json v.reservation_id))])
+      
     let of_json j =
       {
         reservation_id =
@@ -11460,18 +11951,18 @@ module Reservation =
         instances =
           (InstanceList.of_json
              (Util.of_option_exn (Json.lookup j "instances")))
-      }
+      } 
   end
 module VpcPeeringConnection =
   struct
     type t =
       {
-      accepter_vpc_info: VpcPeeringConnectionVpcInfo.t option;
-      expiration_time: DateTime.t option;
-      requester_vpc_info: VpcPeeringConnectionVpcInfo.t option;
-      status: VpcPeeringConnectionStateReason.t option;
-      tags: TagList.t;
-      vpc_peering_connection_id: String.t option;}
+      accepter_vpc_info: VpcPeeringConnectionVpcInfo.t option ;
+      expiration_time: DateTime.t option ;
+      requester_vpc_info: VpcPeeringConnectionVpcInfo.t option ;
+      status: VpcPeeringConnectionStateReason.t option ;
+      tags: TagList.t ;
+      vpc_peering_connection_id: String.t option }
     let make ?accepter_vpc_info  ?expiration_time  ?requester_vpc_info 
       ?status  ?(tags= [])  ?vpc_peering_connection_id  () =
       {
@@ -11481,7 +11972,7 @@ module VpcPeeringConnection =
         status;
         tags;
         vpc_peering_connection_id
-      }
+      } 
     let parse xml =
       Some
         {
@@ -11504,6 +11995,7 @@ module VpcPeeringConnection =
             (Util.option_bind (Xml.member "vpcPeeringConnectionId" xml)
                String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -11527,6 +12019,7 @@ module VpcPeeringConnection =
                 Query.Pair
                   ("AccepterVpcInfo",
                     (VpcPeeringConnectionVpcInfo.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -11546,6 +12039,7 @@ module VpcPeeringConnection =
              (fun f  ->
                 ("accepter_vpc_info",
                   (VpcPeeringConnectionVpcInfo.to_json f)))])
+      
     let of_json j =
       {
         accepter_vpc_info =
@@ -11563,19 +12057,19 @@ module VpcPeeringConnection =
         vpc_peering_connection_id =
           (Util.option_map (Json.lookup j "vpc_peering_connection_id")
              String.of_json)
-      }
+      } 
   end
 module Vpc =
   struct
     type t =
       {
-      vpc_id: String.t;
-      state: VpcState.t;
-      cidr_block: String.t;
-      dhcp_options_id: String.t;
-      tags: TagList.t;
-      instance_tenancy: Tenancy.t;
-      is_default: Boolean.t;}
+      vpc_id: String.t ;
+      state: VpcState.t ;
+      cidr_block: String.t ;
+      dhcp_options_id: String.t ;
+      tags: TagList.t ;
+      instance_tenancy: Tenancy.t ;
+      is_default: Boolean.t }
     let make ~vpc_id  ~state  ~cidr_block  ~dhcp_options_id  ?(tags= []) 
       ~instance_tenancy  ~is_default  () =
       {
@@ -11586,7 +12080,7 @@ module Vpc =
         tags;
         instance_tenancy;
         is_default
-      }
+      } 
     let parse xml =
       Some
         {
@@ -11614,6 +12108,7 @@ module Vpc =
             (Xml.required "isDefault"
                (Util.option_bind (Xml.member "isDefault" xml) Boolean.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -11628,6 +12123,7 @@ module Vpc =
            Some (Query.Pair ("CidrBlock", (String.to_query v.cidr_block)));
            Some (Query.Pair ("State", (VpcState.to_query v.state)));
            Some (Query.Pair ("VpcId", (String.to_query v.vpc_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -11638,6 +12134,7 @@ module Vpc =
            Some ("cidr_block", (String.to_json v.cidr_block));
            Some ("state", (VpcState.to_json v.state));
            Some ("vpc_id", (String.to_json v.vpc_id))])
+      
     let of_json j =
       {
         vpc_id =
@@ -11655,21 +12152,21 @@ module Vpc =
              (Util.of_option_exn (Json.lookup j "instance_tenancy")));
         is_default =
           (Boolean.of_json (Util.of_option_exn (Json.lookup j "is_default")))
-      }
+      } 
   end
 module NetworkAcl =
   struct
     type t =
       {
-      network_acl_id: String.t option;
-      vpc_id: String.t option;
-      is_default: Boolean.t option;
-      entries: NetworkAclEntryList.t;
-      associations: NetworkAclAssociationList.t;
-      tags: TagList.t;}
+      network_acl_id: String.t option ;
+      vpc_id: String.t option ;
+      is_default: Boolean.t option ;
+      entries: NetworkAclEntryList.t ;
+      associations: NetworkAclAssociationList.t ;
+      tags: TagList.t }
     let make ?network_acl_id  ?vpc_id  ?is_default  ?(entries= []) 
       ?(associations= [])  ?(tags= [])  () =
-      { network_acl_id; vpc_id; is_default; entries; associations; tags }
+      { network_acl_id; vpc_id; is_default; entries; associations; tags } 
     let parse xml =
       Some
         {
@@ -11690,6 +12187,7 @@ module NetworkAcl =
             (Util.of_option []
                (Util.option_bind (Xml.member "tagSet" xml) TagList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -11707,6 +12205,7 @@ module NetworkAcl =
              (fun f  -> Query.Pair ("VpcId", (String.to_query f)));
            Util.option_map v.network_acl_id
              (fun f  -> Query.Pair ("NetworkAclId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -11721,6 +12220,7 @@ module NetworkAcl =
              (fun f  -> ("vpc_id", (String.to_json f)));
            Util.option_map v.network_acl_id
              (fun f  -> ("network_acl_id", (String.to_json f)))])
+      
     let of_json j =
       {
         network_acl_id =
@@ -11735,21 +12235,21 @@ module NetworkAcl =
           (NetworkAclAssociationList.of_json
              (Util.of_option_exn (Json.lookup j "associations")));
         tags = (TagList.of_json (Util.of_option_exn (Json.lookup j "tags")))
-      }
+      } 
   end
 module Subnet =
   struct
     type t =
       {
-      subnet_id: String.t;
-      state: SubnetState.t;
-      vpc_id: String.t;
-      cidr_block: String.t;
-      available_ip_address_count: Integer.t;
-      availability_zone: String.t;
-      default_for_az: Boolean.t;
-      map_public_ip_on_launch: Boolean.t;
-      tags: TagList.t;}
+      subnet_id: String.t ;
+      state: SubnetState.t ;
+      vpc_id: String.t ;
+      cidr_block: String.t ;
+      available_ip_address_count: Integer.t ;
+      availability_zone: String.t ;
+      default_for_az: Boolean.t ;
+      map_public_ip_on_launch: Boolean.t ;
+      tags: TagList.t }
     let make ~subnet_id  ~state  ~vpc_id  ~cidr_block 
       ~available_ip_address_count  ~availability_zone  ~default_for_az 
       ~map_public_ip_on_launch  ?(tags= [])  () =
@@ -11763,7 +12263,7 @@ module Subnet =
         default_for_az;
         map_public_ip_on_launch;
         tags
-      }
+      } 
     let parse xml =
       Some
         {
@@ -11799,6 +12299,7 @@ module Subnet =
             (Util.of_option []
                (Util.option_bind (Xml.member "tagSet" xml) TagList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -11821,6 +12322,7 @@ module Subnet =
            Some (Query.Pair ("VpcId", (String.to_query v.vpc_id)));
            Some (Query.Pair ("State", (SubnetState.to_query v.state)));
            Some (Query.Pair ("SubnetId", (String.to_query v.subnet_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -11837,6 +12339,7 @@ module Subnet =
            Some ("vpc_id", (String.to_json v.vpc_id));
            Some ("state", (SubnetState.to_json v.state));
            Some ("subnet_id", (String.to_json v.subnet_id))])
+      
     let of_json j =
       {
         subnet_id =
@@ -11860,17 +12363,17 @@ module Subnet =
           (Boolean.of_json
              (Util.of_option_exn (Json.lookup j "map_public_ip_on_launch")));
         tags = (TagList.of_json (Util.of_option_exn (Json.lookup j "tags")))
-      }
+      } 
   end
 module VpcClassicLink =
   struct
     type t =
       {
-      vpc_id: String.t option;
-      classic_link_enabled: Boolean.t option;
-      tags: TagList.t;}
+      vpc_id: String.t option ;
+      classic_link_enabled: Boolean.t option ;
+      tags: TagList.t }
     let make ?vpc_id  ?classic_link_enabled  ?(tags= [])  () =
-      { vpc_id; classic_link_enabled; tags }
+      { vpc_id; classic_link_enabled; tags } 
     let parse xml =
       Some
         {
@@ -11882,6 +12385,7 @@ module VpcClassicLink =
             (Util.of_option []
                (Util.option_bind (Xml.member "tagSet" xml) TagList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -11891,6 +12395,7 @@ module VpcClassicLink =
                 Query.Pair ("ClassicLinkEnabled", (Boolean.to_query f)));
            Util.option_map v.vpc_id
              (fun f  -> Query.Pair ("VpcId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -11899,6 +12404,7 @@ module VpcClassicLink =
              (fun f  -> ("classic_link_enabled", (Boolean.to_json f)));
            Util.option_map v.vpc_id
              (fun f  -> ("vpc_id", (String.to_json f)))])
+      
     let of_json j =
       {
         vpc_id = (Util.option_map (Json.lookup j "vpc_id") String.of_json);
@@ -11906,23 +12412,23 @@ module VpcClassicLink =
           (Util.option_map (Json.lookup j "classic_link_enabled")
              Boolean.of_json);
         tags = (TagList.of_json (Util.of_option_exn (Json.lookup j "tags")))
-      }
+      } 
   end
 module ImportImageTask =
   struct
     type t =
       {
-      import_task_id: String.t option;
-      architecture: String.t option;
-      license_type: String.t option;
-      platform: String.t option;
-      hypervisor: String.t option;
-      description: String.t option;
-      snapshot_details: SnapshotDetailList.t;
-      image_id: String.t option;
-      progress: String.t option;
-      status_message: String.t option;
-      status: String.t option;}
+      import_task_id: String.t option ;
+      architecture: String.t option ;
+      license_type: String.t option ;
+      platform: String.t option ;
+      hypervisor: String.t option ;
+      description: String.t option ;
+      snapshot_details: SnapshotDetailList.t ;
+      image_id: String.t option ;
+      progress: String.t option ;
+      status_message: String.t option ;
+      status: String.t option }
     let make ?import_task_id  ?architecture  ?license_type  ?platform 
       ?hypervisor  ?description  ?(snapshot_details= [])  ?image_id 
       ?progress  ?status_message  ?status  () =
@@ -11938,7 +12444,7 @@ module ImportImageTask =
         progress;
         status_message;
         status
-      }
+      } 
     let parse xml =
       Some
         {
@@ -11966,6 +12472,7 @@ module ImportImageTask =
             (Util.option_bind (Xml.member "statusMessage" xml) String.parse);
           status = (Util.option_bind (Xml.member "status" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -11993,6 +12500,7 @@ module ImportImageTask =
              (fun f  -> Query.Pair ("Architecture", (String.to_query f)));
            Util.option_map v.import_task_id
              (fun f  -> Query.Pair ("ImportTaskId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -12019,6 +12527,7 @@ module ImportImageTask =
              (fun f  -> ("architecture", (String.to_json f)));
            Util.option_map v.import_task_id
              (fun f  -> ("import_task_id", (String.to_json f)))])
+      
     let of_json j =
       {
         import_task_id =
@@ -12043,16 +12552,16 @@ module ImportImageTask =
         status_message =
           (Util.option_map (Json.lookup j "status_message") String.of_json);
         status = (Util.option_map (Json.lookup j "status") String.of_json)
-      }
+      } 
   end
 module CancelSpotFleetRequestsErrorItem =
   struct
     type t =
       {
-      spot_fleet_request_id: String.t;
-      error: CancelSpotFleetRequestsError.t;}
+      spot_fleet_request_id: String.t ;
+      error: CancelSpotFleetRequestsError.t }
     let make ~spot_fleet_request_id  ~error  () =
-      { spot_fleet_request_id; error }
+      { spot_fleet_request_id; error } 
     let parse xml =
       Some
         {
@@ -12065,6 +12574,7 @@ module CancelSpotFleetRequestsErrorItem =
                (Util.option_bind (Xml.member "error" xml)
                   CancelSpotFleetRequestsError.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -12075,6 +12585,7 @@ module CancelSpotFleetRequestsErrorItem =
              (Query.Pair
                 ("SpotFleetRequestId",
                   (String.to_query v.spot_fleet_request_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -12082,6 +12593,7 @@ module CancelSpotFleetRequestsErrorItem =
            Some
              ("spot_fleet_request_id",
                (String.to_json v.spot_fleet_request_id))])
+      
     let of_json j =
       {
         spot_fleet_request_id =
@@ -12090,22 +12602,22 @@ module CancelSpotFleetRequestsErrorItem =
         error =
           (CancelSpotFleetRequestsError.of_json
              (Util.of_option_exn (Json.lookup j "error")))
-      }
+      } 
   end
 module CancelSpotFleetRequestsSuccessItem =
   struct
     type t =
       {
-      spot_fleet_request_id: String.t;
-      current_spot_fleet_request_state: BatchState.t;
-      previous_spot_fleet_request_state: BatchState.t;}
+      spot_fleet_request_id: String.t ;
+      current_spot_fleet_request_state: BatchState.t ;
+      previous_spot_fleet_request_state: BatchState.t }
     let make ~spot_fleet_request_id  ~current_spot_fleet_request_state 
       ~previous_spot_fleet_request_state  () =
       {
         spot_fleet_request_id;
         current_spot_fleet_request_state;
         previous_spot_fleet_request_state
-      }
+      } 
     let parse xml =
       Some
         {
@@ -12124,6 +12636,7 @@ module CancelSpotFleetRequestsSuccessItem =
                   (Xml.member "previousSpotFleetRequestState" xml)
                   BatchState.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -12139,6 +12652,7 @@ module CancelSpotFleetRequestsSuccessItem =
              (Query.Pair
                 ("SpotFleetRequestId",
                   (String.to_query v.spot_fleet_request_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -12151,6 +12665,7 @@ module CancelSpotFleetRequestsSuccessItem =
            Some
              ("spot_fleet_request_id",
                (String.to_json v.spot_fleet_request_id))])
+      
     let of_json j =
       {
         spot_fleet_request_id =
@@ -12164,16 +12679,16 @@ module CancelSpotFleetRequestsSuccessItem =
           (BatchState.of_json
              (Util.of_option_exn
                 (Json.lookup j "previous_spot_fleet_request_state")))
-      }
+      } 
   end
 module AccountAttribute =
   struct
     type t =
       {
-      attribute_name: String.t option;
-      attribute_values: AccountAttributeValueList.t;}
+      attribute_name: String.t option ;
+      attribute_values: AccountAttributeValueList.t }
     let make ?attribute_name  ?(attribute_values= [])  () =
-      { attribute_name; attribute_values }
+      { attribute_name; attribute_values } 
     let parse xml =
       Some
         {
@@ -12184,6 +12699,7 @@ module AccountAttribute =
                (Util.option_bind (Xml.member "attributeValueSet" xml)
                   AccountAttributeValueList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -12193,6 +12709,7 @@ module AccountAttribute =
                    (AccountAttributeValueList.to_query v.attribute_values)));
            Util.option_map v.attribute_name
              (fun f  -> Query.Pair ("AttributeName", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -12201,6 +12718,7 @@ module AccountAttribute =
                 (AccountAttributeValueList.to_json v.attribute_values));
            Util.option_map v.attribute_name
              (fun f  -> ("attribute_name", (String.to_json f)))])
+      
     let of_json j =
       {
         attribute_name =
@@ -12208,17 +12726,17 @@ module AccountAttribute =
         attribute_values =
           (AccountAttributeValueList.of_json
              (Util.of_option_exn (Json.lookup j "attribute_values")))
-      }
+      } 
   end
 module SpotPrice =
   struct
     type t =
       {
-      instance_type: InstanceType.t option;
-      product_description: RIProductDescription.t option;
-      spot_price: String.t option;
-      timestamp: DateTime.t option;
-      availability_zone: String.t option;}
+      instance_type: InstanceType.t option ;
+      product_description: RIProductDescription.t option ;
+      spot_price: String.t option ;
+      timestamp: DateTime.t option ;
+      availability_zone: String.t option }
     let make ?instance_type  ?product_description  ?spot_price  ?timestamp 
       ?availability_zone  () =
       {
@@ -12227,7 +12745,7 @@ module SpotPrice =
         spot_price;
         timestamp;
         availability_zone
-      }
+      } 
     let parse xml =
       Some
         {
@@ -12245,6 +12763,7 @@ module SpotPrice =
             (Util.option_bind (Xml.member "availabilityZone" xml)
                String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -12261,6 +12780,7 @@ module SpotPrice =
            Util.option_map v.instance_type
              (fun f  ->
                 Query.Pair ("InstanceType", (InstanceType.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -12275,6 +12795,7 @@ module SpotPrice =
                 ("product_description", (RIProductDescription.to_json f)));
            Util.option_map v.instance_type
              (fun f  -> ("instance_type", (InstanceType.to_json f)))])
+      
     let of_json j =
       {
         instance_type =
@@ -12289,20 +12810,20 @@ module SpotPrice =
           (Util.option_map (Json.lookup j "timestamp") DateTime.of_json);
         availability_zone =
           (Util.option_map (Json.lookup j "availability_zone") String.of_json)
-      }
+      } 
   end
 module ReportInstanceReasonCodes =
   struct
     type t =
-      | Instance_stuck_in_state
-      | Unresponsive
-      | Not_accepting_credentials
-      | Password_not_available
-      | Performance_network
-      | Performance_instance_store
-      | Performance_ebs_volume
-      | Performance_other
-      | Other
+      | Instance_stuck_in_state 
+      | Unresponsive 
+      | Not_accepting_credentials 
+      | Password_not_available 
+      | Performance_network 
+      | Performance_instance_store 
+      | Performance_ebs_volume 
+      | Performance_other 
+      | Other 
     let str_to_t =
       [("other", Other);
       ("performance-other", Performance_other);
@@ -12312,7 +12833,7 @@ module ReportInstanceReasonCodes =
       ("password-not-available", Password_not_available);
       ("not-accepting-credentials", Not_accepting_credentials);
       ("unresponsive", Unresponsive);
-      ("instance-stuck-in-state", Instance_stuck_in_state)]
+      ("instance-stuck-in-state", Instance_stuck_in_state)] 
     let t_to_str =
       [(Other, "other");
       (Performance_other, "performance-other");
@@ -12322,27 +12843,28 @@ module ReportInstanceReasonCodes =
       (Password_not_available, "password-not-available");
       (Not_accepting_credentials, "not-accepting-credentials");
       (Unresponsive, "unresponsive");
-      (Instance_stuck_in_state, "instance-stuck-in-state")]
-    let make v () = v
+      (Instance_stuck_in_state, "instance-stuck-in-state")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module DiskImage =
   struct
     type t =
       {
-      image: DiskImageDetail.t option;
-      description: String.t option;
-      volume: VolumeDetail.t option;}
+      image: DiskImageDetail.t option ;
+      description: String.t option ;
+      volume: VolumeDetail.t option }
     let make ?image  ?description  ?volume  () =
-      { image; description; volume }
+      { image; description; volume } 
     let parse xml =
       Some
         {
@@ -12353,6 +12875,7 @@ module DiskImage =
           volume =
             (Util.option_bind (Xml.member "Volume" xml) VolumeDetail.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -12362,6 +12885,7 @@ module DiskImage =
              (fun f  -> Query.Pair ("Description", (String.to_query f)));
            Util.option_map v.image
              (fun f  -> Query.Pair ("Image", (DiskImageDetail.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -12371,6 +12895,7 @@ module DiskImage =
              (fun f  -> ("description", (String.to_json f)));
            Util.option_map v.image
              (fun f  -> ("image", (DiskImageDetail.to_json f)))])
+      
     let of_json j =
       {
         image =
@@ -12379,67 +12904,71 @@ module DiskImage =
           (Util.option_map (Json.lookup j "description") String.of_json);
         volume =
           (Util.option_map (Json.lookup j "volume") VolumeDetail.of_json)
-      }
+      } 
   end
 module SecurityGroupStringList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map String.parse (Xml.members "SecurityGroup" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module ShutdownBehavior =
   struct
     type t =
-      | Stop
-      | Terminate
-    let str_to_t = [("terminate", Terminate); ("stop", Stop)]
-    let t_to_str = [(Terminate, "terminate"); (Stop, "stop")]
-    let make v () = v
+      | Stop 
+      | Terminate 
+    let str_to_t = [("terminate", Terminate); ("stop", Stop)] 
+    let t_to_str = [(Terminate, "terminate"); (Stop, "stop")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module UserData =
   struct
     type t = {
-      data: String.t option;}
-    let make ?data  () = { data }
+      data: String.t option }
+    let make ?data  () = { data } 
     let parse xml =
-      Some { data = (Util.option_bind (Xml.member "data" xml) String.parse) }
+      Some { data = (Util.option_bind (Xml.member "data" xml) String.parse) } 
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.data
               (fun f  -> Query.Pair ("Data", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.data (fun f  -> ("data", (String.to_json f)))])
+      
     let of_json j =
-      { data = (Util.option_map (Json.lookup j "data") String.of_json) }
+      { data = (Util.option_map (Json.lookup j "data") String.of_json) } 
   end
 module VpcEndpoint =
   struct
     type t =
       {
-      vpc_endpoint_id: String.t option;
-      vpc_id: String.t option;
-      service_name: String.t option;
-      state: State.t option;
-      policy_document: String.t option;
-      route_table_ids: ValueStringList.t;
-      creation_timestamp: DateTime.t option;}
+      vpc_endpoint_id: String.t option ;
+      vpc_id: String.t option ;
+      service_name: String.t option ;
+      state: State.t option ;
+      policy_document: String.t option ;
+      route_table_ids: ValueStringList.t ;
+      creation_timestamp: DateTime.t option }
     let make ?vpc_endpoint_id  ?vpc_id  ?service_name  ?state 
       ?policy_document  ?(route_table_ids= [])  ?creation_timestamp  () =
       {
@@ -12450,7 +12979,7 @@ module VpcEndpoint =
         policy_document;
         route_table_ids;
         creation_timestamp
-      }
+      } 
     let parse xml =
       Some
         {
@@ -12470,6 +12999,7 @@ module VpcEndpoint =
             (Util.option_bind (Xml.member "creationTimestamp" xml)
                DateTime.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -12490,6 +13020,7 @@ module VpcEndpoint =
              (fun f  -> Query.Pair ("VpcId", (String.to_query f)));
            Util.option_map v.vpc_endpoint_id
              (fun f  -> Query.Pair ("VpcEndpointId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -12506,6 +13037,7 @@ module VpcEndpoint =
              (fun f  -> ("vpc_id", (String.to_json f)));
            Util.option_map v.vpc_endpoint_id
              (fun f  -> ("vpc_endpoint_id", (String.to_json f)))])
+      
     let of_json j =
       {
         vpc_endpoint_id =
@@ -12522,21 +13054,21 @@ module VpcEndpoint =
         creation_timestamp =
           (Util.option_map (Json.lookup j "creation_timestamp")
              DateTime.of_json)
-      }
+      } 
   end
 module ImageDiskContainer =
   struct
     type t =
       {
-      description: String.t option;
-      format: String.t option;
-      url: String.t option;
-      user_bucket: UserBucket.t option;
-      device_name: String.t option;
-      snapshot_id: String.t option;}
+      description: String.t option ;
+      format: String.t option ;
+      url: String.t option ;
+      user_bucket: UserBucket.t option ;
+      device_name: String.t option ;
+      snapshot_id: String.t option }
     let make ?description  ?format  ?url  ?user_bucket  ?device_name 
       ?snapshot_id  () =
-      { description; format; url; user_bucket; device_name; snapshot_id }
+      { description; format; url; user_bucket; device_name; snapshot_id } 
     let parse xml =
       Some
         {
@@ -12551,6 +13083,7 @@ module ImageDiskContainer =
           snapshot_id =
             (Util.option_bind (Xml.member "SnapshotId" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -12566,6 +13099,7 @@ module ImageDiskContainer =
              (fun f  -> Query.Pair ("Format", (String.to_query f)));
            Util.option_map v.description
              (fun f  -> Query.Pair ("Description", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -12580,6 +13114,7 @@ module ImageDiskContainer =
              (fun f  -> ("format", (String.to_json f)));
            Util.option_map v.description
              (fun f  -> ("description", (String.to_json f)))])
+      
     let of_json j =
       {
         description =
@@ -12592,18 +13127,18 @@ module ImageDiskContainer =
           (Util.option_map (Json.lookup j "device_name") String.of_json);
         snapshot_id =
           (Util.option_map (Json.lookup j "snapshot_id") String.of_json)
-      }
+      } 
   end
 module ClassicLinkInstance =
   struct
     type t =
       {
-      instance_id: String.t option;
-      vpc_id: String.t option;
-      groups: GroupIdentifierList.t;
-      tags: TagList.t;}
+      instance_id: String.t option ;
+      vpc_id: String.t option ;
+      groups: GroupIdentifierList.t ;
+      tags: TagList.t }
     let make ?instance_id  ?vpc_id  ?(groups= [])  ?(tags= [])  () =
-      { instance_id; vpc_id; groups; tags }
+      { instance_id; vpc_id; groups; tags } 
     let parse xml =
       Some
         {
@@ -12618,6 +13153,7 @@ module ClassicLinkInstance =
             (Util.of_option []
                (Util.option_bind (Xml.member "tagSet" xml) TagList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -12629,6 +13165,7 @@ module ClassicLinkInstance =
              (fun f  -> Query.Pair ("VpcId", (String.to_query f)));
            Util.option_map v.instance_id
              (fun f  -> Query.Pair ("InstanceId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -12638,6 +13175,7 @@ module ClassicLinkInstance =
              (fun f  -> ("vpc_id", (String.to_json f)));
            Util.option_map v.instance_id
              (fun f  -> ("instance_id", (String.to_json f)))])
+      
     let of_json j =
       {
         instance_id =
@@ -12647,24 +13185,24 @@ module ClassicLinkInstance =
           (GroupIdentifierList.of_json
              (Util.of_option_exn (Json.lookup j "groups")));
         tags = (TagList.of_json (Util.of_option_exn (Json.lookup j "tags")))
-      }
+      } 
   end
 module Snapshot =
   struct
     type t =
       {
-      snapshot_id: String.t;
-      volume_id: String.t;
-      state: SnapshotState.t;
-      start_time: DateTime.t;
-      progress: String.t;
-      owner_id: String.t;
-      description: String.t;
-      volume_size: Integer.t;
-      owner_alias: String.t option;
-      tags: TagList.t;
-      encrypted: Boolean.t;
-      kms_key_id: String.t option;}
+      snapshot_id: String.t ;
+      volume_id: String.t ;
+      state: SnapshotState.t ;
+      start_time: DateTime.t ;
+      progress: String.t ;
+      owner_id: String.t ;
+      description: String.t ;
+      volume_size: Integer.t ;
+      owner_alias: String.t option ;
+      tags: TagList.t ;
+      encrypted: Boolean.t ;
+      kms_key_id: String.t option }
     let make ~snapshot_id  ~volume_id  ~state  ~start_time  ~progress 
       ~owner_id  ~description  ~volume_size  ?owner_alias  ?(tags= []) 
       ~encrypted  ?kms_key_id  () =
@@ -12681,7 +13219,7 @@ module Snapshot =
         tags;
         encrypted;
         kms_key_id
-      }
+      } 
     let parse xml =
       Some
         {
@@ -12721,6 +13259,7 @@ module Snapshot =
           kms_key_id =
             (Util.option_bind (Xml.member "kmsKeyId" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -12738,6 +13277,7 @@ module Snapshot =
            Some (Query.Pair ("Status", (SnapshotState.to_query v.state)));
            Some (Query.Pair ("VolumeId", (String.to_query v.volume_id)));
            Some (Query.Pair ("SnapshotId", (String.to_query v.snapshot_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -12755,6 +13295,7 @@ module Snapshot =
            Some ("state", (SnapshotState.to_json v.state));
            Some ("volume_id", (String.to_json v.volume_id));
            Some ("snapshot_id", (String.to_json v.snapshot_id))])
+      
     let of_json j =
       {
         snapshot_id =
@@ -12780,14 +13321,14 @@ module Snapshot =
           (Boolean.of_json (Util.of_option_exn (Json.lookup j "encrypted")));
         kms_key_id =
           (Util.option_map (Json.lookup j "kms_key_id") String.of_json)
-      }
+      } 
   end
 module NewDhcpConfiguration =
   struct
     type t = {
-      key: String.t option;
-      values: ValueStringList.t;}
-    let make ?key  ?(values= [])  () = { key; values }
+      key: String.t option ;
+      values: ValueStringList.t }
+    let make ?key  ?(values= [])  () = { key; values } 
     let parse xml =
       Some
         {
@@ -12797,200 +13338,214 @@ module NewDhcpConfiguration =
                (Util.option_bind (Xml.member "Value" xml)
                   ValueStringList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("Value", (ValueStringList.to_query v.values)));
            Util.option_map v.key
              (fun f  -> Query.Pair ("Key", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("values", (ValueStringList.to_json v.values));
            Util.option_map v.key (fun f  -> ("key", (String.to_json f)))])
+      
     let of_json j =
       {
         key = (Util.option_map (Json.lookup j "key") String.of_json);
         values =
           (ValueStringList.of_json
              (Util.of_option_exn (Json.lookup j "values")))
-      }
+      } 
   end
 module VpcAttributeName =
   struct
     type t =
-      | EnableDnsSupport
-      | EnableDnsHostnames
+      | EnableDnsSupport 
+      | EnableDnsHostnames 
     let str_to_t =
       [("enableDnsHostnames", EnableDnsHostnames);
-      ("enableDnsSupport", EnableDnsSupport)]
+      ("enableDnsSupport", EnableDnsSupport)] 
     let t_to_str =
       [(EnableDnsHostnames, "enableDnsHostnames");
-      (EnableDnsSupport, "enableDnsSupport")]
-    let make v () = v
+      (EnableDnsSupport, "enableDnsSupport")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module BlockDeviceMappingRequestList =
   struct
     type t = BlockDeviceMapping.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map BlockDeviceMapping.parse
            (Xml.members "BlockDeviceMapping" xml))
-    let to_query v = Query.to_query_list BlockDeviceMapping.to_query v
-    let to_json v = `List (List.map BlockDeviceMapping.to_json v)
-    let of_json j = Json.to_list BlockDeviceMapping.of_json j
+      
+    let to_query v = Query.to_query_list BlockDeviceMapping.to_query v 
+    let to_json v = `List (List.map BlockDeviceMapping.to_json v) 
+    let of_json j = Json.to_list BlockDeviceMapping.of_json j 
   end
 module NetworkInterfaceList =
   struct
     type t = NetworkInterface.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map NetworkInterface.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list NetworkInterface.to_query v
-    let to_json v = `List (List.map NetworkInterface.to_json v)
-    let of_json j = Json.to_list NetworkInterface.of_json j
+      
+    let to_query v = Query.to_query_list NetworkInterface.to_query v 
+    let to_json v = `List (List.map NetworkInterface.to_json v) 
+    let of_json j = Json.to_list NetworkInterface.of_json j 
   end
 module TagDescriptionList =
   struct
     type t = TagDescription.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map TagDescription.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list TagDescription.to_query v
-    let to_json v = `List (List.map TagDescription.to_json v)
-    let of_json j = Json.to_list TagDescription.of_json j
+      
+    let to_query v = Query.to_query_list TagDescription.to_query v 
+    let to_json v = `List (List.map TagDescription.to_json v) 
+    let of_json j = Json.to_list TagDescription.of_json j 
   end
 module DhcpOptionsList =
   struct
     type t = DhcpOptions.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map DhcpOptions.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list DhcpOptions.to_query v
-    let to_json v = `List (List.map DhcpOptions.to_json v)
-    let of_json j = Json.to_list DhcpOptions.of_json j
+      Util.option_all (List.map DhcpOptions.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list DhcpOptions.to_query v 
+    let to_json v = `List (List.map DhcpOptions.to_json v) 
+    let of_json j = Json.to_list DhcpOptions.of_json j 
   end
 module VpnGatewayList =
   struct
     type t = VpnGateway.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map VpnGateway.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list VpnGateway.to_query v
-    let to_json v = `List (List.map VpnGateway.to_json v)
-    let of_json j = Json.to_list VpnGateway.of_json j
+      Util.option_all (List.map VpnGateway.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list VpnGateway.to_query v 
+    let to_json v = `List (List.map VpnGateway.to_json v) 
+    let of_json j = Json.to_list VpnGateway.of_json j 
   end
 module AttributeBooleanValue =
   struct
     type t = {
-      value: Boolean.t option;}
-    let make ?value  () = { value }
+      value: Boolean.t option }
+    let make ?value  () = { value } 
     let parse xml =
       Some
         { value = (Util.option_bind (Xml.member "value" xml) Boolean.parse) }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.value
               (fun f  -> Query.Pair ("Value", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.value
               (fun f  -> ("value", (Boolean.to_json f)))])
+      
     let of_json j =
-      { value = (Util.option_map (Json.lookup j "value") Boolean.of_json) }
+      { value = (Util.option_map (Json.lookup j "value") Boolean.of_json) } 
   end
 module ReservedInstancesModificationList =
   struct
     type t = ReservedInstancesModification.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map ReservedInstancesModification.parse
            (Xml.members "item" xml))
+      
     let to_query v =
-      Query.to_query_list ReservedInstancesModification.to_query v
-    let to_json v = `List (List.map ReservedInstancesModification.to_json v)
-    let of_json j = Json.to_list ReservedInstancesModification.of_json j
+      Query.to_query_list ReservedInstancesModification.to_query v 
+    let to_json v = `List (List.map ReservedInstancesModification.to_json v) 
+    let of_json j = Json.to_list ReservedInstancesModification.of_json j 
   end
 module ReservedInstancesList =
   struct
     type t = ReservedInstances.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map ReservedInstances.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list ReservedInstances.to_query v
-    let to_json v = `List (List.map ReservedInstances.to_json v)
-    let of_json j = Json.to_list ReservedInstances.of_json j
+      
+    let to_query v = Query.to_query_list ReservedInstances.to_query v 
+    let to_json v = `List (List.map ReservedInstances.to_json v) 
+    let of_json j = Json.to_list ReservedInstances.of_json j 
   end
 module FilterList =
   struct
     type t = Filter.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map Filter.parse (Xml.members "Filter" xml))
-    let to_query v = Query.to_query_list Filter.to_query v
-    let to_json v = `List (List.map Filter.to_json v)
-    let of_json j = Json.to_list Filter.of_json j
+      Util.option_all (List.map Filter.parse (Xml.members "Filter" xml)) 
+    let to_query v = Query.to_query_list Filter.to_query v 
+    let to_json v = `List (List.map Filter.to_json v) 
+    let of_json j = Json.to_list Filter.of_json j 
   end
 module PlacementGroupList =
   struct
     type t = PlacementGroup.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map PlacementGroup.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list PlacementGroup.to_query v
-    let to_json v = `List (List.map PlacementGroup.to_json v)
-    let of_json j = Json.to_list PlacementGroup.of_json j
+      
+    let to_query v = Query.to_query_list PlacementGroup.to_query v 
+    let to_json v = `List (List.map PlacementGroup.to_json v) 
+    let of_json j = Json.to_list PlacementGroup.of_json j 
   end
 module KeyPairList =
   struct
     type t = KeyPairInfo.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map KeyPairInfo.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list KeyPairInfo.to_query v
-    let to_json v = `List (List.map KeyPairInfo.to_json v)
-    let of_json j = Json.to_list KeyPairInfo.of_json j
+      Util.option_all (List.map KeyPairInfo.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list KeyPairInfo.to_query v 
+    let to_json v = `List (List.map KeyPairInfo.to_json v) 
+    let of_json j = Json.to_list KeyPairInfo.of_json j 
   end
 module CancelledSpotInstanceRequestList =
   struct
     type t = CancelledSpotInstanceRequest.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map CancelledSpotInstanceRequest.parse (Xml.members "item" xml))
+      
     let to_query v =
-      Query.to_query_list CancelledSpotInstanceRequest.to_query v
-    let to_json v = `List (List.map CancelledSpotInstanceRequest.to_json v)
-    let of_json j = Json.to_list CancelledSpotInstanceRequest.of_json j
+      Query.to_query_list CancelledSpotInstanceRequest.to_query v 
+    let to_json v = `List (List.map CancelledSpotInstanceRequest.to_json v) 
+    let of_json j = Json.to_list CancelledSpotInstanceRequest.of_json j 
   end
 module SpotDatafeedSubscription =
   struct
     type t =
       {
-      owner_id: String.t option;
-      bucket: String.t option;
-      prefix: String.t option;
-      state: DatafeedSubscriptionState.t option;
-      fault: SpotInstanceStateFault.t option;}
+      owner_id: String.t option ;
+      bucket: String.t option ;
+      prefix: String.t option ;
+      state: DatafeedSubscriptionState.t option ;
+      fault: SpotInstanceStateFault.t option }
     let make ?owner_id  ?bucket  ?prefix  ?state  ?fault  () =
-      { owner_id; bucket; prefix; state; fault }
+      { owner_id; bucket; prefix; state; fault } 
     let parse xml =
       Some
         {
@@ -13005,6 +13560,7 @@ module SpotDatafeedSubscription =
             (Util.option_bind (Xml.member "fault" xml)
                SpotInstanceStateFault.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -13020,6 +13576,7 @@ module SpotDatafeedSubscription =
              (fun f  -> Query.Pair ("Bucket", (String.to_query f)));
            Util.option_map v.owner_id
              (fun f  -> Query.Pair ("OwnerId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -13033,6 +13590,7 @@ module SpotDatafeedSubscription =
              (fun f  -> ("bucket", (String.to_json f)));
            Util.option_map v.owner_id
              (fun f  -> ("owner_id", (String.to_json f)))])
+      
     let of_json j =
       {
         owner_id =
@@ -13045,14 +13603,14 @@ module SpotDatafeedSubscription =
         fault =
           (Util.option_map (Json.lookup j "fault")
              SpotInstanceStateFault.of_json)
-      }
+      } 
   end
 module LaunchPermissionModifications =
   struct
     type t = {
-      add: LaunchPermissionList.t;
-      remove: LaunchPermissionList.t;}
-    let make ?(add= [])  ?(remove= [])  () = { add; remove }
+      add: LaunchPermissionList.t ;
+      remove: LaunchPermissionList.t }
+    let make ?(add= [])  ?(remove= [])  () = { add; remove } 
     let parse xml =
       Some
         {
@@ -13065,6 +13623,7 @@ module LaunchPermissionModifications =
                (Util.option_bind (Xml.member "Remove" xml)
                   LaunchPermissionList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -13072,11 +13631,13 @@ module LaunchPermissionModifications =
               (Query.Pair
                  ("Remove", (LaunchPermissionList.to_query v.remove)));
            Some (Query.Pair ("Add", (LaunchPermissionList.to_query v.add)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("remove", (LaunchPermissionList.to_json v.remove));
            Some ("add", (LaunchPermissionList.to_json v.add))])
+      
     let of_json j =
       {
         add =
@@ -13085,72 +13646,73 @@ module LaunchPermissionModifications =
         remove =
           (LaunchPermissionList.of_json
              (Util.of_option_exn (Json.lookup j "remove")))
-      }
+      } 
   end
 module OperationType =
   struct
     type t =
-      | Add
-      | Remove
-    let str_to_t = [("remove", Remove); ("add", Add)]
-    let t_to_str = [(Remove, "remove"); (Add, "add")]
-    let make v () = v
+      | Add 
+      | Remove 
+    let str_to_t = [("remove", Remove); ("add", Add)] 
+    let t_to_str = [(Remove, "remove"); (Add, "add")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module ProductCodeStringList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "ProductCode" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "ProductCode" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module UserGroupStringList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "UserGroup" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "UserGroup" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module UserIdStringList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "UserId" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "UserId" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module InstanceAttributeName =
   struct
     type t =
-      | InstanceType
-      | Kernel
-      | Ramdisk
-      | UserData
-      | DisableApiTermination
-      | InstanceInitiatedShutdownBehavior
-      | RootDeviceName
-      | BlockDeviceMapping
-      | ProductCodes
-      | SourceDestCheck
-      | GroupSet
-      | EbsOptimized
-      | SriovNetSupport
+      | InstanceType 
+      | Kernel 
+      | Ramdisk 
+      | UserData 
+      | DisableApiTermination 
+      | InstanceInitiatedShutdownBehavior 
+      | RootDeviceName 
+      | BlockDeviceMapping 
+      | ProductCodes 
+      | SourceDestCheck 
+      | GroupSet 
+      | EbsOptimized 
+      | SriovNetSupport 
     let str_to_t =
       [("sriovNetSupport", SriovNetSupport);
       ("ebsOptimized", EbsOptimized);
@@ -13165,7 +13727,7 @@ module InstanceAttributeName =
       ("userData", UserData);
       ("ramdisk", Ramdisk);
       ("kernel", Kernel);
-      ("instanceType", InstanceType)]
+      ("instanceType", InstanceType)] 
     let t_to_str =
       [(SriovNetSupport, "sriovNetSupport");
       (EbsOptimized, "ebsOptimized");
@@ -13180,49 +13742,51 @@ module InstanceAttributeName =
       (UserData, "userData");
       (Ramdisk, "ramdisk");
       (Kernel, "kernel");
-      (InstanceType, "instanceType")]
-    let make v () = v
+      (InstanceType, "instanceType")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module BundleIdStringList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "BundleId" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "BundleId" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module DescribeConversionTaskList =
   struct
     type t = ConversionTask.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map ConversionTask.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list ConversionTask.to_query v
-    let to_json v = `List (List.map ConversionTask.to_json v)
-    let of_json j = Json.to_list ConversionTask.of_json j
+      
+    let to_query v = Query.to_query_list ConversionTask.to_query v 
+    let to_json v = `List (List.map ConversionTask.to_json v) 
+    let of_json j = Json.to_list ConversionTask.of_json j 
   end
 module ExportToS3TaskSpecification =
   struct
     type t =
       {
-      disk_image_format: DiskImageFormat.t option;
-      container_format: ContainerFormat.t option;
-      s3_bucket: String.t option;
-      s3_prefix: String.t option;}
+      disk_image_format: DiskImageFormat.t option ;
+      container_format: ContainerFormat.t option ;
+      s3_bucket: String.t option ;
+      s3_prefix: String.t option }
     let make ?disk_image_format  ?container_format  ?s3_bucket  ?s3_prefix 
-      () = { disk_image_format; container_format; s3_bucket; s3_prefix }
+      () = { disk_image_format; container_format; s3_bucket; s3_prefix } 
     let parse xml =
       Some
         {
@@ -13237,6 +13801,7 @@ module ExportToS3TaskSpecification =
           s3_prefix =
             (Util.option_bind (Xml.member "s3Prefix" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -13250,6 +13815,7 @@ module ExportToS3TaskSpecification =
            Util.option_map v.disk_image_format
              (fun f  ->
                 Query.Pair ("DiskImageFormat", (DiskImageFormat.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -13261,6 +13827,7 @@ module ExportToS3TaskSpecification =
              (fun f  -> ("container_format", (ContainerFormat.to_json f)));
            Util.option_map v.disk_image_format
              (fun f  -> ("disk_image_format", (DiskImageFormat.to_json f)))])
+      
     let of_json j =
       {
         disk_image_format =
@@ -13273,112 +13840,114 @@ module ExportToS3TaskSpecification =
           (Util.option_map (Json.lookup j "s3_bucket") String.of_json);
         s3_prefix =
           (Util.option_map (Json.lookup j "s3_prefix") String.of_json)
-      }
+      } 
   end
 module HistoryRecords =
   struct
     type t = HistoryRecord.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map HistoryRecord.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list HistoryRecord.to_query v
-    let to_json v = `List (List.map HistoryRecord.to_json v)
-    let of_json j = Json.to_list HistoryRecord.of_json j
+      Util.option_all (List.map HistoryRecord.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list HistoryRecord.to_query v 
+    let to_json v = `List (List.map HistoryRecord.to_json v) 
+    let of_json j = Json.to_list HistoryRecord.of_json j 
   end
 module OwnerStringList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "Owner" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "Owner" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module RestorableByStringList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "member" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module SnapshotIdStringList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "SnapshotId" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "SnapshotId" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module ReservedInstancesConfigurationList =
   struct
     type t = ReservedInstancesConfiguration.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map ReservedInstancesConfiguration.parse
            (Xml.members "item" xml))
+      
     let to_query v =
-      Query.to_query_list ReservedInstancesConfiguration.to_query v
-    let to_json v = `List (List.map ReservedInstancesConfiguration.to_json v)
-    let of_json j = Json.to_list ReservedInstancesConfiguration.of_json j
+      Query.to_query_list ReservedInstancesConfiguration.to_query v 
+    let to_json v = `List (List.map ReservedInstancesConfiguration.to_json v) 
+    let of_json j = Json.to_list ReservedInstancesConfiguration.of_json j 
   end
 module ReservedInstancesIdStringList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map String.parse (Xml.members "ReservedInstancesId" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module GroupIdStringList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "groupId" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "groupId" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module GroupNameStringList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "GroupName" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "GroupName" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module RequestSpotLaunchSpecification =
   struct
     type t =
       {
-      image_id: String.t option;
-      key_name: String.t option;
-      security_groups: ValueStringList.t;
-      user_data: String.t option;
-      addressing_type: String.t option;
-      instance_type: InstanceType.t option;
-      placement: SpotPlacement.t option;
-      kernel_id: String.t option;
-      ramdisk_id: String.t option;
-      block_device_mappings: BlockDeviceMappingList.t;
-      subnet_id: String.t option;
-      network_interfaces: InstanceNetworkInterfaceSpecificationList.t;
-      iam_instance_profile: IamInstanceProfileSpecification.t option;
-      ebs_optimized: Boolean.t option;
-      monitoring: RunInstancesMonitoringEnabled.t option;
-      security_group_ids: ValueStringList.t;}
+      image_id: String.t option ;
+      key_name: String.t option ;
+      security_groups: ValueStringList.t ;
+      user_data: String.t option ;
+      addressing_type: String.t option ;
+      instance_type: InstanceType.t option ;
+      placement: SpotPlacement.t option ;
+      kernel_id: String.t option ;
+      ramdisk_id: String.t option ;
+      block_device_mappings: BlockDeviceMappingList.t ;
+      subnet_id: String.t option ;
+      network_interfaces: InstanceNetworkInterfaceSpecificationList.t ;
+      iam_instance_profile: IamInstanceProfileSpecification.t option ;
+      ebs_optimized: Boolean.t option ;
+      monitoring: RunInstancesMonitoringEnabled.t option ;
+      security_group_ids: ValueStringList.t }
     let make ?image_id  ?key_name  ?(security_groups= [])  ?user_data 
       ?addressing_type  ?instance_type  ?placement  ?kernel_id  ?ramdisk_id 
       ?(block_device_mappings= [])  ?subnet_id  ?(network_interfaces= []) 
@@ -13401,7 +13970,7 @@ module RequestSpotLaunchSpecification =
         ebs_optimized;
         monitoring;
         security_group_ids
-      }
+      } 
     let parse xml =
       Some
         {
@@ -13450,6 +14019,7 @@ module RequestSpotLaunchSpecification =
                (Util.option_bind (Xml.member "SecurityGroupId" xml)
                   ValueStringList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -13500,6 +14070,7 @@ module RequestSpotLaunchSpecification =
              (fun f  -> Query.Pair ("KeyName", (String.to_query f)));
            Util.option_map v.image_id
              (fun f  -> Query.Pair ("ImageId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -13542,6 +14113,7 @@ module RequestSpotLaunchSpecification =
              (fun f  -> ("key_name", (String.to_json f)));
            Util.option_map v.image_id
              (fun f  -> ("image_id", (String.to_json f)))])
+      
     let of_json j =
       {
         image_id =
@@ -13583,180 +14155,190 @@ module RequestSpotLaunchSpecification =
         security_group_ids =
           (ValueStringList.of_json
              (Util.of_option_exn (Json.lookup j "security_group_ids")))
-      }
+      } 
   end
 module PrivateIpAddressStringList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map String.parse (Xml.members "PrivateIpAddress" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module UnsuccessfulItemSet =
   struct
     type t = UnsuccessfulItem.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map UnsuccessfulItem.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list UnsuccessfulItem.to_query v
-    let to_json v = `List (List.map UnsuccessfulItem.to_json v)
-    let of_json j = Json.to_list UnsuccessfulItem.of_json j
+      
+    let to_query v = Query.to_query_list UnsuccessfulItem.to_query v 
+    let to_json v = `List (List.map UnsuccessfulItem.to_json v) 
+    let of_json j = Json.to_list UnsuccessfulItem.of_json j 
   end
 module Status =
   struct
     type t =
-      | MoveInProgress
-      | InVpc
-      | InClassic
+      | MoveInProgress 
+      | InVpc 
+      | InClassic 
     let str_to_t =
       [("InClassic", InClassic);
       ("InVpc", InVpc);
-      ("MoveInProgress", MoveInProgress)]
+      ("MoveInProgress", MoveInProgress)] 
     let t_to_str =
       [(InClassic, "InClassic");
       (InVpc, "InVpc");
-      (MoveInProgress, "MoveInProgress")]
-    let make v () = v
+      (MoveInProgress, "MoveInProgress")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module RouteTableList =
   struct
     type t = RouteTable.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map RouteTable.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list RouteTable.to_query v
-    let to_json v = `List (List.map RouteTable.to_json v)
-    let of_json j = Json.to_list RouteTable.of_json j
+      Util.option_all (List.map RouteTable.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list RouteTable.to_query v 
+    let to_json v = `List (List.map RouteTable.to_json v) 
+    let of_json j = Json.to_list RouteTable.of_json j 
   end
 module InstanceIdStringList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "InstanceId" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "InstanceId" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module ImportTaskIdList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map String.parse (Xml.members "ImportTaskId" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module ReservedInstancesListingList =
   struct
     type t = ReservedInstancesListing.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map ReservedInstancesListing.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list ReservedInstancesListing.to_query v
-    let to_json v = `List (List.map ReservedInstancesListing.to_json v)
-    let of_json j = Json.to_list ReservedInstancesListing.of_json j
+      
+    let to_query v = Query.to_query_list ReservedInstancesListing.to_query v 
+    let to_json v = `List (List.map ReservedInstancesListing.to_json v) 
+    let of_json j = Json.to_list ReservedInstancesListing.of_json j 
   end
 module InstanceStateChangeList =
   struct
     type t = InstanceStateChange.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map InstanceStateChange.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list InstanceStateChange.to_query v
-    let to_json v = `List (List.map InstanceStateChange.to_json v)
-    let of_json j = Json.to_list InstanceStateChange.of_json j
+      
+    let to_query v = Query.to_query_list InstanceStateChange.to_query v 
+    let to_json v = `List (List.map InstanceStateChange.to_json v) 
+    let of_json j = Json.to_list InstanceStateChange.of_json j 
   end
 module ExecutableByStringList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map String.parse (Xml.members "ExecutableBy" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module ImageIdStringList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "ImageId" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "ImageId" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module MovingAddressStatusSet =
   struct
     type t = MovingAddressStatus.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map MovingAddressStatus.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list MovingAddressStatus.to_query v
-    let to_json v = `List (List.map MovingAddressStatus.to_json v)
-    let of_json j = Json.to_list MovingAddressStatus.of_json j
+      
+    let to_query v = Query.to_query_list MovingAddressStatus.to_query v 
+    let to_json v = `List (List.map MovingAddressStatus.to_json v) 
+    let of_json j = Json.to_list MovingAddressStatus.of_json j 
   end
 module ExportTaskIdStringList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map String.parse (Xml.members "ExportTaskId" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module ReservedInstancesOfferingIdStringList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "member" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module InstanceStatusList =
   struct
     type t = InstanceStatus.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map InstanceStatus.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list InstanceStatus.to_query v
-    let to_json v = `List (List.map InstanceStatus.to_json v)
-    let of_json j = Json.to_list InstanceStatus.of_json j
+      
+    let to_query v = Query.to_query_list InstanceStatus.to_query v 
+    let to_json v = `List (List.map InstanceStatus.to_json v) 
+    let of_json j = Json.to_list InstanceStatus.of_json j 
   end
 module NetworkInterfaceAttachmentChanges =
   struct
     type t =
       {
-      attachment_id: String.t option;
-      delete_on_termination: Boolean.t option;}
+      attachment_id: String.t option ;
+      delete_on_termination: Boolean.t option }
     let make ?attachment_id  ?delete_on_termination  () =
-      { attachment_id; delete_on_termination }
+      { attachment_id; delete_on_termination } 
     let parse xml =
       Some
         {
@@ -13766,6 +14348,7 @@ module NetworkInterfaceAttachmentChanges =
             (Util.option_bind (Xml.member "deleteOnTermination" xml)
                Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -13774,6 +14357,7 @@ module NetworkInterfaceAttachmentChanges =
                  Query.Pair ("DeleteOnTermination", (Boolean.to_query f)));
            Util.option_map v.attachment_id
              (fun f  -> Query.Pair ("AttachmentId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -13781,6 +14365,7 @@ module NetworkInterfaceAttachmentChanges =
               (fun f  -> ("delete_on_termination", (Boolean.to_json f)));
            Util.option_map v.attachment_id
              (fun f  -> ("attachment_id", (String.to_json f)))])
+      
     let of_json j =
       {
         attachment_id =
@@ -13788,411 +14373,433 @@ module NetworkInterfaceAttachmentChanges =
         delete_on_termination =
           (Util.option_map (Json.lookup j "delete_on_termination")
              Boolean.of_json)
-      }
+      } 
   end
 module ImageList =
   struct
     type t = Image.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map Image.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list Image.to_query v
-    let to_json v = `List (List.map Image.to_json v)
-    let of_json j = Json.to_list Image.of_json j
+      Util.option_all (List.map Image.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list Image.to_query v 
+    let to_json v = `List (List.map Image.to_json v) 
+    let of_json j = Json.to_list Image.of_json j 
   end
 module PriceScheduleSpecificationList =
   struct
     type t = PriceScheduleSpecification.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map PriceScheduleSpecification.parse (Xml.members "item" xml))
+      
     let to_query v =
-      Query.to_query_list PriceScheduleSpecification.to_query v
-    let to_json v = `List (List.map PriceScheduleSpecification.to_json v)
-    let of_json j = Json.to_list PriceScheduleSpecification.of_json j
+      Query.to_query_list PriceScheduleSpecification.to_query v 
+    let to_json v = `List (List.map PriceScheduleSpecification.to_json v) 
+    let of_json j = Json.to_list PriceScheduleSpecification.of_json j 
   end
 module ImportSnapshotTaskList =
   struct
     type t = ImportSnapshotTask.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map ImportSnapshotTask.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list ImportSnapshotTask.to_query v
-    let to_json v = `List (List.map ImportSnapshotTask.to_json v)
-    let of_json j = Json.to_list ImportSnapshotTask.of_json j
+      
+    let to_query v = Query.to_query_list ImportSnapshotTask.to_query v 
+    let to_json v = `List (List.map ImportSnapshotTask.to_json v) 
+    let of_json j = Json.to_list ImportSnapshotTask.of_json j 
   end
 module SpotInstanceRequestIdList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map String.parse (Xml.members "SpotInstanceRequestId" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module KeyNameStringList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "KeyName" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "KeyName" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module SpotInstanceRequestList =
   struct
     type t = SpotInstanceRequest.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map SpotInstanceRequest.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list SpotInstanceRequest.to_query v
-    let to_json v = `List (List.map SpotInstanceRequest.to_json v)
-    let of_json j = Json.to_list SpotInstanceRequest.of_json j
+      
+    let to_query v = Query.to_query_list SpotInstanceRequest.to_query v 
+    let to_json v = `List (List.map SpotInstanceRequest.to_json v) 
+    let of_json j = Json.to_list SpotInstanceRequest.of_json j 
   end
 module InstanceTypeList =
   struct
     type t = InstanceType.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map InstanceType.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list InstanceType.to_query v
-    let to_json v = `List (List.map InstanceType.to_json v)
-    let of_json j = Json.to_list InstanceType.of_json j
+      
+    let to_query v = Query.to_query_list InstanceType.to_query v 
+    let to_json v = `List (List.map InstanceType.to_json v) 
+    let of_json j = Json.to_list InstanceType.of_json j 
   end
 module ProductDescriptionList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "member" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module CustomerGatewayIdStringList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map String.parse (Xml.members "CustomerGatewayId" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module ExportTaskList =
   struct
     type t = ExportTask.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map ExportTask.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list ExportTask.to_query v
-    let to_json v = `List (List.map ExportTask.to_json v)
-    let of_json j = Json.to_list ExportTask.of_json j
+      Util.option_all (List.map ExportTask.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list ExportTask.to_query v 
+    let to_json v = `List (List.map ExportTask.to_json v) 
+    let of_json j = Json.to_list ExportTask.of_json j 
   end
 module PrefixListSet =
   struct
     type t = PrefixList.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map PrefixList.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list PrefixList.to_query v
-    let to_json v = `List (List.map PrefixList.to_json v)
-    let of_json j = Json.to_list PrefixList.of_json j
+      Util.option_all (List.map PrefixList.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list PrefixList.to_query v 
+    let to_json v = `List (List.map PrefixList.to_json v) 
+    let of_json j = Json.to_list PrefixList.of_json j 
   end
 module InstanceMonitoringList =
   struct
     type t = InstanceMonitoring.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map InstanceMonitoring.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list InstanceMonitoring.to_query v
-    let to_json v = `List (List.map InstanceMonitoring.to_json v)
-    let of_json j = Json.to_list InstanceMonitoring.of_json j
+      
+    let to_query v = Query.to_query_list InstanceMonitoring.to_query v 
+    let to_json v = `List (List.map InstanceMonitoring.to_json v) 
+    let of_json j = Json.to_list InstanceMonitoring.of_json j 
   end
 module SecurityGroupList =
   struct
     type t = SecurityGroup.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map SecurityGroup.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list SecurityGroup.to_query v
-    let to_json v = `List (List.map SecurityGroup.to_json v)
-    let of_json j = Json.to_list SecurityGroup.of_json j
+      Util.option_all (List.map SecurityGroup.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list SecurityGroup.to_query v 
+    let to_json v = `List (List.map SecurityGroup.to_json v) 
+    let of_json j = Json.to_list SecurityGroup.of_json j 
   end
 module VpnConnectionIdStringList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map String.parse (Xml.members "VpnConnectionId" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module ActiveInstanceSet =
   struct
     type t = ActiveInstance.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map ActiveInstance.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list ActiveInstance.to_query v
-    let to_json v = `List (List.map ActiveInstance.to_json v)
-    let of_json j = Json.to_list ActiveInstance.of_json j
+      
+    let to_query v = Query.to_query_list ActiveInstance.to_query v 
+    let to_json v = `List (List.map ActiveInstance.to_json v) 
+    let of_json j = Json.to_list ActiveInstance.of_json j 
   end
 module SnapshotAttributeName =
   struct
     type t =
-      | ProductCodes
-      | CreateVolumePermission
+      | ProductCodes 
+      | CreateVolumePermission 
     let str_to_t =
       [("createVolumePermission", CreateVolumePermission);
-      ("productCodes", ProductCodes)]
+      ("productCodes", ProductCodes)] 
     let t_to_str =
       [(CreateVolumePermission, "createVolumePermission");
-      (ProductCodes, "productCodes")]
-    let make v () = v
+      (ProductCodes, "productCodes")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module BlobAttributeValue =
   struct
     type t = {
-      value: Blob.t option;}
-    let make ?value  () = { value }
+      value: Blob.t option }
+    let make ?value  () = { value } 
     let parse xml =
-      Some { value = (Util.option_bind (Xml.member "value" xml) Blob.parse) }
+      Some { value = (Util.option_bind (Xml.member "value" xml) Blob.parse) } 
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.value
               (fun f  -> Query.Pair ("Value", (Blob.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.value (fun f  -> ("value", (Blob.to_json f)))])
+      
     let of_json j =
-      { value = (Util.option_map (Json.lookup j "value") Blob.of_json) }
+      { value = (Util.option_map (Json.lookup j "value") Blob.of_json) } 
   end
 module InstanceBlockDeviceMappingSpecificationList =
   struct
     type t = InstanceBlockDeviceMappingSpecification.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map InstanceBlockDeviceMappingSpecification.parse
            (Xml.members "item" xml))
+      
     let to_query v =
-      Query.to_query_list InstanceBlockDeviceMappingSpecification.to_query v
+      Query.to_query_list InstanceBlockDeviceMappingSpecification.to_query v 
     let to_json v =
-      `List (List.map InstanceBlockDeviceMappingSpecification.to_json v)
+      `List (List.map InstanceBlockDeviceMappingSpecification.to_json v) 
     let of_json j =
-      Json.to_list InstanceBlockDeviceMappingSpecification.of_json j
+      Json.to_list InstanceBlockDeviceMappingSpecification.of_json j 
   end
 module InternetGatewayList =
   struct
     type t = InternetGateway.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map InternetGateway.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list InternetGateway.to_query v
-    let to_json v = `List (List.map InternetGateway.to_json v)
-    let of_json j = Json.to_list InternetGateway.of_json j
+      
+    let to_query v = Query.to_query_list InternetGateway.to_query v 
+    let to_json v = `List (List.map InternetGateway.to_json v) 
+    let of_json j = Json.to_list InternetGateway.of_json j 
   end
 module NetworkInterfaceIdList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module AccountAttributeNameStringList =
   struct
     type t = AccountAttributeName.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map AccountAttributeName.parse
            (Xml.members "attributeName" xml))
-    let to_query v = Query.to_query_list AccountAttributeName.to_query v
-    let to_json v = `List (List.map AccountAttributeName.to_json v)
-    let of_json j = Json.to_list AccountAttributeName.of_json j
+      
+    let to_query v = Query.to_query_list AccountAttributeName.to_query v 
+    let to_json v = `List (List.map AccountAttributeName.to_json v) 
+    let of_json j = Json.to_list AccountAttributeName.of_json j 
   end
 module ConversionIdStringList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module ZoneNameStringList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "ZoneName" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "ZoneName" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module VpnGatewayIdStringList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map String.parse (Xml.members "VpnGatewayId" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module ReservedInstancesModificationIdStringList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map String.parse
            (Xml.members "ReservedInstancesModificationId" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module SpotFleetRequestConfigSet =
   struct
     type t = SpotFleetRequestConfig.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map SpotFleetRequestConfig.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list SpotFleetRequestConfig.to_query v
-    let to_json v = `List (List.map SpotFleetRequestConfig.to_json v)
-    let of_json j = Json.to_list SpotFleetRequestConfig.of_json j
+      
+    let to_query v = Query.to_query_list SpotFleetRequestConfig.to_query v 
+    let to_json v = `List (List.map SpotFleetRequestConfig.to_json v) 
+    let of_json j = Json.to_list SpotFleetRequestConfig.of_json j 
   end
 module VolumeAttributeName =
   struct
     type t =
-      | AutoEnableIO
-      | ProductCodes
+      | AutoEnableIO 
+      | ProductCodes 
     let str_to_t =
-      [("productCodes", ProductCodes); ("autoEnableIO", AutoEnableIO)]
+      [("productCodes", ProductCodes); ("autoEnableIO", AutoEnableIO)] 
     let t_to_str =
-      [(ProductCodes, "productCodes"); (AutoEnableIO, "autoEnableIO")]
-    let make v () = v
+      [(ProductCodes, "productCodes"); (AutoEnableIO, "autoEnableIO")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module PlacementGroupStringList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "member" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module AvailabilityZoneList =
   struct
     type t = AvailabilityZone.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map AvailabilityZone.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list AvailabilityZone.to_query v
-    let to_json v = `List (List.map AvailabilityZone.to_json v)
-    let of_json j = Json.to_list AvailabilityZone.of_json j
+      
+    let to_query v = Query.to_query_list AvailabilityZone.to_query v 
+    let to_json v = `List (List.map AvailabilityZone.to_json v) 
+    let of_json j = Json.to_list AvailabilityZone.of_json j 
   end
 module CustomerGatewayList =
   struct
     type t = CustomerGateway.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map CustomerGateway.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list CustomerGateway.to_query v
-    let to_json v = `List (List.map CustomerGateway.to_json v)
-    let of_json j = Json.to_list CustomerGateway.of_json j
+      
+    let to_query v = Query.to_query_list CustomerGateway.to_query v 
+    let to_json v = `List (List.map CustomerGateway.to_json v) 
+    let of_json j = Json.to_list CustomerGateway.of_json j 
   end
 module FlowLogSet =
   struct
     type t = FlowLog.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map FlowLog.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list FlowLog.to_query v
-    let to_json v = `List (List.map FlowLog.to_json v)
-    let of_json j = Json.to_list FlowLog.of_json j
+      Util.option_all (List.map FlowLog.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list FlowLog.to_query v 
+    let to_json v = `List (List.map FlowLog.to_json v) 
+    let of_json j = Json.to_list FlowLog.of_json j 
   end
 module BundleTaskList =
   struct
     type t = BundleTask.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map BundleTask.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list BundleTask.to_query v
-    let to_json v = `List (List.map BundleTask.to_json v)
-    let of_json j = Json.to_list BundleTask.of_json j
+      Util.option_all (List.map BundleTask.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list BundleTask.to_query v 
+    let to_json v = `List (List.map BundleTask.to_json v) 
+    let of_json j = Json.to_list BundleTask.of_json j 
   end
 module VolumeStatusList =
   struct
     type t = VolumeStatusItem.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map VolumeStatusItem.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list VolumeStatusItem.to_query v
-    let to_json v = `List (List.map VolumeStatusItem.to_json v)
-    let of_json j = Json.to_list VolumeStatusItem.of_json j
+      
+    let to_query v = Query.to_query_list VolumeStatusItem.to_query v 
+    let to_json v = `List (List.map VolumeStatusItem.to_json v) 
+    let of_json j = Json.to_list VolumeStatusItem.of_json j 
   end
 module SubnetIdStringList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "SubnetId" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "SubnetId" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module CreateVolumePermissionModifications =
   struct
     type t =
       {
-      add: CreateVolumePermissionList.t;
-      remove: CreateVolumePermissionList.t;}
-    let make ?(add= [])  ?(remove= [])  () = { add; remove }
+      add: CreateVolumePermissionList.t ;
+      remove: CreateVolumePermissionList.t }
+    let make ?(add= [])  ?(remove= [])  () = { add; remove } 
     let parse xml =
       Some
         {
@@ -14205,6 +14812,7 @@ module CreateVolumePermissionModifications =
                (Util.option_bind (Xml.member "Remove" xml)
                   CreateVolumePermissionList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -14213,11 +14821,13 @@ module CreateVolumePermissionModifications =
                  ("Remove", (CreateVolumePermissionList.to_query v.remove)));
            Some
              (Query.Pair ("Add", (CreateVolumePermissionList.to_query v.add)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("remove", (CreateVolumePermissionList.to_json v.remove));
            Some ("add", (CreateVolumePermissionList.to_json v.add))])
+      
     let of_json j =
       {
         add =
@@ -14226,43 +14836,43 @@ module CreateVolumePermissionModifications =
         remove =
           (CreateVolumePermissionList.of_json
              (Util.of_option_exn (Json.lookup j "remove")))
-      }
+      } 
   end
 module VolumeList =
   struct
     type t = Volume.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map Volume.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list Volume.to_query v
-    let to_json v = `List (List.map Volume.to_json v)
-    let of_json j = Json.to_list Volume.of_json j
+      Util.option_all (List.map Volume.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list Volume.to_query v 
+    let to_json v = `List (List.map Volume.to_json v) 
+    let of_json j = Json.to_list Volume.of_json j 
   end
 module VpcClassicLinkIdList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "VpcId" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "VpcId" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module RegionList =
   struct
     type t = Region.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map Region.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list Region.to_query v
-    let to_json v = `List (List.map Region.to_json v)
-    let of_json j = Json.to_list Region.of_json j
+      Util.option_all (List.map Region.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list Region.to_query v 
+    let to_json v = `List (List.map Region.to_json v) 
+    let of_json j = Json.to_list Region.of_json j 
   end
 module VpnConnectionOptionsSpecification =
   struct
     type t = {
-      static_routes_only: Boolean.t option;}
-    let make ?static_routes_only  () = { static_routes_only }
+      static_routes_only: Boolean.t option }
+    let make ?static_routes_only  () = { static_routes_only } 
     let parse xml =
       Some
         {
@@ -14270,75 +14880,79 @@ module VpnConnectionOptionsSpecification =
             (Util.option_bind (Xml.member "staticRoutesOnly" xml)
                Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.static_routes_only
               (fun f  ->
                  Query.Pair ("StaticRoutesOnly", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.static_routes_only
               (fun f  -> ("static_routes_only", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         static_routes_only =
           (Util.option_map (Json.lookup j "static_routes_only")
              Boolean.of_json)
-      }
+      } 
   end
 module ResourceIdList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "member" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module AllocationIdList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map String.parse (Xml.members "AllocationId" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module PublicIpStringList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "PublicIp" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "PublicIp" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module AddressList =
   struct
     type t = Address.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map Address.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list Address.to_query v
-    let to_json v = `List (List.map Address.to_json v)
-    let of_json j = Json.to_list Address.of_json j
+      Util.option_all (List.map Address.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list Address.to_query v 
+    let to_json v = `List (List.map Address.to_json v) 
+    let of_json j = Json.to_list Address.of_json j 
   end
 module ClientData =
   struct
     type t =
       {
-      upload_start: DateTime.t option;
-      upload_end: DateTime.t option;
-      upload_size: Double.t option;
-      comment: String.t option;}
+      upload_start: DateTime.t option ;
+      upload_end: DateTime.t option ;
+      upload_size: Double.t option ;
+      comment: String.t option }
     let make ?upload_start  ?upload_end  ?upload_size  ?comment  () =
-      { upload_start; upload_end; upload_size; comment }
+      { upload_start; upload_end; upload_size; comment } 
     let parse xml =
       Some
         {
@@ -14351,6 +14965,7 @@ module ClientData =
           comment =
             (Util.option_bind (Xml.member "Comment" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -14362,6 +14977,7 @@ module ClientData =
              (fun f  -> Query.Pair ("UploadEnd", (DateTime.to_query f)));
            Util.option_map v.upload_start
              (fun f  -> Query.Pair ("UploadStart", (DateTime.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -14373,6 +14989,7 @@ module ClientData =
              (fun f  -> ("upload_end", (DateTime.to_json f)));
            Util.option_map v.upload_start
              (fun f  -> ("upload_start", (DateTime.to_json f)))])
+      
     let of_json j =
       {
         upload_start =
@@ -14382,18 +14999,18 @@ module ClientData =
         upload_size =
           (Util.option_map (Json.lookup j "upload_size") Double.of_json);
         comment = (Util.option_map (Json.lookup j "comment") String.of_json)
-      }
+      } 
   end
 module SnapshotDiskContainer =
   struct
     type t =
       {
-      description: String.t option;
-      format: String.t option;
-      url: String.t option;
-      user_bucket: UserBucket.t option;}
+      description: String.t option ;
+      format: String.t option ;
+      url: String.t option ;
+      user_bucket: UserBucket.t option }
     let make ?description  ?format  ?url  ?user_bucket  () =
-      { description; format; url; user_bucket }
+      { description; format; url; user_bucket } 
     let parse xml =
       Some
         {
@@ -14404,6 +15021,7 @@ module SnapshotDiskContainer =
           user_bucket =
             (Util.option_bind (Xml.member "UserBucket" xml) UserBucket.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -14415,6 +15033,7 @@ module SnapshotDiskContainer =
              (fun f  -> Query.Pair ("Format", (String.to_query f)));
            Util.option_map v.description
              (fun f  -> Query.Pair ("Description", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -14425,6 +15044,7 @@ module SnapshotDiskContainer =
              (fun f  -> ("format", (String.to_json f)));
            Util.option_map v.description
              (fun f  -> ("description", (String.to_json f)))])
+      
     let of_json j =
       {
         description =
@@ -14433,271 +15053,282 @@ module SnapshotDiskContainer =
         url = (Util.option_map (Json.lookup j "url") String.of_json);
         user_bucket =
           (Util.option_map (Json.lookup j "user_bucket") UserBucket.of_json)
-      }
+      } 
   end
 module VpnConnectionList =
   struct
     type t = VpnConnection.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map VpnConnection.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list VpnConnection.to_query v
-    let to_json v = `List (List.map VpnConnection.to_json v)
-    let of_json j = Json.to_list VpnConnection.of_json j
+      Util.option_all (List.map VpnConnection.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list VpnConnection.to_query v 
+    let to_json v = `List (List.map VpnConnection.to_json v) 
+    let of_json j = Json.to_list VpnConnection.of_json j 
   end
 module ReservedInstancesOfferingList =
   struct
     type t = ReservedInstancesOffering.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map ReservedInstancesOffering.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list ReservedInstancesOffering.to_query v
-    let to_json v = `List (List.map ReservedInstancesOffering.to_json v)
-    let of_json j = Json.to_list ReservedInstancesOffering.of_json j
+      
+    let to_query v = Query.to_query_list ReservedInstancesOffering.to_query v 
+    let to_json v = `List (List.map ReservedInstancesOffering.to_json v) 
+    let of_json j = Json.to_list ReservedInstancesOffering.of_json j 
   end
 module ReservationList =
   struct
     type t = Reservation.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map Reservation.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list Reservation.to_query v
-    let to_json v = `List (List.map Reservation.to_json v)
-    let of_json j = Json.to_list Reservation.of_json j
+      Util.option_all (List.map Reservation.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list Reservation.to_query v 
+    let to_json v = `List (List.map Reservation.to_json v) 
+    let of_json j = Json.to_list Reservation.of_json j 
   end
 module VolumeIdStringList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "VolumeId" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "VolumeId" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module RegionNameStringList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "RegionName" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "RegionName" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module VpcPeeringConnectionList =
   struct
     type t = VpcPeeringConnection.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map VpcPeeringConnection.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list VpcPeeringConnection.to_query v
-    let to_json v = `List (List.map VpcPeeringConnection.to_json v)
-    let of_json j = Json.to_list VpcPeeringConnection.of_json j
+      
+    let to_query v = Query.to_query_list VpcPeeringConnection.to_query v 
+    let to_json v = `List (List.map VpcPeeringConnection.to_json v) 
+    let of_json j = Json.to_list VpcPeeringConnection.of_json j 
   end
 module VpcList =
   struct
     type t = Vpc.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map Vpc.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list Vpc.to_query v
-    let to_json v = `List (List.map Vpc.to_json v)
-    let of_json j = Json.to_list Vpc.of_json j
+      Util.option_all (List.map Vpc.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list Vpc.to_query v 
+    let to_json v = `List (List.map Vpc.to_json v) 
+    let of_json j = Json.to_list Vpc.of_json j 
   end
 module NetworkAclList =
   struct
     type t = NetworkAcl.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map NetworkAcl.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list NetworkAcl.to_query v
-    let to_json v = `List (List.map NetworkAcl.to_json v)
-    let of_json j = Json.to_list NetworkAcl.of_json j
+      Util.option_all (List.map NetworkAcl.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list NetworkAcl.to_query v 
+    let to_json v = `List (List.map NetworkAcl.to_json v) 
+    let of_json j = Json.to_list NetworkAcl.of_json j 
   end
 module SubnetList =
   struct
     type t = Subnet.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map Subnet.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list Subnet.to_query v
-    let to_json v = `List (List.map Subnet.to_json v)
-    let of_json j = Json.to_list Subnet.of_json j
+      Util.option_all (List.map Subnet.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list Subnet.to_query v 
+    let to_json v = `List (List.map Subnet.to_json v) 
+    let of_json j = Json.to_list Subnet.of_json j 
   end
 module VpcClassicLinkList =
   struct
     type t = VpcClassicLink.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map VpcClassicLink.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list VpcClassicLink.to_query v
-    let to_json v = `List (List.map VpcClassicLink.to_json v)
-    let of_json j = Json.to_list VpcClassicLink.of_json j
+      
+    let to_query v = Query.to_query_list VpcClassicLink.to_query v 
+    let to_json v = `List (List.map VpcClassicLink.to_json v) 
+    let of_json j = Json.to_list VpcClassicLink.of_json j 
   end
 module ImportImageTaskList =
   struct
     type t = ImportImageTask.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map ImportImageTask.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list ImportImageTask.to_query v
-    let to_json v = `List (List.map ImportImageTask.to_json v)
-    let of_json j = Json.to_list ImportImageTask.of_json j
+      
+    let to_query v = Query.to_query_list ImportImageTask.to_query v 
+    let to_json v = `List (List.map ImportImageTask.to_json v) 
+    let of_json j = Json.to_list ImportImageTask.of_json j 
   end
 module FlowLogsResourceType =
   struct
     type t =
-      | VPC
-      | Subnet
-      | NetworkInterface
+      | VPC 
+      | Subnet 
+      | NetworkInterface 
     let str_to_t =
       [("NetworkInterface", NetworkInterface);
       ("Subnet", Subnet);
-      ("VPC", VPC)]
+      ("VPC", VPC)] 
     let t_to_str =
       [(NetworkInterface, "NetworkInterface");
       (Subnet, "Subnet");
-      (VPC, "VPC")]
-    let make v () = v
+      (VPC, "VPC")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module CancelSpotFleetRequestsErrorSet =
   struct
     type t = CancelSpotFleetRequestsErrorItem.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map CancelSpotFleetRequestsErrorItem.parse
            (Xml.members "item" xml))
+      
     let to_query v =
-      Query.to_query_list CancelSpotFleetRequestsErrorItem.to_query v
+      Query.to_query_list CancelSpotFleetRequestsErrorItem.to_query v 
     let to_json v =
-      `List (List.map CancelSpotFleetRequestsErrorItem.to_json v)
-    let of_json j = Json.to_list CancelSpotFleetRequestsErrorItem.of_json j
+      `List (List.map CancelSpotFleetRequestsErrorItem.to_json v) 
+    let of_json j = Json.to_list CancelSpotFleetRequestsErrorItem.of_json j 
   end
 module CancelSpotFleetRequestsSuccessSet =
   struct
     type t = CancelSpotFleetRequestsSuccessItem.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map CancelSpotFleetRequestsSuccessItem.parse
            (Xml.members "item" xml))
+      
     let to_query v =
-      Query.to_query_list CancelSpotFleetRequestsSuccessItem.to_query v
+      Query.to_query_list CancelSpotFleetRequestsSuccessItem.to_query v 
     let to_json v =
-      `List (List.map CancelSpotFleetRequestsSuccessItem.to_json v)
-    let of_json j = Json.to_list CancelSpotFleetRequestsSuccessItem.of_json j
+      `List (List.map CancelSpotFleetRequestsSuccessItem.to_json v) 
+    let of_json j = Json.to_list CancelSpotFleetRequestsSuccessItem.of_json j 
   end
 module AccountAttributeList =
   struct
     type t = AccountAttribute.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map AccountAttribute.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list AccountAttribute.to_query v
-    let to_json v = `List (List.map AccountAttribute.to_json v)
-    let of_json j = Json.to_list AccountAttribute.of_json j
+      
+    let to_query v = Query.to_query_list AccountAttribute.to_query v 
+    let to_json v = `List (List.map AccountAttribute.to_json v) 
+    let of_json j = Json.to_list AccountAttribute.of_json j 
   end
 module DhcpOptionsIdStringList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map String.parse (Xml.members "DhcpOptionsId" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module SpotPriceHistoryList =
   struct
     type t = SpotPrice.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map SpotPrice.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list SpotPrice.to_query v
-    let to_json v = `List (List.map SpotPrice.to_json v)
-    let of_json j = Json.to_list SpotPrice.of_json j
+      Util.option_all (List.map SpotPrice.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list SpotPrice.to_query v 
+    let to_json v = `List (List.map SpotPrice.to_json v) 
+    let of_json j = Json.to_list SpotPrice.of_json j 
   end
 module ReasonCodesList =
   struct
     type t = ReportInstanceReasonCodes.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map ReportInstanceReasonCodes.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list ReportInstanceReasonCodes.to_query v
-    let to_json v = `List (List.map ReportInstanceReasonCodes.to_json v)
-    let of_json j = Json.to_list ReportInstanceReasonCodes.of_json j
+      
+    let to_query v = Query.to_query_list ReportInstanceReasonCodes.to_query v 
+    let to_json v = `List (List.map ReportInstanceReasonCodes.to_json v) 
+    let of_json j = Json.to_list ReportInstanceReasonCodes.of_json j 
   end
 module ReportStatusType =
   struct
     type t =
-      | Ok
-      | Impaired
-    let str_to_t = [("impaired", Impaired); ("ok", Ok)]
-    let t_to_str = [(Impaired, "impaired"); (Ok, "ok")]
-    let make v () = v
+      | Ok 
+      | Impaired 
+    let str_to_t = [("impaired", Impaired); ("ok", Ok)] 
+    let t_to_str = [(Impaired, "impaired"); (Ok, "ok")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module VpcIdStringList =
   struct
     type t = String.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "VpcId" xml))
-    let to_query v = Query.to_query_list String.to_query v
-    let to_json v = `List (List.map String.to_json v)
-    let of_json j = Json.to_list String.of_json j
+      Util.option_all (List.map String.parse (Xml.members "VpcId" xml)) 
+    let to_query v = Query.to_query_list String.to_query v 
+    let to_json v = `List (List.map String.to_json v) 
+    let of_json j = Json.to_list String.of_json j 
   end
 module DiskImageList =
   struct
     type t = DiskImage.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map DiskImage.parse (Xml.members "member" xml))
-    let to_query v = Query.to_query_list DiskImage.to_query v
-    let to_json v = `List (List.map DiskImage.to_json v)
-    let of_json j = Json.to_list DiskImage.of_json j
+      Util.option_all (List.map DiskImage.parse (Xml.members "member" xml)) 
+    let to_query v = Query.to_query_list DiskImage.to_query v 
+    let to_json v = `List (List.map DiskImage.to_json v) 
+    let of_json j = Json.to_list DiskImage.of_json j 
   end
 module ImportInstanceLaunchSpecification =
   struct
     type t =
       {
-      architecture: ArchitectureValues.t option;
-      group_names: SecurityGroupStringList.t;
-      group_ids: SecurityGroupIdStringList.t;
-      additional_info: String.t option;
-      user_data: UserData.t option;
-      instance_type: InstanceType.t option;
-      placement: Placement.t option;
-      monitoring: Boolean.t option;
-      subnet_id: String.t option;
-      instance_initiated_shutdown_behavior: ShutdownBehavior.t option;
-      private_ip_address: String.t option;}
+      architecture: ArchitectureValues.t option ;
+      group_names: SecurityGroupStringList.t ;
+      group_ids: SecurityGroupIdStringList.t ;
+      additional_info: String.t option ;
+      user_data: UserData.t option ;
+      instance_type: InstanceType.t option ;
+      placement: Placement.t option ;
+      monitoring: Boolean.t option ;
+      subnet_id: String.t option ;
+      instance_initiated_shutdown_behavior: ShutdownBehavior.t option ;
+      private_ip_address: String.t option }
     let make ?architecture  ?(group_names= [])  ?(group_ids= []) 
       ?additional_info  ?user_data  ?instance_type  ?placement  ?monitoring 
       ?subnet_id  ?instance_initiated_shutdown_behavior  ?private_ip_address 
@@ -14714,7 +15345,7 @@ module ImportInstanceLaunchSpecification =
         subnet_id;
         instance_initiated_shutdown_behavior;
         private_ip_address
-      }
+      } 
     let parse xml =
       Some
         {
@@ -14750,6 +15381,7 @@ module ImportInstanceLaunchSpecification =
             (Util.option_bind (Xml.member "privateIpAddress" xml)
                String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -14783,6 +15415,7 @@ module ImportInstanceLaunchSpecification =
            Util.option_map v.architecture
              (fun f  ->
                 Query.Pair ("Architecture", (ArchitectureValues.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -14810,6 +15443,7 @@ module ImportInstanceLaunchSpecification =
              ("group_names", (SecurityGroupStringList.to_json v.group_names));
            Util.option_map v.architecture
              (fun f  -> ("architecture", (ArchitectureValues.to_json f)))])
+      
     let of_json j =
       {
         architecture =
@@ -14841,50 +15475,52 @@ module ImportInstanceLaunchSpecification =
         private_ip_address =
           (Util.option_map (Json.lookup j "private_ip_address")
              String.of_json)
-      }
+      } 
   end
 module VpcEndpointSet =
   struct
     type t = VpcEndpoint.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map VpcEndpoint.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list VpcEndpoint.to_query v
-    let to_json v = `List (List.map VpcEndpoint.to_json v)
-    let of_json j = Json.to_list VpcEndpoint.of_json j
+      Util.option_all (List.map VpcEndpoint.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list VpcEndpoint.to_query v 
+    let to_json v = `List (List.map VpcEndpoint.to_json v) 
+    let of_json j = Json.to_list VpcEndpoint.of_json j 
   end
 module ImageDiskContainerList =
   struct
     type t = ImageDiskContainer.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map ImageDiskContainer.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list ImageDiskContainer.to_query v
-    let to_json v = `List (List.map ImageDiskContainer.to_json v)
-    let of_json j = Json.to_list ImageDiskContainer.of_json j
+      
+    let to_query v = Query.to_query_list ImageDiskContainer.to_query v 
+    let to_json v = `List (List.map ImageDiskContainer.to_json v) 
+    let of_json j = Json.to_list ImageDiskContainer.of_json j 
   end
 module ClassicLinkInstanceList =
   struct
     type t = ClassicLinkInstance.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map ClassicLinkInstance.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list ClassicLinkInstance.to_query v
-    let to_json v = `List (List.map ClassicLinkInstance.to_json v)
-    let of_json j = Json.to_list ClassicLinkInstance.of_json j
+      
+    let to_query v = Query.to_query_list ClassicLinkInstance.to_query v 
+    let to_json v = `List (List.map ClassicLinkInstance.to_json v) 
+    let of_json j = Json.to_list ClassicLinkInstance.of_json j 
   end
 module ImageAttributeName =
   struct
     type t =
-      | Description
-      | Kernel
-      | Ramdisk
-      | LaunchPermission
-      | ProductCodes
-      | BlockDeviceMapping
-      | SriovNetSupport
+      | Description 
+      | Kernel 
+      | Ramdisk 
+      | LaunchPermission 
+      | ProductCodes 
+      | BlockDeviceMapping 
+      | SriovNetSupport 
     let str_to_t =
       [("sriovNetSupport", SriovNetSupport);
       ("blockDeviceMapping", BlockDeviceMapping);
@@ -14892,7 +15528,7 @@ module ImageAttributeName =
       ("launchPermission", LaunchPermission);
       ("ramdisk", Ramdisk);
       ("kernel", Kernel);
-      ("description", Description)]
+      ("description", Description)] 
     let t_to_str =
       [(SriovNetSupport, "sriovNetSupport");
       (BlockDeviceMapping, "blockDeviceMapping");
@@ -14900,63 +15536,65 @@ module ImageAttributeName =
       (LaunchPermission, "launchPermission");
       (Ramdisk, "ramdisk");
       (Kernel, "kernel");
-      (Description, "description")]
-    let make v () = v
+      (Description, "description")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module SnapshotList =
   struct
     type t = Snapshot.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
-      Util.option_all (List.map Snapshot.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list Snapshot.to_query v
-    let to_json v = `List (List.map Snapshot.to_json v)
-    let of_json j = Json.to_list Snapshot.of_json j
+      Util.option_all (List.map Snapshot.parse (Xml.members "item" xml)) 
+    let to_query v = Query.to_query_list Snapshot.to_query v 
+    let to_json v = `List (List.map Snapshot.to_json v) 
+    let of_json j = Json.to_list Snapshot.of_json j 
   end
 module NetworkInterfaceAttribute =
   struct
     type t =
-      | Description
-      | GroupSet
-      | SourceDestCheck
-      | Attachment
+      | Description 
+      | GroupSet 
+      | SourceDestCheck 
+      | Attachment 
     let str_to_t =
       [("attachment", Attachment);
       ("sourceDestCheck", SourceDestCheck);
       ("groupSet", GroupSet);
-      ("description", Description)]
+      ("description", Description)] 
     let t_to_str =
       [(Attachment, "attachment");
       (SourceDestCheck, "sourceDestCheck");
       (GroupSet, "groupSet");
-      (Description, "description")]
-    let make v () = v
+      (Description, "description")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module ReservedInstanceLimitPrice =
   struct
     type t =
       {
-      amount: Double.t option;
-      currency_code: CurrencyCodeValues.t option;}
-    let make ?amount  ?currency_code  () = { amount; currency_code }
+      amount: Double.t option ;
+      currency_code: CurrencyCodeValues.t option }
+    let make ?amount  ?currency_code  () = { amount; currency_code } 
     let parse xml =
       Some
         {
@@ -14965,6 +15603,7 @@ module ReservedInstanceLimitPrice =
             (Util.option_bind (Xml.member "currencyCode" xml)
                CurrencyCodeValues.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -14973,6 +15612,7 @@ module ReservedInstanceLimitPrice =
                  Query.Pair ("CurrencyCode", (CurrencyCodeValues.to_query f)));
            Util.option_map v.amount
              (fun f  -> Query.Pair ("Amount", (Double.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -14980,51 +15620,54 @@ module ReservedInstanceLimitPrice =
               (fun f  -> ("currency_code", (CurrencyCodeValues.to_json f)));
            Util.option_map v.amount
              (fun f  -> ("amount", (Double.to_json f)))])
+      
     let of_json j =
       {
         amount = (Util.option_map (Json.lookup j "amount") Double.of_json);
         currency_code =
           (Util.option_map (Json.lookup j "currency_code")
              CurrencyCodeValues.of_json)
-      }
+      } 
   end
 module ResetImageAttributeName =
   struct
     type t =
-      | LaunchPermission
-    let str_to_t = [("launchPermission", LaunchPermission)]
-    let t_to_str = [(LaunchPermission, "launchPermission")]
-    let make v () = v
+      | LaunchPermission 
+    let str_to_t = [("launchPermission", LaunchPermission)] 
+    let t_to_str = [(LaunchPermission, "launchPermission")] 
+    let make v () = v 
     let parse xml =
       Util.option_bind (String.parse xml)
         (fun s  -> Util.list_find str_to_t s)
+      
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
   end
 module NewDhcpConfigurationList =
   struct
     type t = NewDhcpConfiguration.t list
-    let make elems () = elems
+    let make elems () = elems 
     let parse xml =
       Util.option_all
         (List.map NewDhcpConfiguration.parse (Xml.members "item" xml))
-    let to_query v = Query.to_query_list NewDhcpConfiguration.to_query v
-    let to_json v = `List (List.map NewDhcpConfiguration.to_json v)
-    let of_json j = Json.to_list NewDhcpConfiguration.of_json j
+      
+    let to_query v = Query.to_query_list NewDhcpConfiguration.to_query v 
+    let to_json v = `List (List.map NewDhcpConfiguration.to_json v) 
+    let of_json j = Json.to_list NewDhcpConfiguration.of_json j 
   end
 module DescribeVpcAttributeRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      vpc_id: String.t;
-      attribute: VpcAttributeName.t option;}
+      dry_run: Boolean.t option ;
+      vpc_id: String.t ;
+      attribute: VpcAttributeName.t option }
     let make ?dry_run  ~vpc_id  ?attribute  () =
-      { dry_run; vpc_id; attribute }
+      { dry_run; vpc_id; attribute } 
     let parse xml =
       Some
         {
@@ -15037,6 +15680,7 @@ module DescribeVpcAttributeRequest =
             (Util.option_bind (Xml.member "Attribute" xml)
                VpcAttributeName.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -15046,6 +15690,7 @@ module DescribeVpcAttributeRequest =
            Some (Query.Pair ("VpcId", (String.to_query v.vpc_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -15054,6 +15699,7 @@ module DescribeVpcAttributeRequest =
            Some ("vpc_id", (String.to_json v.vpc_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -15062,14 +15708,14 @@ module DescribeVpcAttributeRequest =
         attribute =
           (Util.option_map (Json.lookup j "attribute")
              VpcAttributeName.of_json)
-      }
+      } 
   end
 module DeleteNetworkAclRequest =
   struct
     type t = {
-      dry_run: Boolean.t option;
-      network_acl_id: String.t;}
-    let make ?dry_run  ~network_acl_id  () = { dry_run; network_acl_id }
+      dry_run: Boolean.t option ;
+      network_acl_id: String.t }
+    let make ?dry_run  ~network_acl_id  () = { dry_run; network_acl_id } 
     let parse xml =
       Some
         {
@@ -15079,6 +15725,7 @@ module DeleteNetworkAclRequest =
             (Xml.required "networkAclId"
                (Util.option_bind (Xml.member "networkAclId" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -15087,30 +15734,32 @@ module DeleteNetworkAclRequest =
                  ("NetworkAclId", (String.to_query v.network_acl_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("network_acl_id", (String.to_json v.network_acl_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         network_acl_id =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "network_acl_id")))
-      }
+      } 
   end
 module CreateImageRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      instance_id: String.t;
-      name: String.t;
-      description: String.t option;
-      no_reboot: Boolean.t option;
-      block_device_mappings: BlockDeviceMappingRequestList.t;}
+      dry_run: Boolean.t option ;
+      instance_id: String.t ;
+      name: String.t ;
+      description: String.t option ;
+      no_reboot: Boolean.t option ;
+      block_device_mappings: BlockDeviceMappingRequestList.t }
     let make ?dry_run  ~instance_id  ~name  ?description  ?no_reboot 
       ?(block_device_mappings= [])  () =
       {
@@ -15120,7 +15769,7 @@ module CreateImageRequest =
         description;
         no_reboot;
         block_device_mappings
-      }
+      } 
     let parse xml =
       Some
         {
@@ -15141,6 +15790,7 @@ module CreateImageRequest =
                (Util.option_bind (Xml.member "blockDeviceMapping" xml)
                   BlockDeviceMappingRequestList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -15157,6 +15807,7 @@ module CreateImageRequest =
            Some (Query.Pair ("InstanceId", (String.to_query v.instance_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -15172,6 +15823,7 @@ module CreateImageRequest =
            Some ("instance_id", (String.to_json v.instance_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -15185,13 +15837,13 @@ module CreateImageRequest =
         block_device_mappings =
           (BlockDeviceMappingRequestList.of_json
              (Util.of_option_exn (Json.lookup j "block_device_mappings")))
-      }
+      } 
   end
 module DescribeNetworkInterfacesResult =
   struct
     type t = {
-      network_interfaces: NetworkInterfaceList.t;}
-    let make ?(network_interfaces= [])  () = { network_interfaces }
+      network_interfaces: NetworkInterfaceList.t }
+    let make ?(network_interfaces= [])  () = { network_interfaces } 
     let parse xml =
       Some
         {
@@ -15200,6 +15852,7 @@ module DescribeNetworkInterfacesResult =
                (Util.option_bind (Xml.member "networkInterfaceSet" xml)
                   NetworkInterfaceList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -15207,28 +15860,30 @@ module DescribeNetworkInterfacesResult =
               (Query.Pair
                  ("NetworkInterfaceSet",
                    (NetworkInterfaceList.to_query v.network_interfaces)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("network_interfaces",
                 (NetworkInterfaceList.to_json v.network_interfaces))])
+      
     let of_json j =
       {
         network_interfaces =
           (NetworkInterfaceList.of_json
              (Util.of_option_exn (Json.lookup j "network_interfaces")))
-      }
+      } 
   end
 module CreateVpcRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      cidr_block: String.t;
-      instance_tenancy: Tenancy.t option;}
+      dry_run: Boolean.t option ;
+      cidr_block: String.t ;
+      instance_tenancy: Tenancy.t option }
     let make ?dry_run  ~cidr_block  ?instance_tenancy  () =
-      { dry_run; cidr_block; instance_tenancy }
+      { dry_run; cidr_block; instance_tenancy } 
     let parse xml =
       Some
         {
@@ -15241,6 +15896,7 @@ module CreateVpcRequest =
             (Util.option_bind (Xml.member "instanceTenancy" xml)
                Tenancy.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -15249,6 +15905,7 @@ module CreateVpcRequest =
            Some (Query.Pair ("CidrBlock", (String.to_query v.cidr_block)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -15257,6 +15914,7 @@ module CreateVpcRequest =
            Some ("cidr_block", (String.to_json v.cidr_block));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -15264,14 +15922,14 @@ module CreateVpcRequest =
           (String.of_json (Util.of_option_exn (Json.lookup j "cidr_block")));
         instance_tenancy =
           (Util.option_map (Json.lookup j "instance_tenancy") Tenancy.of_json)
-      }
+      } 
   end
 module DescribeTagsResult =
   struct
     type t = {
-      tags: TagDescriptionList.t;
-      next_token: String.t option;}
-    let make ?(tags= [])  ?next_token  () = { tags; next_token }
+      tags: TagDescriptionList.t ;
+      next_token: String.t option }
+    let make ?(tags= [])  ?next_token  () = { tags; next_token } 
     let parse xml =
       Some
         {
@@ -15282,18 +15940,21 @@ module DescribeTagsResult =
           next_token =
             (Util.option_bind (Xml.member "nextToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.next_token
               (fun f  -> Query.Pair ("NextToken", (String.to_query f)));
            Some (Query.Pair ("TagSet", (TagDescriptionList.to_query v.tags)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.next_token
               (fun f  -> ("next_token", (String.to_json f)));
            Some ("tags", (TagDescriptionList.to_json v.tags))])
+      
     let of_json j =
       {
         tags =
@@ -15301,13 +15962,13 @@ module DescribeTagsResult =
              (Util.of_option_exn (Json.lookup j "tags")));
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      }
+      } 
   end
 module DescribeDhcpOptionsResult =
   struct
     type t = {
-      dhcp_options: DhcpOptionsList.t;}
-    let make ?(dhcp_options= [])  () = { dhcp_options }
+      dhcp_options: DhcpOptionsList.t }
+    let make ?(dhcp_options= [])  () = { dhcp_options } 
     let parse xml =
       Some
         {
@@ -15316,6 +15977,7 @@ module DescribeDhcpOptionsResult =
                (Util.option_bind (Xml.member "dhcpOptionsSet" xml)
                   DhcpOptionsList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -15323,22 +15985,24 @@ module DescribeDhcpOptionsResult =
               (Query.Pair
                  ("DhcpOptionsSet",
                    (DhcpOptionsList.to_query v.dhcp_options)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("dhcp_options", (DhcpOptionsList.to_json v.dhcp_options))])
+      
     let of_json j =
       {
         dhcp_options =
           (DhcpOptionsList.of_json
              (Util.of_option_exn (Json.lookup j "dhcp_options")))
-      }
+      } 
   end
 module DescribeVpnGatewaysResult =
   struct
     type t = {
-      vpn_gateways: VpnGatewayList.t;}
-    let make ?(vpn_gateways= [])  () = { vpn_gateways }
+      vpn_gateways: VpnGatewayList.t }
+    let make ?(vpn_gateways= [])  () = { vpn_gateways } 
     let parse xml =
       Some
         {
@@ -15347,56 +16011,62 @@ module DescribeVpnGatewaysResult =
                (Util.option_bind (Xml.member "vpnGatewaySet" xml)
                   VpnGatewayList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some
               (Query.Pair
                  ("VpnGatewaySet", (VpnGatewayList.to_query v.vpn_gateways)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("vpn_gateways", (VpnGatewayList.to_json v.vpn_gateways))])
+      
     let of_json j =
       {
         vpn_gateways =
           (VpnGatewayList.of_json
              (Util.of_option_exn (Json.lookup j "vpn_gateways")))
-      }
+      } 
   end
 module CreateImageResult =
   struct
     type t = {
-      image_id: String.t option;}
-    let make ?image_id  () = { image_id }
+      image_id: String.t option }
+    let make ?image_id  () = { image_id } 
     let parse xml =
       Some
         {
           image_id =
             (Util.option_bind (Xml.member "imageId" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.image_id
               (fun f  -> Query.Pair ("ImageId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.image_id
               (fun f  -> ("image_id", (String.to_json f)))])
+      
     let of_json j =
       {
         image_id =
           (Util.option_map (Json.lookup j "image_id") String.of_json)
-      }
+      } 
   end
 module CreateNetworkAclRequest =
   struct
     type t = {
-      dry_run: Boolean.t option;
-      vpc_id: String.t;}
-    let make ?dry_run  ~vpc_id  () = { dry_run; vpc_id }
+      dry_run: Boolean.t option ;
+      vpc_id: String.t }
+    let make ?dry_run  ~vpc_id  () = { dry_run; vpc_id } 
     let parse xml =
       Some
         {
@@ -15406,38 +16076,41 @@ module CreateNetworkAclRequest =
             (Xml.required "vpcId"
                (Util.option_bind (Xml.member "vpcId" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("VpcId", (String.to_query v.vpc_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("vpc_id", (String.to_json v.vpc_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         vpc_id =
           (String.of_json (Util.of_option_exn (Json.lookup j "vpc_id")))
-      }
+      } 
   end
 module AuthorizeSecurityGroupEgressRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      group_id: String.t;
-      source_security_group_name: String.t option;
-      source_security_group_owner_id: String.t option;
-      ip_protocol: String.t option;
-      from_port: Integer.t option;
-      to_port: Integer.t option;
-      cidr_ip: String.t option;
-      ip_permissions: IpPermissionList.t;}
+      dry_run: Boolean.t option ;
+      group_id: String.t ;
+      source_security_group_name: String.t option ;
+      source_security_group_owner_id: String.t option ;
+      ip_protocol: String.t option ;
+      from_port: Integer.t option ;
+      to_port: Integer.t option ;
+      cidr_ip: String.t option ;
+      ip_permissions: IpPermissionList.t }
     let make ?dry_run  ~group_id  ?source_security_group_name 
       ?source_security_group_owner_id  ?ip_protocol  ?from_port  ?to_port 
       ?cidr_ip  ?(ip_permissions= [])  () =
@@ -15451,7 +16124,7 @@ module AuthorizeSecurityGroupEgressRequest =
         to_port;
         cidr_ip;
         ip_permissions
-      }
+      } 
     let parse xml =
       Some
         {
@@ -15478,6 +16151,7 @@ module AuthorizeSecurityGroupEgressRequest =
                (Util.option_bind (Xml.member "ipPermissions" xml)
                   IpPermissionList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -15503,6 +16177,7 @@ module AuthorizeSecurityGroupEgressRequest =
            Some (Query.Pair ("GroupId", (String.to_query v.group_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -15524,6 +16199,7 @@ module AuthorizeSecurityGroupEgressRequest =
            Some ("group_id", (String.to_json v.group_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -15544,18 +16220,18 @@ module AuthorizeSecurityGroupEgressRequest =
         ip_permissions =
           (IpPermissionList.of_json
              (Util.of_option_exn (Json.lookup j "ip_permissions")))
-      }
+      } 
   end
 module CopyImageRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      source_region: String.t;
-      source_image_id: String.t;
-      name: String.t;
-      description: String.t option;
-      client_token: String.t option;}
+      dry_run: Boolean.t option ;
+      source_region: String.t ;
+      source_image_id: String.t ;
+      name: String.t ;
+      description: String.t option ;
+      client_token: String.t option }
     let make ?dry_run  ~source_region  ~source_image_id  ~name  ?description 
       ?client_token  () =
       {
@@ -15565,7 +16241,7 @@ module CopyImageRequest =
         name;
         description;
         client_token
-      }
+      } 
     let parse xml =
       Some
         {
@@ -15586,6 +16262,7 @@ module CopyImageRequest =
           client_token =
             (Util.option_bind (Xml.member "ClientToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -15601,6 +16278,7 @@ module CopyImageRequest =
              (Query.Pair ("SourceRegion", (String.to_query v.source_region)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -15613,6 +16291,7 @@ module CopyImageRequest =
            Some ("source_region", (String.to_json v.source_region));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -15627,17 +16306,17 @@ module CopyImageRequest =
           (Util.option_map (Json.lookup j "description") String.of_json);
         client_token =
           (Util.option_map (Json.lookup j "client_token") String.of_json)
-      }
+      } 
   end
 module DescribeNetworkInterfaceAttributeResult =
   struct
     type t =
       {
-      network_interface_id: String.t option;
-      description: AttributeValue.t option;
-      source_dest_check: AttributeBooleanValue.t option;
-      groups: GroupIdentifierList.t;
-      attachment: NetworkInterfaceAttachment.t option;}
+      network_interface_id: String.t option ;
+      description: AttributeValue.t option ;
+      source_dest_check: AttributeBooleanValue.t option ;
+      groups: GroupIdentifierList.t ;
+      attachment: NetworkInterfaceAttachment.t option }
     let make ?network_interface_id  ?description  ?source_dest_check 
       ?(groups= [])  ?attachment  () =
       {
@@ -15646,7 +16325,7 @@ module DescribeNetworkInterfaceAttributeResult =
         source_dest_check;
         groups;
         attachment
-      }
+      } 
     let parse xml =
       Some
         {
@@ -15667,6 +16346,7 @@ module DescribeNetworkInterfaceAttributeResult =
             (Util.option_bind (Xml.member "attachment" xml)
                NetworkInterfaceAttachment.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -15687,6 +16367,7 @@ module DescribeNetworkInterfaceAttributeResult =
            Util.option_map v.network_interface_id
              (fun f  ->
                 Query.Pair ("NetworkInterfaceId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -15701,6 +16382,7 @@ module DescribeNetworkInterfaceAttributeResult =
              (fun f  -> ("description", (AttributeValue.to_json f)));
            Util.option_map v.network_interface_id
              (fun f  -> ("network_interface_id", (String.to_json f)))])
+      
     let of_json j =
       {
         network_interface_id =
@@ -15718,16 +16400,16 @@ module DescribeNetworkInterfaceAttributeResult =
         attachment =
           (Util.option_map (Json.lookup j "attachment")
              NetworkInterfaceAttachment.of_json)
-      }
+      } 
   end
 module DescribeReservedInstancesModificationsResult =
   struct
     type t =
       {
-      reserved_instances_modifications: ReservedInstancesModificationList.t;
-      next_token: String.t option;}
+      reserved_instances_modifications: ReservedInstancesModificationList.t ;
+      next_token: String.t option }
     let make ?(reserved_instances_modifications= [])  ?next_token  () =
-      { reserved_instances_modifications; next_token }
+      { reserved_instances_modifications; next_token } 
     let parse xml =
       Some
         {
@@ -15739,6 +16421,7 @@ module DescribeReservedInstancesModificationsResult =
           next_token =
             (Util.option_bind (Xml.member "nextToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -15749,6 +16432,7 @@ module DescribeReservedInstancesModificationsResult =
                 ("ReservedInstancesModificationsSet",
                   (ReservedInstancesModificationList.to_query
                      v.reserved_instances_modifications)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -15758,6 +16442,7 @@ module DescribeReservedInstancesModificationsResult =
              ("reserved_instances_modifications",
                (ReservedInstancesModificationList.to_json
                   v.reserved_instances_modifications))])
+      
     let of_json j =
       {
         reserved_instances_modifications =
@@ -15766,13 +16451,13 @@ module DescribeReservedInstancesModificationsResult =
                 (Json.lookup j "reserved_instances_modifications")));
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      }
+      } 
   end
 module DescribeReservedInstancesResult =
   struct
     type t = {
-      reserved_instances: ReservedInstancesList.t;}
-    let make ?(reserved_instances= [])  () = { reserved_instances }
+      reserved_instances: ReservedInstancesList.t }
+    let make ?(reserved_instances= [])  () = { reserved_instances } 
     let parse xml =
       Some
         {
@@ -15781,6 +16466,7 @@ module DescribeReservedInstancesResult =
                (Util.option_bind (Xml.member "reservedInstancesSet" xml)
                   ReservedInstancesList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -15788,32 +16474,34 @@ module DescribeReservedInstancesResult =
               (Query.Pair
                  ("ReservedInstancesSet",
                    (ReservedInstancesList.to_query v.reserved_instances)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("reserved_instances",
                 (ReservedInstancesList.to_json v.reserved_instances))])
+      
     let of_json j =
       {
         reserved_instances =
           (ReservedInstancesList.of_json
              (Util.of_option_exn (Json.lookup j "reserved_instances")))
-      }
+      } 
   end
 module CreateNetworkAclEntryRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      network_acl_id: String.t;
-      rule_number: Integer.t;
-      protocol: String.t;
-      rule_action: RuleAction.t;
-      egress: Boolean.t;
-      cidr_block: String.t;
-      icmp_type_code: IcmpTypeCode.t option;
-      port_range: PortRange.t option;}
+      dry_run: Boolean.t option ;
+      network_acl_id: String.t ;
+      rule_number: Integer.t ;
+      protocol: String.t ;
+      rule_action: RuleAction.t ;
+      egress: Boolean.t ;
+      cidr_block: String.t ;
+      icmp_type_code: IcmpTypeCode.t option ;
+      port_range: PortRange.t option }
     let make ?dry_run  ~network_acl_id  ~rule_number  ~protocol  ~rule_action
        ~egress  ~cidr_block  ?icmp_type_code  ?port_range  () =
       {
@@ -15826,7 +16514,7 @@ module CreateNetworkAclEntryRequest =
         cidr_block;
         icmp_type_code;
         port_range
-      }
+      } 
     let parse xml =
       Some
         {
@@ -15856,6 +16544,7 @@ module CreateNetworkAclEntryRequest =
           port_range =
             (Util.option_bind (Xml.member "portRange" xml) PortRange.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -15873,6 +16562,7 @@ module CreateNetworkAclEntryRequest =
              (Query.Pair ("NetworkAclId", (String.to_query v.network_acl_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -15888,6 +16578,7 @@ module CreateNetworkAclEntryRequest =
            Some ("network_acl_id", (String.to_json v.network_acl_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -15910,18 +16601,18 @@ module CreateNetworkAclEntryRequest =
              IcmpTypeCode.of_json);
         port_range =
           (Util.option_map (Json.lookup j "port_range") PortRange.of_json)
-      }
+      } 
   end
 module DescribeTagsRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      filters: FilterList.t;
-      max_results: Integer.t option;
-      next_token: String.t option;}
+      dry_run: Boolean.t option ;
+      filters: FilterList.t ;
+      max_results: Integer.t option ;
+      next_token: String.t option }
     let make ?dry_run  ?(filters= [])  ?max_results  ?next_token  () =
-      { dry_run; filters; max_results; next_token }
+      { dry_run; filters; max_results; next_token } 
     let parse xml =
       Some
         {
@@ -15935,6 +16626,7 @@ module DescribeTagsRequest =
           next_token =
             (Util.option_bind (Xml.member "nextToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -15945,6 +16637,7 @@ module DescribeTagsRequest =
            Some (Query.Pair ("Filter", (FilterList.to_query v.filters)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -15955,6 +16648,7 @@ module DescribeTagsRequest =
            Some ("filters", (FilterList.to_json v.filters));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -15964,13 +16658,13 @@ module DescribeTagsRequest =
           (Util.option_map (Json.lookup j "max_results") Integer.of_json);
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      }
+      } 
   end
 module DescribePlacementGroupsResult =
   struct
     type t = {
-      placement_groups: PlacementGroupList.t;}
-    let make ?(placement_groups= [])  () = { placement_groups }
+      placement_groups: PlacementGroupList.t }
+    let make ?(placement_groups= [])  () = { placement_groups } 
     let parse xml =
       Some
         {
@@ -15979,6 +16673,7 @@ module DescribePlacementGroupsResult =
                (Util.option_bind (Xml.member "placementGroupSet" xml)
                   PlacementGroupList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -15986,29 +16681,31 @@ module DescribePlacementGroupsResult =
               (Query.Pair
                  ("PlacementGroupSet",
                    (PlacementGroupList.to_query v.placement_groups)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("placement_groups",
                 (PlacementGroupList.to_json v.placement_groups))])
+      
     let of_json j =
       {
         placement_groups =
           (PlacementGroupList.of_json
              (Util.of_option_exn (Json.lookup j "placement_groups")))
-      }
+      } 
   end
 module CreateSubnetRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      vpc_id: String.t;
-      cidr_block: String.t;
-      availability_zone: String.t option;}
+      dry_run: Boolean.t option ;
+      vpc_id: String.t ;
+      cidr_block: String.t ;
+      availability_zone: String.t option }
     let make ?dry_run  ~vpc_id  ~cidr_block  ?availability_zone  () =
-      { dry_run; vpc_id; cidr_block; availability_zone }
+      { dry_run; vpc_id; cidr_block; availability_zone } 
     let parse xml =
       Some
         {
@@ -16024,6 +16721,7 @@ module CreateSubnetRequest =
             (Util.option_bind (Xml.member "AvailabilityZone" xml)
                String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -16033,6 +16731,7 @@ module CreateSubnetRequest =
            Some (Query.Pair ("VpcId", (String.to_query v.vpc_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -16042,6 +16741,7 @@ module CreateSubnetRequest =
            Some ("vpc_id", (String.to_json v.vpc_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -16051,14 +16751,14 @@ module CreateSubnetRequest =
           (String.of_json (Util.of_option_exn (Json.lookup j "cidr_block")));
         availability_zone =
           (Util.option_map (Json.lookup j "availability_zone") String.of_json)
-      }
+      } 
   end
 module DeletePlacementGroupRequest =
   struct
     type t = {
-      dry_run: Boolean.t option;
-      group_name: String.t;}
-    let make ?dry_run  ~group_name  () = { dry_run; group_name }
+      dry_run: Boolean.t option ;
+      group_name: String.t }
+    let make ?dry_run  ~group_name  () = { dry_run; group_name } 
     let parse xml =
       Some
         {
@@ -16068,30 +16768,33 @@ module DeletePlacementGroupRequest =
             (Xml.required "groupName"
                (Util.option_bind (Xml.member "groupName" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("GroupName", (String.to_query v.group_name)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("group_name", (String.to_json v.group_name));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         group_name =
           (String.of_json (Util.of_option_exn (Json.lookup j "group_name")))
-      }
+      } 
   end
 module DescribeKeyPairsResult =
   struct
     type t = {
-      key_pairs: KeyPairList.t;}
-    let make ?(key_pairs= [])  () = { key_pairs }
+      key_pairs: KeyPairList.t }
+    let make ?(key_pairs= [])  () = { key_pairs } 
     let parse xml =
       Some
         {
@@ -16099,28 +16802,31 @@ module DescribeKeyPairsResult =
             (Util.of_option []
                (Util.option_bind (Xml.member "keySet" xml) KeyPairList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("KeySet", (KeyPairList.to_query v.key_pairs)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("key_pairs", (KeyPairList.to_json v.key_pairs))])
+      
     let of_json j =
       {
         key_pairs =
           (KeyPairList.of_json
              (Util.of_option_exn (Json.lookup j "key_pairs")))
-      }
+      } 
   end
 module CancelSpotInstanceRequestsResult =
   struct
     type t =
       {
-      cancelled_spot_instance_requests: CancelledSpotInstanceRequestList.t;}
+      cancelled_spot_instance_requests: CancelledSpotInstanceRequestList.t }
     let make ?(cancelled_spot_instance_requests= [])  () =
-      { cancelled_spot_instance_requests }
+      { cancelled_spot_instance_requests } 
     let parse xml =
       Some
         {
@@ -16129,6 +16835,7 @@ module CancelSpotInstanceRequestsResult =
                (Util.option_bind (Xml.member "spotInstanceRequestSet" xml)
                   CancelledSpotInstanceRequestList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -16137,6 +16844,7 @@ module CancelSpotInstanceRequestsResult =
                  ("SpotInstanceRequestSet",
                    (CancelledSpotInstanceRequestList.to_query
                       v.cancelled_spot_instance_requests)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -16144,19 +16852,20 @@ module CancelSpotInstanceRequestsResult =
               ("cancelled_spot_instance_requests",
                 (CancelledSpotInstanceRequestList.to_json
                    v.cancelled_spot_instance_requests))])
+      
     let of_json j =
       {
         cancelled_spot_instance_requests =
           (CancelledSpotInstanceRequestList.of_json
              (Util.of_option_exn
                 (Json.lookup j "cancelled_spot_instance_requests")))
-      }
+      } 
   end
 module CreateSpotDatafeedSubscriptionResult =
   struct
     type t = {
-      spot_datafeed_subscription: SpotDatafeedSubscription.t option;}
-    let make ?spot_datafeed_subscription  () = { spot_datafeed_subscription }
+      spot_datafeed_subscription: SpotDatafeedSubscription.t option }
+    let make ?spot_datafeed_subscription  () = { spot_datafeed_subscription } 
     let parse xml =
       Some
         {
@@ -16164,6 +16873,7 @@ module CreateSpotDatafeedSubscriptionResult =
             (Util.option_bind (Xml.member "spotDatafeedSubscription" xml)
                SpotDatafeedSubscription.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -16172,6 +16882,7 @@ module CreateSpotDatafeedSubscriptionResult =
                  Query.Pair
                    ("SpotDatafeedSubscription",
                      (SpotDatafeedSubscription.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -16179,27 +16890,28 @@ module CreateSpotDatafeedSubscriptionResult =
               (fun f  ->
                  ("spot_datafeed_subscription",
                    (SpotDatafeedSubscription.to_json f)))])
+      
     let of_json j =
       {
         spot_datafeed_subscription =
           (Util.option_map (Json.lookup j "spot_datafeed_subscription")
              SpotDatafeedSubscription.of_json)
-      }
+      } 
   end
 module ModifyImageAttributeRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      image_id: String.t;
-      attribute: String.t option;
-      operation_type: OperationType.t option;
-      user_ids: UserIdStringList.t;
-      user_groups: UserGroupStringList.t;
-      product_codes: ProductCodeStringList.t;
-      value: String.t option;
-      launch_permission: LaunchPermissionModifications.t option;
-      description: AttributeValue.t option;}
+      dry_run: Boolean.t option ;
+      image_id: String.t ;
+      attribute: String.t option ;
+      operation_type: OperationType.t option ;
+      user_ids: UserIdStringList.t ;
+      user_groups: UserGroupStringList.t ;
+      product_codes: ProductCodeStringList.t ;
+      value: String.t option ;
+      launch_permission: LaunchPermissionModifications.t option ;
+      description: AttributeValue.t option }
     let make ?dry_run  ~image_id  ?attribute  ?operation_type  ?(user_ids=
       [])  ?(user_groups= [])  ?(product_codes= [])  ?value 
       ?launch_permission  ?description  () =
@@ -16214,7 +16926,7 @@ module ModifyImageAttributeRequest =
         value;
         launch_permission;
         description
-      }
+      } 
     let parse xml =
       Some
         {
@@ -16248,6 +16960,7 @@ module ModifyImageAttributeRequest =
             (Util.option_bind (Xml.member "Description" xml)
                AttributeValue.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -16278,6 +16991,7 @@ module ModifyImageAttributeRequest =
            Some (Query.Pair ("ImageId", (String.to_query v.image_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -16300,6 +17014,7 @@ module ModifyImageAttributeRequest =
            Some ("image_id", (String.to_json v.image_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -16326,17 +17041,17 @@ module ModifyImageAttributeRequest =
         description =
           (Util.option_map (Json.lookup j "description")
              AttributeValue.of_json)
-      }
+      } 
   end
 module DescribeInstanceAttributeRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      instance_id: String.t;
-      attribute: InstanceAttributeName.t;}
+      dry_run: Boolean.t option ;
+      instance_id: String.t ;
+      attribute: InstanceAttributeName.t }
     let make ?dry_run  ~instance_id  ~attribute  () =
-      { dry_run; instance_id; attribute }
+      { dry_run; instance_id; attribute } 
     let parse xml =
       Some
         {
@@ -16350,6 +17065,7 @@ module DescribeInstanceAttributeRequest =
                (Util.option_bind (Xml.member "attribute" xml)
                   InstanceAttributeName.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -16359,6 +17075,7 @@ module DescribeInstanceAttributeRequest =
            Some (Query.Pair ("InstanceId", (String.to_query v.instance_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -16366,6 +17083,7 @@ module DescribeInstanceAttributeRequest =
            Some ("instance_id", (String.to_json v.instance_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -16374,17 +17092,17 @@ module DescribeInstanceAttributeRequest =
         attribute =
           (InstanceAttributeName.of_json
              (Util.of_option_exn (Json.lookup j "attribute")))
-      }
+      } 
   end
 module DescribeBundleTasksRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      bundle_ids: BundleIdStringList.t;
-      filters: FilterList.t;}
+      dry_run: Boolean.t option ;
+      bundle_ids: BundleIdStringList.t ;
+      filters: FilterList.t }
     let make ?dry_run  ?(bundle_ids= [])  ?(filters= [])  () =
-      { dry_run; bundle_ids; filters }
+      { dry_run; bundle_ids; filters } 
     let parse xml =
       Some
         {
@@ -16398,6 +17116,7 @@ module DescribeBundleTasksRequest =
             (Util.of_option []
                (Util.option_bind (Xml.member "Filter" xml) FilterList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -16407,6 +17126,7 @@ module DescribeBundleTasksRequest =
                 ("BundleId", (BundleIdStringList.to_query v.bundle_ids)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -16414,6 +17134,7 @@ module DescribeBundleTasksRequest =
            Some ("bundle_ids", (BundleIdStringList.to_json v.bundle_ids));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -16422,13 +17143,13 @@ module DescribeBundleTasksRequest =
              (Util.of_option_exn (Json.lookup j "bundle_ids")));
         filters =
           (FilterList.of_json (Util.of_option_exn (Json.lookup j "filters")))
-      }
+      } 
   end
 module DescribeConversionTasksResult =
   struct
     type t = {
-      conversion_tasks: DescribeConversionTaskList.t;}
-    let make ?(conversion_tasks= [])  () = { conversion_tasks }
+      conversion_tasks: DescribeConversionTaskList.t }
+    let make ?(conversion_tasks= [])  () = { conversion_tasks } 
     let parse xml =
       Some
         {
@@ -16437,6 +17158,7 @@ module DescribeConversionTasksResult =
                (Util.option_bind (Xml.member "conversionTasks" xml)
                   DescribeConversionTaskList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -16444,30 +17166,32 @@ module DescribeConversionTasksResult =
               (Query.Pair
                  ("ConversionTasks",
                    (DescribeConversionTaskList.to_query v.conversion_tasks)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("conversion_tasks",
                 (DescribeConversionTaskList.to_json v.conversion_tasks))])
+      
     let of_json j =
       {
         conversion_tasks =
           (DescribeConversionTaskList.of_json
              (Util.of_option_exn (Json.lookup j "conversion_tasks")))
-      }
+      } 
   end
 module CreateInstanceExportTaskRequest =
   struct
     type t =
       {
-      description: String.t option;
-      instance_id: String.t;
-      target_environment: ExportEnvironment.t option;
-      export_to_s3_task: ExportToS3TaskSpecification.t option;}
+      description: String.t option ;
+      instance_id: String.t ;
+      target_environment: ExportEnvironment.t option ;
+      export_to_s3_task: ExportToS3TaskSpecification.t option }
     let make ?description  ~instance_id  ?target_environment 
       ?export_to_s3_task  () =
-      { description; instance_id; target_environment; export_to_s3_task }
+      { description; instance_id; target_environment; export_to_s3_task } 
     let parse xml =
       Some
         {
@@ -16483,6 +17207,7 @@ module CreateInstanceExportTaskRequest =
             (Util.option_bind (Xml.member "exportToS3" xml)
                ExportToS3TaskSpecification.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -16497,6 +17222,7 @@ module CreateInstanceExportTaskRequest =
            Some (Query.Pair ("InstanceId", (String.to_query v.instance_id)));
            Util.option_map v.description
              (fun f  -> Query.Pair ("Description", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -16509,6 +17235,7 @@ module CreateInstanceExportTaskRequest =
            Some ("instance_id", (String.to_json v.instance_id));
            Util.option_map v.description
              (fun f  -> ("description", (String.to_json f)))])
+      
     let of_json j =
       {
         description =
@@ -16521,17 +17248,17 @@ module CreateInstanceExportTaskRequest =
         export_to_s3_task =
           (Util.option_map (Json.lookup j "export_to_s3_task")
              ExportToS3TaskSpecification.of_json)
-      }
+      } 
   end
 module ResetNetworkInterfaceAttributeRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      network_interface_id: String.t;
-      source_dest_check: String.t option;}
+      dry_run: Boolean.t option ;
+      network_interface_id: String.t ;
+      source_dest_check: String.t option }
     let make ?dry_run  ~network_interface_id  ?source_dest_check  () =
-      { dry_run; network_interface_id; source_dest_check }
+      { dry_run; network_interface_id; source_dest_check } 
     let parse xml =
       Some
         {
@@ -16544,6 +17271,7 @@ module ResetNetworkInterfaceAttributeRequest =
           source_dest_check =
             (Util.option_bind (Xml.member "sourceDestCheck" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -16555,6 +17283,7 @@ module ResetNetworkInterfaceAttributeRequest =
                   (String.to_query v.network_interface_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -16565,6 +17294,7 @@ module ResetNetworkInterfaceAttributeRequest =
                (String.to_json v.network_interface_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -16573,13 +17303,13 @@ module ResetNetworkInterfaceAttributeRequest =
              (Util.of_option_exn (Json.lookup j "network_interface_id")));
         source_dest_check =
           (Util.option_map (Json.lookup j "source_dest_check") String.of_json)
-      }
+      } 
   end
 module CreateSecurityGroupResult =
   struct
     type t = {
-      group_id: String.t;}
-    let make ~group_id  () = { group_id }
+      group_id: String.t }
+    let make ~group_id  () = { group_id } 
     let parse xml =
       Some
         {
@@ -16587,29 +17317,32 @@ module CreateSecurityGroupResult =
             (Xml.required "groupId"
                (Util.option_bind (Xml.member "groupId" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("GroupId", (String.to_query v.group_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("group_id", (String.to_json v.group_id))])
+      
     let of_json j =
       {
         group_id =
           (String.of_json (Util.of_option_exn (Json.lookup j "group_id")))
-      }
+      } 
   end
 module DescribeSpotFleetRequestHistoryResponse =
   struct
     type t =
       {
-      spot_fleet_request_id: String.t;
-      start_time: DateTime.t;
-      last_evaluated_time: DateTime.t;
-      history_records: HistoryRecords.t;
-      next_token: String.t option;}
+      spot_fleet_request_id: String.t ;
+      start_time: DateTime.t ;
+      last_evaluated_time: DateTime.t ;
+      history_records: HistoryRecords.t ;
+      next_token: String.t option }
     let make ~spot_fleet_request_id  ~start_time  ~last_evaluated_time 
       ~history_records  ?next_token  () =
       {
@@ -16618,7 +17351,7 @@ module DescribeSpotFleetRequestHistoryResponse =
         last_evaluated_time;
         history_records;
         next_token
-      }
+      } 
     let parse xml =
       Some
         {
@@ -16640,6 +17373,7 @@ module DescribeSpotFleetRequestHistoryResponse =
           next_token =
             (Util.option_bind (Xml.member "nextToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -16658,6 +17392,7 @@ module DescribeSpotFleetRequestHistoryResponse =
              (Query.Pair
                 ("SpotFleetRequestId",
                   (String.to_query v.spot_fleet_request_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -16672,6 +17407,7 @@ module DescribeSpotFleetRequestHistoryResponse =
            Some
              ("spot_fleet_request_id",
                (String.to_json v.spot_fleet_request_id))])
+      
     let of_json j =
       {
         spot_fleet_request_id =
@@ -16687,14 +17423,14 @@ module DescribeSpotFleetRequestHistoryResponse =
              (Util.of_option_exn (Json.lookup j "history_records")));
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      }
+      } 
   end
 module CancelReservedInstancesListingRequest =
   struct
     type t = {
-      reserved_instances_listing_id: String.t;}
+      reserved_instances_listing_id: String.t }
     let make ~reserved_instances_listing_id  () =
-      { reserved_instances_listing_id }
+      { reserved_instances_listing_id } 
     let parse xml =
       Some
         {
@@ -16703,6 +17439,7 @@ module CancelReservedInstancesListingRequest =
                (Util.option_bind
                   (Xml.member "reservedInstancesListingId" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -16710,31 +17447,33 @@ module CancelReservedInstancesListingRequest =
               (Query.Pair
                  ("ReservedInstancesListingId",
                    (String.to_query v.reserved_instances_listing_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("reserved_instances_listing_id",
                 (String.to_json v.reserved_instances_listing_id))])
+      
     let of_json j =
       {
         reserved_instances_listing_id =
           (String.of_json
              (Util.of_option_exn
                 (Json.lookup j "reserved_instances_listing_id")))
-      }
+      } 
   end
 module DescribeSnapshotsRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      snapshot_ids: SnapshotIdStringList.t;
-      owner_ids: OwnerStringList.t;
-      restorable_by_user_ids: RestorableByStringList.t;
-      filters: FilterList.t;
-      next_token: String.t option;
-      max_results: Integer.t option;}
+      dry_run: Boolean.t option ;
+      snapshot_ids: SnapshotIdStringList.t ;
+      owner_ids: OwnerStringList.t ;
+      restorable_by_user_ids: RestorableByStringList.t ;
+      filters: FilterList.t ;
+      next_token: String.t option ;
+      max_results: Integer.t option }
     let make ?dry_run  ?(snapshot_ids= [])  ?(owner_ids= []) 
       ?(restorable_by_user_ids= [])  ?(filters= [])  ?next_token 
       ?max_results  () =
@@ -16746,7 +17485,7 @@ module DescribeSnapshotsRequest =
         filters;
         next_token;
         max_results
-      }
+      } 
     let parse xml =
       Some
         {
@@ -16772,6 +17511,7 @@ module DescribeSnapshotsRequest =
           max_results =
             (Util.option_bind (Xml.member "MaxResults" xml) Integer.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -16792,6 +17532,7 @@ module DescribeSnapshotsRequest =
                   (SnapshotIdStringList.to_query v.snapshot_ids)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -16808,6 +17549,7 @@ module DescribeSnapshotsRequest =
              ("snapshot_ids", (SnapshotIdStringList.to_json v.snapshot_ids));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -16826,17 +17568,17 @@ module DescribeSnapshotsRequest =
           (Util.option_map (Json.lookup j "next_token") String.of_json);
         max_results =
           (Util.option_map (Json.lookup j "max_results") Integer.of_json)
-      }
+      } 
   end
 module ModifyReservedInstancesRequest =
   struct
     type t =
       {
-      client_token: String.t option;
-      reserved_instances_ids: ReservedInstancesIdStringList.t;
-      target_configurations: ReservedInstancesConfigurationList.t;}
+      client_token: String.t option ;
+      reserved_instances_ids: ReservedInstancesIdStringList.t ;
+      target_configurations: ReservedInstancesConfigurationList.t }
     let make ?client_token  ~reserved_instances_ids  ~target_configurations 
-      () = { client_token; reserved_instances_ids; target_configurations }
+      () = { client_token; reserved_instances_ids; target_configurations } 
     let parse xml =
       Some
         {
@@ -16852,6 +17594,7 @@ module ModifyReservedInstancesRequest =
                   (Xml.member "ReservedInstancesConfigurationSetItemType" xml)
                   ReservedInstancesConfigurationList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -16867,6 +17610,7 @@ module ModifyReservedInstancesRequest =
                      v.reserved_instances_ids)));
            Util.option_map v.client_token
              (fun f  -> Query.Pair ("ClientToken", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -16880,6 +17624,7 @@ module ModifyReservedInstancesRequest =
                   v.reserved_instances_ids));
            Util.option_map v.client_token
              (fun f  -> ("client_token", (String.to_json f)))])
+      
     let of_json j =
       {
         client_token =
@@ -16890,17 +17635,17 @@ module ModifyReservedInstancesRequest =
         target_configurations =
           (ReservedInstancesConfigurationList.of_json
              (Util.of_option_exn (Json.lookup j "target_configurations")))
-      }
+      } 
   end
 module AssociateRouteTableRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      subnet_id: String.t;
-      route_table_id: String.t;}
+      dry_run: Boolean.t option ;
+      subnet_id: String.t ;
+      route_table_id: String.t }
     let make ?dry_run  ~subnet_id  ~route_table_id  () =
-      { dry_run; subnet_id; route_table_id }
+      { dry_run; subnet_id; route_table_id } 
     let parse xml =
       Some
         {
@@ -16913,6 +17658,7 @@ module AssociateRouteTableRequest =
             (Xml.required "routeTableId"
                (Util.option_bind (Xml.member "routeTableId" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -16922,6 +17668,7 @@ module AssociateRouteTableRequest =
            Some (Query.Pair ("SubnetId", (String.to_query v.subnet_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -16929,6 +17676,7 @@ module AssociateRouteTableRequest =
            Some ("subnet_id", (String.to_json v.subnet_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -16937,45 +17685,48 @@ module AssociateRouteTableRequest =
         route_table_id =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "route_table_id")))
-      }
+      } 
   end
 module AssociateAddressResult =
   struct
     type t = {
-      association_id: String.t option;}
-    let make ?association_id  () = { association_id }
+      association_id: String.t option }
+    let make ?association_id  () = { association_id } 
     let parse xml =
       Some
         {
           association_id =
             (Util.option_bind (Xml.member "associationId" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.association_id
               (fun f  -> Query.Pair ("AssociationId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.association_id
               (fun f  -> ("association_id", (String.to_json f)))])
+      
     let of_json j =
       {
         association_id =
           (Util.option_map (Json.lookup j "association_id") String.of_json)
-      }
+      } 
   end
 module CreateCustomerGatewayRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      type_: GatewayType.t;
-      public_ip: String.t;
-      bgp_asn: Integer.t;}
+      dry_run: Boolean.t option ;
+      type_: GatewayType.t ;
+      public_ip: String.t ;
+      bgp_asn: Integer.t }
     let make ?dry_run  ~type_  ~public_ip  ~bgp_asn  () =
-      { dry_run; type_; public_ip; bgp_asn }
+      { dry_run; type_; public_ip; bgp_asn } 
     let parse xml =
       Some
         {
@@ -16991,6 +17742,7 @@ module CreateCustomerGatewayRequest =
             (Xml.required "BgpAsn"
                (Util.option_bind (Xml.member "BgpAsn" xml) Integer.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -16999,6 +17751,7 @@ module CreateCustomerGatewayRequest =
            Some (Query.Pair ("Type", (GatewayType.to_query v.type_)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -17007,6 +17760,7 @@ module CreateCustomerGatewayRequest =
            Some ("type_", (GatewayType.to_json v.type_));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -17016,18 +17770,18 @@ module CreateCustomerGatewayRequest =
           (String.of_json (Util.of_option_exn (Json.lookup j "public_ip")));
         bgp_asn =
           (Integer.of_json (Util.of_option_exn (Json.lookup j "bgp_asn")))
-      }
+      } 
   end
 module DescribeSecurityGroupsRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      group_names: GroupNameStringList.t;
-      group_ids: GroupIdStringList.t;
-      filters: FilterList.t;}
+      dry_run: Boolean.t option ;
+      group_names: GroupNameStringList.t ;
+      group_ids: GroupIdStringList.t ;
+      filters: FilterList.t }
     let make ?dry_run  ?(group_names= [])  ?(group_ids= [])  ?(filters= []) 
-      () = { dry_run; group_names; group_ids; filters }
+      () = { dry_run; group_names; group_ids; filters } 
     let parse xml =
       Some
         {
@@ -17045,6 +17799,7 @@ module DescribeSecurityGroupsRequest =
             (Util.of_option []
                (Util.option_bind (Xml.member "Filter" xml) FilterList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -17057,6 +17812,7 @@ module DescribeSecurityGroupsRequest =
                 ("GroupName", (GroupNameStringList.to_query v.group_names)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -17065,6 +17821,7 @@ module DescribeSecurityGroupsRequest =
            Some ("group_names", (GroupNameStringList.to_json v.group_names));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -17076,21 +17833,21 @@ module DescribeSecurityGroupsRequest =
              (Util.of_option_exn (Json.lookup j "group_ids")));
         filters =
           (FilterList.of_json (Util.of_option_exn (Json.lookup j "filters")))
-      }
+      } 
   end
 module ReplaceNetworkAclEntryRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      network_acl_id: String.t;
-      rule_number: Integer.t;
-      protocol: String.t;
-      rule_action: RuleAction.t;
-      egress: Boolean.t;
-      cidr_block: String.t;
-      icmp_type_code: IcmpTypeCode.t option;
-      port_range: PortRange.t option;}
+      dry_run: Boolean.t option ;
+      network_acl_id: String.t ;
+      rule_number: Integer.t ;
+      protocol: String.t ;
+      rule_action: RuleAction.t ;
+      egress: Boolean.t ;
+      cidr_block: String.t ;
+      icmp_type_code: IcmpTypeCode.t option ;
+      port_range: PortRange.t option }
     let make ?dry_run  ~network_acl_id  ~rule_number  ~protocol  ~rule_action
        ~egress  ~cidr_block  ?icmp_type_code  ?port_range  () =
       {
@@ -17103,7 +17860,7 @@ module ReplaceNetworkAclEntryRequest =
         cidr_block;
         icmp_type_code;
         port_range
-      }
+      } 
     let parse xml =
       Some
         {
@@ -17133,6 +17890,7 @@ module ReplaceNetworkAclEntryRequest =
           port_range =
             (Util.option_bind (Xml.member "portRange" xml) PortRange.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -17150,6 +17908,7 @@ module ReplaceNetworkAclEntryRequest =
              (Query.Pair ("NetworkAclId", (String.to_query v.network_acl_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -17165,6 +17924,7 @@ module ReplaceNetworkAclEntryRequest =
            Some ("network_acl_id", (String.to_json v.network_acl_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -17187,18 +17947,18 @@ module ReplaceNetworkAclEntryRequest =
              IcmpTypeCode.of_json);
         port_range =
           (Util.option_map (Json.lookup j "port_range") PortRange.of_json)
-      }
+      } 
   end
 module DescribeFlowLogsRequest =
   struct
     type t =
       {
-      flow_log_ids: ValueStringList.t;
-      filter: FilterList.t;
-      next_token: String.t option;
-      max_results: Integer.t option;}
+      flow_log_ids: ValueStringList.t ;
+      filter: FilterList.t ;
+      next_token: String.t option ;
+      max_results: Integer.t option }
     let make ?(flow_log_ids= [])  ?(filter= [])  ?next_token  ?max_results 
-      () = { flow_log_ids; filter; next_token; max_results }
+      () = { flow_log_ids; filter; next_token; max_results } 
     let parse xml =
       Some
         {
@@ -17214,6 +17974,7 @@ module DescribeFlowLogsRequest =
           max_results =
             (Util.option_bind (Xml.member "MaxResults" xml) Integer.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -17225,6 +17986,7 @@ module DescribeFlowLogsRequest =
            Some
              (Query.Pair
                 ("FlowLogId", (ValueStringList.to_query v.flow_log_ids)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -17234,6 +17996,7 @@ module DescribeFlowLogsRequest =
              (fun f  -> ("next_token", (String.to_json f)));
            Some ("filter", (FilterList.to_json v.filter));
            Some ("flow_log_ids", (ValueStringList.to_json v.flow_log_ids))])
+      
     let of_json j =
       {
         flow_log_ids =
@@ -17245,22 +18008,22 @@ module DescribeFlowLogsRequest =
           (Util.option_map (Json.lookup j "next_token") String.of_json);
         max_results =
           (Util.option_map (Json.lookup j "max_results") Integer.of_json)
-      }
+      } 
   end
 module RequestSpotInstancesRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      spot_price: String.t;
-      client_token: String.t option;
-      instance_count: Integer.t option;
-      type_: SpotInstanceType.t option;
-      valid_from: DateTime.t option;
-      valid_until: DateTime.t option;
-      launch_group: String.t option;
-      availability_zone_group: String.t option;
-      launch_specification: RequestSpotLaunchSpecification.t option;}
+      dry_run: Boolean.t option ;
+      spot_price: String.t ;
+      client_token: String.t option ;
+      instance_count: Integer.t option ;
+      type_: SpotInstanceType.t option ;
+      valid_from: DateTime.t option ;
+      valid_until: DateTime.t option ;
+      launch_group: String.t option ;
+      availability_zone_group: String.t option ;
+      launch_specification: RequestSpotLaunchSpecification.t option }
     let make ?dry_run  ~spot_price  ?client_token  ?instance_count  ?type_ 
       ?valid_from  ?valid_until  ?launch_group  ?availability_zone_group 
       ?launch_specification  () =
@@ -17275,7 +18038,7 @@ module RequestSpotInstancesRequest =
         launch_group;
         availability_zone_group;
         launch_specification
-      }
+      } 
     let parse xml =
       Some
         {
@@ -17303,6 +18066,7 @@ module RequestSpotInstancesRequest =
             (Util.option_bind (Xml.member "LaunchSpecification" xml)
                RequestSpotLaunchSpecification.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -17329,6 +18093,7 @@ module RequestSpotInstancesRequest =
            Some (Query.Pair ("SpotPrice", (String.to_query v.spot_price)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -17353,6 +18118,7 @@ module RequestSpotInstancesRequest =
            Some ("spot_price", (String.to_json v.spot_price));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -17376,16 +18142,16 @@ module RequestSpotInstancesRequest =
         launch_specification =
           (Util.option_map (Json.lookup j "launch_specification")
              RequestSpotLaunchSpecification.of_json)
-      }
+      } 
   end
 module AssignPrivateIpAddressesRequest =
   struct
     type t =
       {
-      network_interface_id: String.t;
-      private_ip_addresses: PrivateIpAddressStringList.t;
-      secondary_private_ip_address_count: Integer.t option;
-      allow_reassignment: Boolean.t option;}
+      network_interface_id: String.t ;
+      private_ip_addresses: PrivateIpAddressStringList.t ;
+      secondary_private_ip_address_count: Integer.t option ;
+      allow_reassignment: Boolean.t option }
     let make ~network_interface_id  ?(private_ip_addresses= []) 
       ?secondary_private_ip_address_count  ?allow_reassignment  () =
       {
@@ -17393,7 +18159,7 @@ module AssignPrivateIpAddressesRequest =
         private_ip_addresses;
         secondary_private_ip_address_count;
         allow_reassignment
-      }
+      } 
     let parse xml =
       Some
         {
@@ -17413,6 +18179,7 @@ module AssignPrivateIpAddressesRequest =
             (Util.option_bind (Xml.member "allowReassignment" xml)
                Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -17431,6 +18198,7 @@ module AssignPrivateIpAddressesRequest =
              (Query.Pair
                 ("NetworkInterfaceId",
                   (String.to_query v.network_interface_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -17445,6 +18213,7 @@ module AssignPrivateIpAddressesRequest =
            Some
              ("network_interface_id",
                (String.to_json v.network_interface_id))])
+      
     let of_json j =
       {
         network_interface_id =
@@ -17460,17 +18229,17 @@ module AssignPrivateIpAddressesRequest =
         allow_reassignment =
           (Util.option_map (Json.lookup j "allow_reassignment")
              Boolean.of_json)
-      }
+      } 
   end
 module CreateFlowLogsResult =
   struct
     type t =
       {
-      flow_log_ids: ValueStringList.t;
-      client_token: String.t option;
-      unsuccessful: UnsuccessfulItemSet.t;}
+      flow_log_ids: ValueStringList.t ;
+      client_token: String.t option ;
+      unsuccessful: UnsuccessfulItemSet.t }
     let make ?(flow_log_ids= [])  ?client_token  ?(unsuccessful= [])  () =
-      { flow_log_ids; client_token; unsuccessful }
+      { flow_log_ids; client_token; unsuccessful } 
     let parse xml =
       Some
         {
@@ -17485,6 +18254,7 @@ module CreateFlowLogsResult =
                (Util.option_bind (Xml.member "unsuccessful" xml)
                   UnsuccessfulItemSet.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -17497,6 +18267,7 @@ module CreateFlowLogsResult =
            Some
              (Query.Pair
                 ("FlowLogIdSet", (ValueStringList.to_query v.flow_log_ids)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -17505,6 +18276,7 @@ module CreateFlowLogsResult =
            Util.option_map v.client_token
              (fun f  -> ("client_token", (String.to_json f)));
            Some ("flow_log_ids", (ValueStringList.to_json v.flow_log_ids))])
+      
     let of_json j =
       {
         flow_log_ids =
@@ -17515,13 +18287,13 @@ module CreateFlowLogsResult =
         unsuccessful =
           (UnsuccessfulItemSet.of_json
              (Util.of_option_exn (Json.lookup j "unsuccessful")))
-      }
+      } 
   end
 module CreateNetworkInterfaceResult =
   struct
     type t = {
-      network_interface: NetworkInterface.t option;}
-    let make ?network_interface  () = { network_interface }
+      network_interface: NetworkInterface.t option }
+    let make ?network_interface  () = { network_interface } 
     let parse xml =
       Some
         {
@@ -17529,6 +18301,7 @@ module CreateNetworkInterfaceResult =
             (Util.option_bind (Xml.member "networkInterface" xml)
                NetworkInterface.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -17536,24 +18309,26 @@ module CreateNetworkInterfaceResult =
               (fun f  ->
                  Query.Pair
                    ("NetworkInterface", (NetworkInterface.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.network_interface
               (fun f  -> ("network_interface", (NetworkInterface.to_json f)))])
+      
     let of_json j =
       {
         network_interface =
           (Util.option_map (Json.lookup j "network_interface")
              NetworkInterface.of_json)
-      }
+      } 
   end
 module RestoreAddressToClassicResult =
   struct
     type t = {
-      status: Status.t option;
-      public_ip: String.t option;}
-    let make ?status  ?public_ip  () = { status; public_ip }
+      status: Status.t option ;
+      public_ip: String.t option }
+    let make ?status  ?public_ip  () = { status; public_ip } 
     let parse xml =
       Some
         {
@@ -17561,6 +18336,7 @@ module RestoreAddressToClassicResult =
           public_ip =
             (Util.option_bind (Xml.member "publicIp" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -17568,6 +18344,7 @@ module RestoreAddressToClassicResult =
               (fun f  -> Query.Pair ("PublicIp", (String.to_query f)));
            Util.option_map v.status
              (fun f  -> Query.Pair ("Status", (Status.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -17575,18 +18352,19 @@ module RestoreAddressToClassicResult =
               (fun f  -> ("public_ip", (String.to_json f)));
            Util.option_map v.status
              (fun f  -> ("status", (Status.to_json f)))])
+      
     let of_json j =
       {
         status = (Util.option_map (Json.lookup j "status") Status.of_json);
         public_ip =
           (Util.option_map (Json.lookup j "public_ip") String.of_json)
-      }
+      } 
   end
 module DescribeRouteTablesResult =
   struct
     type t = {
-      route_tables: RouteTableList.t;}
-    let make ?(route_tables= [])  () = { route_tables }
+      route_tables: RouteTableList.t }
+    let make ?(route_tables= [])  () = { route_tables } 
     let parse xml =
       Some
         {
@@ -17595,57 +18373,63 @@ module DescribeRouteTablesResult =
                (Util.option_bind (Xml.member "routeTableSet" xml)
                   RouteTableList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some
               (Query.Pair
                  ("RouteTableSet", (RouteTableList.to_query v.route_tables)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("route_tables", (RouteTableList.to_json v.route_tables))])
+      
     let of_json j =
       {
         route_tables =
           (RouteTableList.of_json
              (Util.of_option_exn (Json.lookup j "route_tables")))
-      }
+      } 
   end
 module DescribeSpotDatafeedSubscriptionRequest =
   struct
     type t = {
-      dry_run: Boolean.t option;}
-    let make ?dry_run  () = { dry_run }
+      dry_run: Boolean.t option }
+    let make ?dry_run  () = { dry_run } 
     let parse xml =
       Some
         {
           dry_run =
             (Util.option_bind (Xml.member "dryRun" xml) Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.dry_run
               (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.dry_run
               (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       { dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json)
-      }
+      } 
   end
 module DescribeSnapshotAttributeResult =
   struct
     type t =
       {
-      snapshot_id: String.t option;
-      create_volume_permissions: CreateVolumePermissionList.t;
-      product_codes: ProductCodeList.t;}
+      snapshot_id: String.t option ;
+      create_volume_permissions: CreateVolumePermissionList.t ;
+      product_codes: ProductCodeList.t }
     let make ?snapshot_id  ?(create_volume_permissions= [])  ?(product_codes=
-      [])  () = { snapshot_id; create_volume_permissions; product_codes }
+      [])  () = { snapshot_id; create_volume_permissions; product_codes } 
     let parse xml =
       Some
         {
@@ -17660,6 +18444,7 @@ module DescribeSnapshotAttributeResult =
                (Util.option_bind (Xml.member "productCodes" xml)
                   ProductCodeList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -17673,6 +18458,7 @@ module DescribeSnapshotAttributeResult =
                      v.create_volume_permissions)));
            Util.option_map v.snapshot_id
              (fun f  -> Query.Pair ("SnapshotId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -17683,6 +18469,7 @@ module DescribeSnapshotAttributeResult =
                   v.create_volume_permissions));
            Util.option_map v.snapshot_id
              (fun f  -> ("snapshot_id", (String.to_json f)))])
+      
     let of_json j =
       {
         snapshot_id =
@@ -17693,14 +18480,14 @@ module DescribeSnapshotAttributeResult =
         product_codes =
           (ProductCodeList.of_json
              (Util.of_option_exn (Json.lookup j "product_codes")))
-      }
+      } 
   end
 module DeleteVpnGatewayRequest =
   struct
     type t = {
-      dry_run: Boolean.t option;
-      vpn_gateway_id: String.t;}
-    let make ?dry_run  ~vpn_gateway_id  () = { dry_run; vpn_gateway_id }
+      dry_run: Boolean.t option ;
+      vpn_gateway_id: String.t }
+    let make ?dry_run  ~vpn_gateway_id  () = { dry_run; vpn_gateway_id } 
     let parse xml =
       Some
         {
@@ -17710,6 +18497,7 @@ module DeleteVpnGatewayRequest =
             (Xml.required "VpnGatewayId"
                (Util.option_bind (Xml.member "VpnGatewayId" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -17718,28 +18506,30 @@ module DeleteVpnGatewayRequest =
                  ("VpnGatewayId", (String.to_query v.vpn_gateway_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("vpn_gateway_id", (String.to_json v.vpn_gateway_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         vpn_gateway_id =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "vpn_gateway_id")))
-      }
+      } 
   end
 module UnassignPrivateIpAddressesRequest =
   struct
     type t =
       {
-      network_interface_id: String.t;
-      private_ip_addresses: PrivateIpAddressStringList.t;}
+      network_interface_id: String.t ;
+      private_ip_addresses: PrivateIpAddressStringList.t }
     let make ~network_interface_id  ~private_ip_addresses  () =
-      { network_interface_id; private_ip_addresses }
+      { network_interface_id; private_ip_addresses } 
     let parse xml =
       Some
         {
@@ -17752,6 +18542,7 @@ module UnassignPrivateIpAddressesRequest =
                (Util.option_bind (Xml.member "privateIpAddress" xml)
                   PrivateIpAddressStringList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -17764,6 +18555,7 @@ module UnassignPrivateIpAddressesRequest =
              (Query.Pair
                 ("NetworkInterfaceId",
                   (String.to_query v.network_interface_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -17773,6 +18565,7 @@ module UnassignPrivateIpAddressesRequest =
            Some
              ("network_interface_id",
                (String.to_json v.network_interface_id))])
+      
     let of_json j =
       {
         network_interface_id =
@@ -17781,35 +18574,38 @@ module UnassignPrivateIpAddressesRequest =
         private_ip_addresses =
           (PrivateIpAddressStringList.of_json
              (Util.of_option_exn (Json.lookup j "private_ip_addresses")))
-      }
+      } 
   end
 module EnableVpcClassicLinkResult =
   struct
     type t = {
-      return: Boolean.t option;}
-    let make ?return  () = { return }
+      return: Boolean.t option }
+    let make ?return  () = { return } 
     let parse xml =
       Some
         { return = (Util.option_bind (Xml.member "return" xml) Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.return
               (fun f  -> Query.Pair ("Return", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.return
               (fun f  -> ("return", (Boolean.to_json f)))])
+      
     let of_json j =
-      { return = (Util.option_map (Json.lookup j "return") Boolean.of_json) }
+      { return = (Util.option_map (Json.lookup j "return") Boolean.of_json) } 
   end
 module PurchaseReservedInstancesOfferingResult =
   struct
     type t = {
-      reserved_instances_id: String.t option;}
-    let make ?reserved_instances_id  () = { reserved_instances_id }
+      reserved_instances_id: String.t option }
+    let make ?reserved_instances_id  () = { reserved_instances_id } 
     let parse xml =
       Some
         {
@@ -17817,33 +18613,36 @@ module PurchaseReservedInstancesOfferingResult =
             (Util.option_bind (Xml.member "reservedInstancesId" xml)
                String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.reserved_instances_id
               (fun f  ->
                  Query.Pair ("ReservedInstancesId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.reserved_instances_id
               (fun f  -> ("reserved_instances_id", (String.to_json f)))])
+      
     let of_json j =
       {
         reserved_instances_id =
           (Util.option_map (Json.lookup j "reserved_instances_id")
              String.of_json)
-      }
+      } 
   end
 module ModifyVpcAttributeRequest =
   struct
     type t =
       {
-      vpc_id: String.t;
-      enable_dns_support: AttributeBooleanValue.t option;
-      enable_dns_hostnames: AttributeBooleanValue.t option;}
+      vpc_id: String.t ;
+      enable_dns_support: AttributeBooleanValue.t option ;
+      enable_dns_hostnames: AttributeBooleanValue.t option }
     let make ~vpc_id  ?enable_dns_support  ?enable_dns_hostnames  () =
-      { vpc_id; enable_dns_support; enable_dns_hostnames }
+      { vpc_id; enable_dns_support; enable_dns_hostnames } 
     let parse xml =
       Some
         {
@@ -17857,6 +18656,7 @@ module ModifyVpcAttributeRequest =
             (Util.option_bind (Xml.member "EnableDnsHostnames" xml)
                AttributeBooleanValue.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -17869,6 +18669,7 @@ module ModifyVpcAttributeRequest =
                 Query.Pair
                   ("EnableDnsSupport", (AttributeBooleanValue.to_query f)));
            Some (Query.Pair ("VpcId", (String.to_query v.vpc_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -17879,6 +18680,7 @@ module ModifyVpcAttributeRequest =
              (fun f  ->
                 ("enable_dns_support", (AttributeBooleanValue.to_json f)));
            Some ("vpc_id", (String.to_json v.vpc_id))])
+      
     let of_json j =
       {
         vpc_id =
@@ -17889,35 +18691,38 @@ module ModifyVpcAttributeRequest =
         enable_dns_hostnames =
           (Util.option_map (Json.lookup j "enable_dns_hostnames")
              AttributeBooleanValue.of_json)
-      }
+      } 
   end
 module RejectVpcPeeringConnectionResult =
   struct
     type t = {
-      return: Boolean.t option;}
-    let make ?return  () = { return }
+      return: Boolean.t option }
+    let make ?return  () = { return } 
     let parse xml =
       Some
         { return = (Util.option_bind (Xml.member "return" xml) Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.return
               (fun f  -> Query.Pair ("Return", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.return
               (fun f  -> ("return", (Boolean.to_json f)))])
+      
     let of_json j =
-      { return = (Util.option_map (Json.lookup j "return") Boolean.of_json) }
+      { return = (Util.option_map (Json.lookup j "return") Boolean.of_json) } 
   end
 module ReplaceNetworkAclAssociationResult =
   struct
     type t = {
-      new_association_id: String.t option;}
-    let make ?new_association_id  () = { new_association_id }
+      new_association_id: String.t option }
+    let make ?new_association_id  () = { new_association_id } 
     let parse xml =
       Some
         {
@@ -17925,99 +18730,111 @@ module ReplaceNetworkAclAssociationResult =
             (Util.option_bind (Xml.member "newAssociationId" xml)
                String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.new_association_id
               (fun f  -> Query.Pair ("NewAssociationId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.new_association_id
               (fun f  -> ("new_association_id", (String.to_json f)))])
+      
     let of_json j =
       {
         new_association_id =
           (Util.option_map (Json.lookup j "new_association_id")
              String.of_json)
-      }
+      } 
   end
 module ModifyVpcEndpointResult =
   struct
     type t = {
-      return: Boolean.t option;}
-    let make ?return  () = { return }
+      return: Boolean.t option }
+    let make ?return  () = { return } 
     let parse xml =
       Some
         { return = (Util.option_bind (Xml.member "return" xml) Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.return
               (fun f  -> Query.Pair ("Return", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.return
               (fun f  -> ("return", (Boolean.to_json f)))])
+      
     let of_json j =
-      { return = (Util.option_map (Json.lookup j "return") Boolean.of_json) }
+      { return = (Util.option_map (Json.lookup j "return") Boolean.of_json) } 
   end
 module AttachClassicLinkVpcResult =
   struct
     type t = {
-      return: Boolean.t option;}
-    let make ?return  () = { return }
+      return: Boolean.t option }
+    let make ?return  () = { return } 
     let parse xml =
       Some
         { return = (Util.option_bind (Xml.member "return" xml) Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.return
               (fun f  -> Query.Pair ("Return", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.return
               (fun f  -> ("return", (Boolean.to_json f)))])
+      
     let of_json j =
-      { return = (Util.option_map (Json.lookup j "return") Boolean.of_json) }
+      { return = (Util.option_map (Json.lookup j "return") Boolean.of_json) } 
   end
 module DeleteSpotDatafeedSubscriptionRequest =
   struct
     type t = {
-      dry_run: Boolean.t option;}
-    let make ?dry_run  () = { dry_run }
+      dry_run: Boolean.t option }
+    let make ?dry_run  () = { dry_run } 
     let parse xml =
       Some
         {
           dry_run =
             (Util.option_bind (Xml.member "dryRun" xml) Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.dry_run
               (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.dry_run
               (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       { dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json)
-      }
+      } 
   end
 module TerminateInstancesRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      instance_ids: InstanceIdStringList.t;}
-    let make ?dry_run  ~instance_ids  () = { dry_run; instance_ids }
+      dry_run: Boolean.t option ;
+      instance_ids: InstanceIdStringList.t }
+    let make ?dry_run  ~instance_ids  () = { dry_run; instance_ids } 
     let parse xml =
       Some
         {
@@ -18028,6 +18845,7 @@ module TerminateInstancesRequest =
                (Util.option_bind (Xml.member "InstanceId" xml)
                   InstanceIdStringList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -18037,6 +18855,7 @@ module TerminateInstancesRequest =
                    (InstanceIdStringList.to_query v.instance_ids)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -18044,42 +18863,46 @@ module TerminateInstancesRequest =
               ("instance_ids", (InstanceIdStringList.to_json v.instance_ids));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         instance_ids =
           (InstanceIdStringList.of_json
              (Util.of_option_exn (Json.lookup j "instance_ids")))
-      }
+      } 
   end
 module CreateRouteResult =
   struct
     type t = {
-      return: Boolean.t option;}
-    let make ?return  () = { return }
+      return: Boolean.t option }
+    let make ?return  () = { return } 
     let parse xml =
       Some
         { return = (Util.option_bind (Xml.member "return" xml) Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.return
               (fun f  -> Query.Pair ("Return", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.return
               (fun f  -> ("return", (Boolean.to_json f)))])
+      
     let of_json j =
-      { return = (Util.option_map (Json.lookup j "return") Boolean.of_json) }
+      { return = (Util.option_map (Json.lookup j "return") Boolean.of_json) } 
   end
 module DeleteRouteTableRequest =
   struct
     type t = {
-      dry_run: Boolean.t option;
-      route_table_id: String.t;}
-    let make ?dry_run  ~route_table_id  () = { dry_run; route_table_id }
+      dry_run: Boolean.t option ;
+      route_table_id: String.t }
+    let make ?dry_run  ~route_table_id  () = { dry_run; route_table_id } 
     let parse xml =
       Some
         {
@@ -18089,6 +18912,7 @@ module DeleteRouteTableRequest =
             (Xml.required "routeTableId"
                (Util.option_bind (Xml.member "routeTableId" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -18097,29 +18921,31 @@ module DeleteRouteTableRequest =
                  ("RouteTableId", (String.to_query v.route_table_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("route_table_id", (String.to_json v.route_table_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         route_table_id =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "route_table_id")))
-      }
+      } 
   end
 module CancelSpotFleetRequestsRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      spot_fleet_request_ids: ValueStringList.t;
-      terminate_instances: Boolean.t;}
+      dry_run: Boolean.t option ;
+      spot_fleet_request_ids: ValueStringList.t ;
+      terminate_instances: Boolean.t }
     let make ?dry_run  ~spot_fleet_request_ids  ~terminate_instances  () =
-      { dry_run; spot_fleet_request_ids; terminate_instances }
+      { dry_run; spot_fleet_request_ids; terminate_instances } 
     let parse xml =
       Some
         {
@@ -18134,6 +18960,7 @@ module CancelSpotFleetRequestsRequest =
                (Util.option_bind (Xml.member "terminateInstances" xml)
                   Boolean.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -18147,6 +18974,7 @@ module CancelSpotFleetRequestsRequest =
                   (ValueStringList.to_query v.spot_fleet_request_ids)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -18158,6 +18986,7 @@ module CancelSpotFleetRequestsRequest =
                (ValueStringList.to_json v.spot_fleet_request_ids));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -18167,13 +18996,13 @@ module CancelSpotFleetRequestsRequest =
         terminate_instances =
           (Boolean.of_json
              (Util.of_option_exn (Json.lookup j "terminate_instances")))
-      }
+      } 
   end
 module DeleteVpcEndpointsResult =
   struct
     type t = {
-      unsuccessful: UnsuccessfulItemSet.t;}
-    let make ?(unsuccessful= [])  () = { unsuccessful }
+      unsuccessful: UnsuccessfulItemSet.t }
+    let make ?(unsuccessful= [])  () = { unsuccessful } 
     let parse xml =
       Some
         {
@@ -18182,6 +19011,7 @@ module DeleteVpcEndpointsResult =
                (Util.option_bind (Xml.member "unsuccessful" xml)
                   UnsuccessfulItemSet.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -18189,24 +19019,26 @@ module DeleteVpcEndpointsResult =
               (Query.Pair
                  ("Unsuccessful",
                    (UnsuccessfulItemSet.to_query v.unsuccessful)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("unsuccessful", (UnsuccessfulItemSet.to_json v.unsuccessful))])
+      
     let of_json j =
       {
         unsuccessful =
           (UnsuccessfulItemSet.of_json
              (Util.of_option_exn (Json.lookup j "unsuccessful")))
-      }
+      } 
   end
 module CancelBundleTaskRequest =
   struct
     type t = {
-      dry_run: Boolean.t option;
-      bundle_id: String.t;}
-    let make ?dry_run  ~bundle_id  () = { dry_run; bundle_id }
+      dry_run: Boolean.t option ;
+      bundle_id: String.t }
+    let make ?dry_run  ~bundle_id  () = { dry_run; bundle_id } 
     let parse xml =
       Some
         {
@@ -18216,89 +19048,98 @@ module CancelBundleTaskRequest =
             (Xml.required "BundleId"
                (Util.option_bind (Xml.member "BundleId" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("BundleId", (String.to_query v.bundle_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("bundle_id", (String.to_json v.bundle_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         bundle_id =
           (String.of_json (Util.of_option_exn (Json.lookup j "bundle_id")))
-      }
+      } 
   end
 module CopyImageResult =
   struct
     type t = {
-      image_id: String.t option;}
-    let make ?image_id  () = { image_id }
+      image_id: String.t option }
+    let make ?image_id  () = { image_id } 
     let parse xml =
       Some
         {
           image_id =
             (Util.option_bind (Xml.member "imageId" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.image_id
               (fun f  -> Query.Pair ("ImageId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.image_id
               (fun f  -> ("image_id", (String.to_json f)))])
+      
     let of_json j =
       {
         image_id =
           (Util.option_map (Json.lookup j "image_id") String.of_json)
-      }
+      } 
   end
 module CreateInstanceExportTaskResult =
   struct
     type t = {
-      export_task: ExportTask.t option;}
-    let make ?export_task  () = { export_task }
+      export_task: ExportTask.t option }
+    let make ?export_task  () = { export_task } 
     let parse xml =
       Some
         {
           export_task =
             (Util.option_bind (Xml.member "exportTask" xml) ExportTask.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.export_task
               (fun f  -> Query.Pair ("ExportTask", (ExportTask.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.export_task
               (fun f  -> ("export_task", (ExportTask.to_json f)))])
+      
     let of_json j =
       {
         export_task =
           (Util.option_map (Json.lookup j "export_task") ExportTask.of_json)
-      }
+      } 
   end
 module CreateVpcEndpointRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      vpc_id: String.t;
-      service_name: String.t;
-      policy_document: String.t option;
-      route_table_ids: ValueStringList.t;
-      client_token: String.t option;}
+      dry_run: Boolean.t option ;
+      vpc_id: String.t ;
+      service_name: String.t ;
+      policy_document: String.t option ;
+      route_table_ids: ValueStringList.t ;
+      client_token: String.t option }
     let make ?dry_run  ~vpc_id  ~service_name  ?policy_document 
       ?(route_table_ids= [])  ?client_token  () =
       {
@@ -18308,7 +19149,7 @@ module CreateVpcEndpointRequest =
         policy_document;
         route_table_ids;
         client_token
-      }
+      } 
     let parse xml =
       Some
         {
@@ -18329,6 +19170,7 @@ module CreateVpcEndpointRequest =
           client_token =
             (Util.option_bind (Xml.member "ClientToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -18345,6 +19187,7 @@ module CreateVpcEndpointRequest =
            Some (Query.Pair ("VpcId", (String.to_query v.vpc_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -18358,6 +19201,7 @@ module CreateVpcEndpointRequest =
            Some ("vpc_id", (String.to_json v.vpc_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -18372,14 +19216,14 @@ module CreateVpcEndpointRequest =
              (Util.of_option_exn (Json.lookup j "route_table_ids")));
         client_token =
           (Util.option_map (Json.lookup j "client_token") String.of_json)
-      }
+      } 
   end
 module DeleteDhcpOptionsRequest =
   struct
     type t = {
-      dry_run: Boolean.t option;
-      dhcp_options_id: String.t;}
-    let make ?dry_run  ~dhcp_options_id  () = { dry_run; dhcp_options_id }
+      dry_run: Boolean.t option ;
+      dhcp_options_id: String.t }
+    let make ?dry_run  ~dhcp_options_id  () = { dry_run; dhcp_options_id } 
     let parse xml =
       Some
         {
@@ -18390,6 +19234,7 @@ module DeleteDhcpOptionsRequest =
                (Util.option_bind (Xml.member "DhcpOptionsId" xml)
                   String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -18398,32 +19243,34 @@ module DeleteDhcpOptionsRequest =
                  ("DhcpOptionsId", (String.to_query v.dhcp_options_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("dhcp_options_id", (String.to_json v.dhcp_options_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         dhcp_options_id =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "dhcp_options_id")))
-      }
+      } 
   end
 module DescribeImportSnapshotTasksRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      import_task_ids: ImportTaskIdList.t;
-      next_token: String.t option;
-      max_results: Integer.t option;
-      filters: FilterList.t;}
+      dry_run: Boolean.t option ;
+      import_task_ids: ImportTaskIdList.t ;
+      next_token: String.t option ;
+      max_results: Integer.t option ;
+      filters: FilterList.t }
     let make ?dry_run  ?(import_task_ids= [])  ?next_token  ?max_results 
       ?(filters= [])  () =
-      { dry_run; import_task_ids; next_token; max_results; filters }
+      { dry_run; import_task_ids; next_token; max_results; filters } 
     let parse xml =
       Some
         {
@@ -18441,6 +19288,7 @@ module DescribeImportSnapshotTasksRequest =
             (Util.of_option []
                (Util.option_bind (Xml.member "Filters" xml) FilterList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -18455,6 +19303,7 @@ module DescribeImportSnapshotTasksRequest =
                   (ImportTaskIdList.to_query v.import_task_ids)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -18468,6 +19317,7 @@ module DescribeImportSnapshotTasksRequest =
                (ImportTaskIdList.to_json v.import_task_ids));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -18480,16 +19330,16 @@ module DescribeImportSnapshotTasksRequest =
           (Util.option_map (Json.lookup j "max_results") Integer.of_json);
         filters =
           (FilterList.of_json (Util.of_option_exn (Json.lookup j "filters")))
-      }
+      } 
   end
 module RequestSpotFleetRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      spot_fleet_request_config: SpotFleetRequestConfigData.t;}
+      dry_run: Boolean.t option ;
+      spot_fleet_request_config: SpotFleetRequestConfigData.t }
     let make ?dry_run  ~spot_fleet_request_config  () =
-      { dry_run; spot_fleet_request_config }
+      { dry_run; spot_fleet_request_config } 
     let parse xml =
       Some
         {
@@ -18500,6 +19350,7 @@ module RequestSpotFleetRequest =
                (Util.option_bind (Xml.member "spotFleetRequestConfig" xml)
                   SpotFleetRequestConfigData.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -18510,6 +19361,7 @@ module RequestSpotFleetRequest =
                       v.spot_fleet_request_config)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -18519,20 +19371,21 @@ module RequestSpotFleetRequest =
                    v.spot_fleet_request_config));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         spot_fleet_request_config =
           (SpotFleetRequestConfigData.of_json
              (Util.of_option_exn (Json.lookup j "spot_fleet_request_config")))
-      }
+      } 
   end
 module DescribeReservedInstancesListingsResult =
   struct
     type t = {
-      reserved_instances_listings: ReservedInstancesListingList.t;}
+      reserved_instances_listings: ReservedInstancesListingList.t }
     let make ?(reserved_instances_listings= [])  () =
-      { reserved_instances_listings }
+      { reserved_instances_listings } 
     let parse xml =
       Some
         {
@@ -18542,6 +19395,7 @@ module DescribeReservedInstancesListingsResult =
                   (Xml.member "reservedInstancesListingsSet" xml)
                   ReservedInstancesListingList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -18550,6 +19404,7 @@ module DescribeReservedInstancesListingsResult =
                  ("ReservedInstancesListingsSet",
                    (ReservedInstancesListingList.to_query
                       v.reserved_instances_listings)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -18557,23 +19412,24 @@ module DescribeReservedInstancesListingsResult =
               ("reserved_instances_listings",
                 (ReservedInstancesListingList.to_json
                    v.reserved_instances_listings))])
+      
     let of_json j =
       {
         reserved_instances_listings =
           (ReservedInstancesListingList.of_json
              (Util.of_option_exn
                 (Json.lookup j "reserved_instances_listings")))
-      }
+      } 
   end
 module DeleteSecurityGroupRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      group_name: String.t option;
-      group_id: String.t option;}
+      dry_run: Boolean.t option ;
+      group_name: String.t option ;
+      group_id: String.t option }
     let make ?dry_run  ?group_name  ?group_id  () =
-      { dry_run; group_name; group_id }
+      { dry_run; group_name; group_id } 
     let parse xml =
       Some
         {
@@ -18584,6 +19440,7 @@ module DeleteSecurityGroupRequest =
           group_id =
             (Util.option_bind (Xml.member "GroupId" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -18593,6 +19450,7 @@ module DeleteSecurityGroupRequest =
              (fun f  -> Query.Pair ("GroupName", (String.to_query f)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -18602,6 +19460,7 @@ module DeleteSecurityGroupRequest =
              (fun f  -> ("group_name", (String.to_json f)));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -18609,14 +19468,15 @@ module DeleteSecurityGroupRequest =
           (Util.option_map (Json.lookup j "group_name") String.of_json);
         group_id =
           (Util.option_map (Json.lookup j "group_id") String.of_json)
-      }
+      } 
   end
 module DeleteVpcEndpointsRequest =
   struct
-    type t = {
-      dry_run: Boolean.t option;
-      vpc_endpoint_ids: ValueStringList.t;}
-    let make ?dry_run  ~vpc_endpoint_ids  () = { dry_run; vpc_endpoint_ids }
+    type t =
+      {
+      dry_run: Boolean.t option ;
+      vpc_endpoint_ids: ValueStringList.t }
+    let make ?dry_run  ~vpc_endpoint_ids  () = { dry_run; vpc_endpoint_ids } 
     let parse xml =
       Some
         {
@@ -18627,6 +19487,7 @@ module DeleteVpcEndpointsRequest =
                (Util.option_bind (Xml.member "VpcEndpointId" xml)
                   ValueStringList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -18636,6 +19497,7 @@ module DeleteVpcEndpointsRequest =
                    (ValueStringList.to_query v.vpc_endpoint_ids)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -18644,41 +19506,42 @@ module DeleteVpcEndpointsRequest =
                 (ValueStringList.to_json v.vpc_endpoint_ids));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         vpc_endpoint_ids =
           (ValueStringList.of_json
              (Util.of_option_exn (Json.lookup j "vpc_endpoint_ids")))
-      }
+      } 
   end
 module RunInstancesRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      image_id: String.t;
-      min_count: Integer.t;
-      max_count: Integer.t;
-      key_name: String.t option;
-      security_groups: SecurityGroupStringList.t;
-      security_group_ids: SecurityGroupIdStringList.t;
-      user_data: String.t option;
-      instance_type: InstanceType.t option;
-      placement: Placement.t option;
-      kernel_id: String.t option;
-      ramdisk_id: String.t option;
-      block_device_mappings: BlockDeviceMappingRequestList.t;
-      monitoring: RunInstancesMonitoringEnabled.t option;
-      subnet_id: String.t option;
-      disable_api_termination: Boolean.t option;
-      instance_initiated_shutdown_behavior: ShutdownBehavior.t option;
-      private_ip_address: String.t option;
-      client_token: String.t option;
-      additional_info: String.t option;
-      network_interfaces: InstanceNetworkInterfaceSpecificationList.t;
-      iam_instance_profile: IamInstanceProfileSpecification.t option;
-      ebs_optimized: Boolean.t option;}
+      dry_run: Boolean.t option ;
+      image_id: String.t ;
+      min_count: Integer.t ;
+      max_count: Integer.t ;
+      key_name: String.t option ;
+      security_groups: SecurityGroupStringList.t ;
+      security_group_ids: SecurityGroupIdStringList.t ;
+      user_data: String.t option ;
+      instance_type: InstanceType.t option ;
+      placement: Placement.t option ;
+      kernel_id: String.t option ;
+      ramdisk_id: String.t option ;
+      block_device_mappings: BlockDeviceMappingRequestList.t ;
+      monitoring: RunInstancesMonitoringEnabled.t option ;
+      subnet_id: String.t option ;
+      disable_api_termination: Boolean.t option ;
+      instance_initiated_shutdown_behavior: ShutdownBehavior.t option ;
+      private_ip_address: String.t option ;
+      client_token: String.t option ;
+      additional_info: String.t option ;
+      network_interfaces: InstanceNetworkInterfaceSpecificationList.t ;
+      iam_instance_profile: IamInstanceProfileSpecification.t option ;
+      ebs_optimized: Boolean.t option }
     let make ?dry_run  ~image_id  ~min_count  ~max_count  ?key_name 
       ?(security_groups= [])  ?(security_group_ids= [])  ?user_data 
       ?instance_type  ?placement  ?kernel_id  ?ramdisk_id 
@@ -18710,7 +19573,7 @@ module RunInstancesRequest =
         network_interfaces;
         iam_instance_profile;
         ebs_optimized
-      }
+      } 
     let parse xml =
       Some
         {
@@ -18779,6 +19642,7 @@ module RunInstancesRequest =
           ebs_optimized =
             (Util.option_bind (Xml.member "ebsOptimized" xml) Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -18845,6 +19709,7 @@ module RunInstancesRequest =
            Some (Query.Pair ("ImageId", (String.to_query v.image_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -18901,6 +19766,7 @@ module RunInstancesRequest =
            Some ("image_id", (String.to_json v.image_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -18959,13 +19825,13 @@ module RunInstancesRequest =
              IamInstanceProfileSpecification.of_json);
         ebs_optimized =
           (Util.option_map (Json.lookup j "ebs_optimized") Boolean.of_json)
-      }
+      } 
   end
 module StartInstancesResult =
   struct
     type t = {
-      starting_instances: InstanceStateChangeList.t;}
-    let make ?(starting_instances= [])  () = { starting_instances }
+      starting_instances: InstanceStateChangeList.t }
+    let make ?(starting_instances= [])  () = { starting_instances } 
     let parse xml =
       Some
         {
@@ -18974,6 +19840,7 @@ module StartInstancesResult =
                (Util.option_bind (Xml.member "instancesSet" xml)
                   InstanceStateChangeList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -18981,25 +19848,27 @@ module StartInstancesResult =
               (Query.Pair
                  ("InstancesSet",
                    (InstanceStateChangeList.to_query v.starting_instances)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("starting_instances",
                 (InstanceStateChangeList.to_json v.starting_instances))])
+      
     let of_json j =
       {
         starting_instances =
           (InstanceStateChangeList.of_json
              (Util.of_option_exn (Json.lookup j "starting_instances")))
-      }
+      } 
   end
 module DisableVpcClassicLinkRequest =
   struct
     type t = {
-      dry_run: Boolean.t option;
-      vpc_id: String.t;}
-    let make ?dry_run  ~vpc_id  () = { dry_run; vpc_id }
+      dry_run: Boolean.t option ;
+      vpc_id: String.t }
+    let make ?dry_run  ~vpc_id  () = { dry_run; vpc_id } 
     let parse xml =
       Some
         {
@@ -19009,35 +19878,38 @@ module DisableVpcClassicLinkRequest =
             (Xml.required "vpcId"
                (Util.option_bind (Xml.member "vpcId" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("VpcId", (String.to_query v.vpc_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("vpc_id", (String.to_json v.vpc_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         vpc_id =
           (String.of_json (Util.of_option_exn (Json.lookup j "vpc_id")))
-      }
+      } 
   end
 module DeleteNetworkAclEntryRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      network_acl_id: String.t;
-      rule_number: Integer.t;
-      egress: Boolean.t;}
+      dry_run: Boolean.t option ;
+      network_acl_id: String.t ;
+      rule_number: Integer.t ;
+      egress: Boolean.t }
     let make ?dry_run  ~network_acl_id  ~rule_number  ~egress  () =
-      { dry_run; network_acl_id; rule_number; egress }
+      { dry_run; network_acl_id; rule_number; egress } 
     let parse xml =
       Some
         {
@@ -19053,6 +19925,7 @@ module DeleteNetworkAclEntryRequest =
             (Xml.required "egress"
                (Util.option_bind (Xml.member "egress" xml) Boolean.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -19062,6 +19935,7 @@ module DeleteNetworkAclEntryRequest =
              (Query.Pair ("NetworkAclId", (String.to_query v.network_acl_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -19070,6 +19944,7 @@ module DeleteNetworkAclEntryRequest =
            Some ("network_acl_id", (String.to_json v.network_acl_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -19080,17 +19955,17 @@ module DeleteNetworkAclEntryRequest =
           (Integer.of_json (Util.of_option_exn (Json.lookup j "rule_number")));
         egress =
           (Boolean.of_json (Util.of_option_exn (Json.lookup j "egress")))
-      }
+      } 
   end
 module AllocateAddressResult =
   struct
     type t =
       {
-      public_ip: String.t option;
-      domain: DomainType.t option;
-      allocation_id: String.t option;}
+      public_ip: String.t option ;
+      domain: DomainType.t option ;
+      allocation_id: String.t option }
     let make ?public_ip  ?domain  ?allocation_id  () =
-      { public_ip; domain; allocation_id }
+      { public_ip; domain; allocation_id } 
     let parse xml =
       Some
         {
@@ -19101,6 +19976,7 @@ module AllocateAddressResult =
           allocation_id =
             (Util.option_bind (Xml.member "allocationId" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -19110,6 +19986,7 @@ module AllocateAddressResult =
              (fun f  -> Query.Pair ("Domain", (DomainType.to_query f)));
            Util.option_map v.public_ip
              (fun f  -> Query.Pair ("PublicIp", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -19119,6 +19996,7 @@ module AllocateAddressResult =
              (fun f  -> ("domain", (DomainType.to_json f)));
            Util.option_map v.public_ip
              (fun f  -> ("public_ip", (String.to_json f)))])
+      
     let of_json j =
       {
         public_ip =
@@ -19127,20 +20005,20 @@ module AllocateAddressResult =
           (Util.option_map (Json.lookup j "domain") DomainType.of_json);
         allocation_id =
           (Util.option_map (Json.lookup j "allocation_id") String.of_json)
-      }
+      } 
   end
 module DescribeImagesRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      image_ids: ImageIdStringList.t;
-      owners: OwnerStringList.t;
-      executable_users: ExecutableByStringList.t;
-      filters: FilterList.t;}
+      dry_run: Boolean.t option ;
+      image_ids: ImageIdStringList.t ;
+      owners: OwnerStringList.t ;
+      executable_users: ExecutableByStringList.t ;
+      filters: FilterList.t }
     let make ?dry_run  ?(image_ids= [])  ?(owners= [])  ?(executable_users=
       [])  ?(filters= [])  () =
-      { dry_run; image_ids; owners; executable_users; filters }
+      { dry_run; image_ids; owners; executable_users; filters } 
     let parse xml =
       Some
         {
@@ -19162,6 +20040,7 @@ module DescribeImagesRequest =
             (Util.of_option []
                (Util.option_bind (Xml.member "Filter" xml) FilterList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -19176,6 +20055,7 @@ module DescribeImagesRequest =
                 ("ImageId", (ImageIdStringList.to_query v.image_ids)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -19187,6 +20067,7 @@ module DescribeImagesRequest =
            Some ("image_ids", (ImageIdStringList.to_json v.image_ids));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -19201,17 +20082,17 @@ module DescribeImagesRequest =
              (Util.of_option_exn (Json.lookup j "executable_users")));
         filters =
           (FilterList.of_json (Util.of_option_exn (Json.lookup j "filters")))
-      }
+      } 
   end
 module ReplaceNetworkAclAssociationRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      association_id: String.t;
-      network_acl_id: String.t;}
+      dry_run: Boolean.t option ;
+      association_id: String.t ;
+      network_acl_id: String.t }
     let make ?dry_run  ~association_id  ~network_acl_id  () =
-      { dry_run; association_id; network_acl_id }
+      { dry_run; association_id; network_acl_id } 
     let parse xml =
       Some
         {
@@ -19225,6 +20106,7 @@ module ReplaceNetworkAclAssociationRequest =
             (Xml.required "networkAclId"
                (Util.option_bind (Xml.member "networkAclId" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -19236,6 +20118,7 @@ module ReplaceNetworkAclAssociationRequest =
                 ("AssociationId", (String.to_query v.association_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -19243,6 +20126,7 @@ module ReplaceNetworkAclAssociationRequest =
            Some ("association_id", (String.to_json v.association_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -19252,20 +20136,20 @@ module ReplaceNetworkAclAssociationRequest =
         network_acl_id =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "network_acl_id")))
-      }
+      } 
   end
 module DescribeVpcEndpointsRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      vpc_endpoint_ids: ValueStringList.t;
-      filters: FilterList.t;
-      max_results: Integer.t option;
-      next_token: String.t option;}
+      dry_run: Boolean.t option ;
+      vpc_endpoint_ids: ValueStringList.t ;
+      filters: FilterList.t ;
+      max_results: Integer.t option ;
+      next_token: String.t option }
     let make ?dry_run  ?(vpc_endpoint_ids= [])  ?(filters= [])  ?max_results 
       ?next_token  () =
-      { dry_run; vpc_endpoint_ids; filters; max_results; next_token }
+      { dry_run; vpc_endpoint_ids; filters; max_results; next_token } 
     let parse xml =
       Some
         {
@@ -19283,6 +20167,7 @@ module DescribeVpcEndpointsRequest =
           next_token =
             (Util.option_bind (Xml.member "NextToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -19297,6 +20182,7 @@ module DescribeVpcEndpointsRequest =
                   (ValueStringList.to_query v.vpc_endpoint_ids)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -19310,6 +20196,7 @@ module DescribeVpcEndpointsRequest =
                (ValueStringList.to_json v.vpc_endpoint_ids));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -19322,17 +20209,17 @@ module DescribeVpcEndpointsRequest =
           (Util.option_map (Json.lookup j "max_results") Integer.of_json);
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      }
+      } 
   end
 module DescribeVpcPeeringConnectionsRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      vpc_peering_connection_ids: ValueStringList.t;
-      filters: FilterList.t;}
+      dry_run: Boolean.t option ;
+      vpc_peering_connection_ids: ValueStringList.t ;
+      filters: FilterList.t }
     let make ?dry_run  ?(vpc_peering_connection_ids= [])  ?(filters= [])  ()
-      = { dry_run; vpc_peering_connection_ids; filters }
+      = { dry_run; vpc_peering_connection_ids; filters } 
     let parse xml =
       Some
         {
@@ -19346,6 +20233,7 @@ module DescribeVpcPeeringConnectionsRequest =
             (Util.of_option []
                (Util.option_bind (Xml.member "Filter" xml) FilterList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -19356,6 +20244,7 @@ module DescribeVpcPeeringConnectionsRequest =
                   (ValueStringList.to_query v.vpc_peering_connection_ids)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -19365,6 +20254,7 @@ module DescribeVpcPeeringConnectionsRequest =
                (ValueStringList.to_json v.vpc_peering_connection_ids));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -19373,13 +20263,13 @@ module DescribeVpcPeeringConnectionsRequest =
              (Util.of_option_exn (Json.lookup j "vpc_peering_connection_ids")));
         filters =
           (FilterList.of_json (Util.of_option_exn (Json.lookup j "filters")))
-      }
+      } 
   end
 module TerminateInstancesResult =
   struct
     type t = {
-      terminating_instances: InstanceStateChangeList.t;}
-    let make ?(terminating_instances= [])  () = { terminating_instances }
+      terminating_instances: InstanceStateChangeList.t }
+    let make ?(terminating_instances= [])  () = { terminating_instances } 
     let parse xml =
       Some
         {
@@ -19388,6 +20278,7 @@ module TerminateInstancesResult =
                (Util.option_bind (Xml.member "instancesSet" xml)
                   InstanceStateChangeList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -19395,27 +20286,29 @@ module TerminateInstancesResult =
               (Query.Pair
                  ("InstancesSet",
                    (InstanceStateChangeList.to_query v.terminating_instances)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("terminating_instances",
                 (InstanceStateChangeList.to_json v.terminating_instances))])
+      
     let of_json j =
       {
         terminating_instances =
           (InstanceStateChangeList.of_json
              (Util.of_option_exn (Json.lookup j "terminating_instances")))
-      }
+      } 
   end
 module DescribeMovingAddressesResult =
   struct
     type t =
       {
-      moving_address_statuses: MovingAddressStatusSet.t;
-      next_token: String.t option;}
+      moving_address_statuses: MovingAddressStatusSet.t ;
+      next_token: String.t option }
     let make ?(moving_address_statuses= [])  ?next_token  () =
-      { moving_address_statuses; next_token }
+      { moving_address_statuses; next_token } 
     let parse xml =
       Some
         {
@@ -19426,6 +20319,7 @@ module DescribeMovingAddressesResult =
           next_token =
             (Util.option_bind (Xml.member "nextToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -19435,6 +20329,7 @@ module DescribeMovingAddressesResult =
              (Query.Pair
                 ("MovingAddressStatusSet",
                   (MovingAddressStatusSet.to_query v.moving_address_statuses)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -19443,6 +20338,7 @@ module DescribeMovingAddressesResult =
            Some
              ("moving_address_statuses",
                (MovingAddressStatusSet.to_json v.moving_address_statuses))])
+      
     let of_json j =
       {
         moving_address_statuses =
@@ -19450,13 +20346,13 @@ module DescribeMovingAddressesResult =
              (Util.of_option_exn (Json.lookup j "moving_address_statuses")));
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      }
+      } 
   end
 module DescribeExportTasksRequest =
   struct
     type t = {
-      export_task_ids: ExportTaskIdStringList.t;}
-    let make ?(export_task_ids= [])  () = { export_task_ids }
+      export_task_ids: ExportTaskIdStringList.t }
+    let make ?(export_task_ids= [])  () = { export_task_ids } 
     let parse xml =
       Some
         {
@@ -19465,6 +20361,7 @@ module DescribeExportTasksRequest =
                (Util.option_bind (Xml.member "exportTaskId" xml)
                   ExportTaskIdStringList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -19472,38 +20369,40 @@ module DescribeExportTasksRequest =
               (Query.Pair
                  ("ExportTaskId",
                    (ExportTaskIdStringList.to_query v.export_task_ids)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("export_task_ids",
                 (ExportTaskIdStringList.to_json v.export_task_ids))])
+      
     let of_json j =
       {
         export_task_ids =
           (ExportTaskIdStringList.of_json
              (Util.of_option_exn (Json.lookup j "export_task_ids")))
-      }
+      } 
   end
 module DescribeReservedInstancesOfferingsRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
+      dry_run: Boolean.t option ;
       reserved_instances_offering_ids:
-        ReservedInstancesOfferingIdStringList.t;
-      instance_type: InstanceType.t option;
-      availability_zone: String.t option;
-      product_description: RIProductDescription.t option;
-      filters: FilterList.t;
-      instance_tenancy: Tenancy.t option;
-      offering_type: OfferingTypeValues.t option;
-      next_token: String.t option;
-      max_results: Integer.t option;
-      include_marketplace: Boolean.t option;
-      min_duration: Long.t option;
-      max_duration: Long.t option;
-      max_instance_count: Integer.t option;}
+        ReservedInstancesOfferingIdStringList.t ;
+      instance_type: InstanceType.t option ;
+      availability_zone: String.t option ;
+      product_description: RIProductDescription.t option ;
+      filters: FilterList.t ;
+      instance_tenancy: Tenancy.t option ;
+      offering_type: OfferingTypeValues.t option ;
+      next_token: String.t option ;
+      max_results: Integer.t option ;
+      include_marketplace: Boolean.t option ;
+      min_duration: Long.t option ;
+      max_duration: Long.t option ;
+      max_instance_count: Integer.t option }
     let make ?dry_run  ?(reserved_instances_offering_ids= [])  ?instance_type
        ?availability_zone  ?product_description  ?(filters= []) 
       ?instance_tenancy  ?offering_type  ?next_token  ?max_results 
@@ -19524,7 +20423,7 @@ module DescribeReservedInstancesOfferingsRequest =
         min_duration;
         max_duration;
         max_instance_count
-      }
+      } 
     let parse xml =
       Some
         {
@@ -19568,6 +20467,7 @@ module DescribeReservedInstancesOfferingsRequest =
             (Util.option_bind (Xml.member "MaxInstanceCount" xml)
                Integer.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -19607,6 +20507,7 @@ module DescribeReservedInstancesOfferingsRequest =
                      v.reserved_instances_offering_ids)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -19640,6 +20541,7 @@ module DescribeReservedInstancesOfferingsRequest =
                   v.reserved_instances_offering_ids));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -19676,13 +20578,13 @@ module DescribeReservedInstancesOfferingsRequest =
         max_instance_count =
           (Util.option_map (Json.lookup j "max_instance_count")
              Integer.of_json)
-      }
+      } 
   end
 module CreateVpcPeeringConnectionResult =
   struct
     type t = {
-      vpc_peering_connection: VpcPeeringConnection.t option;}
-    let make ?vpc_peering_connection  () = { vpc_peering_connection }
+      vpc_peering_connection: VpcPeeringConnection.t option }
+    let make ?vpc_peering_connection  () = { vpc_peering_connection } 
     let parse xml =
       Some
         {
@@ -19690,6 +20592,7 @@ module CreateVpcPeeringConnectionResult =
             (Util.option_bind (Xml.member "vpcPeeringConnection" xml)
                VpcPeeringConnection.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -19698,27 +20601,29 @@ module CreateVpcPeeringConnectionResult =
                  Query.Pair
                    ("VpcPeeringConnection",
                      (VpcPeeringConnection.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.vpc_peering_connection
               (fun f  ->
                  ("vpc_peering_connection", (VpcPeeringConnection.to_json f)))])
+      
     let of_json j =
       {
         vpc_peering_connection =
           (Util.option_map (Json.lookup j "vpc_peering_connection")
              VpcPeeringConnection.of_json)
-      }
+      } 
   end
 module DescribeInstanceStatusResult =
   struct
     type t =
       {
-      instance_statuses: InstanceStatusList.t;
-      next_token: String.t option;}
+      instance_statuses: InstanceStatusList.t ;
+      next_token: String.t option }
     let make ?(instance_statuses= [])  ?next_token  () =
-      { instance_statuses; next_token }
+      { instance_statuses; next_token } 
     let parse xml =
       Some
         {
@@ -19729,6 +20634,7 @@ module DescribeInstanceStatusResult =
           next_token =
             (Util.option_bind (Xml.member "nextToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -19738,6 +20644,7 @@ module DescribeInstanceStatusResult =
              (Query.Pair
                 ("InstanceStatusSet",
                   (InstanceStatusList.to_query v.instance_statuses)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -19746,6 +20653,7 @@ module DescribeInstanceStatusResult =
            Some
              ("instance_statuses",
                (InstanceStatusList.to_json v.instance_statuses))])
+      
     let of_json j =
       {
         instance_statuses =
@@ -19753,14 +20661,14 @@ module DescribeInstanceStatusResult =
              (Util.of_option_exn (Json.lookup j "instance_statuses")));
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      }
+      } 
   end
 module CreateReservedInstancesListingResult =
   struct
     type t = {
-      reserved_instances_listings: ReservedInstancesListingList.t;}
+      reserved_instances_listings: ReservedInstancesListingList.t }
     let make ?(reserved_instances_listings= [])  () =
-      { reserved_instances_listings }
+      { reserved_instances_listings } 
     let parse xml =
       Some
         {
@@ -19770,6 +20678,7 @@ module CreateReservedInstancesListingResult =
                   (Xml.member "reservedInstancesListingsSet" xml)
                   ReservedInstancesListingList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -19778,6 +20687,7 @@ module CreateReservedInstancesListingResult =
                  ("ReservedInstancesListingsSet",
                    (ReservedInstancesListingList.to_query
                       v.reserved_instances_listings)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -19785,21 +20695,22 @@ module CreateReservedInstancesListingResult =
               ("reserved_instances_listings",
                 (ReservedInstancesListingList.to_json
                    v.reserved_instances_listings))])
+      
     let of_json j =
       {
         reserved_instances_listings =
           (ReservedInstancesListingList.of_json
              (Util.of_option_exn
                 (Json.lookup j "reserved_instances_listings")))
-      }
+      } 
   end
 module DeleteInternetGatewayRequest =
   struct
     type t = {
-      dry_run: Boolean.t option;
-      internet_gateway_id: String.t;}
+      dry_run: Boolean.t option ;
+      internet_gateway_id: String.t }
     let make ?dry_run  ~internet_gateway_id  () =
-      { dry_run; internet_gateway_id }
+      { dry_run; internet_gateway_id } 
     let parse xml =
       Some
         {
@@ -19810,6 +20721,7 @@ module DeleteInternetGatewayRequest =
                (Util.option_bind (Xml.member "internetGatewayId" xml)
                   String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -19819,6 +20731,7 @@ module DeleteInternetGatewayRequest =
                    (String.to_query v.internet_gateway_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -19826,23 +20739,24 @@ module DeleteInternetGatewayRequest =
               ("internet_gateway_id", (String.to_json v.internet_gateway_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         internet_gateway_id =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "internet_gateway_id")))
-      }
+      } 
   end
 module DescribeNetworkAclsRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      network_acl_ids: ValueStringList.t;
-      filters: FilterList.t;}
+      dry_run: Boolean.t option ;
+      network_acl_ids: ValueStringList.t ;
+      filters: FilterList.t }
     let make ?dry_run  ?(network_acl_ids= [])  ?(filters= [])  () =
-      { dry_run; network_acl_ids; filters }
+      { dry_run; network_acl_ids; filters } 
     let parse xml =
       Some
         {
@@ -19856,6 +20770,7 @@ module DescribeNetworkAclsRequest =
             (Util.of_option []
                (Util.option_bind (Xml.member "Filter" xml) FilterList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -19866,6 +20781,7 @@ module DescribeNetworkAclsRequest =
                   (ValueStringList.to_query v.network_acl_ids)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -19874,6 +20790,7 @@ module DescribeNetworkAclsRequest =
              ("network_acl_ids", (ValueStringList.to_json v.network_acl_ids));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -19882,15 +20799,15 @@ module DescribeNetworkAclsRequest =
              (Util.of_option_exn (Json.lookup j "network_acl_ids")));
         filters =
           (FilterList.of_json (Util.of_option_exn (Json.lookup j "filters")))
-      }
+      } 
   end
 module CreateVpnConnectionRouteRequest =
   struct
     type t = {
-      vpn_connection_id: String.t;
-      destination_cidr_block: String.t;}
+      vpn_connection_id: String.t ;
+      destination_cidr_block: String.t }
     let make ~vpn_connection_id  ~destination_cidr_block  () =
-      { vpn_connection_id; destination_cidr_block }
+      { vpn_connection_id; destination_cidr_block } 
     let parse xml =
       Some
         {
@@ -19903,6 +20820,7 @@ module CreateVpnConnectionRouteRequest =
                (Util.option_bind (Xml.member "DestinationCidrBlock" xml)
                   String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -19913,6 +20831,7 @@ module CreateVpnConnectionRouteRequest =
            Some
              (Query.Pair
                 ("VpnConnectionId", (String.to_query v.vpn_connection_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -19920,6 +20839,7 @@ module CreateVpnConnectionRouteRequest =
               ("destination_cidr_block",
                 (String.to_json v.destination_cidr_block));
            Some ("vpn_connection_id", (String.to_json v.vpn_connection_id))])
+      
     let of_json j =
       {
         vpn_connection_id =
@@ -19928,17 +20848,17 @@ module CreateVpnConnectionRouteRequest =
         destination_cidr_block =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "destination_cidr_block")))
-      }
+      } 
   end
 module ConfirmProductInstanceRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      product_code: String.t;
-      instance_id: String.t;}
+      dry_run: Boolean.t option ;
+      product_code: String.t ;
+      instance_id: String.t }
     let make ?dry_run  ~product_code  ~instance_id  () =
-      { dry_run; product_code; instance_id }
+      { dry_run; product_code; instance_id } 
     let parse xml =
       Some
         {
@@ -19951,6 +20871,7 @@ module ConfirmProductInstanceRequest =
             (Xml.required "InstanceId"
                (Util.option_bind (Xml.member "InstanceId" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -19959,6 +20880,7 @@ module ConfirmProductInstanceRequest =
              (Query.Pair ("ProductCode", (String.to_query v.product_code)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -19966,6 +20888,7 @@ module ConfirmProductInstanceRequest =
            Some ("product_code", (String.to_json v.product_code));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -19973,18 +20896,18 @@ module ConfirmProductInstanceRequest =
           (String.of_json (Util.of_option_exn (Json.lookup j "product_code")));
         instance_id =
           (String.of_json (Util.of_option_exn (Json.lookup j "instance_id")))
-      }
+      } 
   end
 module ModifyNetworkInterfaceAttributeRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      network_interface_id: String.t;
-      description: AttributeValue.t option;
-      source_dest_check: AttributeBooleanValue.t option;
-      groups: SecurityGroupIdStringList.t;
-      attachment: NetworkInterfaceAttachmentChanges.t option;}
+      dry_run: Boolean.t option ;
+      network_interface_id: String.t ;
+      description: AttributeValue.t option ;
+      source_dest_check: AttributeBooleanValue.t option ;
+      groups: SecurityGroupIdStringList.t ;
+      attachment: NetworkInterfaceAttachmentChanges.t option }
     let make ?dry_run  ~network_interface_id  ?description 
       ?source_dest_check  ?(groups= [])  ?attachment  () =
       {
@@ -19994,7 +20917,7 @@ module ModifyNetworkInterfaceAttributeRequest =
         source_dest_check;
         groups;
         attachment
-      }
+      } 
     let parse xml =
       Some
         {
@@ -20018,6 +20941,7 @@ module ModifyNetworkInterfaceAttributeRequest =
             (Util.option_bind (Xml.member "attachment" xml)
                NetworkInterfaceAttachmentChanges.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -20043,6 +20967,7 @@ module ModifyNetworkInterfaceAttributeRequest =
                   (String.to_query v.network_interface_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -20061,6 +20986,7 @@ module ModifyNetworkInterfaceAttributeRequest =
                (String.to_json v.network_interface_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -20079,20 +21005,20 @@ module ModifyNetworkInterfaceAttributeRequest =
         attachment =
           (Util.option_map (Json.lookup j "attachment")
              NetworkInterfaceAttachmentChanges.of_json)
-      }
+      } 
   end
 module CreateVolumeRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      size: Integer.t option;
-      snapshot_id: String.t option;
-      availability_zone: String.t;
-      volume_type: VolumeType.t option;
-      iops: Integer.t option;
-      encrypted: Boolean.t option;
-      kms_key_id: String.t option;}
+      dry_run: Boolean.t option ;
+      size: Integer.t option ;
+      snapshot_id: String.t option ;
+      availability_zone: String.t ;
+      volume_type: VolumeType.t option ;
+      iops: Integer.t option ;
+      encrypted: Boolean.t option ;
+      kms_key_id: String.t option }
     let make ?dry_run  ?size  ?snapshot_id  ~availability_zone  ?volume_type 
       ?iops  ?encrypted  ?kms_key_id  () =
       {
@@ -20104,7 +21030,7 @@ module CreateVolumeRequest =
         iops;
         encrypted;
         kms_key_id
-      }
+      } 
     let parse xml =
       Some
         {
@@ -20125,6 +21051,7 @@ module CreateVolumeRequest =
           kms_key_id =
             (Util.option_bind (Xml.member "KmsKeyId" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -20145,6 +21072,7 @@ module CreateVolumeRequest =
              (fun f  -> Query.Pair ("Size", (Integer.to_query f)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -20161,6 +21089,7 @@ module CreateVolumeRequest =
            Util.option_map v.size (fun f  -> ("size", (Integer.to_json f)));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -20177,13 +21106,13 @@ module CreateVolumeRequest =
           (Util.option_map (Json.lookup j "encrypted") Boolean.of_json);
         kms_key_id =
           (Util.option_map (Json.lookup j "kms_key_id") String.of_json)
-      }
+      } 
   end
 module DescribeImagesResult =
   struct
     type t = {
-      images: ImageList.t;}
-    let make ?(images= [])  () = { images }
+      images: ImageList.t }
+    let make ?(images= [])  () = { images } 
     let parse xml =
       Some
         {
@@ -20191,25 +21120,28 @@ module DescribeImagesResult =
             (Util.of_option []
                (Util.option_bind (Xml.member "imagesSet" xml) ImageList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("ImagesSet", (ImageList.to_query v.images)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt [Some ("images", (ImageList.to_json v.images))])
+      
     let of_json j =
       {
         images =
           (ImageList.of_json (Util.of_option_exn (Json.lookup j "images")))
-      }
+      } 
   end
 module EnableVpcClassicLinkRequest =
   struct
     type t = {
-      dry_run: Boolean.t option;
-      vpc_id: String.t;}
-    let make ?dry_run  ~vpc_id  () = { dry_run; vpc_id }
+      dry_run: Boolean.t option ;
+      vpc_id: String.t }
+    let make ?dry_run  ~vpc_id  () = { dry_run; vpc_id } 
     let parse xml =
       Some
         {
@@ -20219,37 +21151,40 @@ module EnableVpcClassicLinkRequest =
             (Xml.required "vpcId"
                (Util.option_bind (Xml.member "vpcId" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("VpcId", (String.to_query v.vpc_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("vpc_id", (String.to_json v.vpc_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         vpc_id =
           (String.of_json (Util.of_option_exn (Json.lookup j "vpc_id")))
-      }
+      } 
   end
 module CreateReservedInstancesListingRequest =
   struct
     type t =
       {
-      reserved_instances_id: String.t;
-      instance_count: Integer.t;
-      price_schedules: PriceScheduleSpecificationList.t;
-      client_token: String.t;}
+      reserved_instances_id: String.t ;
+      instance_count: Integer.t ;
+      price_schedules: PriceScheduleSpecificationList.t ;
+      client_token: String.t }
     let make ~reserved_instances_id  ~instance_count  ~price_schedules 
       ~client_token  () =
       { reserved_instances_id; instance_count; price_schedules; client_token
-      }
+      } 
     let parse xml =
       Some
         {
@@ -20269,6 +21204,7 @@ module CreateReservedInstancesListingRequest =
             (Xml.required "clientToken"
                (Util.option_bind (Xml.member "clientToken" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -20285,6 +21221,7 @@ module CreateReservedInstancesListingRequest =
              (Query.Pair
                 ("ReservedInstancesId",
                   (String.to_query v.reserved_instances_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -20296,6 +21233,7 @@ module CreateReservedInstancesListingRequest =
            Some
              ("reserved_instances_id",
                (String.to_json v.reserved_instances_id))])
+      
     let of_json j =
       {
         reserved_instances_id =
@@ -20309,16 +21247,16 @@ module CreateReservedInstancesListingRequest =
              (Util.of_option_exn (Json.lookup j "price_schedules")));
         client_token =
           (String.of_json (Util.of_option_exn (Json.lookup j "client_token")))
-      }
+      } 
   end
 module DescribeImportSnapshotTasksResult =
   struct
     type t =
       {
-      import_snapshot_tasks: ImportSnapshotTaskList.t;
-      next_token: String.t option;}
+      import_snapshot_tasks: ImportSnapshotTaskList.t ;
+      next_token: String.t option }
     let make ?(import_snapshot_tasks= [])  ?next_token  () =
-      { import_snapshot_tasks; next_token }
+      { import_snapshot_tasks; next_token } 
     let parse xml =
       Some
         {
@@ -20329,6 +21267,7 @@ module DescribeImportSnapshotTasksResult =
           next_token =
             (Util.option_bind (Xml.member "nextToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -20338,6 +21277,7 @@ module DescribeImportSnapshotTasksResult =
              (Query.Pair
                 ("ImportSnapshotTaskSet",
                   (ImportSnapshotTaskList.to_query v.import_snapshot_tasks)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -20346,6 +21286,7 @@ module DescribeImportSnapshotTasksResult =
            Some
              ("import_snapshot_tasks",
                (ImportSnapshotTaskList.to_json v.import_snapshot_tasks))])
+      
     let of_json j =
       {
         import_snapshot_tasks =
@@ -20353,14 +21294,14 @@ module DescribeImportSnapshotTasksResult =
              (Util.of_option_exn (Json.lookup j "import_snapshot_tasks")));
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      }
+      } 
   end
 module DisassociateRouteTableRequest =
   struct
     type t = {
-      dry_run: Boolean.t option;
-      association_id: String.t;}
-    let make ?dry_run  ~association_id  () = { dry_run; association_id }
+      dry_run: Boolean.t option ;
+      association_id: String.t }
+    let make ?dry_run  ~association_id  () = { dry_run; association_id } 
     let parse xml =
       Some
         {
@@ -20371,6 +21312,7 @@ module DisassociateRouteTableRequest =
                (Util.option_bind (Xml.member "associationId" xml)
                   String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -20379,27 +21321,29 @@ module DisassociateRouteTableRequest =
                  ("AssociationId", (String.to_query v.association_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("association_id", (String.to_json v.association_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         association_id =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "association_id")))
-      }
+      } 
   end
 module DeleteVpnConnectionRequest =
   struct
     type t = {
-      dry_run: Boolean.t option;
-      vpn_connection_id: String.t;}
+      dry_run: Boolean.t option ;
+      vpn_connection_id: String.t }
     let make ?dry_run  ~vpn_connection_id  () =
-      { dry_run; vpn_connection_id }
+      { dry_run; vpn_connection_id } 
     let parse xml =
       Some
         {
@@ -20410,6 +21354,7 @@ module DeleteVpnConnectionRequest =
                (Util.option_bind (Xml.member "VpnConnectionId" xml)
                   String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -20418,28 +21363,30 @@ module DeleteVpnConnectionRequest =
                  ("VpnConnectionId", (String.to_query v.vpn_connection_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("vpn_connection_id", (String.to_json v.vpn_connection_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         vpn_connection_id =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "vpn_connection_id")))
-      }
+      } 
   end
 module CancelSpotInstanceRequestsRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      spot_instance_request_ids: SpotInstanceRequestIdList.t;}
+      dry_run: Boolean.t option ;
+      spot_instance_request_ids: SpotInstanceRequestIdList.t }
     let make ?dry_run  ~spot_instance_request_ids  () =
-      { dry_run; spot_instance_request_ids }
+      { dry_run; spot_instance_request_ids } 
     let parse xml =
       Some
         {
@@ -20450,6 +21397,7 @@ module CancelSpotInstanceRequestsRequest =
                (Util.option_bind (Xml.member "SpotInstanceRequestId" xml)
                   SpotInstanceRequestIdList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -20460,6 +21408,7 @@ module CancelSpotInstanceRequestsRequest =
                       v.spot_instance_request_ids)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -20469,23 +21418,24 @@ module CancelSpotInstanceRequestsRequest =
                    v.spot_instance_request_ids));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         spot_instance_request_ids =
           (SpotInstanceRequestIdList.of_json
              (Util.of_option_exn (Json.lookup j "spot_instance_request_ids")))
-      }
+      } 
   end
 module DescribeKeyPairsRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      key_names: KeyNameStringList.t;
-      filters: FilterList.t;}
+      dry_run: Boolean.t option ;
+      key_names: KeyNameStringList.t ;
+      filters: FilterList.t }
     let make ?dry_run  ?(key_names= [])  ?(filters= [])  () =
-      { dry_run; key_names; filters }
+      { dry_run; key_names; filters } 
     let parse xml =
       Some
         {
@@ -20499,6 +21449,7 @@ module DescribeKeyPairsRequest =
             (Util.of_option []
                (Util.option_bind (Xml.member "Filter" xml) FilterList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -20508,6 +21459,7 @@ module DescribeKeyPairsRequest =
                 ("KeyName", (KeyNameStringList.to_query v.key_names)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -20515,6 +21467,7 @@ module DescribeKeyPairsRequest =
            Some ("key_names", (KeyNameStringList.to_json v.key_names));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -20523,13 +21476,13 @@ module DescribeKeyPairsRequest =
              (Util.of_option_exn (Json.lookup j "key_names")));
         filters =
           (FilterList.of_json (Util.of_option_exn (Json.lookup j "filters")))
-      }
+      } 
   end
 module RequestSpotInstancesResult =
   struct
     type t = {
-      spot_instance_requests: SpotInstanceRequestList.t;}
-    let make ?(spot_instance_requests= [])  () = { spot_instance_requests }
+      spot_instance_requests: SpotInstanceRequestList.t }
+    let make ?(spot_instance_requests= [])  () = { spot_instance_requests } 
     let parse xml =
       Some
         {
@@ -20538,6 +21491,7 @@ module RequestSpotInstancesResult =
                (Util.option_bind (Xml.member "spotInstanceRequestSet" xml)
                   SpotInstanceRequestList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -20545,29 +21499,31 @@ module RequestSpotInstancesResult =
               (Query.Pair
                  ("SpotInstanceRequestSet",
                    (SpotInstanceRequestList.to_query v.spot_instance_requests)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("spot_instance_requests",
                 (SpotInstanceRequestList.to_json v.spot_instance_requests))])
+      
     let of_json j =
       {
         spot_instance_requests =
           (SpotInstanceRequestList.of_json
              (Util.of_option_exn (Json.lookup j "spot_instance_requests")))
-      }
+      } 
   end
 module DescribeReservedInstancesListingsRequest =
   struct
     type t =
       {
-      reserved_instances_id: String.t option;
-      reserved_instances_listing_id: String.t option;
-      filters: FilterList.t;}
+      reserved_instances_id: String.t option ;
+      reserved_instances_listing_id: String.t option ;
+      filters: FilterList.t }
     let make ?reserved_instances_id  ?reserved_instances_listing_id 
       ?(filters= [])  () =
-      { reserved_instances_id; reserved_instances_listing_id; filters }
+      { reserved_instances_id; reserved_instances_listing_id; filters } 
     let parse xml =
       Some
         {
@@ -20581,6 +21537,7 @@ module DescribeReservedInstancesListingsRequest =
             (Util.of_option []
                (Util.option_bind (Xml.member "filters" xml) FilterList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -20592,6 +21549,7 @@ module DescribeReservedInstancesListingsRequest =
            Util.option_map v.reserved_instances_id
              (fun f  ->
                 Query.Pair ("ReservedInstancesId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -20600,6 +21558,7 @@ module DescribeReservedInstancesListingsRequest =
              (fun f  -> ("reserved_instances_listing_id", (String.to_json f)));
            Util.option_map v.reserved_instances_id
              (fun f  -> ("reserved_instances_id", (String.to_json f)))])
+      
     let of_json j =
       {
         reserved_instances_id =
@@ -20610,21 +21569,21 @@ module DescribeReservedInstancesListingsRequest =
              String.of_json);
         filters =
           (FilterList.of_json (Util.of_option_exn (Json.lookup j "filters")))
-      }
+      } 
   end
 module DescribeSpotPriceHistoryRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      start_time: DateTime.t option;
-      end_time: DateTime.t option;
-      instance_types: InstanceTypeList.t;
-      product_descriptions: ProductDescriptionList.t;
-      filters: FilterList.t;
-      availability_zone: String.t option;
-      max_results: Integer.t option;
-      next_token: String.t option;}
+      dry_run: Boolean.t option ;
+      start_time: DateTime.t option ;
+      end_time: DateTime.t option ;
+      instance_types: InstanceTypeList.t ;
+      product_descriptions: ProductDescriptionList.t ;
+      filters: FilterList.t ;
+      availability_zone: String.t option ;
+      max_results: Integer.t option ;
+      next_token: String.t option }
     let make ?dry_run  ?start_time  ?end_time  ?(instance_types= []) 
       ?(product_descriptions= [])  ?(filters= [])  ?availability_zone 
       ?max_results  ?next_token  () =
@@ -20638,7 +21597,7 @@ module DescribeSpotPriceHistoryRequest =
         availability_zone;
         max_results;
         next_token
-      }
+      } 
     let parse xml =
       Some
         {
@@ -20667,6 +21626,7 @@ module DescribeSpotPriceHistoryRequest =
           next_token =
             (Util.option_bind (Xml.member "nextToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -20691,6 +21651,7 @@ module DescribeSpotPriceHistoryRequest =
              (fun f  -> Query.Pair ("StartTime", (DateTime.to_query f)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -20712,6 +21673,7 @@ module DescribeSpotPriceHistoryRequest =
              (fun f  -> ("start_time", (DateTime.to_json f)));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -20733,14 +21695,14 @@ module DescribeSpotPriceHistoryRequest =
           (Util.option_map (Json.lookup j "max_results") Integer.of_json);
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      }
+      } 
   end
 module MoveAddressToVpcResult =
   struct
     type t = {
-      allocation_id: String.t option;
-      status: Status.t option;}
-    let make ?allocation_id  ?status  () = { allocation_id; status }
+      allocation_id: String.t option ;
+      status: Status.t option }
+    let make ?allocation_id  ?status  () = { allocation_id; status } 
     let parse xml =
       Some
         {
@@ -20748,6 +21710,7 @@ module MoveAddressToVpcResult =
             (Util.option_bind (Xml.member "allocationId" xml) String.parse);
           status = (Util.option_bind (Xml.member "status" xml) Status.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -20755,6 +21718,7 @@ module MoveAddressToVpcResult =
               (fun f  -> Query.Pair ("Status", (Status.to_query f)));
            Util.option_map v.allocation_id
              (fun f  -> Query.Pair ("AllocationId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -20762,22 +21726,23 @@ module MoveAddressToVpcResult =
               (fun f  -> ("status", (Status.to_json f)));
            Util.option_map v.allocation_id
              (fun f  -> ("allocation_id", (String.to_json f)))])
+      
     let of_json j =
       {
         allocation_id =
           (Util.option_map (Json.lookup j "allocation_id") String.of_json);
         status = (Util.option_map (Json.lookup j "status") Status.of_json)
-      }
+      } 
   end
 module CancelImportTaskResult =
   struct
     type t =
       {
-      import_task_id: String.t option;
-      state: String.t option;
-      previous_state: String.t option;}
+      import_task_id: String.t option ;
+      state: String.t option ;
+      previous_state: String.t option }
     let make ?import_task_id  ?state  ?previous_state  () =
-      { import_task_id; state; previous_state }
+      { import_task_id; state; previous_state } 
     let parse xml =
       Some
         {
@@ -20787,6 +21752,7 @@ module CancelImportTaskResult =
           previous_state =
             (Util.option_bind (Xml.member "previousState" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -20796,6 +21762,7 @@ module CancelImportTaskResult =
              (fun f  -> Query.Pair ("State", (String.to_query f)));
            Util.option_map v.import_task_id
              (fun f  -> Query.Pair ("ImportTaskId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -20804,6 +21771,7 @@ module CancelImportTaskResult =
            Util.option_map v.state (fun f  -> ("state", (String.to_json f)));
            Util.option_map v.import_task_id
              (fun f  -> ("import_task_id", (String.to_json f)))])
+      
     let of_json j =
       {
         import_task_id =
@@ -20811,17 +21779,17 @@ module CancelImportTaskResult =
         state = (Util.option_map (Json.lookup j "state") String.of_json);
         previous_state =
           (Util.option_map (Json.lookup j "previous_state") String.of_json)
-      }
+      } 
   end
 module DeleteRouteRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      route_table_id: String.t;
-      destination_cidr_block: String.t;}
+      dry_run: Boolean.t option ;
+      route_table_id: String.t ;
+      destination_cidr_block: String.t }
     let make ?dry_run  ~route_table_id  ~destination_cidr_block  () =
-      { dry_run; route_table_id; destination_cidr_block }
+      { dry_run; route_table_id; destination_cidr_block } 
     let parse xml =
       Some
         {
@@ -20835,6 +21803,7 @@ module DeleteRouteRequest =
                (Util.option_bind (Xml.member "destinationCidrBlock" xml)
                   String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -20846,6 +21815,7 @@ module DeleteRouteRequest =
              (Query.Pair ("RouteTableId", (String.to_query v.route_table_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -20855,6 +21825,7 @@ module DeleteRouteRequest =
            Some ("route_table_id", (String.to_json v.route_table_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -20864,17 +21835,17 @@ module DeleteRouteRequest =
         destination_cidr_block =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "destination_cidr_block")))
-      }
+      } 
   end
 module ResetInstanceAttributeRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      instance_id: String.t;
-      attribute: InstanceAttributeName.t;}
+      dry_run: Boolean.t option ;
+      instance_id: String.t ;
+      attribute: InstanceAttributeName.t }
     let make ?dry_run  ~instance_id  ~attribute  () =
-      { dry_run; instance_id; attribute }
+      { dry_run; instance_id; attribute } 
     let parse xml =
       Some
         {
@@ -20888,6 +21859,7 @@ module ResetInstanceAttributeRequest =
                (Util.option_bind (Xml.member "attribute" xml)
                   InstanceAttributeName.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -20897,6 +21869,7 @@ module ResetInstanceAttributeRequest =
            Some (Query.Pair ("InstanceId", (String.to_query v.instance_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -20904,6 +21877,7 @@ module ResetInstanceAttributeRequest =
            Some ("instance_id", (String.to_json v.instance_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -20912,68 +21886,74 @@ module ResetInstanceAttributeRequest =
         attribute =
           (InstanceAttributeName.of_json
              (Util.of_option_exn (Json.lookup j "attribute")))
-      }
+      } 
   end
 module CopySnapshotResult =
   struct
     type t = {
-      snapshot_id: String.t option;}
-    let make ?snapshot_id  () = { snapshot_id }
+      snapshot_id: String.t option }
+    let make ?snapshot_id  () = { snapshot_id } 
     let parse xml =
       Some
         {
           snapshot_id =
             (Util.option_bind (Xml.member "snapshotId" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.snapshot_id
               (fun f  -> Query.Pair ("SnapshotId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.snapshot_id
               (fun f  -> ("snapshot_id", (String.to_json f)))])
+      
     let of_json j =
       {
         snapshot_id =
           (Util.option_map (Json.lookup j "snapshot_id") String.of_json)
-      }
+      } 
   end
 module CreateVpnGatewayResult =
   struct
     type t = {
-      vpn_gateway: VpnGateway.t option;}
-    let make ?vpn_gateway  () = { vpn_gateway }
+      vpn_gateway: VpnGateway.t option }
+    let make ?vpn_gateway  () = { vpn_gateway } 
     let parse xml =
       Some
         {
           vpn_gateway =
             (Util.option_bind (Xml.member "vpnGateway" xml) VpnGateway.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.vpn_gateway
               (fun f  -> Query.Pair ("VpnGateway", (VpnGateway.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.vpn_gateway
               (fun f  -> ("vpn_gateway", (VpnGateway.to_json f)))])
+      
     let of_json j =
       {
         vpn_gateway =
           (Util.option_map (Json.lookup j "vpn_gateway") VpnGateway.of_json)
-      }
+      } 
   end
 module DeleteVpcRequest =
   struct
     type t = {
-      dry_run: Boolean.t option;
-      vpc_id: String.t;}
-    let make ?dry_run  ~vpc_id  () = { dry_run; vpc_id }
+      dry_run: Boolean.t option ;
+      vpc_id: String.t }
+    let make ?dry_run  ~vpc_id  () = { dry_run; vpc_id } 
     let parse xml =
       Some
         {
@@ -20983,30 +21963,33 @@ module DeleteVpcRequest =
             (Xml.required "VpcId"
                (Util.option_bind (Xml.member "VpcId" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("VpcId", (String.to_query v.vpc_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("vpc_id", (String.to_json v.vpc_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         vpc_id =
           (String.of_json (Util.of_option_exn (Json.lookup j "vpc_id")))
-      }
+      } 
   end
 module CancelExportTaskRequest =
   struct
     type t = {
-      export_task_id: String.t;}
-    let make ~export_task_id  () = { export_task_id }
+      export_task_id: String.t }
+    let make ~export_task_id  () = { export_task_id } 
     let parse xml =
       Some
         {
@@ -21014,32 +21997,35 @@ module CancelExportTaskRequest =
             (Xml.required "exportTaskId"
                (Util.option_bind (Xml.member "exportTaskId" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some
               (Query.Pair
                  ("ExportTaskId", (String.to_query v.export_task_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("export_task_id", (String.to_json v.export_task_id))])
+      
     let of_json j =
       {
         export_task_id =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "export_task_id")))
-      }
+      } 
   end
 module DescribeCustomerGatewaysRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      customer_gateway_ids: CustomerGatewayIdStringList.t;
-      filters: FilterList.t;}
+      dry_run: Boolean.t option ;
+      customer_gateway_ids: CustomerGatewayIdStringList.t ;
+      filters: FilterList.t }
     let make ?dry_run  ?(customer_gateway_ids= [])  ?(filters= [])  () =
-      { dry_run; customer_gateway_ids; filters }
+      { dry_run; customer_gateway_ids; filters } 
     let parse xml =
       Some
         {
@@ -21053,6 +22039,7 @@ module DescribeCustomerGatewaysRequest =
             (Util.of_option []
                (Util.option_bind (Xml.member "Filter" xml) FilterList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -21064,6 +22051,7 @@ module DescribeCustomerGatewaysRequest =
                      v.customer_gateway_ids)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -21073,6 +22061,7 @@ module DescribeCustomerGatewaysRequest =
                (CustomerGatewayIdStringList.to_json v.customer_gateway_ids));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -21081,13 +22070,13 @@ module DescribeCustomerGatewaysRequest =
              (Util.of_option_exn (Json.lookup j "customer_gateway_ids")));
         filters =
           (FilterList.of_json (Util.of_option_exn (Json.lookup j "filters")))
-      }
+      } 
   end
 module DescribeExportTasksResult =
   struct
     type t = {
-      export_tasks: ExportTaskList.t;}
-    let make ?(export_tasks= [])  () = { export_tasks }
+      export_tasks: ExportTaskList.t }
+    let make ?(export_tasks= [])  () = { export_tasks } 
     let parse xml =
       Some
         {
@@ -21096,30 +22085,33 @@ module DescribeExportTasksResult =
                (Util.option_bind (Xml.member "exportTaskSet" xml)
                   ExportTaskList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some
               (Query.Pair
                  ("ExportTaskSet", (ExportTaskList.to_query v.export_tasks)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("export_tasks", (ExportTaskList.to_json v.export_tasks))])
+      
     let of_json j =
       {
         export_tasks =
           (ExportTaskList.of_json
              (Util.of_option_exn (Json.lookup j "export_tasks")))
-      }
+      } 
   end
 module DescribePrefixListsResult =
   struct
     type t = {
-      prefix_lists: PrefixListSet.t;
-      next_token: String.t option;}
+      prefix_lists: PrefixListSet.t ;
+      next_token: String.t option }
     let make ?(prefix_lists= [])  ?next_token  () =
-      { prefix_lists; next_token }
+      { prefix_lists; next_token } 
     let parse xml =
       Some
         {
@@ -21130,6 +22122,7 @@ module DescribePrefixListsResult =
           next_token =
             (Util.option_bind (Xml.member "nextToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -21138,12 +22131,14 @@ module DescribePrefixListsResult =
            Some
              (Query.Pair
                 ("PrefixListSet", (PrefixListSet.to_query v.prefix_lists)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.next_token
               (fun f  -> ("next_token", (String.to_json f)));
            Some ("prefix_lists", (PrefixListSet.to_json v.prefix_lists))])
+      
     let of_json j =
       {
         prefix_lists =
@@ -21151,13 +22146,13 @@ module DescribePrefixListsResult =
              (Util.of_option_exn (Json.lookup j "prefix_lists")));
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      }
+      } 
   end
 module UnmonitorInstancesResult =
   struct
     type t = {
-      instance_monitorings: InstanceMonitoringList.t;}
-    let make ?(instance_monitorings= [])  () = { instance_monitorings }
+      instance_monitorings: InstanceMonitoringList.t }
+    let make ?(instance_monitorings= [])  () = { instance_monitorings } 
     let parse xml =
       Some
         {
@@ -21166,6 +22161,7 @@ module UnmonitorInstancesResult =
                (Util.option_bind (Xml.member "instancesSet" xml)
                   InstanceMonitoringList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -21173,24 +22169,26 @@ module UnmonitorInstancesResult =
               (Query.Pair
                  ("InstancesSet",
                    (InstanceMonitoringList.to_query v.instance_monitorings)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("instance_monitorings",
                 (InstanceMonitoringList.to_json v.instance_monitorings))])
+      
     let of_json j =
       {
         instance_monitorings =
           (InstanceMonitoringList.of_json
              (Util.of_option_exn (Json.lookup j "instance_monitorings")))
-      }
+      } 
   end
 module DescribeSecurityGroupsResult =
   struct
     type t = {
-      security_groups: SecurityGroupList.t;}
-    let make ?(security_groups= [])  () = { security_groups }
+      security_groups: SecurityGroupList.t }
+    let make ?(security_groups= [])  () = { security_groups } 
     let parse xml =
       Some
         {
@@ -21199,6 +22197,7 @@ module DescribeSecurityGroupsResult =
                (Util.option_bind (Xml.member "securityGroupInfo" xml)
                   SecurityGroupList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -21206,25 +22205,27 @@ module DescribeSecurityGroupsResult =
               (Query.Pair
                  ("SecurityGroupInfo",
                    (SecurityGroupList.to_query v.security_groups)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("security_groups",
                 (SecurityGroupList.to_json v.security_groups))])
+      
     let of_json j =
       {
         security_groups =
           (SecurityGroupList.of_json
              (Util.of_option_exn (Json.lookup j "security_groups")))
-      }
+      } 
   end
 module DeleteSubnetRequest =
   struct
     type t = {
-      dry_run: Boolean.t option;
-      subnet_id: String.t;}
-    let make ?dry_run  ~subnet_id  () = { dry_run; subnet_id }
+      dry_run: Boolean.t option ;
+      subnet_id: String.t }
+    let make ?dry_run  ~subnet_id  () = { dry_run; subnet_id } 
     let parse xml =
       Some
         {
@@ -21234,32 +22235,35 @@ module DeleteSubnetRequest =
             (Xml.required "SubnetId"
                (Util.option_bind (Xml.member "SubnetId" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("SubnetId", (String.to_query v.subnet_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("subnet_id", (String.to_json v.subnet_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         subnet_id =
           (String.of_json (Util.of_option_exn (Json.lookup j "subnet_id")))
-      }
+      } 
   end
 module DescribeVpcEndpointServicesResult =
   struct
     type t = {
-      service_names: ValueStringList.t;
-      next_token: String.t option;}
+      service_names: ValueStringList.t ;
+      next_token: String.t option }
     let make ?(service_names= [])  ?next_token  () =
-      { service_names; next_token }
+      { service_names; next_token } 
     let parse xml =
       Some
         {
@@ -21270,6 +22274,7 @@ module DescribeVpcEndpointServicesResult =
           next_token =
             (Util.option_bind (Xml.member "nextToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -21279,12 +22284,14 @@ module DescribeVpcEndpointServicesResult =
              (Query.Pair
                 ("ServiceNameSet",
                   (ValueStringList.to_query v.service_names)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.next_token
               (fun f  -> ("next_token", (String.to_json f)));
            Some ("service_names", (ValueStringList.to_json v.service_names))])
+      
     let of_json j =
       {
         service_names =
@@ -21292,17 +22299,17 @@ module DescribeVpcEndpointServicesResult =
              (Util.of_option_exn (Json.lookup j "service_names")));
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      }
+      } 
   end
 module DescribeVpnConnectionsRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      vpn_connection_ids: VpnConnectionIdStringList.t;
-      filters: FilterList.t;}
+      dry_run: Boolean.t option ;
+      vpn_connection_ids: VpnConnectionIdStringList.t ;
+      filters: FilterList.t }
     let make ?dry_run  ?(vpn_connection_ids= [])  ?(filters= [])  () =
-      { dry_run; vpn_connection_ids; filters }
+      { dry_run; vpn_connection_ids; filters } 
     let parse xml =
       Some
         {
@@ -21316,6 +22323,7 @@ module DescribeVpnConnectionsRequest =
             (Util.of_option []
                (Util.option_bind (Xml.member "Filter" xml) FilterList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -21326,6 +22334,7 @@ module DescribeVpnConnectionsRequest =
                   (VpnConnectionIdStringList.to_query v.vpn_connection_ids)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -21335,6 +22344,7 @@ module DescribeVpnConnectionsRequest =
                (VpnConnectionIdStringList.to_json v.vpn_connection_ids));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -21343,17 +22353,17 @@ module DescribeVpnConnectionsRequest =
              (Util.of_option_exn (Json.lookup j "vpn_connection_ids")));
         filters =
           (FilterList.of_json (Util.of_option_exn (Json.lookup j "filters")))
-      }
+      } 
   end
 module GetConsoleOutputResult =
   struct
     type t =
       {
-      instance_id: String.t option;
-      timestamp: DateTime.t option;
-      output: String.t option;}
+      instance_id: String.t option ;
+      timestamp: DateTime.t option ;
+      output: String.t option }
     let make ?instance_id  ?timestamp  ?output  () =
-      { instance_id; timestamp; output }
+      { instance_id; timestamp; output } 
     let parse xml =
       Some
         {
@@ -21363,6 +22373,7 @@ module GetConsoleOutputResult =
             (Util.option_bind (Xml.member "timestamp" xml) DateTime.parse);
           output = (Util.option_bind (Xml.member "output" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -21372,6 +22383,7 @@ module GetConsoleOutputResult =
              (fun f  -> Query.Pair ("Timestamp", (DateTime.to_query f)));
            Util.option_map v.instance_id
              (fun f  -> Query.Pair ("InstanceId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -21381,6 +22393,7 @@ module GetConsoleOutputResult =
              (fun f  -> ("timestamp", (DateTime.to_json f)));
            Util.option_map v.instance_id
              (fun f  -> ("instance_id", (String.to_json f)))])
+      
     let of_json j =
       {
         instance_id =
@@ -21388,17 +22401,17 @@ module GetConsoleOutputResult =
         timestamp =
           (Util.option_map (Json.lookup j "timestamp") DateTime.of_json);
         output = (Util.option_map (Json.lookup j "output") String.of_json)
-      }
+      } 
   end
 module DescribeSpotFleetInstancesResponse =
   struct
     type t =
       {
-      spot_fleet_request_id: String.t;
-      active_instances: ActiveInstanceSet.t;
-      next_token: String.t option;}
+      spot_fleet_request_id: String.t ;
+      active_instances: ActiveInstanceSet.t ;
+      next_token: String.t option }
     let make ~spot_fleet_request_id  ~active_instances  ?next_token  () =
-      { spot_fleet_request_id; active_instances; next_token }
+      { spot_fleet_request_id; active_instances; next_token } 
     let parse xml =
       Some
         {
@@ -21413,6 +22426,7 @@ module DescribeSpotFleetInstancesResponse =
           next_token =
             (Util.option_bind (Xml.member "nextToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -21426,6 +22440,7 @@ module DescribeSpotFleetInstancesResponse =
              (Query.Pair
                 ("SpotFleetRequestId",
                   (String.to_query v.spot_fleet_request_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -21437,6 +22452,7 @@ module DescribeSpotFleetInstancesResponse =
            Some
              ("spot_fleet_request_id",
                (String.to_json v.spot_fleet_request_id))])
+      
     let of_json j =
       {
         spot_fleet_request_id =
@@ -21447,17 +22463,17 @@ module DescribeSpotFleetInstancesResponse =
              (Util.of_option_exn (Json.lookup j "active_instances")));
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      }
+      } 
   end
 module DescribeSnapshotAttributeRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      snapshot_id: String.t;
-      attribute: SnapshotAttributeName.t;}
+      dry_run: Boolean.t option ;
+      snapshot_id: String.t ;
+      attribute: SnapshotAttributeName.t }
     let make ?dry_run  ~snapshot_id  ~attribute  () =
-      { dry_run; snapshot_id; attribute }
+      { dry_run; snapshot_id; attribute } 
     let parse xml =
       Some
         {
@@ -21471,6 +22487,7 @@ module DescribeSnapshotAttributeRequest =
                (Util.option_bind (Xml.member "Attribute" xml)
                   SnapshotAttributeName.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -21480,6 +22497,7 @@ module DescribeSnapshotAttributeRequest =
            Some (Query.Pair ("SnapshotId", (String.to_query v.snapshot_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -21487,6 +22505,7 @@ module DescribeSnapshotAttributeRequest =
            Some ("snapshot_id", (String.to_json v.snapshot_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -21495,15 +22514,15 @@ module DescribeSnapshotAttributeRequest =
         attribute =
           (SnapshotAttributeName.of_json
              (Util.of_option_exn (Json.lookup j "attribute")))
-      }
+      } 
   end
 module DeleteVpnConnectionRouteRequest =
   struct
     type t = {
-      vpn_connection_id: String.t;
-      destination_cidr_block: String.t;}
+      vpn_connection_id: String.t ;
+      destination_cidr_block: String.t }
     let make ~vpn_connection_id  ~destination_cidr_block  () =
-      { vpn_connection_id; destination_cidr_block }
+      { vpn_connection_id; destination_cidr_block } 
     let parse xml =
       Some
         {
@@ -21516,6 +22535,7 @@ module DeleteVpnConnectionRouteRequest =
                (Util.option_bind (Xml.member "DestinationCidrBlock" xml)
                   String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -21526,6 +22546,7 @@ module DeleteVpnConnectionRouteRequest =
            Some
              (Query.Pair
                 ("VpnConnectionId", (String.to_query v.vpn_connection_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -21533,6 +22554,7 @@ module DeleteVpnConnectionRouteRequest =
               ("destination_cidr_block",
                 (String.to_json v.destination_cidr_block));
            Some ("vpn_connection_id", (String.to_json v.vpn_connection_id))])
+      
     let of_json j =
       {
         vpn_connection_id =
@@ -21541,16 +22563,16 @@ module DeleteVpnConnectionRouteRequest =
         destination_cidr_block =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "destination_cidr_block")))
-      }
+      } 
   end
 module CreateSpotDatafeedSubscriptionRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      bucket: String.t;
-      prefix: String.t option;}
-    let make ?dry_run  ~bucket  ?prefix  () = { dry_run; bucket; prefix }
+      dry_run: Boolean.t option ;
+      bucket: String.t ;
+      prefix: String.t option }
+    let make ?dry_run  ~bucket  ?prefix  () = { dry_run; bucket; prefix } 
     let parse xml =
       Some
         {
@@ -21561,6 +22583,7 @@ module CreateSpotDatafeedSubscriptionRequest =
                (Util.option_bind (Xml.member "bucket" xml) String.parse));
           prefix = (Util.option_bind (Xml.member "prefix" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -21569,6 +22592,7 @@ module CreateSpotDatafeedSubscriptionRequest =
            Some (Query.Pair ("Bucket", (String.to_query v.bucket)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -21577,23 +22601,24 @@ module CreateSpotDatafeedSubscriptionRequest =
            Some ("bucket", (String.to_json v.bucket));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         bucket =
           (String.of_json (Util.of_option_exn (Json.lookup j "bucket")));
         prefix = (Util.option_map (Json.lookup j "prefix") String.of_json)
-      }
+      } 
   end
 module DetachClassicLinkVpcRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      instance_id: String.t;
-      vpc_id: String.t;}
+      dry_run: Boolean.t option ;
+      instance_id: String.t ;
+      vpc_id: String.t }
     let make ?dry_run  ~instance_id  ~vpc_id  () =
-      { dry_run; instance_id; vpc_id }
+      { dry_run; instance_id; vpc_id } 
     let parse xml =
       Some
         {
@@ -21606,6 +22631,7 @@ module DetachClassicLinkVpcRequest =
             (Xml.required "vpcId"
                (Util.option_bind (Xml.member "vpcId" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -21613,6 +22639,7 @@ module DetachClassicLinkVpcRequest =
            Some (Query.Pair ("InstanceId", (String.to_query v.instance_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -21620,6 +22647,7 @@ module DetachClassicLinkVpcRequest =
            Some ("instance_id", (String.to_json v.instance_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -21627,18 +22655,18 @@ module DetachClassicLinkVpcRequest =
           (String.of_json (Util.of_option_exn (Json.lookup j "instance_id")));
         vpc_id =
           (String.of_json (Util.of_option_exn (Json.lookup j "vpc_id")))
-      }
+      } 
   end
 module AttachClassicLinkVpcRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      instance_id: String.t;
-      vpc_id: String.t;
-      groups: GroupIdStringList.t;}
+      dry_run: Boolean.t option ;
+      instance_id: String.t ;
+      vpc_id: String.t ;
+      groups: GroupIdStringList.t }
     let make ?dry_run  ~instance_id  ~vpc_id  ~groups  () =
-      { dry_run; instance_id; vpc_id; groups }
+      { dry_run; instance_id; vpc_id; groups } 
     let parse xml =
       Some
         {
@@ -21655,6 +22683,7 @@ module AttachClassicLinkVpcRequest =
                (Util.option_bind (Xml.member "SecurityGroupId" xml)
                   GroupIdStringList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -21665,6 +22694,7 @@ module AttachClassicLinkVpcRequest =
            Some (Query.Pair ("InstanceId", (String.to_query v.instance_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -21673,6 +22703,7 @@ module AttachClassicLinkVpcRequest =
            Some ("instance_id", (String.to_json v.instance_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -21683,27 +22714,27 @@ module AttachClassicLinkVpcRequest =
         groups =
           (GroupIdStringList.of_json
              (Util.of_option_exn (Json.lookup j "groups")))
-      }
+      } 
   end
 module ModifyInstanceAttributeRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      instance_id: String.t;
-      attribute: InstanceAttributeName.t option;
-      value: String.t option;
-      block_device_mappings: InstanceBlockDeviceMappingSpecificationList.t;
-      source_dest_check: AttributeBooleanValue.t option;
-      disable_api_termination: AttributeBooleanValue.t option;
-      instance_type: AttributeValue.t option;
-      kernel: AttributeValue.t option;
-      ramdisk: AttributeValue.t option;
-      user_data: BlobAttributeValue.t option;
-      instance_initiated_shutdown_behavior: AttributeValue.t option;
-      groups: GroupIdStringList.t;
-      ebs_optimized: AttributeBooleanValue.t option;
-      sriov_net_support: AttributeValue.t option;}
+      dry_run: Boolean.t option ;
+      instance_id: String.t ;
+      attribute: InstanceAttributeName.t option ;
+      value: String.t option ;
+      block_device_mappings: InstanceBlockDeviceMappingSpecificationList.t ;
+      source_dest_check: AttributeBooleanValue.t option ;
+      disable_api_termination: AttributeBooleanValue.t option ;
+      instance_type: AttributeValue.t option ;
+      kernel: AttributeValue.t option ;
+      ramdisk: AttributeValue.t option ;
+      user_data: BlobAttributeValue.t option ;
+      instance_initiated_shutdown_behavior: AttributeValue.t option ;
+      groups: GroupIdStringList.t ;
+      ebs_optimized: AttributeBooleanValue.t option ;
+      sriov_net_support: AttributeValue.t option }
     let make ?dry_run  ~instance_id  ?attribute  ?value 
       ?(block_device_mappings= [])  ?source_dest_check 
       ?disable_api_termination  ?instance_type  ?kernel  ?ramdisk  ?user_data
@@ -21725,7 +22756,7 @@ module ModifyInstanceAttributeRequest =
         groups;
         ebs_optimized;
         sriov_net_support
-      }
+      } 
     let parse xml =
       Some
         {
@@ -21773,6 +22804,7 @@ module ModifyInstanceAttributeRequest =
             (Util.option_bind (Xml.member "sriovNetSupport" xml)
                AttributeValue.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -21822,6 +22854,7 @@ module ModifyInstanceAttributeRequest =
            Some (Query.Pair ("InstanceId", (String.to_query v.instance_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -21859,6 +22892,7 @@ module ModifyInstanceAttributeRequest =
            Some ("instance_id", (String.to_json v.instance_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -21900,13 +22934,13 @@ module ModifyInstanceAttributeRequest =
         sriov_net_support =
           (Util.option_map (Json.lookup j "sriov_net_support")
              AttributeValue.of_json)
-      }
+      } 
   end
 module DeleteFlowLogsRequest =
   struct
     type t = {
-      flow_log_ids: ValueStringList.t;}
-    let make ~flow_log_ids  () = { flow_log_ids }
+      flow_log_ids: ValueStringList.t }
+    let make ~flow_log_ids  () = { flow_log_ids } 
     let parse xml =
       Some
         {
@@ -21915,30 +22949,33 @@ module DeleteFlowLogsRequest =
                (Util.option_bind (Xml.member "FlowLogId" xml)
                   ValueStringList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some
               (Query.Pair
                  ("FlowLogId", (ValueStringList.to_query v.flow_log_ids)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("flow_log_ids", (ValueStringList.to_json v.flow_log_ids))])
+      
     let of_json j =
       {
         flow_log_ids =
           (ValueStringList.of_json
              (Util.of_option_exn (Json.lookup j "flow_log_ids")))
-      }
+      } 
   end
 module EnableVgwRoutePropagationRequest =
   struct
     type t = {
-      route_table_id: String.t;
-      gateway_id: String.t;}
+      route_table_id: String.t ;
+      gateway_id: String.t }
     let make ~route_table_id  ~gateway_id  () =
-      { route_table_id; gateway_id }
+      { route_table_id; gateway_id } 
     let parse xml =
       Some
         {
@@ -21949,17 +22986,20 @@ module EnableVgwRoutePropagationRequest =
             (Xml.required "GatewayId"
                (Util.option_bind (Xml.member "GatewayId" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("GatewayId", (String.to_query v.gateway_id)));
            Some
              (Query.Pair ("RouteTableId", (String.to_query v.route_table_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("gateway_id", (String.to_json v.gateway_id));
            Some ("route_table_id", (String.to_json v.route_table_id))])
+      
     let of_json j =
       {
         route_table_id =
@@ -21967,13 +23007,13 @@ module EnableVgwRoutePropagationRequest =
              (Util.of_option_exn (Json.lookup j "route_table_id")));
         gateway_id =
           (String.of_json (Util.of_option_exn (Json.lookup j "gateway_id")))
-      }
+      } 
   end
 module DescribeInternetGatewaysResult =
   struct
     type t = {
-      internet_gateways: InternetGatewayList.t;}
-    let make ?(internet_gateways= [])  () = { internet_gateways }
+      internet_gateways: InternetGatewayList.t }
+    let make ?(internet_gateways= [])  () = { internet_gateways } 
     let parse xml =
       Some
         {
@@ -21982,6 +23022,7 @@ module DescribeInternetGatewaysResult =
                (Util.option_bind (Xml.member "internetGatewaySet" xml)
                   InternetGatewayList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -21989,28 +23030,30 @@ module DescribeInternetGatewaysResult =
               (Query.Pair
                  ("InternetGatewaySet",
                    (InternetGatewayList.to_query v.internet_gateways)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("internet_gateways",
                 (InternetGatewayList.to_json v.internet_gateways))])
+      
     let of_json j =
       {
         internet_gateways =
           (InternetGatewayList.of_json
              (Util.of_option_exn (Json.lookup j "internet_gateways")))
-      }
+      } 
   end
 module DescribeNetworkInterfacesRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      network_interface_ids: NetworkInterfaceIdList.t;
-      filters: FilterList.t;}
+      dry_run: Boolean.t option ;
+      network_interface_ids: NetworkInterfaceIdList.t ;
+      filters: FilterList.t }
     let make ?dry_run  ?(network_interface_ids= [])  ?(filters= [])  () =
-      { dry_run; network_interface_ids; filters }
+      { dry_run; network_interface_ids; filters } 
     let parse xml =
       Some
         {
@@ -22024,6 +23067,7 @@ module DescribeNetworkInterfacesRequest =
             (Util.of_option []
                (Util.option_bind (Xml.member "filter" xml) FilterList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -22034,6 +23078,7 @@ module DescribeNetworkInterfacesRequest =
                   (NetworkInterfaceIdList.to_query v.network_interface_ids)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -22043,6 +23088,7 @@ module DescribeNetworkInterfacesRequest =
                (NetworkInterfaceIdList.to_json v.network_interface_ids));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -22051,16 +23097,16 @@ module DescribeNetworkInterfacesRequest =
              (Util.of_option_exn (Json.lookup j "network_interface_ids")));
         filters =
           (FilterList.of_json (Util.of_option_exn (Json.lookup j "filters")))
-      }
+      } 
   end
 module DescribeAccountAttributesRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      attribute_names: AccountAttributeNameStringList.t;}
+      dry_run: Boolean.t option ;
+      attribute_names: AccountAttributeNameStringList.t }
     let make ?dry_run  ?(attribute_names= [])  () =
-      { dry_run; attribute_names }
+      { dry_run; attribute_names } 
     let parse xml =
       Some
         {
@@ -22071,6 +23117,7 @@ module DescribeAccountAttributesRequest =
                (Util.option_bind (Xml.member "attributeName" xml)
                   AccountAttributeNameStringList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -22080,6 +23127,7 @@ module DescribeAccountAttributesRequest =
                    (AccountAttributeNameStringList.to_query v.attribute_names)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -22088,23 +23136,24 @@ module DescribeAccountAttributesRequest =
                 (AccountAttributeNameStringList.to_json v.attribute_names));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         attribute_names =
           (AccountAttributeNameStringList.of_json
              (Util.of_option_exn (Json.lookup j "attribute_names")))
-      }
+      } 
   end
 module DescribeConversionTasksRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      filters: FilterList.t;
-      conversion_task_ids: ConversionIdStringList.t;}
+      dry_run: Boolean.t option ;
+      filters: FilterList.t ;
+      conversion_task_ids: ConversionIdStringList.t }
     let make ?dry_run  ?(filters= [])  ?(conversion_task_ids= [])  () =
-      { dry_run; filters; conversion_task_ids }
+      { dry_run; filters; conversion_task_ids } 
     let parse xml =
       Some
         {
@@ -22118,6 +23167,7 @@ module DescribeConversionTasksRequest =
                (Util.option_bind (Xml.member "conversionTaskId" xml)
                   ConversionIdStringList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -22128,6 +23178,7 @@ module DescribeConversionTasksRequest =
            Some (Query.Pair ("Filter", (FilterList.to_query v.filters)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -22137,6 +23188,7 @@ module DescribeConversionTasksRequest =
            Some ("filters", (FilterList.to_json v.filters));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -22145,18 +23197,18 @@ module DescribeConversionTasksRequest =
         conversion_task_ids =
           (ConversionIdStringList.of_json
              (Util.of_option_exn (Json.lookup j "conversion_task_ids")))
-      }
+      } 
   end
 module ModifyVpcEndpointRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      vpc_endpoint_id: String.t;
-      reset_policy: Boolean.t option;
-      policy_document: String.t option;
-      add_route_table_ids: ValueStringList.t;
-      remove_route_table_ids: ValueStringList.t;}
+      dry_run: Boolean.t option ;
+      vpc_endpoint_id: String.t ;
+      reset_policy: Boolean.t option ;
+      policy_document: String.t option ;
+      add_route_table_ids: ValueStringList.t ;
+      remove_route_table_ids: ValueStringList.t }
     let make ?dry_run  ~vpc_endpoint_id  ?reset_policy  ?policy_document 
       ?(add_route_table_ids= [])  ?(remove_route_table_ids= [])  () =
       {
@@ -22166,7 +23218,7 @@ module ModifyVpcEndpointRequest =
         policy_document;
         add_route_table_ids;
         remove_route_table_ids
-      }
+      } 
     let parse xml =
       Some
         {
@@ -22189,6 +23241,7 @@ module ModifyVpcEndpointRequest =
                (Util.option_bind (Xml.member "RemoveRouteTableId" xml)
                   ValueStringList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -22209,6 +23262,7 @@ module ModifyVpcEndpointRequest =
                 ("VpcEndpointId", (String.to_query v.vpc_endpoint_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -22225,6 +23279,7 @@ module ModifyVpcEndpointRequest =
            Some ("vpc_endpoint_id", (String.to_json v.vpc_endpoint_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -22241,17 +23296,17 @@ module ModifyVpcEndpointRequest =
         remove_route_table_ids =
           (ValueStringList.of_json
              (Util.of_option_exn (Json.lookup j "remove_route_table_ids")))
-      }
+      } 
   end
 module ModifyVolumeAttributeRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      volume_id: String.t;
-      auto_enable_i_o: AttributeBooleanValue.t option;}
+      dry_run: Boolean.t option ;
+      volume_id: String.t ;
+      auto_enable_i_o: AttributeBooleanValue.t option }
     let make ?dry_run  ~volume_id  ?auto_enable_i_o  () =
-      { dry_run; volume_id; auto_enable_i_o }
+      { dry_run; volume_id; auto_enable_i_o } 
     let parse xml =
       Some
         {
@@ -22264,6 +23319,7 @@ module ModifyVolumeAttributeRequest =
             (Util.option_bind (Xml.member "AutoEnableIO" xml)
                AttributeBooleanValue.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -22274,6 +23330,7 @@ module ModifyVolumeAttributeRequest =
            Some (Query.Pair ("VolumeId", (String.to_query v.volume_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -22283,6 +23340,7 @@ module ModifyVolumeAttributeRequest =
            Some ("volume_id", (String.to_json v.volume_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -22291,17 +23349,17 @@ module ModifyVolumeAttributeRequest =
         auto_enable_i_o =
           (Util.option_map (Json.lookup j "auto_enable_i_o")
              AttributeBooleanValue.of_json)
-      }
+      } 
   end
 module AttachVpnGatewayRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      vpn_gateway_id: String.t;
-      vpc_id: String.t;}
+      dry_run: Boolean.t option ;
+      vpn_gateway_id: String.t ;
+      vpc_id: String.t }
     let make ?dry_run  ~vpn_gateway_id  ~vpc_id  () =
-      { dry_run; vpn_gateway_id; vpc_id }
+      { dry_run; vpn_gateway_id; vpc_id } 
     let parse xml =
       Some
         {
@@ -22314,6 +23372,7 @@ module AttachVpnGatewayRequest =
             (Xml.required "VpcId"
                (Util.option_bind (Xml.member "VpcId" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -22322,6 +23381,7 @@ module AttachVpnGatewayRequest =
              (Query.Pair ("VpnGatewayId", (String.to_query v.vpn_gateway_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -22329,6 +23389,7 @@ module AttachVpnGatewayRequest =
            Some ("vpn_gateway_id", (String.to_json v.vpn_gateway_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -22337,16 +23398,16 @@ module AttachVpnGatewayRequest =
              (Util.of_option_exn (Json.lookup j "vpn_gateway_id")));
         vpc_id =
           (String.of_json (Util.of_option_exn (Json.lookup j "vpc_id")))
-      }
+      } 
   end
 module AcceptVpcPeeringConnectionRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      vpc_peering_connection_id: String.t option;}
+      dry_run: Boolean.t option ;
+      vpc_peering_connection_id: String.t option }
     let make ?dry_run  ?vpc_peering_connection_id  () =
-      { dry_run; vpc_peering_connection_id }
+      { dry_run; vpc_peering_connection_id } 
     let parse xml =
       Some
         {
@@ -22356,6 +23417,7 @@ module AcceptVpcPeeringConnectionRequest =
             (Util.option_bind (Xml.member "vpcPeeringConnectionId" xml)
                String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -22364,6 +23426,7 @@ module AcceptVpcPeeringConnectionRequest =
                  Query.Pair ("VpcPeeringConnectionId", (String.to_query f)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -22371,23 +23434,24 @@ module AcceptVpcPeeringConnectionRequest =
               (fun f  -> ("vpc_peering_connection_id", (String.to_json f)));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         vpc_peering_connection_id =
           (Util.option_map (Json.lookup j "vpc_peering_connection_id")
              String.of_json)
-      }
+      } 
   end
 module ResetSnapshotAttributeRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      snapshot_id: String.t;
-      attribute: SnapshotAttributeName.t;}
+      dry_run: Boolean.t option ;
+      snapshot_id: String.t ;
+      attribute: SnapshotAttributeName.t }
     let make ?dry_run  ~snapshot_id  ~attribute  () =
-      { dry_run; snapshot_id; attribute }
+      { dry_run; snapshot_id; attribute } 
     let parse xml =
       Some
         {
@@ -22401,6 +23465,7 @@ module ResetSnapshotAttributeRequest =
                (Util.option_bind (Xml.member "Attribute" xml)
                   SnapshotAttributeName.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -22410,6 +23475,7 @@ module ResetSnapshotAttributeRequest =
            Some (Query.Pair ("SnapshotId", (String.to_query v.snapshot_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -22417,6 +23483,7 @@ module ResetSnapshotAttributeRequest =
            Some ("snapshot_id", (String.to_json v.snapshot_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -22425,17 +23492,17 @@ module ResetSnapshotAttributeRequest =
         attribute =
           (SnapshotAttributeName.of_json
              (Util.of_option_exn (Json.lookup j "attribute")))
-      }
+      } 
   end
 module DescribeAvailabilityZonesRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      zone_names: ZoneNameStringList.t;
-      filters: FilterList.t;}
+      dry_run: Boolean.t option ;
+      zone_names: ZoneNameStringList.t ;
+      filters: FilterList.t }
     let make ?dry_run  ?(zone_names= [])  ?(filters= [])  () =
-      { dry_run; zone_names; filters }
+      { dry_run; zone_names; filters } 
     let parse xml =
       Some
         {
@@ -22449,6 +23516,7 @@ module DescribeAvailabilityZonesRequest =
             (Util.of_option []
                (Util.option_bind (Xml.member "Filter" xml) FilterList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -22458,6 +23526,7 @@ module DescribeAvailabilityZonesRequest =
                 ("ZoneName", (ZoneNameStringList.to_query v.zone_names)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -22465,6 +23534,7 @@ module DescribeAvailabilityZonesRequest =
            Some ("zone_names", (ZoneNameStringList.to_json v.zone_names));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -22473,17 +23543,17 @@ module DescribeAvailabilityZonesRequest =
              (Util.of_option_exn (Json.lookup j "zone_names")));
         filters =
           (FilterList.of_json (Util.of_option_exn (Json.lookup j "filters")))
-      }
+      } 
   end
 module StopInstancesRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      instance_ids: InstanceIdStringList.t;
-      force: Boolean.t option;}
+      dry_run: Boolean.t option ;
+      instance_ids: InstanceIdStringList.t ;
+      force: Boolean.t option }
     let make ?dry_run  ~instance_ids  ?force  () =
-      { dry_run; instance_ids; force }
+      { dry_run; instance_ids; force } 
     let parse xml =
       Some
         {
@@ -22495,6 +23565,7 @@ module StopInstancesRequest =
                   InstanceIdStringList.parse));
           force = (Util.option_bind (Xml.member "force" xml) Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -22506,6 +23577,7 @@ module StopInstancesRequest =
                   (InstanceIdStringList.to_query v.instance_ids)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -22515,6 +23587,7 @@ module StopInstancesRequest =
              ("instance_ids", (InstanceIdStringList.to_json v.instance_ids));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -22522,20 +23595,20 @@ module StopInstancesRequest =
           (InstanceIdStringList.of_json
              (Util.of_option_exn (Json.lookup j "instance_ids")));
         force = (Util.option_map (Json.lookup j "force") Boolean.of_json)
-      }
+      } 
   end
 module DescribeImportImageTasksRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      import_task_ids: ImportTaskIdList.t;
-      next_token: String.t option;
-      max_results: Integer.t option;
-      filters: FilterList.t;}
+      dry_run: Boolean.t option ;
+      import_task_ids: ImportTaskIdList.t ;
+      next_token: String.t option ;
+      max_results: Integer.t option ;
+      filters: FilterList.t }
     let make ?dry_run  ?(import_task_ids= [])  ?next_token  ?max_results 
       ?(filters= [])  () =
-      { dry_run; import_task_ids; next_token; max_results; filters }
+      { dry_run; import_task_ids; next_token; max_results; filters } 
     let parse xml =
       Some
         {
@@ -22553,6 +23626,7 @@ module DescribeImportImageTasksRequest =
             (Util.of_option []
                (Util.option_bind (Xml.member "Filters" xml) FilterList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -22567,6 +23641,7 @@ module DescribeImportImageTasksRequest =
                   (ImportTaskIdList.to_query v.import_task_ids)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -22580,6 +23655,7 @@ module DescribeImportImageTasksRequest =
                (ImportTaskIdList.to_json v.import_task_ids));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -22592,20 +23668,20 @@ module DescribeImportImageTasksRequest =
           (Util.option_map (Json.lookup j "max_results") Integer.of_json);
         filters =
           (FilterList.of_json (Util.of_option_exn (Json.lookup j "filters")))
-      }
+      } 
   end
 module DescribeInstancesRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      instance_ids: InstanceIdStringList.t;
-      filters: FilterList.t;
-      next_token: String.t option;
-      max_results: Integer.t option;}
+      dry_run: Boolean.t option ;
+      instance_ids: InstanceIdStringList.t ;
+      filters: FilterList.t ;
+      next_token: String.t option ;
+      max_results: Integer.t option }
     let make ?dry_run  ?(instance_ids= [])  ?(filters= [])  ?next_token 
       ?max_results  () =
-      { dry_run; instance_ids; filters; next_token; max_results }
+      { dry_run; instance_ids; filters; next_token; max_results } 
     let parse xml =
       Some
         {
@@ -22623,6 +23699,7 @@ module DescribeInstancesRequest =
           max_results =
             (Util.option_bind (Xml.member "maxResults" xml) Integer.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -22637,6 +23714,7 @@ module DescribeInstancesRequest =
                   (InstanceIdStringList.to_query v.instance_ids)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -22649,6 +23727,7 @@ module DescribeInstancesRequest =
              ("instance_ids", (InstanceIdStringList.to_json v.instance_ids));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -22661,17 +23740,17 @@ module DescribeInstancesRequest =
           (Util.option_map (Json.lookup j "next_token") String.of_json);
         max_results =
           (Util.option_map (Json.lookup j "max_results") Integer.of_json)
-      }
+      } 
   end
 module DescribeVpnGatewaysRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      vpn_gateway_ids: VpnGatewayIdStringList.t;
-      filters: FilterList.t;}
+      dry_run: Boolean.t option ;
+      vpn_gateway_ids: VpnGatewayIdStringList.t ;
+      filters: FilterList.t }
     let make ?dry_run  ?(vpn_gateway_ids= [])  ?(filters= [])  () =
-      { dry_run; vpn_gateway_ids; filters }
+      { dry_run; vpn_gateway_ids; filters } 
     let parse xml =
       Some
         {
@@ -22685,6 +23764,7 @@ module DescribeVpnGatewaysRequest =
             (Util.of_option []
                (Util.option_bind (Xml.member "Filter" xml) FilterList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -22695,6 +23775,7 @@ module DescribeVpnGatewaysRequest =
                   (VpnGatewayIdStringList.to_query v.vpn_gateway_ids)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -22704,6 +23785,7 @@ module DescribeVpnGatewaysRequest =
                (VpnGatewayIdStringList.to_json v.vpn_gateway_ids));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -22712,15 +23794,15 @@ module DescribeVpnGatewaysRequest =
              (Util.of_option_exn (Json.lookup j "vpn_gateway_ids")));
         filters =
           (FilterList.of_json (Util.of_option_exn (Json.lookup j "filters")))
-      }
+      } 
   end
 module UnmonitorInstancesRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      instance_ids: InstanceIdStringList.t;}
-    let make ?dry_run  ~instance_ids  () = { dry_run; instance_ids }
+      dry_run: Boolean.t option ;
+      instance_ids: InstanceIdStringList.t }
+    let make ?dry_run  ~instance_ids  () = { dry_run; instance_ids } 
     let parse xml =
       Some
         {
@@ -22731,6 +23813,7 @@ module UnmonitorInstancesRequest =
                (Util.option_bind (Xml.member "InstanceId" xml)
                   InstanceIdStringList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -22740,6 +23823,7 @@ module UnmonitorInstancesRequest =
                    (InstanceIdStringList.to_query v.instance_ids)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -22747,23 +23831,24 @@ module UnmonitorInstancesRequest =
               ("instance_ids", (InstanceIdStringList.to_json v.instance_ids));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         instance_ids =
           (InstanceIdStringList.of_json
              (Util.of_option_exn (Json.lookup j "instance_ids")))
-      }
+      } 
   end
 module ImportKeyPairRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      key_name: String.t;
-      public_key_material: Blob.t;}
+      dry_run: Boolean.t option ;
+      key_name: String.t ;
+      public_key_material: Blob.t }
     let make ?dry_run  ~key_name  ~public_key_material  () =
-      { dry_run; key_name; public_key_material }
+      { dry_run; key_name; public_key_material } 
     let parse xml =
       Some
         {
@@ -22777,6 +23862,7 @@ module ImportKeyPairRequest =
                (Util.option_bind (Xml.member "publicKeyMaterial" xml)
                   Blob.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -22786,6 +23872,7 @@ module ImportKeyPairRequest =
            Some (Query.Pair ("KeyName", (String.to_query v.key_name)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -22794,6 +23881,7 @@ module ImportKeyPairRequest =
            Some ("key_name", (String.to_json v.key_name));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -22802,19 +23890,19 @@ module ImportKeyPairRequest =
         public_key_material =
           (Blob.of_json
              (Util.of_option_exn (Json.lookup j "public_key_material")))
-      }
+      } 
   end
 module DescribeSpotFleetRequestsRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      spot_fleet_request_ids: ValueStringList.t;
-      next_token: String.t option;
-      max_results: Integer.t option;}
+      dry_run: Boolean.t option ;
+      spot_fleet_request_ids: ValueStringList.t ;
+      next_token: String.t option ;
+      max_results: Integer.t option }
     let make ?dry_run  ?(spot_fleet_request_ids= [])  ?next_token 
       ?max_results  () =
-      { dry_run; spot_fleet_request_ids; next_token; max_results }
+      { dry_run; spot_fleet_request_ids; next_token; max_results } 
     let parse xml =
       Some
         {
@@ -22829,6 +23917,7 @@ module DescribeSpotFleetRequestsRequest =
           max_results =
             (Util.option_bind (Xml.member "maxResults" xml) Integer.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -22842,6 +23931,7 @@ module DescribeSpotFleetRequestsRequest =
                   (ValueStringList.to_query v.spot_fleet_request_ids)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -22854,6 +23944,7 @@ module DescribeSpotFleetRequestsRequest =
                (ValueStringList.to_json v.spot_fleet_request_ids));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -22864,13 +23955,13 @@ module DescribeSpotFleetRequestsRequest =
           (Util.option_map (Json.lookup j "next_token") String.of_json);
         max_results =
           (Util.option_map (Json.lookup j "max_results") Integer.of_json)
-      }
+      } 
   end
 module DescribeSpotDatafeedSubscriptionResult =
   struct
     type t = {
-      spot_datafeed_subscription: SpotDatafeedSubscription.t option;}
-    let make ?spot_datafeed_subscription  () = { spot_datafeed_subscription }
+      spot_datafeed_subscription: SpotDatafeedSubscription.t option }
+    let make ?spot_datafeed_subscription  () = { spot_datafeed_subscription } 
     let parse xml =
       Some
         {
@@ -22878,6 +23969,7 @@ module DescribeSpotDatafeedSubscriptionResult =
             (Util.option_bind (Xml.member "spotDatafeedSubscription" xml)
                SpotDatafeedSubscription.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -22886,6 +23978,7 @@ module DescribeSpotDatafeedSubscriptionResult =
                  Query.Pair
                    ("SpotDatafeedSubscription",
                      (SpotDatafeedSubscription.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -22893,26 +23986,27 @@ module DescribeSpotDatafeedSubscriptionResult =
               (fun f  ->
                  ("spot_datafeed_subscription",
                    (SpotDatafeedSubscription.to_json f)))])
+      
     let of_json j =
       {
         spot_datafeed_subscription =
           (Util.option_map (Json.lookup j "spot_datafeed_subscription")
              SpotDatafeedSubscription.of_json)
-      }
+      } 
   end
 module RevokeSecurityGroupEgressRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      group_id: String.t;
-      source_security_group_name: String.t option;
-      source_security_group_owner_id: String.t option;
-      ip_protocol: String.t option;
-      from_port: Integer.t option;
-      to_port: Integer.t option;
-      cidr_ip: String.t option;
-      ip_permissions: IpPermissionList.t;}
+      dry_run: Boolean.t option ;
+      group_id: String.t ;
+      source_security_group_name: String.t option ;
+      source_security_group_owner_id: String.t option ;
+      ip_protocol: String.t option ;
+      from_port: Integer.t option ;
+      to_port: Integer.t option ;
+      cidr_ip: String.t option ;
+      ip_permissions: IpPermissionList.t }
     let make ?dry_run  ~group_id  ?source_security_group_name 
       ?source_security_group_owner_id  ?ip_protocol  ?from_port  ?to_port 
       ?cidr_ip  ?(ip_permissions= [])  () =
@@ -22926,7 +24020,7 @@ module RevokeSecurityGroupEgressRequest =
         to_port;
         cidr_ip;
         ip_permissions
-      }
+      } 
     let parse xml =
       Some
         {
@@ -22953,6 +24047,7 @@ module RevokeSecurityGroupEgressRequest =
                (Util.option_bind (Xml.member "ipPermissions" xml)
                   IpPermissionList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -22978,6 +24073,7 @@ module RevokeSecurityGroupEgressRequest =
            Some (Query.Pair ("GroupId", (String.to_query v.group_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -22999,6 +24095,7 @@ module RevokeSecurityGroupEgressRequest =
            Some ("group_id", (String.to_json v.group_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -23019,17 +24116,17 @@ module RevokeSecurityGroupEgressRequest =
         ip_permissions =
           (IpPermissionList.of_json
              (Util.of_option_exn (Json.lookup j "ip_permissions")))
-      }
+      } 
   end
 module DescribeInternetGatewaysRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      internet_gateway_ids: ValueStringList.t;
-      filters: FilterList.t;}
+      dry_run: Boolean.t option ;
+      internet_gateway_ids: ValueStringList.t ;
+      filters: FilterList.t }
     let make ?dry_run  ?(internet_gateway_ids= [])  ?(filters= [])  () =
-      { dry_run; internet_gateway_ids; filters }
+      { dry_run; internet_gateway_ids; filters } 
     let parse xml =
       Some
         {
@@ -23043,6 +24140,7 @@ module DescribeInternetGatewaysRequest =
             (Util.of_option []
                (Util.option_bind (Xml.member "Filter" xml) FilterList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -23053,6 +24151,7 @@ module DescribeInternetGatewaysRequest =
                   (ValueStringList.to_query v.internet_gateway_ids)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -23062,6 +24161,7 @@ module DescribeInternetGatewaysRequest =
                (ValueStringList.to_json v.internet_gateway_ids));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -23070,41 +24170,44 @@ module DescribeInternetGatewaysRequest =
              (Util.of_option_exn (Json.lookup j "internet_gateway_ids")));
         filters =
           (FilterList.of_json (Util.of_option_exn (Json.lookup j "filters")))
-      }
+      } 
   end
 module DeleteVpcPeeringConnectionResult =
   struct
     type t = {
-      return: Boolean.t option;}
-    let make ?return  () = { return }
+      return: Boolean.t option }
+    let make ?return  () = { return } 
     let parse xml =
       Some
         { return = (Util.option_bind (Xml.member "return" xml) Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.return
               (fun f  -> Query.Pair ("Return", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.return
               (fun f  -> ("return", (Boolean.to_json f)))])
+      
     let of_json j =
-      { return = (Util.option_map (Json.lookup j "return") Boolean.of_json) }
+      { return = (Util.option_map (Json.lookup j "return") Boolean.of_json) } 
   end
 module DescribeReservedInstancesModificationsRequest =
   struct
     type t =
       {
       reserved_instances_modification_ids:
-        ReservedInstancesModificationIdStringList.t;
-      next_token: String.t option;
-      filters: FilterList.t;}
+        ReservedInstancesModificationIdStringList.t ;
+      next_token: String.t option ;
+      filters: FilterList.t }
     let make ?(reserved_instances_modification_ids= [])  ?next_token 
       ?(filters= [])  () =
-      { reserved_instances_modification_ids; next_token; filters }
+      { reserved_instances_modification_ids; next_token; filters } 
     let parse xml =
       Some
         {
@@ -23119,6 +24222,7 @@ module DescribeReservedInstancesModificationsRequest =
             (Util.of_option []
                (Util.option_bind (Xml.member "Filter" xml) FilterList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -23130,6 +24234,7 @@ module DescribeReservedInstancesModificationsRequest =
                 ("ReservedInstancesModificationId",
                   (ReservedInstancesModificationIdStringList.to_query
                      v.reserved_instances_modification_ids)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -23140,6 +24245,7 @@ module DescribeReservedInstancesModificationsRequest =
              ("reserved_instances_modification_ids",
                (ReservedInstancesModificationIdStringList.to_json
                   v.reserved_instances_modification_ids))])
+      
     let of_json j =
       {
         reserved_instances_modification_ids =
@@ -23150,16 +24256,16 @@ module DescribeReservedInstancesModificationsRequest =
           (Util.option_map (Json.lookup j "next_token") String.of_json);
         filters =
           (FilterList.of_json (Util.of_option_exn (Json.lookup j "filters")))
-      }
+      } 
   end
 module DescribeSpotFleetRequestsResponse =
   struct
     type t =
       {
-      spot_fleet_request_configs: SpotFleetRequestConfigSet.t;
-      next_token: String.t option;}
+      spot_fleet_request_configs: SpotFleetRequestConfigSet.t ;
+      next_token: String.t option }
     let make ~spot_fleet_request_configs  ?next_token  () =
-      { spot_fleet_request_configs; next_token }
+      { spot_fleet_request_configs; next_token } 
     let parse xml =
       Some
         {
@@ -23170,6 +24276,7 @@ module DescribeSpotFleetRequestsResponse =
           next_token =
             (Util.option_bind (Xml.member "nextToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -23180,6 +24287,7 @@ module DescribeSpotFleetRequestsResponse =
                 ("SpotFleetRequestConfigSet",
                   (SpotFleetRequestConfigSet.to_query
                      v.spot_fleet_request_configs)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -23189,6 +24297,7 @@ module DescribeSpotFleetRequestsResponse =
              ("spot_fleet_request_configs",
                (SpotFleetRequestConfigSet.to_json
                   v.spot_fleet_request_configs))])
+      
     let of_json j =
       {
         spot_fleet_request_configs =
@@ -23196,13 +24305,13 @@ module DescribeSpotFleetRequestsResponse =
              (Util.of_option_exn (Json.lookup j "spot_fleet_request_configs")));
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      }
+      } 
   end
 module ImportVolumeResult =
   struct
     type t = {
-      conversion_task: ConversionTask.t option;}
-    let make ?conversion_task  () = { conversion_task }
+      conversion_task: ConversionTask.t option }
+    let make ?conversion_task  () = { conversion_task } 
     let parse xml =
       Some
         {
@@ -23210,33 +24319,36 @@ module ImportVolumeResult =
             (Util.option_bind (Xml.member "conversionTask" xml)
                ConversionTask.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.conversion_task
               (fun f  ->
                  Query.Pair ("ConversionTask", (ConversionTask.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.conversion_task
               (fun f  -> ("conversion_task", (ConversionTask.to_json f)))])
+      
     let of_json j =
       {
         conversion_task =
           (Util.option_map (Json.lookup j "conversion_task")
              ConversionTask.of_json)
-      }
+      } 
   end
 module DescribeVolumeAttributeRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      volume_id: String.t;
-      attribute: VolumeAttributeName.t option;}
+      dry_run: Boolean.t option ;
+      volume_id: String.t ;
+      attribute: VolumeAttributeName.t option }
     let make ?dry_run  ~volume_id  ?attribute  () =
-      { dry_run; volume_id; attribute }
+      { dry_run; volume_id; attribute } 
     let parse xml =
       Some
         {
@@ -23249,6 +24361,7 @@ module DescribeVolumeAttributeRequest =
             (Util.option_bind (Xml.member "Attribute" xml)
                VolumeAttributeName.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -23258,6 +24371,7 @@ module DescribeVolumeAttributeRequest =
            Some (Query.Pair ("VolumeId", (String.to_query v.volume_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -23266,6 +24380,7 @@ module DescribeVolumeAttributeRequest =
            Some ("volume_id", (String.to_json v.volume_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -23274,71 +24389,77 @@ module DescribeVolumeAttributeRequest =
         attribute =
           (Util.option_map (Json.lookup j "attribute")
              VolumeAttributeName.of_json)
-      }
+      } 
   end
 module CreateNetworkAclResult =
   struct
     type t = {
-      network_acl: NetworkAcl.t option;}
-    let make ?network_acl  () = { network_acl }
+      network_acl: NetworkAcl.t option }
+    let make ?network_acl  () = { network_acl } 
     let parse xml =
       Some
         {
           network_acl =
             (Util.option_bind (Xml.member "networkAcl" xml) NetworkAcl.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.network_acl
               (fun f  -> Query.Pair ("NetworkAcl", (NetworkAcl.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.network_acl
               (fun f  -> ("network_acl", (NetworkAcl.to_json f)))])
+      
     let of_json j =
       {
         network_acl =
           (Util.option_map (Json.lookup j "network_acl") NetworkAcl.of_json)
-      }
+      } 
   end
 module CreateRouteTableResult =
   struct
     type t = {
-      route_table: RouteTable.t option;}
-    let make ?route_table  () = { route_table }
+      route_table: RouteTable.t option }
+    let make ?route_table  () = { route_table } 
     let parse xml =
       Some
         {
           route_table =
             (Util.option_bind (Xml.member "routeTable" xml) RouteTable.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.route_table
               (fun f  -> Query.Pair ("RouteTable", (RouteTable.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.route_table
               (fun f  -> ("route_table", (RouteTable.to_json f)))])
+      
     let of_json j =
       {
         route_table =
           (Util.option_map (Json.lookup j "route_table") RouteTable.of_json)
-      }
+      } 
   end
 module DescribeSpotInstanceRequestsRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      spot_instance_request_ids: SpotInstanceRequestIdList.t;
-      filters: FilterList.t;}
+      dry_run: Boolean.t option ;
+      spot_instance_request_ids: SpotInstanceRequestIdList.t ;
+      filters: FilterList.t }
     let make ?dry_run  ?(spot_instance_request_ids= [])  ?(filters= [])  () =
-      { dry_run; spot_instance_request_ids; filters }
+      { dry_run; spot_instance_request_ids; filters } 
     let parse xml =
       Some
         {
@@ -23352,6 +24473,7 @@ module DescribeSpotInstanceRequestsRequest =
             (Util.of_option []
                (Util.option_bind (Xml.member "Filter" xml) FilterList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -23363,6 +24485,7 @@ module DescribeSpotInstanceRequestsRequest =
                      v.spot_instance_request_ids)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -23372,6 +24495,7 @@ module DescribeSpotInstanceRequestsRequest =
                (SpotInstanceRequestIdList.to_json v.spot_instance_request_ids));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -23380,15 +24504,15 @@ module DescribeSpotInstanceRequestsRequest =
              (Util.of_option_exn (Json.lookup j "spot_instance_request_ids")));
         filters =
           (FilterList.of_json (Util.of_option_exn (Json.lookup j "filters")))
-      }
+      } 
   end
 module DeleteNetworkInterfaceRequest =
   struct
     type t = {
-      dry_run: Boolean.t option;
-      network_interface_id: String.t;}
+      dry_run: Boolean.t option ;
+      network_interface_id: String.t }
     let make ?dry_run  ~network_interface_id  () =
-      { dry_run; network_interface_id }
+      { dry_run; network_interface_id } 
     let parse xml =
       Some
         {
@@ -23399,6 +24523,7 @@ module DeleteNetworkInterfaceRequest =
                (Util.option_bind (Xml.member "networkInterfaceId" xml)
                   String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -23408,6 +24533,7 @@ module DeleteNetworkInterfaceRequest =
                    (String.to_query v.network_interface_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -23416,23 +24542,24 @@ module DeleteNetworkInterfaceRequest =
                 (String.to_json v.network_interface_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         network_interface_id =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "network_interface_id")))
-      }
+      } 
   end
 module DescribePlacementGroupsRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      group_names: PlacementGroupStringList.t;
-      filters: FilterList.t;}
+      dry_run: Boolean.t option ;
+      group_names: PlacementGroupStringList.t ;
+      filters: FilterList.t }
     let make ?dry_run  ?(group_names= [])  ?(filters= [])  () =
-      { dry_run; group_names; filters }
+      { dry_run; group_names; filters } 
     let parse xml =
       Some
         {
@@ -23446,6 +24573,7 @@ module DescribePlacementGroupsRequest =
             (Util.of_option []
                (Util.option_bind (Xml.member "Filter" xml) FilterList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -23456,6 +24584,7 @@ module DescribePlacementGroupsRequest =
                   (PlacementGroupStringList.to_query v.group_names)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -23465,6 +24594,7 @@ module DescribePlacementGroupsRequest =
                (PlacementGroupStringList.to_json v.group_names));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -23473,13 +24603,13 @@ module DescribePlacementGroupsRequest =
              (Util.of_option_exn (Json.lookup j "group_names")));
         filters =
           (FilterList.of_json (Util.of_option_exn (Json.lookup j "filters")))
-      }
+      } 
   end
 module DescribeAvailabilityZonesResult =
   struct
     type t = {
-      availability_zones: AvailabilityZoneList.t;}
-    let make ?(availability_zones= [])  () = { availability_zones }
+      availability_zones: AvailabilityZoneList.t }
+    let make ?(availability_zones= [])  () = { availability_zones } 
     let parse xml =
       Some
         {
@@ -23488,6 +24618,7 @@ module DescribeAvailabilityZonesResult =
                (Util.option_bind (Xml.member "availabilityZoneInfo" xml)
                   AvailabilityZoneList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -23495,28 +24626,30 @@ module DescribeAvailabilityZonesResult =
               (Query.Pair
                  ("AvailabilityZoneInfo",
                    (AvailabilityZoneList.to_query v.availability_zones)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("availability_zones",
                 (AvailabilityZoneList.to_json v.availability_zones))])
+      
     let of_json j =
       {
         availability_zones =
           (AvailabilityZoneList.of_json
              (Util.of_option_exn (Json.lookup j "availability_zones")))
-      }
+      } 
   end
 module StartInstancesRequest =
   struct
     type t =
       {
-      instance_ids: InstanceIdStringList.t;
-      additional_info: String.t option;
-      dry_run: Boolean.t option;}
+      instance_ids: InstanceIdStringList.t ;
+      additional_info: String.t option ;
+      dry_run: Boolean.t option }
     let make ~instance_ids  ?additional_info  ?dry_run  () =
-      { instance_ids; additional_info; dry_run }
+      { instance_ids; additional_info; dry_run } 
     let parse xml =
       Some
         {
@@ -23529,6 +24662,7 @@ module StartInstancesRequest =
           dry_run =
             (Util.option_bind (Xml.member "dryRun" xml) Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -23540,6 +24674,7 @@ module StartInstancesRequest =
              (Query.Pair
                 ("InstanceId",
                   (InstanceIdStringList.to_query v.instance_ids)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -23549,6 +24684,7 @@ module StartInstancesRequest =
              (fun f  -> ("additional_info", (String.to_json f)));
            Some
              ("instance_ids", (InstanceIdStringList.to_json v.instance_ids))])
+      
     let of_json j =
       {
         instance_ids =
@@ -23557,23 +24693,23 @@ module StartInstancesRequest =
         additional_info =
           (Util.option_map (Json.lookup j "additional_info") String.of_json);
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json)
-      }
+      } 
   end
 module ImportImageResult =
   struct
     type t =
       {
-      import_task_id: String.t option;
-      architecture: String.t option;
-      license_type: String.t option;
-      platform: String.t option;
-      hypervisor: String.t option;
-      description: String.t option;
-      snapshot_details: SnapshotDetailList.t;
-      image_id: String.t option;
-      progress: String.t option;
-      status_message: String.t option;
-      status: String.t option;}
+      import_task_id: String.t option ;
+      architecture: String.t option ;
+      license_type: String.t option ;
+      platform: String.t option ;
+      hypervisor: String.t option ;
+      description: String.t option ;
+      snapshot_details: SnapshotDetailList.t ;
+      image_id: String.t option ;
+      progress: String.t option ;
+      status_message: String.t option ;
+      status: String.t option }
     let make ?import_task_id  ?architecture  ?license_type  ?platform 
       ?hypervisor  ?description  ?(snapshot_details= [])  ?image_id 
       ?progress  ?status_message  ?status  () =
@@ -23589,7 +24725,7 @@ module ImportImageResult =
         progress;
         status_message;
         status
-      }
+      } 
     let parse xml =
       Some
         {
@@ -23617,6 +24753,7 @@ module ImportImageResult =
             (Util.option_bind (Xml.member "statusMessage" xml) String.parse);
           status = (Util.option_bind (Xml.member "status" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -23644,6 +24781,7 @@ module ImportImageResult =
              (fun f  -> Query.Pair ("Architecture", (String.to_query f)));
            Util.option_map v.import_task_id
              (fun f  -> Query.Pair ("ImportTaskId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -23670,6 +24808,7 @@ module ImportImageResult =
              (fun f  -> ("architecture", (String.to_json f)));
            Util.option_map v.import_task_id
              (fun f  -> ("import_task_id", (String.to_json f)))])
+      
     let of_json j =
       {
         import_task_id =
@@ -23694,13 +24833,13 @@ module ImportImageResult =
         status_message =
           (Util.option_map (Json.lookup j "status_message") String.of_json);
         status = (Util.option_map (Json.lookup j "status") String.of_json)
-      }
+      } 
   end
 module DescribeCustomerGatewaysResult =
   struct
     type t = {
-      customer_gateways: CustomerGatewayList.t;}
-    let make ?(customer_gateways= [])  () = { customer_gateways }
+      customer_gateways: CustomerGatewayList.t }
+    let make ?(customer_gateways= [])  () = { customer_gateways } 
     let parse xml =
       Some
         {
@@ -23709,6 +24848,7 @@ module DescribeCustomerGatewaysResult =
                (Util.option_bind (Xml.member "customerGatewaySet" xml)
                   CustomerGatewayList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -23716,28 +24856,30 @@ module DescribeCustomerGatewaysResult =
               (Query.Pair
                  ("CustomerGatewaySet",
                    (CustomerGatewayList.to_query v.customer_gateways)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("customer_gateways",
                 (CustomerGatewayList.to_json v.customer_gateways))])
+      
     let of_json j =
       {
         customer_gateways =
           (CustomerGatewayList.of_json
              (Util.of_option_exn (Json.lookup j "customer_gateways")))
-      }
+      } 
   end
 module DescribeVpcEndpointServicesRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      max_results: Integer.t option;
-      next_token: String.t option;}
+      dry_run: Boolean.t option ;
+      max_results: Integer.t option ;
+      next_token: String.t option }
     let make ?dry_run  ?max_results  ?next_token  () =
-      { dry_run; max_results; next_token }
+      { dry_run; max_results; next_token } 
     let parse xml =
       Some
         {
@@ -23748,6 +24890,7 @@ module DescribeVpcEndpointServicesRequest =
           next_token =
             (Util.option_bind (Xml.member "NextToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -23757,6 +24900,7 @@ module DescribeVpcEndpointServicesRequest =
              (fun f  -> Query.Pair ("MaxResults", (Integer.to_query f)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -23766,6 +24910,7 @@ module DescribeVpcEndpointServicesRequest =
              (fun f  -> ("max_results", (Integer.to_json f)));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -23773,18 +24918,18 @@ module DescribeVpcEndpointServicesRequest =
           (Util.option_map (Json.lookup j "max_results") Integer.of_json);
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      }
+      } 
   end
 module DescribeSpotFleetRequestHistoryRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      spot_fleet_request_id: String.t;
-      event_type: EventType.t option;
-      start_time: DateTime.t;
-      next_token: String.t option;
-      max_results: Integer.t option;}
+      dry_run: Boolean.t option ;
+      spot_fleet_request_id: String.t ;
+      event_type: EventType.t option ;
+      start_time: DateTime.t ;
+      next_token: String.t option ;
+      max_results: Integer.t option }
     let make ?dry_run  ~spot_fleet_request_id  ?event_type  ~start_time 
       ?next_token  ?max_results  () =
       {
@@ -23794,7 +24939,7 @@ module DescribeSpotFleetRequestHistoryRequest =
         start_time;
         next_token;
         max_results
-      }
+      } 
     let parse xml =
       Some
         {
@@ -23814,6 +24959,7 @@ module DescribeSpotFleetRequestHistoryRequest =
           max_results =
             (Util.option_bind (Xml.member "maxResults" xml) Integer.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -23830,6 +24976,7 @@ module DescribeSpotFleetRequestHistoryRequest =
                   (String.to_query v.spot_fleet_request_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -23845,6 +24992,7 @@ module DescribeSpotFleetRequestHistoryRequest =
                (String.to_json v.spot_fleet_request_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -23859,14 +25007,14 @@ module DescribeSpotFleetRequestHistoryRequest =
           (Util.option_map (Json.lookup j "next_token") String.of_json);
         max_results =
           (Util.option_map (Json.lookup j "max_results") Integer.of_json)
-      }
+      } 
   end
 module DeleteVolumeRequest =
   struct
     type t = {
-      dry_run: Boolean.t option;
-      volume_id: String.t;}
-    let make ?dry_run  ~volume_id  () = { dry_run; volume_id }
+      dry_run: Boolean.t option ;
+      volume_id: String.t }
+    let make ?dry_run  ~volume_id  () = { dry_run; volume_id } 
     let parse xml =
       Some
         {
@@ -23876,31 +25024,34 @@ module DeleteVolumeRequest =
             (Xml.required "VolumeId"
                (Util.option_bind (Xml.member "VolumeId" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("VolumeId", (String.to_query v.volume_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("volume_id", (String.to_json v.volume_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         volume_id =
           (String.of_json (Util.of_option_exn (Json.lookup j "volume_id")))
-      }
+      } 
   end
 module DescribeFlowLogsResult =
   struct
     type t = {
-      flow_logs: FlowLogSet.t;
-      next_token: String.t option;}
-    let make ?(flow_logs= [])  ?next_token  () = { flow_logs; next_token }
+      flow_logs: FlowLogSet.t ;
+      next_token: String.t option }
+    let make ?(flow_logs= [])  ?next_token  () = { flow_logs; next_token } 
     let parse xml =
       Some
         {
@@ -23911,6 +25062,7 @@ module DescribeFlowLogsResult =
           next_token =
             (Util.option_bind (Xml.member "nextToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -23918,12 +25070,14 @@ module DescribeFlowLogsResult =
               (fun f  -> Query.Pair ("NextToken", (String.to_query f)));
            Some
              (Query.Pair ("FlowLogSet", (FlowLogSet.to_query v.flow_logs)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.next_token
               (fun f  -> ("next_token", (String.to_json f)));
            Some ("flow_logs", (FlowLogSet.to_json v.flow_logs))])
+      
     let of_json j =
       {
         flow_logs =
@@ -23931,13 +25085,13 @@ module DescribeFlowLogsResult =
              (Util.of_option_exn (Json.lookup j "flow_logs")));
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      }
+      } 
   end
 module DescribeBundleTasksResult =
   struct
     type t = {
-      bundle_tasks: BundleTaskList.t;}
-    let make ?(bundle_tasks= [])  () = { bundle_tasks }
+      bundle_tasks: BundleTaskList.t }
+    let make ?(bundle_tasks= [])  () = { bundle_tasks } 
     let parse xml =
       Some
         {
@@ -23946,6 +25100,7 @@ module DescribeBundleTasksResult =
                (Util.option_bind (Xml.member "bundleInstanceTasksSet" xml)
                   BundleTaskList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -23953,25 +25108,27 @@ module DescribeBundleTasksResult =
               (Query.Pair
                  ("BundleInstanceTasksSet",
                    (BundleTaskList.to_query v.bundle_tasks)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("bundle_tasks", (BundleTaskList.to_json v.bundle_tasks))])
+      
     let of_json j =
       {
         bundle_tasks =
           (BundleTaskList.of_json
              (Util.of_option_exn (Json.lookup j "bundle_tasks")))
-      }
+      } 
   end
 module DescribeVolumeStatusResult =
   struct
     type t =
       {
-      volume_statuses: VolumeStatusList.t;
-      next_token: String.t option;}
+      volume_statuses: VolumeStatusList.t ;
+      next_token: String.t option }
     let make ?(volume_statuses= [])  ?next_token  () =
-      { volume_statuses; next_token }
+      { volume_statuses; next_token } 
     let parse xml =
       Some
         {
@@ -23982,6 +25139,7 @@ module DescribeVolumeStatusResult =
           next_token =
             (Util.option_bind (Xml.member "nextToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -23991,6 +25149,7 @@ module DescribeVolumeStatusResult =
              (Query.Pair
                 ("VolumeStatusSet",
                   (VolumeStatusList.to_query v.volume_statuses)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -23999,6 +25158,7 @@ module DescribeVolumeStatusResult =
            Some
              ("volume_statuses",
                (VolumeStatusList.to_json v.volume_statuses))])
+      
     let of_json j =
       {
         volume_statuses =
@@ -24006,17 +25166,17 @@ module DescribeVolumeStatusResult =
              (Util.of_option_exn (Json.lookup j "volume_statuses")));
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      }
+      } 
   end
 module DescribeSubnetsRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      subnet_ids: SubnetIdStringList.t;
-      filters: FilterList.t;}
+      dry_run: Boolean.t option ;
+      subnet_ids: SubnetIdStringList.t ;
+      filters: FilterList.t }
     let make ?dry_run  ?(subnet_ids= [])  ?(filters= [])  () =
-      { dry_run; subnet_ids; filters }
+      { dry_run; subnet_ids; filters } 
     let parse xml =
       Some
         {
@@ -24030,6 +25190,7 @@ module DescribeSubnetsRequest =
             (Util.of_option []
                (Util.option_bind (Xml.member "Filter" xml) FilterList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -24039,6 +25200,7 @@ module DescribeSubnetsRequest =
                 ("SubnetId", (SubnetIdStringList.to_query v.subnet_ids)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -24046,6 +25208,7 @@ module DescribeSubnetsRequest =
            Some ("subnet_ids", (SubnetIdStringList.to_json v.subnet_ids));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -24054,14 +25217,14 @@ module DescribeSubnetsRequest =
              (Util.of_option_exn (Json.lookup j "subnet_ids")));
         filters =
           (FilterList.of_json (Util.of_option_exn (Json.lookup j "filters")))
-      }
+      } 
   end
 module ImportKeyPairResult =
   struct
     type t = {
-      key_name: String.t option;
-      key_fingerprint: String.t option;}
-    let make ?key_name  ?key_fingerprint  () = { key_name; key_fingerprint }
+      key_name: String.t option ;
+      key_fingerprint: String.t option }
+    let make ?key_name  ?key_fingerprint  () = { key_name; key_fingerprint } 
     let parse xml =
       Some
         {
@@ -24070,6 +25233,7 @@ module ImportKeyPairResult =
           key_fingerprint =
             (Util.option_bind (Xml.member "keyFingerprint" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -24077,6 +25241,7 @@ module ImportKeyPairResult =
               (fun f  -> Query.Pair ("KeyFingerprint", (String.to_query f)));
            Util.option_map v.key_name
              (fun f  -> Query.Pair ("KeyName", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -24084,20 +25249,21 @@ module ImportKeyPairResult =
               (fun f  -> ("key_fingerprint", (String.to_json f)));
            Util.option_map v.key_name
              (fun f  -> ("key_name", (String.to_json f)))])
+      
     let of_json j =
       {
         key_name =
           (Util.option_map (Json.lookup j "key_name") String.of_json);
         key_fingerprint =
           (Util.option_map (Json.lookup j "key_fingerprint") String.of_json)
-      }
+      } 
   end
 module CreateKeyPairRequest =
   struct
     type t = {
-      dry_run: Boolean.t option;
-      key_name: String.t;}
-    let make ?dry_run  ~key_name  () = { dry_run; key_name }
+      dry_run: Boolean.t option ;
+      key_name: String.t }
+    let make ?dry_run  ~key_name  () = { dry_run; key_name } 
     let parse xml =
       Some
         {
@@ -24107,34 +25273,37 @@ module CreateKeyPairRequest =
             (Xml.required "KeyName"
                (Util.option_bind (Xml.member "KeyName" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("KeyName", (String.to_query v.key_name)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("key_name", (String.to_json v.key_name));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         key_name =
           (String.of_json (Util.of_option_exn (Json.lookup j "key_name")))
-      }
+      } 
   end
 module DisassociateAddressRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      public_ip: String.t option;
-      association_id: String.t option;}
+      dry_run: Boolean.t option ;
+      public_ip: String.t option ;
+      association_id: String.t option }
     let make ?dry_run  ?public_ip  ?association_id  () =
-      { dry_run; public_ip; association_id }
+      { dry_run; public_ip; association_id } 
     let parse xml =
       Some
         {
@@ -24145,6 +25314,7 @@ module DisassociateAddressRequest =
           association_id =
             (Util.option_bind (Xml.member "AssociationId" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -24154,6 +25324,7 @@ module DisassociateAddressRequest =
              (fun f  -> Query.Pair ("PublicIp", (String.to_query f)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -24163,6 +25334,7 @@ module DisassociateAddressRequest =
              (fun f  -> ("public_ip", (String.to_json f)));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -24170,41 +25342,44 @@ module DisassociateAddressRequest =
           (Util.option_map (Json.lookup j "public_ip") String.of_json);
         association_id =
           (Util.option_map (Json.lookup j "association_id") String.of_json)
-      }
+      } 
   end
 module DisableVpcClassicLinkResult =
   struct
     type t = {
-      return: Boolean.t option;}
-    let make ?return  () = { return }
+      return: Boolean.t option }
+    let make ?return  () = { return } 
     let parse xml =
       Some
         { return = (Util.option_bind (Xml.member "return" xml) Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.return
               (fun f  -> Query.Pair ("Return", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.return
               (fun f  -> ("return", (Boolean.to_json f)))])
+      
     let of_json j =
-      { return = (Util.option_map (Json.lookup j "return") Boolean.of_json) }
+      { return = (Util.option_map (Json.lookup j "return") Boolean.of_json) } 
   end
 module ReplaceRouteRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      route_table_id: String.t;
-      destination_cidr_block: String.t;
-      gateway_id: String.t option;
-      instance_id: String.t option;
-      network_interface_id: String.t option;
-      vpc_peering_connection_id: String.t option;}
+      dry_run: Boolean.t option ;
+      route_table_id: String.t ;
+      destination_cidr_block: String.t ;
+      gateway_id: String.t option ;
+      instance_id: String.t option ;
+      network_interface_id: String.t option ;
+      vpc_peering_connection_id: String.t option }
     let make ?dry_run  ~route_table_id  ~destination_cidr_block  ?gateway_id 
       ?instance_id  ?network_interface_id  ?vpc_peering_connection_id  () =
       {
@@ -24215,7 +25390,7 @@ module ReplaceRouteRequest =
         instance_id;
         network_interface_id;
         vpc_peering_connection_id
-      }
+      } 
     let parse xml =
       Some
         {
@@ -24239,6 +25414,7 @@ module ReplaceRouteRequest =
             (Util.option_bind (Xml.member "vpcPeeringConnectionId" xml)
                String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -24260,6 +25436,7 @@ module ReplaceRouteRequest =
              (Query.Pair ("RouteTableId", (String.to_query v.route_table_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -24277,6 +25454,7 @@ module ReplaceRouteRequest =
            Some ("route_table_id", (String.to_json v.route_table_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -24296,13 +25474,13 @@ module ReplaceRouteRequest =
         vpc_peering_connection_id =
           (Util.option_map (Json.lookup j "vpc_peering_connection_id")
              String.of_json)
-      }
+      } 
   end
 module DeleteFlowLogsResult =
   struct
     type t = {
-      unsuccessful: UnsuccessfulItemSet.t;}
-    let make ?(unsuccessful= [])  () = { unsuccessful }
+      unsuccessful: UnsuccessfulItemSet.t }
+    let make ?(unsuccessful= [])  () = { unsuccessful } 
     let parse xml =
       Some
         {
@@ -24311,6 +25489,7 @@ module DeleteFlowLogsResult =
                (Util.option_bind (Xml.member "unsuccessful" xml)
                   UnsuccessfulItemSet.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -24318,24 +25497,26 @@ module DeleteFlowLogsResult =
               (Query.Pair
                  ("Unsuccessful",
                    (UnsuccessfulItemSet.to_query v.unsuccessful)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("unsuccessful", (UnsuccessfulItemSet.to_json v.unsuccessful))])
+      
     let of_json j =
       {
         unsuccessful =
           (UnsuccessfulItemSet.of_json
              (Util.of_option_exn (Json.lookup j "unsuccessful")))
-      }
+      } 
   end
 module GetConsoleOutputRequest =
   struct
     type t = {
-      dry_run: Boolean.t option;
-      instance_id: String.t;}
-    let make ?dry_run  ~instance_id  () = { dry_run; instance_id }
+      dry_run: Boolean.t option ;
+      instance_id: String.t }
+    let make ?dry_run  ~instance_id  () = { dry_run; instance_id } 
     let parse xml =
       Some
         {
@@ -24345,30 +25526,33 @@ module GetConsoleOutputRequest =
             (Xml.required "InstanceId"
                (Util.option_bind (Xml.member "InstanceId" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("InstanceId", (String.to_query v.instance_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("instance_id", (String.to_json v.instance_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         instance_id =
           (String.of_json (Util.of_option_exn (Json.lookup j "instance_id")))
-      }
+      } 
   end
 module AttachVpnGatewayResult =
   struct
     type t = {
-      vpc_attachment: VpcAttachment.t option;}
-    let make ?vpc_attachment  () = { vpc_attachment }
+      vpc_attachment: VpcAttachment.t option }
+    let make ?vpc_attachment  () = { vpc_attachment } 
     let parse xml =
       Some
         {
@@ -24376,36 +25560,39 @@ module AttachVpnGatewayResult =
             (Util.option_bind (Xml.member "attachment" xml)
                VpcAttachment.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.vpc_attachment
               (fun f  ->
                  Query.Pair ("Attachment", (VpcAttachment.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.vpc_attachment
               (fun f  -> ("vpc_attachment", (VpcAttachment.to_json f)))])
+      
     let of_json j =
       {
         vpc_attachment =
           (Util.option_map (Json.lookup j "vpc_attachment")
              VpcAttachment.of_json)
-      }
+      } 
   end
 module ImageAttribute =
   struct
     type t =
       {
-      image_id: String.t option;
-      launch_permissions: LaunchPermissionList.t;
-      product_codes: ProductCodeList.t;
-      kernel_id: AttributeValue.t option;
-      ramdisk_id: AttributeValue.t option;
-      description: AttributeValue.t option;
-      sriov_net_support: AttributeValue.t option;
-      block_device_mappings: BlockDeviceMappingList.t;}
+      image_id: String.t option ;
+      launch_permissions: LaunchPermissionList.t ;
+      product_codes: ProductCodeList.t ;
+      kernel_id: AttributeValue.t option ;
+      ramdisk_id: AttributeValue.t option ;
+      description: AttributeValue.t option ;
+      sriov_net_support: AttributeValue.t option ;
+      block_device_mappings: BlockDeviceMappingList.t }
     let make ?image_id  ?(launch_permissions= [])  ?(product_codes= []) 
       ?kernel_id  ?ramdisk_id  ?description  ?sriov_net_support 
       ?(block_device_mappings= [])  () =
@@ -24418,7 +25605,7 @@ module ImageAttribute =
         description;
         sriov_net_support;
         block_device_mappings
-      }
+      } 
     let parse xml =
       Some
         {
@@ -24447,6 +25634,7 @@ module ImageAttribute =
                (Util.option_bind (Xml.member "blockDeviceMapping" xml)
                   BlockDeviceMappingList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -24473,6 +25661,7 @@ module ImageAttribute =
                   (LaunchPermissionList.to_query v.launch_permissions)));
            Util.option_map v.image_id
              (fun f  -> Query.Pair ("ImageId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -24493,6 +25682,7 @@ module ImageAttribute =
                (LaunchPermissionList.to_json v.launch_permissions));
            Util.option_map v.image_id
              (fun f  -> ("image_id", (String.to_json f)))])
+      
     let of_json j =
       {
         image_id =
@@ -24517,35 +25707,38 @@ module ImageAttribute =
         block_device_mappings =
           (BlockDeviceMappingList.of_json
              (Util.of_option_exn (Json.lookup j "block_device_mappings")))
-      }
+      } 
   end
 module DetachClassicLinkVpcResult =
   struct
     type t = {
-      return: Boolean.t option;}
-    let make ?return  () = { return }
+      return: Boolean.t option }
+    let make ?return  () = { return } 
     let parse xml =
       Some
         { return = (Util.option_bind (Xml.member "return" xml) Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.return
               (fun f  -> Query.Pair ("Return", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.return
               (fun f  -> ("return", (Boolean.to_json f)))])
+      
     let of_json j =
-      { return = (Util.option_map (Json.lookup j "return") Boolean.of_json) }
+      { return = (Util.option_map (Json.lookup j "return") Boolean.of_json) } 
   end
 module CreateVpnConnectionResult =
   struct
     type t = {
-      vpn_connection: VpnConnection.t option;}
-    let make ?vpn_connection  () = { vpn_connection }
+      vpn_connection: VpnConnection.t option }
+    let make ?vpn_connection  () = { vpn_connection } 
     let parse xml =
       Some
         {
@@ -24553,30 +25746,33 @@ module CreateVpnConnectionResult =
             (Util.option_bind (Xml.member "vpnConnection" xml)
                VpnConnection.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.vpn_connection
               (fun f  ->
                  Query.Pair ("VpnConnection", (VpnConnection.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.vpn_connection
               (fun f  -> ("vpn_connection", (VpnConnection.to_json f)))])
+      
     let of_json j =
       {
         vpn_connection =
           (Util.option_map (Json.lookup j "vpn_connection")
              VpnConnection.of_json)
-      }
+      } 
   end
 module DeleteSnapshotRequest =
   struct
     type t = {
-      dry_run: Boolean.t option;
-      snapshot_id: String.t;}
-    let make ?dry_run  ~snapshot_id  () = { dry_run; snapshot_id }
+      dry_run: Boolean.t option ;
+      snapshot_id: String.t }
+    let make ?dry_run  ~snapshot_id  () = { dry_run; snapshot_id } 
     let parse xml =
       Some
         {
@@ -24586,34 +25782,37 @@ module DeleteSnapshotRequest =
             (Xml.required "SnapshotId"
                (Util.option_bind (Xml.member "SnapshotId" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("SnapshotId", (String.to_query v.snapshot_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("snapshot_id", (String.to_json v.snapshot_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         snapshot_id =
           (String.of_json (Util.of_option_exn (Json.lookup j "snapshot_id")))
-      }
+      } 
   end
 module KeyPair =
   struct
     type t =
       {
-      key_name: String.t;
-      key_fingerprint: String.t;
-      key_material: String.t;}
+      key_name: String.t ;
+      key_fingerprint: String.t ;
+      key_material: String.t }
     let make ~key_name  ~key_fingerprint  ~key_material  () =
-      { key_name; key_fingerprint; key_material }
+      { key_name; key_fingerprint; key_material } 
     let parse xml =
       Some
         {
@@ -24628,6 +25827,7 @@ module KeyPair =
             (Xml.required "keyMaterial"
                (Util.option_bind (Xml.member "keyMaterial" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -24637,12 +25837,14 @@ module KeyPair =
              (Query.Pair
                 ("KeyFingerprint", (String.to_query v.key_fingerprint)));
            Some (Query.Pair ("KeyName", (String.to_query v.key_name)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("key_material", (String.to_json v.key_material));
            Some ("key_fingerprint", (String.to_json v.key_fingerprint));
            Some ("key_name", (String.to_json v.key_name))])
+      
     let of_json j =
       {
         key_name =
@@ -24652,14 +25854,14 @@ module KeyPair =
              (Util.of_option_exn (Json.lookup j "key_fingerprint")));
         key_material =
           (String.of_json (Util.of_option_exn (Json.lookup j "key_material")))
-      }
+      } 
   end
 module RestoreAddressToClassicRequest =
   struct
     type t = {
-      dry_run: Boolean.t option;
-      public_ip: String.t;}
-    let make ?dry_run  ~public_ip  () = { dry_run; public_ip }
+      dry_run: Boolean.t option ;
+      public_ip: String.t }
+    let make ?dry_run  ~public_ip  () = { dry_run; public_ip } 
     let parse xml =
       Some
         {
@@ -24669,32 +25871,36 @@ module RestoreAddressToClassicRequest =
             (Xml.required "publicIp"
                (Util.option_bind (Xml.member "publicIp" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("PublicIp", (String.to_query v.public_ip)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("public_ip", (String.to_json v.public_ip));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         public_ip =
           (String.of_json (Util.of_option_exn (Json.lookup j "public_ip")))
-      }
+      } 
   end
 module DeleteVpcPeeringConnectionRequest =
   struct
-    type t = {
-      dry_run: Boolean.t option;
-      vpc_peering_connection_id: String.t;}
+    type t =
+      {
+      dry_run: Boolean.t option ;
+      vpc_peering_connection_id: String.t }
     let make ?dry_run  ~vpc_peering_connection_id  () =
-      { dry_run; vpc_peering_connection_id }
+      { dry_run; vpc_peering_connection_id } 
     let parse xml =
       Some
         {
@@ -24705,6 +25911,7 @@ module DeleteVpcPeeringConnectionRequest =
                (Util.option_bind (Xml.member "vpcPeeringConnectionId" xml)
                   String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -24714,6 +25921,7 @@ module DeleteVpcPeeringConnectionRequest =
                    (String.to_query v.vpc_peering_connection_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -24722,19 +25930,20 @@ module DeleteVpcPeeringConnectionRequest =
                 (String.to_json v.vpc_peering_connection_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         vpc_peering_connection_id =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "vpc_peering_connection_id")))
-      }
+      } 
   end
 module CreateCustomerGatewayResult =
   struct
     type t = {
-      customer_gateway: CustomerGateway.t option;}
-    let make ?customer_gateway  () = { customer_gateway }
+      customer_gateway: CustomerGateway.t option }
+    let make ?customer_gateway  () = { customer_gateway } 
     let parse xml =
       Some
         {
@@ -24742,30 +25951,33 @@ module CreateCustomerGatewayResult =
             (Util.option_bind (Xml.member "customerGateway" xml)
                CustomerGateway.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.customer_gateway
               (fun f  ->
                  Query.Pair ("CustomerGateway", (CustomerGateway.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.customer_gateway
               (fun f  -> ("customer_gateway", (CustomerGateway.to_json f)))])
+      
     let of_json j =
       {
         customer_gateway =
           (Util.option_map (Json.lookup j "customer_gateway")
              CustomerGateway.of_json)
-      }
+      } 
   end
 module ModifyReservedInstancesResult =
   struct
     type t = {
-      reserved_instances_modification_id: String.t option;}
+      reserved_instances_modification_id: String.t option }
     let make ?reserved_instances_modification_id  () =
-      { reserved_instances_modification_id }
+      { reserved_instances_modification_id } 
     let parse xml =
       Some
         {
@@ -24774,6 +25986,7 @@ module ModifyReservedInstancesResult =
                (Xml.member "reservedInstancesModificationId" xml)
                String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -24781,25 +25994,27 @@ module ModifyReservedInstancesResult =
               (fun f  ->
                  Query.Pair
                    ("ReservedInstancesModificationId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.reserved_instances_modification_id
               (fun f  ->
                  ("reserved_instances_modification_id", (String.to_json f)))])
+      
     let of_json j =
       {
         reserved_instances_modification_id =
           (Util.option_map
              (Json.lookup j "reserved_instances_modification_id")
              String.of_json)
-      }
+      } 
   end
 module DescribeSpotInstanceRequestsResult =
   struct
     type t = {
-      spot_instance_requests: SpotInstanceRequestList.t;}
-    let make ?(spot_instance_requests= [])  () = { spot_instance_requests }
+      spot_instance_requests: SpotInstanceRequestList.t }
+    let make ?(spot_instance_requests= [])  () = { spot_instance_requests } 
     let parse xml =
       Some
         {
@@ -24808,6 +26023,7 @@ module DescribeSpotInstanceRequestsResult =
                (Util.option_bind (Xml.member "spotInstanceRequestSet" xml)
                   SpotInstanceRequestList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -24815,30 +26031,32 @@ module DescribeSpotInstanceRequestsResult =
               (Query.Pair
                  ("SpotInstanceRequestSet",
                    (SpotInstanceRequestList.to_query v.spot_instance_requests)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("spot_instance_requests",
                 (SpotInstanceRequestList.to_json v.spot_instance_requests))])
+      
     let of_json j =
       {
         spot_instance_requests =
           (SpotInstanceRequestList.of_json
              (Util.of_option_exn (Json.lookup j "spot_instance_requests")))
-      }
+      } 
   end
 module ModifySnapshotAttributeRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      snapshot_id: String.t;
-      attribute: SnapshotAttributeName.t option;
-      operation_type: OperationType.t option;
-      user_ids: UserIdStringList.t;
-      group_names: GroupNameStringList.t;
-      create_volume_permission: CreateVolumePermissionModifications.t option;}
+      dry_run: Boolean.t option ;
+      snapshot_id: String.t ;
+      attribute: SnapshotAttributeName.t option ;
+      operation_type: OperationType.t option ;
+      user_ids: UserIdStringList.t ;
+      group_names: GroupNameStringList.t ;
+      create_volume_permission: CreateVolumePermissionModifications.t option }
     let make ?dry_run  ~snapshot_id  ?attribute  ?operation_type  ?(user_ids=
       [])  ?(group_names= [])  ?create_volume_permission  () =
       {
@@ -24849,7 +26067,7 @@ module ModifySnapshotAttributeRequest =
         user_ids;
         group_names;
         create_volume_permission
-      }
+      } 
     let parse xml =
       Some
         {
@@ -24876,6 +26094,7 @@ module ModifySnapshotAttributeRequest =
             (Util.option_bind (Xml.member "CreateVolumePermission" xml)
                CreateVolumePermissionModifications.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -24898,6 +26117,7 @@ module ModifySnapshotAttributeRequest =
            Some (Query.Pair ("SnapshotId", (String.to_query v.snapshot_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -24914,6 +26134,7 @@ module ModifySnapshotAttributeRequest =
            Some ("snapshot_id", (String.to_json v.snapshot_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -24934,17 +26155,17 @@ module ModifySnapshotAttributeRequest =
         create_volume_permission =
           (Util.option_map (Json.lookup j "create_volume_permission")
              CreateVolumePermissionModifications.of_json)
-      }
+      } 
   end
 module ReleaseAddressRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      public_ip: String.t option;
-      allocation_id: String.t option;}
+      dry_run: Boolean.t option ;
+      public_ip: String.t option ;
+      allocation_id: String.t option }
     let make ?dry_run  ?public_ip  ?allocation_id  () =
-      { dry_run; public_ip; allocation_id }
+      { dry_run; public_ip; allocation_id } 
     let parse xml =
       Some
         {
@@ -24955,6 +26176,7 @@ module ReleaseAddressRequest =
           allocation_id =
             (Util.option_bind (Xml.member "AllocationId" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -24964,6 +26186,7 @@ module ReleaseAddressRequest =
              (fun f  -> Query.Pair ("PublicIp", (String.to_query f)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -24973,6 +26196,7 @@ module ReleaseAddressRequest =
              (fun f  -> ("public_ip", (String.to_json f)));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -24980,17 +26204,17 @@ module ReleaseAddressRequest =
           (Util.option_map (Json.lookup j "public_ip") String.of_json);
         allocation_id =
           (Util.option_map (Json.lookup j "allocation_id") String.of_json)
-      }
+      } 
   end
 module ImportSnapshotResult =
   struct
     type t =
       {
-      import_task_id: String.t option;
-      snapshot_task_detail: SnapshotTaskDetail.t option;
-      description: String.t option;}
+      import_task_id: String.t option ;
+      snapshot_task_detail: SnapshotTaskDetail.t option ;
+      description: String.t option }
     let make ?import_task_id  ?snapshot_task_detail  ?description  () =
-      { import_task_id; snapshot_task_detail; description }
+      { import_task_id; snapshot_task_detail; description } 
     let parse xml =
       Some
         {
@@ -25002,6 +26226,7 @@ module ImportSnapshotResult =
           description =
             (Util.option_bind (Xml.member "description" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -25013,6 +26238,7 @@ module ImportSnapshotResult =
                   ("SnapshotTaskDetail", (SnapshotTaskDetail.to_query f)));
            Util.option_map v.import_task_id
              (fun f  -> Query.Pair ("ImportTaskId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -25023,6 +26249,7 @@ module ImportSnapshotResult =
                 ("snapshot_task_detail", (SnapshotTaskDetail.to_json f)));
            Util.option_map v.import_task_id
              (fun f  -> ("import_task_id", (String.to_json f)))])
+      
     let of_json j =
       {
         import_task_id =
@@ -25032,14 +26259,14 @@ module ImportSnapshotResult =
              SnapshotTaskDetail.of_json);
         description =
           (Util.option_map (Json.lookup j "description") String.of_json)
-      }
+      } 
   end
 module DescribeVolumesResult =
   struct
     type t = {
-      volumes: VolumeList.t;
-      next_token: String.t option;}
-    let make ?(volumes= [])  ?next_token  () = { volumes; next_token }
+      volumes: VolumeList.t ;
+      next_token: String.t option }
+    let make ?(volumes= [])  ?next_token  () = { volumes; next_token } 
     let parse xml =
       Some
         {
@@ -25050,31 +26277,34 @@ module DescribeVolumesResult =
           next_token =
             (Util.option_bind (Xml.member "nextToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.next_token
               (fun f  -> Query.Pair ("NextToken", (String.to_query f)));
            Some (Query.Pair ("VolumeSet", (VolumeList.to_query v.volumes)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.next_token
               (fun f  -> ("next_token", (String.to_json f)));
            Some ("volumes", (VolumeList.to_json v.volumes))])
+      
     let of_json j =
       {
         volumes =
           (VolumeList.of_json (Util.of_option_exn (Json.lookup j "volumes")));
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      }
+      } 
   end
 module AcceptVpcPeeringConnectionResult =
   struct
     type t = {
-      vpc_peering_connection: VpcPeeringConnection.t option;}
-    let make ?vpc_peering_connection  () = { vpc_peering_connection }
+      vpc_peering_connection: VpcPeeringConnection.t option }
+    let make ?vpc_peering_connection  () = { vpc_peering_connection } 
     let parse xml =
       Some
         {
@@ -25082,6 +26312,7 @@ module AcceptVpcPeeringConnectionResult =
             (Util.option_bind (Xml.member "vpcPeeringConnection" xml)
                VpcPeeringConnection.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -25090,57 +26321,62 @@ module AcceptVpcPeeringConnectionResult =
                  Query.Pair
                    ("VpcPeeringConnection",
                      (VpcPeeringConnection.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.vpc_peering_connection
               (fun f  ->
                  ("vpc_peering_connection", (VpcPeeringConnection.to_json f)))])
+      
     let of_json j =
       {
         vpc_peering_connection =
           (Util.option_map (Json.lookup j "vpc_peering_connection")
              VpcPeeringConnection.of_json)
-      }
+      } 
   end
 module AttachNetworkInterfaceResult =
   struct
     type t = {
-      attachment_id: String.t option;}
-    let make ?attachment_id  () = { attachment_id }
+      attachment_id: String.t option }
+    let make ?attachment_id  () = { attachment_id } 
     let parse xml =
       Some
         {
           attachment_id =
             (Util.option_bind (Xml.member "attachmentId" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.attachment_id
               (fun f  -> Query.Pair ("AttachmentId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.attachment_id
               (fun f  -> ("attachment_id", (String.to_json f)))])
+      
     let of_json j =
       {
         attachment_id =
           (Util.option_map (Json.lookup j "attachment_id") String.of_json)
-      }
+      } 
   end
 module DescribeReservedInstancesRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      reserved_instances_ids: ReservedInstancesIdStringList.t;
-      filters: FilterList.t;
-      offering_type: OfferingTypeValues.t option;}
+      dry_run: Boolean.t option ;
+      reserved_instances_ids: ReservedInstancesIdStringList.t ;
+      filters: FilterList.t ;
+      offering_type: OfferingTypeValues.t option }
     let make ?dry_run  ?(reserved_instances_ids= [])  ?(filters= []) 
       ?offering_type  () =
-      { dry_run; reserved_instances_ids; filters; offering_type }
+      { dry_run; reserved_instances_ids; filters; offering_type } 
     let parse xml =
       Some
         {
@@ -25157,6 +26393,7 @@ module DescribeReservedInstancesRequest =
             (Util.option_bind (Xml.member "offeringType" xml)
                OfferingTypeValues.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -25171,6 +26408,7 @@ module DescribeReservedInstancesRequest =
                      v.reserved_instances_ids)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -25183,6 +26421,7 @@ module DescribeReservedInstancesRequest =
                   v.reserved_instances_ids));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -25194,17 +26433,17 @@ module DescribeReservedInstancesRequest =
         offering_type =
           (Util.option_map (Json.lookup j "offering_type")
              OfferingTypeValues.of_json)
-      }
+      } 
   end
 module DescribeVpcClassicLinkRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      vpc_ids: VpcClassicLinkIdList.t;
-      filters: FilterList.t;}
+      dry_run: Boolean.t option ;
+      vpc_ids: VpcClassicLinkIdList.t ;
+      filters: FilterList.t }
     let make ?dry_run  ?(vpc_ids= [])  ?(filters= [])  () =
-      { dry_run; vpc_ids; filters }
+      { dry_run; vpc_ids; filters } 
     let parse xml =
       Some
         {
@@ -25218,6 +26457,7 @@ module DescribeVpcClassicLinkRequest =
             (Util.of_option []
                (Util.option_bind (Xml.member "Filter" xml) FilterList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -25226,6 +26466,7 @@ module DescribeVpcClassicLinkRequest =
              (Query.Pair ("VpcId", (VpcClassicLinkIdList.to_query v.vpc_ids)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -25233,6 +26474,7 @@ module DescribeVpcClassicLinkRequest =
            Some ("vpc_ids", (VpcClassicLinkIdList.to_json v.vpc_ids));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -25241,13 +26483,13 @@ module DescribeVpcClassicLinkRequest =
              (Util.of_option_exn (Json.lookup j "vpc_ids")));
         filters =
           (FilterList.of_json (Util.of_option_exn (Json.lookup j "filters")))
-      }
+      } 
   end
 module DescribeRegionsResult =
   struct
     type t = {
-      regions: RegionList.t;}
-    let make ?(regions= [])  () = { regions }
+      regions: RegionList.t }
+    let make ?(regions= [])  () = { regions } 
     let parse xml =
       Some
         {
@@ -25256,32 +26498,35 @@ module DescribeRegionsResult =
                (Util.option_bind (Xml.member "regionInfo" xml)
                   RegionList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("RegionInfo", (RegionList.to_query v.regions)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("regions", (RegionList.to_json v.regions))])
+      
     let of_json j =
       {
         regions =
           (RegionList.of_json (Util.of_option_exn (Json.lookup j "regions")))
-      }
+      } 
   end
 module CreateVpnConnectionRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      type_: String.t;
-      customer_gateway_id: String.t;
-      vpn_gateway_id: String.t;
-      options: VpnConnectionOptionsSpecification.t option;}
+      dry_run: Boolean.t option ;
+      type_: String.t ;
+      customer_gateway_id: String.t ;
+      vpn_gateway_id: String.t ;
+      options: VpnConnectionOptionsSpecification.t option }
     let make ?dry_run  ~type_  ~customer_gateway_id  ~vpn_gateway_id 
       ?options  () =
-      { dry_run; type_; customer_gateway_id; vpn_gateway_id; options }
+      { dry_run; type_; customer_gateway_id; vpn_gateway_id; options } 
     let parse xml =
       Some
         {
@@ -25301,6 +26546,7 @@ module CreateVpnConnectionRequest =
             (Util.option_bind (Xml.member "options" xml)
                VpnConnectionOptionsSpecification.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -25318,6 +26564,7 @@ module CreateVpnConnectionRequest =
            Some (Query.Pair ("Type", (String.to_query v.type_)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -25330,6 +26577,7 @@ module CreateVpnConnectionRequest =
            Some ("type_", (String.to_json v.type_));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -25343,17 +26591,17 @@ module CreateVpnConnectionRequest =
         options =
           (Util.option_map (Json.lookup j "options")
              VpnConnectionOptionsSpecification.of_json)
-      }
+      } 
   end
 module CreateVpnGatewayRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      type_: GatewayType.t;
-      availability_zone: String.t option;}
+      dry_run: Boolean.t option ;
+      type_: GatewayType.t ;
+      availability_zone: String.t option }
     let make ?dry_run  ~type_  ?availability_zone  () =
-      { dry_run; type_; availability_zone }
+      { dry_run; type_; availability_zone } 
     let parse xml =
       Some
         {
@@ -25366,6 +26614,7 @@ module CreateVpnGatewayRequest =
             (Util.option_bind (Xml.member "AvailabilityZone" xml)
                String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -25374,6 +26623,7 @@ module CreateVpnGatewayRequest =
            Some (Query.Pair ("Type", (GatewayType.to_query v.type_)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -25382,6 +26632,7 @@ module CreateVpnGatewayRequest =
            Some ("type_", (GatewayType.to_json v.type_));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -25389,45 +26640,48 @@ module CreateVpnGatewayRequest =
           (GatewayType.of_json (Util.of_option_exn (Json.lookup j "type_")));
         availability_zone =
           (Util.option_map (Json.lookup j "availability_zone") String.of_json)
-      }
+      } 
   end
 module RegisterImageResult =
   struct
     type t = {
-      image_id: String.t option;}
-    let make ?image_id  () = { image_id }
+      image_id: String.t option }
+    let make ?image_id  () = { image_id } 
     let parse xml =
       Some
         {
           image_id =
             (Util.option_bind (Xml.member "imageId" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.image_id
               (fun f  -> Query.Pair ("ImageId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.image_id
               (fun f  -> ("image_id", (String.to_json f)))])
+      
     let of_json j =
       {
         image_id =
           (Util.option_map (Json.lookup j "image_id") String.of_json)
-      }
+      } 
   end
 module AttachVolumeRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      volume_id: String.t;
-      instance_id: String.t;
-      device: String.t;}
+      dry_run: Boolean.t option ;
+      volume_id: String.t ;
+      instance_id: String.t ;
+      device: String.t }
     let make ?dry_run  ~volume_id  ~instance_id  ~device  () =
-      { dry_run; volume_id; instance_id; device }
+      { dry_run; volume_id; instance_id; device } 
     let parse xml =
       Some
         {
@@ -25443,6 +26697,7 @@ module AttachVolumeRequest =
             (Xml.required "Device"
                (Util.option_bind (Xml.member "Device" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -25451,6 +26706,7 @@ module AttachVolumeRequest =
            Some (Query.Pair ("VolumeId", (String.to_query v.volume_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -25459,6 +26715,7 @@ module AttachVolumeRequest =
            Some ("volume_id", (String.to_json v.volume_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -25468,14 +26725,14 @@ module AttachVolumeRequest =
           (String.of_json (Util.of_option_exn (Json.lookup j "instance_id")));
         device =
           (String.of_json (Util.of_option_exn (Json.lookup j "device")))
-      }
+      } 
   end
 module CancelReservedInstancesListingResult =
   struct
     type t = {
-      reserved_instances_listings: ReservedInstancesListingList.t;}
+      reserved_instances_listings: ReservedInstancesListingList.t }
     let make ?(reserved_instances_listings= [])  () =
-      { reserved_instances_listings }
+      { reserved_instances_listings } 
     let parse xml =
       Some
         {
@@ -25485,6 +26742,7 @@ module CancelReservedInstancesListingResult =
                   (Xml.member "reservedInstancesListingsSet" xml)
                   ReservedInstancesListingList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -25493,6 +26751,7 @@ module CancelReservedInstancesListingResult =
                  ("ReservedInstancesListingsSet",
                    (ReservedInstancesListingList.to_query
                       v.reserved_instances_listings)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -25500,22 +26759,23 @@ module CancelReservedInstancesListingResult =
               ("reserved_instances_listings",
                 (ReservedInstancesListingList.to_json
                    v.reserved_instances_listings))])
+      
     let of_json j =
       {
         reserved_instances_listings =
           (ReservedInstancesListingList.of_json
              (Util.of_option_exn
                 (Json.lookup j "reserved_instances_listings")))
-      }
+      } 
   end
 module CreateTagsRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      resources: ResourceIdList.t;
-      tags: TagList.t;}
-    let make ?dry_run  ~resources  ~tags  () = { dry_run; resources; tags }
+      dry_run: Boolean.t option ;
+      resources: ResourceIdList.t ;
+      tags: TagList.t }
+    let make ?dry_run  ~resources  ~tags  () = { dry_run; resources; tags } 
     let parse xml =
       Some
         {
@@ -25529,6 +26789,7 @@ module CreateTagsRequest =
             (Xml.required "Tag"
                (Util.option_bind (Xml.member "Tag" xml) TagList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -25538,6 +26799,7 @@ module CreateTagsRequest =
                 ("ResourceId", (ResourceIdList.to_query v.resources)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -25545,6 +26807,7 @@ module CreateTagsRequest =
            Some ("resources", (ResourceIdList.to_json v.resources));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -25552,13 +26815,13 @@ module CreateTagsRequest =
           (ResourceIdList.of_json
              (Util.of_option_exn (Json.lookup j "resources")));
         tags = (TagList.of_json (Util.of_option_exn (Json.lookup j "tags")))
-      }
+      } 
   end
 module CreateDhcpOptionsResult =
   struct
     type t = {
-      dhcp_options: DhcpOptions.t option;}
-    let make ?dhcp_options  () = { dhcp_options }
+      dhcp_options: DhcpOptions.t option }
+    let make ?dhcp_options  () = { dhcp_options } 
     let parse xml =
       Some
         {
@@ -25566,31 +26829,34 @@ module CreateDhcpOptionsResult =
             (Util.option_bind (Xml.member "dhcpOptions" xml)
                DhcpOptions.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.dhcp_options
               (fun f  -> Query.Pair ("DhcpOptions", (DhcpOptions.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.dhcp_options
               (fun f  -> ("dhcp_options", (DhcpOptions.to_json f)))])
+      
     let of_json j =
       {
         dhcp_options =
           (Util.option_map (Json.lookup j "dhcp_options") DhcpOptions.of_json)
-      }
+      } 
   end
 module CreatePlacementGroupRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      group_name: String.t;
-      strategy: PlacementStrategy.t;}
+      dry_run: Boolean.t option ;
+      group_name: String.t ;
+      strategy: PlacementStrategy.t }
     let make ?dry_run  ~group_name  ~strategy  () =
-      { dry_run; group_name; strategy }
+      { dry_run; group_name; strategy } 
     let parse xml =
       Some
         {
@@ -25604,6 +26870,7 @@ module CreatePlacementGroupRequest =
                (Util.option_bind (Xml.member "strategy" xml)
                   PlacementStrategy.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -25613,6 +26880,7 @@ module CreatePlacementGroupRequest =
            Some (Query.Pair ("GroupName", (String.to_query v.group_name)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -25620,6 +26888,7 @@ module CreatePlacementGroupRequest =
            Some ("group_name", (String.to_json v.group_name));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -25628,14 +26897,14 @@ module CreatePlacementGroupRequest =
         strategy =
           (PlacementStrategy.of_json
              (Util.of_option_exn (Json.lookup j "strategy")))
-      }
+      } 
   end
 module ConfirmProductInstanceResult =
   struct
     type t = {
-      owner_id: String.t option;
-      return: Boolean.t option;}
-    let make ?owner_id  ?return  () = { owner_id; return }
+      owner_id: String.t option ;
+      return: Boolean.t option }
+    let make ?owner_id  ?return  () = { owner_id; return } 
     let parse xml =
       Some
         {
@@ -25643,6 +26912,7 @@ module ConfirmProductInstanceResult =
             (Util.option_bind (Xml.member "ownerId" xml) String.parse);
           return = (Util.option_bind (Xml.member "return" xml) Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -25650,6 +26920,7 @@ module ConfirmProductInstanceResult =
               (fun f  -> Query.Pair ("Return", (Boolean.to_query f)));
            Util.option_map v.owner_id
              (fun f  -> Query.Pair ("OwnerId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -25657,24 +26928,25 @@ module ConfirmProductInstanceResult =
               (fun f  -> ("return", (Boolean.to_json f)));
            Util.option_map v.owner_id
              (fun f  -> ("owner_id", (String.to_json f)))])
+      
     let of_json j =
       {
         owner_id =
           (Util.option_map (Json.lookup j "owner_id") String.of_json);
         return = (Util.option_map (Json.lookup j "return") Boolean.of_json)
-      }
+      } 
   end
 module AssociateAddressRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      instance_id: String.t option;
-      public_ip: String.t option;
-      allocation_id: String.t option;
-      network_interface_id: String.t option;
-      private_ip_address: String.t option;
-      allow_reassociation: Boolean.t option;}
+      dry_run: Boolean.t option ;
+      instance_id: String.t option ;
+      public_ip: String.t option ;
+      allocation_id: String.t option ;
+      network_interface_id: String.t option ;
+      private_ip_address: String.t option ;
+      allow_reassociation: Boolean.t option }
     let make ?dry_run  ?instance_id  ?public_ip  ?allocation_id 
       ?network_interface_id  ?private_ip_address  ?allow_reassociation  () =
       {
@@ -25685,7 +26957,7 @@ module AssociateAddressRequest =
         network_interface_id;
         private_ip_address;
         allow_reassociation
-      }
+      } 
     let parse xml =
       Some
         {
@@ -25707,6 +26979,7 @@ module AssociateAddressRequest =
             (Util.option_bind (Xml.member "allowReassociation" xml)
                Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -25726,6 +26999,7 @@ module AssociateAddressRequest =
              (fun f  -> Query.Pair ("InstanceId", (String.to_query f)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -25743,6 +27017,7 @@ module AssociateAddressRequest =
              (fun f  -> ("instance_id", (String.to_json f)));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -25761,19 +27036,19 @@ module AssociateAddressRequest =
         allow_reassociation =
           (Util.option_map (Json.lookup j "allow_reassociation")
              Boolean.of_json)
-      }
+      } 
   end
 module CreateRouteRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      route_table_id: String.t;
-      destination_cidr_block: String.t;
-      gateway_id: String.t option;
-      instance_id: String.t option;
-      network_interface_id: String.t option;
-      vpc_peering_connection_id: String.t option;}
+      dry_run: Boolean.t option ;
+      route_table_id: String.t ;
+      destination_cidr_block: String.t ;
+      gateway_id: String.t option ;
+      instance_id: String.t option ;
+      network_interface_id: String.t option ;
+      vpc_peering_connection_id: String.t option }
     let make ?dry_run  ~route_table_id  ~destination_cidr_block  ?gateway_id 
       ?instance_id  ?network_interface_id  ?vpc_peering_connection_id  () =
       {
@@ -25784,7 +27059,7 @@ module CreateRouteRequest =
         instance_id;
         network_interface_id;
         vpc_peering_connection_id
-      }
+      } 
     let parse xml =
       Some
         {
@@ -25808,6 +27083,7 @@ module CreateRouteRequest =
             (Util.option_bind (Xml.member "vpcPeeringConnectionId" xml)
                String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -25829,6 +27105,7 @@ module CreateRouteRequest =
              (Query.Pair ("RouteTableId", (String.to_query v.route_table_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -25846,6 +27123,7 @@ module CreateRouteRequest =
            Some ("route_table_id", (String.to_json v.route_table_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -25865,15 +27143,16 @@ module CreateRouteRequest =
         vpc_peering_connection_id =
           (Util.option_map (Json.lookup j "vpc_peering_connection_id")
              String.of_json)
-      }
+      } 
   end
 module RejectVpcPeeringConnectionRequest =
   struct
-    type t = {
-      dry_run: Boolean.t option;
-      vpc_peering_connection_id: String.t;}
+    type t =
+      {
+      dry_run: Boolean.t option ;
+      vpc_peering_connection_id: String.t }
     let make ?dry_run  ~vpc_peering_connection_id  () =
-      { dry_run; vpc_peering_connection_id }
+      { dry_run; vpc_peering_connection_id } 
     let parse xml =
       Some
         {
@@ -25884,6 +27163,7 @@ module RejectVpcPeeringConnectionRequest =
                (Util.option_bind (Xml.member "vpcPeeringConnectionId" xml)
                   String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -25893,6 +27173,7 @@ module RejectVpcPeeringConnectionRequest =
                    (String.to_query v.vpc_peering_connection_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -25901,20 +27182,21 @@ module RejectVpcPeeringConnectionRequest =
                 (String.to_json v.vpc_peering_connection_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         vpc_peering_connection_id =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "vpc_peering_connection_id")))
-      }
+      } 
   end
 module AllocateAddressRequest =
   struct
     type t = {
-      dry_run: Boolean.t option;
-      domain: DomainType.t option;}
-    let make ?dry_run  ?domain  () = { dry_run; domain }
+      dry_run: Boolean.t option ;
+      domain: DomainType.t option }
+    let make ?dry_run  ?domain  () = { dry_run; domain } 
     let parse xml =
       Some
         {
@@ -25923,6 +27205,7 @@ module AllocateAddressRequest =
           domain =
             (Util.option_bind (Xml.member "Domain" xml) DomainType.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -25930,6 +27213,7 @@ module AllocateAddressRequest =
               (fun f  -> Query.Pair ("Domain", (DomainType.to_query f)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -25937,23 +27221,24 @@ module AllocateAddressRequest =
               (fun f  -> ("domain", (DomainType.to_json f)));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         domain =
           (Util.option_map (Json.lookup j "domain") DomainType.of_json)
-      }
+      } 
   end
 module DescribeAddressesRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      public_ips: PublicIpStringList.t;
-      filters: FilterList.t;
-      allocation_ids: AllocationIdList.t;}
+      dry_run: Boolean.t option ;
+      public_ips: PublicIpStringList.t ;
+      filters: FilterList.t ;
+      allocation_ids: AllocationIdList.t }
     let make ?dry_run  ?(public_ips= [])  ?(filters= [])  ?(allocation_ids=
-      [])  () = { dry_run; public_ips; filters; allocation_ids }
+      [])  () = { dry_run; public_ips; filters; allocation_ids } 
     let parse xml =
       Some
         {
@@ -25971,6 +27256,7 @@ module DescribeAddressesRequest =
                (Util.option_bind (Xml.member "AllocationId" xml)
                   AllocationIdList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -25984,6 +27270,7 @@ module DescribeAddressesRequest =
                 ("PublicIp", (PublicIpStringList.to_query v.public_ips)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -25993,6 +27280,7 @@ module DescribeAddressesRequest =
            Some ("public_ips", (PublicIpStringList.to_json v.public_ips));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -26004,13 +27292,13 @@ module DescribeAddressesRequest =
         allocation_ids =
           (AllocationIdList.of_json
              (Util.of_option_exn (Json.lookup j "allocation_ids")))
-      }
+      } 
   end
 module BundleInstanceResult =
   struct
     type t = {
-      bundle_task: BundleTask.t option;}
-    let make ?bundle_task  () = { bundle_task }
+      bundle_task: BundleTask.t option }
+    let make ?bundle_task  () = { bundle_task } 
     let parse xml =
       Some
         {
@@ -26018,29 +27306,32 @@ module BundleInstanceResult =
             (Util.option_bind (Xml.member "bundleInstanceTask" xml)
                BundleTask.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.bundle_task
               (fun f  ->
                  Query.Pair ("BundleInstanceTask", (BundleTask.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.bundle_task
               (fun f  -> ("bundle_task", (BundleTask.to_json f)))])
+      
     let of_json j =
       {
         bundle_task =
           (Util.option_map (Json.lookup j "bundle_task") BundleTask.of_json)
-      }
+      } 
   end
 module CreateRouteTableRequest =
   struct
     type t = {
-      dry_run: Boolean.t option;
-      vpc_id: String.t;}
-    let make ?dry_run  ~vpc_id  () = { dry_run; vpc_id }
+      dry_run: Boolean.t option ;
+      vpc_id: String.t }
+    let make ?dry_run  ~vpc_id  () = { dry_run; vpc_id } 
     let parse xml =
       Some
         {
@@ -26050,36 +27341,39 @@ module CreateRouteTableRequest =
             (Xml.required "vpcId"
                (Util.option_bind (Xml.member "vpcId" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("VpcId", (String.to_query v.vpc_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("vpc_id", (String.to_json v.vpc_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         vpc_id =
           (String.of_json (Util.of_option_exn (Json.lookup j "vpc_id")))
-      }
+      } 
   end
 module DetachVolumeRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      volume_id: String.t;
-      instance_id: String.t option;
-      device: String.t option;
-      force: Boolean.t option;}
+      dry_run: Boolean.t option ;
+      volume_id: String.t ;
+      instance_id: String.t option ;
+      device: String.t option ;
+      force: Boolean.t option }
     let make ?dry_run  ~volume_id  ?instance_id  ?device  ?force  () =
-      { dry_run; volume_id; instance_id; device; force }
+      { dry_run; volume_id; instance_id; device; force } 
     let parse xml =
       Some
         {
@@ -26093,6 +27387,7 @@ module DetachVolumeRequest =
           device = (Util.option_bind (Xml.member "Device" xml) String.parse);
           force = (Util.option_bind (Xml.member "Force" xml) Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -26105,6 +27400,7 @@ module DetachVolumeRequest =
            Some (Query.Pair ("VolumeId", (String.to_query v.volume_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -26117,6 +27413,7 @@ module DetachVolumeRequest =
            Some ("volume_id", (String.to_json v.volume_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -26126,26 +27423,26 @@ module DetachVolumeRequest =
           (Util.option_map (Json.lookup j "instance_id") String.of_json);
         device = (Util.option_map (Json.lookup j "device") String.of_json);
         force = (Util.option_map (Json.lookup j "force") Boolean.of_json)
-      }
+      } 
   end
 module InstanceAttribute =
   struct
     type t =
       {
-      instance_id: String.t option;
-      instance_type: AttributeValue.t option;
-      kernel_id: AttributeValue.t option;
-      ramdisk_id: AttributeValue.t option;
-      user_data: AttributeValue.t option;
-      disable_api_termination: AttributeBooleanValue.t option;
-      instance_initiated_shutdown_behavior: AttributeValue.t option;
-      root_device_name: AttributeValue.t option;
-      block_device_mappings: InstanceBlockDeviceMappingList.t;
-      product_codes: ProductCodeList.t;
-      ebs_optimized: AttributeBooleanValue.t option;
-      sriov_net_support: AttributeValue.t option;
-      source_dest_check: AttributeBooleanValue.t option;
-      groups: GroupIdentifierList.t;}
+      instance_id: String.t option ;
+      instance_type: AttributeValue.t option ;
+      kernel_id: AttributeValue.t option ;
+      ramdisk_id: AttributeValue.t option ;
+      user_data: AttributeValue.t option ;
+      disable_api_termination: AttributeBooleanValue.t option ;
+      instance_initiated_shutdown_behavior: AttributeValue.t option ;
+      root_device_name: AttributeValue.t option ;
+      block_device_mappings: InstanceBlockDeviceMappingList.t ;
+      product_codes: ProductCodeList.t ;
+      ebs_optimized: AttributeBooleanValue.t option ;
+      sriov_net_support: AttributeValue.t option ;
+      source_dest_check: AttributeBooleanValue.t option ;
+      groups: GroupIdentifierList.t }
     let make ?instance_id  ?instance_type  ?kernel_id  ?ramdisk_id 
       ?user_data  ?disable_api_termination 
       ?instance_initiated_shutdown_behavior  ?root_device_name 
@@ -26166,7 +27463,7 @@ module InstanceAttribute =
         sriov_net_support;
         source_dest_check;
         groups
-      }
+      } 
     let parse xml =
       Some
         {
@@ -26214,6 +27511,7 @@ module InstanceAttribute =
                (Util.option_bind (Xml.member "groupSet" xml)
                   GroupIdentifierList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -26263,6 +27561,7 @@ module InstanceAttribute =
                 Query.Pair ("InstanceType", (AttributeValue.to_query f)));
            Util.option_map v.instance_id
              (fun f  -> Query.Pair ("InstanceId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -26299,6 +27598,7 @@ module InstanceAttribute =
              (fun f  -> ("instance_type", (AttributeValue.to_json f)));
            Util.option_map v.instance_id
              (fun f  -> ("instance_id", (String.to_json f)))])
+      
     let of_json j =
       {
         instance_id =
@@ -26341,13 +27641,13 @@ module InstanceAttribute =
         groups =
           (GroupIdentifierList.of_json
              (Util.of_option_exn (Json.lookup j "groups")))
-      }
+      } 
   end
 module DescribeAddressesResult =
   struct
     type t = {
-      addresses: AddressList.t;}
-    let make ?(addresses= [])  () = { addresses }
+      addresses: AddressList.t }
+    let make ?(addresses= [])  () = { addresses } 
     let parse xml =
       Some
         {
@@ -26356,32 +27656,35 @@ module DescribeAddressesResult =
                (Util.option_bind (Xml.member "addressesSet" xml)
                   AddressList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some
               (Query.Pair
                  ("AddressesSet", (AddressList.to_query v.addresses)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("addresses", (AddressList.to_json v.addresses))])
+      
     let of_json j =
       {
         addresses =
           (AddressList.of_json
              (Util.of_option_exn (Json.lookup j "addresses")))
-      }
+      } 
   end
 module DescribeRouteTablesRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      route_table_ids: ValueStringList.t;
-      filters: FilterList.t;}
+      dry_run: Boolean.t option ;
+      route_table_ids: ValueStringList.t ;
+      filters: FilterList.t }
     let make ?dry_run  ?(route_table_ids= [])  ?(filters= [])  () =
-      { dry_run; route_table_ids; filters }
+      { dry_run; route_table_ids; filters } 
     let parse xml =
       Some
         {
@@ -26395,6 +27698,7 @@ module DescribeRouteTablesRequest =
             (Util.of_option []
                (Util.option_bind (Xml.member "Filter" xml) FilterList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -26405,6 +27709,7 @@ module DescribeRouteTablesRequest =
                   (ValueStringList.to_query v.route_table_ids)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -26413,6 +27718,7 @@ module DescribeRouteTablesRequest =
              ("route_table_ids", (ValueStringList.to_json v.route_table_ids));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -26421,18 +27727,18 @@ module DescribeRouteTablesRequest =
              (Util.of_option_exn (Json.lookup j "route_table_ids")));
         filters =
           (FilterList.of_json (Util.of_option_exn (Json.lookup j "filters")))
-      }
+      } 
   end
 module ImportSnapshotRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      description: String.t option;
-      disk_container: SnapshotDiskContainer.t option;
-      client_data: ClientData.t option;
-      client_token: String.t option;
-      role_name: String.t option;}
+      dry_run: Boolean.t option ;
+      description: String.t option ;
+      disk_container: SnapshotDiskContainer.t option ;
+      client_data: ClientData.t option ;
+      client_token: String.t option ;
+      role_name: String.t option }
     let make ?dry_run  ?description  ?disk_container  ?client_data 
       ?client_token  ?role_name  () =
       {
@@ -26442,7 +27748,7 @@ module ImportSnapshotRequest =
         client_data;
         client_token;
         role_name
-      }
+      } 
     let parse xml =
       Some
         {
@@ -26460,6 +27766,7 @@ module ImportSnapshotRequest =
           role_name =
             (Util.option_bind (Xml.member "RoleName" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -26477,6 +27784,7 @@ module ImportSnapshotRequest =
              (fun f  -> Query.Pair ("Description", (String.to_query f)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -26492,6 +27800,7 @@ module ImportSnapshotRequest =
              (fun f  -> ("description", (String.to_json f)));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -26506,35 +27815,38 @@ module ImportSnapshotRequest =
           (Util.option_map (Json.lookup j "client_token") String.of_json);
         role_name =
           (Util.option_map (Json.lookup j "role_name") String.of_json)
-      }
+      } 
   end
 module CreateSubnetResult =
   struct
     type t = {
-      subnet: Subnet.t option;}
-    let make ?subnet  () = { subnet }
+      subnet: Subnet.t option }
+    let make ?subnet  () = { subnet } 
     let parse xml =
       Some
         { subnet = (Util.option_bind (Xml.member "subnet" xml) Subnet.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.subnet
               (fun f  -> Query.Pair ("Subnet", (Subnet.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.subnet
               (fun f  -> ("subnet", (Subnet.to_json f)))])
+      
     let of_json j =
-      { subnet = (Util.option_map (Json.lookup j "subnet") Subnet.of_json) }
+      { subnet = (Util.option_map (Json.lookup j "subnet") Subnet.of_json) } 
   end
 module StopInstancesResult =
   struct
     type t = {
-      stopping_instances: InstanceStateChangeList.t;}
-    let make ?(stopping_instances= [])  () = { stopping_instances }
+      stopping_instances: InstanceStateChangeList.t }
+    let make ?(stopping_instances= [])  () = { stopping_instances } 
     let parse xml =
       Some
         {
@@ -26543,6 +27855,7 @@ module StopInstancesResult =
                (Util.option_bind (Xml.member "instancesSet" xml)
                   InstanceStateChangeList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -26550,24 +27863,26 @@ module StopInstancesResult =
               (Query.Pair
                  ("InstancesSet",
                    (InstanceStateChangeList.to_query v.stopping_instances)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("stopping_instances",
                 (InstanceStateChangeList.to_json v.stopping_instances))])
+      
     let of_json j =
       {
         stopping_instances =
           (InstanceStateChangeList.of_json
              (Util.of_option_exn (Json.lookup j "stopping_instances")))
-      }
+      } 
   end
 module RequestSpotFleetResponse =
   struct
     type t = {
-      spot_fleet_request_id: String.t;}
-    let make ~spot_fleet_request_id  () = { spot_fleet_request_id }
+      spot_fleet_request_id: String.t }
+    let make ~spot_fleet_request_id  () = { spot_fleet_request_id } 
     let parse xml =
       Some
         {
@@ -26576,6 +27891,7 @@ module RequestSpotFleetResponse =
                (Util.option_bind (Xml.member "spotFleetRequestId" xml)
                   String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -26583,24 +27899,26 @@ module RequestSpotFleetResponse =
               (Query.Pair
                  ("SpotFleetRequestId",
                    (String.to_query v.spot_fleet_request_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("spot_fleet_request_id",
                 (String.to_json v.spot_fleet_request_id))])
+      
     let of_json j =
       {
         spot_fleet_request_id =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "spot_fleet_request_id")))
-      }
+      } 
   end
 module DescribeVpnConnectionsResult =
   struct
     type t = {
-      vpn_connections: VpnConnectionList.t;}
-    let make ?(vpn_connections= [])  () = { vpn_connections }
+      vpn_connections: VpnConnectionList.t }
+    let make ?(vpn_connections= [])  () = { vpn_connections } 
     let parse xml =
       Some
         {
@@ -26609,6 +27927,7 @@ module DescribeVpnConnectionsResult =
                (Util.option_bind (Xml.member "vpnConnectionSet" xml)
                   VpnConnectionList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -26616,27 +27935,29 @@ module DescribeVpnConnectionsResult =
               (Query.Pair
                  ("VpnConnectionSet",
                    (VpnConnectionList.to_query v.vpn_connections)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("vpn_connections",
                 (VpnConnectionList.to_json v.vpn_connections))])
+      
     let of_json j =
       {
         vpn_connections =
           (VpnConnectionList.of_json
              (Util.of_option_exn (Json.lookup j "vpn_connections")))
-      }
+      } 
   end
 module DescribeReservedInstancesOfferingsResult =
   struct
     type t =
       {
-      reserved_instances_offerings: ReservedInstancesOfferingList.t;
-      next_token: String.t option;}
+      reserved_instances_offerings: ReservedInstancesOfferingList.t ;
+      next_token: String.t option }
     let make ?(reserved_instances_offerings= [])  ?next_token  () =
-      { reserved_instances_offerings; next_token }
+      { reserved_instances_offerings; next_token } 
     let parse xml =
       Some
         {
@@ -26648,6 +27969,7 @@ module DescribeReservedInstancesOfferingsResult =
           next_token =
             (Util.option_bind (Xml.member "nextToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -26658,6 +27980,7 @@ module DescribeReservedInstancesOfferingsResult =
                 ("ReservedInstancesOfferingsSet",
                   (ReservedInstancesOfferingList.to_query
                      v.reserved_instances_offerings)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -26667,6 +27990,7 @@ module DescribeReservedInstancesOfferingsResult =
              ("reserved_instances_offerings",
                (ReservedInstancesOfferingList.to_json
                   v.reserved_instances_offerings))])
+      
     let of_json j =
       {
         reserved_instances_offerings =
@@ -26675,17 +27999,17 @@ module DescribeReservedInstancesOfferingsResult =
                 (Json.lookup j "reserved_instances_offerings")));
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      }
+      } 
   end
 module AssociateDhcpOptionsRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      dhcp_options_id: String.t;
-      vpc_id: String.t;}
+      dry_run: Boolean.t option ;
+      dhcp_options_id: String.t ;
+      vpc_id: String.t }
     let make ?dry_run  ~dhcp_options_id  ~vpc_id  () =
-      { dry_run; dhcp_options_id; vpc_id }
+      { dry_run; dhcp_options_id; vpc_id } 
     let parse xml =
       Some
         {
@@ -26699,6 +28023,7 @@ module AssociateDhcpOptionsRequest =
             (Xml.required "VpcId"
                (Util.option_bind (Xml.member "VpcId" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -26708,6 +28033,7 @@ module AssociateDhcpOptionsRequest =
                 ("DhcpOptionsId", (String.to_query v.dhcp_options_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -26715,6 +28041,7 @@ module AssociateDhcpOptionsRequest =
            Some ("dhcp_options_id", (String.to_json v.dhcp_options_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -26723,14 +28050,14 @@ module AssociateDhcpOptionsRequest =
              (Util.of_option_exn (Json.lookup j "dhcp_options_id")));
         vpc_id =
           (String.of_json (Util.of_option_exn (Json.lookup j "vpc_id")))
-      }
+      } 
   end
 module DeleteKeyPairRequest =
   struct
     type t = {
-      dry_run: Boolean.t option;
-      key_name: String.t;}
-    let make ?dry_run  ~key_name  () = { dry_run; key_name }
+      dry_run: Boolean.t option ;
+      key_name: String.t }
+    let make ?dry_run  ~key_name  () = { dry_run; key_name } 
     let parse xml =
       Some
         {
@@ -26740,32 +28067,35 @@ module DeleteKeyPairRequest =
             (Xml.required "KeyName"
                (Util.option_bind (Xml.member "KeyName" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("KeyName", (String.to_query v.key_name)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("key_name", (String.to_json v.key_name));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         key_name =
           (String.of_json (Util.of_option_exn (Json.lookup j "key_name")))
-      }
+      } 
   end
 module DescribeInstancesResult =
   struct
     type t = {
-      reservations: ReservationList.t;
-      next_token: String.t option;}
+      reservations: ReservationList.t ;
+      next_token: String.t option }
     let make ?(reservations= [])  ?next_token  () =
-      { reservations; next_token }
+      { reservations; next_token } 
     let parse xml =
       Some
         {
@@ -26776,6 +28106,7 @@ module DescribeInstancesResult =
           next_token =
             (Util.option_bind (Xml.member "nextToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -26784,12 +28115,14 @@ module DescribeInstancesResult =
            Some
              (Query.Pair
                 ("ReservationSet", (ReservationList.to_query v.reservations)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.next_token
               (fun f  -> ("next_token", (String.to_json f)));
            Some ("reservations", (ReservationList.to_json v.reservations))])
+      
     let of_json j =
       {
         reservations =
@@ -26797,17 +28130,17 @@ module DescribeInstancesResult =
              (Util.of_option_exn (Json.lookup j "reservations")));
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      }
+      } 
   end
 module GetPasswordDataResult =
   struct
     type t =
       {
-      instance_id: String.t;
-      timestamp: DateTime.t;
-      password_data: String.t;}
+      instance_id: String.t ;
+      timestamp: DateTime.t ;
+      password_data: String.t }
     let make ~instance_id  ~timestamp  ~password_data  () =
-      { instance_id; timestamp; password_data }
+      { instance_id; timestamp; password_data } 
     let parse xml =
       Some
         {
@@ -26821,6 +28154,7 @@ module GetPasswordDataResult =
             (Xml.required "passwordData"
                (Util.option_bind (Xml.member "passwordData" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -26828,12 +28162,14 @@ module GetPasswordDataResult =
               (Query.Pair ("PasswordData", (String.to_query v.password_data)));
            Some (Query.Pair ("Timestamp", (DateTime.to_query v.timestamp)));
            Some (Query.Pair ("InstanceId", (String.to_query v.instance_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("password_data", (String.to_json v.password_data));
            Some ("timestamp", (DateTime.to_json v.timestamp));
            Some ("instance_id", (String.to_json v.instance_id))])
+      
     let of_json j =
       {
         instance_id =
@@ -26843,39 +28179,41 @@ module GetPasswordDataResult =
         password_data =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "password_data")))
-      }
+      } 
   end
 module CreateVpcResult =
   struct
     type t = {
-      vpc: Vpc.t option;}
-    let make ?vpc  () = { vpc }
+      vpc: Vpc.t option }
+    let make ?vpc  () = { vpc } 
     let parse xml =
-      Some { vpc = (Util.option_bind (Xml.member "vpc" xml) Vpc.parse) }
+      Some { vpc = (Util.option_bind (Xml.member "vpc" xml) Vpc.parse) } 
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.vpc
               (fun f  -> Query.Pair ("Vpc", (Vpc.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.vpc (fun f  -> ("vpc", (Vpc.to_json f)))])
+      
     let of_json j =
-      { vpc = (Util.option_map (Json.lookup j "vpc") Vpc.of_json) }
+      { vpc = (Util.option_map (Json.lookup j "vpc") Vpc.of_json) } 
   end
 module DescribeVolumesRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      volume_ids: VolumeIdStringList.t;
-      filters: FilterList.t;
-      next_token: String.t option;
-      max_results: Integer.t option;}
+      dry_run: Boolean.t option ;
+      volume_ids: VolumeIdStringList.t ;
+      filters: FilterList.t ;
+      next_token: String.t option ;
+      max_results: Integer.t option }
     let make ?dry_run  ?(volume_ids= [])  ?(filters= [])  ?next_token 
       ?max_results  () =
-      { dry_run; volume_ids; filters; next_token; max_results }
+      { dry_run; volume_ids; filters; next_token; max_results } 
     let parse xml =
       Some
         {
@@ -26893,6 +28231,7 @@ module DescribeVolumesRequest =
           max_results =
             (Util.option_bind (Xml.member "maxResults" xml) Integer.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -26906,6 +28245,7 @@ module DescribeVolumesRequest =
                 ("VolumeId", (VolumeIdStringList.to_query v.volume_ids)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -26917,6 +28257,7 @@ module DescribeVolumesRequest =
            Some ("volume_ids", (VolumeIdStringList.to_json v.volume_ids));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -26929,15 +28270,15 @@ module DescribeVolumesRequest =
           (Util.option_map (Json.lookup j "next_token") String.of_json);
         max_results =
           (Util.option_map (Json.lookup j "max_results") Integer.of_json)
-      }
+      } 
   end
 module MonitorInstancesRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      instance_ids: InstanceIdStringList.t;}
-    let make ?dry_run  ~instance_ids  () = { dry_run; instance_ids }
+      dry_run: Boolean.t option ;
+      instance_ids: InstanceIdStringList.t }
+    let make ?dry_run  ~instance_ids  () = { dry_run; instance_ids } 
     let parse xml =
       Some
         {
@@ -26948,6 +28289,7 @@ module MonitorInstancesRequest =
                (Util.option_bind (Xml.member "InstanceId" xml)
                   InstanceIdStringList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -26957,6 +28299,7 @@ module MonitorInstancesRequest =
                    (InstanceIdStringList.to_query v.instance_ids)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -26964,23 +28307,24 @@ module MonitorInstancesRequest =
               ("instance_ids", (InstanceIdStringList.to_json v.instance_ids));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         instance_ids =
           (InstanceIdStringList.of_json
              (Util.of_option_exn (Json.lookup j "instance_ids")))
-      }
+      } 
   end
 module DescribeRegionsRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      region_names: RegionNameStringList.t;
-      filters: FilterList.t;}
+      dry_run: Boolean.t option ;
+      region_names: RegionNameStringList.t ;
+      filters: FilterList.t }
     let make ?dry_run  ?(region_names= [])  ?(filters= [])  () =
-      { dry_run; region_names; filters }
+      { dry_run; region_names; filters } 
     let parse xml =
       Some
         {
@@ -26994,6 +28338,7 @@ module DescribeRegionsRequest =
             (Util.of_option []
                (Util.option_bind (Xml.member "Filter" xml) FilterList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -27004,6 +28349,7 @@ module DescribeRegionsRequest =
                   (RegionNameStringList.to_query v.region_names)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -27012,6 +28358,7 @@ module DescribeRegionsRequest =
              ("region_names", (RegionNameStringList.to_json v.region_names));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -27020,16 +28367,16 @@ module DescribeRegionsRequest =
              (Util.of_option_exn (Json.lookup j "region_names")));
         filters =
           (FilterList.of_json (Util.of_option_exn (Json.lookup j "filters")))
-      }
+      } 
   end
 module ModifySubnetAttributeRequest =
   struct
     type t =
       {
-      subnet_id: String.t;
-      map_public_ip_on_launch: AttributeBooleanValue.t option;}
+      subnet_id: String.t ;
+      map_public_ip_on_launch: AttributeBooleanValue.t option }
     let make ~subnet_id  ?map_public_ip_on_launch  () =
-      { subnet_id; map_public_ip_on_launch }
+      { subnet_id; map_public_ip_on_launch } 
     let parse xml =
       Some
         {
@@ -27040,6 +28387,7 @@ module ModifySubnetAttributeRequest =
             (Util.option_bind (Xml.member "MapPublicIpOnLaunch" xml)
                AttributeBooleanValue.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -27049,6 +28397,7 @@ module ModifySubnetAttributeRequest =
                    ("MapPublicIpOnLaunch",
                      (AttributeBooleanValue.to_query f)));
            Some (Query.Pair ("SubnetId", (String.to_query v.subnet_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -27057,6 +28406,7 @@ module ModifySubnetAttributeRequest =
                  ("map_public_ip_on_launch",
                    (AttributeBooleanValue.to_json f)));
            Some ("subnet_id", (String.to_json v.subnet_id))])
+      
     let of_json j =
       {
         subnet_id =
@@ -27064,13 +28414,13 @@ module ModifySubnetAttributeRequest =
         map_public_ip_on_launch =
           (Util.option_map (Json.lookup j "map_public_ip_on_launch")
              AttributeBooleanValue.of_json)
-      }
+      } 
   end
 module ImportInstanceResult =
   struct
     type t = {
-      conversion_task: ConversionTask.t option;}
-    let make ?conversion_task  () = { conversion_task }
+      conversion_task: ConversionTask.t option }
+    let make ?conversion_task  () = { conversion_task } 
     let parse xml =
       Some
         {
@@ -27078,39 +28428,42 @@ module ImportInstanceResult =
             (Util.option_bind (Xml.member "conversionTask" xml)
                ConversionTask.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.conversion_task
               (fun f  ->
                  Query.Pair ("ConversionTask", (ConversionTask.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.conversion_task
               (fun f  -> ("conversion_task", (ConversionTask.to_json f)))])
+      
     let of_json j =
       {
         conversion_task =
           (Util.option_map (Json.lookup j "conversion_task")
              ConversionTask.of_json)
-      }
+      } 
   end
 module RegisterImageRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      image_location: String.t option;
-      name: String.t;
-      description: String.t option;
-      architecture: ArchitectureValues.t option;
-      kernel_id: String.t option;
-      ramdisk_id: String.t option;
-      root_device_name: String.t option;
-      block_device_mappings: BlockDeviceMappingRequestList.t;
-      virtualization_type: String.t option;
-      sriov_net_support: String.t option;}
+      dry_run: Boolean.t option ;
+      image_location: String.t option ;
+      name: String.t ;
+      description: String.t option ;
+      architecture: ArchitectureValues.t option ;
+      kernel_id: String.t option ;
+      ramdisk_id: String.t option ;
+      root_device_name: String.t option ;
+      block_device_mappings: BlockDeviceMappingRequestList.t ;
+      virtualization_type: String.t option ;
+      sriov_net_support: String.t option }
     let make ?dry_run  ?image_location  ~name  ?description  ?architecture 
       ?kernel_id  ?ramdisk_id  ?root_device_name  ?(block_device_mappings=
       [])  ?virtualization_type  ?sriov_net_support  () =
@@ -27126,7 +28479,7 @@ module RegisterImageRequest =
         block_device_mappings;
         virtualization_type;
         sriov_net_support
-      }
+      } 
     let parse xml =
       Some
         {
@@ -27158,6 +28511,7 @@ module RegisterImageRequest =
           sriov_net_support =
             (Util.option_bind (Xml.member "sriovNetSupport" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -27187,6 +28541,7 @@ module RegisterImageRequest =
              (fun f  -> Query.Pair ("ImageLocation", (String.to_query f)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -27212,6 +28567,7 @@ module RegisterImageRequest =
              (fun f  -> ("image_location", (String.to_json f)));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -27237,18 +28593,18 @@ module RegisterImageRequest =
              String.of_json);
         sriov_net_support =
           (Util.option_map (Json.lookup j "sriov_net_support") String.of_json)
-      }
+      } 
   end
 module CreateSecurityGroupRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      group_name: String.t;
-      description: String.t;
-      vpc_id: String.t option;}
+      dry_run: Boolean.t option ;
+      group_name: String.t ;
+      description: String.t ;
+      vpc_id: String.t option }
     let make ?dry_run  ~group_name  ~description  ?vpc_id  () =
-      { dry_run; group_name; description; vpc_id }
+      { dry_run; group_name; description; vpc_id } 
     let parse xml =
       Some
         {
@@ -27263,6 +28619,7 @@ module CreateSecurityGroupRequest =
                   String.parse));
           vpc_id = (Util.option_bind (Xml.member "VpcId" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -27274,6 +28631,7 @@ module CreateSecurityGroupRequest =
            Some (Query.Pair ("GroupName", (String.to_query v.group_name)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -27283,6 +28641,7 @@ module CreateSecurityGroupRequest =
            Some ("group_name", (String.to_json v.group_name));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -27291,13 +28650,13 @@ module CreateSecurityGroupRequest =
         description =
           (String.of_json (Util.of_option_exn (Json.lookup j "description")));
         vpc_id = (Util.option_map (Json.lookup j "vpc_id") String.of_json)
-      }
+      } 
   end
 module DescribeVpcPeeringConnectionsResult =
   struct
     type t = {
-      vpc_peering_connections: VpcPeeringConnectionList.t;}
-    let make ?(vpc_peering_connections= [])  () = { vpc_peering_connections }
+      vpc_peering_connections: VpcPeeringConnectionList.t }
+    let make ?(vpc_peering_connections= [])  () = { vpc_peering_connections } 
     let parse xml =
       Some
         {
@@ -27306,6 +28665,7 @@ module DescribeVpcPeeringConnectionsResult =
                (Util.option_bind (Xml.member "vpcPeeringConnectionSet" xml)
                   VpcPeeringConnectionList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -27314,28 +28674,30 @@ module DescribeVpcPeeringConnectionsResult =
                  ("VpcPeeringConnectionSet",
                    (VpcPeeringConnectionList.to_query
                       v.vpc_peering_connections)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("vpc_peering_connections",
                 (VpcPeeringConnectionList.to_json v.vpc_peering_connections))])
+      
     let of_json j =
       {
         vpc_peering_connections =
           (VpcPeeringConnectionList.of_json
              (Util.of_option_exn (Json.lookup j "vpc_peering_connections")))
-      }
+      } 
   end
 module DescribeVolumeAttributeResult =
   struct
     type t =
       {
-      volume_id: String.t option;
-      auto_enable_i_o: AttributeBooleanValue.t option;
-      product_codes: ProductCodeList.t;}
+      volume_id: String.t option ;
+      auto_enable_i_o: AttributeBooleanValue.t option ;
+      product_codes: ProductCodeList.t }
     let make ?volume_id  ?auto_enable_i_o  ?(product_codes= [])  () =
-      { volume_id; auto_enable_i_o; product_codes }
+      { volume_id; auto_enable_i_o; product_codes } 
     let parse xml =
       Some
         {
@@ -27349,6 +28711,7 @@ module DescribeVolumeAttributeResult =
                (Util.option_bind (Xml.member "productCodes" xml)
                   ProductCodeList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -27361,6 +28724,7 @@ module DescribeVolumeAttributeResult =
                   ("AutoEnableIO", (AttributeBooleanValue.to_query f)));
            Util.option_map v.volume_id
              (fun f  -> Query.Pair ("VolumeId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -27370,6 +28734,7 @@ module DescribeVolumeAttributeResult =
                 ("auto_enable_i_o", (AttributeBooleanValue.to_json f)));
            Util.option_map v.volume_id
              (fun f  -> ("volume_id", (String.to_json f)))])
+      
     let of_json j =
       {
         volume_id =
@@ -27380,13 +28745,13 @@ module DescribeVolumeAttributeResult =
         product_codes =
           (ProductCodeList.of_json
              (Util.of_option_exn (Json.lookup j "product_codes")))
-      }
+      } 
   end
 module DescribeVpcsResult =
   struct
     type t = {
-      vpcs: VpcList.t;}
-    let make ?(vpcs= [])  () = { vpcs }
+      vpcs: VpcList.t }
+    let make ?(vpcs= [])  () = { vpcs } 
     let parse xml =
       Some
         {
@@ -27394,28 +28759,30 @@ module DescribeVpcsResult =
             (Util.of_option []
                (Util.option_bind (Xml.member "vpcSet" xml) VpcList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("VpcSet", (VpcList.to_query v.vpcs)))])
+      
     let to_json v =
-      `Assoc (Util.list_filter_opt [Some ("vpcs", (VpcList.to_json v.vpcs))])
+      `Assoc (Util.list_filter_opt [Some ("vpcs", (VpcList.to_json v.vpcs))]) 
     let of_json j =
       { vpcs = (VpcList.of_json (Util.of_option_exn (Json.lookup j "vpcs")))
-      }
+      } 
   end
 module DescribePrefixListsRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      prefix_list_ids: ValueStringList.t;
-      filters: FilterList.t;
-      max_results: Integer.t option;
-      next_token: String.t option;}
+      dry_run: Boolean.t option ;
+      prefix_list_ids: ValueStringList.t ;
+      filters: FilterList.t ;
+      max_results: Integer.t option ;
+      next_token: String.t option }
     let make ?dry_run  ?(prefix_list_ids= [])  ?(filters= [])  ?max_results 
       ?next_token  () =
-      { dry_run; prefix_list_ids; filters; max_results; next_token }
+      { dry_run; prefix_list_ids; filters; max_results; next_token } 
     let parse xml =
       Some
         {
@@ -27433,6 +28800,7 @@ module DescribePrefixListsRequest =
           next_token =
             (Util.option_bind (Xml.member "NextToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -27447,6 +28815,7 @@ module DescribePrefixListsRequest =
                   (ValueStringList.to_query v.prefix_list_ids)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -27459,6 +28828,7 @@ module DescribePrefixListsRequest =
              ("prefix_list_ids", (ValueStringList.to_json v.prefix_list_ids));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -27471,13 +28841,13 @@ module DescribePrefixListsRequest =
           (Util.option_map (Json.lookup j "max_results") Integer.of_json);
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      }
+      } 
   end
 module DescribeNetworkAclsResult =
   struct
     type t = {
-      network_acls: NetworkAclList.t;}
-    let make ?(network_acls= [])  () = { network_acls }
+      network_acls: NetworkAclList.t }
+    let make ?(network_acls= [])  () = { network_acls } 
     let parse xml =
       Some
         {
@@ -27486,28 +28856,31 @@ module DescribeNetworkAclsResult =
                (Util.option_bind (Xml.member "networkAclSet" xml)
                   NetworkAclList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some
               (Query.Pair
                  ("NetworkAclSet", (NetworkAclList.to_query v.network_acls)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("network_acls", (NetworkAclList.to_json v.network_acls))])
+      
     let of_json j =
       {
         network_acls =
           (NetworkAclList.of_json
              (Util.of_option_exn (Json.lookup j "network_acls")))
-      }
+      } 
   end
 module DescribeSubnetsResult =
   struct
     type t = {
-      subnets: SubnetList.t;}
-    let make ?(subnets= [])  () = { subnets }
+      subnets: SubnetList.t }
+    let make ?(subnets= [])  () = { subnets } 
     let parse xml =
       Some
         {
@@ -27516,25 +28889,28 @@ module DescribeSubnetsResult =
                (Util.option_bind (Xml.member "subnetSet" xml)
                   SubnetList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("SubnetSet", (SubnetList.to_query v.subnets)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("subnets", (SubnetList.to_json v.subnets))])
+      
     let of_json j =
       {
         subnets =
           (SubnetList.of_json (Util.of_option_exn (Json.lookup j "subnets")))
-      }
+      } 
   end
 module CancelBundleTaskResult =
   struct
     type t = {
-      bundle_task: BundleTask.t option;}
-    let make ?bundle_task  () = { bundle_task }
+      bundle_task: BundleTask.t option }
+    let make ?bundle_task  () = { bundle_task } 
     let parse xml =
       Some
         {
@@ -27542,32 +28918,35 @@ module CancelBundleTaskResult =
             (Util.option_bind (Xml.member "bundleInstanceTask" xml)
                BundleTask.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.bundle_task
               (fun f  ->
                  Query.Pair ("BundleInstanceTask", (BundleTask.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.bundle_task
               (fun f  -> ("bundle_task", (BundleTask.to_json f)))])
+      
     let of_json j =
       {
         bundle_task =
           (Util.option_map (Json.lookup j "bundle_task") BundleTask.of_json)
-      }
+      } 
   end
 module DetachInternetGatewayRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      internet_gateway_id: String.t;
-      vpc_id: String.t;}
+      dry_run: Boolean.t option ;
+      internet_gateway_id: String.t ;
+      vpc_id: String.t }
     let make ?dry_run  ~internet_gateway_id  ~vpc_id  () =
-      { dry_run; internet_gateway_id; vpc_id }
+      { dry_run; internet_gateway_id; vpc_id } 
     let parse xml =
       Some
         {
@@ -27581,6 +28960,7 @@ module DetachInternetGatewayRequest =
             (Xml.required "vpcId"
                (Util.option_bind (Xml.member "vpcId" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -27591,6 +28971,7 @@ module DetachInternetGatewayRequest =
                   (String.to_query v.internet_gateway_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -27599,6 +28980,7 @@ module DetachInternetGatewayRequest =
              ("internet_gateway_id", (String.to_json v.internet_gateway_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -27607,17 +28989,17 @@ module DetachInternetGatewayRequest =
              (Util.of_option_exn (Json.lookup j "internet_gateway_id")));
         vpc_id =
           (String.of_json (Util.of_option_exn (Json.lookup j "vpc_id")))
-      }
+      } 
   end
 module CancelConversionRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      conversion_task_id: String.t;
-      reason_message: String.t option;}
+      dry_run: Boolean.t option ;
+      conversion_task_id: String.t ;
+      reason_message: String.t option }
     let make ?dry_run  ~conversion_task_id  ?reason_message  () =
-      { dry_run; conversion_task_id; reason_message }
+      { dry_run; conversion_task_id; reason_message } 
     let parse xml =
       Some
         {
@@ -27630,6 +29012,7 @@ module CancelConversionRequest =
           reason_message =
             (Util.option_bind (Xml.member "reasonMessage" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -27640,6 +29023,7 @@ module CancelConversionRequest =
                 ("ConversionTaskId", (String.to_query v.conversion_task_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -27648,6 +29032,7 @@ module CancelConversionRequest =
            Some ("conversion_task_id", (String.to_json v.conversion_task_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -27656,17 +29041,17 @@ module CancelConversionRequest =
              (Util.of_option_exn (Json.lookup j "conversion_task_id")));
         reason_message =
           (Util.option_map (Json.lookup j "reason_message") String.of_json)
-      }
+      } 
   end
 module AttachInternetGatewayRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      internet_gateway_id: String.t;
-      vpc_id: String.t;}
+      dry_run: Boolean.t option ;
+      internet_gateway_id: String.t ;
+      vpc_id: String.t }
     let make ?dry_run  ~internet_gateway_id  ~vpc_id  () =
-      { dry_run; internet_gateway_id; vpc_id }
+      { dry_run; internet_gateway_id; vpc_id } 
     let parse xml =
       Some
         {
@@ -27680,6 +29065,7 @@ module AttachInternetGatewayRequest =
             (Xml.required "vpcId"
                (Util.option_bind (Xml.member "vpcId" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -27690,6 +29076,7 @@ module AttachInternetGatewayRequest =
                   (String.to_query v.internet_gateway_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -27698,6 +29085,7 @@ module AttachInternetGatewayRequest =
              ("internet_gateway_id", (String.to_json v.internet_gateway_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -27706,13 +29094,13 @@ module AttachInternetGatewayRequest =
              (Util.of_option_exn (Json.lookup j "internet_gateway_id")));
         vpc_id =
           (String.of_json (Util.of_option_exn (Json.lookup j "vpc_id")))
-      }
+      } 
   end
 module DescribeVpcClassicLinkResult =
   struct
     type t = {
-      vpcs: VpcClassicLinkList.t;}
-    let make ?(vpcs= [])  () = { vpcs }
+      vpcs: VpcClassicLinkList.t }
+    let make ?(vpcs= [])  () = { vpcs } 
     let parse xml =
       Some
         {
@@ -27721,30 +29109,33 @@ module DescribeVpcClassicLinkResult =
                (Util.option_bind (Xml.member "vpcSet" xml)
                   VpcClassicLinkList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some
               (Query.Pair ("VpcSet", (VpcClassicLinkList.to_query v.vpcs)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("vpcs", (VpcClassicLinkList.to_json v.vpcs))])
+      
     let of_json j =
       {
         vpcs =
           (VpcClassicLinkList.of_json
              (Util.of_option_exn (Json.lookup j "vpcs")))
-      }
+      } 
   end
 module DescribeImportImageTasksResult =
   struct
     type t =
       {
-      import_image_tasks: ImportImageTaskList.t;
-      next_token: String.t option;}
+      import_image_tasks: ImportImageTaskList.t ;
+      next_token: String.t option }
     let make ?(import_image_tasks= [])  ?next_token  () =
-      { import_image_tasks; next_token }
+      { import_image_tasks; next_token } 
     let parse xml =
       Some
         {
@@ -27755,6 +29146,7 @@ module DescribeImportImageTasksResult =
           next_token =
             (Util.option_bind (Xml.member "nextToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -27764,6 +29156,7 @@ module DescribeImportImageTasksResult =
              (Query.Pair
                 ("ImportImageTaskSet",
                   (ImportImageTaskList.to_query v.import_image_tasks)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -27772,6 +29165,7 @@ module DescribeImportImageTasksResult =
            Some
              ("import_image_tasks",
                (ImportImageTaskList.to_json v.import_image_tasks))])
+      
     let of_json j =
       {
         import_image_tasks =
@@ -27779,18 +29173,18 @@ module DescribeImportImageTasksResult =
              (Util.of_option_exn (Json.lookup j "import_image_tasks")));
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      }
+      } 
   end
 module CreateFlowLogsRequest =
   struct
     type t =
       {
-      resource_ids: ValueStringList.t;
-      resource_type: FlowLogsResourceType.t;
-      traffic_type: TrafficType.t;
-      log_group_name: String.t;
-      deliver_logs_permission_arn: String.t;
-      client_token: String.t option;}
+      resource_ids: ValueStringList.t ;
+      resource_type: FlowLogsResourceType.t ;
+      traffic_type: TrafficType.t ;
+      log_group_name: String.t ;
+      deliver_logs_permission_arn: String.t ;
+      client_token: String.t option }
     let make ~resource_ids  ~resource_type  ~traffic_type  ~log_group_name 
       ~deliver_logs_permission_arn  ?client_token  () =
       {
@@ -27800,7 +29194,7 @@ module CreateFlowLogsRequest =
         log_group_name;
         deliver_logs_permission_arn;
         client_token
-      }
+      } 
     let parse xml =
       Some
         {
@@ -27826,6 +29220,7 @@ module CreateFlowLogsRequest =
           client_token =
             (Util.option_bind (Xml.member "ClientToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -27847,6 +29242,7 @@ module CreateFlowLogsRequest =
            Some
              (Query.Pair
                 ("ResourceId", (ValueStringList.to_query v.resource_ids)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -27861,6 +29257,7 @@ module CreateFlowLogsRequest =
              ("resource_type",
                (FlowLogsResourceType.to_json v.resource_type));
            Some ("resource_ids", (ValueStringList.to_json v.resource_ids))])
+      
     let of_json j =
       {
         resource_ids =
@@ -27881,16 +29278,16 @@ module CreateFlowLogsRequest =
                 (Json.lookup j "deliver_logs_permission_arn")));
         client_token =
           (Util.option_map (Json.lookup j "client_token") String.of_json)
-      }
+      } 
   end
 module CancelSpotFleetRequestsResponse =
   struct
     type t =
       {
-      unsuccessful_fleet_requests: CancelSpotFleetRequestsErrorSet.t;
-      successful_fleet_requests: CancelSpotFleetRequestsSuccessSet.t;}
+      unsuccessful_fleet_requests: CancelSpotFleetRequestsErrorSet.t ;
+      successful_fleet_requests: CancelSpotFleetRequestsSuccessSet.t }
     let make ?(unsuccessful_fleet_requests= [])  ?(successful_fleet_requests=
-      [])  () = { unsuccessful_fleet_requests; successful_fleet_requests }
+      [])  () = { unsuccessful_fleet_requests; successful_fleet_requests } 
     let parse xml =
       Some
         {
@@ -27904,6 +29301,7 @@ module CancelSpotFleetRequestsResponse =
                (Util.option_bind (Xml.member "successfulFleetRequestSet" xml)
                   CancelSpotFleetRequestsSuccessSet.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -27917,6 +29315,7 @@ module CancelSpotFleetRequestsResponse =
                 ("UnsuccessfulFleetRequestSet",
                   (CancelSpotFleetRequestsErrorSet.to_query
                      v.unsuccessful_fleet_requests)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -27928,6 +29327,7 @@ module CancelSpotFleetRequestsResponse =
              ("unsuccessful_fleet_requests",
                (CancelSpotFleetRequestsErrorSet.to_json
                   v.unsuccessful_fleet_requests))])
+      
     let of_json j =
       {
         unsuccessful_fleet_requests =
@@ -27937,17 +29337,17 @@ module CancelSpotFleetRequestsResponse =
         successful_fleet_requests =
           (CancelSpotFleetRequestsSuccessSet.of_json
              (Util.of_option_exn (Json.lookup j "successful_fleet_requests")))
-      }
+      } 
   end
 module CreateSnapshotRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      volume_id: String.t;
-      description: String.t option;}
+      dry_run: Boolean.t option ;
+      volume_id: String.t ;
+      description: String.t option }
     let make ?dry_run  ~volume_id  ?description  () =
-      { dry_run; volume_id; description }
+      { dry_run; volume_id; description } 
     let parse xml =
       Some
         {
@@ -27959,6 +29359,7 @@ module CreateSnapshotRequest =
           description =
             (Util.option_bind (Xml.member "Description" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -27967,6 +29368,7 @@ module CreateSnapshotRequest =
            Some (Query.Pair ("VolumeId", (String.to_query v.volume_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -27975,6 +29377,7 @@ module CreateSnapshotRequest =
            Some ("volume_id", (String.to_json v.volume_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -27982,13 +29385,13 @@ module CreateSnapshotRequest =
           (String.of_json (Util.of_option_exn (Json.lookup j "volume_id")));
         description =
           (Util.option_map (Json.lookup j "description") String.of_json)
-      }
+      } 
   end
 module DescribeAccountAttributesResult =
   struct
     type t = {
-      account_attributes: AccountAttributeList.t;}
-    let make ?(account_attributes= [])  () = { account_attributes }
+      account_attributes: AccountAttributeList.t }
+    let make ?(account_attributes= [])  () = { account_attributes } 
     let parse xml =
       Some
         {
@@ -27997,6 +29400,7 @@ module DescribeAccountAttributesResult =
                (Util.option_bind (Xml.member "accountAttributeSet" xml)
                   AccountAttributeList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -28004,24 +29408,26 @@ module DescribeAccountAttributesResult =
               (Query.Pair
                  ("AccountAttributeSet",
                    (AccountAttributeList.to_query v.account_attributes)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("account_attributes",
                 (AccountAttributeList.to_json v.account_attributes))])
+      
     let of_json j =
       {
         account_attributes =
           (AccountAttributeList.of_json
              (Util.of_option_exn (Json.lookup j "account_attributes")))
-      }
+      } 
   end
 module ReplaceRouteTableAssociationResult =
   struct
     type t = {
-      new_association_id: String.t option;}
-    let make ?new_association_id  () = { new_association_id }
+      new_association_id: String.t option }
+    let make ?new_association_id  () = { new_association_id } 
     let parse xml =
       Some
         {
@@ -28029,35 +29435,38 @@ module ReplaceRouteTableAssociationResult =
             (Util.option_bind (Xml.member "newAssociationId" xml)
                String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.new_association_id
               (fun f  -> Query.Pair ("NewAssociationId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.new_association_id
               (fun f  -> ("new_association_id", (String.to_json f)))])
+      
     let of_json j =
       {
         new_association_id =
           (Util.option_map (Json.lookup j "new_association_id")
              String.of_json)
-      }
+      } 
   end
 module DescribeVolumeStatusRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      volume_ids: VolumeIdStringList.t;
-      filters: FilterList.t;
-      next_token: String.t option;
-      max_results: Integer.t option;}
+      dry_run: Boolean.t option ;
+      volume_ids: VolumeIdStringList.t ;
+      filters: FilterList.t ;
+      next_token: String.t option ;
+      max_results: Integer.t option }
     let make ?dry_run  ?(volume_ids= [])  ?(filters= [])  ?next_token 
       ?max_results  () =
-      { dry_run; volume_ids; filters; next_token; max_results }
+      { dry_run; volume_ids; filters; next_token; max_results } 
     let parse xml =
       Some
         {
@@ -28075,6 +29484,7 @@ module DescribeVolumeStatusRequest =
           max_results =
             (Util.option_bind (Xml.member "MaxResults" xml) Integer.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -28088,6 +29498,7 @@ module DescribeVolumeStatusRequest =
                 ("VolumeId", (VolumeIdStringList.to_query v.volume_ids)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -28099,6 +29510,7 @@ module DescribeVolumeStatusRequest =
            Some ("volume_ids", (VolumeIdStringList.to_json v.volume_ids));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -28111,17 +29523,17 @@ module DescribeVolumeStatusRequest =
           (Util.option_map (Json.lookup j "next_token") String.of_json);
         max_results =
           (Util.option_map (Json.lookup j "max_results") Integer.of_json)
-      }
+      } 
   end
 module DescribeDhcpOptionsRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      dhcp_options_ids: DhcpOptionsIdStringList.t;
-      filters: FilterList.t;}
+      dry_run: Boolean.t option ;
+      dhcp_options_ids: DhcpOptionsIdStringList.t ;
+      filters: FilterList.t }
     let make ?dry_run  ?(dhcp_options_ids= [])  ?(filters= [])  () =
-      { dry_run; dhcp_options_ids; filters }
+      { dry_run; dhcp_options_ids; filters } 
     let parse xml =
       Some
         {
@@ -28135,6 +29547,7 @@ module DescribeDhcpOptionsRequest =
             (Util.of_option []
                (Util.option_bind (Xml.member "Filter" xml) FilterList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -28145,6 +29558,7 @@ module DescribeDhcpOptionsRequest =
                   (DhcpOptionsIdStringList.to_query v.dhcp_options_ids)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -28154,6 +29568,7 @@ module DescribeDhcpOptionsRequest =
                (DhcpOptionsIdStringList.to_json v.dhcp_options_ids));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -28162,16 +29577,16 @@ module DescribeDhcpOptionsRequest =
              (Util.of_option_exn (Json.lookup j "dhcp_options_ids")));
         filters =
           (FilterList.of_json (Util.of_option_exn (Json.lookup j "filters")))
-      }
+      } 
   end
 module DescribeSpotPriceHistoryResult =
   struct
     type t =
       {
-      spot_price_history: SpotPriceHistoryList.t;
-      next_token: String.t option;}
+      spot_price_history: SpotPriceHistoryList.t ;
+      next_token: String.t option }
     let make ?(spot_price_history= [])  ?next_token  () =
-      { spot_price_history; next_token }
+      { spot_price_history; next_token } 
     let parse xml =
       Some
         {
@@ -28182,6 +29597,7 @@ module DescribeSpotPriceHistoryResult =
           next_token =
             (Util.option_bind (Xml.member "nextToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -28191,6 +29607,7 @@ module DescribeSpotPriceHistoryResult =
              (Query.Pair
                 ("SpotPriceHistorySet",
                   (SpotPriceHistoryList.to_query v.spot_price_history)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -28199,6 +29616,7 @@ module DescribeSpotPriceHistoryResult =
            Some
              ("spot_price_history",
                (SpotPriceHistoryList.to_json v.spot_price_history))])
+      
     let of_json j =
       {
         spot_price_history =
@@ -28206,17 +29624,17 @@ module DescribeSpotPriceHistoryResult =
              (Util.of_option_exn (Json.lookup j "spot_price_history")));
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      }
+      } 
   end
 module DeleteTagsRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      resources: ResourceIdList.t;
-      tags: TagList.t;}
+      dry_run: Boolean.t option ;
+      resources: ResourceIdList.t ;
+      tags: TagList.t }
     let make ?dry_run  ~resources  ?(tags= [])  () =
-      { dry_run; resources; tags }
+      { dry_run; resources; tags } 
     let parse xml =
       Some
         {
@@ -28230,6 +29648,7 @@ module DeleteTagsRequest =
             (Util.of_option []
                (Util.option_bind (Xml.member "tag" xml) TagList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -28239,6 +29658,7 @@ module DeleteTagsRequest =
                 ("ResourceId", (ResourceIdList.to_query v.resources)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -28246,6 +29666,7 @@ module DeleteTagsRequest =
            Some ("resources", (ResourceIdList.to_json v.resources));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -28253,19 +29674,19 @@ module DeleteTagsRequest =
           (ResourceIdList.of_json
              (Util.of_option_exn (Json.lookup j "resources")));
         tags = (TagList.of_json (Util.of_option_exn (Json.lookup j "tags")))
-      }
+      } 
   end
 module ReportInstanceStatusRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      instances: InstanceIdStringList.t;
-      status: ReportStatusType.t;
-      start_time: DateTime.t option;
-      end_time: DateTime.t option;
-      reason_codes: ReasonCodesList.t;
-      description: String.t option;}
+      dry_run: Boolean.t option ;
+      instances: InstanceIdStringList.t ;
+      status: ReportStatusType.t ;
+      start_time: DateTime.t option ;
+      end_time: DateTime.t option ;
+      reason_codes: ReasonCodesList.t ;
+      description: String.t option }
     let make ?dry_run  ~instances  ~status  ?start_time  ?end_time 
       ~reason_codes  ?description  () =
       {
@@ -28276,7 +29697,7 @@ module ReportInstanceStatusRequest =
         end_time;
         reason_codes;
         description
-      }
+      } 
     let parse xml =
       Some
         {
@@ -28301,6 +29722,7 @@ module ReportInstanceStatusRequest =
           description =
             (Util.option_bind (Xml.member "description" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -28319,6 +29741,7 @@ module ReportInstanceStatusRequest =
                 ("InstanceId", (InstanceIdStringList.to_query v.instances)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -28333,6 +29756,7 @@ module ReportInstanceStatusRequest =
            Some ("instances", (InstanceIdStringList.to_json v.instances));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -28351,45 +29775,48 @@ module ReportInstanceStatusRequest =
              (Util.of_option_exn (Json.lookup j "reason_codes")));
         description =
           (Util.option_map (Json.lookup j "description") String.of_json)
-      }
+      } 
   end
 module AssociateRouteTableResult =
   struct
     type t = {
-      association_id: String.t option;}
-    let make ?association_id  () = { association_id }
+      association_id: String.t option }
+    let make ?association_id  () = { association_id } 
     let parse xml =
       Some
         {
           association_id =
             (Util.option_bind (Xml.member "associationId" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.association_id
               (fun f  -> Query.Pair ("AssociationId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.association_id
               (fun f  -> ("association_id", (String.to_json f)))])
+      
     let of_json j =
       {
         association_id =
           (Util.option_map (Json.lookup j "association_id") String.of_json)
-      }
+      } 
   end
 module CreateVpcPeeringConnectionRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      vpc_id: String.t option;
-      peer_vpc_id: String.t option;
-      peer_owner_id: String.t option;}
+      dry_run: Boolean.t option ;
+      vpc_id: String.t option ;
+      peer_vpc_id: String.t option ;
+      peer_owner_id: String.t option }
     let make ?dry_run  ?vpc_id  ?peer_vpc_id  ?peer_owner_id  () =
-      { dry_run; vpc_id; peer_vpc_id; peer_owner_id }
+      { dry_run; vpc_id; peer_vpc_id; peer_owner_id } 
     let parse xml =
       Some
         {
@@ -28401,6 +29828,7 @@ module CreateVpcPeeringConnectionRequest =
           peer_owner_id =
             (Util.option_bind (Xml.member "peerOwnerId" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -28412,6 +29840,7 @@ module CreateVpcPeeringConnectionRequest =
              (fun f  -> Query.Pair ("VpcId", (String.to_query f)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -28423,6 +29852,7 @@ module CreateVpcPeeringConnectionRequest =
              (fun f  -> ("vpc_id", (String.to_json f)));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -28431,17 +29861,17 @@ module CreateVpcPeeringConnectionRequest =
           (Util.option_map (Json.lookup j "peer_vpc_id") String.of_json);
         peer_owner_id =
           (Util.option_map (Json.lookup j "peer_owner_id") String.of_json)
-      }
+      } 
   end
 module DescribeVpcsRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      vpc_ids: VpcIdStringList.t;
-      filters: FilterList.t;}
+      dry_run: Boolean.t option ;
+      vpc_ids: VpcIdStringList.t ;
+      filters: FilterList.t }
     let make ?dry_run  ?(vpc_ids= [])  ?(filters= [])  () =
-      { dry_run; vpc_ids; filters }
+      { dry_run; vpc_ids; filters } 
     let parse xml =
       Some
         {
@@ -28455,6 +29885,7 @@ module DescribeVpcsRequest =
             (Util.of_option []
                (Util.option_bind (Xml.member "Filter" xml) FilterList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -28462,6 +29893,7 @@ module DescribeVpcsRequest =
            Some (Query.Pair ("VpcId", (VpcIdStringList.to_query v.vpc_ids)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -28469,6 +29901,7 @@ module DescribeVpcsRequest =
            Some ("vpc_ids", (VpcIdStringList.to_json v.vpc_ids));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -28477,17 +29910,17 @@ module DescribeVpcsRequest =
              (Util.of_option_exn (Json.lookup j "vpc_ids")));
         filters =
           (FilterList.of_json (Util.of_option_exn (Json.lookup j "filters")))
-      }
+      } 
   end
 module DetachNetworkInterfaceRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      attachment_id: String.t;
-      force: Boolean.t option;}
+      dry_run: Boolean.t option ;
+      attachment_id: String.t ;
+      force: Boolean.t option }
     let make ?dry_run  ~attachment_id  ?force  () =
-      { dry_run; attachment_id; force }
+      { dry_run; attachment_id; force } 
     let parse xml =
       Some
         {
@@ -28498,6 +29931,7 @@ module DetachNetworkInterfaceRequest =
                (Util.option_bind (Xml.member "attachmentId" xml) String.parse));
           force = (Util.option_bind (Xml.member "force" xml) Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -28507,6 +29941,7 @@ module DetachNetworkInterfaceRequest =
              (Query.Pair ("AttachmentId", (String.to_query v.attachment_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -28515,6 +29950,7 @@ module DetachNetworkInterfaceRequest =
            Some ("attachment_id", (String.to_json v.attachment_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -28522,19 +29958,19 @@ module DetachNetworkInterfaceRequest =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "attachment_id")));
         force = (Util.option_map (Json.lookup j "force") Boolean.of_json)
-      }
+      } 
   end
 module CreateNetworkInterfaceRequest =
   struct
     type t =
       {
-      subnet_id: String.t;
-      description: String.t option;
-      private_ip_address: String.t option;
-      groups: SecurityGroupIdStringList.t;
-      private_ip_addresses: PrivateIpAddressSpecificationList.t;
-      secondary_private_ip_address_count: Integer.t option;
-      dry_run: Boolean.t option;}
+      subnet_id: String.t ;
+      description: String.t option ;
+      private_ip_address: String.t option ;
+      groups: SecurityGroupIdStringList.t ;
+      private_ip_addresses: PrivateIpAddressSpecificationList.t ;
+      secondary_private_ip_address_count: Integer.t option ;
+      dry_run: Boolean.t option }
     let make ~subnet_id  ?description  ?private_ip_address  ?(groups= []) 
       ?(private_ip_addresses= [])  ?secondary_private_ip_address_count 
       ?dry_run  () =
@@ -28546,7 +29982,7 @@ module CreateNetworkInterfaceRequest =
         private_ip_addresses;
         secondary_private_ip_address_count;
         dry_run
-      }
+      } 
     let parse xml =
       Some
         {
@@ -28573,6 +30009,7 @@ module CreateNetworkInterfaceRequest =
           dry_run =
             (Util.option_bind (Xml.member "dryRun" xml) Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -28596,6 +30033,7 @@ module CreateNetworkInterfaceRequest =
            Util.option_map v.description
              (fun f  -> Query.Pair ("Description", (String.to_query f)));
            Some (Query.Pair ("SubnetId", (String.to_query v.subnet_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -28614,6 +30052,7 @@ module CreateNetworkInterfaceRequest =
            Util.option_map v.description
              (fun f  -> ("description", (String.to_json f)));
            Some ("subnet_id", (String.to_json v.subnet_id))])
+      
     let of_json j =
       {
         subnet_id =
@@ -28634,14 +30073,14 @@ module CreateNetworkInterfaceRequest =
              (Json.lookup j "secondary_private_ip_address_count")
              Integer.of_json);
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json)
-      }
+      } 
   end
 module GetPasswordDataRequest =
   struct
     type t = {
-      dry_run: Boolean.t option;
-      instance_id: String.t;}
-    let make ?dry_run  ~instance_id  () = { dry_run; instance_id }
+      dry_run: Boolean.t option ;
+      instance_id: String.t }
+    let make ?dry_run  ~instance_id  () = { dry_run; instance_id } 
     let parse xml =
       Some
         {
@@ -28651,31 +30090,34 @@ module GetPasswordDataRequest =
             (Xml.required "InstanceId"
                (Util.option_bind (Xml.member "InstanceId" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("InstanceId", (String.to_query v.instance_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("instance_id", (String.to_json v.instance_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         instance_id =
           (String.of_json (Util.of_option_exn (Json.lookup j "instance_id")))
-      }
+      } 
   end
 module DeregisterImageRequest =
   struct
     type t = {
-      dry_run: Boolean.t option;
-      image_id: String.t;}
-    let make ?dry_run  ~image_id  () = { dry_run; image_id }
+      dry_run: Boolean.t option ;
+      image_id: String.t }
+    let make ?dry_run  ~image_id  () = { dry_run; image_id } 
     let parse xml =
       Some
         {
@@ -28685,34 +30127,37 @@ module DeregisterImageRequest =
             (Xml.required "ImageId"
                (Util.option_bind (Xml.member "ImageId" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("ImageId", (String.to_query v.image_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("image_id", (String.to_json v.image_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         image_id =
           (String.of_json (Util.of_option_exn (Json.lookup j "image_id")))
-      }
+      } 
   end
 module BundleInstanceRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      instance_id: String.t;
-      storage: Storage.t;}
+      dry_run: Boolean.t option ;
+      instance_id: String.t ;
+      storage: Storage.t }
     let make ?dry_run  ~instance_id  ~storage  () =
-      { dry_run; instance_id; storage }
+      { dry_run; instance_id; storage } 
     let parse xml =
       Some
         {
@@ -28725,6 +30170,7 @@ module BundleInstanceRequest =
             (Xml.required "Storage"
                (Util.option_bind (Xml.member "Storage" xml) Storage.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -28732,6 +30178,7 @@ module BundleInstanceRequest =
            Some (Query.Pair ("InstanceId", (String.to_query v.instance_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -28739,6 +30186,7 @@ module BundleInstanceRequest =
            Some ("instance_id", (String.to_json v.instance_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -28746,15 +30194,15 @@ module BundleInstanceRequest =
           (String.of_json (Util.of_option_exn (Json.lookup j "instance_id")));
         storage =
           (Storage.of_json (Util.of_option_exn (Json.lookup j "storage")))
-      }
+      } 
   end
 module RebootInstancesRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      instance_ids: InstanceIdStringList.t;}
-    let make ?dry_run  ~instance_ids  () = { dry_run; instance_ids }
+      dry_run: Boolean.t option ;
+      instance_ids: InstanceIdStringList.t }
+    let make ?dry_run  ~instance_ids  () = { dry_run; instance_ids } 
     let parse xml =
       Some
         {
@@ -28765,6 +30213,7 @@ module RebootInstancesRequest =
                (Util.option_bind (Xml.member "InstanceId" xml)
                   InstanceIdStringList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -28774,6 +30223,7 @@ module RebootInstancesRequest =
                    (InstanceIdStringList.to_query v.instance_ids)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -28781,23 +30231,24 @@ module RebootInstancesRequest =
               ("instance_ids", (InstanceIdStringList.to_json v.instance_ids));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         instance_ids =
           (InstanceIdStringList.of_json
              (Util.of_option_exn (Json.lookup j "instance_ids")))
-      }
+      } 
   end
 module ReplaceRouteTableAssociationRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      association_id: String.t;
-      route_table_id: String.t;}
+      dry_run: Boolean.t option ;
+      association_id: String.t ;
+      route_table_id: String.t }
     let make ?dry_run  ~association_id  ~route_table_id  () =
-      { dry_run; association_id; route_table_id }
+      { dry_run; association_id; route_table_id } 
     let parse xml =
       Some
         {
@@ -28811,6 +30262,7 @@ module ReplaceRouteTableAssociationRequest =
             (Xml.required "routeTableId"
                (Util.option_bind (Xml.member "routeTableId" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -28822,6 +30274,7 @@ module ReplaceRouteTableAssociationRequest =
                 ("AssociationId", (String.to_query v.association_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -28829,6 +30282,7 @@ module ReplaceRouteTableAssociationRequest =
            Some ("association_id", (String.to_json v.association_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -28838,20 +30292,20 @@ module ReplaceRouteTableAssociationRequest =
         route_table_id =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "route_table_id")))
-      }
+      } 
   end
 module DescribeClassicLinkInstancesRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      instance_ids: InstanceIdStringList.t;
-      filters: FilterList.t;
-      next_token: String.t option;
-      max_results: Integer.t option;}
+      dry_run: Boolean.t option ;
+      instance_ids: InstanceIdStringList.t ;
+      filters: FilterList.t ;
+      next_token: String.t option ;
+      max_results: Integer.t option }
     let make ?dry_run  ?(instance_ids= [])  ?(filters= [])  ?next_token 
       ?max_results  () =
-      { dry_run; instance_ids; filters; next_token; max_results }
+      { dry_run; instance_ids; filters; next_token; max_results } 
     let parse xml =
       Some
         {
@@ -28869,6 +30323,7 @@ module DescribeClassicLinkInstancesRequest =
           max_results =
             (Util.option_bind (Xml.member "maxResults" xml) Integer.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -28883,6 +30338,7 @@ module DescribeClassicLinkInstancesRequest =
                   (InstanceIdStringList.to_query v.instance_ids)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -28895,6 +30351,7 @@ module DescribeClassicLinkInstancesRequest =
              ("instance_ids", (InstanceIdStringList.to_json v.instance_ids));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -28907,13 +30364,13 @@ module DescribeClassicLinkInstancesRequest =
           (Util.option_map (Json.lookup j "next_token") String.of_json);
         max_results =
           (Util.option_map (Json.lookup j "max_results") Integer.of_json)
-      }
+      } 
   end
 module CreateInternetGatewayResult =
   struct
     type t = {
-      internet_gateway: InternetGateway.t option;}
-    let make ?internet_gateway  () = { internet_gateway }
+      internet_gateway: InternetGateway.t option }
+    let make ?internet_gateway  () = { internet_gateway } 
     let parse xml =
       Some
         {
@@ -28921,36 +30378,39 @@ module CreateInternetGatewayResult =
             (Util.option_bind (Xml.member "internetGateway" xml)
                InternetGateway.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.internet_gateway
               (fun f  ->
                  Query.Pair ("InternetGateway", (InternetGateway.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.internet_gateway
               (fun f  -> ("internet_gateway", (InternetGateway.to_json f)))])
+      
     let of_json j =
       {
         internet_gateway =
           (Util.option_map (Json.lookup j "internet_gateway")
              InternetGateway.of_json)
-      }
+      } 
   end
 module ImportInstanceRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      description: String.t option;
-      launch_specification: ImportInstanceLaunchSpecification.t option;
-      disk_images: DiskImageList.t;
-      platform: PlatformValues.t;}
+      dry_run: Boolean.t option ;
+      description: String.t option ;
+      launch_specification: ImportInstanceLaunchSpecification.t option ;
+      disk_images: DiskImageList.t ;
+      platform: PlatformValues.t }
     let make ?dry_run  ?description  ?launch_specification  ?(disk_images=
       [])  ~platform  () =
-      { dry_run; description; launch_specification; disk_images; platform }
+      { dry_run; description; launch_specification; disk_images; platform } 
     let parse xml =
       Some
         {
@@ -28970,6 +30430,7 @@ module ImportInstanceRequest =
                (Util.option_bind (Xml.member "platform" xml)
                   PlatformValues.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -28987,6 +30448,7 @@ module ImportInstanceRequest =
              (fun f  -> Query.Pair ("Description", (String.to_query f)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -29000,6 +30462,7 @@ module ImportInstanceRequest =
              (fun f  -> ("description", (String.to_json f)));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -29014,19 +30477,19 @@ module ImportInstanceRequest =
         platform =
           (PlatformValues.of_json
              (Util.of_option_exn (Json.lookup j "platform")))
-      }
+      } 
   end
 module ImportVolumeRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      availability_zone: String.t;
-      image: DiskImageDetail.t;
-      description: String.t option;
-      volume: VolumeDetail.t;}
+      dry_run: Boolean.t option ;
+      availability_zone: String.t ;
+      image: DiskImageDetail.t ;
+      description: String.t option ;
+      volume: VolumeDetail.t }
     let make ?dry_run  ~availability_zone  ~image  ?description  ~volume  ()
-      = { dry_run; availability_zone; image; description; volume }
+      = { dry_run; availability_zone; image; description; volume } 
     let parse xml =
       Some
         {
@@ -29046,6 +30509,7 @@ module ImportVolumeRequest =
             (Xml.required "volume"
                (Util.option_bind (Xml.member "volume" xml) VolumeDetail.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -29058,6 +30522,7 @@ module ImportVolumeRequest =
                 ("AvailabilityZone", (String.to_query v.availability_zone)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -29068,6 +30533,7 @@ module ImportVolumeRequest =
            Some ("availability_zone", (String.to_json v.availability_zone));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -29081,18 +30547,18 @@ module ImportVolumeRequest =
           (Util.option_map (Json.lookup j "description") String.of_json);
         volume =
           (VolumeDetail.of_json (Util.of_option_exn (Json.lookup j "volume")))
-      }
+      } 
   end
 module DescribeInstanceStatusRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      instance_ids: InstanceIdStringList.t;
-      filters: FilterList.t;
-      next_token: String.t option;
-      max_results: Integer.t option;
-      include_all_instances: Boolean.t option;}
+      dry_run: Boolean.t option ;
+      instance_ids: InstanceIdStringList.t ;
+      filters: FilterList.t ;
+      next_token: String.t option ;
+      max_results: Integer.t option ;
+      include_all_instances: Boolean.t option }
     let make ?dry_run  ?(instance_ids= [])  ?(filters= [])  ?next_token 
       ?max_results  ?include_all_instances  () =
       {
@@ -29102,7 +30568,7 @@ module DescribeInstanceStatusRequest =
         next_token;
         max_results;
         include_all_instances
-      }
+      } 
     let parse xml =
       Some
         {
@@ -29123,6 +30589,7 @@ module DescribeInstanceStatusRequest =
             (Util.option_bind (Xml.member "includeAllInstances" xml)
                Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -29140,6 +30607,7 @@ module DescribeInstanceStatusRequest =
                   (InstanceIdStringList.to_query v.instance_ids)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -29154,6 +30622,7 @@ module DescribeInstanceStatusRequest =
              ("instance_ids", (InstanceIdStringList.to_json v.instance_ids));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -29169,17 +30638,17 @@ module DescribeInstanceStatusRequest =
         include_all_instances =
           (Util.option_map (Json.lookup j "include_all_instances")
              Boolean.of_json)
-      }
+      } 
   end
 module CancelImportTaskRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      import_task_id: String.t option;
-      cancel_reason: String.t option;}
+      dry_run: Boolean.t option ;
+      import_task_id: String.t option ;
+      cancel_reason: String.t option }
     let make ?dry_run  ?import_task_id  ?cancel_reason  () =
-      { dry_run; import_task_id; cancel_reason }
+      { dry_run; import_task_id; cancel_reason } 
     let parse xml =
       Some
         {
@@ -29190,6 +30659,7 @@ module CancelImportTaskRequest =
           cancel_reason =
             (Util.option_bind (Xml.member "CancelReason" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -29199,6 +30669,7 @@ module CancelImportTaskRequest =
              (fun f  -> Query.Pair ("ImportTaskId", (String.to_query f)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -29208,6 +30679,7 @@ module CancelImportTaskRequest =
              (fun f  -> ("import_task_id", (String.to_json f)));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -29215,15 +30687,15 @@ module CancelImportTaskRequest =
           (Util.option_map (Json.lookup j "import_task_id") String.of_json);
         cancel_reason =
           (Util.option_map (Json.lookup j "cancel_reason") String.of_json)
-      }
+      } 
   end
 module DescribeVpcEndpointsResult =
   struct
     type t = {
-      vpc_endpoints: VpcEndpointSet.t;
-      next_token: String.t option;}
+      vpc_endpoints: VpcEndpointSet.t ;
+      next_token: String.t option }
     let make ?(vpc_endpoints= [])  ?next_token  () =
-      { vpc_endpoints; next_token }
+      { vpc_endpoints; next_token } 
     let parse xml =
       Some
         {
@@ -29234,6 +30706,7 @@ module DescribeVpcEndpointsResult =
           next_token =
             (Util.option_bind (Xml.member "nextToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -29242,12 +30715,14 @@ module DescribeVpcEndpointsResult =
            Some
              (Query.Pair
                 ("VpcEndpointSet", (VpcEndpointSet.to_query v.vpc_endpoints)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.next_token
               (fun f  -> ("next_token", (String.to_json f)));
            Some ("vpc_endpoints", (VpcEndpointSet.to_json v.vpc_endpoints))])
+      
     let of_json j =
       {
         vpc_endpoints =
@@ -29255,22 +30730,22 @@ module DescribeVpcEndpointsResult =
              (Util.of_option_exn (Json.lookup j "vpc_endpoints")));
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      }
+      } 
   end
 module ImportImageRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      description: String.t option;
-      disk_containers: ImageDiskContainerList.t;
-      license_type: String.t option;
-      hypervisor: String.t option;
-      architecture: String.t option;
-      platform: String.t option;
-      client_data: ClientData.t option;
-      client_token: String.t option;
-      role_name: String.t option;}
+      dry_run: Boolean.t option ;
+      description: String.t option ;
+      disk_containers: ImageDiskContainerList.t ;
+      license_type: String.t option ;
+      hypervisor: String.t option ;
+      architecture: String.t option ;
+      platform: String.t option ;
+      client_data: ClientData.t option ;
+      client_token: String.t option ;
+      role_name: String.t option }
     let make ?dry_run  ?description  ?(disk_containers= [])  ?license_type 
       ?hypervisor  ?architecture  ?platform  ?client_data  ?client_token 
       ?role_name  () =
@@ -29285,7 +30760,7 @@ module ImportImageRequest =
         client_data;
         client_token;
         role_name
-      }
+      } 
     let parse xml =
       Some
         {
@@ -29312,6 +30787,7 @@ module ImportImageRequest =
           role_name =
             (Util.option_bind (Xml.member "RoleName" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -29337,6 +30813,7 @@ module ImportImageRequest =
              (fun f  -> Query.Pair ("Description", (String.to_query f)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -29361,6 +30838,7 @@ module ImportImageRequest =
              (fun f  -> ("description", (String.to_json f)));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -29383,15 +30861,15 @@ module ImportImageRequest =
           (Util.option_map (Json.lookup j "client_token") String.of_json);
         role_name =
           (Util.option_map (Json.lookup j "role_name") String.of_json)
-      }
+      } 
   end
 module DescribeClassicLinkInstancesResult =
   struct
     type t =
       {
-      instances: ClassicLinkInstanceList.t;
-      next_token: String.t option;}
-    let make ?(instances= [])  ?next_token  () = { instances; next_token }
+      instances: ClassicLinkInstanceList.t ;
+      next_token: String.t option }
+    let make ?(instances= [])  ?next_token  () = { instances; next_token } 
     let parse xml =
       Some
         {
@@ -29402,6 +30880,7 @@ module DescribeClassicLinkInstancesResult =
           next_token =
             (Util.option_bind (Xml.member "nextToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -29411,12 +30890,14 @@ module DescribeClassicLinkInstancesResult =
              (Query.Pair
                 ("InstancesSet",
                   (ClassicLinkInstanceList.to_query v.instances)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.next_token
               (fun f  -> ("next_token", (String.to_json f)));
            Some ("instances", (ClassicLinkInstanceList.to_json v.instances))])
+      
     let of_json j =
       {
         instances =
@@ -29424,18 +30905,18 @@ module DescribeClassicLinkInstancesResult =
              (Util.of_option_exn (Json.lookup j "instances")));
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      }
+      } 
   end
 module DescribeSpotFleetInstancesRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      spot_fleet_request_id: String.t;
-      next_token: String.t option;
-      max_results: Integer.t option;}
+      dry_run: Boolean.t option ;
+      spot_fleet_request_id: String.t ;
+      next_token: String.t option ;
+      max_results: Integer.t option }
     let make ?dry_run  ~spot_fleet_request_id  ?next_token  ?max_results  ()
-      = { dry_run; spot_fleet_request_id; next_token; max_results }
+      = { dry_run; spot_fleet_request_id; next_token; max_results } 
     let parse xml =
       Some
         {
@@ -29450,6 +30931,7 @@ module DescribeSpotFleetInstancesRequest =
           max_results =
             (Util.option_bind (Xml.member "maxResults" xml) Integer.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -29463,6 +30945,7 @@ module DescribeSpotFleetInstancesRequest =
                   (String.to_query v.spot_fleet_request_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -29475,6 +30958,7 @@ module DescribeSpotFleetInstancesRequest =
                (String.to_json v.spot_fleet_request_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -29485,17 +30969,17 @@ module DescribeSpotFleetInstancesRequest =
           (Util.option_map (Json.lookup j "next_token") String.of_json);
         max_results =
           (Util.option_map (Json.lookup j "max_results") Integer.of_json)
-      }
+      } 
   end
 module DetachVpnGatewayRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      vpn_gateway_id: String.t;
-      vpc_id: String.t;}
+      dry_run: Boolean.t option ;
+      vpn_gateway_id: String.t ;
+      vpc_id: String.t }
     let make ?dry_run  ~vpn_gateway_id  ~vpc_id  () =
-      { dry_run; vpn_gateway_id; vpc_id }
+      { dry_run; vpn_gateway_id; vpc_id } 
     let parse xml =
       Some
         {
@@ -29508,6 +30992,7 @@ module DetachVpnGatewayRequest =
             (Xml.required "VpcId"
                (Util.option_bind (Xml.member "VpcId" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -29516,6 +31001,7 @@ module DetachVpnGatewayRequest =
              (Query.Pair ("VpnGatewayId", (String.to_query v.vpn_gateway_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -29523,6 +31009,7 @@ module DetachVpnGatewayRequest =
            Some ("vpn_gateway_id", (String.to_json v.vpn_gateway_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -29531,13 +31018,13 @@ module DetachVpnGatewayRequest =
              (Util.of_option_exn (Json.lookup j "vpn_gateway_id")));
         vpc_id =
           (String.of_json (Util.of_option_exn (Json.lookup j "vpc_id")))
-      }
+      } 
   end
 module MonitorInstancesResult =
   struct
     type t = {
-      instance_monitorings: InstanceMonitoringList.t;}
-    let make ?(instance_monitorings= [])  () = { instance_monitorings }
+      instance_monitorings: InstanceMonitoringList.t }
+    let make ?(instance_monitorings= [])  () = { instance_monitorings } 
     let parse xml =
       Some
         {
@@ -29546,6 +31033,7 @@ module MonitorInstancesResult =
                (Util.option_bind (Xml.member "instancesSet" xml)
                   InstanceMonitoringList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -29553,33 +31041,35 @@ module MonitorInstancesResult =
               (Query.Pair
                  ("InstancesSet",
                    (InstanceMonitoringList.to_query v.instance_monitorings)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("instance_monitorings",
                 (InstanceMonitoringList.to_json v.instance_monitorings))])
+      
     let of_json j =
       {
         instance_monitorings =
           (InstanceMonitoringList.of_json
              (Util.of_option_exn (Json.lookup j "instance_monitorings")))
-      }
+      } 
   end
 module AuthorizeSecurityGroupIngressRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      group_name: String.t option;
-      group_id: String.t option;
-      source_security_group_name: String.t option;
-      source_security_group_owner_id: String.t option;
-      ip_protocol: String.t option;
-      from_port: Integer.t option;
-      to_port: Integer.t option;
-      cidr_ip: String.t option;
-      ip_permissions: IpPermissionList.t;}
+      dry_run: Boolean.t option ;
+      group_name: String.t option ;
+      group_id: String.t option ;
+      source_security_group_name: String.t option ;
+      source_security_group_owner_id: String.t option ;
+      ip_protocol: String.t option ;
+      from_port: Integer.t option ;
+      to_port: Integer.t option ;
+      cidr_ip: String.t option ;
+      ip_permissions: IpPermissionList.t }
     let make ?dry_run  ?group_name  ?group_id  ?source_security_group_name 
       ?source_security_group_owner_id  ?ip_protocol  ?from_port  ?to_port 
       ?cidr_ip  ?(ip_permissions= [])  () =
@@ -29594,7 +31084,7 @@ module AuthorizeSecurityGroupIngressRequest =
         to_port;
         cidr_ip;
         ip_permissions
-      }
+      } 
     let parse xml =
       Some
         {
@@ -29622,6 +31112,7 @@ module AuthorizeSecurityGroupIngressRequest =
                (Util.option_bind (Xml.member "IpPermissions" xml)
                   IpPermissionList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -29650,6 +31141,7 @@ module AuthorizeSecurityGroupIngressRequest =
              (fun f  -> Query.Pair ("GroupName", (String.to_query f)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -29674,6 +31166,7 @@ module AuthorizeSecurityGroupIngressRequest =
              (fun f  -> ("group_name", (String.to_json f)));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -29696,42 +31189,45 @@ module AuthorizeSecurityGroupIngressRequest =
         ip_permissions =
           (IpPermissionList.of_json
              (Util.of_option_exn (Json.lookup j "ip_permissions")))
-      }
+      } 
   end
 module CreateInternetGatewayRequest =
   struct
     type t = {
-      dry_run: Boolean.t option;}
-    let make ?dry_run  () = { dry_run }
+      dry_run: Boolean.t option }
+    let make ?dry_run  () = { dry_run } 
     let parse xml =
       Some
         {
           dry_run =
             (Util.option_bind (Xml.member "dryRun" xml) Boolean.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.dry_run
               (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.dry_run
               (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       { dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json)
-      }
+      } 
   end
 module DescribeImageAttributeRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      image_id: String.t;
-      attribute: ImageAttributeName.t;}
+      dry_run: Boolean.t option ;
+      image_id: String.t ;
+      attribute: ImageAttributeName.t }
     let make ?dry_run  ~image_id  ~attribute  () =
-      { dry_run; image_id; attribute }
+      { dry_run; image_id; attribute } 
     let parse xml =
       Some
         {
@@ -29745,6 +31241,7 @@ module DescribeImageAttributeRequest =
                (Util.option_bind (Xml.member "Attribute" xml)
                   ImageAttributeName.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -29754,6 +31251,7 @@ module DescribeImageAttributeRequest =
            Some (Query.Pair ("ImageId", (String.to_query v.image_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -29761,6 +31259,7 @@ module DescribeImageAttributeRequest =
            Some ("image_id", (String.to_json v.image_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -29769,15 +31268,15 @@ module DescribeImageAttributeRequest =
         attribute =
           (ImageAttributeName.of_json
              (Util.of_option_exn (Json.lookup j "attribute")))
-      }
+      } 
   end
 module DeleteCustomerGatewayRequest =
   struct
     type t = {
-      dry_run: Boolean.t option;
-      customer_gateway_id: String.t;}
+      dry_run: Boolean.t option ;
+      customer_gateway_id: String.t }
     let make ?dry_run  ~customer_gateway_id  () =
-      { dry_run; customer_gateway_id }
+      { dry_run; customer_gateway_id } 
     let parse xml =
       Some
         {
@@ -29788,6 +31287,7 @@ module DeleteCustomerGatewayRequest =
                (Util.option_bind (Xml.member "CustomerGatewayId" xml)
                   String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -29797,6 +31297,7 @@ module DeleteCustomerGatewayRequest =
                    (String.to_query v.customer_gateway_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -29804,20 +31305,21 @@ module DeleteCustomerGatewayRequest =
               ("customer_gateway_id", (String.to_json v.customer_gateway_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         customer_gateway_id =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "customer_gateway_id")))
-      }
+      } 
   end
 module DescribeSnapshotsResult =
   struct
     type t = {
-      snapshots: SnapshotList.t;
-      next_token: String.t option;}
-    let make ?(snapshots= [])  ?next_token  () = { snapshots; next_token }
+      snapshots: SnapshotList.t ;
+      next_token: String.t option }
+    let make ?(snapshots= [])  ?next_token  () = { snapshots; next_token } 
     let parse xml =
       Some
         {
@@ -29828,6 +31330,7 @@ module DescribeSnapshotsResult =
           next_token =
             (Util.option_bind (Xml.member "nextToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -29835,12 +31338,14 @@ module DescribeSnapshotsResult =
               (fun f  -> Query.Pair ("NextToken", (String.to_query f)));
            Some
              (Query.Pair ("SnapshotSet", (SnapshotList.to_query v.snapshots)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.next_token
               (fun f  -> ("next_token", (String.to_json f)));
            Some ("snapshots", (SnapshotList.to_json v.snapshots))])
+      
     let of_json j =
       {
         snapshots =
@@ -29848,14 +31353,14 @@ module DescribeSnapshotsResult =
              (Util.of_option_exn (Json.lookup j "snapshots")));
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      }
+      } 
   end
 module EnableVolumeIORequest =
   struct
     type t = {
-      dry_run: Boolean.t option;
-      volume_id: String.t;}
-    let make ?dry_run  ~volume_id  () = { dry_run; volume_id }
+      dry_run: Boolean.t option ;
+      volume_id: String.t }
+    let make ?dry_run  ~volume_id  () = { dry_run; volume_id } 
     let parse xml =
       Some
         {
@@ -29865,39 +31370,42 @@ module EnableVolumeIORequest =
             (Xml.required "volumeId"
                (Util.option_bind (Xml.member "volumeId" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("VolumeId", (String.to_query v.volume_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("volume_id", (String.to_json v.volume_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         volume_id =
           (String.of_json (Util.of_option_exn (Json.lookup j "volume_id")))
-      }
+      } 
   end
 module RevokeSecurityGroupIngressRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      group_name: String.t option;
-      group_id: String.t option;
-      source_security_group_name: String.t option;
-      source_security_group_owner_id: String.t option;
-      ip_protocol: String.t option;
-      from_port: Integer.t option;
-      to_port: Integer.t option;
-      cidr_ip: String.t option;
-      ip_permissions: IpPermissionList.t;}
+      dry_run: Boolean.t option ;
+      group_name: String.t option ;
+      group_id: String.t option ;
+      source_security_group_name: String.t option ;
+      source_security_group_owner_id: String.t option ;
+      ip_protocol: String.t option ;
+      from_port: Integer.t option ;
+      to_port: Integer.t option ;
+      cidr_ip: String.t option ;
+      ip_permissions: IpPermissionList.t }
     let make ?dry_run  ?group_name  ?group_id  ?source_security_group_name 
       ?source_security_group_owner_id  ?ip_protocol  ?from_port  ?to_port 
       ?cidr_ip  ?(ip_permissions= [])  () =
@@ -29912,7 +31420,7 @@ module RevokeSecurityGroupIngressRequest =
         to_port;
         cidr_ip;
         ip_permissions
-      }
+      } 
     let parse xml =
       Some
         {
@@ -29940,6 +31448,7 @@ module RevokeSecurityGroupIngressRequest =
                (Util.option_bind (Xml.member "IpPermissions" xml)
                   IpPermissionList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -29968,6 +31477,7 @@ module RevokeSecurityGroupIngressRequest =
              (fun f  -> Query.Pair ("GroupName", (String.to_query f)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -29992,6 +31502,7 @@ module RevokeSecurityGroupIngressRequest =
              (fun f  -> ("group_name", (String.to_json f)));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -30014,15 +31525,15 @@ module RevokeSecurityGroupIngressRequest =
         ip_permissions =
           (IpPermissionList.of_json
              (Util.of_option_exn (Json.lookup j "ip_permissions")))
-      }
+      } 
   end
 module DisableVgwRoutePropagationRequest =
   struct
     type t = {
-      route_table_id: String.t;
-      gateway_id: String.t;}
+      route_table_id: String.t ;
+      gateway_id: String.t }
     let make ~route_table_id  ~gateway_id  () =
-      { route_table_id; gateway_id }
+      { route_table_id; gateway_id } 
     let parse xml =
       Some
         {
@@ -30033,17 +31544,20 @@ module DisableVgwRoutePropagationRequest =
             (Xml.required "GatewayId"
                (Util.option_bind (Xml.member "GatewayId" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("GatewayId", (String.to_query v.gateway_id)));
            Some
              (Query.Pair ("RouteTableId", (String.to_query v.route_table_id)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("gateway_id", (String.to_json v.gateway_id));
            Some ("route_table_id", (String.to_json v.route_table_id))])
+      
     let of_json j =
       {
         route_table_id =
@@ -30051,17 +31565,17 @@ module DisableVgwRoutePropagationRequest =
              (Util.of_option_exn (Json.lookup j "route_table_id")));
         gateway_id =
           (String.of_json (Util.of_option_exn (Json.lookup j "gateway_id")))
-      }
+      } 
   end
 module DescribeVpcAttributeResult =
   struct
     type t =
       {
-      vpc_id: String.t option;
-      enable_dns_support: AttributeBooleanValue.t option;
-      enable_dns_hostnames: AttributeBooleanValue.t option;}
+      vpc_id: String.t option ;
+      enable_dns_support: AttributeBooleanValue.t option ;
+      enable_dns_hostnames: AttributeBooleanValue.t option }
     let make ?vpc_id  ?enable_dns_support  ?enable_dns_hostnames  () =
-      { vpc_id; enable_dns_support; enable_dns_hostnames }
+      { vpc_id; enable_dns_support; enable_dns_hostnames } 
     let parse xml =
       Some
         {
@@ -30073,6 +31587,7 @@ module DescribeVpcAttributeResult =
             (Util.option_bind (Xml.member "enableDnsHostnames" xml)
                AttributeBooleanValue.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -30086,6 +31601,7 @@ module DescribeVpcAttributeResult =
                   ("EnableDnsSupport", (AttributeBooleanValue.to_query f)));
            Util.option_map v.vpc_id
              (fun f  -> Query.Pair ("VpcId", (String.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -30097,6 +31613,7 @@ module DescribeVpcAttributeResult =
                 ("enable_dns_support", (AttributeBooleanValue.to_json f)));
            Util.option_map v.vpc_id
              (fun f  -> ("vpc_id", (String.to_json f)))])
+      
     let of_json j =
       {
         vpc_id = (Util.option_map (Json.lookup j "vpc_id") String.of_json);
@@ -30106,17 +31623,17 @@ module DescribeVpcAttributeResult =
         enable_dns_hostnames =
           (Util.option_map (Json.lookup j "enable_dns_hostnames")
              AttributeBooleanValue.of_json)
-      }
+      } 
   end
 module DescribeNetworkInterfaceAttributeRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      network_interface_id: String.t;
-      attribute: NetworkInterfaceAttribute.t option;}
+      dry_run: Boolean.t option ;
+      network_interface_id: String.t ;
+      attribute: NetworkInterfaceAttribute.t option }
     let make ?dry_run  ~network_interface_id  ?attribute  () =
-      { dry_run; network_interface_id; attribute }
+      { dry_run; network_interface_id; attribute } 
     let parse xml =
       Some
         {
@@ -30130,6 +31647,7 @@ module DescribeNetworkInterfaceAttributeRequest =
             (Util.option_bind (Xml.member "attribute" xml)
                NetworkInterfaceAttribute.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -30143,6 +31661,7 @@ module DescribeNetworkInterfaceAttributeRequest =
                   (String.to_query v.network_interface_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -30153,6 +31672,7 @@ module DescribeNetworkInterfaceAttributeRequest =
                (String.to_json v.network_interface_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -30162,20 +31682,20 @@ module DescribeNetworkInterfaceAttributeRequest =
         attribute =
           (Util.option_map (Json.lookup j "attribute")
              NetworkInterfaceAttribute.of_json)
-      }
+      } 
   end
 module PurchaseReservedInstancesOfferingRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      reserved_instances_offering_id: String.t;
-      instance_count: Integer.t;
-      limit_price: ReservedInstanceLimitPrice.t option;}
+      dry_run: Boolean.t option ;
+      reserved_instances_offering_id: String.t ;
+      instance_count: Integer.t ;
+      limit_price: ReservedInstanceLimitPrice.t option }
     let make ?dry_run  ~reserved_instances_offering_id  ~instance_count 
       ?limit_price  () =
       { dry_run; reserved_instances_offering_id; instance_count; limit_price
-      }
+      } 
     let parse xml =
       Some
         {
@@ -30193,6 +31713,7 @@ module PurchaseReservedInstancesOfferingRequest =
             (Util.option_bind (Xml.member "limitPrice" xml)
                ReservedInstanceLimitPrice.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -30209,6 +31730,7 @@ module PurchaseReservedInstancesOfferingRequest =
                   (String.to_query v.reserved_instances_offering_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -30221,6 +31743,7 @@ module PurchaseReservedInstancesOfferingRequest =
                (String.to_json v.reserved_instances_offering_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -30234,16 +31757,16 @@ module PurchaseReservedInstancesOfferingRequest =
         limit_price =
           (Util.option_map (Json.lookup j "limit_price")
              ReservedInstanceLimitPrice.of_json)
-      }
+      } 
   end
 module CreateVpcEndpointResult =
   struct
     type t =
       {
-      vpc_endpoint: VpcEndpoint.t option;
-      client_token: String.t option;}
+      vpc_endpoint: VpcEndpoint.t option ;
+      client_token: String.t option }
     let make ?vpc_endpoint  ?client_token  () =
-      { vpc_endpoint; client_token }
+      { vpc_endpoint; client_token } 
     let parse xml =
       Some
         {
@@ -30253,6 +31776,7 @@ module CreateVpcEndpointResult =
           client_token =
             (Util.option_bind (Xml.member "clientToken" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -30260,6 +31784,7 @@ module CreateVpcEndpointResult =
               (fun f  -> Query.Pair ("ClientToken", (String.to_query f)));
            Util.option_map v.vpc_endpoint
              (fun f  -> Query.Pair ("VpcEndpoint", (VpcEndpoint.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -30267,26 +31792,27 @@ module CreateVpcEndpointResult =
               (fun f  -> ("client_token", (String.to_json f)));
            Util.option_map v.vpc_endpoint
              (fun f  -> ("vpc_endpoint", (VpcEndpoint.to_json f)))])
+      
     let of_json j =
       {
         vpc_endpoint =
           (Util.option_map (Json.lookup j "vpc_endpoint") VpcEndpoint.of_json);
         client_token =
           (Util.option_map (Json.lookup j "client_token") String.of_json)
-      }
+      } 
   end
 module DescribeMovingAddressesRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      public_ips: ValueStringList.t;
-      next_token: String.t option;
-      filters: FilterList.t;
-      max_results: Integer.t option;}
+      dry_run: Boolean.t option ;
+      public_ips: ValueStringList.t ;
+      next_token: String.t option ;
+      filters: FilterList.t ;
+      max_results: Integer.t option }
     let make ?dry_run  ?(public_ips= [])  ?next_token  ?(filters= []) 
       ?max_results  () =
-      { dry_run; public_ips; next_token; filters; max_results }
+      { dry_run; public_ips; next_token; filters; max_results } 
     let parse xml =
       Some
         {
@@ -30304,6 +31830,7 @@ module DescribeMovingAddressesRequest =
           max_results =
             (Util.option_bind (Xml.member "maxResults" xml) Integer.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -30317,6 +31844,7 @@ module DescribeMovingAddressesRequest =
                 ("PublicIp", (ValueStringList.to_query v.public_ips)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -30328,6 +31856,7 @@ module DescribeMovingAddressesRequest =
            Some ("public_ips", (ValueStringList.to_json v.public_ips));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -30340,14 +31869,14 @@ module DescribeMovingAddressesRequest =
           (FilterList.of_json (Util.of_option_exn (Json.lookup j "filters")));
         max_results =
           (Util.option_map (Json.lookup j "max_results") Integer.of_json)
-      }
+      } 
   end
 module MoveAddressToVpcRequest =
   struct
     type t = {
-      dry_run: Boolean.t option;
-      public_ip: String.t;}
-    let make ?dry_run  ~public_ip  () = { dry_run; public_ip }
+      dry_run: Boolean.t option ;
+      public_ip: String.t }
+    let make ?dry_run  ~public_ip  () = { dry_run; public_ip } 
     let parse xml =
       Some
         {
@@ -30357,34 +31886,37 @@ module MoveAddressToVpcRequest =
             (Xml.required "publicIp"
                (Util.option_bind (Xml.member "publicIp" xml) String.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("PublicIp", (String.to_query v.public_ip)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("public_ip", (String.to_json v.public_ip));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         public_ip =
           (String.of_json (Util.of_option_exn (Json.lookup j "public_ip")))
-      }
+      } 
   end
 module ResetImageAttributeRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      image_id: String.t;
-      attribute: ResetImageAttributeName.t;}
+      dry_run: Boolean.t option ;
+      image_id: String.t ;
+      attribute: ResetImageAttributeName.t }
     let make ?dry_run  ~image_id  ~attribute  () =
-      { dry_run; image_id; attribute }
+      { dry_run; image_id; attribute } 
     let parse xml =
       Some
         {
@@ -30398,6 +31930,7 @@ module ResetImageAttributeRequest =
                (Util.option_bind (Xml.member "Attribute" xml)
                   ResetImageAttributeName.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -30408,6 +31941,7 @@ module ResetImageAttributeRequest =
            Some (Query.Pair ("ImageId", (String.to_query v.image_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -30415,6 +31949,7 @@ module ResetImageAttributeRequest =
            Some ("image_id", (String.to_json v.image_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -30423,20 +31958,20 @@ module ResetImageAttributeRequest =
         attribute =
           (ResetImageAttributeName.of_json
              (Util.of_option_exn (Json.lookup j "attribute")))
-      }
+      } 
   end
 module CopySnapshotRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      source_region: String.t;
-      source_snapshot_id: String.t;
-      description: String.t option;
-      destination_region: String.t option;
-      presigned_url: String.t option;
-      encrypted: Boolean.t option;
-      kms_key_id: String.t option;}
+      dry_run: Boolean.t option ;
+      source_region: String.t ;
+      source_snapshot_id: String.t ;
+      description: String.t option ;
+      destination_region: String.t option ;
+      presigned_url: String.t option ;
+      encrypted: Boolean.t option ;
+      kms_key_id: String.t option }
     let make ?dry_run  ~source_region  ~source_snapshot_id  ?description 
       ?destination_region  ?presigned_url  ?encrypted  ?kms_key_id  () =
       {
@@ -30448,7 +31983,7 @@ module CopySnapshotRequest =
         presigned_url;
         encrypted;
         kms_key_id
-      }
+      } 
     let parse xml =
       Some
         {
@@ -30473,6 +32008,7 @@ module CopySnapshotRequest =
           kms_key_id =
             (Util.option_bind (Xml.member "kmsKeyId" xml) String.parse)
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -30493,6 +32029,7 @@ module CopySnapshotRequest =
              (Query.Pair ("SourceRegion", (String.to_query v.source_region)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -30510,6 +32047,7 @@ module CopySnapshotRequest =
            Some ("source_region", (String.to_json v.source_region));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -30530,16 +32068,16 @@ module CopySnapshotRequest =
           (Util.option_map (Json.lookup j "encrypted") Boolean.of_json);
         kms_key_id =
           (Util.option_map (Json.lookup j "kms_key_id") String.of_json)
-      }
+      } 
   end
 module CreateDhcpOptionsRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      dhcp_configurations: NewDhcpConfigurationList.t;}
+      dry_run: Boolean.t option ;
+      dhcp_configurations: NewDhcpConfigurationList.t }
     let make ?dry_run  ~dhcp_configurations  () =
-      { dry_run; dhcp_configurations }
+      { dry_run; dhcp_configurations } 
     let parse xml =
       Some
         {
@@ -30550,6 +32088,7 @@ module CreateDhcpOptionsRequest =
                (Util.option_bind (Xml.member "dhcpConfiguration" xml)
                   NewDhcpConfigurationList.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -30559,6 +32098,7 @@ module CreateDhcpOptionsRequest =
                    (NewDhcpConfigurationList.to_query v.dhcp_configurations)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -30567,24 +32107,25 @@ module CreateDhcpOptionsRequest =
                 (NewDhcpConfigurationList.to_json v.dhcp_configurations));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
         dhcp_configurations =
           (NewDhcpConfigurationList.of_json
              (Util.of_option_exn (Json.lookup j "dhcp_configurations")))
-      }
+      } 
   end
 module AttachNetworkInterfaceRequest =
   struct
     type t =
       {
-      dry_run: Boolean.t option;
-      network_interface_id: String.t;
-      instance_id: String.t;
-      device_index: Integer.t;}
+      dry_run: Boolean.t option ;
+      network_interface_id: String.t ;
+      instance_id: String.t ;
+      device_index: Integer.t }
     let make ?dry_run  ~network_interface_id  ~instance_id  ~device_index  ()
-      = { dry_run; network_interface_id; instance_id; device_index }
+      = { dry_run; network_interface_id; instance_id; device_index } 
     let parse xml =
       Some
         {
@@ -30601,6 +32142,7 @@ module AttachNetworkInterfaceRequest =
             (Xml.required "deviceIndex"
                (Util.option_bind (Xml.member "deviceIndex" xml) Integer.parse))
         }
+      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -30613,6 +32155,7 @@ module AttachNetworkInterfaceRequest =
                   (String.to_query v.network_interface_id)));
            Util.option_map v.dry_run
              (fun f  -> Query.Pair ("DryRun", (Boolean.to_query f)))])
+      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -30623,6 +32166,7 @@ module AttachNetworkInterfaceRequest =
                (String.to_json v.network_interface_id));
            Util.option_map v.dry_run
              (fun f  -> ("dry_run", (Boolean.to_json f)))])
+      
     let of_json j =
       {
         dry_run = (Util.option_map (Json.lookup j "dry_run") Boolean.of_json);
@@ -30634,5 +32178,5 @@ module AttachNetworkInterfaceRequest =
         device_index =
           (Integer.of_json
              (Util.of_option_exn (Json.lookup j "device_index")))
-      }
+      } 
   end

@@ -1,0 +1,8 @@
+(executable
+ (name aws_gen)
+ (public_name aws-gen)
+ (package aws-gen)
+ (preprocess (pps ppx_tools_versioned.metaquot_404))
+ (libraries yojson cmdliner unix
+            ppx_tools_versioned 
+            ocaml-migrate-parsetree ocamlgraph))

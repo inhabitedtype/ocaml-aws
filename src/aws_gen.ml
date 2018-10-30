@@ -40,7 +40,7 @@ let uncapitalize s =
   let at_start = ref true in
   String.map (fun c ->
     if !at_start then
-      begin at_start := false; Char.lowercase c end
+      begin at_start := false; Char.lowercase_ascii c end
     else c)
   s
 
@@ -74,7 +74,6 @@ module Json = struct
     if not !updated
       then (key, default) :: assoc
       else result
-  ;;
 
   let override_shapes original overrides : (string * Yojson.Basic.json) list =
     let open Yojson.Basic.Util in
@@ -133,7 +132,7 @@ let main input override errors_path outdir is_ec2 =
   let ops_json = Json.(member_exn "operations"     desc |> to_assoc) in
   let shp_json = Json.(member_exn "shapes"         desc |> to_assoc) in
   let lib_name      = Json.(member_exn "endpointPrefix" meta |> to_string) in
-  let lib_version   = Json.(member_exn "libraryVersion" overrides |> to_string) in
+  (* let lib_version   = Json.(member_exn "libraryVersion" overrides |> to_string) in *)
   let service_name  = Json.(member_exn "serviceFullName" meta |> to_string) in
   let api_version   = Json.(member_exn "apiVersion"     meta |> to_string) in
   let parsed_ops  = List.map Reading.op ops_json in
@@ -167,7 +166,7 @@ let main input override errors_path outdir is_ec2 =
       common @ specific
   in
   let errors =
-    List.sort_uniq Pervasives.compare (Util.filter_map shp_json ~f:(fun (nm, flds) ->
+    List.sort_uniq Structures.Error.compare (Util.filter_map shp_json ~f:(fun (nm, flds) ->
       match Json.member "exception" flds with
       | `Bool true -> Some(Reading.error nm flds)
       | `Null | `Bool false -> None
@@ -196,17 +195,16 @@ let main input override errors_path outdir is_ec2 =
   ops;
   log "## Wrote %d/%d ops modules..."
     (List.length ops) (List.length ops_json);
-  let modules = List.map (fun op -> op.Operation.name) ops in
-  let append =
-    try
-      let in_ = open_in (dir </> "_oasis_append") in
-      really_input_string in_ (in_channel_length in_)
-    with Sys_error _ -> ""
-  in
-  Printing.write_all (dir </> "_oasis")
-    (Templates.oasis ~append ~lib_name ~lib_version ~service_name ~modules);
-  log "## Wrote _oasis file.";
-;;
+  (* let modules = List.map (fun op -> op.Operation.name) ops in *)
+  (* let append =
+   *   try
+   *     let in_ = open_in (dir </> "_oasis_append") in
+   *     really_input_string in_ (in_channel_length in_)
+   *   with Sys_error _ -> ""
+   * in *)
+  Printing.write_all ~filename:(lib_dir </> "dune")
+    (Templates.dune ~lib_name ~service_name);
+  log "## Wrote dune file.";
 
 module CommandLine = struct
   let input =

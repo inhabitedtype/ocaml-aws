@@ -3,7 +3,7 @@ open Aws
 type input = AddTagsToResourceMessage.t
 type output = TagListMessage.t
 type error = Errors.t
-let service = "elasticache"
+let service = "elasticache" 
 let to_http req =
   let uri =
     Uri.add_query_params (Uri.of_string "https://elasticache.amazonaws.com")
@@ -11,14 +11,16 @@ let to_http req =
          [("Version", ["2015-02-02"]); ("Action", ["AddTagsToResource"])]
          (Util.drop_empty
             (Uri.query_of_encoded
-               (Query.render (AddTagsToResourceMessage.to_query req))))) in
-  (`POST, uri, [])
+               (Query.render (AddTagsToResourceMessage.to_query req)))))
+     in
+  (`POST, uri, []) 
 let of_http body =
   try
-    let xml = Ezxmlm.from_string body in
+    let xml = Ezxmlm.from_string body  in
     let resp =
       Util.option_bind (Xml.member "AddTagsToResourceResponse" (snd xml))
-        (Xml.member "AddTagsToResourceResult") in
+        (Xml.member "AddTagsToResourceResult")
+       in
     try
       Util.or_error (Util.option_bind resp TagListMessage.parse)
         (let open Error in
@@ -40,12 +42,13 @@ let of_http body =
       `Error
         (let open Error in
            BadResponse { body; message = ("Error parsing xml: " ^ msg) })
+  
 let parse_error code err =
   let errors =
     [Errors.InvalidARN;
     Errors.TagQuotaPerResourceExceeded;
     Errors.SnapshotNotFoundFault;
-    Errors.CacheClusterNotFound] @ Errors.common in
+    Errors.CacheClusterNotFound] @ Errors.common  in
   match Errors.of_string err with
   | Some var ->
       if
@@ -55,4 +58,4 @@ let parse_error code err =
             | None  -> true))
       then Some var
       else None
-  | None  -> None
+  | None  -> None 

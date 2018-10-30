@@ -61,3 +61,13 @@ Document \"aws-%s\"
 
 %s" lib_name lib_version service_name lib_name lib_name (String.concat ", " modules) lib_name lib_name lib_name
     append
+
+let dune ~lib_name ~service_name =
+  Printf.sprintf
+"(library
+ (name        aws_%s)
+ (public_name aws_%s)
+ (synopsis \"aws-%s\")
+ (flags (:standard -w -27))
+ (libraries aws))
+" lib_name lib_name service_name

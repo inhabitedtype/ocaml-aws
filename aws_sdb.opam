@@ -1,0 +1,18 @@
+opam-version: "2.0"
+maintainer: "Spiros Eliopoulos <spiros@inhabitedtype.com>"
+authors: [ "Spiros Eliopoulos <spiros@inhabitedtype.com>"
+           "Daniel Patterson <dbp@dbpmail.net>" ]
+synopsis: "Amazon Web Services SDK bindings to SDB"
+description: "Amazon Web Services SDK bindings to SDB"
+license: "BSD-3-clause"
+homepage: "https://github.com/inhabitedtype/ocaml-aws"
+dev-repo: "git+https://github.com/inhabitedtype/ocaml-aws.git"
+bug-reports: "https://github.com/inhabitedtype/ocaml-aws/issues"
+build: [
+  ["dune" "subst"] {pinned}
+  ["dune" "build" "-p" name "-j" jobs]
+]
+depends: [
+  "aws" {>= "0.1.0"}
+  "dune" {build}
+]

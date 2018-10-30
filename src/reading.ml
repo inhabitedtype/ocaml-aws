@@ -44,7 +44,6 @@ end
 let unreserve =
   let reserved_words = [("type", "type_");("to", "to_");("end", "end_")] in
   fun s -> try List.assoc s reserved_words with Not_found -> s
-;;
 
 let parse_member rq (mnm, mj) =
   { Structure.name = mnm
@@ -56,7 +55,6 @@ let parse_member rq (mnm, mj) =
   ; required      = List.mem mnm rq
   ; field_name    = unreserve (Util.to_field_name mnm)
   }
-;;
 
 let shape ((nm, j) : (string * Yojson.Basic.json)) : Shape.parsed =
   match Json.member "type" j with
@@ -86,8 +84,7 @@ let shape ((nm, j) : (string * Yojson.Basic.json)) : Shape.parsed =
       (nm, ty, None)
   | _ -> failwith (Printf.sprintf "Couldn't find 'type' on shape with name '%s'" nm)
 
-
-let op (nm, j) : Operation.t =
+let op (_nm, j) : Operation.t =
   let name = Json.(member_exn "name" j |> to_string) in
   let http = Json.member_exn "http" j in
   let http_meth = Json.(member_exn "method" http |> to_string) in
@@ -101,8 +98,8 @@ let op (nm, j) : Operation.t =
      * future.
      *)
     match Json.member "input" j with
-    | `Null -> "Aws.BaseTypes.Unit"
-    | input -> Json.(member_exn "shape" input |> to_string)
+    | `Null -> Some "Aws.BaseTypes.Unit"
+    | input -> Some Json.(member_exn "shape" input |> to_string)
   in
   let output_shape =
     try Some Json.(member "output" j |> member_exn "shape" |> to_string) with _ -> None

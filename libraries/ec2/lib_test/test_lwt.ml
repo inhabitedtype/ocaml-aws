@@ -1,7 +1,7 @@
-open OUnit
-open Aws_ec2
+(* open OUnit *)
+open Aws_ec2_test
 
-module T = Test.TestSuite(struct
+module T = TestSuite(struct
     type 'a m = 'a Lwt.t
 
     let access_key = Unix.getenv "AWS_ACCESS_KEY"

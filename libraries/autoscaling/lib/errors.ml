@@ -1,37 +1,37 @@
 type t =
-  | AlreadyExists
-  | AuthFailure
-  | Blocked
-  | DryRunOperation
-  | IdempotentParameterMismatch
-  | IncompleteSignature
-  | InternalFailure
-  | InvalidAction
-  | InvalidClientTokenId
-  | InvalidNextToken
-  | InvalidParameter
-  | InvalidParameterCombination
-  | InvalidParameterValue
-  | InvalidQueryParameter
-  | LimitExceeded
-  | MalformedQueryString
-  | MissingAction
-  | MissingAuthenticationToken
-  | MissingParameter
-  | OptInRequired
-  | PendingVerification
-  | RequestExpired
-  | RequestLimitExceeded
-  | ResourceContention
-  | ResourceInUse
-  | ScalingActivityInProgress
-  | ServiceUnavailable
-  | Throttling
-  | UnauthorizedOperation
-  | UnknownParameter
-  | UnsupportedProtocol
-  | ValidationError
-  | Uninhabited
+  | AlreadyExists 
+  | AuthFailure 
+  | Blocked 
+  | DryRunOperation 
+  | IdempotentParameterMismatch 
+  | IncompleteSignature 
+  | InternalFailure 
+  | InvalidAction 
+  | InvalidClientTokenId 
+  | InvalidNextToken 
+  | InvalidParameter 
+  | InvalidParameterCombination 
+  | InvalidParameterValue 
+  | InvalidQueryParameter 
+  | LimitExceeded 
+  | MalformedQueryString 
+  | MissingAction 
+  | MissingAuthenticationToken 
+  | MissingParameter 
+  | OptInRequired 
+  | PendingVerification 
+  | RequestExpired 
+  | RequestLimitExceeded 
+  | ResourceContention 
+  | ResourceInUse 
+  | ScalingActivityInProgress 
+  | ServiceUnavailable 
+  | Throttling 
+  | UnauthorizedOperation 
+  | UnknownParameter 
+  | UnsupportedProtocol 
+  | ValidationError 
+  | Uninhabited 
 let common =
   [UnsupportedProtocol;
   UnknownParameter;
@@ -58,7 +58,7 @@ let common =
   InvalidClientTokenId;
   InvalidAction;
   InternalFailure;
-  IncompleteSignature]
+  IncompleteSignature] 
 let to_http_code e =
   match e with
   | AlreadyExists  -> Some 400
@@ -93,7 +93,7 @@ let to_http_code e =
   | UnknownParameter  -> None
   | UnsupportedProtocol  -> None
   | ValidationError  -> Some 400
-  | Uninhabited  -> None
+  | Uninhabited  -> None 
 let to_string e =
   match e with
   | AlreadyExists  -> "AlreadyExists"
@@ -128,7 +128,7 @@ let to_string e =
   | UnknownParameter  -> "UnknownParameter"
   | UnsupportedProtocol  -> "UnsupportedProtocol"
   | ValidationError  -> "ValidationError"
-  | Uninhabited  -> "Uninhabited"
+  | Uninhabited  -> "Uninhabited" 
 let of_string e =
   match e with
   | "AlreadyExists" -> Some AlreadyExists
@@ -164,4 +164,4 @@ let of_string e =
   | "UnsupportedProtocol" -> Some UnsupportedProtocol
   | "ValidationError" -> Some ValidationError
   | "Uninhabited" -> Some Uninhabited
-  | _ -> None
+  | _ -> None 

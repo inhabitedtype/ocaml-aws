@@ -3,7 +3,7 @@ open Aws
 type input = ModifyDBClusterMessage.t
 type output = ModifyDBClusterResult.t
 type error = Errors.t
-let service = "rds"
+let service = "rds" 
 let to_http req =
   let uri =
     Uri.add_query_params (Uri.of_string "https://rds.amazonaws.com")
@@ -11,14 +11,16 @@ let to_http req =
          [("Version", ["2014-10-31"]); ("Action", ["ModifyDBCluster"])]
          (Util.drop_empty
             (Uri.query_of_encoded
-               (Query.render (ModifyDBClusterMessage.to_query req))))) in
-  (`POST, uri, [])
+               (Query.render (ModifyDBClusterMessage.to_query req)))))
+     in
+  (`POST, uri, []) 
 let of_http body =
   try
-    let xml = Ezxmlm.from_string body in
+    let xml = Ezxmlm.from_string body  in
     let resp =
       Util.option_bind (Xml.member "ModifyDBClusterResponse" (snd xml))
-        (Xml.member "ModifyDBClusterResult") in
+        (Xml.member "ModifyDBClusterResult")
+       in
     try
       Util.or_error (Util.option_bind resp ModifyDBClusterResult.parse)
         (let open Error in
@@ -43,6 +45,7 @@ let of_http body =
       `Error
         (let open Error in
            BadResponse { body; message = ("Error parsing xml: " ^ msg) })
+  
 let parse_error code err =
   let errors =
     [Errors.InvalidDBInstanceState;
@@ -54,7 +57,7 @@ let parse_error code err =
     Errors.DBSubnetGroupNotFoundFault;
     Errors.StorageQuotaExceeded;
     Errors.InvalidDBClusterStateFault;
-    Errors.DBClusterNotFoundFault] @ Errors.common in
+    Errors.DBClusterNotFoundFault] @ Errors.common  in
   match Errors.of_string err with
   | Some var ->
       if
@@ -64,4 +67,4 @@ let parse_error code err =
             | None  -> true))
       then Some var
       else None
-  | None  -> None
+  | None  -> None 
