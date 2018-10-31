@@ -13,9 +13,9 @@ build: [
   ["dune" "build" "-p" name "-j" jobs]
 ]
 depends: [
-  "aws"
+  "aws"          {>= "1.0.2"}
   "async"
   "cohttp"
-  "cohttp-async"
+  "cohttp-async" {>= "0.99"}
   "dune" {build}
 ]
