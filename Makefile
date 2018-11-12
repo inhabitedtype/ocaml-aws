@@ -36,7 +36,7 @@ $(LIBRARIES): aws-%:
 
 gen: build aws-ec2 $(LIBRARIES)
 
-# Before this run `dune tag <VERSION>`
+# Before this run `dune-release tag <VERSION>`
 opam-release:
 	dune-release distrib --skip-build --skip-lint --skip-tests
 	dune-release publish distrib --verbose
