@@ -1,7 +1,7 @@
-open Types
+open Types_internal
 type input = DescribeScalingActivitiesType.t
 type output = ActivitiesType.t
-type error = Errors.t
+type error = Errors_internal.t
 include
   (Aws.Call with type  input :=  input and type  output :=  output and type
      error :=  error)

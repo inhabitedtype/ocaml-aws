@@ -1,8 +1,8 @@
-open Types
+open Types_internal
 open Aws
 type input = CreateCacheClusterMessage.t
 type output = CreateCacheClusterResult.t
-type error = Errors.t
+type error = Errors_internal.t
 let service = "elasticache" 
 let to_http req =
   let uri =
@@ -49,25 +49,26 @@ let of_http body =
   
 let parse_error code err =
   let errors =
-    [Errors.InvalidParameterCombination;
-    Errors.InvalidParameterValue;
-    Errors.TagQuotaPerResourceExceeded;
-    Errors.InvalidVPCNetworkStateFault;
-    Errors.CacheParameterGroupNotFound;
-    Errors.NodeQuotaForCustomerExceeded;
-    Errors.NodeQuotaForClusterExceeded;
-    Errors.ClusterQuotaForCustomerExceeded;
-    Errors.CacheSubnetGroupNotFoundFault;
-    Errors.CacheSecurityGroupNotFound;
-    Errors.InsufficientCacheClusterCapacity;
-    Errors.CacheClusterAlreadyExists;
-    Errors.InvalidReplicationGroupState;
-    Errors.ReplicationGroupNotFoundFault] @ Errors.common  in
-  match Errors.of_string err with
+    [Errors_internal.InvalidParameterCombination;
+    Errors_internal.InvalidParameterValue;
+    Errors_internal.TagQuotaPerResourceExceeded;
+    Errors_internal.InvalidVPCNetworkStateFault;
+    Errors_internal.CacheParameterGroupNotFound;
+    Errors_internal.NodeQuotaForCustomerExceeded;
+    Errors_internal.NodeQuotaForClusterExceeded;
+    Errors_internal.ClusterQuotaForCustomerExceeded;
+    Errors_internal.CacheSubnetGroupNotFoundFault;
+    Errors_internal.CacheSecurityGroupNotFound;
+    Errors_internal.InsufficientCacheClusterCapacity;
+    Errors_internal.CacheClusterAlreadyExists;
+    Errors_internal.InvalidReplicationGroupState;
+    Errors_internal.ReplicationGroupNotFoundFault] @ Errors_internal.common
+     in
+  match Errors_internal.of_string err with
   | Some var ->
       if
         (List.mem var errors) &&
-          ((match Errors.to_http_code var with
+          ((match Errors_internal.to_http_code var with
             | Some var -> var = code
             | None  -> true))
       then Some var

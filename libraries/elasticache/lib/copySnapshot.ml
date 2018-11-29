@@ -1,8 +1,8 @@
-open Types
+open Types_internal
 open Aws
 type input = CopySnapshotMessage.t
 type output = CopySnapshotResult.t
-type error = Errors.t
+type error = Errors_internal.t
 let service = "elasticache" 
 let to_http req =
   let uri =
@@ -48,17 +48,17 @@ let of_http body =
   
 let parse_error code err =
   let errors =
-    [Errors.InvalidParameterCombination;
-    Errors.InvalidParameterValue;
-    Errors.InvalidSnapshotState;
-    Errors.SnapshotQuotaExceededFault;
-    Errors.SnapshotNotFoundFault;
-    Errors.SnapshotAlreadyExistsFault] @ Errors.common  in
-  match Errors.of_string err with
+    [Errors_internal.InvalidParameterCombination;
+    Errors_internal.InvalidParameterValue;
+    Errors_internal.InvalidSnapshotState;
+    Errors_internal.SnapshotQuotaExceededFault;
+    Errors_internal.SnapshotNotFoundFault;
+    Errors_internal.SnapshotAlreadyExistsFault] @ Errors_internal.common  in
+  match Errors_internal.of_string err with
   | Some var ->
       if
         (List.mem var errors) &&
-          ((match Errors.to_http_code var with
+          ((match Errors_internal.to_http_code var with
             | Some var -> var = code
             | None  -> true))
       then Some var

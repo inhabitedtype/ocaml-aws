@@ -1,8 +1,8 @@
-open Types
+open Types_internal
 open Aws
 type input = GetAttributesRequest.t
 type output = GetAttributesResult.t
-type error = Errors.t
+type error = Errors_internal.t
 let service = "sdb" 
 let to_http req =
   let uri =
@@ -48,14 +48,14 @@ let of_http body =
   
 let parse_error code err =
   let errors =
-    [Errors.NoSuchDomain;
-    Errors.MissingParameter;
-    Errors.InvalidParameterValue] @ Errors.common  in
-  match Errors.of_string err with
+    [Errors_internal.NoSuchDomain;
+    Errors_internal.MissingParameter;
+    Errors_internal.InvalidParameterValue] @ Errors_internal.common  in
+  match Errors_internal.of_string err with
   | Some var ->
       if
         (List.mem var errors) &&
-          ((match Errors.to_http_code var with
+          ((match Errors_internal.to_http_code var with
             | Some var -> var = code
             | None  -> true))
       then Some var

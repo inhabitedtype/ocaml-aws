@@ -30,6 +30,7 @@ LIBRARIES := \
 	aws-ssm \
 	aws-sts \
 	aws-s3  \
+	aws-ec2
 
 .PHONY: $(LIBRARIES)
 $(LIBRARIES): aws-%:

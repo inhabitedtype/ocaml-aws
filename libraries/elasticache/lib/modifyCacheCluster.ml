@@ -1,8 +1,8 @@
-open Types
+open Types_internal
 open Aws
 type input = ModifyCacheClusterMessage.t
 type output = ModifyCacheClusterResult.t
-type error = Errors.t
+type error = Errors_internal.t
 let service = "elasticache" 
 let to_http req =
   let uri =
@@ -49,22 +49,22 @@ let of_http body =
   
 let parse_error code err =
   let errors =
-    [Errors.InvalidParameterCombination;
-    Errors.InvalidParameterValue;
-    Errors.InvalidVPCNetworkStateFault;
-    Errors.CacheParameterGroupNotFound;
-    Errors.CacheSecurityGroupNotFound;
-    Errors.NodeQuotaForCustomerExceeded;
-    Errors.NodeQuotaForClusterExceeded;
-    Errors.CacheClusterNotFound;
-    Errors.InsufficientCacheClusterCapacity;
-    Errors.InvalidCacheSecurityGroupState;
-    Errors.InvalidCacheClusterState] @ Errors.common  in
-  match Errors.of_string err with
+    [Errors_internal.InvalidParameterCombination;
+    Errors_internal.InvalidParameterValue;
+    Errors_internal.InvalidVPCNetworkStateFault;
+    Errors_internal.CacheParameterGroupNotFound;
+    Errors_internal.CacheSecurityGroupNotFound;
+    Errors_internal.NodeQuotaForCustomerExceeded;
+    Errors_internal.NodeQuotaForClusterExceeded;
+    Errors_internal.CacheClusterNotFound;
+    Errors_internal.InsufficientCacheClusterCapacity;
+    Errors_internal.InvalidCacheSecurityGroupState;
+    Errors_internal.InvalidCacheClusterState] @ Errors_internal.common  in
+  match Errors_internal.of_string err with
   | Some var ->
       if
         (List.mem var errors) &&
-          ((match Errors.to_http_code var with
+          ((match Errors_internal.to_http_code var with
             | Some var -> var = code
             | None  -> true))
       then Some var

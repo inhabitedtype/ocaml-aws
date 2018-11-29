@@ -1,8 +1,8 @@
-open Types
+open Types_internal
 open Aws
 type input = UpdateTrailRequest.t
 type output = UpdateTrailResponse.t
-type error = Errors.t
+type error = Errors_internal.t
 let service = "cloudtrail" 
 let to_http req =
   let uri =
@@ -44,22 +44,22 @@ let of_http body =
   
 let parse_error code err =
   let errors =
-    [Errors.CloudWatchLogsDeliveryUnavailable;
-    Errors.InvalidCloudWatchLogsRoleArn;
-    Errors.InvalidCloudWatchLogsLogGroupArn;
-    Errors.InvalidTrailName;
-    Errors.InvalidSnsTopicName;
-    Errors.InvalidS3Prefix;
-    Errors.InvalidS3BucketName;
-    Errors.TrailNotFound;
-    Errors.InsufficientSnsTopicPolicy;
-    Errors.InsufficientS3BucketPolicy;
-    Errors.S3BucketDoesNotExist] @ Errors.common  in
-  match Errors.of_string err with
+    [Errors_internal.CloudWatchLogsDeliveryUnavailable;
+    Errors_internal.InvalidCloudWatchLogsRoleArn;
+    Errors_internal.InvalidCloudWatchLogsLogGroupArn;
+    Errors_internal.InvalidTrailName;
+    Errors_internal.InvalidSnsTopicName;
+    Errors_internal.InvalidS3Prefix;
+    Errors_internal.InvalidS3BucketName;
+    Errors_internal.TrailNotFound;
+    Errors_internal.InsufficientSnsTopicPolicy;
+    Errors_internal.InsufficientS3BucketPolicy;
+    Errors_internal.S3BucketDoesNotExist] @ Errors_internal.common  in
+  match Errors_internal.of_string err with
   | Some var ->
       if
         (List.mem var errors) &&
-          ((match Errors.to_http_code var with
+          ((match Errors_internal.to_http_code var with
             | Some var -> var = code
             | None  -> true))
       then Some var
