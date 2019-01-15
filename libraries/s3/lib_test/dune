@@ -1,0 +1,20 @@
+(executables
+ (names test_async test_lwt)
+ (flags (:standard -w -27))
+ (modules test_async test_lwt aws_s3_test)
+ (libraries aws aws_s3 aws-async aws-lwt
+            oUnit yojson
+            async cohttp-async
+            lwt cohttp-lwt cohttp-lwt-unix))
+
+(alias
+ (name runtest)
+ (deps test_async.exe)
+ (locks  m)
+ (action (run %{deps})))
+
+(alias
+ (name runtest)
+ (deps test_lwt.exe)
+ (locks  m)
+ (action (run %{deps})))
