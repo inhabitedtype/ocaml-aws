@@ -128,11 +128,18 @@ let main input override errors_path outdir is_ec2 =
     let json = Yojson.Basic.from_file input in
     Json.override json overrides
   in
+  (* Override endpoint names for particular services. *)
+  let lib_name' meta =
+    match Json.(member_exn "endpointPrefix" meta |> to_string) with
+    | "monitoring" -> "cloudwatch"
+    | a -> a
+  in
+
   let meta     = Json.(member_exn "metadata"       desc) in
   let ops_json = Json.(member_exn "operations"     desc |> to_assoc) in
   let shp_json = Json.(member_exn "shapes"         desc |> to_assoc) in
-  let lib_name      = Json.(member_exn "endpointPrefix" meta |> to_string) in
-  (* let lib_version   = Json.(member_exn "libraryVersion" overrides |> to_string) in *)
+  let lib_name = Json.(member_exn "endpointPrefix" meta |> to_string) in
+  let lib_name_dir = lib_name' meta in
   let service_name  = Json.(member_exn "serviceFullName" meta |> to_string) in
   let api_version   = Json.(member_exn "apiVersion"     meta |> to_string) in
   let parsed_ops  = List.map Reading.op ops_json in
@@ -179,8 +186,8 @@ let main input override errors_path outdir is_ec2 =
       StringTable.add nm shape acc)
     StringTable.empty shp_json)
   in
-  mkdir_p [outdir; lib_name; "lib"];
-  let dir     = outdir </> lib_name in
+  mkdir_p [outdir; lib_name_dir; "lib"];
+  let dir     = outdir </> lib_name_dir in
   let lib_dir = dir    </> "lib" in
   Printing.write_structure (lib_dir </> "types_internal.ml") (Generate.types is_ec2 shapes);
   log "## Wrote %d/%d shape modules..."
@@ -196,7 +203,7 @@ let main input override errors_path outdir is_ec2 =
   log "## Wrote %d/%d ops modules..."
     (List.length ops) (List.length ops_json);
   Printing.write_all ~filename:(lib_dir </> "dune")
-    (Templates.dune ~lib_name ~service_name);
+    (Templates.dune ~lib_name:lib_name_dir ~service_name);
   log "## Wrote dune file.";
 
 module CommandLine = struct
