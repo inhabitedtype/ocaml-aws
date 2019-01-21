@@ -1,8 +1,8 @@
-open Types
+open Types_internal
 open Aws
 type input = UpdateStackInput.t
 type output = UpdateStackOutput.t
-type error = Errors.t
+type error = Errors_internal.t
 let service = "cloudformation" 
 let to_http req =
   let uri =
@@ -47,12 +47,15 @@ let of_http body =
            BadResponse { body; message = ("Error parsing xml: " ^ msg) })
   
 let parse_error code err =
-  let errors = [Errors.InsufficientCapabilitiesException] @ Errors.common  in
-  match Errors.of_string err with
+  let errors =
+    [Errors_internal.InsufficientCapabilitiesException] @
+      Errors_internal.common
+     in
+  match Errors_internal.of_string err with
   | Some var ->
       if
         (List.mem var errors) &&
-          ((match Errors.to_http_code var with
+          ((match Errors_internal.to_http_code var with
             | Some var -> var = code
             | None  -> true))
       then Some var

@@ -80,6 +80,61 @@ module Char = struct
     _is_alpha i || (i >= 48 && i <= 57)
 end
 
+let is_reserved_keyword token =
+  try (List.assoc token
+                  [("and", true);
+                   ("as", true);
+                   ("assert", true);
+                   ("begin", true);
+                   ("class", true);
+                   ("constraint", true);
+                   ("do", true);
+                   ("done", true);
+                   ("downto", true);
+                   ("else", true);
+                   ("end", true);
+                   ("exception", true);
+                   ("external", true);
+                   ("false", true);
+                   ("for", true);
+                   ("fun", true);
+                   ("function", true);
+                   ("functor", true);
+                   ("if", true);
+                   ("in", true);
+                   ("include", true);
+                   ("inherit", true);
+                   ("inherit!", true);
+                   ("initializer", true);
+                   ("lazy", true);
+                   ("let", true);
+                   ("match", true);
+                   ("method", true);
+                   ("method!", true);
+                   ("module", true);
+                   ("mutable", true);
+                   ("new", true);
+                   ("object", true);
+                   ("of", true);
+                   ("open", true);
+                   ("or", true);
+                   ("private", true);
+                   ("rec", true);
+                   ("sig", true);
+                   ("struct", true);
+                   ("then", true);
+                   ("to", true);
+                   ("true", true);
+                   ("try", true);
+                   ("type", true);
+                   ("val", true);
+                   ("val!", true);
+                   ("virtual", true);
+                   ("when", true);
+                   ("while", true);
+                   ("with", true);]) with
+  | Not_found -> false
+
 let to_variant_name s =
   String.map (fun c -> if Char.is_alphanum c then c else '_')
     (if Char.is_alpha (String.get s 0)
@@ -97,7 +152,10 @@ let to_field_name s =
     in
     acc := s :: !acc)
   s;
-  String.concat "" (List.rev !acc)
+  let res = (String.concat "" (List.rev !acc)) in
+  if is_reserved_keyword res then
+    res ^ "_"
+  else res
 
 (* NOTE(dbp 2015-01-26): Shapes that just have primitive types
    (boolean, integer, etc) types aren't actually useful (they
@@ -149,6 +207,8 @@ let inline_shapes (ops : Operation.t list) (shapes : Shape.parsed StringTable.t)
             ms)
           | Some (Shape.List (shp, ln)) ->
             Shape.List (replace_shape shp, ln)
+          | Some (Shape.Map ((kshp, kln), (vshp, vln))) ->
+            Shape.Map ((replace_shape kshp, kln), (replace_shape vshp, vln))
           | Some (Shape.Enum opts) -> Shape.Enum opts
         in
         StringTable.add key { Shape.name = nm; content } acc)
@@ -186,3 +246,8 @@ let rec filter_map l ~f =
     | Some x' -> x' :: filter_map xs ~f
     | None    -> filter_map xs ~f
     end
+
+let option_map l ~f =
+  match l with
+  | None -> None
+  | Some x -> Some (f ^ x)

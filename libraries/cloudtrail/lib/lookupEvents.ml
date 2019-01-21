@@ -1,8 +1,8 @@
-open Types
+open Types_internal
 open Aws
 type input = LookupEventsRequest.t
 type output = LookupEventsResponse.t
-type error = Errors.t
+type error = Errors_internal.t
 let service = "cloudtrail" 
 let to_http req =
   let uri =
@@ -45,15 +45,15 @@ let of_http body =
   
 let parse_error code err =
   let errors =
-    [Errors.InvalidNextToken;
-    Errors.InvalidMaxResults;
-    Errors.InvalidTimeRange;
-    Errors.InvalidLookupAttributes] @ Errors.common  in
-  match Errors.of_string err with
+    [Errors_internal.InvalidNextToken;
+    Errors_internal.InvalidMaxResults;
+    Errors_internal.InvalidTimeRange;
+    Errors_internal.InvalidLookupAttributes] @ Errors_internal.common  in
+  match Errors_internal.of_string err with
   | Some var ->
       if
         (List.mem var errors) &&
-          ((match Errors.to_http_code var with
+          ((match Errors_internal.to_http_code var with
             | Some var -> var = code
             | None  -> true))
       then Some var

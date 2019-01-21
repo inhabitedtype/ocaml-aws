@@ -1,8 +1,8 @@
-open Types
+open Types_internal
 open Aws
 type input = CreateDBInstanceMessage.t
 type output = CreateDBInstanceResult.t
-type error = Errors.t
+type error = Errors_internal.t
 let service = "rds" 
 let to_http req =
   let uri =
@@ -48,30 +48,30 @@ let of_http body =
   
 let parse_error code err =
   let errors =
-    [Errors.InsufficientDomainCapacityFault;
-    Errors.DomainNotFoundFault;
-    Errors.KMSKeyNotAccessibleFault;
-    Errors.AuthorizationNotFound;
-    Errors.StorageTypeNotSupported;
-    Errors.DBClusterNotFoundFault;
-    Errors.OptionGroupNotFoundFault;
-    Errors.ProvisionedIopsNotAvailableInAZFault;
-    Errors.InvalidVPCNetworkStateFault;
-    Errors.InvalidSubnet;
-    Errors.InvalidDBClusterStateFault;
-    Errors.DBSubnetGroupDoesNotCoverEnoughAZs;
-    Errors.DBSubnetGroupNotFoundFault;
-    Errors.StorageQuotaExceeded;
-    Errors.InstanceQuotaExceeded;
-    Errors.DBSecurityGroupNotFound;
-    Errors.DBParameterGroupNotFound;
-    Errors.InsufficientDBInstanceCapacity;
-    Errors.DBInstanceAlreadyExists] @ Errors.common  in
-  match Errors.of_string err with
+    [Errors_internal.InsufficientDomainCapacityFault;
+    Errors_internal.DomainNotFoundFault;
+    Errors_internal.KMSKeyNotAccessibleFault;
+    Errors_internal.AuthorizationNotFound;
+    Errors_internal.StorageTypeNotSupported;
+    Errors_internal.DBClusterNotFoundFault;
+    Errors_internal.OptionGroupNotFoundFault;
+    Errors_internal.ProvisionedIopsNotAvailableInAZFault;
+    Errors_internal.InvalidVPCNetworkStateFault;
+    Errors_internal.InvalidSubnet;
+    Errors_internal.InvalidDBClusterStateFault;
+    Errors_internal.DBSubnetGroupDoesNotCoverEnoughAZs;
+    Errors_internal.DBSubnetGroupNotFoundFault;
+    Errors_internal.StorageQuotaExceeded;
+    Errors_internal.InstanceQuotaExceeded;
+    Errors_internal.DBSecurityGroupNotFound;
+    Errors_internal.DBParameterGroupNotFound;
+    Errors_internal.InsufficientDBInstanceCapacity;
+    Errors_internal.DBInstanceAlreadyExists] @ Errors_internal.common  in
+  match Errors_internal.of_string err with
   | Some var ->
       if
         (List.mem var errors) &&
-          ((match Errors.to_http_code var with
+          ((match Errors_internal.to_http_code var with
             | Some var -> var = code
             | None  -> true))
       then Some var

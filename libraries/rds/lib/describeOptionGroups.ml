@@ -1,8 +1,8 @@
-open Types
+open Types_internal
 open Aws
 type input = DescribeOptionGroupsMessage.t
 type output = OptionGroups.t
-type error = Errors.t
+type error = Errors_internal.t
 let service = "rds" 
 let to_http req =
   let uri =
@@ -44,12 +44,13 @@ let of_http body =
            BadResponse { body; message = ("Error parsing xml: " ^ msg) })
   
 let parse_error code err =
-  let errors = [Errors.OptionGroupNotFoundFault] @ Errors.common  in
-  match Errors.of_string err with
+  let errors =
+    [Errors_internal.OptionGroupNotFoundFault] @ Errors_internal.common  in
+  match Errors_internal.of_string err with
   | Some var ->
       if
         (List.mem var errors) &&
-          ((match Errors.to_http_code var with
+          ((match Errors_internal.to_http_code var with
             | Some var -> var = code
             | None  -> true))
       then Some var

@@ -15,6 +15,7 @@ module Shape = struct
     | Structure of Structure.member list
     | List of string * string option
     | Enum of string list
+    | Map of (string * string option) * (string * string option)
 
   type t = { name : string; content : contents }
 

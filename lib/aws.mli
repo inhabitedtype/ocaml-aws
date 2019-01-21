@@ -188,6 +188,8 @@ module Query : sig
   (** This is a helper to convert a list into a Query.t. It encodes it
       as [(0, val); (1, val)...]. *)
   val to_query_list : ('a -> t) -> 'a list -> t
+
+  val to_query_hashtbl : ('a -> t) -> (string, 'a) Hashtbl.t -> t
 end
 
 (** This module contains helpers used for XML parsing. It wraps Ezxmlm
@@ -217,7 +219,6 @@ end
 (** This module contains a Json type (compatible with
     Yojson.Basic.json) and helpers. *)
 module Json : sig
-
   (** Json type. This is compatible with Yojson.Basic.json *)
   type t =
     [ `Assoc of (string * t) list
@@ -236,6 +237,10 @@ module Json : sig
       Casting_error in the case that the input is not a `List. *)
   val to_list : (t -> 't) -> t -> 't list
 
+  (** This converts an `Assoc (string * t list) to ('a, 'b) Hashtbl.t, or throws a
+      Casting_error in the case that the input is not an `Assoc. *)
+  val to_hashtbl: (t -> 'b) -> t -> (string, 'b) Hashtbl.t
+        
   (** If t is an `Assoc, this looks up the field specified. If it
       isn't found, or if the input is not an `Assoc, returns None. *)
   val lookup : t -> string -> t option

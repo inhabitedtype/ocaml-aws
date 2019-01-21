@@ -1,8 +1,8 @@
-open Types
+open Types_internal
 open Aws
 type input = CreateDocumentRequest.t
 type output = CreateDocumentResult.t
-type error = Errors.t
+type error = Errors_internal.t
 let service = "ssm" 
 let to_http req =
   let uri =
@@ -45,16 +45,16 @@ let of_http body =
   
 let parse_error code err =
   let errors =
-    [Errors.DocumentLimitExceeded;
-    Errors.InvalidDocumentContent;
-    Errors.InternalServerError;
-    Errors.MaxDocumentSizeExceeded;
-    Errors.DocumentAlreadyExists] @ Errors.common  in
-  match Errors.of_string err with
+    [Errors_internal.DocumentLimitExceeded;
+    Errors_internal.InvalidDocumentContent;
+    Errors_internal.InternalServerError;
+    Errors_internal.MaxDocumentSizeExceeded;
+    Errors_internal.DocumentAlreadyExists] @ Errors_internal.common  in
+  match Errors_internal.of_string err with
   | Some var ->
       if
         (List.mem var errors) &&
-          ((match Errors.to_http_code var with
+          ((match Errors_internal.to_http_code var with
             | Some var -> var = code
             | None  -> true))
       then Some var

@@ -1,8 +1,8 @@
-open Types
+open Types_internal
 open Aws
 type input = AssumeRoleWithSAMLRequest.t
 type output = AssumeRoleWithSAMLResponse.t
-type error = Errors.t
+type error = Errors_internal.t
 let service = "sts" 
 let to_http req =
   let uri =
@@ -49,16 +49,16 @@ let of_http body =
   
 let parse_error code err =
   let errors =
-    [Errors.ExpiredTokenException;
-    Errors.InvalidIdentityToken;
-    Errors.IDPRejectedClaim;
-    Errors.PackedPolicyTooLarge;
-    Errors.MalformedPolicyDocument] @ Errors.common  in
-  match Errors.of_string err with
+    [Errors_internal.ExpiredTokenException;
+    Errors_internal.InvalidIdentityToken;
+    Errors_internal.IDPRejectedClaim;
+    Errors_internal.PackedPolicyTooLarge;
+    Errors_internal.MalformedPolicyDocument] @ Errors_internal.common  in
+  match Errors_internal.of_string err with
   | Some var ->
       if
         (List.mem var errors) &&
-          ((match Errors.to_http_code var with
+          ((match Errors_internal.to_http_code var with
             | Some var -> var = code
             | None  -> true))
       then Some var
