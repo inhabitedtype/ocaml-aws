@@ -1,0 +1,6 @@
+(library
+ (name        aws_cloudwatch)
+ (public_name aws_cloudwatch)
+ (synopsis "aws-Amazon CloudWatch")
+ (flags (:standard -w -27))
+ (libraries aws))
