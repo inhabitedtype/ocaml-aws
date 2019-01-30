@@ -30,6 +30,28 @@
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
   ----------------------------------------------------------------------------*)
+let opam ~service_name =
+  Printf.sprintf "opam-version: \"2.0\"
+maintainer: \"Tim McGilchrist <timmcgil@gmail.com>\"
+authors: [ \"Spiros Eliopoulos <spiros@inhabitedtype.com>\"
+           \"Daniel Patterson <dbp@dbpmail.net>\"
+           \"Tim McGilchrist <timmcgil@gmail.com>\"
+         ]
+synopsis: \"Amazon Web Services SDK bindings to %s\"
+description: \"Amazon Web Services SDK bindings to %s\"
+license: \"BSD-3-clause\"
+homepage: \"https://github.com/inhabitedtype/ocaml-aws\"
+dev-repo: \"git+https://github.com/inhabitedtype/ocaml-aws.git\"
+bug-reports: \"https://github.com/inhabitedtype/ocaml-aws/issues\"
+build: [
+  [\"dune\" \"subst\"] {pinned}
+  [\"dune\" \"build\" \"-p\" name \"-j\" jobs]
+]
+depends: [
+  \"aws\" {>= \"0.1.0\"}
+  \"dune\" {build}
+]
+" service_name service_name
 
 let dune ~lib_name ~service_name =
   Printf.sprintf
@@ -40,3 +62,104 @@ let dune ~lib_name ~service_name =
  (flags (:standard -w -27))
  (libraries aws))
 " lib_name lib_name service_name
+
+let dune_test ~lib_name =
+  (* Necessary cause '%' is reserved string in 'sprintf' and I didn't know
+     how to escape it.
+  *)
+  let d = "%{deps}" in
+  Printf.sprintf "(executables
+ (names test_async test_lwt)
+ (flags (:standard -w -27))
+ (modules test_async test_lwt aws_%s_test)
+ (libraries aws aws_%s aws-async aws-lwt
+            oUnit yojson
+            async cohttp-async
+            lwt cohttp-lwt cohttp-lwt-unix))
+
+(alias
+ (name runtest)
+ (deps test_async.exe)
+ (locks  m)
+ (action (run %s)))
+
+(alias
+ (name runtest)
+ (deps test_lwt.exe)
+ (locks  m)
+ (action (run %s)))
+" lib_name lib_name d d
+
+let test_async =
+  Printf.sprintf "open Aws_ec2_test
+
+module T = TestSuite(struct
+    type 'a m = 'a Async.Deferred.t
+
+    let access_key = Unix.getenv \"AWS_ACCESS_KEY\"
+    let secret_key = Unix.getenv \"AWS_SECRET_KEY\"
+
+    let run_request = Aws_async.Runtime.run_request ~access_key ~secret_key
+    let un_m v = Async.Thread_safe.block_on_async_exn (fun () -> v)
+  end)"
+
+let test_lwt =
+  Printf.sprintf "open Aws_ec2_test
+
+module T = TestSuite(struct
+    type 'a m = 'a Lwt.t
+
+    let access_key = Unix.getenv \"AWS_ACCESS_KEY\"
+    let secret_key = Unix.getenv \"AWS_SECRET_KEY\"
+
+    let run_request = Aws_lwt.Runtime.run_request ~access_key ~secret_key
+    let un_m = Lwt_main.run
+  end)
+"
+
+let service_test ~lib_name =
+  let upper_lib_name = String.capitalize_ascii lib_name in
+  Printf.sprintf "open OUnit
+open Aws_cloudwatch
+
+module TestSuite(Runtime : sig
+    type 'a m
+    val run_request :
+      region:string
+      -> (module Aws.Call with type input = 'input
+                           and type output = 'output
+                           and type error = 'error)
+      -> 'input
+      -> [`Ok of 'output | `Error of 'error Aws.Error.t] m
+    val un_m : 'a m -> 'a
+  end) = struct
+
+  let noop_test () =
+    \"Noop %s test succeeds\"
+    @?false
+
+  let test_cases =
+    [ \"%s noop\" >:: noop_test ]
+
+  let rec was_successful =
+    function
+    | [] -> true
+    | RSuccess _::t
+    | RSkip _::t ->
+      was_successful t
+    | RFailure _::_
+    | RError _::_
+    | RTodo _::_ ->
+      false
+  let _ =
+    let suite = \"Tests\" >::: test_cases in
+    let verbose = ref false in
+    let set_verbose _ = verbose := true in
+    Arg.parse
+      [(\"-verbose\", Arg.Unit set_verbose, \"Run the test in verbose mode.\");]
+      (fun x -> raise (Arg.Bad (\"Bad argument : \" ^ x)))
+      (\"Usage: \" ^ Sys.argv.(0) ^ \" [-verbose]\");
+    if not (was_successful (run_test_tt ~verbose:!verbose suite)) then
+      exit 1
+end
+" upper_lib_name upper_lib_name

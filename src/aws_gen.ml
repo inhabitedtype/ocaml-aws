@@ -187,8 +187,10 @@ let main input override errors_path outdir is_ec2 =
     StringTable.empty shp_json)
   in
   mkdir_p [outdir; lib_name_dir; "lib"];
+  mkdir_p [outdir; lib_name_dir; "lib_test"];
   let dir     = outdir </> lib_name_dir in
   let lib_dir = dir    </> "lib" in
+  let lib_dir_test = dir </> "lib_test" in
   Printing.write_structure (lib_dir </> "types_internal.ml") (Generate.types is_ec2 shapes);
   log "## Wrote %d/%d shape modules..."
     (StringTable.cardinal shapes) (List.length shp_json);
@@ -205,6 +207,20 @@ let main input override errors_path outdir is_ec2 =
   Printing.write_all ~filename:(lib_dir </> "dune")
     (Templates.dune ~lib_name:lib_name_dir ~service_name);
   log "## Wrote dune file.";
+  Printing.write_all ~filename:(lib_dir_test </> "dune")
+    (Templates.dune_test ~lib_name:lib_name_dir);
+
+  log "## Wrote test runner files.";
+  Printing.write_all ~filename:(lib_dir_test </> "test_async.ml")
+    (Templates.test_async);
+  Printing.write_all ~filename:(lib_dir_test </> "test_lwt.ml")
+    (Templates.test_lwt);
+  Printing.write_all ~filename:(lib_dir_test </> ("aws_" ^ lib_name_dir ^ "_test.ml"))
+    (Templates.service_test ~lib_name:lib_name_dir);
+
+  log "## Wrote opam file";
+  Printing.write_all ~filename:(dir </> ("aws_" ^ lib_name_dir ^ ".opam"))
+    (Templates.opam ~service_name);
 
 module CommandLine = struct
   let input =
