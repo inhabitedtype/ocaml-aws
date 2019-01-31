@@ -23,6 +23,7 @@ LIBRARIES := \
 	aws-autoscaling \
 	aws-cloudformation \
 	aws-cloudtrail \
+	aws-cloudwatch \
 	aws-elasticache \
 	aws-elasticloadbalancing \
 	aws-rds \
