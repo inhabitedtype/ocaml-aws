@@ -15,6 +15,17 @@ uninstall:
 clean:
 	rm -rf _build *.install
 
+# TODO Something like this
+# update-version: VERSION=$(shell cat CHANGES.md | grep -E '^[0-9]' | head -n 1 | cut -f1 -d':' )
+# update-version:
+# 	@echo "Set version to $(VERSION)"
+# 	@sed -i 's/^version: .*/version: "$(VERSION)"/' *.opam
+# 	@sed -i 's/"\(aws-s3[-a-z]*\)"[ ]*{= .*}/"\1" {= "$(VERSION)" }/' *.opam
+
+# release: VERSION=$(shell cat Changelog | grep -E '^[0-9]' | head -n 1 | cut -f1 -d':')
+# release: update-version
+# 	opam publish
+
 aws-ec2:
 	dune exec aws-gen -- --is-ec2 -i input/ec2/latest/service-2.json -r input/ec2/overrides.json -e input/errors.json -o libraries
 

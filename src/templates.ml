@@ -31,44 +31,46 @@
     POSSIBILITY OF SUCH DAMAGE.
   ----------------------------------------------------------------------------*)
 let opam ~service_name =
-  Printf.sprintf "opam-version: \"2.0\"
-maintainer: \"Tim McGilchrist <timmcgil@gmail.com>\"
-authors: [ \"Spiros Eliopoulos <spiros@inhabitedtype.com>\"
-           \"Daniel Patterson <dbp@dbpmail.net>\"
-           \"Tim McGilchrist <timmcgil@gmail.com>\"
+  Printf.sprintf {|opam-version: "2.0"
+maintainer: "Tim McGilchrist <timmcgil@gmail.com>"
+authors: [ "Spiros Eliopoulos <spiros@inhabitedtype.com>"
+           "Daniel Patterson <dbp@dbpmail.net>"
+           "Tim McGilchrist <timmcgil@gmail.com>"
          ]
-synopsis: \"Amazon Web Services SDK bindings to %s\"
-description: \"Amazon Web Services SDK bindings to %s\"
-license: \"BSD-3-clause\"
-homepage: \"https://github.com/inhabitedtype/ocaml-aws\"
-dev-repo: \"git+https://github.com/inhabitedtype/ocaml-aws.git\"
-bug-reports: \"https://github.com/inhabitedtype/ocaml-aws/issues\"
+synopsis: "Amazon Web Services SDK bindings to %s"
+description: "Amazon Web Services SDK bindings to %s"
+version: "1.1"
+license: "BSD-3-clause"
+homepage: "https://github.com/inhabitedtype/ocaml-aws"
+dev-repo: "git+https://github.com/inhabitedtype/ocaml-aws.git"
+bug-reports: "https://github.com/inhabitedtype/ocaml-aws/issues"
+doc: "https://github.com/inhabitedtype/ocaml-aws"
 build: [
-  [\"dune\" \"subst\"] {pinned}
-  [\"dune\" \"build\" \"-p\" name \"-j\" jobs]
+  ["dune" "subst"] {pinned}
+  ["dune" "build" "-p" name "-j" jobs]
 ]
 depends: [
-  \"aws\" {>= \"0.1.0\"}
-  \"dune\" {build}
+  "aws" {>= "0.1.0"}
+  "dune" {build}
 ]
-" service_name service_name
+|} service_name service_name
 
 let dune ~lib_name ~service_name =
-  Printf.sprintf
-"(library
+  Printf.sprintf {|(library
  (name        aws_%s)
  (public_name aws_%s)
- (synopsis \"aws-%s\")
+ (synopsis "aws-%s")
  (flags (:standard -w -27))
  (libraries aws))
-" lib_name lib_name service_name
+|}
+ lib_name lib_name service_name
 
 let dune_test ~lib_name =
   (* Necessary cause '%' is reserved string in 'sprintf' and I didn't know
      how to escape it.
   *)
   let d = "%{deps}" in
-  Printf.sprintf "(executables
+  Printf.sprintf {|(executables
  (names test_async test_lwt)
  (flags (:standard -w -27))
  (modules test_async test_lwt aws_%s_test)
@@ -88,39 +90,40 @@ let dune_test ~lib_name =
  (deps test_lwt.exe)
  (locks  m)
  (action (run %s)))
-" lib_name lib_name d d
+|} lib_name lib_name d d
 
-let test_async =
-  Printf.sprintf "open Aws_ec2_test
+let test_async ~lib_name =
+  Printf.sprintf {|open Aws_%s_test
 
 module T = TestSuite(struct
     type 'a m = 'a Async.Deferred.t
 
-    let access_key = Unix.getenv \"AWS_ACCESS_KEY\"
-    let secret_key = Unix.getenv \"AWS_SECRET_KEY\"
+    let access_key = Unix.getenv "AWS_ACCESS_KEY"
+    let secret_key = Unix.getenv "AWS_SECRET_KEY"
 
     let run_request = Aws_async.Runtime.run_request ~access_key ~secret_key
     let un_m v = Async.Thread_safe.block_on_async_exn (fun () -> v)
-  end)"
+  end)
+|} lib_name
 
-let test_lwt =
-  Printf.sprintf "open Aws_ec2_test
+let test_lwt ~lib_name =
+  Printf.sprintf {|open Aws_%s_test
 
 module T = TestSuite(struct
     type 'a m = 'a Lwt.t
 
-    let access_key = Unix.getenv \"AWS_ACCESS_KEY\"
-    let secret_key = Unix.getenv \"AWS_SECRET_KEY\"
+    let access_key = Unix.getenv "AWS_ACCESS_KEY"
+    let secret_key = Unix.getenv "AWS_SECRET_KEY"
 
     let run_request = Aws_lwt.Runtime.run_request ~access_key ~secret_key
     let un_m = Lwt_main.run
   end)
-"
+|} lib_name
 
 let service_test ~lib_name =
-  let upper_lib_name = String.capitalize_ascii lib_name in
-  Printf.sprintf "open OUnit
-open Aws_cloudwatch
+  let upper_lib_name = String.uppercase_ascii lib_name in
+  Printf.sprintf {|open OUnit
+open Aws_%s
 
 module TestSuite(Runtime : sig
     type 'a m
@@ -135,11 +138,11 @@ module TestSuite(Runtime : sig
   end) = struct
 
   let noop_test () =
-    \"Noop %s test succeeds\"
+    "Noop %s test succeeds"
     @?false
 
   let test_cases =
-    [ \"%s noop\" >:: noop_test ]
+    [ "%s noop" >:: noop_test ]
 
   let rec was_successful =
     function
@@ -152,14 +155,14 @@ module TestSuite(Runtime : sig
     | RTodo _::_ ->
       false
   let _ =
-    let suite = \"Tests\" >::: test_cases in
+    let suite = "Tests" >::: test_cases in
     let verbose = ref false in
     let set_verbose _ = verbose := true in
     Arg.parse
-      [(\"-verbose\", Arg.Unit set_verbose, \"Run the test in verbose mode.\");]
-      (fun x -> raise (Arg.Bad (\"Bad argument : \" ^ x)))
-      (\"Usage: \" ^ Sys.argv.(0) ^ \" [-verbose]\");
+      [("-verbose", Arg.Unit set_verbose, "Run the test in verbose mode.");]
+      (fun x -> raise (Arg.Bad ("Bad argument : " ^ x)))
+      ("Usage: " ^ Sys.argv.(0) ^ " [-verbose]");
     if not (was_successful (run_test_tt ~verbose:!verbose suite)) then
       exit 1
 end
-" upper_lib_name upper_lib_name
+|} lib_name upper_lib_name upper_lib_name

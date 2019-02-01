@@ -43,10 +43,14 @@ val dune_test
   -> string
 
 (* Template for async runner for tests *)
-val test_async : string
+val test_async
+  : lib_name:string
+  -> string
 
 (* Template for lwt runner for tests *)
-val test_lwt : string
+val test_lwt
+  : lib_name:string
+  -> string
 
 (* Template for service.opam file *)
 val opam

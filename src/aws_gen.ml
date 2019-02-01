@@ -212,14 +212,15 @@ let main input override errors_path outdir is_ec2 =
 
   log "## Wrote test runner files.";
   Printing.write_all ~filename:(lib_dir_test </> "test_async.ml")
-    (Templates.test_async);
+    (Templates.test_async ~lib_name:lib_name_dir);
   Printing.write_all ~filename:(lib_dir_test </> "test_lwt.ml")
-    (Templates.test_lwt);
-  Printing.write_all ~filename:(lib_dir_test </> ("aws_" ^ lib_name_dir ^ "_test.ml"))
-    (Templates.service_test ~lib_name:lib_name_dir);
+    (Templates.test_lwt ~lib_name:lib_name_dir);
+  (* TODO Only overwrite if it doesn't already exist *)
+  (* Printing.write_all ~filename:(lib_dir_test </> ("aws_" ^ lib_name_dir ^ "_test.ml"))
+   *   (Templates.service_test ~lib_name:lib_name_dir); *)
 
   log "## Wrote opam file";
-  Printing.write_all ~filename:(dir </> ("aws_" ^ lib_name_dir ^ ".opam"))
+  Printing.write_all ~filename:("./" </> ("aws_" ^ lib_name_dir ^ ".opam"))
     (Templates.opam ~service_name);
 
 module CommandLine = struct
