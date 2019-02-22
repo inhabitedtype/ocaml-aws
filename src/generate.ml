@@ -123,7 +123,19 @@ let types is_ec2 shapes =
       | Shape.Enum opts -> [let_ "str_to_t"
                               (list (List.map (fun o -> pair (str o) (ident (Util.to_variant_name o))) opts));
                             let_ "t_to_str"
-                              (list (List.map (fun o -> pair (ident (Util.to_variant_name o)) (str o)) opts))
+                              (list (List.map (fun o -> pair (ident (Util.to_variant_name o)) (str o)) opts));
+                            let_ "to_string"
+                              (fun_ "e"
+                                (app1 "Util.of_option_exn"
+                                  (app2 "Util.list_find"
+                                    (ident "t_to_str")
+                                    (ident "e"))));
+                            let_ "of_string"
+                              (fun_ "s"
+                                (app1 "Util.of_option_exn"
+                                  (app2 "Util.list_find"
+                                    (ident "str_to_t")
+                                    (ident "s"))))
                            ]
       | _ -> []
     in
@@ -203,8 +215,8 @@ let types is_ec2 shapes =
                                 (fun_ "f" (q (ident "f"))))) s))))
               | Shape.List (shp,_) ->
                 (app2 "Query.to_query_list" (ident (shp ^ ".to_query")) (ident "v"))
-              | Shape.Map ((shp,_),_) ->
-                (app2 "Query.to_query_hashtbl" (ident (shp ^ ".to_query")) (ident "v"))
+              | Shape.Map ((key_shp,_),(val_shp,_)) ->
+                (app3 "Query.to_query_hashtbl" (ident (key_shp ^ ".to_string")) (ident (val_shp ^ ".to_query")) (ident "v"))
               | Shape.Enum _ ->
                 (app1 "Query.Value"
                    (app1 "Some"
@@ -237,11 +249,11 @@ let types is_ec2 shapes =
                    (app2 "List.map"
                       (ident (shp ^ ".to_json"))
                       (ident "v")))
-              | Shape.Map ((_,_),_) ->
+              | Shape.Map ((key_shp,_),(val_shp,_)) ->
                 (variant1 "Assoc"
                    (app3 "Hashtbl.fold"
                       (fun3 "k" "v" "acc"
-                         (list_expr (pair (ident "k") (app1 "String.to_json" (ident "v"))) (ident "acc")))
+                         (list_expr (pair (app1 (key_shp ^ ".to_string") (ident "k")) (app1 (val_shp ^ ".to_json") (ident "v"))) (ident "acc")))
                       (ident "v")
                       (list [])))
               | Shape.Enum _ ->
@@ -269,7 +281,7 @@ let types is_ec2 shapes =
                        (app2 "Json.lookup" (ident "j") (str mem.Structure.field_name))))
                     s)
               | Shape.List (shp,_) -> app2 "Json.to_list" (ident (shp ^ ".of_json")) (ident "j")
-              | Shape.Map ((_kshp,_),(vshp,_)) -> app2 "Json.to_hashtbl" (ident (vshp ^ ".of_json")) (ident "j")
+              | Shape.Map ((key_shp,_),(val_shp,_)) -> app3 "Json.to_hashtbl" (ident (key_shp ^ ".of_string")) (ident (val_shp ^ ".of_json")) (ident "j")
               | Shape.Enum _ ->
                 (app1 "Util.of_option_exn"
                    (app2 "Util.list_find"
