@@ -1,0 +1,23 @@
+type raw_json <ocaml module="Yojson.Safe" t="json"> = abstract
+
+type constraint_on = [ | REGION <json name="region"> ]
+
+type constraint_op = [
+  | STARTS_WITH <json name="startsWith">
+  | NOT_EQUALS <json name="notEquals">
+  | EQUALS <json name="equals">
+  | ONE_OF <json name="oneOf">
+  | NOT_STARTS_WITH <json name="notStartsWith"> ]
+
+type constraint_data = {
+  data : string nullable list
+} <json adapter.ocaml="Constraint_adapter.StringList">
+
+type constraint_ = (constraint_on * constraint_op * constraint_data)
+
+type endpoint = {
+  uri: string;
+  ?constraints: constraint_ list option
+}
+
+type endpoints = (string * endpoint list) list <json repr="object">

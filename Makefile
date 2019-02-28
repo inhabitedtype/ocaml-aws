@@ -15,6 +15,11 @@ uninstall:
 clean:
 	rm -rf _build *.install
 
+.PHONY: endpoints
+
+endpoints:
+	dune exec endpoint-gen -- -i input/_endpoints.json -o libraries
+
 aws-ec2:
 	dune exec aws-gen -- --is-ec2 -i input/ec2/latest/service-2.json -r input/ec2/overrides.json -e input/errors.json -o libraries
 

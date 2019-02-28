@@ -125,6 +125,9 @@ module type Call = sig
       signing, and to determine the endpoint to send the request. *)
   val service : string
 
+  (** The AWS region for the call. *)
+  (*val region : string*)
+
   (** This function converts the native input into the HTTP request
       type. In particular, it is responsible for properly encoding the
       request type into query format. It also sets the Action and
@@ -217,9 +220,9 @@ module Xml : sig
 end
 
 (** This module contains a Json type (compatible with
-    Yojson.Basic.json) and helpers. *)
+    Yojson.Basic.t) and helpers. *)
 module Json : sig
-  (** Json type. This is compatible with Yojson.Basic.json *)
+  (** Json type. This is compatible with Yojson.Basic.t *)
   type t =
     [ `Assoc of (string * t) list
     | `Bool of bool

@@ -54,7 +54,7 @@ module Json = struct
   let lookup_list field assoc =
     try to_list (List.assoc field assoc) with _ -> []
 
-  let rec merge (orig:Yojson.Basic.json) (extra:Yojson.Basic.json) : Yojson.Basic.json =
+  let rec merge (orig:Yojson.Basic.t) (extra:Yojson.Basic.t) : Yojson.Basic.t =
     match orig, extra with
     | `Assoc os, `Assoc es ->
       let upd_ = List.map (fun (ok, ov) ->
@@ -75,7 +75,7 @@ module Json = struct
       then (key, default) :: assoc
       else result
 
-  let override_shapes original overrides : (string * Yojson.Basic.json) list =
+  let override_shapes original overrides : (string * Yojson.Basic.t) list =
     let open Yojson.Basic.Util in
     List.map (fun (key, val_) ->
       try

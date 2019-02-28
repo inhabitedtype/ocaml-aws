@@ -186,6 +186,7 @@ module type Call = sig
   type error
 
   val service : string
+  (*val region : string*)
   val to_http : input -> Request.t
   val of_http : string -> [`Ok of output | `Error of error Error.error_response]
   val parse_error : int -> string -> error option
