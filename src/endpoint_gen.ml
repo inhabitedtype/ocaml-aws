@@ -4,15 +4,22 @@ open Util
 let (</>) a b = Filename.concat a b
 let log s = Printf.eprintf (s ^^ "\n%!")
 
+(** [filter_missing] removes any [None] elements from the provided list. *)
 let filter_missing =
   List.fold_left
     (fun a  -> function | None  -> a | Some s -> List.append [s] a) []
 
+(** [endpoint_str_matches uri ss] creates the match structure for regions that
+    match particular strings, since matchstr already has an [els] clause, this doesn't
+    require it. *)
 let endpoint_str_matches uri ss =
   let open Syntax in
     let ds = ss |> filter_missing in
     ds |> (List.map (fun s -> (s, (app1 "Some" (str uri)))))
 
+(** [endpoint_str_not_matches uri ss els] creates the match structure for regions that
+    do NOT match particular strings, including null. This is somewhat tricky and generates
+    naive code that can never be reached *)
 let endpoint_str_not_matches uri ss els = Syntax.(
   let m = app1 "Some" (str uri) in
   let matches = ss |> List.map (function
@@ -21,6 +28,8 @@ let endpoint_str_not_matches uri ss els = Syntax.(
   matchvar (ident "region") (List.append matches [("_", els)])
 )
 
+(** [endpoint_starts_with uri ss] creates the match structure for regions that
+    match particular string *)
 let endpoint_starts_with uri ss els =
   let open Syntax in
     let ds = ss |> filter_missing in
@@ -31,6 +40,9 @@ let endpoint_starts_with uri ss els =
               ifthen (app2 "Aws.Util.str_starts_with" (ident "region") (str s))
                 (app1 "Some" (str uri)) a) els)
 
+(** [write_constraints uri cs els] emits the syntax for constraints provided
+    by the _endpoints.json file for a given uri. Currently, the only kind of
+    constraints are against [`REGION] so we ignore that for now. *)
 let write_constraints uri (cs : Endpoints_t.constraint_ list) els =
   let open Syntax in
     List.fold_left
@@ -45,11 +57,15 @@ let write_constraints uri (cs : Endpoints_t.constraint_ list) els =
              endpoint_starts_with uri Endpoints_t.(d.data) a
          | _ -> a) els cs
 
+(** [write_endpoints endpoints] takes a list of [Endpoint_t.endpoint] and
+    generates the syntax for the service endpoint matching defined by the
+    _endpoints.json file
+*)
 let write_endpoints (endpoints : Endpoints_t.endpoint list) =
   [let open Syntax in
      let_ "endpoint_of"
        (fun_ "region"
-          (endpoints |>
+          (endpoints |> List.rev |>
               (List.fold_left (fun a ->
                  (fun (e : Endpoints_t.endpoint)  ->
                     match e.constraints with
