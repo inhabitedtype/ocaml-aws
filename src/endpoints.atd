@@ -1,5 +1,3 @@
-type raw_json <ocaml module="Yojson.Safe" t="json"> = abstract
-
 type constraint_on = [ | REGION <json name="region"> ]
 
 type constraint_op = [
