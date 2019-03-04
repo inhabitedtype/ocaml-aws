@@ -62,7 +62,7 @@ let parse_member rq (mnm, mj) =
   ; field_name    = unreserve (Util.to_field_name mnm)
   }
 
-let shape ((nm, j) : (string * Yojson.Basic.json)) : Shape.parsed =
+let shape ((nm, j) : (string * Yojson.Basic.t)) : Shape.parsed =
   match Json.member "type" j with
   | `String "structure" ->
     let required =

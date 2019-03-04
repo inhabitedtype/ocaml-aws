@@ -17,7 +17,7 @@ depends: [
   "base-unix"
   "cmdliner"
   "ppx_tools_versioned"
-  "yojson"
+  "yojson" {>="1.6.0"}
   "ocaml-migrate-parsetree"
   "ocamlgraph"
   "dune" {build}
