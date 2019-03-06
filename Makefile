@@ -1,4 +1,4 @@
-.PHONY: build clean test
+.PHONY: build clean test update-version
 
 build:
 	dune build @install
