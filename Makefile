@@ -1,4 +1,4 @@
-.PHONY: build clean test
+.PHONY: build clean test update-version
 
 build:
 	dune build @install
@@ -14,6 +14,9 @@ uninstall:
 
 clean:
 	rm -rf _build *.install
+
+update-version:
+	scripts/update-version
 
 aws-ec2:
 	dune exec aws-gen -- --is-ec2 -i input/ec2/latest/service-2.json -r input/ec2/overrides.json -e input/errors.json -o libraries
