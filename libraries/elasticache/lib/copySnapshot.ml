@@ -3,7 +3,7 @@ open Aws
 type input = CopySnapshotMessage.t
 type output = CopySnapshotResult.t
 type error = Errors_internal.t
-let service = "elasticache" 
+let service = "elasticache"
 let to_http req =
   let uri =
     Uri.add_query_params (Uri.of_string "https://elasticache.amazonaws.com")
@@ -11,16 +11,14 @@ let to_http req =
          [("Version", ["2015-02-02"]); ("Action", ["CopySnapshot"])]
          (Util.drop_empty
             (Uri.query_of_encoded
-               (Query.render (CopySnapshotMessage.to_query req)))))
-     in
-  (`POST, uri, []) 
+               (Query.render (CopySnapshotMessage.to_query req))))) in
+  (`POST, uri, [])
 let of_http body =
   try
-    let xml = Ezxmlm.from_string body  in
+    let xml = Ezxmlm.from_string body in
     let resp =
       Util.option_bind (Xml.member "CopySnapshotResponse" (snd xml))
-        (Xml.member "CopySnapshotResult")
-       in
+        (Xml.member "CopySnapshotResult") in
     try
       Util.or_error (Util.option_bind resp CopySnapshotResult.parse)
         (let open Error in
@@ -45,7 +43,6 @@ let of_http body =
       `Error
         (let open Error in
            BadResponse { body; message = ("Error parsing xml: " ^ msg) })
-  
 let parse_error code err =
   let errors =
     [Errors_internal.InvalidParameterCombination;
@@ -53,14 +50,14 @@ let parse_error code err =
     Errors_internal.InvalidSnapshotState;
     Errors_internal.SnapshotQuotaExceededFault;
     Errors_internal.SnapshotNotFoundFault;
-    Errors_internal.SnapshotAlreadyExistsFault] @ Errors_internal.common  in
+    Errors_internal.SnapshotAlreadyExistsFault] @ Errors_internal.common in
   match Errors_internal.of_string err with
   | Some var ->
       if
         (List.mem var errors) &&
           ((match Errors_internal.to_http_code var with
             | Some var -> var = code
-            | None  -> true))
+            | None -> true))
       then Some var
       else None
-  | None  -> None 
+  | None -> None

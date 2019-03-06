@@ -9,7 +9,7 @@ module Resource =
       resource_type: String.t option ;
       resource_name: String.t option }
     let make ?resource_type  ?resource_name  () =
-      { resource_type; resource_name } 
+      { resource_type; resource_name }
     let parse xml =
       Some
         {
@@ -18,30 +18,27 @@ module Resource =
           resource_name =
             (Util.option_bind (Xml.member "ResourceName" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.resource_name
-              (fun f  -> Query.Pair ("ResourceName", (String.to_query f)));
+              (fun f -> Query.Pair ("ResourceName", (String.to_query f)));
            Util.option_map v.resource_type
-             (fun f  -> Query.Pair ("ResourceType", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("ResourceType", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.resource_name
-              (fun f  -> ("resource_name", (String.to_json f)));
+              (fun f -> ("resource_name", (String.to_json f)));
            Util.option_map v.resource_type
-             (fun f  -> ("resource_type", (String.to_json f)))])
-      
+             (fun f -> ("resource_type", (String.to_json f)))])
     let of_json j =
       {
         resource_type =
           (Util.option_map (Json.lookup j "resource_type") String.of_json);
         resource_name =
           (Util.option_map (Json.lookup j "resource_name") String.of_json)
-      } 
+      }
   end
 module LookupAttributeKey =
   struct
@@ -56,34 +53,33 @@ module LookupAttributeKey =
       ("ResourceType", ResourceType);
       ("Username", Username);
       ("EventName", EventName);
-      ("EventId", EventId)] 
+      ("EventId", EventId)]
     let t_to_str =
       [(ResourceName, "ResourceName");
       (ResourceType, "ResourceType");
       (Username, "Username");
       (EventName, "EventName");
-      (EventId, "EventId")] 
-    let make v () = v 
+      (EventId, "EventId")]
+    let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
-        (fun s  -> Util.list_find str_to_t s)
-      
+        (fun s -> Util.list_find str_to_t s)
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
   end
 module ResourceList =
   struct
     type t = Resource.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
-      Util.option_all (List.map Resource.parse (Xml.members "member" xml)) 
-    let to_query v = Query.to_query_list Resource.to_query v 
-    let to_json v = `List (List.map Resource.to_json v) 
-    let of_json j = Json.to_list Resource.of_json j 
+      Util.option_all (List.map Resource.parse (Xml.members "member" xml))
+    let to_query v = Query.to_query_list Resource.to_query v
+    let to_json v = `List (List.map Resource.to_json v)
+    let of_json j = Json.to_list Resource.of_json j
   end
 module LookupAttribute =
   struct
@@ -92,7 +88,7 @@ module LookupAttribute =
       attribute_key: LookupAttributeKey.t ;
       attribute_value: String.t }
     let make ~attribute_key  ~attribute_value  () =
-      { attribute_key; attribute_value } 
+      { attribute_key; attribute_value }
     let parse xml =
       Some
         {
@@ -105,7 +101,6 @@ module LookupAttribute =
                (Util.option_bind (Xml.member "AttributeValue" xml)
                   String.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -116,14 +111,12 @@ module LookupAttribute =
              (Query.Pair
                 ("AttributeKey",
                   (LookupAttributeKey.to_query v.attribute_key)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("attribute_value", (String.to_json v.attribute_value));
            Some
              ("attribute_key", (LookupAttributeKey.to_json v.attribute_key))])
-      
     let of_json j =
       {
         attribute_key =
@@ -132,7 +125,7 @@ module LookupAttribute =
         attribute_value =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "attribute_value")))
-      } 
+      }
   end
 module Event =
   struct
@@ -153,7 +146,7 @@ module Event =
         username;
         resources;
         cloud_trail_event
-      } 
+      }
     let parse xml =
       Some
         {
@@ -172,39 +165,36 @@ module Event =
           cloud_trail_event =
             (Util.option_bind (Xml.member "CloudTrailEvent" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.cloud_trail_event
-              (fun f  -> Query.Pair ("CloudTrailEvent", (String.to_query f)));
+              (fun f -> Query.Pair ("CloudTrailEvent", (String.to_query f)));
            Some
              (Query.Pair
                 ("Resources.member", (ResourceList.to_query v.resources)));
            Util.option_map v.username
-             (fun f  -> Query.Pair ("Username", (String.to_query f)));
+             (fun f -> Query.Pair ("Username", (String.to_query f)));
            Util.option_map v.event_time
-             (fun f  -> Query.Pair ("EventTime", (DateTime.to_query f)));
+             (fun f -> Query.Pair ("EventTime", (DateTime.to_query f)));
            Util.option_map v.event_name
-             (fun f  -> Query.Pair ("EventName", (String.to_query f)));
+             (fun f -> Query.Pair ("EventName", (String.to_query f)));
            Util.option_map v.event_id
-             (fun f  -> Query.Pair ("EventId", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("EventId", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.cloud_trail_event
-              (fun f  -> ("cloud_trail_event", (String.to_json f)));
+              (fun f -> ("cloud_trail_event", (String.to_json f)));
            Some ("resources", (ResourceList.to_json v.resources));
            Util.option_map v.username
-             (fun f  -> ("username", (String.to_json f)));
+             (fun f -> ("username", (String.to_json f)));
            Util.option_map v.event_time
-             (fun f  -> ("event_time", (DateTime.to_json f)));
+             (fun f -> ("event_time", (DateTime.to_json f)));
            Util.option_map v.event_name
-             (fun f  -> ("event_name", (String.to_json f)));
+             (fun f -> ("event_name", (String.to_json f)));
            Util.option_map v.event_id
-             (fun f  -> ("event_id", (String.to_json f)))])
-      
+             (fun f -> ("event_id", (String.to_json f)))])
     let of_json j =
       {
         event_id =
@@ -220,7 +210,7 @@ module Event =
              (Util.of_option_exn (Json.lookup j "resources")));
         cloud_trail_event =
           (Util.option_map (Json.lookup j "cloud_trail_event") String.of_json)
-      } 
+      }
   end
 module Trail =
   struct
@@ -244,7 +234,7 @@ module Trail =
         include_global_service_events;
         cloud_watch_logs_log_group_arn;
         cloud_watch_logs_role_arn
-      } 
+      }
     let parse xml =
       Some
         {
@@ -265,48 +255,43 @@ module Trail =
             (Util.option_bind (Xml.member "CloudWatchLogsRoleArn" xml)
                String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.cloud_watch_logs_role_arn
-              (fun f  ->
+              (fun f ->
                  Query.Pair ("CloudWatchLogsRoleArn", (String.to_query f)));
            Util.option_map v.cloud_watch_logs_log_group_arn
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("CloudWatchLogsLogGroupArn", (String.to_query f)));
            Util.option_map v.include_global_service_events
-             (fun f  ->
+             (fun f ->
                 Query.Pair
                   ("IncludeGlobalServiceEvents", (Boolean.to_query f)));
            Util.option_map v.sns_topic_name
-             (fun f  -> Query.Pair ("SnsTopicName", (String.to_query f)));
+             (fun f -> Query.Pair ("SnsTopicName", (String.to_query f)));
            Util.option_map v.s3_key_prefix
-             (fun f  -> Query.Pair ("S3KeyPrefix", (String.to_query f)));
+             (fun f -> Query.Pair ("S3KeyPrefix", (String.to_query f)));
            Util.option_map v.s3_bucket_name
-             (fun f  -> Query.Pair ("S3BucketName", (String.to_query f)));
+             (fun f -> Query.Pair ("S3BucketName", (String.to_query f)));
            Util.option_map v.name
-             (fun f  -> Query.Pair ("Name", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("Name", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.cloud_watch_logs_role_arn
-              (fun f  -> ("cloud_watch_logs_role_arn", (String.to_json f)));
+              (fun f -> ("cloud_watch_logs_role_arn", (String.to_json f)));
            Util.option_map v.cloud_watch_logs_log_group_arn
-             (fun f  ->
-                ("cloud_watch_logs_log_group_arn", (String.to_json f)));
+             (fun f -> ("cloud_watch_logs_log_group_arn", (String.to_json f)));
            Util.option_map v.include_global_service_events
-             (fun f  ->
-                ("include_global_service_events", (Boolean.to_json f)));
+             (fun f -> ("include_global_service_events", (Boolean.to_json f)));
            Util.option_map v.sns_topic_name
-             (fun f  -> ("sns_topic_name", (String.to_json f)));
+             (fun f -> ("sns_topic_name", (String.to_json f)));
            Util.option_map v.s3_key_prefix
-             (fun f  -> ("s3_key_prefix", (String.to_json f)));
+             (fun f -> ("s3_key_prefix", (String.to_json f)));
            Util.option_map v.s3_bucket_name
-             (fun f  -> ("s3_bucket_name", (String.to_json f)));
-           Util.option_map v.name (fun f  -> ("name", (String.to_json f)))])
-      
+             (fun f -> ("s3_bucket_name", (String.to_json f)));
+           Util.option_map v.name (fun f -> ("name", (String.to_json f)))])
     let of_json j =
       {
         name = (Util.option_map (Json.lookup j "name") String.of_json);
@@ -325,64 +310,63 @@ module Trail =
         cloud_watch_logs_role_arn =
           (Util.option_map (Json.lookup j "cloud_watch_logs_role_arn")
              String.of_json)
-      } 
+      }
   end
 module LookupAttributesList =
   struct
     type t = LookupAttribute.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
       Util.option_all
         (List.map LookupAttribute.parse (Xml.members "member" xml))
-      
-    let to_query v = Query.to_query_list LookupAttribute.to_query v 
-    let to_json v = `List (List.map LookupAttribute.to_json v) 
-    let of_json j = Json.to_list LookupAttribute.of_json j 
+    let to_query v = Query.to_query_list LookupAttribute.to_query v
+    let to_json v = `List (List.map LookupAttribute.to_json v)
+    let of_json j = Json.to_list LookupAttribute.of_json j
   end
 module TrailNameList =
   struct
     type t = String.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "member" xml)) 
-    let to_query v = Query.to_query_list String.to_query v 
-    let to_json v = `List (List.map String.to_json v) 
-    let of_json j = Json.to_list String.of_json j 
+      Util.option_all (List.map String.parse (Xml.members "member" xml))
+    let to_query v = Query.to_query_list String.to_query v
+    let to_json v = `List (List.map String.to_json v)
+    let of_json j = Json.to_list String.of_json j
   end
 module EventsList =
   struct
     type t = Event.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
-      Util.option_all (List.map Event.parse (Xml.members "member" xml)) 
-    let to_query v = Query.to_query_list Event.to_query v 
-    let to_json v = `List (List.map Event.to_json v) 
-    let of_json j = Json.to_list Event.of_json j 
+      Util.option_all (List.map Event.parse (Xml.members "member" xml))
+    let to_query v = Query.to_query_list Event.to_query v
+    let to_json v = `List (List.map Event.to_json v)
+    let of_json j = Json.to_list Event.of_json j
   end
 module TrailList =
   struct
     type t = Trail.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
-      Util.option_all (List.map Trail.parse (Xml.members "member" xml)) 
-    let to_query v = Query.to_query_list Trail.to_query v 
-    let to_json v = `List (List.map Trail.to_json v) 
-    let of_json j = Json.to_list Trail.of_json j 
+      Util.option_all (List.map Trail.parse (Xml.members "member" xml))
+    let to_query v = Query.to_query_list Trail.to_query v
+    let to_json v = `List (List.map Trail.to_json v)
+    let of_json j = Json.to_list Trail.of_json j
   end
 module DeleteTrailResponse =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module StopLoggingRequest =
   struct
     type t = {
       name: String.t }
-    let make ~name  () = { name } 
+    let make ~name  () = { name }
     let parse xml =
       Some
         {
@@ -390,31 +374,29 @@ module StopLoggingRequest =
             (Xml.required "Name"
                (Util.option_bind (Xml.member "Name" xml) String.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("Name", (String.to_query v.name)))])
-      
     let to_json v =
-      `Assoc (Util.list_filter_opt [Some ("name", (String.to_json v.name))]) 
+      `Assoc (Util.list_filter_opt [Some ("name", (String.to_json v.name))])
     let of_json j =
-      { name = (String.of_json (Util.of_option_exn (Json.lookup j "name"))) } 
+      { name = (String.of_json (Util.of_option_exn (Json.lookup j "name"))) }
   end
 module TrailAlreadyExistsException =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module StartLoggingRequest =
   struct
     type t = {
       name: String.t }
-    let make ~name  () = { name } 
+    let make ~name  () = { name }
     let parse xml =
       Some
         {
@@ -422,34 +404,32 @@ module StartLoggingRequest =
             (Xml.required "Name"
                (Util.option_bind (Xml.member "Name" xml) String.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("Name", (String.to_query v.name)))])
-      
     let to_json v =
-      `Assoc (Util.list_filter_opt [Some ("name", (String.to_json v.name))]) 
+      `Assoc (Util.list_filter_opt [Some ("name", (String.to_json v.name))])
     let of_json j =
-      { name = (String.of_json (Util.of_option_exn (Json.lookup j "name"))) } 
+      { name = (String.of_json (Util.of_option_exn (Json.lookup j "name"))) }
   end
 module InvalidS3BucketNameException =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module InvalidCloudWatchLogsRoleArnException =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module LookupEventsRequest =
   struct
@@ -462,7 +442,7 @@ module LookupEventsRequest =
       next_token: String.t option }
     let make ?(lookup_attributes= [])  ?start_time  ?end_time  ?max_results 
       ?next_token  () =
-      { lookup_attributes; start_time; end_time; max_results; next_token } 
+      { lookup_attributes; start_time; end_time; max_results; next_token }
     let parse xml =
       Some
         {
@@ -479,38 +459,35 @@ module LookupEventsRequest =
           next_token =
             (Util.option_bind (Xml.member "NextToken" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.next_token
-              (fun f  -> Query.Pair ("NextToken", (String.to_query f)));
+              (fun f -> Query.Pair ("NextToken", (String.to_query f)));
            Util.option_map v.max_results
-             (fun f  -> Query.Pair ("MaxResults", (Integer.to_query f)));
+             (fun f -> Query.Pair ("MaxResults", (Integer.to_query f)));
            Util.option_map v.end_time
-             (fun f  -> Query.Pair ("EndTime", (DateTime.to_query f)));
+             (fun f -> Query.Pair ("EndTime", (DateTime.to_query f)));
            Util.option_map v.start_time
-             (fun f  -> Query.Pair ("StartTime", (DateTime.to_query f)));
+             (fun f -> Query.Pair ("StartTime", (DateTime.to_query f)));
            Some
              (Query.Pair
                 ("LookupAttributes.member",
                   (LookupAttributesList.to_query v.lookup_attributes)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.next_token
-              (fun f  -> ("next_token", (String.to_json f)));
+              (fun f -> ("next_token", (String.to_json f)));
            Util.option_map v.max_results
-             (fun f  -> ("max_results", (Integer.to_json f)));
+             (fun f -> ("max_results", (Integer.to_json f)));
            Util.option_map v.end_time
-             (fun f  -> ("end_time", (DateTime.to_json f)));
+             (fun f -> ("end_time", (DateTime.to_json f)));
            Util.option_map v.start_time
-             (fun f  -> ("start_time", (DateTime.to_json f)));
+             (fun f -> ("start_time", (DateTime.to_json f)));
            Some
              ("lookup_attributes",
                (LookupAttributesList.to_json v.lookup_attributes))])
-      
     let of_json j =
       {
         lookup_attributes =
@@ -524,16 +501,16 @@ module LookupEventsRequest =
           (Util.option_map (Json.lookup j "max_results") Integer.of_json);
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      } 
+      }
   end
 module StopLoggingResponse =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module GetTrailStatusResponse =
   struct
@@ -562,7 +539,7 @@ module GetTrailStatusResponse =
         stop_logging_time;
         latest_cloud_watch_logs_delivery_error;
         latest_cloud_watch_logs_delivery_time
-      } 
+      }
     let parse xml =
       Some
         {
@@ -595,65 +572,61 @@ module GetTrailStatusResponse =
                (Xml.member "LatestCloudWatchLogsDeliveryTime" xml)
                DateTime.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.latest_cloud_watch_logs_delivery_time
-              (fun f  ->
+              (fun f ->
                  Query.Pair
                    ("LatestCloudWatchLogsDeliveryTime",
                      (DateTime.to_query f)));
            Util.option_map v.latest_cloud_watch_logs_delivery_error
-             (fun f  ->
+             (fun f ->
                 Query.Pair
                   ("LatestCloudWatchLogsDeliveryError", (String.to_query f)));
            Util.option_map v.stop_logging_time
-             (fun f  -> Query.Pair ("StopLoggingTime", (DateTime.to_query f)));
+             (fun f -> Query.Pair ("StopLoggingTime", (DateTime.to_query f)));
            Util.option_map v.start_logging_time
-             (fun f  ->
-                Query.Pair ("StartLoggingTime", (DateTime.to_query f)));
+             (fun f -> Query.Pair ("StartLoggingTime", (DateTime.to_query f)));
            Util.option_map v.latest_notification_time
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("LatestNotificationTime", (DateTime.to_query f)));
            Util.option_map v.latest_delivery_time
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("LatestDeliveryTime", (DateTime.to_query f)));
            Util.option_map v.latest_notification_error
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("LatestNotificationError", (String.to_query f)));
            Util.option_map v.latest_delivery_error
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("LatestDeliveryError", (String.to_query f)));
            Util.option_map v.is_logging
-             (fun f  -> Query.Pair ("IsLogging", (Boolean.to_query f)))])
-      
+             (fun f -> Query.Pair ("IsLogging", (Boolean.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.latest_cloud_watch_logs_delivery_time
-              (fun f  ->
+              (fun f ->
                  ("latest_cloud_watch_logs_delivery_time",
                    (DateTime.to_json f)));
            Util.option_map v.latest_cloud_watch_logs_delivery_error
-             (fun f  ->
+             (fun f ->
                 ("latest_cloud_watch_logs_delivery_error",
                   (String.to_json f)));
            Util.option_map v.stop_logging_time
-             (fun f  -> ("stop_logging_time", (DateTime.to_json f)));
+             (fun f -> ("stop_logging_time", (DateTime.to_json f)));
            Util.option_map v.start_logging_time
-             (fun f  -> ("start_logging_time", (DateTime.to_json f)));
+             (fun f -> ("start_logging_time", (DateTime.to_json f)));
            Util.option_map v.latest_notification_time
-             (fun f  -> ("latest_notification_time", (DateTime.to_json f)));
+             (fun f -> ("latest_notification_time", (DateTime.to_json f)));
            Util.option_map v.latest_delivery_time
-             (fun f  -> ("latest_delivery_time", (DateTime.to_json f)));
+             (fun f -> ("latest_delivery_time", (DateTime.to_json f)));
            Util.option_map v.latest_notification_error
-             (fun f  -> ("latest_notification_error", (String.to_json f)));
+             (fun f -> ("latest_notification_error", (String.to_json f)));
            Util.option_map v.latest_delivery_error
-             (fun f  -> ("latest_delivery_error", (String.to_json f)));
+             (fun f -> ("latest_delivery_error", (String.to_json f)));
            Util.option_map v.is_logging
-             (fun f  -> ("is_logging", (Boolean.to_json f)))])
-      
+             (fun f -> ("is_logging", (Boolean.to_json f)))])
     let of_json j =
       {
         is_logging =
@@ -684,13 +657,13 @@ module GetTrailStatusResponse =
           (Util.option_map
              (Json.lookup j "latest_cloud_watch_logs_delivery_time")
              DateTime.of_json)
-      } 
+      }
   end
 module DeleteTrailRequest =
   struct
     type t = {
       name: String.t }
-    let make ~name  () = { name } 
+    let make ~name  () = { name }
     let parse xml =
       Some
         {
@@ -698,25 +671,23 @@ module DeleteTrailRequest =
             (Xml.required "Name"
                (Util.option_bind (Xml.member "Name" xml) String.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("Name", (String.to_query v.name)))])
-      
     let to_json v =
-      `Assoc (Util.list_filter_opt [Some ("name", (String.to_json v.name))]) 
+      `Assoc (Util.list_filter_opt [Some ("name", (String.to_json v.name))])
     let of_json j =
-      { name = (String.of_json (Util.of_option_exn (Json.lookup j "name"))) } 
+      { name = (String.of_json (Util.of_option_exn (Json.lookup j "name"))) }
   end
 module TrailNotFoundException =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module UpdateTrailResponse =
   struct
@@ -740,7 +711,7 @@ module UpdateTrailResponse =
         include_global_service_events;
         cloud_watch_logs_log_group_arn;
         cloud_watch_logs_role_arn
-      } 
+      }
     let parse xml =
       Some
         {
@@ -761,48 +732,43 @@ module UpdateTrailResponse =
             (Util.option_bind (Xml.member "CloudWatchLogsRoleArn" xml)
                String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.cloud_watch_logs_role_arn
-              (fun f  ->
+              (fun f ->
                  Query.Pair ("CloudWatchLogsRoleArn", (String.to_query f)));
            Util.option_map v.cloud_watch_logs_log_group_arn
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("CloudWatchLogsLogGroupArn", (String.to_query f)));
            Util.option_map v.include_global_service_events
-             (fun f  ->
+             (fun f ->
                 Query.Pair
                   ("IncludeGlobalServiceEvents", (Boolean.to_query f)));
            Util.option_map v.sns_topic_name
-             (fun f  -> Query.Pair ("SnsTopicName", (String.to_query f)));
+             (fun f -> Query.Pair ("SnsTopicName", (String.to_query f)));
            Util.option_map v.s3_key_prefix
-             (fun f  -> Query.Pair ("S3KeyPrefix", (String.to_query f)));
+             (fun f -> Query.Pair ("S3KeyPrefix", (String.to_query f)));
            Util.option_map v.s3_bucket_name
-             (fun f  -> Query.Pair ("S3BucketName", (String.to_query f)));
+             (fun f -> Query.Pair ("S3BucketName", (String.to_query f)));
            Util.option_map v.name
-             (fun f  -> Query.Pair ("Name", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("Name", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.cloud_watch_logs_role_arn
-              (fun f  -> ("cloud_watch_logs_role_arn", (String.to_json f)));
+              (fun f -> ("cloud_watch_logs_role_arn", (String.to_json f)));
            Util.option_map v.cloud_watch_logs_log_group_arn
-             (fun f  ->
-                ("cloud_watch_logs_log_group_arn", (String.to_json f)));
+             (fun f -> ("cloud_watch_logs_log_group_arn", (String.to_json f)));
            Util.option_map v.include_global_service_events
-             (fun f  ->
-                ("include_global_service_events", (Boolean.to_json f)));
+             (fun f -> ("include_global_service_events", (Boolean.to_json f)));
            Util.option_map v.sns_topic_name
-             (fun f  -> ("sns_topic_name", (String.to_json f)));
+             (fun f -> ("sns_topic_name", (String.to_json f)));
            Util.option_map v.s3_key_prefix
-             (fun f  -> ("s3_key_prefix", (String.to_json f)));
+             (fun f -> ("s3_key_prefix", (String.to_json f)));
            Util.option_map v.s3_bucket_name
-             (fun f  -> ("s3_bucket_name", (String.to_json f)));
-           Util.option_map v.name (fun f  -> ("name", (String.to_json f)))])
-      
+             (fun f -> ("s3_bucket_name", (String.to_json f)));
+           Util.option_map v.name (fun f -> ("name", (String.to_json f)))])
     let of_json j =
       {
         name = (Util.option_map (Json.lookup j "name") String.of_json);
@@ -821,7 +787,7 @@ module UpdateTrailResponse =
         cloud_watch_logs_role_arn =
           (Util.option_map (Json.lookup j "cloud_watch_logs_role_arn")
              String.of_json)
-      } 
+      }
   end
 module CreateTrailRequest =
   struct
@@ -845,7 +811,7 @@ module CreateTrailRequest =
         include_global_service_events;
         cloud_watch_logs_log_group_arn;
         cloud_watch_logs_role_arn
-      } 
+      }
     let parse xml =
       Some
         {
@@ -869,46 +835,41 @@ module CreateTrailRequest =
             (Util.option_bind (Xml.member "CloudWatchLogsRoleArn" xml)
                String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.cloud_watch_logs_role_arn
-              (fun f  ->
+              (fun f ->
                  Query.Pair ("CloudWatchLogsRoleArn", (String.to_query f)));
            Util.option_map v.cloud_watch_logs_log_group_arn
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("CloudWatchLogsLogGroupArn", (String.to_query f)));
            Util.option_map v.include_global_service_events
-             (fun f  ->
+             (fun f ->
                 Query.Pair
                   ("IncludeGlobalServiceEvents", (Boolean.to_query f)));
            Util.option_map v.sns_topic_name
-             (fun f  -> Query.Pair ("SnsTopicName", (String.to_query f)));
+             (fun f -> Query.Pair ("SnsTopicName", (String.to_query f)));
            Util.option_map v.s3_key_prefix
-             (fun f  -> Query.Pair ("S3KeyPrefix", (String.to_query f)));
+             (fun f -> Query.Pair ("S3KeyPrefix", (String.to_query f)));
            Some
              (Query.Pair ("S3BucketName", (String.to_query v.s3_bucket_name)));
            Some (Query.Pair ("Name", (String.to_query v.name)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.cloud_watch_logs_role_arn
-              (fun f  -> ("cloud_watch_logs_role_arn", (String.to_json f)));
+              (fun f -> ("cloud_watch_logs_role_arn", (String.to_json f)));
            Util.option_map v.cloud_watch_logs_log_group_arn
-             (fun f  ->
-                ("cloud_watch_logs_log_group_arn", (String.to_json f)));
+             (fun f -> ("cloud_watch_logs_log_group_arn", (String.to_json f)));
            Util.option_map v.include_global_service_events
-             (fun f  ->
-                ("include_global_service_events", (Boolean.to_json f)));
+             (fun f -> ("include_global_service_events", (Boolean.to_json f)));
            Util.option_map v.sns_topic_name
-             (fun f  -> ("sns_topic_name", (String.to_json f)));
+             (fun f -> ("sns_topic_name", (String.to_json f)));
            Util.option_map v.s3_key_prefix
-             (fun f  -> ("s3_key_prefix", (String.to_json f)));
+             (fun f -> ("s3_key_prefix", (String.to_json f)));
            Some ("s3_bucket_name", (String.to_json v.s3_bucket_name));
            Some ("name", (String.to_json v.name))])
-      
     let of_json j =
       {
         name = (String.of_json (Util.of_option_exn (Json.lookup j "name")));
@@ -928,22 +889,22 @@ module CreateTrailRequest =
         cloud_watch_logs_role_arn =
           (Util.option_map (Json.lookup j "cloud_watch_logs_role_arn")
              String.of_json)
-      } 
+      }
   end
 module StartLoggingResponse =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module GetTrailStatusRequest =
   struct
     type t = {
       name: String.t }
-    let make ~name  () = { name } 
+    let make ~name  () = { name }
     let parse xml =
       Some
         {
@@ -951,16 +912,14 @@ module GetTrailStatusRequest =
             (Xml.required "Name"
                (Util.option_bind (Xml.member "Name" xml) String.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("Name", (String.to_query v.name)))])
-      
     let to_json v =
-      `Assoc (Util.list_filter_opt [Some ("name", (String.to_json v.name))]) 
+      `Assoc (Util.list_filter_opt [Some ("name", (String.to_json v.name))])
     let of_json j =
-      { name = (String.of_json (Util.of_option_exn (Json.lookup j "name"))) } 
+      { name = (String.of_json (Util.of_option_exn (Json.lookup j "name"))) }
   end
 module UpdateTrailRequest =
   struct
@@ -984,7 +943,7 @@ module UpdateTrailRequest =
         include_global_service_events;
         cloud_watch_logs_log_group_arn;
         cloud_watch_logs_role_arn
-      } 
+      }
     let parse xml =
       Some
         {
@@ -1007,47 +966,42 @@ module UpdateTrailRequest =
             (Util.option_bind (Xml.member "CloudWatchLogsRoleArn" xml)
                String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.cloud_watch_logs_role_arn
-              (fun f  ->
+              (fun f ->
                  Query.Pair ("CloudWatchLogsRoleArn", (String.to_query f)));
            Util.option_map v.cloud_watch_logs_log_group_arn
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("CloudWatchLogsLogGroupArn", (String.to_query f)));
            Util.option_map v.include_global_service_events
-             (fun f  ->
+             (fun f ->
                 Query.Pair
                   ("IncludeGlobalServiceEvents", (Boolean.to_query f)));
            Util.option_map v.sns_topic_name
-             (fun f  -> Query.Pair ("SnsTopicName", (String.to_query f)));
+             (fun f -> Query.Pair ("SnsTopicName", (String.to_query f)));
            Util.option_map v.s3_key_prefix
-             (fun f  -> Query.Pair ("S3KeyPrefix", (String.to_query f)));
+             (fun f -> Query.Pair ("S3KeyPrefix", (String.to_query f)));
            Util.option_map v.s3_bucket_name
-             (fun f  -> Query.Pair ("S3BucketName", (String.to_query f)));
+             (fun f -> Query.Pair ("S3BucketName", (String.to_query f)));
            Some (Query.Pair ("Name", (String.to_query v.name)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.cloud_watch_logs_role_arn
-              (fun f  -> ("cloud_watch_logs_role_arn", (String.to_json f)));
+              (fun f -> ("cloud_watch_logs_role_arn", (String.to_json f)));
            Util.option_map v.cloud_watch_logs_log_group_arn
-             (fun f  ->
-                ("cloud_watch_logs_log_group_arn", (String.to_json f)));
+             (fun f -> ("cloud_watch_logs_log_group_arn", (String.to_json f)));
            Util.option_map v.include_global_service_events
-             (fun f  ->
-                ("include_global_service_events", (Boolean.to_json f)));
+             (fun f -> ("include_global_service_events", (Boolean.to_json f)));
            Util.option_map v.sns_topic_name
-             (fun f  -> ("sns_topic_name", (String.to_json f)));
+             (fun f -> ("sns_topic_name", (String.to_json f)));
            Util.option_map v.s3_key_prefix
-             (fun f  -> ("s3_key_prefix", (String.to_json f)));
+             (fun f -> ("s3_key_prefix", (String.to_json f)));
            Util.option_map v.s3_bucket_name
-             (fun f  -> ("s3_bucket_name", (String.to_json f)));
+             (fun f -> ("s3_bucket_name", (String.to_json f)));
            Some ("name", (String.to_json v.name))])
-      
     let of_json j =
       {
         name = (String.of_json (Util.of_option_exn (Json.lookup j "name")));
@@ -1066,40 +1020,40 @@ module UpdateTrailRequest =
         cloud_watch_logs_role_arn =
           (Util.option_map (Json.lookup j "cloud_watch_logs_role_arn")
              String.of_json)
-      } 
+      }
   end
 module InvalidLookupAttributesException =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module InvalidTrailNameException =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module S3BucketDoesNotExistException =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module DescribeTrailsRequest =
   struct
     type t = {
       trail_name_list: TrailNameList.t }
-    let make ?(trail_name_list= [])  () = { trail_name_list } 
+    let make ?(trail_name_list= [])  () = { trail_name_list }
     let parse xml =
       Some
         {
@@ -1108,7 +1062,6 @@ module DescribeTrailsRequest =
                (Util.option_bind (Xml.member "trailNameList" xml)
                   TrailNameList.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -1116,71 +1069,69 @@ module DescribeTrailsRequest =
               (Query.Pair
                  ("trailNameList.member",
                    (TrailNameList.to_query v.trail_name_list)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("trail_name_list", (TrailNameList.to_json v.trail_name_list))])
-      
     let of_json j =
       {
         trail_name_list =
           (TrailNameList.of_json
              (Util.of_option_exn (Json.lookup j "trail_name_list")))
-      } 
+      }
   end
 module CloudWatchLogsDeliveryUnavailableException =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module InvalidMaxResultsException =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module InvalidTimeRangeException =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module InsufficientSnsTopicPolicyException =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module InsufficientS3BucketPolicyException =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module LookupEventsResponse =
   struct
     type t = {
       events: EventsList.t ;
       next_token: String.t option }
-    let make ?(events= [])  ?next_token  () = { events; next_token } 
+    let make ?(events= [])  ?next_token  () = { events; next_token }
     let parse xml =
       Some
         {
@@ -1190,74 +1141,71 @@ module LookupEventsResponse =
           next_token =
             (Util.option_bind (Xml.member "NextToken" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.next_token
-              (fun f  -> Query.Pair ("NextToken", (String.to_query f)));
+              (fun f -> Query.Pair ("NextToken", (String.to_query f)));
            Some
              (Query.Pair ("Events.member", (EventsList.to_query v.events)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.next_token
-              (fun f  -> ("next_token", (String.to_json f)));
+              (fun f -> ("next_token", (String.to_json f)));
            Some ("events", (EventsList.to_json v.events))])
-      
     let of_json j =
       {
         events =
           (EventsList.of_json (Util.of_option_exn (Json.lookup j "events")));
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      } 
+      }
   end
 module InvalidCloudWatchLogsLogGroupArnException =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module InvalidS3PrefixException =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module InvalidNextTokenException =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module MaximumNumberOfTrailsExceededException =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module InvalidSnsTopicNameException =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module CreateTrailResponse =
   struct
@@ -1281,7 +1229,7 @@ module CreateTrailResponse =
         include_global_service_events;
         cloud_watch_logs_log_group_arn;
         cloud_watch_logs_role_arn
-      } 
+      }
     let parse xml =
       Some
         {
@@ -1302,48 +1250,43 @@ module CreateTrailResponse =
             (Util.option_bind (Xml.member "CloudWatchLogsRoleArn" xml)
                String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.cloud_watch_logs_role_arn
-              (fun f  ->
+              (fun f ->
                  Query.Pair ("CloudWatchLogsRoleArn", (String.to_query f)));
            Util.option_map v.cloud_watch_logs_log_group_arn
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("CloudWatchLogsLogGroupArn", (String.to_query f)));
            Util.option_map v.include_global_service_events
-             (fun f  ->
+             (fun f ->
                 Query.Pair
                   ("IncludeGlobalServiceEvents", (Boolean.to_query f)));
            Util.option_map v.sns_topic_name
-             (fun f  -> Query.Pair ("SnsTopicName", (String.to_query f)));
+             (fun f -> Query.Pair ("SnsTopicName", (String.to_query f)));
            Util.option_map v.s3_key_prefix
-             (fun f  -> Query.Pair ("S3KeyPrefix", (String.to_query f)));
+             (fun f -> Query.Pair ("S3KeyPrefix", (String.to_query f)));
            Util.option_map v.s3_bucket_name
-             (fun f  -> Query.Pair ("S3BucketName", (String.to_query f)));
+             (fun f -> Query.Pair ("S3BucketName", (String.to_query f)));
            Util.option_map v.name
-             (fun f  -> Query.Pair ("Name", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("Name", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.cloud_watch_logs_role_arn
-              (fun f  -> ("cloud_watch_logs_role_arn", (String.to_json f)));
+              (fun f -> ("cloud_watch_logs_role_arn", (String.to_json f)));
            Util.option_map v.cloud_watch_logs_log_group_arn
-             (fun f  ->
-                ("cloud_watch_logs_log_group_arn", (String.to_json f)));
+             (fun f -> ("cloud_watch_logs_log_group_arn", (String.to_json f)));
            Util.option_map v.include_global_service_events
-             (fun f  ->
-                ("include_global_service_events", (Boolean.to_json f)));
+             (fun f -> ("include_global_service_events", (Boolean.to_json f)));
            Util.option_map v.sns_topic_name
-             (fun f  -> ("sns_topic_name", (String.to_json f)));
+             (fun f -> ("sns_topic_name", (String.to_json f)));
            Util.option_map v.s3_key_prefix
-             (fun f  -> ("s3_key_prefix", (String.to_json f)));
+             (fun f -> ("s3_key_prefix", (String.to_json f)));
            Util.option_map v.s3_bucket_name
-             (fun f  -> ("s3_bucket_name", (String.to_json f)));
-           Util.option_map v.name (fun f  -> ("name", (String.to_json f)))])
-      
+             (fun f -> ("s3_bucket_name", (String.to_json f)));
+           Util.option_map v.name (fun f -> ("name", (String.to_json f)))])
     let of_json j =
       {
         name = (Util.option_map (Json.lookup j "name") String.of_json);
@@ -1362,13 +1305,13 @@ module CreateTrailResponse =
         cloud_watch_logs_role_arn =
           (Util.option_map (Json.lookup j "cloud_watch_logs_role_arn")
              String.of_json)
-      } 
+      }
   end
 module DescribeTrailsResponse =
   struct
     type t = {
       trail_list: TrailList.t }
-    let make ?(trail_list= [])  () = { trail_list } 
+    let make ?(trail_list= [])  () = { trail_list }
     let parse xml =
       Some
         {
@@ -1376,23 +1319,20 @@ module DescribeTrailsResponse =
             (Util.of_option []
                (Util.option_bind (Xml.member "trailList" xml) TrailList.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some
               (Query.Pair
                  ("trailList.member", (TrailList.to_query v.trail_list)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("trail_list", (TrailList.to_json v.trail_list))])
-      
     let of_json j =
       {
         trail_list =
           (TrailList.of_json
              (Util.of_option_exn (Json.lookup j "trail_list")))
-      } 
+      }
   end

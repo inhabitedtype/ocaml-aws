@@ -31,7 +31,6 @@ LIBRARIES := \
 	aws-ssm \
 	aws-sts \
 	aws-s3  \
-	aws-ec2 \
 	aws-route53 \
 
 .PHONY: $(LIBRARIES)
@@ -39,6 +38,20 @@ $(LIBRARIES): aws-%:
 	dune exec aws-gen -- -i input/$*/latest/service-2.json -r input/$*/overrides.json -e input/errors.json -o libraries
 
 gen: build aws-ec2 $(LIBRARIES)
+
+# mv libraries/ssm/aws_ssm.opam .
+# mv libraries/cloudwatch/aws_cloudwatch.opam .
+# mv libraries/s3/aws_s3.opam .
+# mv libraries/elasticloadbalancing/aws_elasticloadbalancing.opam .
+# mv libraries/cloudtrail/aws_cloudtrail.opam .
+# mv libraries/sdb/aws_sdb.opam .
+# mv libraries/autoscaling/aws_autoscaling.opam .
+# mv libraries/cloudformation/aws_cloudformation.opam .
+# mv libraries/elasticache/aws_elasticache.opam .
+# mv libraries/rds/aws_rds.opam .
+# mv libraries/sts/aws_sts.opam .
+# mv libraries/route53/aws_route53.opam .
+# mv libraries/ec2/aws_ec2.opam .
 
 # TODO Something like this
 # update-version: VERSION=$(shell cat CHANGES.md | grep -E '^[0-9]' | head -n 1 | cut -f1 -d':' )

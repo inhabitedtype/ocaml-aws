@@ -3,7 +3,7 @@ open Aws
 type input = DescribeStackResourcesInput.t
 type output = DescribeStackResourcesOutput.t
 type error = Errors_internal.t
-let service = "cloudformation" 
+let service = "cloudformation"
 let to_http req =
   let uri =
     Uri.add_query_params
@@ -13,17 +13,15 @@ let to_http req =
          ("Action", ["DescribeStackResources"])]
          (Util.drop_empty
             (Uri.query_of_encoded
-               (Query.render (DescribeStackResourcesInput.to_query req)))))
-     in
-  (`POST, uri, []) 
+               (Query.render (DescribeStackResourcesInput.to_query req))))) in
+  (`POST, uri, [])
 let of_http body =
   try
-    let xml = Ezxmlm.from_string body  in
+    let xml = Ezxmlm.from_string body in
     let resp =
       Util.option_bind
         (Xml.member "DescribeStackResourcesResponse" (snd xml))
-        (Xml.member "DescribeStackResourcesResult")
-       in
+        (Xml.member "DescribeStackResourcesResult") in
     try
       Util.or_error
         (Util.option_bind resp DescribeStackResourcesOutput.parse)
@@ -50,16 +48,15 @@ let of_http body =
       `Error
         (let open Error in
            BadResponse { body; message = ("Error parsing xml: " ^ msg) })
-  
 let parse_error code err =
-  let errors = [] @ Errors_internal.common  in
+  let errors = [] @ Errors_internal.common in
   match Errors_internal.of_string err with
   | Some var ->
       if
         (List.mem var errors) &&
           ((match Errors_internal.to_http_code var with
             | Some var -> var = code
-            | None  -> true))
+            | None -> true))
       then Some var
       else None
-  | None  -> None 
+  | None -> None
