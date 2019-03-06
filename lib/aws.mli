@@ -125,14 +125,11 @@ module type Call = sig
       signing, and to determine the endpoint to send the request. *)
   val service : string
 
-  (** The AWS region for the call. *)
-  (*val region : string*)
-
   (** This function converts the native input into the HTTP request
       type. In particular, it is responsible for properly encoding the
       request type into query format. It also sets the Action and
       Version query parameters. *)
-  val to_http : input -> Request.t
+  val to_http : string -> input -> Request.t
 
   (** This function converts from a HTTP response body to an output
       or an error if the response could not be decoded. *)
@@ -243,7 +240,7 @@ module Json : sig
   (** This converts an `Assoc (string * t list) to ('a, 'b) Hashtbl.t, or throws a
       Casting_error in the case that the input is not an `Assoc. *)
   val to_hashtbl: (t -> 'b) -> t -> (string, 'b) Hashtbl.t
-        
+
   (** If t is an `Assoc, this looks up the field specified. If it
       isn't found, or if the input is not an `Assoc, returns None. *)
   val lookup : t -> string -> t option

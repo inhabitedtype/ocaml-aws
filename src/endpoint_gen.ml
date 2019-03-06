@@ -85,7 +85,7 @@ let main input outdir =
            print_endline ("service: " ^ name);
            (match name with
             | "sqs" ->
-                let outfile = (outdir </> name) </> "endpoints.ml" in
+                let outfile = (outdir </> name) </> (name ^ "_endpoints.ml") in
                 let syntax = write_endpoints endpoints in
                 Printing.write_structure outfile syntax
             | _ -> print_endline "not writing temporarily"));
@@ -107,6 +107,7 @@ module CommandLine = struct
     Term.info "endpoint-gen" ~version:"0.0.1" ~doc
 end
 
+(** entrypoint *)
 let () =
   match Term.eval CommandLine.(gen_t, info) with
   | `Error _ -> exit 1
