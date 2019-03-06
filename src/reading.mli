@@ -31,8 +31,8 @@
     POSSIBILITY OF SUCH DAMAGE.
   ----------------------------------------------------------------------------*)
 
-val shape : string * Yojson.Basic.json -> Structures.Shape.parsed
+val shape : string * Yojson.Basic.t -> Structures.Shape.parsed
 
-val op : string * Yojson.Basic.json -> Structures.Operation.t
+val op : string * Yojson.Basic.t -> Structures.Operation.t
 
-val error : string -> Yojson.Basic.json -> Structures.Error.t
+val error : string -> Yojson.Basic.t -> Structures.Error.t
