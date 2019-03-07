@@ -55,71 +55,71 @@ let common =
   InvalidClientTokenId;
   InvalidAction;
   InternalFailure;
-  IncompleteSignature] 
+  IncompleteSignature]
 let to_http_code e =
   match e with
-  | AlreadyExistsException  -> Some 400
-  | AuthFailure  -> None
-  | Blocked  -> None
-  | DryRunOperation  -> None
-  | IdempotentParameterMismatch  -> None
-  | IncompleteSignature  -> Some 400
-  | InsufficientCapabilitiesException  -> Some 400
-  | InternalFailure  -> Some 500
-  | InvalidAction  -> Some 400
-  | InvalidClientTokenId  -> Some 403
-  | InvalidParameter  -> None
-  | InvalidParameterCombination  -> Some 400
-  | InvalidParameterValue  -> Some 400
-  | InvalidQueryParameter  -> Some 400
-  | LimitExceededException  -> Some 400
-  | MalformedQueryString  -> Some 404
-  | MissingAction  -> Some 400
-  | MissingAuthenticationToken  -> Some 403
-  | MissingParameter  -> Some 400
-  | OptInRequired  -> Some 403
-  | PendingVerification  -> None
-  | RequestExpired  -> Some 400
-  | RequestLimitExceeded  -> None
-  | ServiceUnavailable  -> Some 503
-  | Throttling  -> Some 400
-  | UnauthorizedOperation  -> None
-  | UnknownParameter  -> None
-  | UnsupportedProtocol  -> None
-  | ValidationError  -> Some 400
-  | Uninhabited  -> None 
+  | AlreadyExistsException -> Some 400
+  | AuthFailure -> None
+  | Blocked -> None
+  | DryRunOperation -> None
+  | IdempotentParameterMismatch -> None
+  | IncompleteSignature -> Some 400
+  | InsufficientCapabilitiesException -> Some 400
+  | InternalFailure -> Some 500
+  | InvalidAction -> Some 400
+  | InvalidClientTokenId -> Some 403
+  | InvalidParameter -> None
+  | InvalidParameterCombination -> Some 400
+  | InvalidParameterValue -> Some 400
+  | InvalidQueryParameter -> Some 400
+  | LimitExceededException -> Some 400
+  | MalformedQueryString -> Some 404
+  | MissingAction -> Some 400
+  | MissingAuthenticationToken -> Some 403
+  | MissingParameter -> Some 400
+  | OptInRequired -> Some 403
+  | PendingVerification -> None
+  | RequestExpired -> Some 400
+  | RequestLimitExceeded -> None
+  | ServiceUnavailable -> Some 503
+  | Throttling -> Some 400
+  | UnauthorizedOperation -> None
+  | UnknownParameter -> None
+  | UnsupportedProtocol -> None
+  | ValidationError -> Some 400
+  | Uninhabited -> None
 let to_string e =
   match e with
-  | AlreadyExistsException  -> "AlreadyExistsException"
-  | AuthFailure  -> "AuthFailure"
-  | Blocked  -> "Blocked"
-  | DryRunOperation  -> "DryRunOperation"
-  | IdempotentParameterMismatch  -> "IdempotentParameterMismatch"
-  | IncompleteSignature  -> "IncompleteSignature"
-  | InsufficientCapabilitiesException  -> "InsufficientCapabilitiesException"
-  | InternalFailure  -> "InternalFailure"
-  | InvalidAction  -> "InvalidAction"
-  | InvalidClientTokenId  -> "InvalidClientTokenId"
-  | InvalidParameter  -> "InvalidParameter"
-  | InvalidParameterCombination  -> "InvalidParameterCombination"
-  | InvalidParameterValue  -> "InvalidParameterValue"
-  | InvalidQueryParameter  -> "InvalidQueryParameter"
-  | LimitExceededException  -> "LimitExceededException"
-  | MalformedQueryString  -> "MalformedQueryString"
-  | MissingAction  -> "MissingAction"
-  | MissingAuthenticationToken  -> "MissingAuthenticationToken"
-  | MissingParameter  -> "MissingParameter"
-  | OptInRequired  -> "OptInRequired"
-  | PendingVerification  -> "PendingVerification"
-  | RequestExpired  -> "RequestExpired"
-  | RequestLimitExceeded  -> "RequestLimitExceeded"
-  | ServiceUnavailable  -> "ServiceUnavailable"
-  | Throttling  -> "Throttling"
-  | UnauthorizedOperation  -> "UnauthorizedOperation"
-  | UnknownParameter  -> "UnknownParameter"
-  | UnsupportedProtocol  -> "UnsupportedProtocol"
-  | ValidationError  -> "ValidationError"
-  | Uninhabited  -> "Uninhabited" 
+  | AlreadyExistsException -> "AlreadyExistsException"
+  | AuthFailure -> "AuthFailure"
+  | Blocked -> "Blocked"
+  | DryRunOperation -> "DryRunOperation"
+  | IdempotentParameterMismatch -> "IdempotentParameterMismatch"
+  | IncompleteSignature -> "IncompleteSignature"
+  | InsufficientCapabilitiesException -> "InsufficientCapabilitiesException"
+  | InternalFailure -> "InternalFailure"
+  | InvalidAction -> "InvalidAction"
+  | InvalidClientTokenId -> "InvalidClientTokenId"
+  | InvalidParameter -> "InvalidParameter"
+  | InvalidParameterCombination -> "InvalidParameterCombination"
+  | InvalidParameterValue -> "InvalidParameterValue"
+  | InvalidQueryParameter -> "InvalidQueryParameter"
+  | LimitExceededException -> "LimitExceededException"
+  | MalformedQueryString -> "MalformedQueryString"
+  | MissingAction -> "MissingAction"
+  | MissingAuthenticationToken -> "MissingAuthenticationToken"
+  | MissingParameter -> "MissingParameter"
+  | OptInRequired -> "OptInRequired"
+  | PendingVerification -> "PendingVerification"
+  | RequestExpired -> "RequestExpired"
+  | RequestLimitExceeded -> "RequestLimitExceeded"
+  | ServiceUnavailable -> "ServiceUnavailable"
+  | Throttling -> "Throttling"
+  | UnauthorizedOperation -> "UnauthorizedOperation"
+  | UnknownParameter -> "UnknownParameter"
+  | UnsupportedProtocol -> "UnsupportedProtocol"
+  | ValidationError -> "ValidationError"
+  | Uninhabited -> "Uninhabited"
 let of_string e =
   match e with
   | "AlreadyExistsException" -> Some AlreadyExistsException
@@ -153,4 +153,4 @@ let of_string e =
   | "UnsupportedProtocol" -> Some UnsupportedProtocol
   | "ValidationError" -> Some ValidationError
   | "Uninhabited" -> Some Uninhabited
-  | _ -> None 
+  | _ -> None

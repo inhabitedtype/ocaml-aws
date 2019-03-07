@@ -31,7 +31,33 @@
     POSSIBILITY OF SUCH DAMAGE.
   ----------------------------------------------------------------------------*)
 
+(* Generate a dune file suitable for building main library *)
 val dune
   :  lib_name:string
   -> service_name:string
+  -> string
+
+(* Generate a dune file suitable for building library tests *)
+val dune_test
+  : lib_name:string
+  -> string
+
+(* Template for async runner for tests *)
+val test_async
+  : lib_name:string
+  -> string
+
+(* Template for lwt runner for tests *)
+val test_lwt
+  : lib_name:string
+  -> string
+
+(* Template for service.opam file *)
+val opam
+  :  service_name:string
+  -> string
+
+(* Template for generic service test *)
+val service_test
+  :  lib_name:string
   -> string

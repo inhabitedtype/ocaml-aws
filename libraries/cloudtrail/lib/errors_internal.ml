@@ -69,99 +69,99 @@ let common =
   InvalidClientTokenId;
   InvalidAction;
   InternalFailure;
-  IncompleteSignature] 
+  IncompleteSignature]
 let to_http_code e =
   match e with
-  | AuthFailure  -> None
-  | Blocked  -> None
-  | CloudWatchLogsDeliveryUnavailable  -> Some 400
-  | DryRunOperation  -> None
-  | IdempotentParameterMismatch  -> None
-  | IncompleteSignature  -> Some 400
-  | InsufficientS3BucketPolicy  -> Some 403
-  | InsufficientSnsTopicPolicy  -> Some 403
-  | InternalFailure  -> Some 500
-  | InvalidAction  -> Some 400
-  | InvalidClientTokenId  -> Some 403
-  | InvalidCloudWatchLogsLogGroupArn  -> Some 400
-  | InvalidCloudWatchLogsRoleArn  -> Some 400
-  | InvalidLookupAttributes  -> Some 400
-  | InvalidMaxResults  -> Some 400
-  | InvalidNextToken  -> Some 400
-  | InvalidParameter  -> None
-  | InvalidParameterCombination  -> Some 400
-  | InvalidParameterValue  -> Some 400
-  | InvalidQueryParameter  -> Some 400
-  | InvalidS3BucketName  -> Some 400
-  | InvalidS3Prefix  -> Some 400
-  | InvalidSnsTopicName  -> Some 400
-  | InvalidTimeRange  -> Some 400
-  | InvalidTrailName  -> Some 400
-  | MalformedQueryString  -> Some 404
-  | MaximumNumberOfTrailsExceeded  -> Some 403
-  | MissingAction  -> Some 400
-  | MissingAuthenticationToken  -> Some 403
-  | MissingParameter  -> Some 400
-  | OptInRequired  -> Some 403
-  | PendingVerification  -> None
-  | RequestExpired  -> Some 400
-  | RequestLimitExceeded  -> None
-  | S3BucketDoesNotExist  -> Some 404
-  | ServiceUnavailable  -> Some 503
-  | Throttling  -> Some 400
-  | TrailAlreadyExists  -> Some 400
-  | TrailNotFound  -> Some 404
-  | UnauthorizedOperation  -> None
-  | UnknownParameter  -> None
-  | UnsupportedProtocol  -> None
-  | ValidationError  -> Some 400
-  | Uninhabited  -> None 
+  | AuthFailure -> None
+  | Blocked -> None
+  | CloudWatchLogsDeliveryUnavailable -> Some 400
+  | DryRunOperation -> None
+  | IdempotentParameterMismatch -> None
+  | IncompleteSignature -> Some 400
+  | InsufficientS3BucketPolicy -> Some 403
+  | InsufficientSnsTopicPolicy -> Some 403
+  | InternalFailure -> Some 500
+  | InvalidAction -> Some 400
+  | InvalidClientTokenId -> Some 403
+  | InvalidCloudWatchLogsLogGroupArn -> Some 400
+  | InvalidCloudWatchLogsRoleArn -> Some 400
+  | InvalidLookupAttributes -> Some 400
+  | InvalidMaxResults -> Some 400
+  | InvalidNextToken -> Some 400
+  | InvalidParameter -> None
+  | InvalidParameterCombination -> Some 400
+  | InvalidParameterValue -> Some 400
+  | InvalidQueryParameter -> Some 400
+  | InvalidS3BucketName -> Some 400
+  | InvalidS3Prefix -> Some 400
+  | InvalidSnsTopicName -> Some 400
+  | InvalidTimeRange -> Some 400
+  | InvalidTrailName -> Some 400
+  | MalformedQueryString -> Some 404
+  | MaximumNumberOfTrailsExceeded -> Some 403
+  | MissingAction -> Some 400
+  | MissingAuthenticationToken -> Some 403
+  | MissingParameter -> Some 400
+  | OptInRequired -> Some 403
+  | PendingVerification -> None
+  | RequestExpired -> Some 400
+  | RequestLimitExceeded -> None
+  | S3BucketDoesNotExist -> Some 404
+  | ServiceUnavailable -> Some 503
+  | Throttling -> Some 400
+  | TrailAlreadyExists -> Some 400
+  | TrailNotFound -> Some 404
+  | UnauthorizedOperation -> None
+  | UnknownParameter -> None
+  | UnsupportedProtocol -> None
+  | ValidationError -> Some 400
+  | Uninhabited -> None
 let to_string e =
   match e with
-  | AuthFailure  -> "AuthFailure"
-  | Blocked  -> "Blocked"
-  | CloudWatchLogsDeliveryUnavailable  -> "CloudWatchLogsDeliveryUnavailable"
-  | DryRunOperation  -> "DryRunOperation"
-  | IdempotentParameterMismatch  -> "IdempotentParameterMismatch"
-  | IncompleteSignature  -> "IncompleteSignature"
-  | InsufficientS3BucketPolicy  -> "InsufficientS3BucketPolicy"
-  | InsufficientSnsTopicPolicy  -> "InsufficientSnsTopicPolicy"
-  | InternalFailure  -> "InternalFailure"
-  | InvalidAction  -> "InvalidAction"
-  | InvalidClientTokenId  -> "InvalidClientTokenId"
-  | InvalidCloudWatchLogsLogGroupArn  -> "InvalidCloudWatchLogsLogGroupArn"
-  | InvalidCloudWatchLogsRoleArn  -> "InvalidCloudWatchLogsRoleArn"
-  | InvalidLookupAttributes  -> "InvalidLookupAttributes"
-  | InvalidMaxResults  -> "InvalidMaxResults"
-  | InvalidNextToken  -> "InvalidNextToken"
-  | InvalidParameter  -> "InvalidParameter"
-  | InvalidParameterCombination  -> "InvalidParameterCombination"
-  | InvalidParameterValue  -> "InvalidParameterValue"
-  | InvalidQueryParameter  -> "InvalidQueryParameter"
-  | InvalidS3BucketName  -> "InvalidS3BucketName"
-  | InvalidS3Prefix  -> "InvalidS3Prefix"
-  | InvalidSnsTopicName  -> "InvalidSnsTopicName"
-  | InvalidTimeRange  -> "InvalidTimeRange"
-  | InvalidTrailName  -> "InvalidTrailName"
-  | MalformedQueryString  -> "MalformedQueryString"
-  | MaximumNumberOfTrailsExceeded  -> "MaximumNumberOfTrailsExceeded"
-  | MissingAction  -> "MissingAction"
-  | MissingAuthenticationToken  -> "MissingAuthenticationToken"
-  | MissingParameter  -> "MissingParameter"
-  | OptInRequired  -> "OptInRequired"
-  | PendingVerification  -> "PendingVerification"
-  | RequestExpired  -> "RequestExpired"
-  | RequestLimitExceeded  -> "RequestLimitExceeded"
-  | S3BucketDoesNotExist  -> "S3BucketDoesNotExist"
-  | ServiceUnavailable  -> "ServiceUnavailable"
-  | Throttling  -> "Throttling"
-  | TrailAlreadyExists  -> "TrailAlreadyExists"
-  | TrailNotFound  -> "TrailNotFound"
-  | UnauthorizedOperation  -> "UnauthorizedOperation"
-  | UnknownParameter  -> "UnknownParameter"
-  | UnsupportedProtocol  -> "UnsupportedProtocol"
-  | ValidationError  -> "ValidationError"
-  | Uninhabited  -> "Uninhabited" 
+  | AuthFailure -> "AuthFailure"
+  | Blocked -> "Blocked"
+  | CloudWatchLogsDeliveryUnavailable -> "CloudWatchLogsDeliveryUnavailable"
+  | DryRunOperation -> "DryRunOperation"
+  | IdempotentParameterMismatch -> "IdempotentParameterMismatch"
+  | IncompleteSignature -> "IncompleteSignature"
+  | InsufficientS3BucketPolicy -> "InsufficientS3BucketPolicy"
+  | InsufficientSnsTopicPolicy -> "InsufficientSnsTopicPolicy"
+  | InternalFailure -> "InternalFailure"
+  | InvalidAction -> "InvalidAction"
+  | InvalidClientTokenId -> "InvalidClientTokenId"
+  | InvalidCloudWatchLogsLogGroupArn -> "InvalidCloudWatchLogsLogGroupArn"
+  | InvalidCloudWatchLogsRoleArn -> "InvalidCloudWatchLogsRoleArn"
+  | InvalidLookupAttributes -> "InvalidLookupAttributes"
+  | InvalidMaxResults -> "InvalidMaxResults"
+  | InvalidNextToken -> "InvalidNextToken"
+  | InvalidParameter -> "InvalidParameter"
+  | InvalidParameterCombination -> "InvalidParameterCombination"
+  | InvalidParameterValue -> "InvalidParameterValue"
+  | InvalidQueryParameter -> "InvalidQueryParameter"
+  | InvalidS3BucketName -> "InvalidS3BucketName"
+  | InvalidS3Prefix -> "InvalidS3Prefix"
+  | InvalidSnsTopicName -> "InvalidSnsTopicName"
+  | InvalidTimeRange -> "InvalidTimeRange"
+  | InvalidTrailName -> "InvalidTrailName"
+  | MalformedQueryString -> "MalformedQueryString"
+  | MaximumNumberOfTrailsExceeded -> "MaximumNumberOfTrailsExceeded"
+  | MissingAction -> "MissingAction"
+  | MissingAuthenticationToken -> "MissingAuthenticationToken"
+  | MissingParameter -> "MissingParameter"
+  | OptInRequired -> "OptInRequired"
+  | PendingVerification -> "PendingVerification"
+  | RequestExpired -> "RequestExpired"
+  | RequestLimitExceeded -> "RequestLimitExceeded"
+  | S3BucketDoesNotExist -> "S3BucketDoesNotExist"
+  | ServiceUnavailable -> "ServiceUnavailable"
+  | Throttling -> "Throttling"
+  | TrailAlreadyExists -> "TrailAlreadyExists"
+  | TrailNotFound -> "TrailNotFound"
+  | UnauthorizedOperation -> "UnauthorizedOperation"
+  | UnknownParameter -> "UnknownParameter"
+  | UnsupportedProtocol -> "UnsupportedProtocol"
+  | ValidationError -> "ValidationError"
+  | Uninhabited -> "Uninhabited"
 let of_string e =
   match e with
   | "AuthFailure" -> Some AuthFailure
@@ -210,4 +210,4 @@ let of_string e =
   | "UnsupportedProtocol" -> Some UnsupportedProtocol
   | "ValidationError" -> Some ValidationError
   | "Uninhabited" -> Some Uninhabited
-  | _ -> None 
+  | _ -> None

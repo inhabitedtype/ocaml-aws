@@ -370,401 +370,401 @@ let common =
   InvalidClientTokenId;
   InvalidAction;
   InternalFailure;
-  IncompleteSignature] 
+  IncompleteSignature]
 let to_http_code e =
   match e with
-  | ActiveVpcPeeringConnectionPerVpcLimitExceeded  -> None
-  | AddressLimitExceeded  -> None
-  | AttachmentLimitExceeded  -> None
-  | AuthFailure  -> None
-  | Blocked  -> None
-  | BundlingInProgress  -> None
-  | CannotDelete  -> None
-  | ConcurrentSnapshotLimitExceeded  -> None
-  | ConcurrentTagAccess  -> None
-  | CustomerGatewayLimitExceeded  -> None
-  | DependencyViolation  -> None
-  | DiskImageSizeTooLarge  -> None
-  | DryRunOperation  -> None
-  | EncryptedVolumesNotSupported  -> None
-  | FilterLimitExceeded  -> None
-  | Gateway_NotAttached  -> None
-  | IdempotentParameterMismatch  -> None
-  | IncompleteSignature  -> Some 400
-  | IncorrectInstanceState  -> None
-  | IncorrectState  -> None
-  | InstanceAlreadyLinked  -> None
-  | InstanceLimitExceeded  -> None
-  | InsufficientFreeAddressesInSubnet  -> None
-  | InsufficientReservedInstancesCapacity  -> None
-  | InternalFailure  -> Some 500
-  | InternetGatewayLimitExceeded  -> None
-  | InvalidAMIAttributeItemValue  -> None
-  | InvalidAMIID_Malformed  -> None
-  | InvalidAMIID_NotFound  -> None
-  | InvalidAMIID_Unavailable  -> None
-  | InvalidAMIName_Duplicate  -> None
-  | InvalidAMIName_Malformed  -> None
-  | InvalidAction  -> Some 400
-  | InvalidAddress_NotFound  -> None
-  | InvalidAddressID_NotFound  -> None
-  | InvalidAllocationID_NotFound  -> None
-  | InvalidAssociationID_NotFound  -> None
-  | InvalidAttachment_NotFound  -> None
-  | InvalidAttachmentID_NotFound  -> None
-  | InvalidBlockDeviceMapping  -> None
-  | InvalidBundleID_NotFound  -> None
-  | InvalidClientTokenId  -> Some 403
-  | InvalidConversionTaskId  -> None
-  | InvalidCustomerGateway_DuplicateIpAddress  -> None
-  | InvalidCustomerGatewayID_NotFound  -> None
-  | InvalidCustomerGatewayId_Malformed  -> None
-  | InvalidDevice_InUse  -> None
-  | InvalidDhcpOptionID_NotFound  -> None
-  | InvalidDhcpOptionsID_NotFound  -> None
-  | InvalidDhcpOptionsId_Malformed  -> None
-  | InvalidExportTaskID_NotFound  -> None
-  | InvalidFilter  -> None
-  | InvalidFormat  -> None
-  | InvalidGatewayID_NotFound  -> None
-  | InvalidGroup_Duplicate  -> None
-  | InvalidGroup_InUse  -> None
-  | InvalidGroup_NotFound  -> None
-  | InvalidGroup_Reserved  -> None
-  | InvalidGroupId_Malformed  -> None
-  | InvalidID  -> None
-  | InvalidIPAddress_InUse  -> None
-  | InvalidInput  -> None
-  | InvalidInstanceAttributeValue  -> None
-  | InvalidInstanceID  -> None
-  | InvalidInstanceID_Malformed  -> None
-  | InvalidInstanceID_NotFound  -> None
-  | InvalidInstanceID_NotLinkable  -> None
-  | InvalidInstanceType  -> None
-  | InvalidInterface_IpAddressLimitExceeded  -> None
-  | InvalidInternetGatewayID_NotFound  -> None
-  | InvalidKey_Format  -> None
-  | InvalidKeyPair_Duplicate  -> None
-  | InvalidKeyPair_Format  -> None
-  | InvalidKeyPair_NotFound  -> None
-  | InvalidManifest  -> None
-  | InvalidNetworkAclEntry_NotFound  -> None
-  | InvalidNetworkAclID_NotFound  -> None
-  | InvalidNetworkInterface_InUse  -> None
-  | InvalidNetworkInterfaceAttachmentID_Malformed  -> None
-  | InvalidNetworkInterfaceID_NotFound  -> None
-  | InvalidNetworkInterfaceId_Malformed  -> None
-  | InvalidOption_Conflict  -> None
-  | InvalidParameter  -> None
-  | InvalidParameterCombination  -> Some 400
-  | InvalidParameterValue  -> Some 400
-  | InvalidPermission_Duplicate  -> None
-  | InvalidPermission_Malformed  -> None
-  | InvalidPermission_NotFound  -> None
-  | InvalidPlacementGroup_Duplicate  -> None
-  | InvalidPlacementGroup_InUse  -> None
-  | InvalidPlacementGroup_Unknown  -> None
-  | InvalidQueryParameter  -> Some 400
-  | InvalidRequest  -> None
-  | InvalidReservationID_Malformed  -> None
-  | InvalidReservationID_NotFound  -> None
-  | InvalidReservedInstancesId  -> None
-  | InvalidReservedInstancesOfferingId  -> None
-  | InvalidRoute_Malformed  -> None
-  | InvalidRoute_NotFound  -> None
-  | InvalidRouteTableID_NotFound  -> None
-  | InvalidRouteTableId_Malformed  -> None
-  | InvalidSecurity_RequestHasExpired  -> None
-  | InvalidSecurityGroupID_NotFound  -> None
-  | InvalidSnapshot_InUse  -> None
-  | InvalidSnapshot_NotFound  -> None
-  | InvalidSnapshotID_Malformed  -> None
-  | InvalidSpotDatafeed_NotFound  -> None
-  | InvalidSpotInstanceRequestID_Malformed  -> None
-  | InvalidSpotInstanceRequestID_NotFound  -> None
-  | InvalidState  -> None
-  | InvalidStateTransition  -> None
-  | InvalidSubnet_Conflict  -> None
-  | InvalidSubnetID_NotFound  -> None
-  | InvalidUserID_Malformed  -> None
-  | InvalidVolume_NotFound  -> None
-  | InvalidVolume_ZoneMismatch  -> None
-  | InvalidVolumeID_Duplicate  -> None
-  | InvalidVolumeID_Malformed  -> None
-  | InvalidVolumeID_ZoneMismatch  -> None
-  | InvalidVpcID_NotFound  -> None
-  | InvalidVpcPeeringConnectionID_NotFound  -> None
-  | InvalidVpcPeeringConnectionId_Malformed  -> None
-  | InvalidVpcRange  -> None
-  | InvalidVpcState  -> None
-  | InvalidVpnConnectionID  -> None
-  | InvalidVpnConnectionID_NotFound  -> None
-  | InvalidVpnGatewayAttachment_NotFound  -> None
-  | InvalidVpnGatewayID_NotFound  -> None
-  | InvalidZone_NotFound  -> None
-  | LegacySecurityGroup  -> None
-  | MalformedQueryString  -> Some 404
-  | MaxIOPSLimitExceeded  -> None
-  | MaxSpotInstanceCountExceeded  -> None
-  | MissingAction  -> Some 400
-  | MissingAuthenticationToken  -> Some 403
-  | MissingParameter  -> Some 400
-  | NetworkAclEntryAlreadyExists  -> None
-  | NetworkAclEntryLimitExceeded  -> None
-  | NetworkAclLimitExceeded  -> None
-  | NonEBSInstance  -> None
-  | NotExportable  -> None
-  | OperationNotPermitted  -> None
-  | OptInRequired  -> Some 403
-  | OutstandingVpcPeeringConnectionLimitExceeded  -> None
-  | PendingSnapshotLimitExceeded  -> None
-  | PendingVerification  -> None
-  | PrivateIpAddressLimitExceeded  -> None
-  | RequestExpired  -> Some 400
-  | RequestLimitExceeded  -> None
-  | RequestResourceCountExceeded  -> None
-  | ReservedInstancesLimitExceeded  -> None
-  | Resource_AlreadyAssociated  -> None
-  | ResourceCountExceeded  -> None
-  | ResourceLimitExceeded  -> None
-  | RouteAlreadyExists  -> None
-  | RouteLimitExceeded  -> None
-  | RouteTableLimitExceeded  -> None
-  | RulesPerSecurityGroupLimitExceeded  -> None
-  | SecurityGroupLimitExceeded  -> None
-  | SecurityGroupsPerInstanceLimitExceeded  -> None
-  | SecurityGroupsPerInterfaceLimitExceeded  -> None
-  | ServiceUnavailable  -> Some 503
-  | SignatureDoesNotMatch  -> None
-  | SnapshotLimitExceeded  -> None
-  | SubnetLimitExceeded  -> None
-  | TagLimitExceeded  -> None
-  | Throttling  -> Some 400
-  | UnauthorizedOperation  -> None
-  | UnknownParameter  -> None
-  | UnknownVolumeType  -> None
-  | Unsupported  -> None
-  | UnsupportedOperation  -> None
-  | UnsupportedProtocol  -> None
-  | VPCIdNotSpecified  -> None
-  | VPCResourceNotSpecified  -> None
-  | ValidationError  -> Some 400
-  | VolumeInUse  -> None
-  | VolumeLimitExceeded  -> None
-  | VolumeTypeNotAvailableInZone  -> None
-  | VpcCidrConflict  -> None
-  | VpcLimitExceeded  -> None
-  | VpcPeeringConnectionAlreadyExists  -> None
-  | VpnConnectionLimitExceeded  -> None
-  | VpnGatewayAttachmentLimitExceeded  -> None
-  | VpnGatewayLimitExceeded  -> None
-  | Uninhabited  -> None 
+  | ActiveVpcPeeringConnectionPerVpcLimitExceeded -> None
+  | AddressLimitExceeded -> None
+  | AttachmentLimitExceeded -> None
+  | AuthFailure -> None
+  | Blocked -> None
+  | BundlingInProgress -> None
+  | CannotDelete -> None
+  | ConcurrentSnapshotLimitExceeded -> None
+  | ConcurrentTagAccess -> None
+  | CustomerGatewayLimitExceeded -> None
+  | DependencyViolation -> None
+  | DiskImageSizeTooLarge -> None
+  | DryRunOperation -> None
+  | EncryptedVolumesNotSupported -> None
+  | FilterLimitExceeded -> None
+  | Gateway_NotAttached -> None
+  | IdempotentParameterMismatch -> None
+  | IncompleteSignature -> Some 400
+  | IncorrectInstanceState -> None
+  | IncorrectState -> None
+  | InstanceAlreadyLinked -> None
+  | InstanceLimitExceeded -> None
+  | InsufficientFreeAddressesInSubnet -> None
+  | InsufficientReservedInstancesCapacity -> None
+  | InternalFailure -> Some 500
+  | InternetGatewayLimitExceeded -> None
+  | InvalidAMIAttributeItemValue -> None
+  | InvalidAMIID_Malformed -> None
+  | InvalidAMIID_NotFound -> None
+  | InvalidAMIID_Unavailable -> None
+  | InvalidAMIName_Duplicate -> None
+  | InvalidAMIName_Malformed -> None
+  | InvalidAction -> Some 400
+  | InvalidAddress_NotFound -> None
+  | InvalidAddressID_NotFound -> None
+  | InvalidAllocationID_NotFound -> None
+  | InvalidAssociationID_NotFound -> None
+  | InvalidAttachment_NotFound -> None
+  | InvalidAttachmentID_NotFound -> None
+  | InvalidBlockDeviceMapping -> None
+  | InvalidBundleID_NotFound -> None
+  | InvalidClientTokenId -> Some 403
+  | InvalidConversionTaskId -> None
+  | InvalidCustomerGateway_DuplicateIpAddress -> None
+  | InvalidCustomerGatewayID_NotFound -> None
+  | InvalidCustomerGatewayId_Malformed -> None
+  | InvalidDevice_InUse -> None
+  | InvalidDhcpOptionID_NotFound -> None
+  | InvalidDhcpOptionsID_NotFound -> None
+  | InvalidDhcpOptionsId_Malformed -> None
+  | InvalidExportTaskID_NotFound -> None
+  | InvalidFilter -> None
+  | InvalidFormat -> None
+  | InvalidGatewayID_NotFound -> None
+  | InvalidGroup_Duplicate -> None
+  | InvalidGroup_InUse -> None
+  | InvalidGroup_NotFound -> None
+  | InvalidGroup_Reserved -> None
+  | InvalidGroupId_Malformed -> None
+  | InvalidID -> None
+  | InvalidIPAddress_InUse -> None
+  | InvalidInput -> None
+  | InvalidInstanceAttributeValue -> None
+  | InvalidInstanceID -> None
+  | InvalidInstanceID_Malformed -> None
+  | InvalidInstanceID_NotFound -> None
+  | InvalidInstanceID_NotLinkable -> None
+  | InvalidInstanceType -> None
+  | InvalidInterface_IpAddressLimitExceeded -> None
+  | InvalidInternetGatewayID_NotFound -> None
+  | InvalidKey_Format -> None
+  | InvalidKeyPair_Duplicate -> None
+  | InvalidKeyPair_Format -> None
+  | InvalidKeyPair_NotFound -> None
+  | InvalidManifest -> None
+  | InvalidNetworkAclEntry_NotFound -> None
+  | InvalidNetworkAclID_NotFound -> None
+  | InvalidNetworkInterface_InUse -> None
+  | InvalidNetworkInterfaceAttachmentID_Malformed -> None
+  | InvalidNetworkInterfaceID_NotFound -> None
+  | InvalidNetworkInterfaceId_Malformed -> None
+  | InvalidOption_Conflict -> None
+  | InvalidParameter -> None
+  | InvalidParameterCombination -> Some 400
+  | InvalidParameterValue -> Some 400
+  | InvalidPermission_Duplicate -> None
+  | InvalidPermission_Malformed -> None
+  | InvalidPermission_NotFound -> None
+  | InvalidPlacementGroup_Duplicate -> None
+  | InvalidPlacementGroup_InUse -> None
+  | InvalidPlacementGroup_Unknown -> None
+  | InvalidQueryParameter -> Some 400
+  | InvalidRequest -> None
+  | InvalidReservationID_Malformed -> None
+  | InvalidReservationID_NotFound -> None
+  | InvalidReservedInstancesId -> None
+  | InvalidReservedInstancesOfferingId -> None
+  | InvalidRoute_Malformed -> None
+  | InvalidRoute_NotFound -> None
+  | InvalidRouteTableID_NotFound -> None
+  | InvalidRouteTableId_Malformed -> None
+  | InvalidSecurity_RequestHasExpired -> None
+  | InvalidSecurityGroupID_NotFound -> None
+  | InvalidSnapshot_InUse -> None
+  | InvalidSnapshot_NotFound -> None
+  | InvalidSnapshotID_Malformed -> None
+  | InvalidSpotDatafeed_NotFound -> None
+  | InvalidSpotInstanceRequestID_Malformed -> None
+  | InvalidSpotInstanceRequestID_NotFound -> None
+  | InvalidState -> None
+  | InvalidStateTransition -> None
+  | InvalidSubnet_Conflict -> None
+  | InvalidSubnetID_NotFound -> None
+  | InvalidUserID_Malformed -> None
+  | InvalidVolume_NotFound -> None
+  | InvalidVolume_ZoneMismatch -> None
+  | InvalidVolumeID_Duplicate -> None
+  | InvalidVolumeID_Malformed -> None
+  | InvalidVolumeID_ZoneMismatch -> None
+  | InvalidVpcID_NotFound -> None
+  | InvalidVpcPeeringConnectionID_NotFound -> None
+  | InvalidVpcPeeringConnectionId_Malformed -> None
+  | InvalidVpcRange -> None
+  | InvalidVpcState -> None
+  | InvalidVpnConnectionID -> None
+  | InvalidVpnConnectionID_NotFound -> None
+  | InvalidVpnGatewayAttachment_NotFound -> None
+  | InvalidVpnGatewayID_NotFound -> None
+  | InvalidZone_NotFound -> None
+  | LegacySecurityGroup -> None
+  | MalformedQueryString -> Some 404
+  | MaxIOPSLimitExceeded -> None
+  | MaxSpotInstanceCountExceeded -> None
+  | MissingAction -> Some 400
+  | MissingAuthenticationToken -> Some 403
+  | MissingParameter -> Some 400
+  | NetworkAclEntryAlreadyExists -> None
+  | NetworkAclEntryLimitExceeded -> None
+  | NetworkAclLimitExceeded -> None
+  | NonEBSInstance -> None
+  | NotExportable -> None
+  | OperationNotPermitted -> None
+  | OptInRequired -> Some 403
+  | OutstandingVpcPeeringConnectionLimitExceeded -> None
+  | PendingSnapshotLimitExceeded -> None
+  | PendingVerification -> None
+  | PrivateIpAddressLimitExceeded -> None
+  | RequestExpired -> Some 400
+  | RequestLimitExceeded -> None
+  | RequestResourceCountExceeded -> None
+  | ReservedInstancesLimitExceeded -> None
+  | Resource_AlreadyAssociated -> None
+  | ResourceCountExceeded -> None
+  | ResourceLimitExceeded -> None
+  | RouteAlreadyExists -> None
+  | RouteLimitExceeded -> None
+  | RouteTableLimitExceeded -> None
+  | RulesPerSecurityGroupLimitExceeded -> None
+  | SecurityGroupLimitExceeded -> None
+  | SecurityGroupsPerInstanceLimitExceeded -> None
+  | SecurityGroupsPerInterfaceLimitExceeded -> None
+  | ServiceUnavailable -> Some 503
+  | SignatureDoesNotMatch -> None
+  | SnapshotLimitExceeded -> None
+  | SubnetLimitExceeded -> None
+  | TagLimitExceeded -> None
+  | Throttling -> Some 400
+  | UnauthorizedOperation -> None
+  | UnknownParameter -> None
+  | UnknownVolumeType -> None
+  | Unsupported -> None
+  | UnsupportedOperation -> None
+  | UnsupportedProtocol -> None
+  | VPCIdNotSpecified -> None
+  | VPCResourceNotSpecified -> None
+  | ValidationError -> Some 400
+  | VolumeInUse -> None
+  | VolumeLimitExceeded -> None
+  | VolumeTypeNotAvailableInZone -> None
+  | VpcCidrConflict -> None
+  | VpcLimitExceeded -> None
+  | VpcPeeringConnectionAlreadyExists -> None
+  | VpnConnectionLimitExceeded -> None
+  | VpnGatewayAttachmentLimitExceeded -> None
+  | VpnGatewayLimitExceeded -> None
+  | Uninhabited -> None
 let to_string e =
   match e with
-  | ActiveVpcPeeringConnectionPerVpcLimitExceeded  ->
+  | ActiveVpcPeeringConnectionPerVpcLimitExceeded ->
       "ActiveVpcPeeringConnectionPerVpcLimitExceeded"
-  | AddressLimitExceeded  -> "AddressLimitExceeded"
-  | AttachmentLimitExceeded  -> "AttachmentLimitExceeded"
-  | AuthFailure  -> "AuthFailure"
-  | Blocked  -> "Blocked"
-  | BundlingInProgress  -> "BundlingInProgress"
-  | CannotDelete  -> "CannotDelete"
-  | ConcurrentSnapshotLimitExceeded  -> "ConcurrentSnapshotLimitExceeded"
-  | ConcurrentTagAccess  -> "ConcurrentTagAccess"
-  | CustomerGatewayLimitExceeded  -> "CustomerGatewayLimitExceeded"
-  | DependencyViolation  -> "DependencyViolation"
-  | DiskImageSizeTooLarge  -> "DiskImageSizeTooLarge"
-  | DryRunOperation  -> "DryRunOperation"
-  | EncryptedVolumesNotSupported  -> "EncryptedVolumesNotSupported"
-  | FilterLimitExceeded  -> "FilterLimitExceeded"
-  | Gateway_NotAttached  -> "Gateway.NotAttached"
-  | IdempotentParameterMismatch  -> "IdempotentParameterMismatch"
-  | IncompleteSignature  -> "IncompleteSignature"
-  | IncorrectInstanceState  -> "IncorrectInstanceState"
-  | IncorrectState  -> "IncorrectState"
-  | InstanceAlreadyLinked  -> "InstanceAlreadyLinked"
-  | InstanceLimitExceeded  -> "InstanceLimitExceeded"
-  | InsufficientFreeAddressesInSubnet  -> "InsufficientFreeAddressesInSubnet"
-  | InsufficientReservedInstancesCapacity  ->
+  | AddressLimitExceeded -> "AddressLimitExceeded"
+  | AttachmentLimitExceeded -> "AttachmentLimitExceeded"
+  | AuthFailure -> "AuthFailure"
+  | Blocked -> "Blocked"
+  | BundlingInProgress -> "BundlingInProgress"
+  | CannotDelete -> "CannotDelete"
+  | ConcurrentSnapshotLimitExceeded -> "ConcurrentSnapshotLimitExceeded"
+  | ConcurrentTagAccess -> "ConcurrentTagAccess"
+  | CustomerGatewayLimitExceeded -> "CustomerGatewayLimitExceeded"
+  | DependencyViolation -> "DependencyViolation"
+  | DiskImageSizeTooLarge -> "DiskImageSizeTooLarge"
+  | DryRunOperation -> "DryRunOperation"
+  | EncryptedVolumesNotSupported -> "EncryptedVolumesNotSupported"
+  | FilterLimitExceeded -> "FilterLimitExceeded"
+  | Gateway_NotAttached -> "Gateway.NotAttached"
+  | IdempotentParameterMismatch -> "IdempotentParameterMismatch"
+  | IncompleteSignature -> "IncompleteSignature"
+  | IncorrectInstanceState -> "IncorrectInstanceState"
+  | IncorrectState -> "IncorrectState"
+  | InstanceAlreadyLinked -> "InstanceAlreadyLinked"
+  | InstanceLimitExceeded -> "InstanceLimitExceeded"
+  | InsufficientFreeAddressesInSubnet -> "InsufficientFreeAddressesInSubnet"
+  | InsufficientReservedInstancesCapacity ->
       "InsufficientReservedInstancesCapacity"
-  | InternalFailure  -> "InternalFailure"
-  | InternetGatewayLimitExceeded  -> "InternetGatewayLimitExceeded"
-  | InvalidAMIAttributeItemValue  -> "InvalidAMIAttributeItemValue"
-  | InvalidAMIID_Malformed  -> "InvalidAMIID.Malformed"
-  | InvalidAMIID_NotFound  -> "InvalidAMIID.NotFound"
-  | InvalidAMIID_Unavailable  -> "InvalidAMIID.Unavailable"
-  | InvalidAMIName_Duplicate  -> "InvalidAMIName.Duplicate"
-  | InvalidAMIName_Malformed  -> "InvalidAMIName.Malformed"
-  | InvalidAction  -> "InvalidAction"
-  | InvalidAddress_NotFound  -> "InvalidAddress.NotFound"
-  | InvalidAddressID_NotFound  -> "InvalidAddressID.NotFound"
-  | InvalidAllocationID_NotFound  -> "InvalidAllocationID.NotFound"
-  | InvalidAssociationID_NotFound  -> "InvalidAssociationID.NotFound"
-  | InvalidAttachment_NotFound  -> "InvalidAttachment.NotFound"
-  | InvalidAttachmentID_NotFound  -> "InvalidAttachmentID.NotFound"
-  | InvalidBlockDeviceMapping  -> "InvalidBlockDeviceMapping"
-  | InvalidBundleID_NotFound  -> "InvalidBundleID.NotFound"
-  | InvalidClientTokenId  -> "InvalidClientTokenId"
-  | InvalidConversionTaskId  -> "InvalidConversionTaskId"
-  | InvalidCustomerGateway_DuplicateIpAddress  ->
+  | InternalFailure -> "InternalFailure"
+  | InternetGatewayLimitExceeded -> "InternetGatewayLimitExceeded"
+  | InvalidAMIAttributeItemValue -> "InvalidAMIAttributeItemValue"
+  | InvalidAMIID_Malformed -> "InvalidAMIID.Malformed"
+  | InvalidAMIID_NotFound -> "InvalidAMIID.NotFound"
+  | InvalidAMIID_Unavailable -> "InvalidAMIID.Unavailable"
+  | InvalidAMIName_Duplicate -> "InvalidAMIName.Duplicate"
+  | InvalidAMIName_Malformed -> "InvalidAMIName.Malformed"
+  | InvalidAction -> "InvalidAction"
+  | InvalidAddress_NotFound -> "InvalidAddress.NotFound"
+  | InvalidAddressID_NotFound -> "InvalidAddressID.NotFound"
+  | InvalidAllocationID_NotFound -> "InvalidAllocationID.NotFound"
+  | InvalidAssociationID_NotFound -> "InvalidAssociationID.NotFound"
+  | InvalidAttachment_NotFound -> "InvalidAttachment.NotFound"
+  | InvalidAttachmentID_NotFound -> "InvalidAttachmentID.NotFound"
+  | InvalidBlockDeviceMapping -> "InvalidBlockDeviceMapping"
+  | InvalidBundleID_NotFound -> "InvalidBundleID.NotFound"
+  | InvalidClientTokenId -> "InvalidClientTokenId"
+  | InvalidConversionTaskId -> "InvalidConversionTaskId"
+  | InvalidCustomerGateway_DuplicateIpAddress ->
       "InvalidCustomerGateway.DuplicateIpAddress"
-  | InvalidCustomerGatewayID_NotFound  -> "InvalidCustomerGatewayID.NotFound"
-  | InvalidCustomerGatewayId_Malformed  ->
+  | InvalidCustomerGatewayID_NotFound -> "InvalidCustomerGatewayID.NotFound"
+  | InvalidCustomerGatewayId_Malformed ->
       "InvalidCustomerGatewayId.Malformed"
-  | InvalidDevice_InUse  -> "InvalidDevice.InUse"
-  | InvalidDhcpOptionID_NotFound  -> "InvalidDhcpOptionID.NotFound"
-  | InvalidDhcpOptionsID_NotFound  -> "InvalidDhcpOptionsID.NotFound"
-  | InvalidDhcpOptionsId_Malformed  -> "InvalidDhcpOptionsId.Malformed"
-  | InvalidExportTaskID_NotFound  -> "InvalidExportTaskID.NotFound"
-  | InvalidFilter  -> "InvalidFilter"
-  | InvalidFormat  -> "InvalidFormat"
-  | InvalidGatewayID_NotFound  -> "InvalidGatewayID.NotFound"
-  | InvalidGroup_Duplicate  -> "InvalidGroup.Duplicate"
-  | InvalidGroup_InUse  -> "InvalidGroup.InUse"
-  | InvalidGroup_NotFound  -> "InvalidGroup.NotFound"
-  | InvalidGroup_Reserved  -> "InvalidGroup.Reserved"
-  | InvalidGroupId_Malformed  -> "InvalidGroupId.Malformed"
-  | InvalidID  -> "InvalidID"
-  | InvalidIPAddress_InUse  -> "InvalidIPAddress.InUse"
-  | InvalidInput  -> "InvalidInput"
-  | InvalidInstanceAttributeValue  -> "InvalidInstanceAttributeValue"
-  | InvalidInstanceID  -> "InvalidInstanceID"
-  | InvalidInstanceID_Malformed  -> "InvalidInstanceID.Malformed"
-  | InvalidInstanceID_NotFound  -> "InvalidInstanceID.NotFound"
-  | InvalidInstanceID_NotLinkable  -> "InvalidInstanceID.NotLinkable"
-  | InvalidInstanceType  -> "InvalidInstanceType"
-  | InvalidInterface_IpAddressLimitExceeded  ->
+  | InvalidDevice_InUse -> "InvalidDevice.InUse"
+  | InvalidDhcpOptionID_NotFound -> "InvalidDhcpOptionID.NotFound"
+  | InvalidDhcpOptionsID_NotFound -> "InvalidDhcpOptionsID.NotFound"
+  | InvalidDhcpOptionsId_Malformed -> "InvalidDhcpOptionsId.Malformed"
+  | InvalidExportTaskID_NotFound -> "InvalidExportTaskID.NotFound"
+  | InvalidFilter -> "InvalidFilter"
+  | InvalidFormat -> "InvalidFormat"
+  | InvalidGatewayID_NotFound -> "InvalidGatewayID.NotFound"
+  | InvalidGroup_Duplicate -> "InvalidGroup.Duplicate"
+  | InvalidGroup_InUse -> "InvalidGroup.InUse"
+  | InvalidGroup_NotFound -> "InvalidGroup.NotFound"
+  | InvalidGroup_Reserved -> "InvalidGroup.Reserved"
+  | InvalidGroupId_Malformed -> "InvalidGroupId.Malformed"
+  | InvalidID -> "InvalidID"
+  | InvalidIPAddress_InUse -> "InvalidIPAddress.InUse"
+  | InvalidInput -> "InvalidInput"
+  | InvalidInstanceAttributeValue -> "InvalidInstanceAttributeValue"
+  | InvalidInstanceID -> "InvalidInstanceID"
+  | InvalidInstanceID_Malformed -> "InvalidInstanceID.Malformed"
+  | InvalidInstanceID_NotFound -> "InvalidInstanceID.NotFound"
+  | InvalidInstanceID_NotLinkable -> "InvalidInstanceID.NotLinkable"
+  | InvalidInstanceType -> "InvalidInstanceType"
+  | InvalidInterface_IpAddressLimitExceeded ->
       "InvalidInterface.IpAddressLimitExceeded"
-  | InvalidInternetGatewayID_NotFound  -> "InvalidInternetGatewayID.NotFound"
-  | InvalidKey_Format  -> "InvalidKey.Format"
-  | InvalidKeyPair_Duplicate  -> "InvalidKeyPair.Duplicate"
-  | InvalidKeyPair_Format  -> "InvalidKeyPair.Format"
-  | InvalidKeyPair_NotFound  -> "InvalidKeyPair.NotFound"
-  | InvalidManifest  -> "InvalidManifest"
-  | InvalidNetworkAclEntry_NotFound  -> "InvalidNetworkAclEntry.NotFound"
-  | InvalidNetworkAclID_NotFound  -> "InvalidNetworkAclID.NotFound"
-  | InvalidNetworkInterface_InUse  -> "InvalidNetworkInterface.InUse"
-  | InvalidNetworkInterfaceAttachmentID_Malformed  ->
+  | InvalidInternetGatewayID_NotFound -> "InvalidInternetGatewayID.NotFound"
+  | InvalidKey_Format -> "InvalidKey.Format"
+  | InvalidKeyPair_Duplicate -> "InvalidKeyPair.Duplicate"
+  | InvalidKeyPair_Format -> "InvalidKeyPair.Format"
+  | InvalidKeyPair_NotFound -> "InvalidKeyPair.NotFound"
+  | InvalidManifest -> "InvalidManifest"
+  | InvalidNetworkAclEntry_NotFound -> "InvalidNetworkAclEntry.NotFound"
+  | InvalidNetworkAclID_NotFound -> "InvalidNetworkAclID.NotFound"
+  | InvalidNetworkInterface_InUse -> "InvalidNetworkInterface.InUse"
+  | InvalidNetworkInterfaceAttachmentID_Malformed ->
       "InvalidNetworkInterfaceAttachmentID.Malformed"
-  | InvalidNetworkInterfaceID_NotFound  ->
+  | InvalidNetworkInterfaceID_NotFound ->
       "InvalidNetworkInterfaceID.NotFound"
-  | InvalidNetworkInterfaceId_Malformed  ->
+  | InvalidNetworkInterfaceId_Malformed ->
       "InvalidNetworkInterfaceId.Malformed"
-  | InvalidOption_Conflict  -> "InvalidOption.Conflict"
-  | InvalidParameter  -> "InvalidParameter"
-  | InvalidParameterCombination  -> "InvalidParameterCombination"
-  | InvalidParameterValue  -> "InvalidParameterValue"
-  | InvalidPermission_Duplicate  -> "InvalidPermission.Duplicate"
-  | InvalidPermission_Malformed  -> "InvalidPermission.Malformed"
-  | InvalidPermission_NotFound  -> "InvalidPermission.NotFound"
-  | InvalidPlacementGroup_Duplicate  -> "InvalidPlacementGroup.Duplicate"
-  | InvalidPlacementGroup_InUse  -> "InvalidPlacementGroup.InUse"
-  | InvalidPlacementGroup_Unknown  -> "InvalidPlacementGroup.Unknown"
-  | InvalidQueryParameter  -> "InvalidQueryParameter"
-  | InvalidRequest  -> "InvalidRequest"
-  | InvalidReservationID_Malformed  -> "InvalidReservationID.Malformed"
-  | InvalidReservationID_NotFound  -> "InvalidReservationID.NotFound"
-  | InvalidReservedInstancesId  -> "InvalidReservedInstancesId"
-  | InvalidReservedInstancesOfferingId  ->
+  | InvalidOption_Conflict -> "InvalidOption.Conflict"
+  | InvalidParameter -> "InvalidParameter"
+  | InvalidParameterCombination -> "InvalidParameterCombination"
+  | InvalidParameterValue -> "InvalidParameterValue"
+  | InvalidPermission_Duplicate -> "InvalidPermission.Duplicate"
+  | InvalidPermission_Malformed -> "InvalidPermission.Malformed"
+  | InvalidPermission_NotFound -> "InvalidPermission.NotFound"
+  | InvalidPlacementGroup_Duplicate -> "InvalidPlacementGroup.Duplicate"
+  | InvalidPlacementGroup_InUse -> "InvalidPlacementGroup.InUse"
+  | InvalidPlacementGroup_Unknown -> "InvalidPlacementGroup.Unknown"
+  | InvalidQueryParameter -> "InvalidQueryParameter"
+  | InvalidRequest -> "InvalidRequest"
+  | InvalidReservationID_Malformed -> "InvalidReservationID.Malformed"
+  | InvalidReservationID_NotFound -> "InvalidReservationID.NotFound"
+  | InvalidReservedInstancesId -> "InvalidReservedInstancesId"
+  | InvalidReservedInstancesOfferingId ->
       "InvalidReservedInstancesOfferingId"
-  | InvalidRoute_Malformed  -> "InvalidRoute.Malformed"
-  | InvalidRoute_NotFound  -> "InvalidRoute.NotFound"
-  | InvalidRouteTableID_NotFound  -> "InvalidRouteTableID.NotFound"
-  | InvalidRouteTableId_Malformed  -> "InvalidRouteTableId.Malformed"
-  | InvalidSecurity_RequestHasExpired  -> "InvalidSecurity.RequestHasExpired"
-  | InvalidSecurityGroupID_NotFound  -> "InvalidSecurityGroupID.NotFound"
-  | InvalidSnapshot_InUse  -> "InvalidSnapshot.InUse"
-  | InvalidSnapshot_NotFound  -> "InvalidSnapshot.NotFound"
-  | InvalidSnapshotID_Malformed  -> "InvalidSnapshotID.Malformed"
-  | InvalidSpotDatafeed_NotFound  -> "InvalidSpotDatafeed.NotFound"
-  | InvalidSpotInstanceRequestID_Malformed  ->
+  | InvalidRoute_Malformed -> "InvalidRoute.Malformed"
+  | InvalidRoute_NotFound -> "InvalidRoute.NotFound"
+  | InvalidRouteTableID_NotFound -> "InvalidRouteTableID.NotFound"
+  | InvalidRouteTableId_Malformed -> "InvalidRouteTableId.Malformed"
+  | InvalidSecurity_RequestHasExpired -> "InvalidSecurity.RequestHasExpired"
+  | InvalidSecurityGroupID_NotFound -> "InvalidSecurityGroupID.NotFound"
+  | InvalidSnapshot_InUse -> "InvalidSnapshot.InUse"
+  | InvalidSnapshot_NotFound -> "InvalidSnapshot.NotFound"
+  | InvalidSnapshotID_Malformed -> "InvalidSnapshotID.Malformed"
+  | InvalidSpotDatafeed_NotFound -> "InvalidSpotDatafeed.NotFound"
+  | InvalidSpotInstanceRequestID_Malformed ->
       "InvalidSpotInstanceRequestID.Malformed"
-  | InvalidSpotInstanceRequestID_NotFound  ->
+  | InvalidSpotInstanceRequestID_NotFound ->
       "InvalidSpotInstanceRequestID.NotFound"
-  | InvalidState  -> "InvalidState"
-  | InvalidStateTransition  -> "InvalidStateTransition"
-  | InvalidSubnet_Conflict  -> "InvalidSubnet.Conflict"
-  | InvalidSubnetID_NotFound  -> "InvalidSubnetID.NotFound"
-  | InvalidUserID_Malformed  -> "InvalidUserID.Malformed"
-  | InvalidVolume_NotFound  -> "InvalidVolume.NotFound"
-  | InvalidVolume_ZoneMismatch  -> "InvalidVolume.ZoneMismatch"
-  | InvalidVolumeID_Duplicate  -> "InvalidVolumeID.Duplicate"
-  | InvalidVolumeID_Malformed  -> "InvalidVolumeID.Malformed"
-  | InvalidVolumeID_ZoneMismatch  -> "InvalidVolumeID.ZoneMismatch"
-  | InvalidVpcID_NotFound  -> "InvalidVpcID.NotFound"
-  | InvalidVpcPeeringConnectionID_NotFound  ->
+  | InvalidState -> "InvalidState"
+  | InvalidStateTransition -> "InvalidStateTransition"
+  | InvalidSubnet_Conflict -> "InvalidSubnet.Conflict"
+  | InvalidSubnetID_NotFound -> "InvalidSubnetID.NotFound"
+  | InvalidUserID_Malformed -> "InvalidUserID.Malformed"
+  | InvalidVolume_NotFound -> "InvalidVolume.NotFound"
+  | InvalidVolume_ZoneMismatch -> "InvalidVolume.ZoneMismatch"
+  | InvalidVolumeID_Duplicate -> "InvalidVolumeID.Duplicate"
+  | InvalidVolumeID_Malformed -> "InvalidVolumeID.Malformed"
+  | InvalidVolumeID_ZoneMismatch -> "InvalidVolumeID.ZoneMismatch"
+  | InvalidVpcID_NotFound -> "InvalidVpcID.NotFound"
+  | InvalidVpcPeeringConnectionID_NotFound ->
       "InvalidVpcPeeringConnectionID.NotFound"
-  | InvalidVpcPeeringConnectionId_Malformed  ->
+  | InvalidVpcPeeringConnectionId_Malformed ->
       "InvalidVpcPeeringConnectionId.Malformed"
-  | InvalidVpcRange  -> "InvalidVpcRange"
-  | InvalidVpcState  -> "InvalidVpcState"
-  | InvalidVpnConnectionID  -> "InvalidVpnConnectionID"
-  | InvalidVpnConnectionID_NotFound  -> "InvalidVpnConnectionID.NotFound"
-  | InvalidVpnGatewayAttachment_NotFound  ->
+  | InvalidVpcRange -> "InvalidVpcRange"
+  | InvalidVpcState -> "InvalidVpcState"
+  | InvalidVpnConnectionID -> "InvalidVpnConnectionID"
+  | InvalidVpnConnectionID_NotFound -> "InvalidVpnConnectionID.NotFound"
+  | InvalidVpnGatewayAttachment_NotFound ->
       "InvalidVpnGatewayAttachment.NotFound"
-  | InvalidVpnGatewayID_NotFound  -> "InvalidVpnGatewayID.NotFound"
-  | InvalidZone_NotFound  -> "InvalidZone.NotFound"
-  | LegacySecurityGroup  -> "LegacySecurityGroup"
-  | MalformedQueryString  -> "MalformedQueryString"
-  | MaxIOPSLimitExceeded  -> "MaxIOPSLimitExceeded"
-  | MaxSpotInstanceCountExceeded  -> "MaxSpotInstanceCountExceeded"
-  | MissingAction  -> "MissingAction"
-  | MissingAuthenticationToken  -> "MissingAuthenticationToken"
-  | MissingParameter  -> "MissingParameter"
-  | NetworkAclEntryAlreadyExists  -> "NetworkAclEntryAlreadyExists"
-  | NetworkAclEntryLimitExceeded  -> "NetworkAclEntryLimitExceeded"
-  | NetworkAclLimitExceeded  -> "NetworkAclLimitExceeded"
-  | NonEBSInstance  -> "NonEBSInstance"
-  | NotExportable  -> "NotExportable"
-  | OperationNotPermitted  -> "OperationNotPermitted"
-  | OptInRequired  -> "OptInRequired"
-  | OutstandingVpcPeeringConnectionLimitExceeded  ->
+  | InvalidVpnGatewayID_NotFound -> "InvalidVpnGatewayID.NotFound"
+  | InvalidZone_NotFound -> "InvalidZone.NotFound"
+  | LegacySecurityGroup -> "LegacySecurityGroup"
+  | MalformedQueryString -> "MalformedQueryString"
+  | MaxIOPSLimitExceeded -> "MaxIOPSLimitExceeded"
+  | MaxSpotInstanceCountExceeded -> "MaxSpotInstanceCountExceeded"
+  | MissingAction -> "MissingAction"
+  | MissingAuthenticationToken -> "MissingAuthenticationToken"
+  | MissingParameter -> "MissingParameter"
+  | NetworkAclEntryAlreadyExists -> "NetworkAclEntryAlreadyExists"
+  | NetworkAclEntryLimitExceeded -> "NetworkAclEntryLimitExceeded"
+  | NetworkAclLimitExceeded -> "NetworkAclLimitExceeded"
+  | NonEBSInstance -> "NonEBSInstance"
+  | NotExportable -> "NotExportable"
+  | OperationNotPermitted -> "OperationNotPermitted"
+  | OptInRequired -> "OptInRequired"
+  | OutstandingVpcPeeringConnectionLimitExceeded ->
       "OutstandingVpcPeeringConnectionLimitExceeded"
-  | PendingSnapshotLimitExceeded  -> "PendingSnapshotLimitExceeded"
-  | PendingVerification  -> "PendingVerification"
-  | PrivateIpAddressLimitExceeded  -> "PrivateIpAddressLimitExceeded"
-  | RequestExpired  -> "RequestExpired"
-  | RequestLimitExceeded  -> "RequestLimitExceeded"
-  | RequestResourceCountExceeded  -> "RequestResourceCountExceeded"
-  | ReservedInstancesLimitExceeded  -> "ReservedInstancesLimitExceeded"
-  | Resource_AlreadyAssociated  -> "Resource.AlreadyAssociated"
-  | ResourceCountExceeded  -> "ResourceCountExceeded"
-  | ResourceLimitExceeded  -> "ResourceLimitExceeded"
-  | RouteAlreadyExists  -> "RouteAlreadyExists"
-  | RouteLimitExceeded  -> "RouteLimitExceeded"
-  | RouteTableLimitExceeded  -> "RouteTableLimitExceeded"
-  | RulesPerSecurityGroupLimitExceeded  ->
+  | PendingSnapshotLimitExceeded -> "PendingSnapshotLimitExceeded"
+  | PendingVerification -> "PendingVerification"
+  | PrivateIpAddressLimitExceeded -> "PrivateIpAddressLimitExceeded"
+  | RequestExpired -> "RequestExpired"
+  | RequestLimitExceeded -> "RequestLimitExceeded"
+  | RequestResourceCountExceeded -> "RequestResourceCountExceeded"
+  | ReservedInstancesLimitExceeded -> "ReservedInstancesLimitExceeded"
+  | Resource_AlreadyAssociated -> "Resource.AlreadyAssociated"
+  | ResourceCountExceeded -> "ResourceCountExceeded"
+  | ResourceLimitExceeded -> "ResourceLimitExceeded"
+  | RouteAlreadyExists -> "RouteAlreadyExists"
+  | RouteLimitExceeded -> "RouteLimitExceeded"
+  | RouteTableLimitExceeded -> "RouteTableLimitExceeded"
+  | RulesPerSecurityGroupLimitExceeded ->
       "RulesPerSecurityGroupLimitExceeded"
-  | SecurityGroupLimitExceeded  -> "SecurityGroupLimitExceeded"
-  | SecurityGroupsPerInstanceLimitExceeded  ->
+  | SecurityGroupLimitExceeded -> "SecurityGroupLimitExceeded"
+  | SecurityGroupsPerInstanceLimitExceeded ->
       "SecurityGroupsPerInstanceLimitExceeded"
-  | SecurityGroupsPerInterfaceLimitExceeded  ->
+  | SecurityGroupsPerInterfaceLimitExceeded ->
       "SecurityGroupsPerInterfaceLimitExceeded"
-  | ServiceUnavailable  -> "ServiceUnavailable"
-  | SignatureDoesNotMatch  -> "SignatureDoesNotMatch"
-  | SnapshotLimitExceeded  -> "SnapshotLimitExceeded"
-  | SubnetLimitExceeded  -> "SubnetLimitExceeded"
-  | TagLimitExceeded  -> "TagLimitExceeded"
-  | Throttling  -> "Throttling"
-  | UnauthorizedOperation  -> "UnauthorizedOperation"
-  | UnknownParameter  -> "UnknownParameter"
-  | UnknownVolumeType  -> "UnknownVolumeType"
-  | Unsupported  -> "Unsupported"
-  | UnsupportedOperation  -> "UnsupportedOperation"
-  | UnsupportedProtocol  -> "UnsupportedProtocol"
-  | VPCIdNotSpecified  -> "VPCIdNotSpecified"
-  | VPCResourceNotSpecified  -> "VPCResourceNotSpecified"
-  | ValidationError  -> "ValidationError"
-  | VolumeInUse  -> "VolumeInUse"
-  | VolumeLimitExceeded  -> "VolumeLimitExceeded"
-  | VolumeTypeNotAvailableInZone  -> "VolumeTypeNotAvailableInZone"
-  | VpcCidrConflict  -> "VpcCidrConflict"
-  | VpcLimitExceeded  -> "VpcLimitExceeded"
-  | VpcPeeringConnectionAlreadyExists  -> "VpcPeeringConnectionAlreadyExists"
-  | VpnConnectionLimitExceeded  -> "VpnConnectionLimitExceeded"
-  | VpnGatewayAttachmentLimitExceeded  -> "VpnGatewayAttachmentLimitExceeded"
-  | VpnGatewayLimitExceeded  -> "VpnGatewayLimitExceeded"
-  | Uninhabited  -> "Uninhabited" 
+  | ServiceUnavailable -> "ServiceUnavailable"
+  | SignatureDoesNotMatch -> "SignatureDoesNotMatch"
+  | SnapshotLimitExceeded -> "SnapshotLimitExceeded"
+  | SubnetLimitExceeded -> "SubnetLimitExceeded"
+  | TagLimitExceeded -> "TagLimitExceeded"
+  | Throttling -> "Throttling"
+  | UnauthorizedOperation -> "UnauthorizedOperation"
+  | UnknownParameter -> "UnknownParameter"
+  | UnknownVolumeType -> "UnknownVolumeType"
+  | Unsupported -> "Unsupported"
+  | UnsupportedOperation -> "UnsupportedOperation"
+  | UnsupportedProtocol -> "UnsupportedProtocol"
+  | VPCIdNotSpecified -> "VPCIdNotSpecified"
+  | VPCResourceNotSpecified -> "VPCResourceNotSpecified"
+  | ValidationError -> "ValidationError"
+  | VolumeInUse -> "VolumeInUse"
+  | VolumeLimitExceeded -> "VolumeLimitExceeded"
+  | VolumeTypeNotAvailableInZone -> "VolumeTypeNotAvailableInZone"
+  | VpcCidrConflict -> "VpcCidrConflict"
+  | VpcLimitExceeded -> "VpcLimitExceeded"
+  | VpcPeeringConnectionAlreadyExists -> "VpcPeeringConnectionAlreadyExists"
+  | VpnConnectionLimitExceeded -> "VpnConnectionLimitExceeded"
+  | VpnGatewayAttachmentLimitExceeded -> "VpnGatewayAttachmentLimitExceeded"
+  | VpnGatewayLimitExceeded -> "VpnGatewayLimitExceeded"
+  | Uninhabited -> "Uninhabited"
 let of_string e =
   match e with
   | "ActiveVpcPeeringConnectionPerVpcLimitExceeded" ->
@@ -977,4 +977,4 @@ let of_string e =
       Some VpnGatewayAttachmentLimitExceeded
   | "VpnGatewayLimitExceeded" -> Some VpnGatewayLimitExceeded
   | "Uninhabited" -> Some Uninhabited
-  | _ -> None 
+  | _ -> None

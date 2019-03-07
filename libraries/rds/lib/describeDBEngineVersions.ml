@@ -3,7 +3,7 @@ open Aws
 type input = DescribeDBEngineVersionsMessage.t
 type output = DBEngineVersionMessage.t
 type error = Errors_internal.t
-let service = "rds" 
+let service = "rds"
 let to_http req =
   let uri =
     Uri.add_query_params (Uri.of_string "https://rds.amazonaws.com")
@@ -12,17 +12,15 @@ let to_http req =
          ("Action", ["DescribeDBEngineVersions"])]
          (Util.drop_empty
             (Uri.query_of_encoded
-               (Query.render (DescribeDBEngineVersionsMessage.to_query req)))))
-     in
-  (`POST, uri, []) 
+               (Query.render (DescribeDBEngineVersionsMessage.to_query req))))) in
+  (`POST, uri, [])
 let of_http body =
   try
-    let xml = Ezxmlm.from_string body  in
+    let xml = Ezxmlm.from_string body in
     let resp =
       Util.option_bind
         (Xml.member "DescribeDBEngineVersionsResponse" (snd xml))
-        (Xml.member "DescribeDBEngineVersionsResult")
-       in
+        (Xml.member "DescribeDBEngineVersionsResult") in
     try
       Util.or_error (Util.option_bind resp DBEngineVersionMessage.parse)
         (let open Error in
@@ -47,16 +45,15 @@ let of_http body =
       `Error
         (let open Error in
            BadResponse { body; message = ("Error parsing xml: " ^ msg) })
-  
 let parse_error code err =
-  let errors = [] @ Errors_internal.common  in
+  let errors = [] @ Errors_internal.common in
   match Errors_internal.of_string err with
   | Some var ->
       if
         (List.mem var errors) &&
           ((match Errors_internal.to_http_code var with
             | Some var -> var = code
-            | None  -> true))
+            | None -> true))
       then Some var
       else None
-  | None  -> None 
+  | None -> None
