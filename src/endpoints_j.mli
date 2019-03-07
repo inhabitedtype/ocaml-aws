@@ -1,124 +1,57 @@
 (* Auto-generated from "endpoints.atd" *)
 [@@@ocaml.warning "-27-32-35-39"]
 
-type raw_json = Yojson.Safe.json
-
-type constraint_op = Endpoints_t.constraint_op
-
-type constraint_on = Endpoints_t.constraint_on
-
-type constraint_data = Endpoints_t.constraint_data = {
-  data: string option list
+type service_defaults = Endpoints_t.service_defaults = {
+  protocols: string list option;
+  ssl_common_name: string option
 }
 
-type constraint_ = Endpoints_t.constraint_
+type endpoint = Endpoints_t.endpoint = { hostname: string option }
 
-type endpoint = Endpoints_t.endpoint = {
-  uri: string;
-  constraints: constraint_ list option
+type service = Endpoints_t.service = {
+  defaults: service_defaults option;
+  endpoints: (string * endpoint) list
 }
 
-type endpoints = Endpoints_t.endpoints
+type region = Endpoints_t.region = { description: string }
 
-val write_raw_json :
-  Bi_outbuf.t -> raw_json -> unit
-  (** Output a JSON value of type {!raw_json}. *)
+type partition_defaults = Endpoints_t.partition_defaults = {
+  hostname: string option;
+  protocols: string list;
+  signature_versions: string list
+}
 
-val string_of_raw_json :
-  ?len:int -> raw_json -> string
-  (** Serialize a value of type {!raw_json}
+type partition = Endpoints_t.partition = {
+  defaults: partition_defaults;
+  dns_suffix: string;
+  partition: string;
+  partition_name: string;
+  region_regex: string;
+  regions: (string * region) list;
+  services: (string * service) list
+}
+
+type endpoints = Endpoints_t.endpoints = { partitions: partition list }
+
+val write_service_defaults :
+  Bi_outbuf.t -> service_defaults -> unit
+  (** Output a JSON value of type {!service_defaults}. *)
+
+val string_of_service_defaults :
+  ?len:int -> service_defaults -> string
+  (** Serialize a value of type {!service_defaults}
       into a JSON string.
       @param len specifies the initial length
                  of the buffer used internally.
                  Default: 1024. *)
 
-val read_raw_json :
-  Yojson.Safe.lexer_state -> Lexing.lexbuf -> raw_json
-  (** Input JSON data of type {!raw_json}. *)
+val read_service_defaults :
+  Yojson.Safe.lexer_state -> Lexing.lexbuf -> service_defaults
+  (** Input JSON data of type {!service_defaults}. *)
 
-val raw_json_of_string :
-  string -> raw_json
-  (** Deserialize JSON data of type {!raw_json}. *)
-
-val write_constraint_op :
-  Bi_outbuf.t -> constraint_op -> unit
-  (** Output a JSON value of type {!constraint_op}. *)
-
-val string_of_constraint_op :
-  ?len:int -> constraint_op -> string
-  (** Serialize a value of type {!constraint_op}
-      into a JSON string.
-      @param len specifies the initial length
-                 of the buffer used internally.
-                 Default: 1024. *)
-
-val read_constraint_op :
-  Yojson.Safe.lexer_state -> Lexing.lexbuf -> constraint_op
-  (** Input JSON data of type {!constraint_op}. *)
-
-val constraint_op_of_string :
-  string -> constraint_op
-  (** Deserialize JSON data of type {!constraint_op}. *)
-
-val write_constraint_on :
-  Bi_outbuf.t -> constraint_on -> unit
-  (** Output a JSON value of type {!constraint_on}. *)
-
-val string_of_constraint_on :
-  ?len:int -> constraint_on -> string
-  (** Serialize a value of type {!constraint_on}
-      into a JSON string.
-      @param len specifies the initial length
-                 of the buffer used internally.
-                 Default: 1024. *)
-
-val read_constraint_on :
-  Yojson.Safe.lexer_state -> Lexing.lexbuf -> constraint_on
-  (** Input JSON data of type {!constraint_on}. *)
-
-val constraint_on_of_string :
-  string -> constraint_on
-  (** Deserialize JSON data of type {!constraint_on}. *)
-
-val write_constraint_data :
-  Bi_outbuf.t -> constraint_data -> unit
-  (** Output a JSON value of type {!constraint_data}. *)
-
-val string_of_constraint_data :
-  ?len:int -> constraint_data -> string
-  (** Serialize a value of type {!constraint_data}
-      into a JSON string.
-      @param len specifies the initial length
-                 of the buffer used internally.
-                 Default: 1024. *)
-
-val read_constraint_data :
-  Yojson.Safe.lexer_state -> Lexing.lexbuf -> constraint_data
-  (** Input JSON data of type {!constraint_data}. *)
-
-val constraint_data_of_string :
-  string -> constraint_data
-  (** Deserialize JSON data of type {!constraint_data}. *)
-
-val write_constraint_ :
-  Bi_outbuf.t -> constraint_ -> unit
-  (** Output a JSON value of type {!constraint_}. *)
-
-val string_of_constraint_ :
-  ?len:int -> constraint_ -> string
-  (** Serialize a value of type {!constraint_}
-      into a JSON string.
-      @param len specifies the initial length
-                 of the buffer used internally.
-                 Default: 1024. *)
-
-val read_constraint_ :
-  Yojson.Safe.lexer_state -> Lexing.lexbuf -> constraint_
-  (** Input JSON data of type {!constraint_}. *)
-
-val constraint__of_string :
-  string -> constraint_
-  (** Deserialize JSON data of type {!constraint_}. *)
+val service_defaults_of_string :
+  string -> service_defaults
+  (** Deserialize JSON data of type {!service_defaults}. *)
 
 val write_endpoint :
   Bi_outbuf.t -> endpoint -> unit
@@ -139,6 +72,86 @@ val read_endpoint :
 val endpoint_of_string :
   string -> endpoint
   (** Deserialize JSON data of type {!endpoint}. *)
+
+val write_service :
+  Bi_outbuf.t -> service -> unit
+  (** Output a JSON value of type {!service}. *)
+
+val string_of_service :
+  ?len:int -> service -> string
+  (** Serialize a value of type {!service}
+      into a JSON string.
+      @param len specifies the initial length
+                 of the buffer used internally.
+                 Default: 1024. *)
+
+val read_service :
+  Yojson.Safe.lexer_state -> Lexing.lexbuf -> service
+  (** Input JSON data of type {!service}. *)
+
+val service_of_string :
+  string -> service
+  (** Deserialize JSON data of type {!service}. *)
+
+val write_region :
+  Bi_outbuf.t -> region -> unit
+  (** Output a JSON value of type {!region}. *)
+
+val string_of_region :
+  ?len:int -> region -> string
+  (** Serialize a value of type {!region}
+      into a JSON string.
+      @param len specifies the initial length
+                 of the buffer used internally.
+                 Default: 1024. *)
+
+val read_region :
+  Yojson.Safe.lexer_state -> Lexing.lexbuf -> region
+  (** Input JSON data of type {!region}. *)
+
+val region_of_string :
+  string -> region
+  (** Deserialize JSON data of type {!region}. *)
+
+val write_partition_defaults :
+  Bi_outbuf.t -> partition_defaults -> unit
+  (** Output a JSON value of type {!partition_defaults}. *)
+
+val string_of_partition_defaults :
+  ?len:int -> partition_defaults -> string
+  (** Serialize a value of type {!partition_defaults}
+      into a JSON string.
+      @param len specifies the initial length
+                 of the buffer used internally.
+                 Default: 1024. *)
+
+val read_partition_defaults :
+  Yojson.Safe.lexer_state -> Lexing.lexbuf -> partition_defaults
+  (** Input JSON data of type {!partition_defaults}. *)
+
+val partition_defaults_of_string :
+  string -> partition_defaults
+  (** Deserialize JSON data of type {!partition_defaults}. *)
+
+val write_partition :
+  Bi_outbuf.t -> partition -> unit
+  (** Output a JSON value of type {!partition}. *)
+
+val string_of_partition :
+  ?len:int -> partition -> string
+  (** Serialize a value of type {!partition}
+      into a JSON string.
+      @param len specifies the initial length
+                 of the buffer used internally.
+                 Default: 1024. *)
+
+val read_partition :
+  Yojson.Safe.lexer_state -> Lexing.lexbuf -> partition
+  (** Input JSON data of type {!partition}. *)
+
+val partition_of_string :
+  string -> partition
+  (** Deserialize JSON data of type {!partition}. *)
 
 val write_endpoints :
   Bi_outbuf.t -> endpoints -> unit

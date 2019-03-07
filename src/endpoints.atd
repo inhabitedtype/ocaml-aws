@@ -1,21 +1,37 @@
-type constraint_on = [ | REGION <json name="region"> ]
-
-type constraint_op = [
-  | STARTS_WITH <json name="startsWith">
-  | NOT_EQUALS <json name="notEquals">
-  | EQUALS <json name="equals">
-  | ONE_OF <json name="oneOf">
-  | NOT_STARTS_WITH <json name="notStartsWith"> ]
-
-type constraint_data = {
-  data : string nullable list
-} <json adapter.ocaml="Constraint_adapter.StringList">
-
-type constraint_ = (constraint_on * constraint_op * constraint_data)
-
-type endpoint = {
-  uri: string;
-  ?constraints: constraint_ list option
+type region = {
+  description: string;
 }
 
-type endpoints = (string * endpoint list) list <json repr="object">
+type partition_defaults = {
+  ?hostname: string nullable;
+  protocols: string list;
+  signature_versions <json name="signatureVersions">: string list;
+}
+
+type service_defaults = {
+  ?protocols: string list option;
+  ?ssl_common_name: string nullable;
+}
+
+type endpoint = {
+  ?hostname: string nullable;
+}
+
+type service = {
+  ?defaults: service_defaults option;
+  endpoints: (string * endpoint) list <json repr="object">;
+}
+
+type partition = {
+  defaults: partition_defaults;
+  dns_suffix <json name="dnsSuffix">: string;
+  partition: string;
+  partition_name <json name="partitionName">: string;
+  region_regex <json name="regionRegex">: string;
+  regions: (string * region) list <json repr="object">;
+  services: (string * service) list <json repr="object">;
+}
+
+type endpoints = {
+  partitions: partition list;
+}

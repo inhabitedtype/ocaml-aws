@@ -1,18 +1,34 @@
 (* Auto-generated from "endpoints.atd" *)
               [@@@ocaml.warning "-27-32-35-39"]
 
-type raw_json = Yojson.Safe.json
+type service_defaults = {
+  protocols: string list option;
+  ssl_common_name: string option
+}
 
-type constraint_op = [
-    `STARTS_WITH | `NOT_EQUALS | `EQUALS | `ONE_OF | `NOT_STARTS_WITH
-]
+type endpoint = { hostname: string option }
 
-type constraint_on = [ `REGION ]
+type service = {
+  defaults: service_defaults option;
+  endpoints: (string * endpoint) list
+}
 
-type constraint_data = { data: string option list }
+type region = { description: string }
 
-type constraint_ = (constraint_on * constraint_op * constraint_data)
+type partition_defaults = {
+  hostname: string option;
+  protocols: string list;
+  signature_versions: string list
+}
 
-type endpoint = { uri: string; constraints: constraint_ list option }
+type partition = {
+  defaults: partition_defaults;
+  dns_suffix: string;
+  partition: string;
+  partition_name: string;
+  region_regex: string;
+  regions: (string * region) list;
+  services: (string * service) list
+}
 
-type endpoints = (string * endpoint list) list
+type endpoints = { partitions: partition list }
