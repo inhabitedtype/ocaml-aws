@@ -169,10 +169,8 @@ let types is_ec2 shapes =
             let op =
               if mem.Structure.required then
                 Syntax.(app2 "Xml.required" (str loc_name) b)
-              else if is_list ~shapes ~shp:mem.Structure.shape then (
-                print_endline ("is_list " ^ mem.Structure.shape);
-                print_endline ("is_flat " ^ string_of_bool(is_flat_list ~shapes ~shp:mem.Structure.shape));
-                Syntax.(app2 "Util.of_option" (list []) b))
+              else if is_list ~shapes ~shp:mem.Structure.shape then
+                Syntax.(app2 "Util.of_option" (list []) b)
               else
                 b
             in
