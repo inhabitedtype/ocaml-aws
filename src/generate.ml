@@ -43,6 +43,13 @@ let is_list ~shapes ~shp =
     | _            -> false
   with Not_found -> false
 
+let is_flat_list ~shapes ~shp =
+  try
+    match (StringTable.find shp shapes).Shape.content with
+    | Shape.List (_,_,true) -> true
+    | _ -> false
+  with Not_found -> false
+
 let toposort (shapes : Shape.t StringTable.t) =
   let open Graph in
   let module G = Imperative.Digraph.ConcreteBidirectional(struct
@@ -62,7 +69,7 @@ let toposort (shapes : Shape.t StringTable.t) =
     match data.Shape.content with
     | Shape.Structure members ->
       List.iter (fun mem -> add_edge data mem.Structure.shape) members
-    | Shape.List (s,_) -> add_edge data s
+    | Shape.List (s,_,_) -> add_edge data s
     | Shape.Map ((ks,_), (vs,_)) -> add_edge data ks; add_edge data vs
     | Shape.Enum _ -> ())
   shapes;
@@ -90,7 +97,7 @@ let types is_ec2 shapes =
         mkrecty (List.map (fun m ->
             (m.Structure.field_name, m.Structure.shape ^ ".t", m.Structure.required || is_list ~shapes ~shp:m.Structure.shape))
             members)
-      | Shape.List (shp, _) ->
+      | Shape.List (shp, _, _flatten) ->
         Syntax.tylet "t" (Syntax.ty1 "list" (shp ^ ".t"))
       | Shape.Map ((kshp, _loc), (vshp, _)) ->
         Syntax.tylet "t" (Syntax.ty2 "Hashtbl.t" (kshp ^ ".t") (vshp ^ ".t"))
@@ -149,15 +156,23 @@ let types is_ec2 shapes =
               | Some name -> name
               | None      -> mem.Structure.name
             in
-            let b = Syntax.(app2 "Util.option_bind"
+            let b = if is_flat_list ~shapes ~shp:mem.Structure.shape then
+              Syntax.(
+                  (app1 (mem.Structure.shape ^ ".parse")
+                    (ident "xml"))
+              )
+            else
+              Syntax.(app2 "Util.option_bind"
                               (app2 "Xml.member" (str loc_name) (ident "xml"))
                               (ident (mem.Structure.shape ^ ".parse")))
             in
             let op =
               if mem.Structure.required then
                 Syntax.(app2 "Xml.required" (str loc_name) b)
-              else if is_list ~shapes ~shp:mem.Structure.shape then
-                Syntax.(app2 "Util.of_option" (list []) b)
+              else if is_list ~shapes ~shp:mem.Structure.shape then (
+                print_endline ("is_list " ^ mem.Structure.shape);
+                print_endline ("is_flat " ^ string_of_bool(is_flat_list ~shapes ~shp:mem.Structure.shape));
+                Syntax.(app2 "Util.of_option" (list []) b))
               else
                 b
             in
@@ -169,16 +184,16 @@ let types is_ec2 shapes =
         Syntax.(let_ "parse"
                   (fun_ "xml"
                      (ident "None")))
-      | Shape.List (shp, loc_name) ->
+      | Shape.List (shp, loc_name, _flatten) ->
         let item_name = match loc_name with
           | None -> "member"
           | Some nm -> nm in
-        Syntax.(let_ "parse"
-                  (fun_ "xml"
-                     (app1 "Util.option_all"
-                        (app2 "List.map"
-                           (ident (shp ^ ".parse"))
-                           (app2 "Xml.members" (str item_name) (ident "xml"))))))
+            Syntax.(let_ "parse"
+                      (fun_ "xml"
+                         (app1 "Util.option_all"
+                            (app2 "List.map"
+                               (ident (shp ^ ".parse"))
+                               (app2 "Xml.members" (str item_name) (ident "xml"))))))
       | Shape.Enum _opts ->
         Syntax.(let_ "parse"
                   (fun_ "xml"
@@ -213,7 +228,7 @@ let types is_ec2 shapes =
                             then app1 "Some" (q (ident ("v." ^ mem.Structure.field_name)))
                             else app2 "Util.option_map" (ident ("v." ^ mem.Structure.field_name))
                                 (fun_ "f" (q (ident "f"))))) s))))
-              | Shape.List (shp,_) ->
+              | Shape.List (shp,_,_flatten) ->
                 (app2 "Query.to_query_list" (ident (shp ^ ".to_query")) (ident "v"))
               | Shape.Map ((key_shp,_),(val_shp,_)) ->
                 (app3 "Query.to_query_hashtbl" (ident (key_shp ^ ".to_string")) (ident (val_shp ^ ".to_query")) (ident "v"))
@@ -244,7 +259,7 @@ let types is_ec2 shapes =
                                   (fun_ "f" (q (ident "f")))
 
                             ) s))))
-              | Shape.List (shp,_) ->
+              | Shape.List (shp,_,_flatten) ->
                 (variant1 "List"
                    (app2 "List.map"
                       (ident (shp ^ ".to_json"))
@@ -280,7 +295,7 @@ let types is_ec2 shapes =
                       else fun v -> app2 "Util.option_map" v (ident (mem.Structure.shape ^ ".of_json")))
                        (app2 "Json.lookup" (ident "j") (str mem.Structure.field_name))))
                     s)
-              | Shape.List (shp,_) -> app2 "Json.to_list" (ident (shp ^ ".of_json")) (ident "j")
+              | Shape.List (shp,_,_flatten) -> app2 "Json.to_list" (ident (shp ^ ".of_json")) (ident "j")
               | Shape.Map ((key_shp,_),(val_shp,_)) -> app3 "Json.to_hashtbl" (ident (key_shp ^ ".of_string")) (ident (val_shp ^ ".of_json")) (ident "j")
               | Shape.Enum _ ->
                 (app1 "Util.of_option_exn"
@@ -315,7 +330,7 @@ let op service version _shapes op =
     letin "uri"
       (app2 "Uri.add_query_params"
          (app1 "Uri.of_string"
-          (app1 "Aws.Util.of_option_exn" (app2 "Aws_endpoints.endpoint_of" (ident "service") (ident "region"))))
+          (app1 "Aws.Util.of_option_exn" (app2 "Endpoints.url_of" (ident "service") (ident "region"))))
          (match op.Operation.input_shape with
           | None -> defaults
           | Some input_shape ->

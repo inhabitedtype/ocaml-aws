@@ -74,13 +74,16 @@ let shape ((nm, j) : (string * Yojson.Basic.t)) : Shape.parsed =
     (nm, "structure", Some (Shape.Structure (List.map (parse_member required) member)))
   | `String "list" ->
     let member = Json.member_exn "member" j in
+    let flattened = match Json.member "flattened" j with
+      | `Bool true -> true
+      | _ -> false in
     let shape  = Json.member_exn "shape" member |> Json.to_string in
     let loc_name =
       match Json.member "locationName" member with
       | `Null    -> None
       | loc_name -> Some (Json.to_string loc_name)
     in
-    (nm, "list", Some (Shape.List(shape, loc_name)))
+    (nm, "list", Some (Shape.List(shape, loc_name, flattened)))
   | `String "map" ->
     let key = Json.member_exn "key" j in
     let key_shape  = Json.member_exn "shape" key |> Json.to_string in

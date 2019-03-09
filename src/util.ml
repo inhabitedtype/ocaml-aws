@@ -205,8 +205,9 @@ let inline_shapes (ops : Operation.t list) (shapes : Shape.parsed StringTable.t)
             Shape.Structure (List.map (fun member ->
               { member with Structure.shape = replace_shape member.Structure.shape })
             ms)
-          | Some (Shape.List (shp, ln)) ->
-            Shape.List (replace_shape shp, ln)
+          | Some (Shape.List (shp, ln, flatten)) ->
+            print_endline ("shape " ^ shp ^ " is a list, flatten? " ^ (string_of_bool flatten));
+            Shape.List (replace_shape shp, ln, flatten)
           | Some (Shape.Map ((kshp, kln), (vshp, vln))) ->
             Shape.Map ((replace_shape kshp, kln), (replace_shape vshp, vln))
           | Some (Shape.Enum opts) -> Shape.Enum opts

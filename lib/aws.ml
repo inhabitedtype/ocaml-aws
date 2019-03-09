@@ -61,9 +61,6 @@ module Util = struct
     | [] -> Some []
     | (Some v) :: xs -> option_bind (option_all xs) (fun rest -> Some (v :: rest))
     | None :: _ -> None
-  let str_starts_with prefix s =
-    let re = Str.regexp_case_fold ("^" ^ (prefix ^ ".*")) in
-    Str.string_partial_match re s 0
 end
 
 module Xml = struct
@@ -397,6 +394,8 @@ module BaseTypes = struct
 
 end
 
+module Endpoints = Endpoints
+
 module Signing = struct
 
     module Hash = struct
@@ -439,7 +438,7 @@ module Signing = struct
      * http://docs.aws.amazon.com/general/latest/gr/sigv4-signed-request-examples.html
      *)
     let sign_request ~access_key ~secret_key ~service ~region (meth, uri, headers) =
-      let host = service ^ ".amazonaws.com" in
+      let host = Util.of_option_exn (Endpoints.endpoint_of service region) in
       let params = encode_query (Uri.query uri) in
       let sign key msg = Hash.sha256 ~key msg in
       let get_signature_key key date region service =
@@ -449,16 +448,20 @@ module Signing = struct
       let datestamp = Time.date_yymmdd now in
       let canonical_uri = "/" in
       let canonical_querystring = params in
-      let canonical_headers = "host:" ^ host ^ "\n" ^ "x-amz-date:" ^ amzdate ^ "\n" in
-      let signed_headers = "host;x-amz-date" in
       let payload_hash = Hash.sha256_hex "" in
+      let canonical_headers = "host:" ^ host ^ "\n" ^ "x-amz-content-sha256:" ^ payload_hash ^ "\nx-amz-date:" ^ amzdate ^ "\n" in
+      let signed_headers = "host;x-amz-content-sha256;x-amz-date" in
       let canonical_request = Request.string_of_meth meth ^ "\n" ^ canonical_uri ^ "\n" ^ canonical_querystring ^ "\n" ^ canonical_headers ^ "\n" ^ signed_headers ^ "\n" ^ payload_hash in
       let algorithm = "AWS4-HMAC-SHA256" in
       let credential_scope = datestamp ^ "/" ^ region ^ "/" ^ service ^ "/" ^ "aws4_request" in
       let string_to_sign = algorithm ^ "\n" ^  amzdate ^ "\n" ^  credential_scope ^ "\n" ^  Hash.sha256_hex canonical_request in
       let signing_key = get_signature_key secret_key datestamp region service in
+      print_endline ("\nstring_to_sign:\n" ^ string_to_sign);
+      print_endline ("\ncanonical string:\n" ^ canonical_request);
       let signature = Hash.sha256_hex ~key:signing_key string_to_sign in
       let authorization_header = String.concat "" [algorithm; " "; "Credential="; access_key; "/"; credential_scope; ", "; "SignedHeaders="; signed_headers; ", "; "Signature="; signature] in
-      let headers = ("x-amz-date",amzdate) :: ("Authorization", authorization_header) :: headers in
+      let headers = ("x-amz-date", amzdate) :: ("x-amz-content-sha256", payload_hash) :: ("Authorization", authorization_header) :: headers in
       (meth, uri, headers)
   end
+
+
