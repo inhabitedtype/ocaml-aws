@@ -314,7 +314,7 @@ let op service version _shapes op =
 
     letin "uri"
       (app2 "Uri.add_query_params"
-         (app1 "Uri.of_string" (app1 ((String.capitalize_ascii service) ^ "_endpoints.endpoint_of") (ident "region")))
+         (app1 "Uri.of_string" (app1 "Aws.of_option_exn" (app1 "Aws_endpoints.endpoint_of") (ident "service") (ident "region")))
          (match op.Operation.input_shape with
           | None -> defaults
           | Some input_shape ->
@@ -388,7 +388,7 @@ let op service version _shapes op =
    ; tylet "output" (mkty op.Operation.output_shape)
    ; tylet "error" (ty0 "Errors_internal.t")
    ; let_ "service" (str service)
-   ; let_ "to_http" (fun2 "region" "req" to_body)
+   ; let_ "to_http" (fun3 "service" "region" "req" to_body)
    ; let_ "of_http" (fun_ "body" of_body)
    ; let_ "parse_error" (fun2 "code" "err" op_error_parse)
    ])

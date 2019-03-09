@@ -1,102 +1,61 @@
 open Cmdliner
-(*open Util*)
 
 let (</>) a b = Filename.concat a b
 let log s = Printf.eprintf (s ^^ "\n%!")
-
-(** [filter_missing] removes any [None] elements from the provided list. *)
-let filter_missing =
-  List.fold_left
-    (fun a  -> function | None  -> a | Some s -> List.append [s] a) []
-
-(** [endpoint_str_matches uri ss] creates the match structure for regions that
-    match particular strings, since matchstr already has an [els] clause, this doesn't
-    require it. *)
-let endpoint_str_matches uri ss =
-  let open Syntax in
-    let ds = ss |> filter_missing in
-    ds |> (List.map (fun s -> (s, (app1 "Some" (str uri)))))
-
-(** [endpoint_str_not_matches uri ss els] creates the match structure for regions that
-    do NOT match particular strings, including null. This is somewhat tricky and generates
-    naive code that can never be reached *)
-let endpoint_str_not_matches uri ss els = Syntax.(
-  let m = app1 "Some" (str uri) in
-  let matches = ss |> List.map (function
-                                 | None  -> ("region", m)
-                                 | Some s -> (("Some " ^ s), m)) in
-  matchvar (ident "region") (List.append matches [("_", els)])
-)
-
-(** [endpoint_starts_with uri ss] creates the match structure for regions that
-    match particular string *)
-let endpoint_starts_with uri ss els =
-  let open Syntax in
-    let ds = ss |> filter_missing in
-    ds |>
-      (List.fold_left
-         (fun a  ->
-            fun s  ->
-              ifthen (app2 "Aws.Util.str_starts_with" (ident "region") (str s))
-                (app1 "Some" (str uri)) a) els)
-
-(** [write_constraints uri cs els] emits the syntax for constraints provided
-    by the _endpoints.json file for a given uri. Currently, the only kind of
-    constraints are against [`REGION] so we ignore that for now. *)
-(*let write_constraints uri (cs : Endpoints_t.constraint_ list) els =*)
-  (*let open Syntax in*)
-    (*List.fold_left*)
-      (*(fun a  ->*)
-         (*function*)
-         (*| (_on,`NOT_EQUALS,d) ->*)
-             (*endpoint_str_not_matches uri Endpoints_t.(d.data) a*)
-         (*| (_on,`EQUALS,d) ->*)
-             (*matchstrs (ident "region")*)
-               (*(endpoint_str_matches uri Endpoints_t.(d.data)) a*)
-         (*| (_on,`STARTS_WITH,d) ->*)
-             (*endpoint_starts_with uri Endpoints_t.(d.data) a*)
-         (*| _ -> a) els cs*)
-
-(** [write_endpoints endpoints] takes a list of [Endpoint_t.endpoint] and
-    generates the syntax for the service endpoint matching defined by the
-    _endpoints.json file
-*)
-(*let write_endpoints (endpoints : Endpoints_t.endpoint list) =*)
-  (*[let open Syntax in*)
-     (*let_ "endpoint_of"*)
-       (*(fun_ "region"*)
-          (*(endpoints |> List.rev |>*)
-              (*(List.fold_left (fun a ->*)
-                 (*(fun (e : Endpoints_t.endpoint)  ->*)
-                    (*match e.constraints with*)
-                    (*| None  -> ident e.uri*)
-                    (*| Some cs -> write_constraints e.uri cs a)) (ident "None")))*)
-             (* )] *)
-
-(**)
-  (*endpoints |> List.iter*)
-        (*(fun (name,(endpoints : Endpoints_t.endpoint list))  ->*)
-           (*print_endline ("service: " ^ name);*)
-           (*(match name with*)
-            (*| "sqs" ->*)
-                (*let outfile = (outdir </> name) </> (name ^ "_endpoints.ml") in*)
-                (*let syntax = write_endpoints endpoints in*)
-                (*Printing.write_structure outfile syntax*)
-            (*| _ -> print_endline "not writing temporarily"));*)
 
 let print_partition (p : Endpoints_t.partition) =
   print_endline ("dns_suffix: " ^ p.dns_suffix);
   print_endline ("partition: " ^ p.partition);
   print_endline ("partition_name: " ^ p.partition_name);;
 
-let main input _outdir =
+let var_replace hostname service_name region dns_suffix =
+  let hostname = Str.replace_first (Str.regexp_string {|{region}|}) region hostname in
+  let hostname = Str.replace_first (Str.regexp_string {|{service}|}) service_name hostname in
+  Str.replace_first (Str.regexp_string {|{dnsSuffix}|}) dns_suffix hostname
+
+let write_endpoint
+  region
+  dns_suffix
+  (default_hostname : string option)
+  ((service_name, endpoint) : (string * Endpoints_t.endpoint)) = Syntax.(
+  let host = match (endpoint.hostname, default_hostname) with
+    | (None, None) -> (ident "None")
+    | (None, Some(h))
+    | (Some(h), _) -> (app1 "Some" (str (var_replace h service_name region dns_suffix))) in
+  (service_name, host)
+)
+
+let write_service
+  dns_suffix
+  (partition_defaults : Endpoints_t.partition_defaults)
+  ((region, svc) : (string * Endpoints_t.service)) = Syntax.(
+  (region, (matchstrs
+    (ident "region")
+    (svc.endpoints |> List.map (write_endpoint region dns_suffix partition_defaults.hostname))
+    (ident "None")))
+)
+
+let write_partition (p : Endpoints_t.partition) = Syntax.(
+  let_ "endpoint_of"
+    (fun2 "svc_name" "region"
+      (matchstrs
+        (ident "svc_name")
+        (p.services |> List.map (write_service p.dns_suffix p.defaults))
+        (ident "None")))
+)
+
+let main input outdir =
   log "Start processing endpoints";
 
   let inc = open_in input in
   let n = in_channel_length inc in
   let endpoint_data = really_input_string inc n in
   let endpoints = Endpoints_j.endpoints_of_string endpoint_data in
-  endpoints.partitions |> List.iter print_partition;
+  let aws = endpoints.partitions
+    |> List.find (fun p -> String.equal Endpoints_t.(p.partition) "aws") in
+  let outfile = (outdir </> "Aws_endpoints.ml") in
+  let syntax = write_partition aws in
+  Util.Printing.write_structure outfile [syntax];
   close_in inc;
 
 module CommandLine = struct

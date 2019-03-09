@@ -129,7 +129,7 @@ module type Call = sig
       type. In particular, it is responsible for properly encoding the
       request type into query format. It also sets the Action and
       Version query parameters. *)
-  val to_http : string -> input -> Request.t
+  val to_http : string -> string -> input -> Request.t
 
   (** This function converts from a HTTP response body to an output
       or an error if the response could not be decoded. *)
