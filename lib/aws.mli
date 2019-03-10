@@ -278,8 +278,6 @@ module Util : sig
   (** If all values in list are Some v, produce Some (list_filter_opt
       list), else produce None. *)
   val option_all : 'a option list -> 'a list option
-
-  val str_starts_with : string -> string -> bool
 end
 
 (** This module contains the V4 Authorization header AWS signature
