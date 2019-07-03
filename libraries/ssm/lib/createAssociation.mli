@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = CreateAssociationRequest.t
 type output = CreateAssociationResult.t
 type error = Errors_internal.t

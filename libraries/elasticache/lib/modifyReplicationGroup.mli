@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = ModifyReplicationGroupMessage.t
 type output = ModifyReplicationGroupResult.t
 type error = Errors_internal.t

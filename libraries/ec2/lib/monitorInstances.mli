@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = MonitorInstancesRequest.t
 type output = MonitorInstancesResult.t
 type error = Errors_internal.t

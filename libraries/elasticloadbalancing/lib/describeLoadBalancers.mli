@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = DescribeAccessPointsInput.t
 type output = DescribeAccessPointsOutput.t
 type error = Errors_internal.t

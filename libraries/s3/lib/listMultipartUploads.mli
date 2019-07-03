@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = ListMultipartUploadsRequest.t
 type output = ListMultipartUploadsOutput.t
 type error = Errors_internal.t

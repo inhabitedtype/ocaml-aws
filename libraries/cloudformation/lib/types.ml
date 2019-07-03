@@ -5,30 +5,29 @@ type calendar = Calendar.t
 module AllowedValues =
   struct
     type t = String.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "member" xml)) 
-    let to_query v = Query.to_query_list String.to_query v 
-    let to_json v = `List (List.map String.to_json v) 
-    let of_json j = Json.to_list String.of_json j 
+      Util.option_all (List.map String.parse (Xml.members "member" xml))
+    let to_query v = Query.to_query_list String.to_query v
+    let to_json v = `List (List.map String.to_json v)
+    let of_json j = Json.to_list String.of_json j
   end
 module Capability =
   struct
     type t =
       | CAPABILITY_IAM 
-    let str_to_t = [("CAPABILITY_IAM", CAPABILITY_IAM)] 
-    let t_to_str = [(CAPABILITY_IAM, "CAPABILITY_IAM")] 
-    let make v () = v 
+    let str_to_t = [("CAPABILITY_IAM", CAPABILITY_IAM)]
+    let t_to_str = [(CAPABILITY_IAM, "CAPABILITY_IAM")]
+    let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
-        (fun s  -> Util.list_find str_to_t s)
-      
+        (fun s -> Util.list_find str_to_t s)
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
   end
 module Output =
   struct
@@ -38,7 +37,7 @@ module Output =
       output_value: String.t option ;
       description: String.t option }
     let make ?output_key  ?output_value  ?description  () =
-      { output_key; output_value; description } 
+      { output_key; output_value; description }
     let parse xml =
       Some
         {
@@ -49,27 +48,24 @@ module Output =
           description =
             (Util.option_bind (Xml.member "Description" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.description
-              (fun f  -> Query.Pair ("Description", (String.to_query f)));
+              (fun f -> Query.Pair ("Description", (String.to_query f)));
            Util.option_map v.output_value
-             (fun f  -> Query.Pair ("OutputValue", (String.to_query f)));
+             (fun f -> Query.Pair ("OutputValue", (String.to_query f)));
            Util.option_map v.output_key
-             (fun f  -> Query.Pair ("OutputKey", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("OutputKey", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.description
-              (fun f  -> ("description", (String.to_json f)));
+              (fun f -> ("description", (String.to_json f)));
            Util.option_map v.output_value
-             (fun f  -> ("output_value", (String.to_json f)));
+             (fun f -> ("output_value", (String.to_json f)));
            Util.option_map v.output_key
-             (fun f  -> ("output_key", (String.to_json f)))])
-      
+             (fun f -> ("output_key", (String.to_json f)))])
     let of_json j =
       {
         output_key =
@@ -78,7 +74,7 @@ module Output =
           (Util.option_map (Json.lookup j "output_value") String.of_json);
         description =
           (Util.option_map (Json.lookup j "description") String.of_json)
-      } 
+      }
   end
 module Parameter =
   struct
@@ -88,7 +84,7 @@ module Parameter =
       parameter_value: String.t option ;
       use_previous_value: Boolean.t option }
     let make ?parameter_key  ?parameter_value  ?use_previous_value  () =
-      { parameter_key; parameter_value; use_previous_value } 
+      { parameter_key; parameter_value; use_previous_value }
     let parse xml =
       Some
         {
@@ -100,28 +96,24 @@ module Parameter =
             (Util.option_bind (Xml.member "UsePreviousValue" xml)
                Boolean.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.use_previous_value
-              (fun f  ->
-                 Query.Pair ("UsePreviousValue", (Boolean.to_query f)));
+              (fun f -> Query.Pair ("UsePreviousValue", (Boolean.to_query f)));
            Util.option_map v.parameter_value
-             (fun f  -> Query.Pair ("ParameterValue", (String.to_query f)));
+             (fun f -> Query.Pair ("ParameterValue", (String.to_query f)));
            Util.option_map v.parameter_key
-             (fun f  -> Query.Pair ("ParameterKey", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("ParameterKey", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.use_previous_value
-              (fun f  -> ("use_previous_value", (Boolean.to_json f)));
+              (fun f -> ("use_previous_value", (Boolean.to_json f)));
            Util.option_map v.parameter_value
-             (fun f  -> ("parameter_value", (String.to_json f)));
+             (fun f -> ("parameter_value", (String.to_json f)));
            Util.option_map v.parameter_key
-             (fun f  -> ("parameter_key", (String.to_json f)))])
-      
+             (fun f -> ("parameter_key", (String.to_json f)))])
     let of_json j =
       {
         parameter_key =
@@ -131,40 +123,37 @@ module Parameter =
         use_previous_value =
           (Util.option_map (Json.lookup j "use_previous_value")
              Boolean.of_json)
-      } 
+      }
   end
 module Tag =
   struct
     type t = {
       key: String.t option ;
       value: String.t option }
-    let make ?key  ?value  () = { key; value } 
+    let make ?key  ?value  () = { key; value }
     let parse xml =
       Some
         {
           key = (Util.option_bind (Xml.member "Key" xml) String.parse);
           value = (Util.option_bind (Xml.member "Value" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.value
-              (fun f  -> Query.Pair ("Value", (String.to_query f)));
+              (fun f -> Query.Pair ("Value", (String.to_query f)));
            Util.option_map v.key
-             (fun f  -> Query.Pair ("Key", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("Key", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
-           [Util.option_map v.value (fun f  -> ("value", (String.to_json f)));
-           Util.option_map v.key (fun f  -> ("key", (String.to_json f)))])
-      
+           [Util.option_map v.value (fun f -> ("value", (String.to_json f)));
+           Util.option_map v.key (fun f -> ("key", (String.to_json f)))])
     let of_json j =
       {
         key = (Util.option_map (Json.lookup j "key") String.of_json);
         value = (Util.option_map (Json.lookup j "value") String.of_json)
-      } 
+      }
   end
 module ResourceStatus =
   struct
@@ -189,7 +178,7 @@ module ResourceStatus =
       ("DELETE_IN_PROGRESS", DELETE_IN_PROGRESS);
       ("CREATE_COMPLETE", CREATE_COMPLETE);
       ("CREATE_FAILED", CREATE_FAILED);
-      ("CREATE_IN_PROGRESS", CREATE_IN_PROGRESS)] 
+      ("CREATE_IN_PROGRESS", CREATE_IN_PROGRESS)]
     let t_to_str =
       [(UPDATE_COMPLETE, "UPDATE_COMPLETE");
       (UPDATE_FAILED, "UPDATE_FAILED");
@@ -200,18 +189,17 @@ module ResourceStatus =
       (DELETE_IN_PROGRESS, "DELETE_IN_PROGRESS");
       (CREATE_COMPLETE, "CREATE_COMPLETE");
       (CREATE_FAILED, "CREATE_FAILED");
-      (CREATE_IN_PROGRESS, "CREATE_IN_PROGRESS")] 
-    let make v () = v 
+      (CREATE_IN_PROGRESS, "CREATE_IN_PROGRESS")]
+    let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
-        (fun s  -> Util.list_find str_to_t s)
-      
+        (fun s -> Util.list_find str_to_t s)
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
   end
 module StackStatus =
   struct
@@ -250,7 +238,7 @@ module StackStatus =
       ("ROLLBACK_IN_PROGRESS", ROLLBACK_IN_PROGRESS);
       ("CREATE_COMPLETE", CREATE_COMPLETE);
       ("CREATE_FAILED", CREATE_FAILED);
-      ("CREATE_IN_PROGRESS", CREATE_IN_PROGRESS)] 
+      ("CREATE_IN_PROGRESS", CREATE_IN_PROGRESS)]
     let t_to_str =
       [(UPDATE_ROLLBACK_COMPLETE, "UPDATE_ROLLBACK_COMPLETE");
       (UPDATE_ROLLBACK_COMPLETE_CLEANUP_IN_PROGRESS,
@@ -269,24 +257,23 @@ module StackStatus =
       (ROLLBACK_IN_PROGRESS, "ROLLBACK_IN_PROGRESS");
       (CREATE_COMPLETE, "CREATE_COMPLETE");
       (CREATE_FAILED, "CREATE_FAILED");
-      (CREATE_IN_PROGRESS, "CREATE_IN_PROGRESS")] 
-    let make v () = v 
+      (CREATE_IN_PROGRESS, "CREATE_IN_PROGRESS")]
+    let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
-        (fun s  -> Util.list_find str_to_t s)
-      
+        (fun s -> Util.list_find str_to_t s)
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
   end
 module ParameterConstraints =
   struct
     type t = {
       allowed_values: AllowedValues.t }
-    let make ?(allowed_values= [])  () = { allowed_values } 
+    let make ?(allowed_values= [])  () = { allowed_values }
     let parse xml =
       Some
         {
@@ -295,7 +282,6 @@ module ParameterConstraints =
                (Util.option_bind (Xml.member "AllowedValues" xml)
                   AllowedValues.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -303,68 +289,66 @@ module ParameterConstraints =
               (Query.Pair
                  ("AllowedValues.member",
                    (AllowedValues.to_query v.allowed_values)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("allowed_values", (AllowedValues.to_json v.allowed_values))])
-      
     let of_json j =
       {
         allowed_values =
           (AllowedValues.of_json
              (Util.of_option_exn (Json.lookup j "allowed_values")))
-      } 
+      }
   end
 module Capabilities =
   struct
     type t = Capability.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
-      Util.option_all (List.map Capability.parse (Xml.members "member" xml)) 
-    let to_query v = Query.to_query_list Capability.to_query v 
-    let to_json v = `List (List.map Capability.to_json v) 
-    let of_json j = Json.to_list Capability.of_json j 
+      Util.option_all (List.map Capability.parse (Xml.members "member" xml))
+    let to_query v = Query.to_query_list Capability.to_query v
+    let to_json v = `List (List.map Capability.to_json v)
+    let of_json j = Json.to_list Capability.of_json j
   end
 module NotificationARNs =
   struct
     type t = String.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "member" xml)) 
-    let to_query v = Query.to_query_list String.to_query v 
-    let to_json v = `List (List.map String.to_json v) 
-    let of_json j = Json.to_list String.of_json j 
+      Util.option_all (List.map String.parse (Xml.members "member" xml))
+    let to_query v = Query.to_query_list String.to_query v
+    let to_json v = `List (List.map String.to_json v)
+    let of_json j = Json.to_list String.of_json j
   end
 module Outputs =
   struct
     type t = Output.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
-      Util.option_all (List.map Output.parse (Xml.members "member" xml)) 
-    let to_query v = Query.to_query_list Output.to_query v 
-    let to_json v = `List (List.map Output.to_json v) 
-    let of_json j = Json.to_list Output.of_json j 
+      Util.option_all (List.map Output.parse (Xml.members "member" xml))
+    let to_query v = Query.to_query_list Output.to_query v
+    let to_json v = `List (List.map Output.to_json v)
+    let of_json j = Json.to_list Output.of_json j
   end
 module Parameters =
   struct
     type t = Parameter.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
-      Util.option_all (List.map Parameter.parse (Xml.members "member" xml)) 
-    let to_query v = Query.to_query_list Parameter.to_query v 
-    let to_json v = `List (List.map Parameter.to_json v) 
-    let of_json j = Json.to_list Parameter.of_json j 
+      Util.option_all (List.map Parameter.parse (Xml.members "member" xml))
+    let to_query v = Query.to_query_list Parameter.to_query v
+    let to_json v = `List (List.map Parameter.to_json v)
+    let of_json j = Json.to_list Parameter.of_json j
   end
 module Tags =
   struct
     type t = Tag.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
-      Util.option_all (List.map Tag.parse (Xml.members "member" xml)) 
-    let to_query v = Query.to_query_list Tag.to_query v 
-    let to_json v = `List (List.map Tag.to_json v) 
-    let of_json j = Json.to_list Tag.of_json j 
+      Util.option_all (List.map Tag.parse (Xml.members "member" xml))
+    let to_query v = Query.to_query_list Tag.to_query v
+    let to_json v = `List (List.map Tag.to_json v)
+    let of_json j = Json.to_list Tag.of_json j
   end
 module StackResourceSummary =
   struct
@@ -386,7 +370,7 @@ module StackResourceSummary =
         last_updated_timestamp;
         resource_status;
         resource_status_reason
-      } 
+      }
     let parse xml =
       Some
         {
@@ -412,12 +396,11 @@ module StackResourceSummary =
             (Util.option_bind (Xml.member "ResourceStatusReason" xml)
                String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.resource_status_reason
-              (fun f  ->
+              (fun f ->
                  Query.Pair ("ResourceStatusReason", (String.to_query f)));
            Some
              (Query.Pair
@@ -430,18 +413,16 @@ module StackResourceSummary =
            Some
              (Query.Pair ("ResourceType", (String.to_query v.resource_type)));
            Util.option_map v.physical_resource_id
-             (fun f  ->
-                Query.Pair ("PhysicalResourceId", (String.to_query f)));
+             (fun f -> Query.Pair ("PhysicalResourceId", (String.to_query f)));
            Some
              (Query.Pair
                 ("LogicalResourceId",
                   (String.to_query v.logical_resource_id)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.resource_status_reason
-              (fun f  -> ("resource_status_reason", (String.to_json f)));
+              (fun f -> ("resource_status_reason", (String.to_json f)));
            Some
              ("resource_status", (ResourceStatus.to_json v.resource_status));
            Some
@@ -449,10 +430,9 @@ module StackResourceSummary =
                (DateTime.to_json v.last_updated_timestamp));
            Some ("resource_type", (String.to_json v.resource_type));
            Util.option_map v.physical_resource_id
-             (fun f  -> ("physical_resource_id", (String.to_json f)));
+             (fun f -> ("physical_resource_id", (String.to_json f)));
            Some
              ("logical_resource_id", (String.to_json v.logical_resource_id))])
-      
     let of_json j =
       {
         logical_resource_id =
@@ -473,7 +453,7 @@ module StackResourceSummary =
         resource_status_reason =
           (Util.option_map (Json.lookup j "resource_status_reason")
              String.of_json)
-      } 
+      }
   end
 module StackSummary =
   struct
@@ -499,7 +479,7 @@ module StackSummary =
         deletion_time;
         stack_status;
         stack_status_reason
-      } 
+      }
     let parse xml =
       Some
         {
@@ -528,47 +508,43 @@ module StackSummary =
             (Util.option_bind (Xml.member "StackStatusReason" xml)
                String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.stack_status_reason
-              (fun f  ->
-                 Query.Pair ("StackStatusReason", (String.to_query f)));
+              (fun f -> Query.Pair ("StackStatusReason", (String.to_query f)));
            Some
              (Query.Pair
                 ("StackStatus", (StackStatus.to_query v.stack_status)));
            Util.option_map v.deletion_time
-             (fun f  -> Query.Pair ("DeletionTime", (DateTime.to_query f)));
+             (fun f -> Query.Pair ("DeletionTime", (DateTime.to_query f)));
            Util.option_map v.last_updated_time
-             (fun f  -> Query.Pair ("LastUpdatedTime", (DateTime.to_query f)));
+             (fun f -> Query.Pair ("LastUpdatedTime", (DateTime.to_query f)));
            Some
              (Query.Pair
                 ("CreationTime", (DateTime.to_query v.creation_time)));
            Util.option_map v.template_description
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("TemplateDescription", (String.to_query f)));
            Some (Query.Pair ("StackName", (String.to_query v.stack_name)));
            Util.option_map v.stack_id
-             (fun f  -> Query.Pair ("StackId", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("StackId", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.stack_status_reason
-              (fun f  -> ("stack_status_reason", (String.to_json f)));
+              (fun f -> ("stack_status_reason", (String.to_json f)));
            Some ("stack_status", (StackStatus.to_json v.stack_status));
            Util.option_map v.deletion_time
-             (fun f  -> ("deletion_time", (DateTime.to_json f)));
+             (fun f -> ("deletion_time", (DateTime.to_json f)));
            Util.option_map v.last_updated_time
-             (fun f  -> ("last_updated_time", (DateTime.to_json f)));
+             (fun f -> ("last_updated_time", (DateTime.to_json f)));
            Some ("creation_time", (DateTime.to_json v.creation_time));
            Util.option_map v.template_description
-             (fun f  -> ("template_description", (String.to_json f)));
+             (fun f -> ("template_description", (String.to_json f)));
            Some ("stack_name", (String.to_json v.stack_name));
            Util.option_map v.stack_id
-             (fun f  -> ("stack_id", (String.to_json f)))])
-      
+             (fun f -> ("stack_id", (String.to_json f)))])
     let of_json j =
       {
         stack_id =
@@ -592,7 +568,7 @@ module StackSummary =
         stack_status_reason =
           (Util.option_map (Json.lookup j "stack_status_reason")
              String.of_json)
-      } 
+      }
   end
 module ParameterDeclaration =
   struct
@@ -613,7 +589,7 @@ module ParameterDeclaration =
         no_echo;
         description;
         parameter_constraints
-      } 
+      }
     let parse xml =
       Some
         {
@@ -631,43 +607,40 @@ module ParameterDeclaration =
             (Util.option_bind (Xml.member "ParameterConstraints" xml)
                ParameterConstraints.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.parameter_constraints
-              (fun f  ->
+              (fun f ->
                  Query.Pair
                    ("ParameterConstraints",
                      (ParameterConstraints.to_query f)));
            Util.option_map v.description
-             (fun f  -> Query.Pair ("Description", (String.to_query f)));
+             (fun f -> Query.Pair ("Description", (String.to_query f)));
            Util.option_map v.no_echo
-             (fun f  -> Query.Pair ("NoEcho", (Boolean.to_query f)));
+             (fun f -> Query.Pair ("NoEcho", (Boolean.to_query f)));
            Util.option_map v.parameter_type
-             (fun f  -> Query.Pair ("ParameterType", (String.to_query f)));
+             (fun f -> Query.Pair ("ParameterType", (String.to_query f)));
            Util.option_map v.default_value
-             (fun f  -> Query.Pair ("DefaultValue", (String.to_query f)));
+             (fun f -> Query.Pair ("DefaultValue", (String.to_query f)));
            Util.option_map v.parameter_key
-             (fun f  -> Query.Pair ("ParameterKey", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("ParameterKey", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.parameter_constraints
-              (fun f  ->
+              (fun f ->
                  ("parameter_constraints", (ParameterConstraints.to_json f)));
            Util.option_map v.description
-             (fun f  -> ("description", (String.to_json f)));
+             (fun f -> ("description", (String.to_json f)));
            Util.option_map v.no_echo
-             (fun f  -> ("no_echo", (Boolean.to_json f)));
+             (fun f -> ("no_echo", (Boolean.to_json f)));
            Util.option_map v.parameter_type
-             (fun f  -> ("parameter_type", (String.to_json f)));
+             (fun f -> ("parameter_type", (String.to_json f)));
            Util.option_map v.default_value
-             (fun f  -> ("default_value", (String.to_json f)));
+             (fun f -> ("default_value", (String.to_json f)));
            Util.option_map v.parameter_key
-             (fun f  -> ("parameter_key", (String.to_json f)))])
-      
+             (fun f -> ("parameter_key", (String.to_json f)))])
     let of_json j =
       {
         parameter_key =
@@ -682,7 +655,7 @@ module ParameterDeclaration =
         parameter_constraints =
           (Util.option_map (Json.lookup j "parameter_constraints")
              ParameterConstraints.of_json)
-      } 
+      }
   end
 module TemplateParameter =
   struct
@@ -693,7 +666,7 @@ module TemplateParameter =
       no_echo: Boolean.t option ;
       description: String.t option }
     let make ?parameter_key  ?default_value  ?no_echo  ?description  () =
-      { parameter_key; default_value; no_echo; description } 
+      { parameter_key; default_value; no_echo; description }
     let parse xml =
       Some
         {
@@ -706,31 +679,28 @@ module TemplateParameter =
           description =
             (Util.option_bind (Xml.member "Description" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.description
-              (fun f  -> Query.Pair ("Description", (String.to_query f)));
+              (fun f -> Query.Pair ("Description", (String.to_query f)));
            Util.option_map v.no_echo
-             (fun f  -> Query.Pair ("NoEcho", (Boolean.to_query f)));
+             (fun f -> Query.Pair ("NoEcho", (Boolean.to_query f)));
            Util.option_map v.default_value
-             (fun f  -> Query.Pair ("DefaultValue", (String.to_query f)));
+             (fun f -> Query.Pair ("DefaultValue", (String.to_query f)));
            Util.option_map v.parameter_key
-             (fun f  -> Query.Pair ("ParameterKey", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("ParameterKey", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.description
-              (fun f  -> ("description", (String.to_json f)));
+              (fun f -> ("description", (String.to_json f)));
            Util.option_map v.no_echo
-             (fun f  -> ("no_echo", (Boolean.to_json f)));
+             (fun f -> ("no_echo", (Boolean.to_json f)));
            Util.option_map v.default_value
-             (fun f  -> ("default_value", (String.to_json f)));
+             (fun f -> ("default_value", (String.to_json f)));
            Util.option_map v.parameter_key
-             (fun f  -> ("parameter_key", (String.to_json f)))])
-      
+             (fun f -> ("parameter_key", (String.to_json f)))])
     let of_json j =
       {
         parameter_key =
@@ -740,7 +710,7 @@ module TemplateParameter =
         no_echo = (Util.option_map (Json.lookup j "no_echo") Boolean.of_json);
         description =
           (Util.option_map (Json.lookup j "description") String.of_json)
-      } 
+      }
   end
 module Stack =
   struct
@@ -779,7 +749,7 @@ module Stack =
         capabilities;
         outputs;
         tags
-      } 
+      }
     let parse xml =
       Some
         {
@@ -829,7 +799,6 @@ module Stack =
             (Util.of_option []
                (Util.option_bind (Xml.member "Tags" xml) Tags.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -840,20 +809,20 @@ module Stack =
                 ("Capabilities.member",
                   (Capabilities.to_query v.capabilities)));
            Util.option_map v.timeout_in_minutes
-             (fun f  -> Query.Pair ("TimeoutInMinutes", (Integer.to_query f)));
+             (fun f -> Query.Pair ("TimeoutInMinutes", (Integer.to_query f)));
            Some
              (Query.Pair
                 ("NotificationARNs.member",
                   (NotificationARNs.to_query v.notification_a_r_ns)));
            Util.option_map v.disable_rollback
-             (fun f  -> Query.Pair ("DisableRollback", (Boolean.to_query f)));
+             (fun f -> Query.Pair ("DisableRollback", (Boolean.to_query f)));
            Util.option_map v.stack_status_reason
-             (fun f  -> Query.Pair ("StackStatusReason", (String.to_query f)));
+             (fun f -> Query.Pair ("StackStatusReason", (String.to_query f)));
            Some
              (Query.Pair
                 ("StackStatus", (StackStatus.to_query v.stack_status)));
            Util.option_map v.last_updated_time
-             (fun f  -> Query.Pair ("LastUpdatedTime", (DateTime.to_query f)));
+             (fun f -> Query.Pair ("LastUpdatedTime", (DateTime.to_query f)));
            Some
              (Query.Pair
                 ("CreationTime", (DateTime.to_query v.creation_time)));
@@ -861,11 +830,10 @@ module Stack =
              (Query.Pair
                 ("Parameters.member", (Parameters.to_query v.parameters)));
            Util.option_map v.description
-             (fun f  -> Query.Pair ("Description", (String.to_query f)));
+             (fun f -> Query.Pair ("Description", (String.to_query f)));
            Some (Query.Pair ("StackName", (String.to_query v.stack_name)));
            Util.option_map v.stack_id
-             (fun f  -> Query.Pair ("StackId", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("StackId", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -873,25 +841,24 @@ module Stack =
            Some ("outputs", (Outputs.to_json v.outputs));
            Some ("capabilities", (Capabilities.to_json v.capabilities));
            Util.option_map v.timeout_in_minutes
-             (fun f  -> ("timeout_in_minutes", (Integer.to_json f)));
+             (fun f -> ("timeout_in_minutes", (Integer.to_json f)));
            Some
              ("notification_a_r_ns",
                (NotificationARNs.to_json v.notification_a_r_ns));
            Util.option_map v.disable_rollback
-             (fun f  -> ("disable_rollback", (Boolean.to_json f)));
+             (fun f -> ("disable_rollback", (Boolean.to_json f)));
            Util.option_map v.stack_status_reason
-             (fun f  -> ("stack_status_reason", (String.to_json f)));
+             (fun f -> ("stack_status_reason", (String.to_json f)));
            Some ("stack_status", (StackStatus.to_json v.stack_status));
            Util.option_map v.last_updated_time
-             (fun f  -> ("last_updated_time", (DateTime.to_json f)));
+             (fun f -> ("last_updated_time", (DateTime.to_json f)));
            Some ("creation_time", (DateTime.to_json v.creation_time));
            Some ("parameters", (Parameters.to_json v.parameters));
            Util.option_map v.description
-             (fun f  -> ("description", (String.to_json f)));
+             (fun f -> ("description", (String.to_json f)));
            Some ("stack_name", (String.to_json v.stack_name));
            Util.option_map v.stack_id
-             (fun f  -> ("stack_id", (String.to_json f)))])
-      
+             (fun f -> ("stack_id", (String.to_json f)))])
     let of_json j =
       {
         stack_id =
@@ -929,7 +896,7 @@ module Stack =
         outputs =
           (Outputs.of_json (Util.of_option_exn (Json.lookup j "outputs")));
         tags = (Tags.of_json (Util.of_option_exn (Json.lookup j "tags")))
-      } 
+      }
   end
 module StackEvent =
   struct
@@ -959,7 +926,7 @@ module StackEvent =
         resource_status;
         resource_status_reason;
         resource_properties
-      } 
+      }
     let parse xml =
       Some
         {
@@ -993,51 +960,47 @@ module StackEvent =
             (Util.option_bind (Xml.member "ResourceProperties" xml)
                String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.resource_properties
-              (fun f  ->
+              (fun f ->
                  Query.Pair ("ResourceProperties", (String.to_query f)));
            Util.option_map v.resource_status_reason
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("ResourceStatusReason", (String.to_query f)));
            Util.option_map v.resource_status
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("ResourceStatus", (ResourceStatus.to_query f)));
            Some (Query.Pair ("Timestamp", (DateTime.to_query v.timestamp)));
            Util.option_map v.resource_type
-             (fun f  -> Query.Pair ("ResourceType", (String.to_query f)));
+             (fun f -> Query.Pair ("ResourceType", (String.to_query f)));
            Util.option_map v.physical_resource_id
-             (fun f  ->
-                Query.Pair ("PhysicalResourceId", (String.to_query f)));
+             (fun f -> Query.Pair ("PhysicalResourceId", (String.to_query f)));
            Util.option_map v.logical_resource_id
-             (fun f  -> Query.Pair ("LogicalResourceId", (String.to_query f)));
+             (fun f -> Query.Pair ("LogicalResourceId", (String.to_query f)));
            Some (Query.Pair ("StackName", (String.to_query v.stack_name)));
            Some (Query.Pair ("EventId", (String.to_query v.event_id)));
            Some (Query.Pair ("StackId", (String.to_query v.stack_id)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.resource_properties
-              (fun f  -> ("resource_properties", (String.to_json f)));
+              (fun f -> ("resource_properties", (String.to_json f)));
            Util.option_map v.resource_status_reason
-             (fun f  -> ("resource_status_reason", (String.to_json f)));
+             (fun f -> ("resource_status_reason", (String.to_json f)));
            Util.option_map v.resource_status
-             (fun f  -> ("resource_status", (ResourceStatus.to_json f)));
+             (fun f -> ("resource_status", (ResourceStatus.to_json f)));
            Some ("timestamp", (DateTime.to_json v.timestamp));
            Util.option_map v.resource_type
-             (fun f  -> ("resource_type", (String.to_json f)));
+             (fun f -> ("resource_type", (String.to_json f)));
            Util.option_map v.physical_resource_id
-             (fun f  -> ("physical_resource_id", (String.to_json f)));
+             (fun f -> ("physical_resource_id", (String.to_json f)));
            Util.option_map v.logical_resource_id
-             (fun f  -> ("logical_resource_id", (String.to_json f)));
+             (fun f -> ("logical_resource_id", (String.to_json f)));
            Some ("stack_name", (String.to_json v.stack_name));
            Some ("event_id", (String.to_json v.event_id));
            Some ("stack_id", (String.to_json v.stack_id))])
-      
     let of_json j =
       {
         stack_id =
@@ -1065,7 +1028,7 @@ module StackEvent =
         resource_properties =
           (Util.option_map (Json.lookup j "resource_properties")
              String.of_json)
-      } 
+      }
   end
 module StackResource =
   struct
@@ -1093,7 +1056,7 @@ module StackResource =
         resource_status;
         resource_status_reason;
         description
-      } 
+      }
     let parse xml =
       Some
         {
@@ -1124,14 +1087,13 @@ module StackResource =
           description =
             (Util.option_bind (Xml.member "Description" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.description
-              (fun f  -> Query.Pair ("Description", (String.to_query f)));
+              (fun f -> Query.Pair ("Description", (String.to_query f)));
            Util.option_map v.resource_status_reason
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("ResourceStatusReason", (String.to_query f)));
            Some
              (Query.Pair
@@ -1141,37 +1103,34 @@ module StackResource =
            Some
              (Query.Pair ("ResourceType", (String.to_query v.resource_type)));
            Util.option_map v.physical_resource_id
-             (fun f  ->
-                Query.Pair ("PhysicalResourceId", (String.to_query f)));
+             (fun f -> Query.Pair ("PhysicalResourceId", (String.to_query f)));
            Some
              (Query.Pair
                 ("LogicalResourceId",
                   (String.to_query v.logical_resource_id)));
            Util.option_map v.stack_id
-             (fun f  -> Query.Pair ("StackId", (String.to_query f)));
+             (fun f -> Query.Pair ("StackId", (String.to_query f)));
            Util.option_map v.stack_name
-             (fun f  -> Query.Pair ("StackName", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("StackName", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.description
-              (fun f  -> ("description", (String.to_json f)));
+              (fun f -> ("description", (String.to_json f)));
            Util.option_map v.resource_status_reason
-             (fun f  -> ("resource_status_reason", (String.to_json f)));
+             (fun f -> ("resource_status_reason", (String.to_json f)));
            Some
              ("resource_status", (ResourceStatus.to_json v.resource_status));
            Some ("timestamp", (DateTime.to_json v.timestamp));
            Some ("resource_type", (String.to_json v.resource_type));
            Util.option_map v.physical_resource_id
-             (fun f  -> ("physical_resource_id", (String.to_json f)));
+             (fun f -> ("physical_resource_id", (String.to_json f)));
            Some
              ("logical_resource_id", (String.to_json v.logical_resource_id));
            Util.option_map v.stack_id
-             (fun f  -> ("stack_id", (String.to_json f)));
+             (fun f -> ("stack_id", (String.to_json f)));
            Util.option_map v.stack_name
-             (fun f  -> ("stack_name", (String.to_json f)))])
-      
+             (fun f -> ("stack_name", (String.to_json f)))])
     let of_json j =
       {
         stack_name =
@@ -1197,94 +1156,89 @@ module StackResource =
              String.of_json);
         description =
           (Util.option_map (Json.lookup j "description") String.of_json)
-      } 
+      }
   end
 module StackResourceSummaries =
   struct
     type t = StackResourceSummary.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
       Util.option_all
         (List.map StackResourceSummary.parse (Xml.members "member" xml))
-      
-    let to_query v = Query.to_query_list StackResourceSummary.to_query v 
-    let to_json v = `List (List.map StackResourceSummary.to_json v) 
-    let of_json j = Json.to_list StackResourceSummary.of_json j 
+    let to_query v = Query.to_query_list StackResourceSummary.to_query v
+    let to_json v = `List (List.map StackResourceSummary.to_json v)
+    let of_json j = Json.to_list StackResourceSummary.of_json j
   end
 module StackSummaries =
   struct
     type t = StackSummary.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
       Util.option_all
         (List.map StackSummary.parse (Xml.members "member" xml))
-      
-    let to_query v = Query.to_query_list StackSummary.to_query v 
-    let to_json v = `List (List.map StackSummary.to_json v) 
-    let of_json j = Json.to_list StackSummary.of_json j 
+    let to_query v = Query.to_query_list StackSummary.to_query v
+    let to_json v = `List (List.map StackSummary.to_json v)
+    let of_json j = Json.to_list StackSummary.of_json j
   end
 module StackStatusFilter =
   struct
     type t = StackStatus.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
-      Util.option_all (List.map StackStatus.parse (Xml.members "member" xml)) 
-    let to_query v = Query.to_query_list StackStatus.to_query v 
-    let to_json v = `List (List.map StackStatus.to_json v) 
-    let of_json j = Json.to_list StackStatus.of_json j 
+      Util.option_all (List.map StackStatus.parse (Xml.members "member" xml))
+    let to_query v = Query.to_query_list StackStatus.to_query v
+    let to_json v = `List (List.map StackStatus.to_json v)
+    let of_json j = Json.to_list StackStatus.of_json j
   end
 module ResourceSignalStatus =
   struct
     type t =
       | SUCCESS 
       | FAILURE 
-    let str_to_t = [("FAILURE", FAILURE); ("SUCCESS", SUCCESS)] 
-    let t_to_str = [(FAILURE, "FAILURE"); (SUCCESS, "SUCCESS")] 
-    let make v () = v 
+    let str_to_t = [("FAILURE", FAILURE); ("SUCCESS", SUCCESS)]
+    let t_to_str = [(FAILURE, "FAILURE"); (SUCCESS, "SUCCESS")]
+    let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
-        (fun s  -> Util.list_find str_to_t s)
-      
+        (fun s -> Util.list_find str_to_t s)
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
   end
 module ParameterDeclarations =
   struct
     type t = ParameterDeclaration.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
       Util.option_all
         (List.map ParameterDeclaration.parse (Xml.members "member" xml))
-      
-    let to_query v = Query.to_query_list ParameterDeclaration.to_query v 
-    let to_json v = `List (List.map ParameterDeclaration.to_json v) 
-    let of_json j = Json.to_list ParameterDeclaration.of_json j 
+    let to_query v = Query.to_query_list ParameterDeclaration.to_query v
+    let to_json v = `List (List.map ParameterDeclaration.to_json v)
+    let of_json j = Json.to_list ParameterDeclaration.of_json j
   end
 module TemplateParameters =
   struct
     type t = TemplateParameter.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
       Util.option_all
         (List.map TemplateParameter.parse (Xml.members "member" xml))
-      
-    let to_query v = Query.to_query_list TemplateParameter.to_query v 
-    let to_json v = `List (List.map TemplateParameter.to_json v) 
-    let of_json j = Json.to_list TemplateParameter.of_json j 
+    let to_query v = Query.to_query_list TemplateParameter.to_query v
+    let to_json v = `List (List.map TemplateParameter.to_json v)
+    let of_json j = Json.to_list TemplateParameter.of_json j
   end
 module Stacks =
   struct
     type t = Stack.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
-      Util.option_all (List.map Stack.parse (Xml.members "member" xml)) 
-    let to_query v = Query.to_query_list Stack.to_query v 
-    let to_json v = `List (List.map Stack.to_json v) 
-    let of_json j = Json.to_list Stack.of_json j 
+      Util.option_all (List.map Stack.parse (Xml.members "member" xml))
+    let to_query v = Query.to_query_list Stack.to_query v
+    let to_json v = `List (List.map Stack.to_json v)
+    let of_json j = Json.to_list Stack.of_json j
   end
 module StackResourceDetail =
   struct
@@ -1315,7 +1269,7 @@ module StackResourceDetail =
         resource_status_reason;
         description;
         metadata
-      } 
+      }
     let parse xml =
       Some
         {
@@ -1349,16 +1303,15 @@ module StackResourceDetail =
           metadata =
             (Util.option_bind (Xml.member "Metadata" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.metadata
-              (fun f  -> Query.Pair ("Metadata", (String.to_query f)));
+              (fun f -> Query.Pair ("Metadata", (String.to_query f)));
            Util.option_map v.description
-             (fun f  -> Query.Pair ("Description", (String.to_query f)));
+             (fun f -> Query.Pair ("Description", (String.to_query f)));
            Util.option_map v.resource_status_reason
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("ResourceStatusReason", (String.to_query f)));
            Some
              (Query.Pair
@@ -1371,26 +1324,24 @@ module StackResourceDetail =
            Some
              (Query.Pair ("ResourceType", (String.to_query v.resource_type)));
            Util.option_map v.physical_resource_id
-             (fun f  ->
-                Query.Pair ("PhysicalResourceId", (String.to_query f)));
+             (fun f -> Query.Pair ("PhysicalResourceId", (String.to_query f)));
            Some
              (Query.Pair
                 ("LogicalResourceId",
                   (String.to_query v.logical_resource_id)));
            Util.option_map v.stack_id
-             (fun f  -> Query.Pair ("StackId", (String.to_query f)));
+             (fun f -> Query.Pair ("StackId", (String.to_query f)));
            Util.option_map v.stack_name
-             (fun f  -> Query.Pair ("StackName", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("StackName", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.metadata
-              (fun f  -> ("metadata", (String.to_json f)));
+              (fun f -> ("metadata", (String.to_json f)));
            Util.option_map v.description
-             (fun f  -> ("description", (String.to_json f)));
+             (fun f -> ("description", (String.to_json f)));
            Util.option_map v.resource_status_reason
-             (fun f  -> ("resource_status_reason", (String.to_json f)));
+             (fun f -> ("resource_status_reason", (String.to_json f)));
            Some
              ("resource_status", (ResourceStatus.to_json v.resource_status));
            Some
@@ -1398,14 +1349,13 @@ module StackResourceDetail =
                (DateTime.to_json v.last_updated_timestamp));
            Some ("resource_type", (String.to_json v.resource_type));
            Util.option_map v.physical_resource_id
-             (fun f  -> ("physical_resource_id", (String.to_json f)));
+             (fun f -> ("physical_resource_id", (String.to_json f)));
            Some
              ("logical_resource_id", (String.to_json v.logical_resource_id));
            Util.option_map v.stack_id
-             (fun f  -> ("stack_id", (String.to_json f)));
+             (fun f -> ("stack_id", (String.to_json f)));
            Util.option_map v.stack_name
-             (fun f  -> ("stack_name", (String.to_json f)))])
-      
+             (fun f -> ("stack_name", (String.to_json f)))])
     let of_json j =
       {
         stack_name =
@@ -1434,7 +1384,7 @@ module StackResourceDetail =
           (Util.option_map (Json.lookup j "description") String.of_json);
         metadata =
           (Util.option_map (Json.lookup j "metadata") String.of_json)
-      } 
+      }
   end
 module OnFailure =
   struct
@@ -1445,44 +1395,42 @@ module OnFailure =
     let str_to_t =
       [("DELETE", DELETE);
       ("ROLLBACK", ROLLBACK);
-      ("DO_NOTHING", DO_NOTHING)] 
+      ("DO_NOTHING", DO_NOTHING)]
     let t_to_str =
       [(DELETE, "DELETE");
       (ROLLBACK, "ROLLBACK");
-      (DO_NOTHING, "DO_NOTHING")] 
-    let make v () = v 
+      (DO_NOTHING, "DO_NOTHING")]
+    let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
-        (fun s  -> Util.list_find str_to_t s)
-      
+        (fun s -> Util.list_find str_to_t s)
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
   end
 module StackEvents =
   struct
     type t = StackEvent.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
-      Util.option_all (List.map StackEvent.parse (Xml.members "member" xml)) 
-    let to_query v = Query.to_query_list StackEvent.to_query v 
-    let to_json v = `List (List.map StackEvent.to_json v) 
-    let of_json j = Json.to_list StackEvent.of_json j 
+      Util.option_all (List.map StackEvent.parse (Xml.members "member" xml))
+    let to_query v = Query.to_query_list StackEvent.to_query v
+    let to_json v = `List (List.map StackEvent.to_json v)
+    let of_json j = Json.to_list StackEvent.of_json j
   end
 module StackResources =
   struct
     type t = StackResource.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
       Util.option_all
         (List.map StackResource.parse (Xml.members "member" xml))
-      
-    let to_query v = Query.to_query_list StackResource.to_query v 
-    let to_json v = `List (List.map StackResource.to_json v) 
-    let of_json j = Json.to_list StackResource.of_json j 
+    let to_query v = Query.to_query_list StackResource.to_query v
+    let to_json v = `List (List.map StackResource.to_json v)
+    let of_json j = Json.to_list StackResource.of_json j
   end
 module ListStackResourcesOutput =
   struct
@@ -1491,7 +1439,7 @@ module ListStackResourcesOutput =
       stack_resource_summaries: StackResourceSummaries.t ;
       next_token: String.t option }
     let make ?(stack_resource_summaries= [])  ?next_token  () =
-      { stack_resource_summaries; next_token } 
+      { stack_resource_summaries; next_token }
     let parse xml =
       Some
         {
@@ -1502,26 +1450,23 @@ module ListStackResourcesOutput =
           next_token =
             (Util.option_bind (Xml.member "NextToken" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.next_token
-              (fun f  -> Query.Pair ("NextToken", (String.to_query f)));
+              (fun f -> Query.Pair ("NextToken", (String.to_query f)));
            Some
              (Query.Pair
                 ("StackResourceSummaries.member",
                   (StackResourceSummaries.to_query v.stack_resource_summaries)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.next_token
-              (fun f  -> ("next_token", (String.to_json f)));
+              (fun f -> ("next_token", (String.to_json f)));
            Some
              ("stack_resource_summaries",
                (StackResourceSummaries.to_json v.stack_resource_summaries))])
-      
     let of_json j =
       {
         stack_resource_summaries =
@@ -1529,7 +1474,7 @@ module ListStackResourcesOutput =
              (Util.of_option_exn (Json.lookup j "stack_resource_summaries")));
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      } 
+      }
   end
 module SetStackPolicyInput =
   struct
@@ -1539,7 +1484,7 @@ module SetStackPolicyInput =
       stack_policy_body: String.t option ;
       stack_policy_u_r_l: String.t option }
     let make ~stack_name  ?stack_policy_body  ?stack_policy_u_r_l  () =
-      { stack_name; stack_policy_body; stack_policy_u_r_l } 
+      { stack_name; stack_policy_body; stack_policy_u_r_l }
     let parse xml =
       Some
         {
@@ -1551,25 +1496,22 @@ module SetStackPolicyInput =
           stack_policy_u_r_l =
             (Util.option_bind (Xml.member "StackPolicyURL" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.stack_policy_u_r_l
-              (fun f  -> Query.Pair ("StackPolicyURL", (String.to_query f)));
+              (fun f -> Query.Pair ("StackPolicyURL", (String.to_query f)));
            Util.option_map v.stack_policy_body
-             (fun f  -> Query.Pair ("StackPolicyBody", (String.to_query f)));
+             (fun f -> Query.Pair ("StackPolicyBody", (String.to_query f)));
            Some (Query.Pair ("StackName", (String.to_query v.stack_name)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.stack_policy_u_r_l
-              (fun f  -> ("stack_policy_u_r_l", (String.to_json f)));
+              (fun f -> ("stack_policy_u_r_l", (String.to_json f)));
            Util.option_map v.stack_policy_body
-             (fun f  -> ("stack_policy_body", (String.to_json f)));
+             (fun f -> ("stack_policy_body", (String.to_json f)));
            Some ("stack_name", (String.to_json v.stack_name))])
-      
     let of_json j =
       {
         stack_name =
@@ -1579,37 +1521,34 @@ module SetStackPolicyInput =
         stack_policy_u_r_l =
           (Util.option_map (Json.lookup j "stack_policy_u_r_l")
              String.of_json)
-      } 
+      }
   end
 module CreateStackOutput =
   struct
     type t = {
       stack_id: String.t option }
-    let make ?stack_id  () = { stack_id } 
+    let make ?stack_id  () = { stack_id }
     let parse xml =
       Some
         {
           stack_id =
             (Util.option_bind (Xml.member "StackId" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.stack_id
-              (fun f  -> Query.Pair ("StackId", (String.to_query f)))])
-      
+              (fun f -> Query.Pair ("StackId", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.stack_id
-              (fun f  -> ("stack_id", (String.to_json f)))])
-      
+              (fun f -> ("stack_id", (String.to_json f)))])
     let of_json j =
       {
         stack_id =
           (Util.option_map (Json.lookup j "stack_id") String.of_json)
-      } 
+      }
   end
 module DescribeStackResourceInput =
   struct
@@ -1617,7 +1556,7 @@ module DescribeStackResourceInput =
       stack_name: String.t ;
       logical_resource_id: String.t }
     let make ~stack_name  ~logical_resource_id  () =
-      { stack_name; logical_resource_id } 
+      { stack_name; logical_resource_id }
     let parse xml =
       Some
         {
@@ -1629,7 +1568,6 @@ module DescribeStackResourceInput =
                (Util.option_bind (Xml.member "LogicalResourceId" xml)
                   String.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -1638,14 +1576,12 @@ module DescribeStackResourceInput =
                  ("LogicalResourceId",
                    (String.to_query v.logical_resource_id)));
            Some (Query.Pair ("StackName", (String.to_query v.stack_name)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("logical_resource_id", (String.to_json v.logical_resource_id));
            Some ("stack_name", (String.to_json v.stack_name))])
-      
     let of_json j =
       {
         stack_name =
@@ -1653,7 +1589,7 @@ module DescribeStackResourceInput =
         logical_resource_id =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "logical_resource_id")))
-      } 
+      }
   end
 module ListStacksOutput =
   struct
@@ -1662,7 +1598,7 @@ module ListStacksOutput =
       stack_summaries: StackSummaries.t ;
       next_token: String.t option }
     let make ?(stack_summaries= [])  ?next_token  () =
-      { stack_summaries; next_token } 
+      { stack_summaries; next_token }
     let parse xml =
       Some
         {
@@ -1673,25 +1609,22 @@ module ListStacksOutput =
           next_token =
             (Util.option_bind (Xml.member "NextToken" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.next_token
-              (fun f  -> Query.Pair ("NextToken", (String.to_query f)));
+              (fun f -> Query.Pair ("NextToken", (String.to_query f)));
            Some
              (Query.Pair
                 ("StackSummaries.member",
                   (StackSummaries.to_query v.stack_summaries)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.next_token
-              (fun f  -> ("next_token", (String.to_json f)));
+              (fun f -> ("next_token", (String.to_json f)));
            Some
              ("stack_summaries", (StackSummaries.to_json v.stack_summaries))])
-      
     let of_json j =
       {
         stack_summaries =
@@ -1699,13 +1632,13 @@ module ListStacksOutput =
              (Util.of_option_exn (Json.lookup j "stack_summaries")));
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      } 
+      }
   end
 module GetTemplateInput =
   struct
     type t = {
       stack_name: String.t }
-    let make ~stack_name  () = { stack_name } 
+    let make ~stack_name  () = { stack_name }
     let parse xml =
       Some
         {
@@ -1713,43 +1646,38 @@ module GetTemplateInput =
             (Xml.required "StackName"
                (Util.option_bind (Xml.member "StackName" xml) String.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("StackName", (String.to_query v.stack_name)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("stack_name", (String.to_json v.stack_name))])
-      
     let of_json j =
       {
         stack_name =
           (String.of_json (Util.of_option_exn (Json.lookup j "stack_name")))
-      } 
+      }
   end
 module EstimateTemplateCostOutput =
   struct
     type t = {
       url: String.t option }
-    let make ?url  () = { url } 
+    let make ?url  () = { url }
     let parse xml =
-      Some { url = (Util.option_bind (Xml.member "Url" xml) String.parse) } 
+      Some { url = (Util.option_bind (Xml.member "Url" xml) String.parse) }
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.url
-              (fun f  -> Query.Pair ("Url", (String.to_query f)))])
-      
+              (fun f -> Query.Pair ("Url", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
-           [Util.option_map v.url (fun f  -> ("url", (String.to_json f)))])
-      
+           [Util.option_map v.url (fun f -> ("url", (String.to_json f)))])
     let of_json j =
-      { url = (Util.option_map (Json.lookup j "url") String.of_json) } 
+      { url = (Util.option_map (Json.lookup j "url") String.of_json) }
   end
 module ListStacksInput =
   struct
@@ -1758,7 +1686,7 @@ module ListStacksInput =
       next_token: String.t option ;
       stack_status_filter: StackStatusFilter.t }
     let make ?next_token  ?(stack_status_filter= [])  () =
-      { next_token; stack_status_filter } 
+      { next_token; stack_status_filter }
     let parse xml =
       Some
         {
@@ -1769,7 +1697,6 @@ module ListStacksInput =
                (Util.option_bind (Xml.member "StackStatusFilter" xml)
                   StackStatusFilter.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -1778,8 +1705,7 @@ module ListStacksInput =
                  ("StackStatusFilter.member",
                    (StackStatusFilter.to_query v.stack_status_filter)));
            Util.option_map v.next_token
-             (fun f  -> Query.Pair ("NextToken", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("NextToken", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -1787,8 +1713,7 @@ module ListStacksInput =
               ("stack_status_filter",
                 (StackStatusFilter.to_json v.stack_status_filter));
            Util.option_map v.next_token
-             (fun f  -> ("next_token", (String.to_json f)))])
-      
+             (fun f -> ("next_token", (String.to_json f)))])
     let of_json j =
       {
         next_token =
@@ -1796,13 +1721,13 @@ module ListStacksInput =
         stack_status_filter =
           (StackStatusFilter.of_json
              (Util.of_option_exn (Json.lookup j "stack_status_filter")))
-      } 
+      }
   end
 module GetStackPolicyInput =
   struct
     type t = {
       stack_name: String.t }
-    let make ~stack_name  () = { stack_name } 
+    let make ~stack_name  () = { stack_name }
     let parse xml =
       Some
         {
@@ -1810,61 +1735,55 @@ module GetStackPolicyInput =
             (Xml.required "StackName"
                (Util.option_bind (Xml.member "StackName" xml) String.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("StackName", (String.to_query v.stack_name)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("stack_name", (String.to_json v.stack_name))])
-      
     let of_json j =
       {
         stack_name =
           (String.of_json (Util.of_option_exn (Json.lookup j "stack_name")))
-      } 
+      }
   end
 module GetStackPolicyOutput =
   struct
     type t = {
       stack_policy_body: String.t option }
-    let make ?stack_policy_body  () = { stack_policy_body } 
+    let make ?stack_policy_body  () = { stack_policy_body }
     let parse xml =
       Some
         {
           stack_policy_body =
             (Util.option_bind (Xml.member "StackPolicyBody" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.stack_policy_body
-              (fun f  -> Query.Pair ("StackPolicyBody", (String.to_query f)))])
-      
+              (fun f -> Query.Pair ("StackPolicyBody", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.stack_policy_body
-              (fun f  -> ("stack_policy_body", (String.to_json f)))])
-      
+              (fun f -> ("stack_policy_body", (String.to_json f)))])
     let of_json j =
       {
         stack_policy_body =
           (Util.option_map (Json.lookup j "stack_policy_body") String.of_json)
-      } 
+      }
   end
 module InsufficientCapabilitiesException =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module DescribeStackResourcesInput =
   struct
@@ -1874,7 +1793,7 @@ module DescribeStackResourcesInput =
       logical_resource_id: String.t option ;
       physical_resource_id: String.t option }
     let make ?stack_name  ?logical_resource_id  ?physical_resource_id  () =
-      { stack_name; logical_resource_id; physical_resource_id } 
+      { stack_name; logical_resource_id; physical_resource_id }
     let parse xml =
       Some
         {
@@ -1887,28 +1806,25 @@ module DescribeStackResourcesInput =
             (Util.option_bind (Xml.member "PhysicalResourceId" xml)
                String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.physical_resource_id
-              (fun f  ->
+              (fun f ->
                  Query.Pair ("PhysicalResourceId", (String.to_query f)));
            Util.option_map v.logical_resource_id
-             (fun f  -> Query.Pair ("LogicalResourceId", (String.to_query f)));
+             (fun f -> Query.Pair ("LogicalResourceId", (String.to_query f)));
            Util.option_map v.stack_name
-             (fun f  -> Query.Pair ("StackName", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("StackName", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.physical_resource_id
-              (fun f  -> ("physical_resource_id", (String.to_json f)));
+              (fun f -> ("physical_resource_id", (String.to_json f)));
            Util.option_map v.logical_resource_id
-             (fun f  -> ("logical_resource_id", (String.to_json f)));
+             (fun f -> ("logical_resource_id", (String.to_json f)));
            Util.option_map v.stack_name
-             (fun f  -> ("stack_name", (String.to_json f)))])
-      
+             (fun f -> ("stack_name", (String.to_json f)))])
     let of_json j =
       {
         stack_name =
@@ -1919,7 +1835,7 @@ module DescribeStackResourcesInput =
         physical_resource_id =
           (Util.option_map (Json.lookup j "physical_resource_id")
              String.of_json)
-      } 
+      }
   end
 module SignalResourceInput =
   struct
@@ -1930,7 +1846,7 @@ module SignalResourceInput =
       unique_id: String.t ;
       status: ResourceSignalStatus.t }
     let make ~stack_name  ~logical_resource_id  ~unique_id  ~status  () =
-      { stack_name; logical_resource_id; unique_id; status } 
+      { stack_name; logical_resource_id; unique_id; status }
     let parse xml =
       Some
         {
@@ -1949,7 +1865,6 @@ module SignalResourceInput =
                (Util.option_bind (Xml.member "Status" xml)
                   ResourceSignalStatus.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -1962,7 +1877,6 @@ module SignalResourceInput =
                 ("LogicalResourceId",
                   (String.to_query v.logical_resource_id)));
            Some (Query.Pair ("StackName", (String.to_query v.stack_name)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -1971,7 +1885,6 @@ module SignalResourceInput =
            Some
              ("logical_resource_id", (String.to_json v.logical_resource_id));
            Some ("stack_name", (String.to_json v.stack_name))])
-      
     let of_json j =
       {
         stack_name =
@@ -1984,13 +1897,13 @@ module SignalResourceInput =
         status =
           (ResourceSignalStatus.of_json
              (Util.of_option_exn (Json.lookup j "status")))
-      } 
+      }
   end
 module DeleteStackInput =
   struct
     type t = {
       stack_name: String.t }
-    let make ~stack_name  () = { stack_name } 
+    let make ~stack_name  () = { stack_name }
     let parse xml =
       Some
         {
@@ -1998,22 +1911,19 @@ module DeleteStackInput =
             (Xml.required "StackName"
                (Util.option_bind (Xml.member "StackName" xml) String.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("StackName", (String.to_query v.stack_name)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("stack_name", (String.to_json v.stack_name))])
-      
     let of_json j =
       {
         stack_name =
           (String.of_json (Util.of_option_exn (Json.lookup j "stack_name")))
-      } 
+      }
   end
 module GetTemplateSummaryOutput =
   struct
@@ -2034,7 +1944,7 @@ module GetTemplateSummaryOutput =
         capabilities_reason;
         version;
         metadata
-      } 
+      }
     let parse xml =
       Some
         {
@@ -2056,42 +1966,38 @@ module GetTemplateSummaryOutput =
           metadata =
             (Util.option_bind (Xml.member "Metadata" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.metadata
-              (fun f  -> Query.Pair ("Metadata", (String.to_query f)));
+              (fun f -> Query.Pair ("Metadata", (String.to_query f)));
            Util.option_map v.version
-             (fun f  -> Query.Pair ("Version", (String.to_query f)));
+             (fun f -> Query.Pair ("Version", (String.to_query f)));
            Util.option_map v.capabilities_reason
-             (fun f  ->
-                Query.Pair ("CapabilitiesReason", (String.to_query f)));
+             (fun f -> Query.Pair ("CapabilitiesReason", (String.to_query f)));
            Some
              (Query.Pair
                 ("Capabilities.member",
                   (Capabilities.to_query v.capabilities)));
            Util.option_map v.description
-             (fun f  -> Query.Pair ("Description", (String.to_query f)));
+             (fun f -> Query.Pair ("Description", (String.to_query f)));
            Some
              (Query.Pair
                 ("Parameters.member",
                   (ParameterDeclarations.to_query v.parameters)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.metadata
-              (fun f  -> ("metadata", (String.to_json f)));
+              (fun f -> ("metadata", (String.to_json f)));
            Util.option_map v.version
-             (fun f  -> ("version", (String.to_json f)));
+             (fun f -> ("version", (String.to_json f)));
            Util.option_map v.capabilities_reason
-             (fun f  -> ("capabilities_reason", (String.to_json f)));
+             (fun f -> ("capabilities_reason", (String.to_json f)));
            Some ("capabilities", (Capabilities.to_json v.capabilities));
            Util.option_map v.description
-             (fun f  -> ("description", (String.to_json f)));
+             (fun f -> ("description", (String.to_json f)));
            Some ("parameters", (ParameterDeclarations.to_json v.parameters))])
-      
     let of_json j =
       {
         parameters =
@@ -2108,23 +2014,23 @@ module GetTemplateSummaryOutput =
         version = (Util.option_map (Json.lookup j "version") String.of_json);
         metadata =
           (Util.option_map (Json.lookup j "metadata") String.of_json)
-      } 
+      }
   end
 module AlreadyExistsException =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module DescribeStackEventsInput =
   struct
     type t = {
       stack_name: String.t option ;
       next_token: String.t option }
-    let make ?stack_name  ?next_token  () = { stack_name; next_token } 
+    let make ?stack_name  ?next_token  () = { stack_name; next_token }
     let parse xml =
       Some
         {
@@ -2133,30 +2039,27 @@ module DescribeStackEventsInput =
           next_token =
             (Util.option_bind (Xml.member "NextToken" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.next_token
-              (fun f  -> Query.Pair ("NextToken", (String.to_query f)));
+              (fun f -> Query.Pair ("NextToken", (String.to_query f)));
            Util.option_map v.stack_name
-             (fun f  -> Query.Pair ("StackName", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("StackName", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.next_token
-              (fun f  -> ("next_token", (String.to_json f)));
+              (fun f -> ("next_token", (String.to_json f)));
            Util.option_map v.stack_name
-             (fun f  -> ("stack_name", (String.to_json f)))])
-      
+             (fun f -> ("stack_name", (String.to_json f)))])
     let of_json j =
       {
         stack_name =
           (Util.option_map (Json.lookup j "stack_name") String.of_json);
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      } 
+      }
   end
 module ValidateTemplateInput =
   struct
@@ -2165,7 +2068,7 @@ module ValidateTemplateInput =
       template_body: String.t option ;
       template_u_r_l: String.t option }
     let make ?template_body  ?template_u_r_l  () =
-      { template_body; template_u_r_l } 
+      { template_body; template_u_r_l }
     let parse xml =
       Some
         {
@@ -2174,30 +2077,27 @@ module ValidateTemplateInput =
           template_u_r_l =
             (Util.option_bind (Xml.member "TemplateURL" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.template_u_r_l
-              (fun f  -> Query.Pair ("TemplateURL", (String.to_query f)));
+              (fun f -> Query.Pair ("TemplateURL", (String.to_query f)));
            Util.option_map v.template_body
-             (fun f  -> Query.Pair ("TemplateBody", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("TemplateBody", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.template_u_r_l
-              (fun f  -> ("template_u_r_l", (String.to_json f)));
+              (fun f -> ("template_u_r_l", (String.to_json f)));
            Util.option_map v.template_body
-             (fun f  -> ("template_body", (String.to_json f)))])
-      
+             (fun f -> ("template_body", (String.to_json f)))])
     let of_json j =
       {
         template_body =
           (Util.option_map (Json.lookup j "template_body") String.of_json);
         template_u_r_l =
           (Util.option_map (Json.lookup j "template_u_r_l") String.of_json)
-      } 
+      }
   end
 module ValidateTemplateOutput =
   struct
@@ -2209,7 +2109,7 @@ module ValidateTemplateOutput =
       capabilities_reason: String.t option }
     let make ?(parameters= [])  ?description  ?(capabilities= []) 
       ?capabilities_reason  () =
-      { parameters; description; capabilities; capabilities_reason } 
+      { parameters; description; capabilities; capabilities_reason }
     let parse xml =
       Some
         {
@@ -2227,34 +2127,31 @@ module ValidateTemplateOutput =
             (Util.option_bind (Xml.member "CapabilitiesReason" xml)
                String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.capabilities_reason
-              (fun f  ->
+              (fun f ->
                  Query.Pair ("CapabilitiesReason", (String.to_query f)));
            Some
              (Query.Pair
                 ("Capabilities.member",
                   (Capabilities.to_query v.capabilities)));
            Util.option_map v.description
-             (fun f  -> Query.Pair ("Description", (String.to_query f)));
+             (fun f -> Query.Pair ("Description", (String.to_query f)));
            Some
              (Query.Pair
                 ("Parameters.member",
                   (TemplateParameters.to_query v.parameters)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.capabilities_reason
-              (fun f  -> ("capabilities_reason", (String.to_json f)));
+              (fun f -> ("capabilities_reason", (String.to_json f)));
            Some ("capabilities", (Capabilities.to_json v.capabilities));
            Util.option_map v.description
-             (fun f  -> ("description", (String.to_json f)));
+             (fun f -> ("description", (String.to_json f)));
            Some ("parameters", (TemplateParameters.to_json v.parameters))])
-      
     let of_json j =
       {
         parameters =
@@ -2268,7 +2165,7 @@ module ValidateTemplateOutput =
         capabilities_reason =
           (Util.option_map (Json.lookup j "capabilities_reason")
              String.of_json)
-      } 
+      }
   end
 module GetTemplateSummaryInput =
   struct
@@ -2278,7 +2175,7 @@ module GetTemplateSummaryInput =
       template_u_r_l: String.t option ;
       stack_name: String.t option }
     let make ?template_body  ?template_u_r_l  ?stack_name  () =
-      { template_body; template_u_r_l; stack_name } 
+      { template_body; template_u_r_l; stack_name }
     let parse xml =
       Some
         {
@@ -2289,27 +2186,24 @@ module GetTemplateSummaryInput =
           stack_name =
             (Util.option_bind (Xml.member "StackName" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.stack_name
-              (fun f  -> Query.Pair ("StackName", (String.to_query f)));
+              (fun f -> Query.Pair ("StackName", (String.to_query f)));
            Util.option_map v.template_u_r_l
-             (fun f  -> Query.Pair ("TemplateURL", (String.to_query f)));
+             (fun f -> Query.Pair ("TemplateURL", (String.to_query f)));
            Util.option_map v.template_body
-             (fun f  -> Query.Pair ("TemplateBody", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("TemplateBody", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.stack_name
-              (fun f  -> ("stack_name", (String.to_json f)));
+              (fun f -> ("stack_name", (String.to_json f)));
            Util.option_map v.template_u_r_l
-             (fun f  -> ("template_u_r_l", (String.to_json f)));
+             (fun f -> ("template_u_r_l", (String.to_json f)));
            Util.option_map v.template_body
-             (fun f  -> ("template_body", (String.to_json f)))])
-      
+             (fun f -> ("template_body", (String.to_json f)))])
     let of_json j =
       {
         template_body =
@@ -2318,13 +2212,13 @@ module GetTemplateSummaryInput =
           (Util.option_map (Json.lookup j "template_u_r_l") String.of_json);
         stack_name =
           (Util.option_map (Json.lookup j "stack_name") String.of_json)
-      } 
+      }
   end
 module CancelUpdateStackInput =
   struct
     type t = {
       stack_name: String.t }
-    let make ~stack_name  () = { stack_name } 
+    let make ~stack_name  () = { stack_name }
     let parse xml =
       Some
         {
@@ -2332,59 +2226,53 @@ module CancelUpdateStackInput =
             (Xml.required "StackName"
                (Util.option_bind (Xml.member "StackName" xml) String.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("StackName", (String.to_query v.stack_name)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("stack_name", (String.to_json v.stack_name))])
-      
     let of_json j =
       {
         stack_name =
           (String.of_json (Util.of_option_exn (Json.lookup j "stack_name")))
-      } 
+      }
   end
 module UpdateStackOutput =
   struct
     type t = {
       stack_id: String.t option }
-    let make ?stack_id  () = { stack_id } 
+    let make ?stack_id  () = { stack_id }
     let parse xml =
       Some
         {
           stack_id =
             (Util.option_bind (Xml.member "StackId" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.stack_id
-              (fun f  -> Query.Pair ("StackId", (String.to_query f)))])
-      
+              (fun f -> Query.Pair ("StackId", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.stack_id
-              (fun f  -> ("stack_id", (String.to_json f)))])
-      
+              (fun f -> ("stack_id", (String.to_json f)))])
     let of_json j =
       {
         stack_id =
           (Util.option_map (Json.lookup j "stack_id") String.of_json)
-      } 
+      }
   end
 module DescribeStacksOutput =
   struct
     type t = {
       stacks: Stacks.t ;
       next_token: String.t option }
-    let make ?(stacks= [])  ?next_token  () = { stacks; next_token } 
+    let make ?(stacks= [])  ?next_token  () = { stacks; next_token }
     let parse xml =
       Some
         {
@@ -2394,43 +2282,40 @@ module DescribeStacksOutput =
           next_token =
             (Util.option_bind (Xml.member "NextToken" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.next_token
-              (fun f  -> Query.Pair ("NextToken", (String.to_query f)));
+              (fun f -> Query.Pair ("NextToken", (String.to_query f)));
            Some (Query.Pair ("Stacks.member", (Stacks.to_query v.stacks)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.next_token
-              (fun f  -> ("next_token", (String.to_json f)));
+              (fun f -> ("next_token", (String.to_json f)));
            Some ("stacks", (Stacks.to_json v.stacks))])
-      
     let of_json j =
       {
         stacks =
           (Stacks.of_json (Util.of_option_exn (Json.lookup j "stacks")));
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      } 
+      }
   end
 module LimitExceededException =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module DescribeStackResourceOutput =
   struct
     type t = {
       stack_resource_detail: StackResourceDetail.t option }
-    let make ?stack_resource_detail  () = { stack_resource_detail } 
+    let make ?stack_resource_detail  () = { stack_resource_detail }
     let parse xml =
       Some
         {
@@ -2438,35 +2323,32 @@ module DescribeStackResourceOutput =
             (Util.option_bind (Xml.member "StackResourceDetail" xml)
                StackResourceDetail.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.stack_resource_detail
-              (fun f  ->
+              (fun f ->
                  Query.Pair
                    ("StackResourceDetail", (StackResourceDetail.to_query f)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.stack_resource_detail
-              (fun f  ->
+              (fun f ->
                  ("stack_resource_detail", (StackResourceDetail.to_json f)))])
-      
     let of_json j =
       {
         stack_resource_detail =
           (Util.option_map (Json.lookup j "stack_resource_detail")
              StackResourceDetail.of_json)
-      } 
+      }
   end
 module DescribeStacksInput =
   struct
     type t = {
       stack_name: String.t option ;
       next_token: String.t option }
-    let make ?stack_name  ?next_token  () = { stack_name; next_token } 
+    let make ?stack_name  ?next_token  () = { stack_name; next_token }
     let parse xml =
       Some
         {
@@ -2475,30 +2357,27 @@ module DescribeStacksInput =
           next_token =
             (Util.option_bind (Xml.member "NextToken" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.next_token
-              (fun f  -> Query.Pair ("NextToken", (String.to_query f)));
+              (fun f -> Query.Pair ("NextToken", (String.to_query f)));
            Util.option_map v.stack_name
-             (fun f  -> Query.Pair ("StackName", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("StackName", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.next_token
-              (fun f  -> ("next_token", (String.to_json f)));
+              (fun f -> ("next_token", (String.to_json f)));
            Util.option_map v.stack_name
-             (fun f  -> ("stack_name", (String.to_json f)))])
-      
+             (fun f -> ("stack_name", (String.to_json f)))])
     let of_json j =
       {
         stack_name =
           (Util.option_map (Json.lookup j "stack_name") String.of_json);
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      } 
+      }
   end
 module EstimateTemplateCostInput =
   struct
@@ -2508,7 +2387,7 @@ module EstimateTemplateCostInput =
       template_u_r_l: String.t option ;
       parameters: Parameters.t }
     let make ?template_body  ?template_u_r_l  ?(parameters= [])  () =
-      { template_body; template_u_r_l; parameters } 
+      { template_body; template_u_r_l; parameters }
     let parse xml =
       Some
         {
@@ -2521,7 +2400,6 @@ module EstimateTemplateCostInput =
                (Util.option_bind (Xml.member "Parameters" xml)
                   Parameters.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -2529,19 +2407,17 @@ module EstimateTemplateCostInput =
               (Query.Pair
                  ("Parameters.member", (Parameters.to_query v.parameters)));
            Util.option_map v.template_u_r_l
-             (fun f  -> Query.Pair ("TemplateURL", (String.to_query f)));
+             (fun f -> Query.Pair ("TemplateURL", (String.to_query f)));
            Util.option_map v.template_body
-             (fun f  -> Query.Pair ("TemplateBody", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("TemplateBody", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("parameters", (Parameters.to_json v.parameters));
            Util.option_map v.template_u_r_l
-             (fun f  -> ("template_u_r_l", (String.to_json f)));
+             (fun f -> ("template_u_r_l", (String.to_json f)));
            Util.option_map v.template_body
-             (fun f  -> ("template_body", (String.to_json f)))])
-      
+             (fun f -> ("template_body", (String.to_json f)))])
     let of_json j =
       {
         template_body =
@@ -2551,7 +2427,7 @@ module EstimateTemplateCostInput =
         parameters =
           (Parameters.of_json
              (Util.of_option_exn (Json.lookup j "parameters")))
-      } 
+      }
   end
 module UpdateStackInput =
   struct
@@ -2585,7 +2461,7 @@ module UpdateStackInput =
         stack_policy_body;
         stack_policy_u_r_l;
         notification_a_r_ns
-      } 
+      }
     let parse xml =
       Some
         {
@@ -2622,7 +2498,6 @@ module UpdateStackInput =
                (Util.option_bind (Xml.member "NotificationARNs" xml)
                   NotificationARNs.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -2631,9 +2506,9 @@ module UpdateStackInput =
                  ("NotificationARNs.member",
                    (NotificationARNs.to_query v.notification_a_r_ns)));
            Util.option_map v.stack_policy_u_r_l
-             (fun f  -> Query.Pair ("StackPolicyURL", (String.to_query f)));
+             (fun f -> Query.Pair ("StackPolicyURL", (String.to_query f)));
            Util.option_map v.stack_policy_body
-             (fun f  -> Query.Pair ("StackPolicyBody", (String.to_query f)));
+             (fun f -> Query.Pair ("StackPolicyBody", (String.to_query f)));
            Some
              (Query.Pair
                 ("Capabilities.member",
@@ -2642,22 +2517,21 @@ module UpdateStackInput =
              (Query.Pair
                 ("Parameters.member", (Parameters.to_query v.parameters)));
            Util.option_map v.stack_policy_during_update_u_r_l
-             (fun f  ->
+             (fun f ->
                 Query.Pair
                   ("StackPolicyDuringUpdateURL", (String.to_query f)));
            Util.option_map v.stack_policy_during_update_body
-             (fun f  ->
+             (fun f ->
                 Query.Pair
                   ("StackPolicyDuringUpdateBody", (String.to_query f)));
            Util.option_map v.use_previous_template
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("UsePreviousTemplate", (Boolean.to_query f)));
            Util.option_map v.template_u_r_l
-             (fun f  -> Query.Pair ("TemplateURL", (String.to_query f)));
+             (fun f -> Query.Pair ("TemplateURL", (String.to_query f)));
            Util.option_map v.template_body
-             (fun f  -> Query.Pair ("TemplateBody", (String.to_query f)));
+             (fun f -> Query.Pair ("TemplateBody", (String.to_query f)));
            Some (Query.Pair ("StackName", (String.to_query v.stack_name)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -2665,25 +2539,24 @@ module UpdateStackInput =
               ("notification_a_r_ns",
                 (NotificationARNs.to_json v.notification_a_r_ns));
            Util.option_map v.stack_policy_u_r_l
-             (fun f  -> ("stack_policy_u_r_l", (String.to_json f)));
+             (fun f -> ("stack_policy_u_r_l", (String.to_json f)));
            Util.option_map v.stack_policy_body
-             (fun f  -> ("stack_policy_body", (String.to_json f)));
+             (fun f -> ("stack_policy_body", (String.to_json f)));
            Some ("capabilities", (Capabilities.to_json v.capabilities));
            Some ("parameters", (Parameters.to_json v.parameters));
            Util.option_map v.stack_policy_during_update_u_r_l
-             (fun f  ->
+             (fun f ->
                 ("stack_policy_during_update_u_r_l", (String.to_json f)));
            Util.option_map v.stack_policy_during_update_body
-             (fun f  ->
+             (fun f ->
                 ("stack_policy_during_update_body", (String.to_json f)));
            Util.option_map v.use_previous_template
-             (fun f  -> ("use_previous_template", (Boolean.to_json f)));
+             (fun f -> ("use_previous_template", (Boolean.to_json f)));
            Util.option_map v.template_u_r_l
-             (fun f  -> ("template_u_r_l", (String.to_json f)));
+             (fun f -> ("template_u_r_l", (String.to_json f)));
            Util.option_map v.template_body
-             (fun f  -> ("template_body", (String.to_json f)));
+             (fun f -> ("template_body", (String.to_json f)));
            Some ("stack_name", (String.to_json v.stack_name))])
-      
     let of_json j =
       {
         stack_name =
@@ -2715,7 +2588,7 @@ module UpdateStackInput =
         notification_a_r_ns =
           (NotificationARNs.of_json
              (Util.of_option_exn (Json.lookup j "notification_a_r_ns")))
-      } 
+      }
   end
 module CreateStackInput =
   struct
@@ -2750,7 +2623,7 @@ module CreateStackInput =
         stack_policy_body;
         stack_policy_u_r_l;
         tags
-      } 
+      }
     let parse xml =
       Some
         {
@@ -2789,17 +2662,16 @@ module CreateStackInput =
             (Util.of_option []
                (Util.option_bind (Xml.member "Tags" xml) Tags.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("Tags.member", (Tags.to_query v.tags)));
            Util.option_map v.stack_policy_u_r_l
-             (fun f  -> Query.Pair ("StackPolicyURL", (String.to_query f)));
+             (fun f -> Query.Pair ("StackPolicyURL", (String.to_query f)));
            Util.option_map v.stack_policy_body
-             (fun f  -> Query.Pair ("StackPolicyBody", (String.to_query f)));
+             (fun f -> Query.Pair ("StackPolicyBody", (String.to_query f)));
            Util.option_map v.on_failure
-             (fun f  -> Query.Pair ("OnFailure", (OnFailure.to_query f)));
+             (fun f -> Query.Pair ("OnFailure", (OnFailure.to_query f)));
            Some
              (Query.Pair
                 ("Capabilities.member",
@@ -2809,43 +2681,41 @@ module CreateStackInput =
                 ("NotificationARNs.member",
                   (NotificationARNs.to_query v.notification_a_r_ns)));
            Util.option_map v.timeout_in_minutes
-             (fun f  -> Query.Pair ("TimeoutInMinutes", (Integer.to_query f)));
+             (fun f -> Query.Pair ("TimeoutInMinutes", (Integer.to_query f)));
            Util.option_map v.disable_rollback
-             (fun f  -> Query.Pair ("DisableRollback", (Boolean.to_query f)));
+             (fun f -> Query.Pair ("DisableRollback", (Boolean.to_query f)));
            Some
              (Query.Pair
                 ("Parameters.member", (Parameters.to_query v.parameters)));
            Util.option_map v.template_u_r_l
-             (fun f  -> Query.Pair ("TemplateURL", (String.to_query f)));
+             (fun f -> Query.Pair ("TemplateURL", (String.to_query f)));
            Util.option_map v.template_body
-             (fun f  -> Query.Pair ("TemplateBody", (String.to_query f)));
+             (fun f -> Query.Pair ("TemplateBody", (String.to_query f)));
            Some (Query.Pair ("StackName", (String.to_query v.stack_name)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("tags", (Tags.to_json v.tags));
            Util.option_map v.stack_policy_u_r_l
-             (fun f  -> ("stack_policy_u_r_l", (String.to_json f)));
+             (fun f -> ("stack_policy_u_r_l", (String.to_json f)));
            Util.option_map v.stack_policy_body
-             (fun f  -> ("stack_policy_body", (String.to_json f)));
+             (fun f -> ("stack_policy_body", (String.to_json f)));
            Util.option_map v.on_failure
-             (fun f  -> ("on_failure", (OnFailure.to_json f)));
+             (fun f -> ("on_failure", (OnFailure.to_json f)));
            Some ("capabilities", (Capabilities.to_json v.capabilities));
            Some
              ("notification_a_r_ns",
                (NotificationARNs.to_json v.notification_a_r_ns));
            Util.option_map v.timeout_in_minutes
-             (fun f  -> ("timeout_in_minutes", (Integer.to_json f)));
+             (fun f -> ("timeout_in_minutes", (Integer.to_json f)));
            Util.option_map v.disable_rollback
-             (fun f  -> ("disable_rollback", (Boolean.to_json f)));
+             (fun f -> ("disable_rollback", (Boolean.to_json f)));
            Some ("parameters", (Parameters.to_json v.parameters));
            Util.option_map v.template_u_r_l
-             (fun f  -> ("template_u_r_l", (String.to_json f)));
+             (fun f -> ("template_u_r_l", (String.to_json f)));
            Util.option_map v.template_body
-             (fun f  -> ("template_body", (String.to_json f)));
+             (fun f -> ("template_body", (String.to_json f)));
            Some ("stack_name", (String.to_json v.stack_name))])
-      
     let of_json j =
       {
         stack_name =
@@ -2876,7 +2746,7 @@ module CreateStackInput =
           (Util.option_map (Json.lookup j "stack_policy_u_r_l")
              String.of_json);
         tags = (Tags.of_json (Util.of_option_exn (Json.lookup j "tags")))
-      } 
+      }
   end
 module DescribeStackEventsOutput =
   struct
@@ -2884,7 +2754,7 @@ module DescribeStackEventsOutput =
       stack_events: StackEvents.t ;
       next_token: String.t option }
     let make ?(stack_events= [])  ?next_token  () =
-      { stack_events; next_token } 
+      { stack_events; next_token }
     let parse xml =
       Some
         {
@@ -2895,23 +2765,20 @@ module DescribeStackEventsOutput =
           next_token =
             (Util.option_bind (Xml.member "NextToken" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.next_token
-              (fun f  -> Query.Pair ("NextToken", (String.to_query f)));
+              (fun f -> Query.Pair ("NextToken", (String.to_query f)));
            Some
              (Query.Pair
                 ("StackEvents.member", (StackEvents.to_query v.stack_events)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.next_token
-              (fun f  -> ("next_token", (String.to_json f)));
+              (fun f -> ("next_token", (String.to_json f)));
            Some ("stack_events", (StackEvents.to_json v.stack_events))])
-      
     let of_json j =
       {
         stack_events =
@@ -2919,13 +2786,13 @@ module DescribeStackEventsOutput =
              (Util.of_option_exn (Json.lookup j "stack_events")));
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      } 
+      }
   end
 module DescribeStackResourcesOutput =
   struct
     type t = {
       stack_resources: StackResources.t }
-    let make ?(stack_resources= [])  () = { stack_resources } 
+    let make ?(stack_resources= [])  () = { stack_resources }
     let parse xml =
       Some
         {
@@ -2934,7 +2801,6 @@ module DescribeStackResourcesOutput =
                (Util.option_bind (Xml.member "StackResources" xml)
                   StackResources.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -2942,26 +2808,24 @@ module DescribeStackResourcesOutput =
               (Query.Pair
                  ("StackResources.member",
                    (StackResources.to_query v.stack_resources)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("stack_resources", (StackResources.to_json v.stack_resources))])
-      
     let of_json j =
       {
         stack_resources =
           (StackResources.of_json
              (Util.of_option_exn (Json.lookup j "stack_resources")))
-      } 
+      }
   end
 module ListStackResourcesInput =
   struct
     type t = {
       stack_name: String.t ;
       next_token: String.t option }
-    let make ~stack_name  ?next_token  () = { stack_name; next_token } 
+    let make ~stack_name  ?next_token  () = { stack_name; next_token }
     let parse xml =
       Some
         {
@@ -2971,56 +2835,50 @@ module ListStackResourcesInput =
           next_token =
             (Util.option_bind (Xml.member "NextToken" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.next_token
-              (fun f  -> Query.Pair ("NextToken", (String.to_query f)));
+              (fun f -> Query.Pair ("NextToken", (String.to_query f)));
            Some (Query.Pair ("StackName", (String.to_query v.stack_name)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.next_token
-              (fun f  -> ("next_token", (String.to_json f)));
+              (fun f -> ("next_token", (String.to_json f)));
            Some ("stack_name", (String.to_json v.stack_name))])
-      
     let of_json j =
       {
         stack_name =
           (String.of_json (Util.of_option_exn (Json.lookup j "stack_name")));
         next_token =
           (Util.option_map (Json.lookup j "next_token") String.of_json)
-      } 
+      }
   end
 module GetTemplateOutput =
   struct
     type t = {
       template_body: String.t option }
-    let make ?template_body  () = { template_body } 
+    let make ?template_body  () = { template_body }
     let parse xml =
       Some
         {
           template_body =
             (Util.option_bind (Xml.member "TemplateBody" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.template_body
-              (fun f  -> Query.Pair ("TemplateBody", (String.to_query f)))])
-      
+              (fun f -> Query.Pair ("TemplateBody", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.template_body
-              (fun f  -> ("template_body", (String.to_json f)))])
-      
+              (fun f -> ("template_body", (String.to_json f)))])
     let of_json j =
       {
         template_body =
           (Util.option_map (Json.lookup j "template_body") String.of_json)
-      } 
+      }
   end

@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = RemoveSourceIdentifierFromSubscriptionMessage.t
 type output = RemoveSourceIdentifierFromSubscriptionResult.t
 type error = Errors_internal.t

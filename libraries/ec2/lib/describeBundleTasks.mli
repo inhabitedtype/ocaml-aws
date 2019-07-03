@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = DescribeBundleTasksRequest.t
 type output = DescribeBundleTasksResult.t
 type error = Errors_internal.t

@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = ResetDBParameterGroupMessage.t
 type output = DBParameterGroupNameMessage.t
 type error = Errors_internal.t

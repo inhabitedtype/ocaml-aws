@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = GetHealthCheckRequest.t
 type output = GetHealthCheckResponse.t
 type error = Errors_internal.t

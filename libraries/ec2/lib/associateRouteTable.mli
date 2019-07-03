@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = AssociateRouteTableRequest.t
 type output = AssociateRouteTableResult.t
 type error = Errors_internal.t

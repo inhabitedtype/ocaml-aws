@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = DescribeAlarmHistoryInput.t
 type output = DescribeAlarmHistoryOutput.t
 type error = Errors_internal.t

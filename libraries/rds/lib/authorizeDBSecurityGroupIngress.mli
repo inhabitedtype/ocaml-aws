@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = AuthorizeDBSecurityGroupIngressMessage.t
 type output = AuthorizeDBSecurityGroupIngressResult.t
 type error = Errors_internal.t

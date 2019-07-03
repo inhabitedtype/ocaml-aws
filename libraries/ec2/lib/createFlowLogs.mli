@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = CreateFlowLogsRequest.t
 type output = CreateFlowLogsResult.t
 type error = Errors_internal.t

@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = ListMetricsInput.t
 type output = ListMetricsOutput.t
 type error = Errors_internal.t

@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = CreateDBInstanceMessage.t
 type output = CreateDBInstanceResult.t
 type error = Errors_internal.t

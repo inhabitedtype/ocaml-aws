@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = UploadPartCopyRequest.t
 type output = UploadPartCopyOutput.t
 type error = Errors_internal.t

@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = CreateVpnConnectionRequest.t
 type output = CreateVpnConnectionResult.t
 type error = Errors_internal.t

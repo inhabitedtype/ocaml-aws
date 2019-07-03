@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = CreateInstanceExportTaskRequest.t
 type output = CreateInstanceExportTaskResult.t
 type error = Errors_internal.t

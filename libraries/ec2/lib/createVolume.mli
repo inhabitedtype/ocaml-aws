@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = CreateVolumeRequest.t
 type output = Volume.t
 type error = Errors_internal.t

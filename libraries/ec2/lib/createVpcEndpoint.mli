@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = CreateVpcEndpointRequest.t
 type output = CreateVpcEndpointResult.t
 type error = Errors_internal.t

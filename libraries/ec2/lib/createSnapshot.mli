@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = CreateSnapshotRequest.t
 type output = Snapshot.t
 type error = Errors_internal.t

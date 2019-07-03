@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = DescribeDBEngineVersionsMessage.t
 type output = DBEngineVersionMessage.t
 type error = Errors_internal.t
