@@ -1,5 +1,6 @@
 .*.sw[po]
 _build/
+_opam/
 setup.log
 setup.data
 *.native
