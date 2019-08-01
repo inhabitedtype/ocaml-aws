@@ -7,7 +7,7 @@ module Endpoint =
     type t = {
       address: String.t option ;
       port: Integer.t option }
-    let make ?address  ?port  () = { address; port } 
+    let make ?address  ?port  () = { address; port }
     let parse xml =
       Some
         {
@@ -15,27 +15,24 @@ module Endpoint =
             (Util.option_bind (Xml.member "Address" xml) String.parse);
           port = (Util.option_bind (Xml.member "Port" xml) Integer.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.port
-              (fun f  -> Query.Pair ("Port", (Integer.to_query f)));
+              (fun f -> Query.Pair ("Port", (Integer.to_query f)));
            Util.option_map v.address
-             (fun f  -> Query.Pair ("Address", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("Address", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
-           [Util.option_map v.port (fun f  -> ("port", (Integer.to_json f)));
+           [Util.option_map v.port (fun f -> ("port", (Integer.to_json f)));
            Util.option_map v.address
-             (fun f  -> ("address", (String.to_json f)))])
-      
+             (fun f -> ("address", (String.to_json f)))])
     let of_json j =
       {
         address = (Util.option_map (Json.lookup j "address") String.of_json);
         port = (Util.option_map (Json.lookup j "port") Integer.of_json)
-      } 
+      }
   end
 module NodeGroupMember =
   struct
@@ -54,7 +51,7 @@ module NodeGroupMember =
         read_endpoint;
         preferred_availability_zone;
         current_role
-      } 
+      }
     let parse xml =
       Some
         {
@@ -70,36 +67,33 @@ module NodeGroupMember =
           current_role =
             (Util.option_bind (Xml.member "CurrentRole" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.current_role
-              (fun f  -> Query.Pair ("CurrentRole", (String.to_query f)));
+              (fun f -> Query.Pair ("CurrentRole", (String.to_query f)));
            Util.option_map v.preferred_availability_zone
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("PreferredAvailabilityZone", (String.to_query f)));
            Util.option_map v.read_endpoint
-             (fun f  -> Query.Pair ("ReadEndpoint", (Endpoint.to_query f)));
+             (fun f -> Query.Pair ("ReadEndpoint", (Endpoint.to_query f)));
            Util.option_map v.cache_node_id
-             (fun f  -> Query.Pair ("CacheNodeId", (String.to_query f)));
+             (fun f -> Query.Pair ("CacheNodeId", (String.to_query f)));
            Util.option_map v.cache_cluster_id
-             (fun f  -> Query.Pair ("CacheClusterId", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("CacheClusterId", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.current_role
-              (fun f  -> ("current_role", (String.to_json f)));
+              (fun f -> ("current_role", (String.to_json f)));
            Util.option_map v.preferred_availability_zone
-             (fun f  -> ("preferred_availability_zone", (String.to_json f)));
+             (fun f -> ("preferred_availability_zone", (String.to_json f)));
            Util.option_map v.read_endpoint
-             (fun f  -> ("read_endpoint", (Endpoint.to_json f)));
+             (fun f -> ("read_endpoint", (Endpoint.to_json f)));
            Util.option_map v.cache_node_id
-             (fun f  -> ("cache_node_id", (String.to_json f)));
+             (fun f -> ("cache_node_id", (String.to_json f)));
            Util.option_map v.cache_cluster_id
-             (fun f  -> ("cache_cluster_id", (String.to_json f)))])
-      
+             (fun f -> ("cache_cluster_id", (String.to_json f)))])
     let of_json j =
       {
         cache_cluster_id =
@@ -113,35 +107,33 @@ module NodeGroupMember =
              String.of_json);
         current_role =
           (Util.option_map (Json.lookup j "current_role") String.of_json)
-      } 
+      }
   end
 module AvailabilityZone =
   struct
     type t = {
       name: String.t option }
-    let make ?name  () = { name } 
+    let make ?name  () = { name }
     let parse xml =
-      Some { name = (Util.option_bind (Xml.member "Name" xml) String.parse) } 
+      Some { name = (Util.option_bind (Xml.member "Name" xml) String.parse) }
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.name
-              (fun f  -> Query.Pair ("Name", (String.to_query f)))])
-      
+              (fun f -> Query.Pair ("Name", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
-           [Util.option_map v.name (fun f  -> ("name", (String.to_json f)))])
-      
+           [Util.option_map v.name (fun f -> ("name", (String.to_json f)))])
     let of_json j =
-      { name = (Util.option_map (Json.lookup j "name") String.of_json) } 
+      { name = (Util.option_map (Json.lookup j "name") String.of_json) }
   end
 module CacheNodeTypeSpecificValue =
   struct
     type t = {
       cache_node_type: String.t option ;
       value: String.t option }
-    let make ?cache_node_type  ?value  () = { cache_node_type; value } 
+    let make ?cache_node_type  ?value  () = { cache_node_type; value }
     let parse xml =
       Some
         {
@@ -149,40 +141,36 @@ module CacheNodeTypeSpecificValue =
             (Util.option_bind (Xml.member "CacheNodeType" xml) String.parse);
           value = (Util.option_bind (Xml.member "Value" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.value
-              (fun f  -> Query.Pair ("Value", (String.to_query f)));
+              (fun f -> Query.Pair ("Value", (String.to_query f)));
            Util.option_map v.cache_node_type
-             (fun f  -> Query.Pair ("CacheNodeType", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("CacheNodeType", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
-           [Util.option_map v.value (fun f  -> ("value", (String.to_json f)));
+           [Util.option_map v.value (fun f -> ("value", (String.to_json f)));
            Util.option_map v.cache_node_type
-             (fun f  -> ("cache_node_type", (String.to_json f)))])
-      
+             (fun f -> ("cache_node_type", (String.to_json f)))])
     let of_json j =
       {
         cache_node_type =
           (Util.option_map (Json.lookup j "cache_node_type") String.of_json);
         value = (Util.option_map (Json.lookup j "value") String.of_json)
-      } 
+      }
   end
 module NodeGroupMemberList =
   struct
     type t = NodeGroupMember.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
       Util.option_all
         (List.map NodeGroupMember.parse (Xml.members "NodeGroupMember" xml))
-      
-    let to_query v = Query.to_query_list NodeGroupMember.to_query v 
-    let to_json v = `List (List.map NodeGroupMember.to_json v) 
-    let of_json j = Json.to_list NodeGroupMember.of_json j 
+    let to_query v = Query.to_query_list NodeGroupMember.to_query v
+    let to_json v = `List (List.map NodeGroupMember.to_json v)
+    let of_json j = Json.to_list NodeGroupMember.of_json j
   end
 module RecurringCharge =
   struct
@@ -191,7 +179,7 @@ module RecurringCharge =
       recurring_charge_amount: Double.t option ;
       recurring_charge_frequency: String.t option }
     let make ?recurring_charge_amount  ?recurring_charge_frequency  () =
-      { recurring_charge_amount; recurring_charge_frequency } 
+      { recurring_charge_amount; recurring_charge_frequency }
     let parse xml =
       Some
         {
@@ -202,25 +190,22 @@ module RecurringCharge =
             (Util.option_bind (Xml.member "RecurringChargeFrequency" xml)
                String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.recurring_charge_frequency
-              (fun f  ->
+              (fun f ->
                  Query.Pair ("RecurringChargeFrequency", (String.to_query f)));
            Util.option_map v.recurring_charge_amount
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("RecurringChargeAmount", (Double.to_query f)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.recurring_charge_frequency
-              (fun f  -> ("recurring_charge_frequency", (String.to_json f)));
+              (fun f -> ("recurring_charge_frequency", (String.to_json f)));
            Util.option_map v.recurring_charge_amount
-             (fun f  -> ("recurring_charge_amount", (Double.to_json f)))])
-      
+             (fun f -> ("recurring_charge_amount", (Double.to_json f)))])
     let of_json j =
       {
         recurring_charge_amount =
@@ -229,7 +214,7 @@ module RecurringCharge =
         recurring_charge_frequency =
           (Util.option_map (Json.lookup j "recurring_charge_frequency")
              String.of_json)
-      } 
+      }
   end
 module NodeSnapshot =
   struct
@@ -246,7 +231,7 @@ module NodeSnapshot =
         cache_size;
         cache_node_create_time;
         snapshot_create_time
-      } 
+      }
     let parse xml =
       Some
         {
@@ -261,33 +246,30 @@ module NodeSnapshot =
             (Util.option_bind (Xml.member "SnapshotCreateTime" xml)
                DateTime.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.snapshot_create_time
-              (fun f  ->
+              (fun f ->
                  Query.Pair ("SnapshotCreateTime", (DateTime.to_query f)));
            Util.option_map v.cache_node_create_time
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("CacheNodeCreateTime", (DateTime.to_query f)));
            Util.option_map v.cache_size
-             (fun f  -> Query.Pair ("CacheSize", (String.to_query f)));
+             (fun f -> Query.Pair ("CacheSize", (String.to_query f)));
            Util.option_map v.cache_node_id
-             (fun f  -> Query.Pair ("CacheNodeId", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("CacheNodeId", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.snapshot_create_time
-              (fun f  -> ("snapshot_create_time", (DateTime.to_json f)));
+              (fun f -> ("snapshot_create_time", (DateTime.to_json f)));
            Util.option_map v.cache_node_create_time
-             (fun f  -> ("cache_node_create_time", (DateTime.to_json f)));
+             (fun f -> ("cache_node_create_time", (DateTime.to_json f)));
            Util.option_map v.cache_size
-             (fun f  -> ("cache_size", (String.to_json f)));
+             (fun f -> ("cache_size", (String.to_json f)));
            Util.option_map v.cache_node_id
-             (fun f  -> ("cache_node_id", (String.to_json f)))])
-      
+             (fun f -> ("cache_node_id", (String.to_json f)))])
     let of_json j =
       {
         cache_node_id =
@@ -300,7 +282,7 @@ module NodeSnapshot =
         snapshot_create_time =
           (Util.option_map (Json.lookup j "snapshot_create_time")
              DateTime.of_json)
-      } 
+      }
   end
 module Subnet =
   struct
@@ -309,7 +291,7 @@ module Subnet =
       subnet_identifier: String.t option ;
       subnet_availability_zone: AvailabilityZone.t option }
     let make ?subnet_identifier  ?subnet_availability_zone  () =
-      { subnet_identifier; subnet_availability_zone } 
+      { subnet_identifier; subnet_availability_zone }
     let parse xml =
       Some
         {
@@ -320,26 +302,23 @@ module Subnet =
             (Util.option_bind (Xml.member "SubnetAvailabilityZone" xml)
                AvailabilityZone.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.subnet_availability_zone
-              (fun f  ->
+              (fun f ->
                  Query.Pair
                    ("SubnetAvailabilityZone", (AvailabilityZone.to_query f)));
            Util.option_map v.subnet_identifier
-             (fun f  -> Query.Pair ("SubnetIdentifier", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("SubnetIdentifier", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.subnet_availability_zone
-              (fun f  ->
+              (fun f ->
                  ("subnet_availability_zone", (AvailabilityZone.to_json f)));
            Util.option_map v.subnet_identifier
-             (fun f  -> ("subnet_identifier", (String.to_json f)))])
-      
+             (fun f -> ("subnet_identifier", (String.to_json f)))])
     let of_json j =
       {
         subnet_identifier =
@@ -347,7 +326,7 @@ module Subnet =
         subnet_availability_zone =
           (Util.option_map (Json.lookup j "subnet_availability_zone")
              AvailabilityZone.of_json)
-      } 
+      }
   end
 module CacheNode =
   struct
@@ -371,7 +350,7 @@ module CacheNode =
         parameter_group_status;
         source_cache_node_id;
         customer_availability_zone
-      } 
+      }
     let parse xml =
       Some
         {
@@ -394,46 +373,43 @@ module CacheNode =
             (Util.option_bind (Xml.member "CustomerAvailabilityZone" xml)
                String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.customer_availability_zone
-              (fun f  ->
+              (fun f ->
                  Query.Pair ("CustomerAvailabilityZone", (String.to_query f)));
            Util.option_map v.source_cache_node_id
-             (fun f  -> Query.Pair ("SourceCacheNodeId", (String.to_query f)));
+             (fun f -> Query.Pair ("SourceCacheNodeId", (String.to_query f)));
            Util.option_map v.parameter_group_status
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("ParameterGroupStatus", (String.to_query f)));
            Util.option_map v.endpoint
-             (fun f  -> Query.Pair ("Endpoint", (Endpoint.to_query f)));
+             (fun f -> Query.Pair ("Endpoint", (Endpoint.to_query f)));
            Util.option_map v.cache_node_create_time
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("CacheNodeCreateTime", (DateTime.to_query f)));
            Util.option_map v.cache_node_status
-             (fun f  -> Query.Pair ("CacheNodeStatus", (String.to_query f)));
+             (fun f -> Query.Pair ("CacheNodeStatus", (String.to_query f)));
            Util.option_map v.cache_node_id
-             (fun f  -> Query.Pair ("CacheNodeId", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("CacheNodeId", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.customer_availability_zone
-              (fun f  -> ("customer_availability_zone", (String.to_json f)));
+              (fun f -> ("customer_availability_zone", (String.to_json f)));
            Util.option_map v.source_cache_node_id
-             (fun f  -> ("source_cache_node_id", (String.to_json f)));
+             (fun f -> ("source_cache_node_id", (String.to_json f)));
            Util.option_map v.parameter_group_status
-             (fun f  -> ("parameter_group_status", (String.to_json f)));
+             (fun f -> ("parameter_group_status", (String.to_json f)));
            Util.option_map v.endpoint
-             (fun f  -> ("endpoint", (Endpoint.to_json f)));
+             (fun f -> ("endpoint", (Endpoint.to_json f)));
            Util.option_map v.cache_node_create_time
-             (fun f  -> ("cache_node_create_time", (DateTime.to_json f)));
+             (fun f -> ("cache_node_create_time", (DateTime.to_json f)));
            Util.option_map v.cache_node_status
-             (fun f  -> ("cache_node_status", (String.to_json f)));
+             (fun f -> ("cache_node_status", (String.to_json f)));
            Util.option_map v.cache_node_id
-             (fun f  -> ("cache_node_id", (String.to_json f)))])
-      
+             (fun f -> ("cache_node_id", (String.to_json f)))])
     let of_json j =
       {
         cache_node_id =
@@ -454,17 +430,17 @@ module CacheNode =
         customer_availability_zone =
           (Util.option_map (Json.lookup j "customer_availability_zone")
              String.of_json)
-      } 
+      }
   end
 module CacheNodeIdsList =
   struct
     type t = String.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "CacheNodeId" xml)) 
-    let to_query v = Query.to_query_list String.to_query v 
-    let to_json v = `List (List.map String.to_json v) 
-    let of_json j = Json.to_list String.of_json j 
+      Util.option_all (List.map String.parse (Xml.members "CacheNodeId" xml))
+    let to_query v = Query.to_query_list String.to_query v
+    let to_json v = `List (List.map String.to_json v)
+    let of_json j = Json.to_list String.of_json j
   end
 module CacheSecurityGroupMembership =
   struct
@@ -473,7 +449,7 @@ module CacheSecurityGroupMembership =
       cache_security_group_name: String.t option ;
       status: String.t option }
     let make ?cache_security_group_name  ?status  () =
-      { cache_security_group_name; status } 
+      { cache_security_group_name; status }
     let parse xml =
       Some
         {
@@ -482,38 +458,35 @@ module CacheSecurityGroupMembership =
                String.parse);
           status = (Util.option_bind (Xml.member "Status" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.status
-              (fun f  -> Query.Pair ("Status", (String.to_query f)));
+              (fun f -> Query.Pair ("Status", (String.to_query f)));
            Util.option_map v.cache_security_group_name
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("CacheSecurityGroupName", (String.to_query f)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.status
-              (fun f  -> ("status", (String.to_json f)));
+              (fun f -> ("status", (String.to_json f)));
            Util.option_map v.cache_security_group_name
-             (fun f  -> ("cache_security_group_name", (String.to_json f)))])
-      
+             (fun f -> ("cache_security_group_name", (String.to_json f)))])
     let of_json j =
       {
         cache_security_group_name =
           (Util.option_map (Json.lookup j "cache_security_group_name")
              String.of_json);
         status = (Util.option_map (Json.lookup j "status") String.of_json)
-      } 
+      }
   end
 module SecurityGroupMembership =
   struct
     type t = {
       security_group_id: String.t option ;
       status: String.t option }
-    let make ?security_group_id  ?status  () = { security_group_id; status } 
+    let make ?security_group_id  ?status  () = { security_group_id; status }
     let parse xml =
       Some
         {
@@ -521,43 +494,39 @@ module SecurityGroupMembership =
             (Util.option_bind (Xml.member "SecurityGroupId" xml) String.parse);
           status = (Util.option_bind (Xml.member "Status" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.status
-              (fun f  -> Query.Pair ("Status", (String.to_query f)));
+              (fun f -> Query.Pair ("Status", (String.to_query f)));
            Util.option_map v.security_group_id
-             (fun f  -> Query.Pair ("SecurityGroupId", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("SecurityGroupId", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.status
-              (fun f  -> ("status", (String.to_json f)));
+              (fun f -> ("status", (String.to_json f)));
            Util.option_map v.security_group_id
-             (fun f  -> ("security_group_id", (String.to_json f)))])
-      
+             (fun f -> ("security_group_id", (String.to_json f)))])
     let of_json j =
       {
         security_group_id =
           (Util.option_map (Json.lookup j "security_group_id") String.of_json);
         status = (Util.option_map (Json.lookup j "status") String.of_json)
-      } 
+      }
   end
 module CacheNodeTypeSpecificValueList =
   struct
     type t = CacheNodeTypeSpecificValue.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
       Util.option_all
         (List.map CacheNodeTypeSpecificValue.parse
            (Xml.members "CacheNodeTypeSpecificValue" xml))
-      
     let to_query v =
-      Query.to_query_list CacheNodeTypeSpecificValue.to_query v 
-    let to_json v = `List (List.map CacheNodeTypeSpecificValue.to_json v) 
-    let of_json j = Json.to_list CacheNodeTypeSpecificValue.of_json j 
+      Query.to_query_list CacheNodeTypeSpecificValue.to_query v
+    let to_json v = `List (List.map CacheNodeTypeSpecificValue.to_json v)
+    let of_json j = Json.to_list CacheNodeTypeSpecificValue.of_json j
   end
 module NodeGroup =
   struct
@@ -569,7 +538,7 @@ module NodeGroup =
       node_group_members: NodeGroupMemberList.t }
     let make ?node_group_id  ?status  ?primary_endpoint 
       ?(node_group_members= [])  () =
-      { node_group_id; status; primary_endpoint; node_group_members } 
+      { node_group_id; status; primary_endpoint; node_group_members }
     let parse xml =
       Some
         {
@@ -584,7 +553,6 @@ module NodeGroup =
                (Util.option_bind (Xml.member "NodeGroupMembers" xml)
                   NodeGroupMemberList.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -593,12 +561,11 @@ module NodeGroup =
                  ("NodeGroupMembers.member",
                    (NodeGroupMemberList.to_query v.node_group_members)));
            Util.option_map v.primary_endpoint
-             (fun f  -> Query.Pair ("PrimaryEndpoint", (Endpoint.to_query f)));
+             (fun f -> Query.Pair ("PrimaryEndpoint", (Endpoint.to_query f)));
            Util.option_map v.status
-             (fun f  -> Query.Pair ("Status", (String.to_query f)));
+             (fun f -> Query.Pair ("Status", (String.to_query f)));
            Util.option_map v.node_group_id
-             (fun f  -> Query.Pair ("NodeGroupId", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("NodeGroupId", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -606,12 +573,10 @@ module NodeGroup =
               ("node_group_members",
                 (NodeGroupMemberList.to_json v.node_group_members));
            Util.option_map v.primary_endpoint
-             (fun f  -> ("primary_endpoint", (Endpoint.to_json f)));
-           Util.option_map v.status
-             (fun f  -> ("status", (String.to_json f)));
+             (fun f -> ("primary_endpoint", (Endpoint.to_json f)));
+           Util.option_map v.status (fun f -> ("status", (String.to_json f)));
            Util.option_map v.node_group_id
-             (fun f  -> ("node_group_id", (String.to_json f)))])
-      
+             (fun f -> ("node_group_id", (String.to_json f)))])
     let of_json j =
       {
         node_group_id =
@@ -623,26 +588,25 @@ module NodeGroup =
         node_group_members =
           (NodeGroupMemberList.of_json
              (Util.of_option_exn (Json.lookup j "node_group_members")))
-      } 
+      }
   end
 module PendingAutomaticFailoverStatus =
   struct
     type t =
       | Enabled 
       | Disabled 
-    let str_to_t = [("disabled", Disabled); ("enabled", Enabled)] 
-    let t_to_str = [(Disabled, "disabled"); (Enabled, "enabled")] 
-    let make v () = v 
+    let str_to_t = [("disabled", Disabled); ("enabled", Enabled)]
+    let t_to_str = [(Disabled, "disabled"); (Enabled, "enabled")]
+    let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
-        (fun s  -> Util.list_find str_to_t s)
-      
+        (fun s -> Util.list_find str_to_t s)
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
   end
 module EC2SecurityGroup =
   struct
@@ -653,7 +617,7 @@ module EC2SecurityGroup =
       e_c2_security_group_owner_id: String.t option }
     let make ?status  ?e_c2_security_group_name 
       ?e_c2_security_group_owner_id  () =
-      { status; e_c2_security_group_name; e_c2_security_group_owner_id } 
+      { status; e_c2_security_group_name; e_c2_security_group_owner_id }
     let parse xml =
       Some
         {
@@ -665,29 +629,25 @@ module EC2SecurityGroup =
             (Util.option_bind (Xml.member "EC2SecurityGroupOwnerId" xml)
                String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.e_c2_security_group_owner_id
-              (fun f  ->
+              (fun f ->
                  Query.Pair ("EC2SecurityGroupOwnerId", (String.to_query f)));
            Util.option_map v.e_c2_security_group_name
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("EC2SecurityGroupName", (String.to_query f)));
            Util.option_map v.status
-             (fun f  -> Query.Pair ("Status", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("Status", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.e_c2_security_group_owner_id
-              (fun f  -> ("e_c2_security_group_owner_id", (String.to_json f)));
+              (fun f -> ("e_c2_security_group_owner_id", (String.to_json f)));
            Util.option_map v.e_c2_security_group_name
-             (fun f  -> ("e_c2_security_group_name", (String.to_json f)));
-           Util.option_map v.status
-             (fun f  -> ("status", (String.to_json f)))])
-      
+             (fun f -> ("e_c2_security_group_name", (String.to_json f)));
+           Util.option_map v.status (fun f -> ("status", (String.to_json f)))])
     let of_json j =
       {
         status = (Util.option_map (Json.lookup j "status") String.of_json);
@@ -697,53 +657,50 @@ module EC2SecurityGroup =
         e_c2_security_group_owner_id =
           (Util.option_map (Json.lookup j "e_c2_security_group_owner_id")
              String.of_json)
-      } 
+      }
   end
 module RecurringChargeList =
   struct
     type t = RecurringCharge.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
       Util.option_all
         (List.map RecurringCharge.parse (Xml.members "RecurringCharge" xml))
-      
-    let to_query v = Query.to_query_list RecurringCharge.to_query v 
-    let to_json v = `List (List.map RecurringCharge.to_json v) 
-    let of_json j = Json.to_list RecurringCharge.of_json j 
+    let to_query v = Query.to_query_list RecurringCharge.to_query v
+    let to_json v = `List (List.map RecurringCharge.to_json v)
+    let of_json j = Json.to_list RecurringCharge.of_json j
   end
 module NodeSnapshotList =
   struct
     type t = NodeSnapshot.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
       Util.option_all
         (List.map NodeSnapshot.parse (Xml.members "NodeSnapshot" xml))
-      
-    let to_query v = Query.to_query_list NodeSnapshot.to_query v 
-    let to_json v = `List (List.map NodeSnapshot.to_json v) 
-    let of_json j = Json.to_list NodeSnapshot.of_json j 
+    let to_query v = Query.to_query_list NodeSnapshot.to_query v
+    let to_json v = `List (List.map NodeSnapshot.to_json v)
+    let of_json j = Json.to_list NodeSnapshot.of_json j
   end
 module SubnetList =
   struct
     type t = Subnet.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
-      Util.option_all (List.map Subnet.parse (Xml.members "Subnet" xml)) 
-    let to_query v = Query.to_query_list Subnet.to_query v 
-    let to_json v = `List (List.map Subnet.to_json v) 
-    let of_json j = Json.to_list Subnet.of_json j 
+      Util.option_all (List.map Subnet.parse (Xml.members "Subnet" xml))
+    let to_query v = Query.to_query_list Subnet.to_query v
+    let to_json v = `List (List.map Subnet.to_json v)
+    let of_json j = Json.to_list Subnet.of_json j
   end
 module CacheNodeList =
   struct
     type t = CacheNode.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
       Util.option_all
         (List.map CacheNode.parse (Xml.members "CacheNode" xml))
-      
-    let to_query v = Query.to_query_list CacheNode.to_query v 
-    let to_json v = `List (List.map CacheNode.to_json v) 
-    let of_json j = Json.to_list CacheNode.of_json j 
+    let to_query v = Query.to_query_list CacheNode.to_query v
+    let to_json v = `List (List.map CacheNode.to_json v)
+    let of_json j = Json.to_list CacheNode.of_json j
   end
 module CacheParameterGroupStatus =
   struct
@@ -758,7 +715,7 @@ module CacheParameterGroupStatus =
         cache_parameter_group_name;
         parameter_apply_status;
         cache_node_ids_to_reboot
-      } 
+      }
     let parse xml =
       Some
         {
@@ -773,7 +730,6 @@ module CacheParameterGroupStatus =
                (Util.option_bind (Xml.member "CacheNodeIdsToReboot" xml)
                   CacheNodeIdsList.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -782,12 +738,11 @@ module CacheParameterGroupStatus =
                  ("CacheNodeIdsToReboot.member",
                    (CacheNodeIdsList.to_query v.cache_node_ids_to_reboot)));
            Util.option_map v.parameter_apply_status
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("ParameterApplyStatus", (String.to_query f)));
            Util.option_map v.cache_parameter_group_name
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("CacheParameterGroupName", (String.to_query f)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -795,10 +750,9 @@ module CacheParameterGroupStatus =
               ("cache_node_ids_to_reboot",
                 (CacheNodeIdsList.to_json v.cache_node_ids_to_reboot));
            Util.option_map v.parameter_apply_status
-             (fun f  -> ("parameter_apply_status", (String.to_json f)));
+             (fun f -> ("parameter_apply_status", (String.to_json f)));
            Util.option_map v.cache_parameter_group_name
-             (fun f  -> ("cache_parameter_group_name", (String.to_json f)))])
-      
+             (fun f -> ("cache_parameter_group_name", (String.to_json f)))])
     let of_json j =
       {
         cache_parameter_group_name =
@@ -810,28 +764,27 @@ module CacheParameterGroupStatus =
         cache_node_ids_to_reboot =
           (CacheNodeIdsList.of_json
              (Util.of_option_exn (Json.lookup j "cache_node_ids_to_reboot")))
-      } 
+      }
   end
 module CacheSecurityGroupMembershipList =
   struct
     type t = CacheSecurityGroupMembership.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
       Util.option_all
         (List.map CacheSecurityGroupMembership.parse
            (Xml.members "CacheSecurityGroup" xml))
-      
     let to_query v =
-      Query.to_query_list CacheSecurityGroupMembership.to_query v 
-    let to_json v = `List (List.map CacheSecurityGroupMembership.to_json v) 
-    let of_json j = Json.to_list CacheSecurityGroupMembership.of_json j 
+      Query.to_query_list CacheSecurityGroupMembership.to_query v
+    let to_json v = `List (List.map CacheSecurityGroupMembership.to_json v)
+    let of_json j = Json.to_list CacheSecurityGroupMembership.of_json j
   end
 module NotificationConfiguration =
   struct
     type t = {
       topic_arn: String.t option ;
       topic_status: String.t option }
-    let make ?topic_arn  ?topic_status  () = { topic_arn; topic_status } 
+    let make ?topic_arn  ?topic_status  () = { topic_arn; topic_status }
     let parse xml =
       Some
         {
@@ -840,30 +793,27 @@ module NotificationConfiguration =
           topic_status =
             (Util.option_bind (Xml.member "TopicStatus" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.topic_status
-              (fun f  -> Query.Pair ("TopicStatus", (String.to_query f)));
+              (fun f -> Query.Pair ("TopicStatus", (String.to_query f)));
            Util.option_map v.topic_arn
-             (fun f  -> Query.Pair ("TopicArn", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("TopicArn", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.topic_status
-              (fun f  -> ("topic_status", (String.to_json f)));
+              (fun f -> ("topic_status", (String.to_json f)));
            Util.option_map v.topic_arn
-             (fun f  -> ("topic_arn", (String.to_json f)))])
-      
+             (fun f -> ("topic_arn", (String.to_json f)))])
     let of_json j =
       {
         topic_arn =
           (Util.option_map (Json.lookup j "topic_arn") String.of_json);
         topic_status =
           (Util.option_map (Json.lookup j "topic_status") String.of_json)
-      } 
+      }
   end
 module PendingModifiedValues =
   struct
@@ -874,7 +824,7 @@ module PendingModifiedValues =
       engine_version: String.t option }
     let make ?num_cache_nodes  ?(cache_node_ids_to_remove= []) 
       ?engine_version  () =
-      { num_cache_nodes; cache_node_ids_to_remove; engine_version } 
+      { num_cache_nodes; cache_node_ids_to_remove; engine_version }
     let parse xml =
       Some
         {
@@ -887,30 +837,27 @@ module PendingModifiedValues =
           engine_version =
             (Util.option_bind (Xml.member "EngineVersion" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.engine_version
-              (fun f  -> Query.Pair ("EngineVersion", (String.to_query f)));
+              (fun f -> Query.Pair ("EngineVersion", (String.to_query f)));
            Some
              (Query.Pair
                 ("CacheNodeIdsToRemove.member",
                   (CacheNodeIdsList.to_query v.cache_node_ids_to_remove)));
            Util.option_map v.num_cache_nodes
-             (fun f  -> Query.Pair ("NumCacheNodes", (Integer.to_query f)))])
-      
+             (fun f -> Query.Pair ("NumCacheNodes", (Integer.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.engine_version
-              (fun f  -> ("engine_version", (String.to_json f)));
+              (fun f -> ("engine_version", (String.to_json f)));
            Some
              ("cache_node_ids_to_remove",
                (CacheNodeIdsList.to_json v.cache_node_ids_to_remove));
            Util.option_map v.num_cache_nodes
-             (fun f  -> ("num_cache_nodes", (Integer.to_json f)))])
-      
+             (fun f -> ("num_cache_nodes", (Integer.to_json f)))])
     let of_json j =
       {
         num_cache_nodes =
@@ -920,19 +867,18 @@ module PendingModifiedValues =
              (Util.of_option_exn (Json.lookup j "cache_node_ids_to_remove")));
         engine_version =
           (Util.option_map (Json.lookup j "engine_version") String.of_json)
-      } 
+      }
   end
 module SecurityGroupMembershipList =
   struct
     type t = SecurityGroupMembership.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
       Util.option_all
         (List.map SecurityGroupMembership.parse (Xml.members "member" xml))
-      
-    let to_query v = Query.to_query_list SecurityGroupMembership.to_query v 
-    let to_json v = `List (List.map SecurityGroupMembership.to_json v) 
-    let of_json j = Json.to_list SecurityGroupMembership.of_json j 
+    let to_query v = Query.to_query_list SecurityGroupMembership.to_query v
+    let to_json v = `List (List.map SecurityGroupMembership.to_json v)
+    let of_json j = Json.to_list SecurityGroupMembership.of_json j
   end
 module CacheNodeTypeSpecificParameter =
   struct
@@ -958,7 +904,7 @@ module CacheNodeTypeSpecificParameter =
         is_modifiable;
         minimum_engine_version;
         cache_node_type_specific_values
-      } 
+      }
     let parse xml =
       Some
         {
@@ -982,7 +928,6 @@ module CacheNodeTypeSpecificParameter =
                   (Xml.member "CacheNodeTypeSpecificValues" xml)
                   CacheNodeTypeSpecificValueList.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -992,21 +937,20 @@ module CacheNodeTypeSpecificParameter =
                    (CacheNodeTypeSpecificValueList.to_query
                       v.cache_node_type_specific_values)));
            Util.option_map v.minimum_engine_version
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("MinimumEngineVersion", (String.to_query f)));
            Util.option_map v.is_modifiable
-             (fun f  -> Query.Pair ("IsModifiable", (Boolean.to_query f)));
+             (fun f -> Query.Pair ("IsModifiable", (Boolean.to_query f)));
            Util.option_map v.allowed_values
-             (fun f  -> Query.Pair ("AllowedValues", (String.to_query f)));
+             (fun f -> Query.Pair ("AllowedValues", (String.to_query f)));
            Util.option_map v.data_type
-             (fun f  -> Query.Pair ("DataType", (String.to_query f)));
+             (fun f -> Query.Pair ("DataType", (String.to_query f)));
            Util.option_map v.source
-             (fun f  -> Query.Pair ("Source", (String.to_query f)));
+             (fun f -> Query.Pair ("Source", (String.to_query f)));
            Util.option_map v.description
-             (fun f  -> Query.Pair ("Description", (String.to_query f)));
+             (fun f -> Query.Pair ("Description", (String.to_query f)));
            Util.option_map v.parameter_name
-             (fun f  -> Query.Pair ("ParameterName", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("ParameterName", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -1015,20 +959,18 @@ module CacheNodeTypeSpecificParameter =
                 (CacheNodeTypeSpecificValueList.to_json
                    v.cache_node_type_specific_values));
            Util.option_map v.minimum_engine_version
-             (fun f  -> ("minimum_engine_version", (String.to_json f)));
+             (fun f -> ("minimum_engine_version", (String.to_json f)));
            Util.option_map v.is_modifiable
-             (fun f  -> ("is_modifiable", (Boolean.to_json f)));
+             (fun f -> ("is_modifiable", (Boolean.to_json f)));
            Util.option_map v.allowed_values
-             (fun f  -> ("allowed_values", (String.to_json f)));
+             (fun f -> ("allowed_values", (String.to_json f)));
            Util.option_map v.data_type
-             (fun f  -> ("data_type", (String.to_json f)));
-           Util.option_map v.source
-             (fun f  -> ("source", (String.to_json f)));
+             (fun f -> ("data_type", (String.to_json f)));
+           Util.option_map v.source (fun f -> ("source", (String.to_json f)));
            Util.option_map v.description
-             (fun f  -> ("description", (String.to_json f)));
+             (fun f -> ("description", (String.to_json f)));
            Util.option_map v.parameter_name
-             (fun f  -> ("parameter_name", (String.to_json f)))])
-      
+             (fun f -> ("parameter_name", (String.to_json f)))])
     let of_json j =
       {
         parameter_name =
@@ -1049,7 +991,7 @@ module CacheNodeTypeSpecificParameter =
           (CacheNodeTypeSpecificValueList.of_json
              (Util.of_option_exn
                 (Json.lookup j "cache_node_type_specific_values")))
-      } 
+      }
   end
 module Parameter =
   struct
@@ -1075,7 +1017,7 @@ module Parameter =
         allowed_values;
         is_modifiable;
         minimum_engine_version
-      } 
+      }
     let parse xml =
       Some
         {
@@ -1096,48 +1038,44 @@ module Parameter =
             (Util.option_bind (Xml.member "MinimumEngineVersion" xml)
                String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.minimum_engine_version
-              (fun f  ->
+              (fun f ->
                  Query.Pair ("MinimumEngineVersion", (String.to_query f)));
            Util.option_map v.is_modifiable
-             (fun f  -> Query.Pair ("IsModifiable", (Boolean.to_query f)));
+             (fun f -> Query.Pair ("IsModifiable", (Boolean.to_query f)));
            Util.option_map v.allowed_values
-             (fun f  -> Query.Pair ("AllowedValues", (String.to_query f)));
+             (fun f -> Query.Pair ("AllowedValues", (String.to_query f)));
            Util.option_map v.data_type
-             (fun f  -> Query.Pair ("DataType", (String.to_query f)));
+             (fun f -> Query.Pair ("DataType", (String.to_query f)));
            Util.option_map v.source
-             (fun f  -> Query.Pair ("Source", (String.to_query f)));
+             (fun f -> Query.Pair ("Source", (String.to_query f)));
            Util.option_map v.description
-             (fun f  -> Query.Pair ("Description", (String.to_query f)));
+             (fun f -> Query.Pair ("Description", (String.to_query f)));
            Util.option_map v.parameter_value
-             (fun f  -> Query.Pair ("ParameterValue", (String.to_query f)));
+             (fun f -> Query.Pair ("ParameterValue", (String.to_query f)));
            Util.option_map v.parameter_name
-             (fun f  -> Query.Pair ("ParameterName", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("ParameterName", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.minimum_engine_version
-              (fun f  -> ("minimum_engine_version", (String.to_json f)));
+              (fun f -> ("minimum_engine_version", (String.to_json f)));
            Util.option_map v.is_modifiable
-             (fun f  -> ("is_modifiable", (Boolean.to_json f)));
+             (fun f -> ("is_modifiable", (Boolean.to_json f)));
            Util.option_map v.allowed_values
-             (fun f  -> ("allowed_values", (String.to_json f)));
+             (fun f -> ("allowed_values", (String.to_json f)));
            Util.option_map v.data_type
-             (fun f  -> ("data_type", (String.to_json f)));
-           Util.option_map v.source
-             (fun f  -> ("source", (String.to_json f)));
+             (fun f -> ("data_type", (String.to_json f)));
+           Util.option_map v.source (fun f -> ("source", (String.to_json f)));
            Util.option_map v.description
-             (fun f  -> ("description", (String.to_json f)));
+             (fun f -> ("description", (String.to_json f)));
            Util.option_map v.parameter_value
-             (fun f  -> ("parameter_value", (String.to_json f)));
+             (fun f -> ("parameter_value", (String.to_json f)));
            Util.option_map v.parameter_name
-             (fun f  -> ("parameter_name", (String.to_json f)))])
-      
+             (fun f -> ("parameter_name", (String.to_json f)))])
     let of_json j =
       {
         parameter_name =
@@ -1156,7 +1094,7 @@ module Parameter =
         minimum_engine_version =
           (Util.option_map (Json.lookup j "minimum_engine_version")
              String.of_json)
-      } 
+      }
   end
 module SourceType =
   struct
@@ -1169,23 +1107,22 @@ module SourceType =
       [("cache-subnet-group", Cache_subnet_group);
       ("cache-security-group", Cache_security_group);
       ("cache-parameter-group", Cache_parameter_group);
-      ("cache-cluster", Cache_cluster)] 
+      ("cache-cluster", Cache_cluster)]
     let t_to_str =
       [(Cache_subnet_group, "cache-subnet-group");
       (Cache_security_group, "cache-security-group");
       (Cache_parameter_group, "cache-parameter-group");
-      (Cache_cluster, "cache-cluster")] 
-    let make v () = v 
+      (Cache_cluster, "cache-cluster")]
+    let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
-        (fun s  -> Util.list_find str_to_t s)
-      
+        (fun s -> Util.list_find str_to_t s)
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
   end
 module AutomaticFailoverStatus =
   struct
@@ -1198,45 +1135,43 @@ module AutomaticFailoverStatus =
       [("disabling", Disabling);
       ("enabling", Enabling);
       ("disabled", Disabled);
-      ("enabled", Enabled)] 
+      ("enabled", Enabled)]
     let t_to_str =
       [(Disabling, "disabling");
       (Enabling, "enabling");
       (Disabled, "disabled");
-      (Enabled, "enabled")] 
-    let make v () = v 
+      (Enabled, "enabled")]
+    let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
-        (fun s  -> Util.list_find str_to_t s)
-      
+        (fun s -> Util.list_find str_to_t s)
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
   end
 module ClusterIdList =
   struct
     type t = String.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "ClusterId" xml)) 
-    let to_query v = Query.to_query_list String.to_query v 
-    let to_json v = `List (List.map String.to_json v) 
-    let of_json j = Json.to_list String.of_json j 
+      Util.option_all (List.map String.parse (Xml.members "ClusterId" xml))
+    let to_query v = Query.to_query_list String.to_query v
+    let to_json v = `List (List.map String.to_json v)
+    let of_json j = Json.to_list String.of_json j
   end
 module NodeGroupList =
   struct
     type t = NodeGroup.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
       Util.option_all
         (List.map NodeGroup.parse (Xml.members "NodeGroup" xml))
-      
-    let to_query v = Query.to_query_list NodeGroup.to_query v 
-    let to_json v = `List (List.map NodeGroup.to_json v) 
-    let of_json j = Json.to_list NodeGroup.of_json j 
+    let to_query v = Query.to_query_list NodeGroup.to_query v
+    let to_json v = `List (List.map NodeGroup.to_json v)
+    let of_json j = Json.to_list NodeGroup.of_json j
   end
 module ReplicationGroupPendingModifiedValues =
   struct
@@ -1245,7 +1180,7 @@ module ReplicationGroupPendingModifiedValues =
       primary_cluster_id: String.t option ;
       automatic_failover_status: PendingAutomaticFailoverStatus.t option }
     let make ?primary_cluster_id  ?automatic_failover_status  () =
-      { primary_cluster_id; automatic_failover_status } 
+      { primary_cluster_id; automatic_failover_status }
     let parse xml =
       Some
         {
@@ -1256,28 +1191,25 @@ module ReplicationGroupPendingModifiedValues =
             (Util.option_bind (Xml.member "AutomaticFailoverStatus" xml)
                PendingAutomaticFailoverStatus.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.automatic_failover_status
-              (fun f  ->
+              (fun f ->
                  Query.Pair
                    ("AutomaticFailoverStatus",
                      (PendingAutomaticFailoverStatus.to_query f)));
            Util.option_map v.primary_cluster_id
-             (fun f  -> Query.Pair ("PrimaryClusterId", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("PrimaryClusterId", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.automatic_failover_status
-              (fun f  ->
+              (fun f ->
                  ("automatic_failover_status",
                    (PendingAutomaticFailoverStatus.to_json f)));
            Util.option_map v.primary_cluster_id
-             (fun f  -> ("primary_cluster_id", (String.to_json f)))])
-      
+             (fun f -> ("primary_cluster_id", (String.to_json f)))])
     let of_json j =
       {
         primary_cluster_id =
@@ -1286,19 +1218,18 @@ module ReplicationGroupPendingModifiedValues =
         automatic_failover_status =
           (Util.option_map (Json.lookup j "automatic_failover_status")
              PendingAutomaticFailoverStatus.of_json)
-      } 
+      }
   end
 module EC2SecurityGroupList =
   struct
     type t = EC2SecurityGroup.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
       Util.option_all
         (List.map EC2SecurityGroup.parse (Xml.members "EC2SecurityGroup" xml))
-      
-    let to_query v = Query.to_query_list EC2SecurityGroup.to_query v 
-    let to_json v = `List (List.map EC2SecurityGroup.to_json v) 
-    let of_json j = Json.to_list EC2SecurityGroup.of_json j 
+    let to_query v = Query.to_query_list EC2SecurityGroup.to_query v
+    let to_json v = `List (List.map EC2SecurityGroup.to_json v)
+    let of_json j = Json.to_list EC2SecurityGroup.of_json j
   end
 module ReservedCacheNodesOffering =
   struct
@@ -1324,7 +1255,7 @@ module ReservedCacheNodesOffering =
         product_description;
         offering_type;
         recurring_charges
-      } 
+      }
     let parse xml =
       Some
         {
@@ -1349,7 +1280,6 @@ module ReservedCacheNodesOffering =
                (Util.option_bind (Xml.member "RecurringCharges" xml)
                   RecurringChargeList.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -1358,23 +1288,21 @@ module ReservedCacheNodesOffering =
                  ("RecurringCharges.member",
                    (RecurringChargeList.to_query v.recurring_charges)));
            Util.option_map v.offering_type
-             (fun f  -> Query.Pair ("OfferingType", (String.to_query f)));
+             (fun f -> Query.Pair ("OfferingType", (String.to_query f)));
            Util.option_map v.product_description
-             (fun f  ->
-                Query.Pair ("ProductDescription", (String.to_query f)));
+             (fun f -> Query.Pair ("ProductDescription", (String.to_query f)));
            Util.option_map v.usage_price
-             (fun f  -> Query.Pair ("UsagePrice", (Double.to_query f)));
+             (fun f -> Query.Pair ("UsagePrice", (Double.to_query f)));
            Util.option_map v.fixed_price
-             (fun f  -> Query.Pair ("FixedPrice", (Double.to_query f)));
+             (fun f -> Query.Pair ("FixedPrice", (Double.to_query f)));
            Util.option_map v.duration
-             (fun f  -> Query.Pair ("Duration", (Integer.to_query f)));
+             (fun f -> Query.Pair ("Duration", (Integer.to_query f)));
            Util.option_map v.cache_node_type
-             (fun f  -> Query.Pair ("CacheNodeType", (String.to_query f)));
+             (fun f -> Query.Pair ("CacheNodeType", (String.to_query f)));
            Util.option_map v.reserved_cache_nodes_offering_id
-             (fun f  ->
+             (fun f ->
                 Query.Pair
                   ("ReservedCacheNodesOfferingId", (String.to_query f)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -1382,21 +1310,20 @@ module ReservedCacheNodesOffering =
               ("recurring_charges",
                 (RecurringChargeList.to_json v.recurring_charges));
            Util.option_map v.offering_type
-             (fun f  -> ("offering_type", (String.to_json f)));
+             (fun f -> ("offering_type", (String.to_json f)));
            Util.option_map v.product_description
-             (fun f  -> ("product_description", (String.to_json f)));
+             (fun f -> ("product_description", (String.to_json f)));
            Util.option_map v.usage_price
-             (fun f  -> ("usage_price", (Double.to_json f)));
+             (fun f -> ("usage_price", (Double.to_json f)));
            Util.option_map v.fixed_price
-             (fun f  -> ("fixed_price", (Double.to_json f)));
+             (fun f -> ("fixed_price", (Double.to_json f)));
            Util.option_map v.duration
-             (fun f  -> ("duration", (Integer.to_json f)));
+             (fun f -> ("duration", (Integer.to_json f)));
            Util.option_map v.cache_node_type
-             (fun f  -> ("cache_node_type", (String.to_json f)));
+             (fun f -> ("cache_node_type", (String.to_json f)));
            Util.option_map v.reserved_cache_nodes_offering_id
-             (fun f  ->
+             (fun f ->
                 ("reserved_cache_nodes_offering_id", (String.to_json f)))])
-      
     let of_json j =
       {
         reserved_cache_nodes_offering_id =
@@ -1418,7 +1345,7 @@ module ReservedCacheNodesOffering =
         recurring_charges =
           (RecurringChargeList.of_json
              (Util.of_option_exn (Json.lookup j "recurring_charges")))
-      } 
+      }
   end
 module CacheParameterGroup =
   struct
@@ -1430,7 +1357,7 @@ module CacheParameterGroup =
     let make ?cache_parameter_group_name  ?cache_parameter_group_family 
       ?description  () =
       { cache_parameter_group_name; cache_parameter_group_family; description
-      } 
+      }
     let parse xml =
       Some
         {
@@ -1443,29 +1370,26 @@ module CacheParameterGroup =
           description =
             (Util.option_bind (Xml.member "Description" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.description
-              (fun f  -> Query.Pair ("Description", (String.to_query f)));
+              (fun f -> Query.Pair ("Description", (String.to_query f)));
            Util.option_map v.cache_parameter_group_family
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("CacheParameterGroupFamily", (String.to_query f)));
            Util.option_map v.cache_parameter_group_name
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("CacheParameterGroupName", (String.to_query f)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.description
-              (fun f  -> ("description", (String.to_json f)));
+              (fun f -> ("description", (String.to_json f)));
            Util.option_map v.cache_parameter_group_family
-             (fun f  -> ("cache_parameter_group_family", (String.to_json f)));
+             (fun f -> ("cache_parameter_group_family", (String.to_json f)));
            Util.option_map v.cache_parameter_group_name
-             (fun f  -> ("cache_parameter_group_name", (String.to_json f)))])
-      
+             (fun f -> ("cache_parameter_group_name", (String.to_json f)))])
     let of_json j =
       {
         cache_parameter_group_name =
@@ -1476,7 +1400,7 @@ module CacheParameterGroup =
              String.of_json);
         description =
           (Util.option_map (Json.lookup j "description") String.of_json)
-      } 
+      }
   end
 module Snapshot =
   struct
@@ -1530,7 +1454,7 @@ module Snapshot =
         snapshot_retention_limit;
         snapshot_window;
         node_snapshots
-      } 
+      }
     let parse xml =
       Some
         {
@@ -1581,7 +1505,6 @@ module Snapshot =
                (Util.option_bind (Xml.member "NodeSnapshots" xml)
                   NodeSnapshotList.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -1590,95 +1513,91 @@ module Snapshot =
                  ("NodeSnapshots.member",
                    (NodeSnapshotList.to_query v.node_snapshots)));
            Util.option_map v.snapshot_window
-             (fun f  -> Query.Pair ("SnapshotWindow", (String.to_query f)));
+             (fun f -> Query.Pair ("SnapshotWindow", (String.to_query f)));
            Util.option_map v.snapshot_retention_limit
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("SnapshotRetentionLimit", (Integer.to_query f)));
            Util.option_map v.auto_minor_version_upgrade
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("AutoMinorVersionUpgrade", (Boolean.to_query f)));
            Util.option_map v.vpc_id
-             (fun f  -> Query.Pair ("VpcId", (String.to_query f)));
+             (fun f -> Query.Pair ("VpcId", (String.to_query f)));
            Util.option_map v.cache_subnet_group_name
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("CacheSubnetGroupName", (String.to_query f)));
            Util.option_map v.cache_parameter_group_name
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("CacheParameterGroupName", (String.to_query f)));
            Util.option_map v.port
-             (fun f  -> Query.Pair ("Port", (Integer.to_query f)));
+             (fun f -> Query.Pair ("Port", (Integer.to_query f)));
            Util.option_map v.topic_arn
-             (fun f  -> Query.Pair ("TopicArn", (String.to_query f)));
+             (fun f -> Query.Pair ("TopicArn", (String.to_query f)));
            Util.option_map v.preferred_maintenance_window
-             (fun f  ->
+             (fun f ->
                 Query.Pair
                   ("PreferredMaintenanceWindow", (String.to_query f)));
            Util.option_map v.cache_cluster_create_time
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("CacheClusterCreateTime", (DateTime.to_query f)));
            Util.option_map v.preferred_availability_zone
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("PreferredAvailabilityZone", (String.to_query f)));
            Util.option_map v.num_cache_nodes
-             (fun f  -> Query.Pair ("NumCacheNodes", (Integer.to_query f)));
+             (fun f -> Query.Pair ("NumCacheNodes", (Integer.to_query f)));
            Util.option_map v.engine_version
-             (fun f  -> Query.Pair ("EngineVersion", (String.to_query f)));
+             (fun f -> Query.Pair ("EngineVersion", (String.to_query f)));
            Util.option_map v.engine
-             (fun f  -> Query.Pair ("Engine", (String.to_query f)));
+             (fun f -> Query.Pair ("Engine", (String.to_query f)));
            Util.option_map v.cache_node_type
-             (fun f  -> Query.Pair ("CacheNodeType", (String.to_query f)));
+             (fun f -> Query.Pair ("CacheNodeType", (String.to_query f)));
            Util.option_map v.snapshot_source
-             (fun f  -> Query.Pair ("SnapshotSource", (String.to_query f)));
+             (fun f -> Query.Pair ("SnapshotSource", (String.to_query f)));
            Util.option_map v.snapshot_status
-             (fun f  -> Query.Pair ("SnapshotStatus", (String.to_query f)));
+             (fun f -> Query.Pair ("SnapshotStatus", (String.to_query f)));
            Util.option_map v.cache_cluster_id
-             (fun f  -> Query.Pair ("CacheClusterId", (String.to_query f)));
+             (fun f -> Query.Pair ("CacheClusterId", (String.to_query f)));
            Util.option_map v.snapshot_name
-             (fun f  -> Query.Pair ("SnapshotName", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("SnapshotName", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("node_snapshots", (NodeSnapshotList.to_json v.node_snapshots));
            Util.option_map v.snapshot_window
-             (fun f  -> ("snapshot_window", (String.to_json f)));
+             (fun f -> ("snapshot_window", (String.to_json f)));
            Util.option_map v.snapshot_retention_limit
-             (fun f  -> ("snapshot_retention_limit", (Integer.to_json f)));
+             (fun f -> ("snapshot_retention_limit", (Integer.to_json f)));
            Util.option_map v.auto_minor_version_upgrade
-             (fun f  -> ("auto_minor_version_upgrade", (Boolean.to_json f)));
-           Util.option_map v.vpc_id
-             (fun f  -> ("vpc_id", (String.to_json f)));
+             (fun f -> ("auto_minor_version_upgrade", (Boolean.to_json f)));
+           Util.option_map v.vpc_id (fun f -> ("vpc_id", (String.to_json f)));
            Util.option_map v.cache_subnet_group_name
-             (fun f  -> ("cache_subnet_group_name", (String.to_json f)));
+             (fun f -> ("cache_subnet_group_name", (String.to_json f)));
            Util.option_map v.cache_parameter_group_name
-             (fun f  -> ("cache_parameter_group_name", (String.to_json f)));
-           Util.option_map v.port (fun f  -> ("port", (Integer.to_json f)));
+             (fun f -> ("cache_parameter_group_name", (String.to_json f)));
+           Util.option_map v.port (fun f -> ("port", (Integer.to_json f)));
            Util.option_map v.topic_arn
-             (fun f  -> ("topic_arn", (String.to_json f)));
+             (fun f -> ("topic_arn", (String.to_json f)));
            Util.option_map v.preferred_maintenance_window
-             (fun f  -> ("preferred_maintenance_window", (String.to_json f)));
+             (fun f -> ("preferred_maintenance_window", (String.to_json f)));
            Util.option_map v.cache_cluster_create_time
-             (fun f  -> ("cache_cluster_create_time", (DateTime.to_json f)));
+             (fun f -> ("cache_cluster_create_time", (DateTime.to_json f)));
            Util.option_map v.preferred_availability_zone
-             (fun f  -> ("preferred_availability_zone", (String.to_json f)));
+             (fun f -> ("preferred_availability_zone", (String.to_json f)));
            Util.option_map v.num_cache_nodes
-             (fun f  -> ("num_cache_nodes", (Integer.to_json f)));
+             (fun f -> ("num_cache_nodes", (Integer.to_json f)));
            Util.option_map v.engine_version
-             (fun f  -> ("engine_version", (String.to_json f)));
-           Util.option_map v.engine
-             (fun f  -> ("engine", (String.to_json f)));
+             (fun f -> ("engine_version", (String.to_json f)));
+           Util.option_map v.engine (fun f -> ("engine", (String.to_json f)));
            Util.option_map v.cache_node_type
-             (fun f  -> ("cache_node_type", (String.to_json f)));
+             (fun f -> ("cache_node_type", (String.to_json f)));
            Util.option_map v.snapshot_source
-             (fun f  -> ("snapshot_source", (String.to_json f)));
+             (fun f -> ("snapshot_source", (String.to_json f)));
            Util.option_map v.snapshot_status
-             (fun f  -> ("snapshot_status", (String.to_json f)));
+             (fun f -> ("snapshot_status", (String.to_json f)));
            Util.option_map v.cache_cluster_id
-             (fun f  -> ("cache_cluster_id", (String.to_json f)));
+             (fun f -> ("cache_cluster_id", (String.to_json f)));
            Util.option_map v.snapshot_name
-             (fun f  -> ("snapshot_name", (String.to_json f)))])
-      
+             (fun f -> ("snapshot_name", (String.to_json f)))])
     let of_json j =
       {
         snapshot_name =
@@ -1726,7 +1645,7 @@ module Snapshot =
         node_snapshots =
           (NodeSnapshotList.of_json
              (Util.of_option_exn (Json.lookup j "node_snapshots")))
-      } 
+      }
   end
 module CacheSubnetGroup =
   struct
@@ -1743,7 +1662,7 @@ module CacheSubnetGroup =
         cache_subnet_group_description;
         vpc_id;
         subnets
-      } 
+      }
     let parse xml =
       Some
         {
@@ -1758,34 +1677,29 @@ module CacheSubnetGroup =
             (Util.of_option []
                (Util.option_bind (Xml.member "Subnets" xml) SubnetList.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some
               (Query.Pair ("Subnets.member", (SubnetList.to_query v.subnets)));
            Util.option_map v.vpc_id
-             (fun f  -> Query.Pair ("VpcId", (String.to_query f)));
+             (fun f -> Query.Pair ("VpcId", (String.to_query f)));
            Util.option_map v.cache_subnet_group_description
-             (fun f  ->
+             (fun f ->
                 Query.Pair
                   ("CacheSubnetGroupDescription", (String.to_query f)));
            Util.option_map v.cache_subnet_group_name
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("CacheSubnetGroupName", (String.to_query f)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("subnets", (SubnetList.to_json v.subnets));
-           Util.option_map v.vpc_id
-             (fun f  -> ("vpc_id", (String.to_json f)));
+           Util.option_map v.vpc_id (fun f -> ("vpc_id", (String.to_json f)));
            Util.option_map v.cache_subnet_group_description
-             (fun f  ->
-                ("cache_subnet_group_description", (String.to_json f)));
+             (fun f -> ("cache_subnet_group_description", (String.to_json f)));
            Util.option_map v.cache_subnet_group_name
-             (fun f  -> ("cache_subnet_group_name", (String.to_json f)))])
-      
+             (fun f -> ("cache_subnet_group_name", (String.to_json f)))])
     let of_json j =
       {
         cache_subnet_group_name =
@@ -1797,40 +1711,37 @@ module CacheSubnetGroup =
         vpc_id = (Util.option_map (Json.lookup j "vpc_id") String.of_json);
         subnets =
           (SubnetList.of_json (Util.of_option_exn (Json.lookup j "subnets")))
-      } 
+      }
   end
 module Tag =
   struct
     type t = {
       key: String.t option ;
       value: String.t option }
-    let make ?key  ?value  () = { key; value } 
+    let make ?key  ?value  () = { key; value }
     let parse xml =
       Some
         {
           key = (Util.option_bind (Xml.member "Key" xml) String.parse);
           value = (Util.option_bind (Xml.member "Value" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.value
-              (fun f  -> Query.Pair ("Value", (String.to_query f)));
+              (fun f -> Query.Pair ("Value", (String.to_query f)));
            Util.option_map v.key
-             (fun f  -> Query.Pair ("Key", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("Key", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
-           [Util.option_map v.value (fun f  -> ("value", (String.to_json f)));
-           Util.option_map v.key (fun f  -> ("key", (String.to_json f)))])
-      
+           [Util.option_map v.value (fun f -> ("value", (String.to_json f)));
+           Util.option_map v.key (fun f -> ("key", (String.to_json f)))])
     let of_json j =
       {
         key = (Util.option_map (Json.lookup j "key") String.of_json);
         value = (Util.option_map (Json.lookup j "value") String.of_json)
-      } 
+      }
   end
 module ParameterNameValue =
   struct
@@ -1839,7 +1750,7 @@ module ParameterNameValue =
       parameter_name: String.t option ;
       parameter_value: String.t option }
     let make ?parameter_name  ?parameter_value  () =
-      { parameter_name; parameter_value } 
+      { parameter_name; parameter_value }
     let parse xml =
       Some
         {
@@ -1848,30 +1759,27 @@ module ParameterNameValue =
           parameter_value =
             (Util.option_bind (Xml.member "ParameterValue" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.parameter_value
-              (fun f  -> Query.Pair ("ParameterValue", (String.to_query f)));
+              (fun f -> Query.Pair ("ParameterValue", (String.to_query f)));
            Util.option_map v.parameter_name
-             (fun f  -> Query.Pair ("ParameterName", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("ParameterName", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.parameter_value
-              (fun f  -> ("parameter_value", (String.to_json f)));
+              (fun f -> ("parameter_value", (String.to_json f)));
            Util.option_map v.parameter_name
-             (fun f  -> ("parameter_name", (String.to_json f)))])
-      
+             (fun f -> ("parameter_name", (String.to_json f)))])
     let of_json j =
       {
         parameter_name =
           (Util.option_map (Json.lookup j "parameter_name") String.of_json);
         parameter_value =
           (Util.option_map (Json.lookup j "parameter_value") String.of_json)
-      } 
+      }
   end
 module CacheCluster =
   struct
@@ -1932,7 +1840,7 @@ module CacheCluster =
         replication_group_id;
         snapshot_retention_limit;
         snapshot_window
-      } 
+      }
     let parse xml =
       Some
         {
@@ -1999,33 +1907,31 @@ module CacheCluster =
           snapshot_window =
             (Util.option_bind (Xml.member "SnapshotWindow" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.snapshot_window
-              (fun f  -> Query.Pair ("SnapshotWindow", (String.to_query f)));
+              (fun f -> Query.Pair ("SnapshotWindow", (String.to_query f)));
            Util.option_map v.snapshot_retention_limit
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("SnapshotRetentionLimit", (Integer.to_query f)));
            Util.option_map v.replication_group_id
-             (fun f  ->
-                Query.Pair ("ReplicationGroupId", (String.to_query f)));
+             (fun f -> Query.Pair ("ReplicationGroupId", (String.to_query f)));
            Some
              (Query.Pair
                 ("SecurityGroups.member",
                   (SecurityGroupMembershipList.to_query v.security_groups)));
            Util.option_map v.auto_minor_version_upgrade
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("AutoMinorVersionUpgrade", (Boolean.to_query f)));
            Some
              (Query.Pair
                 ("CacheNodes.member", (CacheNodeList.to_query v.cache_nodes)));
            Util.option_map v.cache_subnet_group_name
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("CacheSubnetGroupName", (String.to_query f)));
            Util.option_map v.cache_parameter_group
-             (fun f  ->
+             (fun f ->
                 Query.Pair
                   ("CacheParameterGroup",
                     (CacheParameterGroupStatus.to_query f)));
@@ -2035,64 +1941,62 @@ module CacheCluster =
                   (CacheSecurityGroupMembershipList.to_query
                      v.cache_security_groups)));
            Util.option_map v.notification_configuration
-             (fun f  ->
+             (fun f ->
                 Query.Pair
                   ("NotificationConfiguration",
                     (NotificationConfiguration.to_query f)));
            Util.option_map v.pending_modified_values
-             (fun f  ->
+             (fun f ->
                 Query.Pair
                   ("PendingModifiedValues",
                     (PendingModifiedValues.to_query f)));
            Util.option_map v.preferred_maintenance_window
-             (fun f  ->
+             (fun f ->
                 Query.Pair
                   ("PreferredMaintenanceWindow", (String.to_query f)));
            Util.option_map v.cache_cluster_create_time
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("CacheClusterCreateTime", (DateTime.to_query f)));
            Util.option_map v.preferred_availability_zone
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("PreferredAvailabilityZone", (String.to_query f)));
            Util.option_map v.num_cache_nodes
-             (fun f  -> Query.Pair ("NumCacheNodes", (Integer.to_query f)));
+             (fun f -> Query.Pair ("NumCacheNodes", (Integer.to_query f)));
            Util.option_map v.cache_cluster_status
-             (fun f  ->
-                Query.Pair ("CacheClusterStatus", (String.to_query f)));
+             (fun f -> Query.Pair ("CacheClusterStatus", (String.to_query f)));
            Util.option_map v.engine_version
-             (fun f  -> Query.Pair ("EngineVersion", (String.to_query f)));
+             (fun f -> Query.Pair ("EngineVersion", (String.to_query f)));
            Util.option_map v.engine
-             (fun f  -> Query.Pair ("Engine", (String.to_query f)));
+             (fun f -> Query.Pair ("Engine", (String.to_query f)));
            Util.option_map v.cache_node_type
-             (fun f  -> Query.Pair ("CacheNodeType", (String.to_query f)));
+             (fun f -> Query.Pair ("CacheNodeType", (String.to_query f)));
            Util.option_map v.client_download_landing_page
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("ClientDownloadLandingPage", (String.to_query f)));
            Util.option_map v.configuration_endpoint
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("ConfigurationEndpoint", (Endpoint.to_query f)));
            Util.option_map v.cache_cluster_id
-             (fun f  -> Query.Pair ("CacheClusterId", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("CacheClusterId", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.snapshot_window
-              (fun f  -> ("snapshot_window", (String.to_json f)));
+              (fun f -> ("snapshot_window", (String.to_json f)));
            Util.option_map v.snapshot_retention_limit
-             (fun f  -> ("snapshot_retention_limit", (Integer.to_json f)));
+             (fun f -> ("snapshot_retention_limit", (Integer.to_json f)));
            Util.option_map v.replication_group_id
-             (fun f  -> ("replication_group_id", (String.to_json f)));
+             (fun f -> ("replication_group_id", (String.to_json f)));
            Some
              ("security_groups",
                (SecurityGroupMembershipList.to_json v.security_groups));
            Util.option_map v.auto_minor_version_upgrade
-             (fun f  -> ("auto_minor_version_upgrade", (Boolean.to_json f)));
+             (fun f -> ("auto_minor_version_upgrade", (Boolean.to_json f)));
            Some ("cache_nodes", (CacheNodeList.to_json v.cache_nodes));
            Util.option_map v.cache_subnet_group_name
-             (fun f  -> ("cache_subnet_group_name", (String.to_json f)));
+             (fun f -> ("cache_subnet_group_name", (String.to_json f)));
            Util.option_map v.cache_parameter_group
-             (fun f  ->
+             (fun f ->
                 ("cache_parameter_group",
                   (CacheParameterGroupStatus.to_json f)));
            Some
@@ -2100,36 +2004,34 @@ module CacheCluster =
                (CacheSecurityGroupMembershipList.to_json
                   v.cache_security_groups));
            Util.option_map v.notification_configuration
-             (fun f  ->
+             (fun f ->
                 ("notification_configuration",
                   (NotificationConfiguration.to_json f)));
            Util.option_map v.pending_modified_values
-             (fun f  ->
+             (fun f ->
                 ("pending_modified_values",
                   (PendingModifiedValues.to_json f)));
            Util.option_map v.preferred_maintenance_window
-             (fun f  -> ("preferred_maintenance_window", (String.to_json f)));
+             (fun f -> ("preferred_maintenance_window", (String.to_json f)));
            Util.option_map v.cache_cluster_create_time
-             (fun f  -> ("cache_cluster_create_time", (DateTime.to_json f)));
+             (fun f -> ("cache_cluster_create_time", (DateTime.to_json f)));
            Util.option_map v.preferred_availability_zone
-             (fun f  -> ("preferred_availability_zone", (String.to_json f)));
+             (fun f -> ("preferred_availability_zone", (String.to_json f)));
            Util.option_map v.num_cache_nodes
-             (fun f  -> ("num_cache_nodes", (Integer.to_json f)));
+             (fun f -> ("num_cache_nodes", (Integer.to_json f)));
            Util.option_map v.cache_cluster_status
-             (fun f  -> ("cache_cluster_status", (String.to_json f)));
+             (fun f -> ("cache_cluster_status", (String.to_json f)));
            Util.option_map v.engine_version
-             (fun f  -> ("engine_version", (String.to_json f)));
-           Util.option_map v.engine
-             (fun f  -> ("engine", (String.to_json f)));
+             (fun f -> ("engine_version", (String.to_json f)));
+           Util.option_map v.engine (fun f -> ("engine", (String.to_json f)));
            Util.option_map v.cache_node_type
-             (fun f  -> ("cache_node_type", (String.to_json f)));
+             (fun f -> ("cache_node_type", (String.to_json f)));
            Util.option_map v.client_download_landing_page
-             (fun f  -> ("client_download_landing_page", (String.to_json f)));
+             (fun f -> ("client_download_landing_page", (String.to_json f)));
            Util.option_map v.configuration_endpoint
-             (fun f  -> ("configuration_endpoint", (Endpoint.to_json f)));
+             (fun f -> ("configuration_endpoint", (Endpoint.to_json f)));
            Util.option_map v.cache_cluster_id
-             (fun f  -> ("cache_cluster_id", (String.to_json f)))])
-      
+             (fun f -> ("cache_cluster_id", (String.to_json f)))])
     let of_json j =
       {
         cache_cluster_id =
@@ -2191,33 +2093,31 @@ module CacheCluster =
              Integer.of_json);
         snapshot_window =
           (Util.option_map (Json.lookup j "snapshot_window") String.of_json)
-      } 
+      }
   end
 module CacheNodeTypeSpecificParametersList =
   struct
     type t = CacheNodeTypeSpecificParameter.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
       Util.option_all
         (List.map CacheNodeTypeSpecificParameter.parse
            (Xml.members "CacheNodeTypeSpecificParameter" xml))
-      
     let to_query v =
-      Query.to_query_list CacheNodeTypeSpecificParameter.to_query v 
-    let to_json v = `List (List.map CacheNodeTypeSpecificParameter.to_json v) 
-    let of_json j = Json.to_list CacheNodeTypeSpecificParameter.of_json j 
+      Query.to_query_list CacheNodeTypeSpecificParameter.to_query v
+    let to_json v = `List (List.map CacheNodeTypeSpecificParameter.to_json v)
+    let of_json j = Json.to_list CacheNodeTypeSpecificParameter.of_json j
   end
 module ParametersList =
   struct
     type t = Parameter.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
       Util.option_all
         (List.map Parameter.parse (Xml.members "Parameter" xml))
-      
-    let to_query v = Query.to_query_list Parameter.to_query v 
-    let to_json v = `List (List.map Parameter.to_json v) 
-    let of_json j = Json.to_list Parameter.of_json j 
+    let to_query v = Query.to_query_list Parameter.to_query v
+    let to_json v = `List (List.map Parameter.to_json v)
+    let of_json j = Json.to_list Parameter.of_json j
   end
 module Event =
   struct
@@ -2228,7 +2128,7 @@ module Event =
       message: String.t option ;
       date: DateTime.t option }
     let make ?source_identifier  ?source_type  ?message  ?date  () =
-      { source_identifier; source_type; message; date } 
+      { source_identifier; source_type; message; date }
     let parse xml =
       Some
         {
@@ -2241,30 +2141,27 @@ module Event =
             (Util.option_bind (Xml.member "Message" xml) String.parse);
           date = (Util.option_bind (Xml.member "Date" xml) DateTime.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.date
-              (fun f  -> Query.Pair ("Date", (DateTime.to_query f)));
+              (fun f -> Query.Pair ("Date", (DateTime.to_query f)));
            Util.option_map v.message
-             (fun f  -> Query.Pair ("Message", (String.to_query f)));
+             (fun f -> Query.Pair ("Message", (String.to_query f)));
            Util.option_map v.source_type
-             (fun f  -> Query.Pair ("SourceType", (SourceType.to_query f)));
+             (fun f -> Query.Pair ("SourceType", (SourceType.to_query f)));
            Util.option_map v.source_identifier
-             (fun f  -> Query.Pair ("SourceIdentifier", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("SourceIdentifier", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
-           [Util.option_map v.date (fun f  -> ("date", (DateTime.to_json f)));
+           [Util.option_map v.date (fun f -> ("date", (DateTime.to_json f)));
            Util.option_map v.message
-             (fun f  -> ("message", (String.to_json f)));
+             (fun f -> ("message", (String.to_json f)));
            Util.option_map v.source_type
-             (fun f  -> ("source_type", (SourceType.to_json f)));
+             (fun f -> ("source_type", (SourceType.to_json f)));
            Util.option_map v.source_identifier
-             (fun f  -> ("source_identifier", (String.to_json f)))])
-      
+             (fun f -> ("source_identifier", (String.to_json f)))])
     let of_json j =
       {
         source_identifier =
@@ -2273,7 +2170,7 @@ module Event =
           (Util.option_map (Json.lookup j "source_type") SourceType.of_json);
         message = (Util.option_map (Json.lookup j "message") String.of_json);
         date = (Util.option_map (Json.lookup j "date") DateTime.of_json)
-      } 
+      }
   end
 module ReplicationGroup =
   struct
@@ -2299,7 +2196,7 @@ module ReplicationGroup =
         node_groups;
         snapshotting_cluster_id;
         automatic_failover
-      } 
+      }
     let parse xml =
       Some
         {
@@ -2327,17 +2224,16 @@ module ReplicationGroup =
             (Util.option_bind (Xml.member "AutomaticFailover" xml)
                AutomaticFailoverStatus.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.automatic_failover
-              (fun f  ->
+              (fun f ->
                  Query.Pair
                    ("AutomaticFailover",
                      (AutomaticFailoverStatus.to_query f)));
            Util.option_map v.snapshotting_cluster_id
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("SnapshottingClusterId", (String.to_query f)));
            Some
              (Query.Pair
@@ -2347,40 +2243,36 @@ module ReplicationGroup =
                 ("MemberClusters.member",
                   (ClusterIdList.to_query v.member_clusters)));
            Util.option_map v.pending_modified_values
-             (fun f  ->
+             (fun f ->
                 Query.Pair
                   ("PendingModifiedValues",
                     (ReplicationGroupPendingModifiedValues.to_query f)));
            Util.option_map v.status
-             (fun f  -> Query.Pair ("Status", (String.to_query f)));
+             (fun f -> Query.Pair ("Status", (String.to_query f)));
            Util.option_map v.description
-             (fun f  -> Query.Pair ("Description", (String.to_query f)));
+             (fun f -> Query.Pair ("Description", (String.to_query f)));
            Util.option_map v.replication_group_id
-             (fun f  ->
-                Query.Pair ("ReplicationGroupId", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("ReplicationGroupId", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.automatic_failover
-              (fun f  ->
+              (fun f ->
                  ("automatic_failover", (AutomaticFailoverStatus.to_json f)));
            Util.option_map v.snapshotting_cluster_id
-             (fun f  -> ("snapshotting_cluster_id", (String.to_json f)));
+             (fun f -> ("snapshotting_cluster_id", (String.to_json f)));
            Some ("node_groups", (NodeGroupList.to_json v.node_groups));
            Some
              ("member_clusters", (ClusterIdList.to_json v.member_clusters));
            Util.option_map v.pending_modified_values
-             (fun f  ->
+             (fun f ->
                 ("pending_modified_values",
                   (ReplicationGroupPendingModifiedValues.to_json f)));
-           Util.option_map v.status
-             (fun f  -> ("status", (String.to_json f)));
+           Util.option_map v.status (fun f -> ("status", (String.to_json f)));
            Util.option_map v.description
-             (fun f  -> ("description", (String.to_json f)));
+             (fun f -> ("description", (String.to_json f)));
            Util.option_map v.replication_group_id
-             (fun f  -> ("replication_group_id", (String.to_json f)))])
-      
+             (fun f -> ("replication_group_id", (String.to_json f)))])
     let of_json j =
       {
         replication_group_id =
@@ -2404,7 +2296,7 @@ module ReplicationGroup =
         automatic_failover =
           (Util.option_map (Json.lookup j "automatic_failover")
              AutomaticFailoverStatus.of_json)
-      } 
+      }
   end
 module CacheEngineVersion =
   struct
@@ -2423,7 +2315,7 @@ module CacheEngineVersion =
         cache_parameter_group_family;
         cache_engine_description;
         cache_engine_version_description
-      } 
+      }
     let parse xml =
       Some
         {
@@ -2440,40 +2332,36 @@ module CacheEngineVersion =
             (Util.option_bind
                (Xml.member "CacheEngineVersionDescription" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.cache_engine_version_description
-              (fun f  ->
+              (fun f ->
                  Query.Pair
                    ("CacheEngineVersionDescription", (String.to_query f)));
            Util.option_map v.cache_engine_description
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("CacheEngineDescription", (String.to_query f)));
            Util.option_map v.cache_parameter_group_family
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("CacheParameterGroupFamily", (String.to_query f)));
            Util.option_map v.engine_version
-             (fun f  -> Query.Pair ("EngineVersion", (String.to_query f)));
+             (fun f -> Query.Pair ("EngineVersion", (String.to_query f)));
            Util.option_map v.engine
-             (fun f  -> Query.Pair ("Engine", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("Engine", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.cache_engine_version_description
-              (fun f  ->
+              (fun f ->
                  ("cache_engine_version_description", (String.to_json f)));
            Util.option_map v.cache_engine_description
-             (fun f  -> ("cache_engine_description", (String.to_json f)));
+             (fun f -> ("cache_engine_description", (String.to_json f)));
            Util.option_map v.cache_parameter_group_family
-             (fun f  -> ("cache_parameter_group_family", (String.to_json f)));
+             (fun f -> ("cache_parameter_group_family", (String.to_json f)));
            Util.option_map v.engine_version
-             (fun f  -> ("engine_version", (String.to_json f)));
-           Util.option_map v.engine
-             (fun f  -> ("engine", (String.to_json f)))])
-      
+             (fun f -> ("engine_version", (String.to_json f)));
+           Util.option_map v.engine (fun f -> ("engine", (String.to_json f)))])
     let of_json j =
       {
         engine = (Util.option_map (Json.lookup j "engine") String.of_json);
@@ -2488,7 +2376,7 @@ module CacheEngineVersion =
         cache_engine_version_description =
           (Util.option_map (Json.lookup j "cache_engine_version_description")
              String.of_json)
-      } 
+      }
   end
 module CacheSecurityGroup =
   struct
@@ -2505,7 +2393,7 @@ module CacheSecurityGroup =
         cache_security_group_name;
         description;
         e_c2_security_groups
-      } 
+      }
     let parse xml =
       Some
         {
@@ -2521,7 +2409,6 @@ module CacheSecurityGroup =
                (Util.option_bind (Xml.member "EC2SecurityGroups" xml)
                   EC2SecurityGroupList.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -2530,13 +2417,12 @@ module CacheSecurityGroup =
                  ("EC2SecurityGroups.member",
                    (EC2SecurityGroupList.to_query v.e_c2_security_groups)));
            Util.option_map v.description
-             (fun f  -> Query.Pair ("Description", (String.to_query f)));
+             (fun f -> Query.Pair ("Description", (String.to_query f)));
            Util.option_map v.cache_security_group_name
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("CacheSecurityGroupName", (String.to_query f)));
            Util.option_map v.owner_id
-             (fun f  -> Query.Pair ("OwnerId", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("OwnerId", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -2544,12 +2430,11 @@ module CacheSecurityGroup =
               ("e_c2_security_groups",
                 (EC2SecurityGroupList.to_json v.e_c2_security_groups));
            Util.option_map v.description
-             (fun f  -> ("description", (String.to_json f)));
+             (fun f -> ("description", (String.to_json f)));
            Util.option_map v.cache_security_group_name
-             (fun f  -> ("cache_security_group_name", (String.to_json f)));
+             (fun f -> ("cache_security_group_name", (String.to_json f)));
            Util.option_map v.owner_id
-             (fun f  -> ("owner_id", (String.to_json f)))])
-      
+             (fun f -> ("owner_id", (String.to_json f)))])
     let of_json j =
       {
         owner_id =
@@ -2562,7 +2447,7 @@ module CacheSecurityGroup =
         e_c2_security_groups =
           (EC2SecurityGroupList.of_json
              (Util.of_option_exn (Json.lookup j "e_c2_security_groups")))
-      } 
+      }
   end
 module ReservedCacheNode =
   struct
@@ -2597,7 +2482,7 @@ module ReservedCacheNode =
         offering_type;
         state;
         recurring_charges
-      } 
+      }
     let parse xml =
       Some
         {
@@ -2630,7 +2515,6 @@ module ReservedCacheNode =
                (Util.option_bind (Xml.member "RecurringCharges" xml)
                   RecurringChargeList.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -2639,61 +2523,58 @@ module ReservedCacheNode =
                  ("RecurringCharges.member",
                    (RecurringChargeList.to_query v.recurring_charges)));
            Util.option_map v.state
-             (fun f  -> Query.Pair ("State", (String.to_query f)));
+             (fun f -> Query.Pair ("State", (String.to_query f)));
            Util.option_map v.offering_type
-             (fun f  -> Query.Pair ("OfferingType", (String.to_query f)));
+             (fun f -> Query.Pair ("OfferingType", (String.to_query f)));
            Util.option_map v.product_description
-             (fun f  ->
-                Query.Pair ("ProductDescription", (String.to_query f)));
+             (fun f -> Query.Pair ("ProductDescription", (String.to_query f)));
            Util.option_map v.cache_node_count
-             (fun f  -> Query.Pair ("CacheNodeCount", (Integer.to_query f)));
+             (fun f -> Query.Pair ("CacheNodeCount", (Integer.to_query f)));
            Util.option_map v.usage_price
-             (fun f  -> Query.Pair ("UsagePrice", (Double.to_query f)));
+             (fun f -> Query.Pair ("UsagePrice", (Double.to_query f)));
            Util.option_map v.fixed_price
-             (fun f  -> Query.Pair ("FixedPrice", (Double.to_query f)));
+             (fun f -> Query.Pair ("FixedPrice", (Double.to_query f)));
            Util.option_map v.duration
-             (fun f  -> Query.Pair ("Duration", (Integer.to_query f)));
+             (fun f -> Query.Pair ("Duration", (Integer.to_query f)));
            Util.option_map v.start_time
-             (fun f  -> Query.Pair ("StartTime", (DateTime.to_query f)));
+             (fun f -> Query.Pair ("StartTime", (DateTime.to_query f)));
            Util.option_map v.cache_node_type
-             (fun f  -> Query.Pair ("CacheNodeType", (String.to_query f)));
+             (fun f -> Query.Pair ("CacheNodeType", (String.to_query f)));
            Util.option_map v.reserved_cache_nodes_offering_id
-             (fun f  ->
+             (fun f ->
                 Query.Pair
                   ("ReservedCacheNodesOfferingId", (String.to_query f)));
            Util.option_map v.reserved_cache_node_id
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("ReservedCacheNodeId", (String.to_query f)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("recurring_charges",
                 (RecurringChargeList.to_json v.recurring_charges));
-           Util.option_map v.state (fun f  -> ("state", (String.to_json f)));
+           Util.option_map v.state (fun f -> ("state", (String.to_json f)));
            Util.option_map v.offering_type
-             (fun f  -> ("offering_type", (String.to_json f)));
+             (fun f -> ("offering_type", (String.to_json f)));
            Util.option_map v.product_description
-             (fun f  -> ("product_description", (String.to_json f)));
+             (fun f -> ("product_description", (String.to_json f)));
            Util.option_map v.cache_node_count
-             (fun f  -> ("cache_node_count", (Integer.to_json f)));
+             (fun f -> ("cache_node_count", (Integer.to_json f)));
            Util.option_map v.usage_price
-             (fun f  -> ("usage_price", (Double.to_json f)));
+             (fun f -> ("usage_price", (Double.to_json f)));
            Util.option_map v.fixed_price
-             (fun f  -> ("fixed_price", (Double.to_json f)));
+             (fun f -> ("fixed_price", (Double.to_json f)));
            Util.option_map v.duration
-             (fun f  -> ("duration", (Integer.to_json f)));
+             (fun f -> ("duration", (Integer.to_json f)));
            Util.option_map v.start_time
-             (fun f  -> ("start_time", (DateTime.to_json f)));
+             (fun f -> ("start_time", (DateTime.to_json f)));
            Util.option_map v.cache_node_type
-             (fun f  -> ("cache_node_type", (String.to_json f)));
+             (fun f -> ("cache_node_type", (String.to_json f)));
            Util.option_map v.reserved_cache_nodes_offering_id
-             (fun f  ->
+             (fun f ->
                 ("reserved_cache_nodes_offering_id", (String.to_json f)));
            Util.option_map v.reserved_cache_node_id
-             (fun f  -> ("reserved_cache_node_id", (String.to_json f)))])
-      
+             (fun f -> ("reserved_cache_node_id", (String.to_json f)))])
     let of_json j =
       {
         reserved_cache_node_id =
@@ -2723,149 +2604,140 @@ module ReservedCacheNode =
         recurring_charges =
           (RecurringChargeList.of_json
              (Util.of_option_exn (Json.lookup j "recurring_charges")))
-      } 
+      }
   end
 module ReservedCacheNodesOfferingList =
   struct
     type t = ReservedCacheNodesOffering.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
       Util.option_all
         (List.map ReservedCacheNodesOffering.parse
            (Xml.members "ReservedCacheNodesOffering" xml))
-      
     let to_query v =
-      Query.to_query_list ReservedCacheNodesOffering.to_query v 
-    let to_json v = `List (List.map ReservedCacheNodesOffering.to_json v) 
-    let of_json j = Json.to_list ReservedCacheNodesOffering.of_json j 
+      Query.to_query_list ReservedCacheNodesOffering.to_query v
+    let to_json v = `List (List.map ReservedCacheNodesOffering.to_json v)
+    let of_json j = Json.to_list ReservedCacheNodesOffering.of_json j
   end
 module CacheParameterGroupList =
   struct
     type t = CacheParameterGroup.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
       Util.option_all
         (List.map CacheParameterGroup.parse
            (Xml.members "CacheParameterGroup" xml))
-      
-    let to_query v = Query.to_query_list CacheParameterGroup.to_query v 
-    let to_json v = `List (List.map CacheParameterGroup.to_json v) 
-    let of_json j = Json.to_list CacheParameterGroup.of_json j 
+    let to_query v = Query.to_query_list CacheParameterGroup.to_query v
+    let to_json v = `List (List.map CacheParameterGroup.to_json v)
+    let of_json j = Json.to_list CacheParameterGroup.of_json j
   end
 module SnapshotList =
   struct
     type t = Snapshot.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
-      Util.option_all (List.map Snapshot.parse (Xml.members "Snapshot" xml)) 
-    let to_query v = Query.to_query_list Snapshot.to_query v 
-    let to_json v = `List (List.map Snapshot.to_json v) 
-    let of_json j = Json.to_list Snapshot.of_json j 
+      Util.option_all (List.map Snapshot.parse (Xml.members "Snapshot" xml))
+    let to_query v = Query.to_query_list Snapshot.to_query v
+    let to_json v = `List (List.map Snapshot.to_json v)
+    let of_json j = Json.to_list Snapshot.of_json j
   end
 module CacheSubnetGroups =
   struct
     type t = CacheSubnetGroup.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
       Util.option_all
         (List.map CacheSubnetGroup.parse (Xml.members "CacheSubnetGroup" xml))
-      
-    let to_query v = Query.to_query_list CacheSubnetGroup.to_query v 
-    let to_json v = `List (List.map CacheSubnetGroup.to_json v) 
-    let of_json j = Json.to_list CacheSubnetGroup.of_json j 
+    let to_query v = Query.to_query_list CacheSubnetGroup.to_query v
+    let to_json v = `List (List.map CacheSubnetGroup.to_json v)
+    let of_json j = Json.to_list CacheSubnetGroup.of_json j
   end
 module TagList =
   struct
     type t = Tag.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
-      Util.option_all (List.map Tag.parse (Xml.members "Tag" xml)) 
-    let to_query v = Query.to_query_list Tag.to_query v 
-    let to_json v = `List (List.map Tag.to_json v) 
-    let of_json j = Json.to_list Tag.of_json j 
+      Util.option_all (List.map Tag.parse (Xml.members "Tag" xml))
+    let to_query v = Query.to_query_list Tag.to_query v
+    let to_json v = `List (List.map Tag.to_json v)
+    let of_json j = Json.to_list Tag.of_json j
   end
 module ParameterNameValueList =
   struct
     type t = ParameterNameValue.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
       Util.option_all
         (List.map ParameterNameValue.parse
            (Xml.members "ParameterNameValue" xml))
-      
-    let to_query v = Query.to_query_list ParameterNameValue.to_query v 
-    let to_json v = `List (List.map ParameterNameValue.to_json v) 
-    let of_json j = Json.to_list ParameterNameValue.of_json j 
+    let to_query v = Query.to_query_list ParameterNameValue.to_query v
+    let to_json v = `List (List.map ParameterNameValue.to_json v)
+    let of_json j = Json.to_list ParameterNameValue.of_json j
   end
 module SubnetIdentifierList =
   struct
     type t = String.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
       Util.option_all
         (List.map String.parse (Xml.members "SubnetIdentifier" xml))
-      
-    let to_query v = Query.to_query_list String.to_query v 
-    let to_json v = `List (List.map String.to_json v) 
-    let of_json j = Json.to_list String.of_json j 
+    let to_query v = Query.to_query_list String.to_query v
+    let to_json v = `List (List.map String.to_json v)
+    let of_json j = Json.to_list String.of_json j
   end
 module AvailabilityZonesList =
   struct
     type t = String.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
       Util.option_all
         (List.map String.parse (Xml.members "AvailabilityZone" xml))
-      
-    let to_query v = Query.to_query_list String.to_query v 
-    let to_json v = `List (List.map String.to_json v) 
-    let of_json j = Json.to_list String.of_json j 
+    let to_query v = Query.to_query_list String.to_query v
+    let to_json v = `List (List.map String.to_json v)
+    let of_json j = Json.to_list String.of_json j
   end
 module CacheSecurityGroupNameList =
   struct
     type t = String.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
       Util.option_all
         (List.map String.parse (Xml.members "CacheSecurityGroupName" xml))
-      
-    let to_query v = Query.to_query_list String.to_query v 
-    let to_json v = `List (List.map String.to_json v) 
-    let of_json j = Json.to_list String.of_json j 
+    let to_query v = Query.to_query_list String.to_query v
+    let to_json v = `List (List.map String.to_json v)
+    let of_json j = Json.to_list String.of_json j
   end
 module SecurityGroupIdsList =
   struct
     type t = String.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
       Util.option_all
         (List.map String.parse (Xml.members "SecurityGroupId" xml))
-      
-    let to_query v = Query.to_query_list String.to_query v 
-    let to_json v = `List (List.map String.to_json v) 
-    let of_json j = Json.to_list String.of_json j 
+    let to_query v = Query.to_query_list String.to_query v
+    let to_json v = `List (List.map String.to_json v)
+    let of_json j = Json.to_list String.of_json j
   end
 module SnapshotArnsList =
   struct
     type t = String.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "SnapshotArn" xml)) 
-    let to_query v = Query.to_query_list String.to_query v 
-    let to_json v = `List (List.map String.to_json v) 
-    let of_json j = Json.to_list String.of_json j 
+      Util.option_all (List.map String.parse (Xml.members "SnapshotArn" xml))
+    let to_query v = Query.to_query_list String.to_query v
+    let to_json v = `List (List.map String.to_json v)
+    let of_json j = Json.to_list String.of_json j
   end
 module CacheClusterList =
   struct
     type t = CacheCluster.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
       Util.option_all
         (List.map CacheCluster.parse (Xml.members "CacheCluster" xml))
-      
-    let to_query v = Query.to_query_list CacheCluster.to_query v 
-    let to_json v = `List (List.map CacheCluster.to_json v) 
-    let of_json j = Json.to_list CacheCluster.of_json j 
+    let to_query v = Query.to_query_list CacheCluster.to_query v
+    let to_json v = `List (List.map CacheCluster.to_json v)
+    let of_json j = Json.to_list CacheCluster.of_json j
   end
 module EngineDefaults =
   struct
@@ -2883,7 +2755,7 @@ module EngineDefaults =
         marker;
         parameters;
         cache_node_type_specific_parameters
-      } 
+      }
     let parse xml =
       Some
         {
@@ -2901,7 +2773,6 @@ module EngineDefaults =
                   (Xml.member "CacheNodeTypeSpecificParameters" xml)
                   CacheNodeTypeSpecificParametersList.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -2914,11 +2785,10 @@ module EngineDefaults =
              (Query.Pair
                 ("Parameters.member", (ParametersList.to_query v.parameters)));
            Util.option_map v.marker
-             (fun f  -> Query.Pair ("Marker", (String.to_query f)));
+             (fun f -> Query.Pair ("Marker", (String.to_query f)));
            Util.option_map v.cache_parameter_group_family
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("CacheParameterGroupFamily", (String.to_query f)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -2927,11 +2797,9 @@ module EngineDefaults =
                 (CacheNodeTypeSpecificParametersList.to_json
                    v.cache_node_type_specific_parameters));
            Some ("parameters", (ParametersList.to_json v.parameters));
-           Util.option_map v.marker
-             (fun f  -> ("marker", (String.to_json f)));
+           Util.option_map v.marker (fun f -> ("marker", (String.to_json f)));
            Util.option_map v.cache_parameter_group_family
-             (fun f  -> ("cache_parameter_group_family", (String.to_json f)))])
-      
+             (fun f -> ("cache_parameter_group_family", (String.to_json f)))])
     let of_json j =
       {
         cache_parameter_group_family =
@@ -2945,115 +2813,109 @@ module EngineDefaults =
           (CacheNodeTypeSpecificParametersList.of_json
              (Util.of_option_exn
                 (Json.lookup j "cache_node_type_specific_parameters")))
-      } 
+      }
   end
 module EventList =
   struct
     type t = Event.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
-      Util.option_all (List.map Event.parse (Xml.members "Event" xml)) 
-    let to_query v = Query.to_query_list Event.to_query v 
-    let to_json v = `List (List.map Event.to_json v) 
-    let of_json j = Json.to_list Event.of_json j 
+      Util.option_all (List.map Event.parse (Xml.members "Event" xml))
+    let to_query v = Query.to_query_list Event.to_query v
+    let to_json v = `List (List.map Event.to_json v)
+    let of_json j = Json.to_list Event.of_json j
   end
 module AZMode =
   struct
     type t =
       | Single_az 
       | Cross_az 
-    let str_to_t = [("cross-az", Cross_az); ("single-az", Single_az)] 
-    let t_to_str = [(Cross_az, "cross-az"); (Single_az, "single-az")] 
-    let make v () = v 
+    let str_to_t = [("cross-az", Cross_az); ("single-az", Single_az)]
+    let t_to_str = [(Cross_az, "cross-az"); (Single_az, "single-az")]
+    let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
-        (fun s  -> Util.list_find str_to_t s)
-      
+        (fun s -> Util.list_find str_to_t s)
     let to_query v =
-      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v))) 
+      Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
     let to_json v =
-      String.to_json (Util.of_option_exn (Util.list_find t_to_str v)) 
+      String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
     let of_json j =
-      Util.of_option_exn (Util.list_find str_to_t (String.of_json j)) 
+      Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
   end
 module PreferredAvailabilityZoneList =
   struct
     type t = String.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
       Util.option_all
         (List.map String.parse (Xml.members "PreferredAvailabilityZone" xml))
-      
-    let to_query v = Query.to_query_list String.to_query v 
-    let to_json v = `List (List.map String.to_json v) 
-    let of_json j = Json.to_list String.of_json j 
+    let to_query v = Query.to_query_list String.to_query v
+    let to_json v = `List (List.map String.to_json v)
+    let of_json j = Json.to_list String.of_json j
   end
 module KeyList =
   struct
     type t = String.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
-      Util.option_all (List.map String.parse (Xml.members "member" xml)) 
-    let to_query v = Query.to_query_list String.to_query v 
-    let to_json v = `List (List.map String.to_json v) 
-    let of_json j = Json.to_list String.of_json j 
+      Util.option_all (List.map String.parse (Xml.members "member" xml))
+    let to_query v = Query.to_query_list String.to_query v
+    let to_json v = `List (List.map String.to_json v)
+    let of_json j = Json.to_list String.of_json j
   end
 module ReplicationGroupList =
   struct
     type t = ReplicationGroup.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
       Util.option_all
         (List.map ReplicationGroup.parse (Xml.members "ReplicationGroup" xml))
-      
-    let to_query v = Query.to_query_list ReplicationGroup.to_query v 
-    let to_json v = `List (List.map ReplicationGroup.to_json v) 
-    let of_json j = Json.to_list ReplicationGroup.of_json j 
+    let to_query v = Query.to_query_list ReplicationGroup.to_query v
+    let to_json v = `List (List.map ReplicationGroup.to_json v)
+    let of_json j = Json.to_list ReplicationGroup.of_json j
   end
 module CacheEngineVersionList =
   struct
     type t = CacheEngineVersion.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
       Util.option_all
         (List.map CacheEngineVersion.parse
            (Xml.members "CacheEngineVersion" xml))
-      
-    let to_query v = Query.to_query_list CacheEngineVersion.to_query v 
-    let to_json v = `List (List.map CacheEngineVersion.to_json v) 
-    let of_json j = Json.to_list CacheEngineVersion.of_json j 
+    let to_query v = Query.to_query_list CacheEngineVersion.to_query v
+    let to_json v = `List (List.map CacheEngineVersion.to_json v)
+    let of_json j = Json.to_list CacheEngineVersion.of_json j
   end
 module CacheSecurityGroups =
   struct
     type t = CacheSecurityGroup.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
       Util.option_all
         (List.map CacheSecurityGroup.parse
            (Xml.members "CacheSecurityGroup" xml))
-      
-    let to_query v = Query.to_query_list CacheSecurityGroup.to_query v 
-    let to_json v = `List (List.map CacheSecurityGroup.to_json v) 
-    let of_json j = Json.to_list CacheSecurityGroup.of_json j 
+    let to_query v = Query.to_query_list CacheSecurityGroup.to_query v
+    let to_json v = `List (List.map CacheSecurityGroup.to_json v)
+    let of_json j = Json.to_list CacheSecurityGroup.of_json j
   end
 module ReservedCacheNodeList =
   struct
     type t = ReservedCacheNode.t list
-    let make elems () = elems 
+    let make elems () = elems
     let parse xml =
       Util.option_all
         (List.map ReservedCacheNode.parse
            (Xml.members "ReservedCacheNode" xml))
-      
-    let to_query v = Query.to_query_list ReservedCacheNode.to_query v 
-    let to_json v = `List (List.map ReservedCacheNode.to_json v) 
-    let of_json j = Json.to_list ReservedCacheNode.of_json j 
+    let to_query v = Query.to_query_list ReservedCacheNode.to_query v
+    let to_json v = `List (List.map ReservedCacheNode.to_json v)
+    let of_json j = Json.to_list ReservedCacheNode.of_json j
   end
 module CreateCacheSecurityGroupResult =
   struct
     type t = {
       cache_security_group: CacheSecurityGroup.t option }
-    let make ?cache_security_group  () = { cache_security_group } 
+    let make ?cache_security_group  () = { cache_security_group }
     let parse xml =
       Some
         {
@@ -3061,28 +2923,25 @@ module CreateCacheSecurityGroupResult =
             (Util.option_bind (Xml.member "CacheSecurityGroup" xml)
                CacheSecurityGroup.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.cache_security_group
-              (fun f  ->
+              (fun f ->
                  Query.Pair
                    ("CacheSecurityGroup", (CacheSecurityGroup.to_query f)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.cache_security_group
-              (fun f  ->
+              (fun f ->
                  ("cache_security_group", (CacheSecurityGroup.to_json f)))])
-      
     let of_json j =
       {
         cache_security_group =
           (Util.option_map (Json.lookup j "cache_security_group")
              CacheSecurityGroup.of_json)
-      } 
+      }
   end
 module ReservedCacheNodesOfferingMessage =
   struct
@@ -3091,7 +2950,7 @@ module ReservedCacheNodesOfferingMessage =
       marker: String.t option ;
       reserved_cache_nodes_offerings: ReservedCacheNodesOfferingList.t }
     let make ?marker  ?(reserved_cache_nodes_offerings= [])  () =
-      { marker; reserved_cache_nodes_offerings } 
+      { marker; reserved_cache_nodes_offerings }
     let parse xml =
       Some
         {
@@ -3102,7 +2961,6 @@ module ReservedCacheNodesOfferingMessage =
                   (Xml.member "ReservedCacheNodesOfferings" xml)
                   ReservedCacheNodesOfferingList.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3112,8 +2970,7 @@ module ReservedCacheNodesOfferingMessage =
                    (ReservedCacheNodesOfferingList.to_query
                       v.reserved_cache_nodes_offerings)));
            Util.option_map v.marker
-             (fun f  -> Query.Pair ("Marker", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("Marker", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -3121,9 +2978,7 @@ module ReservedCacheNodesOfferingMessage =
               ("reserved_cache_nodes_offerings",
                 (ReservedCacheNodesOfferingList.to_json
                    v.reserved_cache_nodes_offerings));
-           Util.option_map v.marker
-             (fun f  -> ("marker", (String.to_json f)))])
-      
+           Util.option_map v.marker (fun f -> ("marker", (String.to_json f)))])
     let of_json j =
       {
         marker = (Util.option_map (Json.lookup j "marker") String.of_json);
@@ -3131,7 +2986,7 @@ module ReservedCacheNodesOfferingMessage =
           (ReservedCacheNodesOfferingList.of_json
              (Util.of_option_exn
                 (Json.lookup j "reserved_cache_nodes_offerings")))
-      } 
+      }
   end
 module CacheParameterGroupsMessage =
   struct
@@ -3140,7 +2995,7 @@ module CacheParameterGroupsMessage =
       marker: String.t option ;
       cache_parameter_groups: CacheParameterGroupList.t }
     let make ?marker  ?(cache_parameter_groups= [])  () =
-      { marker; cache_parameter_groups } 
+      { marker; cache_parameter_groups }
     let parse xml =
       Some
         {
@@ -3150,7 +3005,6 @@ module CacheParameterGroupsMessage =
                (Util.option_bind (Xml.member "CacheParameterGroups" xml)
                   CacheParameterGroupList.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3159,24 +3013,21 @@ module CacheParameterGroupsMessage =
                  ("CacheParameterGroups.member",
                    (CacheParameterGroupList.to_query v.cache_parameter_groups)));
            Util.option_map v.marker
-             (fun f  -> Query.Pair ("Marker", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("Marker", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("cache_parameter_groups",
                 (CacheParameterGroupList.to_json v.cache_parameter_groups));
-           Util.option_map v.marker
-             (fun f  -> ("marker", (String.to_json f)))])
-      
+           Util.option_map v.marker (fun f -> ("marker", (String.to_json f)))])
     let of_json j =
       {
         marker = (Util.option_map (Json.lookup j "marker") String.of_json);
         cache_parameter_groups =
           (CacheParameterGroupList.of_json
              (Util.of_option_exn (Json.lookup j "cache_parameter_groups")))
-      } 
+      }
   end
 module DescribeCacheClustersMessage =
   struct
@@ -3187,7 +3038,7 @@ module DescribeCacheClustersMessage =
       marker: String.t option ;
       show_cache_node_info: Boolean.t option }
     let make ?cache_cluster_id  ?max_records  ?marker  ?show_cache_node_info 
-      () = { cache_cluster_id; max_records; marker; show_cache_node_info } 
+      () = { cache_cluster_id; max_records; marker; show_cache_node_info }
     let parse xml =
       Some
         {
@@ -3200,32 +3051,28 @@ module DescribeCacheClustersMessage =
             (Util.option_bind (Xml.member "ShowCacheNodeInfo" xml)
                Boolean.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.show_cache_node_info
-              (fun f  ->
+              (fun f ->
                  Query.Pair ("ShowCacheNodeInfo", (Boolean.to_query f)));
            Util.option_map v.marker
-             (fun f  -> Query.Pair ("Marker", (String.to_query f)));
+             (fun f -> Query.Pair ("Marker", (String.to_query f)));
            Util.option_map v.max_records
-             (fun f  -> Query.Pair ("MaxRecords", (Integer.to_query f)));
+             (fun f -> Query.Pair ("MaxRecords", (Integer.to_query f)));
            Util.option_map v.cache_cluster_id
-             (fun f  -> Query.Pair ("CacheClusterId", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("CacheClusterId", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.show_cache_node_info
-              (fun f  -> ("show_cache_node_info", (Boolean.to_json f)));
-           Util.option_map v.marker
-             (fun f  -> ("marker", (String.to_json f)));
+              (fun f -> ("show_cache_node_info", (Boolean.to_json f)));
+           Util.option_map v.marker (fun f -> ("marker", (String.to_json f)));
            Util.option_map v.max_records
-             (fun f  -> ("max_records", (Integer.to_json f)));
+             (fun f -> ("max_records", (Integer.to_json f)));
            Util.option_map v.cache_cluster_id
-             (fun f  -> ("cache_cluster_id", (String.to_json f)))])
-      
+             (fun f -> ("cache_cluster_id", (String.to_json f)))])
     let of_json j =
       {
         cache_cluster_id =
@@ -3236,7 +3083,7 @@ module DescribeCacheClustersMessage =
         show_cache_node_info =
           (Util.option_map (Json.lookup j "show_cache_node_info")
              Boolean.of_json)
-      } 
+      }
   end
 module DeleteCacheClusterMessage =
   struct
@@ -3245,7 +3092,7 @@ module DeleteCacheClusterMessage =
       cache_cluster_id: String.t ;
       final_snapshot_identifier: String.t option }
     let make ~cache_cluster_id  ?final_snapshot_identifier  () =
-      { cache_cluster_id; final_snapshot_identifier } 
+      { cache_cluster_id; final_snapshot_identifier }
     let parse xml =
       Some
         {
@@ -3257,24 +3104,21 @@ module DeleteCacheClusterMessage =
             (Util.option_bind (Xml.member "FinalSnapshotIdentifier" xml)
                String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.final_snapshot_identifier
-              (fun f  ->
+              (fun f ->
                  Query.Pair ("FinalSnapshotIdentifier", (String.to_query f)));
            Some
              (Query.Pair
                 ("CacheClusterId", (String.to_query v.cache_cluster_id)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.final_snapshot_identifier
-              (fun f  -> ("final_snapshot_identifier", (String.to_json f)));
+              (fun f -> ("final_snapshot_identifier", (String.to_json f)));
            Some ("cache_cluster_id", (String.to_json v.cache_cluster_id))])
-      
     let of_json j =
       {
         cache_cluster_id =
@@ -3283,13 +3127,13 @@ module DeleteCacheClusterMessage =
         final_snapshot_identifier =
           (Util.option_map (Json.lookup j "final_snapshot_identifier")
              String.of_json)
-      } 
+      }
   end
 module DeleteReplicationGroupResult =
   struct
     type t = {
       replication_group: ReplicationGroup.t option }
-    let make ?replication_group  () = { replication_group } 
+    let make ?replication_group  () = { replication_group }
     let parse xml =
       Some
         {
@@ -3297,34 +3141,31 @@ module DeleteReplicationGroupResult =
             (Util.option_bind (Xml.member "ReplicationGroup" xml)
                ReplicationGroup.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.replication_group
-              (fun f  ->
+              (fun f ->
                  Query.Pair
                    ("ReplicationGroup", (ReplicationGroup.to_query f)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.replication_group
-              (fun f  -> ("replication_group", (ReplicationGroup.to_json f)))])
-      
+              (fun f -> ("replication_group", (ReplicationGroup.to_json f)))])
     let of_json j =
       {
         replication_group =
           (Util.option_map (Json.lookup j "replication_group")
              ReplicationGroup.of_json)
-      } 
+      }
   end
 module DescribeSnapshotsListMessage =
   struct
     type t = {
       marker: String.t option ;
       snapshots: SnapshotList.t }
-    let make ?marker  ?(snapshots= [])  () = { marker; snapshots } 
+    let make ?marker  ?(snapshots= [])  () = { marker; snapshots }
     let parse xml =
       Some
         {
@@ -3334,7 +3175,6 @@ module DescribeSnapshotsListMessage =
                (Util.option_bind (Xml.member "Snapshots" xml)
                   SnapshotList.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3342,28 +3182,25 @@ module DescribeSnapshotsListMessage =
               (Query.Pair
                  ("Snapshots.member", (SnapshotList.to_query v.snapshots)));
            Util.option_map v.marker
-             (fun f  -> Query.Pair ("Marker", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("Marker", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("snapshots", (SnapshotList.to_json v.snapshots));
-           Util.option_map v.marker
-             (fun f  -> ("marker", (String.to_json f)))])
-      
+           Util.option_map v.marker (fun f -> ("marker", (String.to_json f)))])
     let of_json j =
       {
         marker = (Util.option_map (Json.lookup j "marker") String.of_json);
         snapshots =
           (SnapshotList.of_json
              (Util.of_option_exn (Json.lookup j "snapshots")))
-      } 
+      }
   end
 module CreateReplicationGroupResult =
   struct
     type t = {
       replication_group: ReplicationGroup.t option }
-    let make ?replication_group  () = { replication_group } 
+    let make ?replication_group  () = { replication_group }
     let parse xml =
       Some
         {
@@ -3371,33 +3208,30 @@ module CreateReplicationGroupResult =
             (Util.option_bind (Xml.member "ReplicationGroup" xml)
                ReplicationGroup.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.replication_group
-              (fun f  ->
+              (fun f ->
                  Query.Pair
                    ("ReplicationGroup", (ReplicationGroup.to_query f)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.replication_group
-              (fun f  -> ("replication_group", (ReplicationGroup.to_json f)))])
-      
+              (fun f -> ("replication_group", (ReplicationGroup.to_json f)))])
     let of_json j =
       {
         replication_group =
           (Util.option_map (Json.lookup j "replication_group")
              ReplicationGroup.of_json)
-      } 
+      }
   end
 module ModifyCacheSubnetGroupResult =
   struct
     type t = {
       cache_subnet_group: CacheSubnetGroup.t option }
-    let make ?cache_subnet_group  () = { cache_subnet_group } 
+    let make ?cache_subnet_group  () = { cache_subnet_group }
     let parse xml =
       Some
         {
@@ -3405,45 +3239,42 @@ module ModifyCacheSubnetGroupResult =
             (Util.option_bind (Xml.member "CacheSubnetGroup" xml)
                CacheSubnetGroup.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.cache_subnet_group
-              (fun f  ->
+              (fun f ->
                  Query.Pair
                    ("CacheSubnetGroup", (CacheSubnetGroup.to_query f)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.cache_subnet_group
-              (fun f  -> ("cache_subnet_group", (CacheSubnetGroup.to_json f)))])
-      
+              (fun f -> ("cache_subnet_group", (CacheSubnetGroup.to_json f)))])
     let of_json j =
       {
         cache_subnet_group =
           (Util.option_map (Json.lookup j "cache_subnet_group")
              CacheSubnetGroup.of_json)
-      } 
+      }
   end
 module CacheParameterGroupAlreadyExistsFault =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module SnapshotNotFoundFault =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module DescribeReplicationGroupsMessage =
   struct
@@ -3453,7 +3284,7 @@ module DescribeReplicationGroupsMessage =
       max_records: Integer.t option ;
       marker: String.t option }
     let make ?replication_group_id  ?max_records  ?marker  () =
-      { replication_group_id; max_records; marker } 
+      { replication_group_id; max_records; marker }
     let parse xml =
       Some
         {
@@ -3464,28 +3295,24 @@ module DescribeReplicationGroupsMessage =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse);
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.marker
-              (fun f  -> Query.Pair ("Marker", (String.to_query f)));
+              (fun f -> Query.Pair ("Marker", (String.to_query f)));
            Util.option_map v.max_records
-             (fun f  -> Query.Pair ("MaxRecords", (Integer.to_query f)));
+             (fun f -> Query.Pair ("MaxRecords", (Integer.to_query f)));
            Util.option_map v.replication_group_id
-             (fun f  ->
-                Query.Pair ("ReplicationGroupId", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("ReplicationGroupId", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.marker
-              (fun f  -> ("marker", (String.to_json f)));
+              (fun f -> ("marker", (String.to_json f)));
            Util.option_map v.max_records
-             (fun f  -> ("max_records", (Integer.to_json f)));
+             (fun f -> ("max_records", (Integer.to_json f)));
            Util.option_map v.replication_group_id
-             (fun f  -> ("replication_group_id", (String.to_json f)))])
-      
+             (fun f -> ("replication_group_id", (String.to_json f)))])
     let of_json j =
       {
         replication_group_id =
@@ -3494,22 +3321,22 @@ module DescribeReplicationGroupsMessage =
         max_records =
           (Util.option_map (Json.lookup j "max_records") Integer.of_json);
         marker = (Util.option_map (Json.lookup j "marker") String.of_json)
-      } 
+      }
   end
 module ReservedCacheNodesOfferingNotFoundFault =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module DeleteCacheClusterResult =
   struct
     type t = {
       cache_cluster: CacheCluster.t option }
-    let make ?cache_cluster  () = { cache_cluster } 
+    let make ?cache_cluster  () = { cache_cluster }
     let parse xml =
       Some
         {
@@ -3517,44 +3344,41 @@ module DeleteCacheClusterResult =
             (Util.option_bind (Xml.member "CacheCluster" xml)
                CacheCluster.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.cache_cluster
-              (fun f  ->
+              (fun f ->
                  Query.Pair ("CacheCluster", (CacheCluster.to_query f)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.cache_cluster
-              (fun f  -> ("cache_cluster", (CacheCluster.to_json f)))])
-      
+              (fun f -> ("cache_cluster", (CacheCluster.to_json f)))])
     let of_json j =
       {
         cache_cluster =
           (Util.option_map (Json.lookup j "cache_cluster")
              CacheCluster.of_json)
-      } 
+      }
   end
 module AuthorizationNotFoundFault =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module ReservedCacheNodeAlreadyExistsFault =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module CacheSubnetGroupMessage =
   struct
@@ -3563,7 +3387,7 @@ module CacheSubnetGroupMessage =
       marker: String.t option ;
       cache_subnet_groups: CacheSubnetGroups.t }
     let make ?marker  ?(cache_subnet_groups= [])  () =
-      { marker; cache_subnet_groups } 
+      { marker; cache_subnet_groups }
     let parse xml =
       Some
         {
@@ -3573,7 +3397,6 @@ module CacheSubnetGroupMessage =
                (Util.option_bind (Xml.member "CacheSubnetGroups" xml)
                   CacheSubnetGroups.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3582,39 +3405,36 @@ module CacheSubnetGroupMessage =
                  ("CacheSubnetGroups.member",
                    (CacheSubnetGroups.to_query v.cache_subnet_groups)));
            Util.option_map v.marker
-             (fun f  -> Query.Pair ("Marker", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("Marker", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("cache_subnet_groups",
                 (CacheSubnetGroups.to_json v.cache_subnet_groups));
-           Util.option_map v.marker
-             (fun f  -> ("marker", (String.to_json f)))])
-      
+           Util.option_map v.marker (fun f -> ("marker", (String.to_json f)))])
     let of_json j =
       {
         marker = (Util.option_map (Json.lookup j "marker") String.of_json);
         cache_subnet_groups =
           (CacheSubnetGroups.of_json
              (Util.of_option_exn (Json.lookup j "cache_subnet_groups")))
-      } 
+      }
   end
 module CacheSecurityGroupNotFoundFault =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module DeleteCacheParameterGroupMessage =
   struct
     type t = {
       cache_parameter_group_name: String.t }
-    let make ~cache_parameter_group_name  () = { cache_parameter_group_name } 
+    let make ~cache_parameter_group_name  () = { cache_parameter_group_name }
     let parse xml =
       Some
         {
@@ -3623,7 +3443,6 @@ module DeleteCacheParameterGroupMessage =
                (Util.option_bind (Xml.member "CacheParameterGroupName" xml)
                   String.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3631,20 +3450,18 @@ module DeleteCacheParameterGroupMessage =
               (Query.Pair
                  ("CacheParameterGroupName",
                    (String.to_query v.cache_parameter_group_name)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("cache_parameter_group_name",
                 (String.to_json v.cache_parameter_group_name))])
-      
     let of_json j =
       {
         cache_parameter_group_name =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "cache_parameter_group_name")))
-      } 
+      }
   end
 module AuthorizeCacheSecurityGroupIngressMessage =
   struct
@@ -3659,7 +3476,7 @@ module AuthorizeCacheSecurityGroupIngressMessage =
         cache_security_group_name;
         e_c2_security_group_name;
         e_c2_security_group_owner_id
-      } 
+      }
     let parse xml =
       Some
         {
@@ -3676,7 +3493,6 @@ module AuthorizeCacheSecurityGroupIngressMessage =
                (Util.option_bind (Xml.member "EC2SecurityGroupOwnerId" xml)
                   String.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3692,7 +3508,6 @@ module AuthorizeCacheSecurityGroupIngressMessage =
              (Query.Pair
                 ("CacheSecurityGroupName",
                   (String.to_query v.cache_security_group_name)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -3705,7 +3520,6 @@ module AuthorizeCacheSecurityGroupIngressMessage =
            Some
              ("cache_security_group_name",
                (String.to_json v.cache_security_group_name))])
-      
     let of_json j =
       {
         cache_security_group_name =
@@ -3718,16 +3532,16 @@ module AuthorizeCacheSecurityGroupIngressMessage =
           (String.of_json
              (Util.of_option_exn
                 (Json.lookup j "e_c2_security_group_owner_id")))
-      } 
+      }
   end
 module NodeQuotaForCustomerExceededFault =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module DescribeReservedCacheNodesOfferingsMessage =
   struct
@@ -3750,7 +3564,7 @@ module DescribeReservedCacheNodesOfferingsMessage =
         offering_type;
         max_records;
         marker
-      } 
+      }
     let parse xml =
       Some
         {
@@ -3770,47 +3584,43 @@ module DescribeReservedCacheNodesOfferingsMessage =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse);
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.marker
-              (fun f  -> Query.Pair ("Marker", (String.to_query f)));
+              (fun f -> Query.Pair ("Marker", (String.to_query f)));
            Util.option_map v.max_records
-             (fun f  -> Query.Pair ("MaxRecords", (Integer.to_query f)));
+             (fun f -> Query.Pair ("MaxRecords", (Integer.to_query f)));
            Util.option_map v.offering_type
-             (fun f  -> Query.Pair ("OfferingType", (String.to_query f)));
+             (fun f -> Query.Pair ("OfferingType", (String.to_query f)));
            Util.option_map v.product_description
-             (fun f  ->
-                Query.Pair ("ProductDescription", (String.to_query f)));
+             (fun f -> Query.Pair ("ProductDescription", (String.to_query f)));
            Util.option_map v.duration
-             (fun f  -> Query.Pair ("Duration", (String.to_query f)));
+             (fun f -> Query.Pair ("Duration", (String.to_query f)));
            Util.option_map v.cache_node_type
-             (fun f  -> Query.Pair ("CacheNodeType", (String.to_query f)));
+             (fun f -> Query.Pair ("CacheNodeType", (String.to_query f)));
            Util.option_map v.reserved_cache_nodes_offering_id
-             (fun f  ->
+             (fun f ->
                 Query.Pair
                   ("ReservedCacheNodesOfferingId", (String.to_query f)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.marker
-              (fun f  -> ("marker", (String.to_json f)));
+              (fun f -> ("marker", (String.to_json f)));
            Util.option_map v.max_records
-             (fun f  -> ("max_records", (Integer.to_json f)));
+             (fun f -> ("max_records", (Integer.to_json f)));
            Util.option_map v.offering_type
-             (fun f  -> ("offering_type", (String.to_json f)));
+             (fun f -> ("offering_type", (String.to_json f)));
            Util.option_map v.product_description
-             (fun f  -> ("product_description", (String.to_json f)));
+             (fun f -> ("product_description", (String.to_json f)));
            Util.option_map v.duration
-             (fun f  -> ("duration", (String.to_json f)));
+             (fun f -> ("duration", (String.to_json f)));
            Util.option_map v.cache_node_type
-             (fun f  -> ("cache_node_type", (String.to_json f)));
+             (fun f -> ("cache_node_type", (String.to_json f)));
            Util.option_map v.reserved_cache_nodes_offering_id
-             (fun f  ->
+             (fun f ->
                 ("reserved_cache_nodes_offering_id", (String.to_json f)))])
-      
     let of_json j =
       {
         reserved_cache_nodes_offering_id =
@@ -3828,13 +3638,13 @@ module DescribeReservedCacheNodesOfferingsMessage =
         max_records =
           (Util.option_map (Json.lookup j "max_records") Integer.of_json);
         marker = (Util.option_map (Json.lookup j "marker") String.of_json)
-      } 
+      }
   end
 module TagListMessage =
   struct
     type t = {
       tag_list: TagList.t }
-    let make ?(tag_list= [])  () = { tag_list } 
+    let make ?(tag_list= [])  () = { tag_list }
     let parse xml =
       Some
         {
@@ -3842,32 +3652,29 @@ module TagListMessage =
             (Util.of_option []
                (Util.option_bind (Xml.member "TagList" xml) TagList.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some
               (Query.Pair ("TagList.member", (TagList.to_query v.tag_list)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("tag_list", (TagList.to_json v.tag_list))])
-      
     let of_json j =
       {
         tag_list =
           (TagList.of_json (Util.of_option_exn (Json.lookup j "tag_list")))
-      } 
+      }
   end
 module CacheSecurityGroupQuotaExceededFault =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module PurchaseReservedCacheNodesOfferingMessage =
   struct
@@ -3882,7 +3689,7 @@ module PurchaseReservedCacheNodesOfferingMessage =
         reserved_cache_nodes_offering_id;
         reserved_cache_node_id;
         cache_node_count
-      } 
+      }
     let parse xml =
       Some
         {
@@ -3897,31 +3704,28 @@ module PurchaseReservedCacheNodesOfferingMessage =
           cache_node_count =
             (Util.option_bind (Xml.member "CacheNodeCount" xml) Integer.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.cache_node_count
-              (fun f  -> Query.Pair ("CacheNodeCount", (Integer.to_query f)));
+              (fun f -> Query.Pair ("CacheNodeCount", (Integer.to_query f)));
            Util.option_map v.reserved_cache_node_id
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("ReservedCacheNodeId", (String.to_query f)));
            Some
              (Query.Pair
                 ("ReservedCacheNodesOfferingId",
                   (String.to_query v.reserved_cache_nodes_offering_id)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.cache_node_count
-              (fun f  -> ("cache_node_count", (Integer.to_json f)));
+              (fun f -> ("cache_node_count", (Integer.to_json f)));
            Util.option_map v.reserved_cache_node_id
-             (fun f  -> ("reserved_cache_node_id", (String.to_json f)));
+             (fun f -> ("reserved_cache_node_id", (String.to_json f)));
            Some
              ("reserved_cache_nodes_offering_id",
                (String.to_json v.reserved_cache_nodes_offering_id))])
-      
     let of_json j =
       {
         reserved_cache_nodes_offering_id =
@@ -3933,16 +3737,16 @@ module PurchaseReservedCacheNodesOfferingMessage =
              String.of_json);
         cache_node_count =
           (Util.option_map (Json.lookup j "cache_node_count") Integer.of_json)
-      } 
+      }
   end
 module AuthorizationAlreadyExistsFault =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module DeleteReplicationGroupMessage =
   struct
@@ -3957,7 +3761,7 @@ module DeleteReplicationGroupMessage =
         replication_group_id;
         retain_primary_cluster;
         final_snapshot_identifier
-      } 
+      }
     let parse xml =
       Some
         {
@@ -3972,32 +3776,29 @@ module DeleteReplicationGroupMessage =
             (Util.option_bind (Xml.member "FinalSnapshotIdentifier" xml)
                String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.final_snapshot_identifier
-              (fun f  ->
+              (fun f ->
                  Query.Pair ("FinalSnapshotIdentifier", (String.to_query f)));
            Util.option_map v.retain_primary_cluster
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("RetainPrimaryCluster", (Boolean.to_query f)));
            Some
              (Query.Pair
                 ("ReplicationGroupId",
                   (String.to_query v.replication_group_id)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.final_snapshot_identifier
-              (fun f  -> ("final_snapshot_identifier", (String.to_json f)));
+              (fun f -> ("final_snapshot_identifier", (String.to_json f)));
            Util.option_map v.retain_primary_cluster
-             (fun f  -> ("retain_primary_cluster", (Boolean.to_json f)));
+             (fun f -> ("retain_primary_cluster", (Boolean.to_json f)));
            Some
              ("replication_group_id",
                (String.to_json v.replication_group_id))])
-      
     let of_json j =
       {
         replication_group_id =
@@ -4009,55 +3810,52 @@ module DeleteReplicationGroupMessage =
         final_snapshot_identifier =
           (Util.option_map (Json.lookup j "final_snapshot_identifier")
              String.of_json)
-      } 
+      }
   end
 module ClusterQuotaForCustomerExceededFault =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module TagNotFoundFault =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module CopySnapshotResult =
   struct
     type t = {
       snapshot: Snapshot.t option }
-    let make ?snapshot  () = { snapshot } 
+    let make ?snapshot  () = { snapshot }
     let parse xml =
       Some
         {
           snapshot =
             (Util.option_bind (Xml.member "Snapshot" xml) Snapshot.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.snapshot
-              (fun f  -> Query.Pair ("Snapshot", (Snapshot.to_query f)))])
-      
+              (fun f -> Query.Pair ("Snapshot", (Snapshot.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.snapshot
-              (fun f  -> ("snapshot", (Snapshot.to_json f)))])
-      
+              (fun f -> ("snapshot", (Snapshot.to_json f)))])
     let of_json j =
       {
         snapshot =
           (Util.option_map (Json.lookup j "snapshot") Snapshot.of_json)
-      } 
+      }
   end
 module DescribeCacheSecurityGroupsMessage =
   struct
@@ -4067,7 +3865,7 @@ module DescribeCacheSecurityGroupsMessage =
       max_records: Integer.t option ;
       marker: String.t option }
     let make ?cache_security_group_name  ?max_records  ?marker  () =
-      { cache_security_group_name; max_records; marker } 
+      { cache_security_group_name; max_records; marker }
     let parse xml =
       Some
         {
@@ -4078,28 +3876,25 @@ module DescribeCacheSecurityGroupsMessage =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse);
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.marker
-              (fun f  -> Query.Pair ("Marker", (String.to_query f)));
+              (fun f -> Query.Pair ("Marker", (String.to_query f)));
            Util.option_map v.max_records
-             (fun f  -> Query.Pair ("MaxRecords", (Integer.to_query f)));
+             (fun f -> Query.Pair ("MaxRecords", (Integer.to_query f)));
            Util.option_map v.cache_security_group_name
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("CacheSecurityGroupName", (String.to_query f)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.marker
-              (fun f  -> ("marker", (String.to_json f)));
+              (fun f -> ("marker", (String.to_json f)));
            Util.option_map v.max_records
-             (fun f  -> ("max_records", (Integer.to_json f)));
+             (fun f -> ("max_records", (Integer.to_json f)));
            Util.option_map v.cache_security_group_name
-             (fun f  -> ("cache_security_group_name", (String.to_json f)))])
-      
+             (fun f -> ("cache_security_group_name", (String.to_json f)))])
     let of_json j =
       {
         cache_security_group_name =
@@ -4108,16 +3903,16 @@ module DescribeCacheSecurityGroupsMessage =
         max_records =
           (Util.option_map (Json.lookup j "max_records") Integer.of_json);
         marker = (Util.option_map (Json.lookup j "marker") String.of_json)
-      } 
+      }
   end
 module CacheSubnetGroupNotFoundFault =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module ResetCacheParameterGroupMessage =
   struct
@@ -4132,7 +3927,7 @@ module ResetCacheParameterGroupMessage =
         cache_parameter_group_name;
         reset_all_parameters;
         parameter_name_values
-      } 
+      }
     let parse xml =
       Some
         {
@@ -4148,7 +3943,6 @@ module ResetCacheParameterGroupMessage =
                (Util.option_bind (Xml.member "ParameterNameValues" xml)
                   ParameterNameValueList.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -4157,13 +3951,12 @@ module ResetCacheParameterGroupMessage =
                  ("ParameterNameValues.member",
                    (ParameterNameValueList.to_query v.parameter_name_values)));
            Util.option_map v.reset_all_parameters
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("ResetAllParameters", (Boolean.to_query f)));
            Some
              (Query.Pair
                 ("CacheParameterGroupName",
                   (String.to_query v.cache_parameter_group_name)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -4171,11 +3964,10 @@ module ResetCacheParameterGroupMessage =
               ("parameter_name_values",
                 (ParameterNameValueList.to_json v.parameter_name_values));
            Util.option_map v.reset_all_parameters
-             (fun f  -> ("reset_all_parameters", (Boolean.to_json f)));
+             (fun f -> ("reset_all_parameters", (Boolean.to_json f)));
            Some
              ("cache_parameter_group_name",
                (String.to_json v.cache_parameter_group_name))])
-      
     let of_json j =
       {
         cache_parameter_group_name =
@@ -4187,22 +3979,22 @@ module ResetCacheParameterGroupMessage =
         parameter_name_values =
           (ParameterNameValueList.of_json
              (Util.of_option_exn (Json.lookup j "parameter_name_values")))
-      } 
+      }
   end
 module CacheSecurityGroupAlreadyExistsFault =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module RevokeCacheSecurityGroupIngressResult =
   struct
     type t = {
       cache_security_group: CacheSecurityGroup.t option }
-    let make ?cache_security_group  () = { cache_security_group } 
+    let make ?cache_security_group  () = { cache_security_group }
     let parse xml =
       Some
         {
@@ -4210,28 +4002,25 @@ module RevokeCacheSecurityGroupIngressResult =
             (Util.option_bind (Xml.member "CacheSecurityGroup" xml)
                CacheSecurityGroup.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.cache_security_group
-              (fun f  ->
+              (fun f ->
                  Query.Pair
                    ("CacheSecurityGroup", (CacheSecurityGroup.to_query f)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.cache_security_group
-              (fun f  ->
+              (fun f ->
                  ("cache_security_group", (CacheSecurityGroup.to_json f)))])
-      
     let of_json j =
       {
         cache_security_group =
           (Util.option_map (Json.lookup j "cache_security_group")
              CacheSecurityGroup.of_json)
-      } 
+      }
   end
 module DescribeEventsMessage =
   struct
@@ -4254,7 +4043,7 @@ module DescribeEventsMessage =
         duration;
         max_records;
         marker
-      } 
+      }
     let parse xml =
       Some
         {
@@ -4273,43 +4062,40 @@ module DescribeEventsMessage =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse);
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.marker
-              (fun f  -> Query.Pair ("Marker", (String.to_query f)));
+              (fun f -> Query.Pair ("Marker", (String.to_query f)));
            Util.option_map v.max_records
-             (fun f  -> Query.Pair ("MaxRecords", (Integer.to_query f)));
+             (fun f -> Query.Pair ("MaxRecords", (Integer.to_query f)));
            Util.option_map v.duration
-             (fun f  -> Query.Pair ("Duration", (Integer.to_query f)));
+             (fun f -> Query.Pair ("Duration", (Integer.to_query f)));
            Util.option_map v.end_time
-             (fun f  -> Query.Pair ("EndTime", (DateTime.to_query f)));
+             (fun f -> Query.Pair ("EndTime", (DateTime.to_query f)));
            Util.option_map v.start_time
-             (fun f  -> Query.Pair ("StartTime", (DateTime.to_query f)));
+             (fun f -> Query.Pair ("StartTime", (DateTime.to_query f)));
            Util.option_map v.source_type
-             (fun f  -> Query.Pair ("SourceType", (SourceType.to_query f)));
+             (fun f -> Query.Pair ("SourceType", (SourceType.to_query f)));
            Util.option_map v.source_identifier
-             (fun f  -> Query.Pair ("SourceIdentifier", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("SourceIdentifier", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.marker
-              (fun f  -> ("marker", (String.to_json f)));
+              (fun f -> ("marker", (String.to_json f)));
            Util.option_map v.max_records
-             (fun f  -> ("max_records", (Integer.to_json f)));
+             (fun f -> ("max_records", (Integer.to_json f)));
            Util.option_map v.duration
-             (fun f  -> ("duration", (Integer.to_json f)));
+             (fun f -> ("duration", (Integer.to_json f)));
            Util.option_map v.end_time
-             (fun f  -> ("end_time", (DateTime.to_json f)));
+             (fun f -> ("end_time", (DateTime.to_json f)));
            Util.option_map v.start_time
-             (fun f  -> ("start_time", (DateTime.to_json f)));
+             (fun f -> ("start_time", (DateTime.to_json f)));
            Util.option_map v.source_type
-             (fun f  -> ("source_type", (SourceType.to_json f)));
+             (fun f -> ("source_type", (SourceType.to_json f)));
            Util.option_map v.source_identifier
-             (fun f  -> ("source_identifier", (String.to_json f)))])
-      
+             (fun f -> ("source_identifier", (String.to_json f)))])
     let of_json j =
       {
         source_identifier =
@@ -4325,7 +4111,7 @@ module DescribeEventsMessage =
         max_records =
           (Util.option_map (Json.lookup j "max_records") Integer.of_json);
         marker = (Util.option_map (Json.lookup j "marker") String.of_json)
-      } 
+      }
   end
 module ModifyCacheSubnetGroupMessage =
   struct
@@ -4336,7 +4122,7 @@ module ModifyCacheSubnetGroupMessage =
       subnet_ids: SubnetIdentifierList.t }
     let make ~cache_subnet_group_name  ?cache_subnet_group_description 
       ?(subnet_ids= [])  () =
-      { cache_subnet_group_name; cache_subnet_group_description; subnet_ids } 
+      { cache_subnet_group_name; cache_subnet_group_description; subnet_ids }
     let parse xml =
       Some
         {
@@ -4352,7 +4138,6 @@ module ModifyCacheSubnetGroupMessage =
                (Util.option_bind (Xml.member "SubnetIds" xml)
                   SubnetIdentifierList.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -4361,25 +4146,22 @@ module ModifyCacheSubnetGroupMessage =
                  ("SubnetIds.member",
                    (SubnetIdentifierList.to_query v.subnet_ids)));
            Util.option_map v.cache_subnet_group_description
-             (fun f  ->
+             (fun f ->
                 Query.Pair
                   ("CacheSubnetGroupDescription", (String.to_query f)));
            Some
              (Query.Pair
                 ("CacheSubnetGroupName",
                   (String.to_query v.cache_subnet_group_name)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("subnet_ids", (SubnetIdentifierList.to_json v.subnet_ids));
            Util.option_map v.cache_subnet_group_description
-             (fun f  ->
-                ("cache_subnet_group_description", (String.to_json f)));
+             (fun f -> ("cache_subnet_group_description", (String.to_json f)));
            Some
              ("cache_subnet_group_name",
                (String.to_json v.cache_subnet_group_name))])
-      
     let of_json j =
       {
         cache_subnet_group_name =
@@ -4391,16 +4173,16 @@ module ModifyCacheSubnetGroupMessage =
         subnet_ids =
           (SubnetIdentifierList.of_json
              (Util.of_option_exn (Json.lookup j "subnet_ids")))
-      } 
+      }
   end
 module ReservedCacheNodeNotFoundFault =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module RevokeCacheSecurityGroupIngressMessage =
   struct
@@ -4415,7 +4197,7 @@ module RevokeCacheSecurityGroupIngressMessage =
         cache_security_group_name;
         e_c2_security_group_name;
         e_c2_security_group_owner_id
-      } 
+      }
     let parse xml =
       Some
         {
@@ -4432,7 +4214,6 @@ module RevokeCacheSecurityGroupIngressMessage =
                (Util.option_bind (Xml.member "EC2SecurityGroupOwnerId" xml)
                   String.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -4448,7 +4229,6 @@ module RevokeCacheSecurityGroupIngressMessage =
              (Query.Pair
                 ("CacheSecurityGroupName",
                   (String.to_query v.cache_security_group_name)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -4461,7 +4241,6 @@ module RevokeCacheSecurityGroupIngressMessage =
            Some
              ("cache_security_group_name",
                (String.to_json v.cache_security_group_name))])
-      
     let of_json j =
       {
         cache_security_group_name =
@@ -4474,25 +4253,25 @@ module RevokeCacheSecurityGroupIngressMessage =
           (String.of_json
              (Util.of_option_exn
                 (Json.lookup j "e_c2_security_group_owner_id")))
-      } 
+      }
   end
 module InvalidReplicationGroupStateFault =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module SnapshotAlreadyExistsFault =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module CreateReplicationGroupMessage =
   struct
@@ -4552,7 +4331,7 @@ module CreateReplicationGroupMessage =
         auto_minor_version_upgrade;
         snapshot_retention_limit;
         snapshot_window
-      } 
+      }
     let parse xml =
       Some
         {
@@ -4621,29 +4400,28 @@ module CreateReplicationGroupMessage =
           snapshot_window =
             (Util.option_bind (Xml.member "SnapshotWindow" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.snapshot_window
-              (fun f  -> Query.Pair ("SnapshotWindow", (String.to_query f)));
+              (fun f -> Query.Pair ("SnapshotWindow", (String.to_query f)));
            Util.option_map v.snapshot_retention_limit
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("SnapshotRetentionLimit", (Integer.to_query f)));
            Util.option_map v.auto_minor_version_upgrade
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("AutoMinorVersionUpgrade", (Boolean.to_query f)));
            Util.option_map v.notification_topic_arn
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("NotificationTopicArn", (String.to_query f)));
            Util.option_map v.port
-             (fun f  -> Query.Pair ("Port", (Integer.to_query f)));
+             (fun f -> Query.Pair ("Port", (Integer.to_query f)));
            Util.option_map v.preferred_maintenance_window
-             (fun f  ->
+             (fun f ->
                 Query.Pair
                   ("PreferredMaintenanceWindow", (String.to_query f)));
            Util.option_map v.snapshot_name
-             (fun f  -> Query.Pair ("SnapshotName", (String.to_query f)));
+             (fun f -> Query.Pair ("SnapshotName", (String.to_query f)));
            Some
              (Query.Pair
                 ("SnapshotArns.member",
@@ -4659,29 +4437,29 @@ module CreateReplicationGroupMessage =
                   (CacheSecurityGroupNameList.to_query
                      v.cache_security_group_names)));
            Util.option_map v.cache_subnet_group_name
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("CacheSubnetGroupName", (String.to_query f)));
            Util.option_map v.cache_parameter_group_name
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("CacheParameterGroupName", (String.to_query f)));
            Util.option_map v.engine_version
-             (fun f  -> Query.Pair ("EngineVersion", (String.to_query f)));
+             (fun f -> Query.Pair ("EngineVersion", (String.to_query f)));
            Util.option_map v.engine
-             (fun f  -> Query.Pair ("Engine", (String.to_query f)));
+             (fun f -> Query.Pair ("Engine", (String.to_query f)));
            Util.option_map v.cache_node_type
-             (fun f  -> Query.Pair ("CacheNodeType", (String.to_query f)));
+             (fun f -> Query.Pair ("CacheNodeType", (String.to_query f)));
            Some
              (Query.Pair
                 ("PreferredCacheClusterAZs.member",
                   (AvailabilityZonesList.to_query
                      v.preferred_cache_cluster_a_zs)));
            Util.option_map v.num_cache_clusters
-             (fun f  -> Query.Pair ("NumCacheClusters", (Integer.to_query f)));
+             (fun f -> Query.Pair ("NumCacheClusters", (Integer.to_query f)));
            Util.option_map v.automatic_failover_enabled
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("AutomaticFailoverEnabled", (Boolean.to_query f)));
            Util.option_map v.primary_cluster_id
-             (fun f  -> Query.Pair ("PrimaryClusterId", (String.to_query f)));
+             (fun f -> Query.Pair ("PrimaryClusterId", (String.to_query f)));
            Some
              (Query.Pair
                 ("ReplicationGroupDescription",
@@ -4690,23 +4468,22 @@ module CreateReplicationGroupMessage =
              (Query.Pair
                 ("ReplicationGroupId",
                   (String.to_query v.replication_group_id)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.snapshot_window
-              (fun f  -> ("snapshot_window", (String.to_json f)));
+              (fun f -> ("snapshot_window", (String.to_json f)));
            Util.option_map v.snapshot_retention_limit
-             (fun f  -> ("snapshot_retention_limit", (Integer.to_json f)));
+             (fun f -> ("snapshot_retention_limit", (Integer.to_json f)));
            Util.option_map v.auto_minor_version_upgrade
-             (fun f  -> ("auto_minor_version_upgrade", (Boolean.to_json f)));
+             (fun f -> ("auto_minor_version_upgrade", (Boolean.to_json f)));
            Util.option_map v.notification_topic_arn
-             (fun f  -> ("notification_topic_arn", (String.to_json f)));
-           Util.option_map v.port (fun f  -> ("port", (Integer.to_json f)));
+             (fun f -> ("notification_topic_arn", (String.to_json f)));
+           Util.option_map v.port (fun f -> ("port", (Integer.to_json f)));
            Util.option_map v.preferred_maintenance_window
-             (fun f  -> ("preferred_maintenance_window", (String.to_json f)));
+             (fun f -> ("preferred_maintenance_window", (String.to_json f)));
            Util.option_map v.snapshot_name
-             (fun f  -> ("snapshot_name", (String.to_json f)));
+             (fun f -> ("snapshot_name", (String.to_json f)));
            Some ("snapshot_arns", (SnapshotArnsList.to_json v.snapshot_arns));
            Some ("tags", (TagList.to_json v.tags));
            Some
@@ -4717,31 +4494,29 @@ module CreateReplicationGroupMessage =
                (CacheSecurityGroupNameList.to_json
                   v.cache_security_group_names));
            Util.option_map v.cache_subnet_group_name
-             (fun f  -> ("cache_subnet_group_name", (String.to_json f)));
+             (fun f -> ("cache_subnet_group_name", (String.to_json f)));
            Util.option_map v.cache_parameter_group_name
-             (fun f  -> ("cache_parameter_group_name", (String.to_json f)));
+             (fun f -> ("cache_parameter_group_name", (String.to_json f)));
            Util.option_map v.engine_version
-             (fun f  -> ("engine_version", (String.to_json f)));
-           Util.option_map v.engine
-             (fun f  -> ("engine", (String.to_json f)));
+             (fun f -> ("engine_version", (String.to_json f)));
+           Util.option_map v.engine (fun f -> ("engine", (String.to_json f)));
            Util.option_map v.cache_node_type
-             (fun f  -> ("cache_node_type", (String.to_json f)));
+             (fun f -> ("cache_node_type", (String.to_json f)));
            Some
              ("preferred_cache_cluster_a_zs",
                (AvailabilityZonesList.to_json v.preferred_cache_cluster_a_zs));
            Util.option_map v.num_cache_clusters
-             (fun f  -> ("num_cache_clusters", (Integer.to_json f)));
+             (fun f -> ("num_cache_clusters", (Integer.to_json f)));
            Util.option_map v.automatic_failover_enabled
-             (fun f  -> ("automatic_failover_enabled", (Boolean.to_json f)));
+             (fun f -> ("automatic_failover_enabled", (Boolean.to_json f)));
            Util.option_map v.primary_cluster_id
-             (fun f  -> ("primary_cluster_id", (String.to_json f)));
+             (fun f -> ("primary_cluster_id", (String.to_json f)));
            Some
              ("replication_group_description",
                (String.to_json v.replication_group_description));
            Some
              ("replication_group_id",
                (String.to_json v.replication_group_id))])
-      
     let of_json j =
       {
         replication_group_id =
@@ -4802,32 +4577,32 @@ module CreateReplicationGroupMessage =
              Integer.of_json);
         snapshot_window =
           (Util.option_map (Json.lookup j "snapshot_window") String.of_json)
-      } 
+      }
   end
 module InvalidCacheClusterStateFault =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module ReplicationGroupNotFoundFault =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module CacheClusterMessage =
   struct
     type t = {
       marker: String.t option ;
       cache_clusters: CacheClusterList.t }
-    let make ?marker  ?(cache_clusters= [])  () = { marker; cache_clusters } 
+    let make ?marker  ?(cache_clusters= [])  () = { marker; cache_clusters }
     let parse xml =
       Some
         {
@@ -4837,7 +4612,6 @@ module CacheClusterMessage =
                (Util.option_bind (Xml.member "CacheClusters" xml)
                   CacheClusterList.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -4846,41 +4620,38 @@ module CacheClusterMessage =
                  ("CacheClusters.member",
                    (CacheClusterList.to_query v.cache_clusters)));
            Util.option_map v.marker
-             (fun f  -> Query.Pair ("Marker", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("Marker", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("cache_clusters", (CacheClusterList.to_json v.cache_clusters));
-           Util.option_map v.marker
-             (fun f  -> ("marker", (String.to_json f)))])
-      
+           Util.option_map v.marker (fun f -> ("marker", (String.to_json f)))])
     let of_json j =
       {
         marker = (Util.option_map (Json.lookup j "marker") String.of_json);
         cache_clusters =
           (CacheClusterList.of_json
              (Util.of_option_exn (Json.lookup j "cache_clusters")))
-      } 
+      }
   end
 module CacheParameterGroupQuotaExceededFault =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module CacheSubnetGroupAlreadyExistsFault =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module CreateCacheSubnetGroupMessage =
   struct
@@ -4891,7 +4662,7 @@ module CreateCacheSubnetGroupMessage =
       subnet_ids: SubnetIdentifierList.t }
     let make ~cache_subnet_group_name  ~cache_subnet_group_description 
       ~subnet_ids  () =
-      { cache_subnet_group_name; cache_subnet_group_description; subnet_ids } 
+      { cache_subnet_group_name; cache_subnet_group_description; subnet_ids }
     let parse xml =
       Some
         {
@@ -4908,7 +4679,6 @@ module CreateCacheSubnetGroupMessage =
                (Util.option_bind (Xml.member "SubnetIds" xml)
                   SubnetIdentifierList.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -4924,7 +4694,6 @@ module CreateCacheSubnetGroupMessage =
              (Query.Pair
                 ("CacheSubnetGroupName",
                   (String.to_query v.cache_subnet_group_name)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -4935,7 +4704,6 @@ module CreateCacheSubnetGroupMessage =
            Some
              ("cache_subnet_group_name",
                (String.to_json v.cache_subnet_group_name))])
-      
     let of_json j =
       {
         cache_subnet_group_name =
@@ -4948,7 +4716,7 @@ module CreateCacheSubnetGroupMessage =
         subnet_ids =
           (SubnetIdentifierList.of_json
              (Util.of_option_exn (Json.lookup j "subnet_ids")))
-      } 
+      }
   end
 module RebootCacheClusterMessage =
   struct
@@ -4957,7 +4725,7 @@ module RebootCacheClusterMessage =
       cache_cluster_id: String.t ;
       cache_node_ids_to_reboot: CacheNodeIdsList.t }
     let make ~cache_cluster_id  ~cache_node_ids_to_reboot  () =
-      { cache_cluster_id; cache_node_ids_to_reboot } 
+      { cache_cluster_id; cache_node_ids_to_reboot }
     let parse xml =
       Some
         {
@@ -4970,7 +4738,6 @@ module RebootCacheClusterMessage =
                (Util.option_bind (Xml.member "CacheNodeIdsToReboot" xml)
                   CacheNodeIdsList.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -4981,7 +4748,6 @@ module RebootCacheClusterMessage =
            Some
              (Query.Pair
                 ("CacheClusterId", (String.to_query v.cache_cluster_id)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -4989,7 +4755,6 @@ module RebootCacheClusterMessage =
               ("cache_node_ids_to_reboot",
                 (CacheNodeIdsList.to_json v.cache_node_ids_to_reboot));
            Some ("cache_cluster_id", (String.to_json v.cache_cluster_id))])
-      
     let of_json j =
       {
         cache_cluster_id =
@@ -4998,13 +4763,13 @@ module RebootCacheClusterMessage =
         cache_node_ids_to_reboot =
           (CacheNodeIdsList.of_json
              (Util.of_option_exn (Json.lookup j "cache_node_ids_to_reboot")))
-      } 
+      }
   end
 module DescribeEngineDefaultParametersResult =
   struct
     type t = {
       engine_defaults: EngineDefaults.t }
-    let make ~engine_defaults  () = { engine_defaults } 
+    let make ~engine_defaults  () = { engine_defaults }
     let parse xml =
       Some
         {
@@ -5013,7 +4778,6 @@ module DescribeEngineDefaultParametersResult =
                (Util.option_bind (Xml.member "EngineDefaults" xml)
                   EngineDefaults.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -5021,128 +4785,120 @@ module DescribeEngineDefaultParametersResult =
               (Query.Pair
                  ("EngineDefaults",
                    (EngineDefaults.to_query v.engine_defaults)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("engine_defaults", (EngineDefaults.to_json v.engine_defaults))])
-      
     let of_json j =
       {
         engine_defaults =
           (EngineDefaults.of_json
              (Util.of_option_exn (Json.lookup j "engine_defaults")))
-      } 
+      }
   end
 module InvalidParameterValueException =
   struct
     type t = {
       message: String.t option }
-    let make ?message  () = { message } 
+    let make ?message  () = { message }
     let parse xml =
       Some
         {
           message =
             (Util.option_bind (Xml.member "message" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.message
-              (fun f  -> Query.Pair ("message", (String.to_query f)))])
-      
+              (fun f -> Query.Pair ("message", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.message
-              (fun f  -> ("message", (String.to_json f)))])
-      
+              (fun f -> ("message", (String.to_json f)))])
     let of_json j =
       { message = (Util.option_map (Json.lookup j "message") String.of_json)
-      } 
+      }
   end
 module TagQuotaPerResourceExceeded =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module DeleteSnapshotResult =
   struct
     type t = {
       snapshot: Snapshot.t option }
-    let make ?snapshot  () = { snapshot } 
+    let make ?snapshot  () = { snapshot }
     let parse xml =
       Some
         {
           snapshot =
             (Util.option_bind (Xml.member "Snapshot" xml) Snapshot.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.snapshot
-              (fun f  -> Query.Pair ("Snapshot", (Snapshot.to_query f)))])
-      
+              (fun f -> Query.Pair ("Snapshot", (Snapshot.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.snapshot
-              (fun f  -> ("snapshot", (Snapshot.to_json f)))])
-      
+              (fun f -> ("snapshot", (Snapshot.to_json f)))])
     let of_json j =
       {
         snapshot =
           (Util.option_map (Json.lookup j "snapshot") Snapshot.of_json)
-      } 
+      }
   end
 module ReservedCacheNodeQuotaExceededFault =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module InsufficientCacheClusterCapacityFault =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module SnapshotQuotaExceededFault =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module InvalidSubnet =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module CreateCacheParameterGroupResult =
   struct
     type t = {
       cache_parameter_group: CacheParameterGroup.t option }
-    let make ?cache_parameter_group  () = { cache_parameter_group } 
+    let make ?cache_parameter_group  () = { cache_parameter_group }
     let parse xml =
       Some
         {
@@ -5150,28 +4906,25 @@ module CreateCacheParameterGroupResult =
             (Util.option_bind (Xml.member "CacheParameterGroup" xml)
                CacheParameterGroup.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.cache_parameter_group
-              (fun f  ->
+              (fun f ->
                  Query.Pair
                    ("CacheParameterGroup", (CacheParameterGroup.to_query f)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.cache_parameter_group
-              (fun f  ->
+              (fun f ->
                  ("cache_parameter_group", (CacheParameterGroup.to_json f)))])
-      
     let of_json j =
       {
         cache_parameter_group =
           (Util.option_map (Json.lookup j "cache_parameter_group")
              CacheParameterGroup.of_json)
-      } 
+      }
   end
 module CreateCacheSecurityGroupMessage =
   struct
@@ -5179,7 +4932,7 @@ module CreateCacheSecurityGroupMessage =
       cache_security_group_name: String.t ;
       description: String.t }
     let make ~cache_security_group_name  ~description  () =
-      { cache_security_group_name; description } 
+      { cache_security_group_name; description }
     let parse xml =
       Some
         {
@@ -5191,7 +4944,6 @@ module CreateCacheSecurityGroupMessage =
             (Xml.required "Description"
                (Util.option_bind (Xml.member "Description" xml) String.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -5201,7 +4953,6 @@ module CreateCacheSecurityGroupMessage =
              (Query.Pair
                 ("CacheSecurityGroupName",
                   (String.to_query v.cache_security_group_name)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -5209,7 +4960,6 @@ module CreateCacheSecurityGroupMessage =
            Some
              ("cache_security_group_name",
                (String.to_json v.cache_security_group_name))])
-      
     let of_json j =
       {
         cache_security_group_name =
@@ -5217,14 +4967,14 @@ module CreateCacheSecurityGroupMessage =
              (Util.of_option_exn (Json.lookup j "cache_security_group_name")));
         description =
           (String.of_json (Util.of_option_exn (Json.lookup j "description")))
-      } 
+      }
   end
 module AddTagsToResourceMessage =
   struct
     type t = {
       resource_name: String.t ;
       tags: TagList.t }
-    let make ~resource_name  ~tags  () = { resource_name; tags } 
+    let make ~resource_name  ~tags  () = { resource_name; tags }
     let parse xml =
       Some
         {
@@ -5235,36 +4985,33 @@ module AddTagsToResourceMessage =
             (Xml.required "Tags"
                (Util.option_bind (Xml.member "Tags" xml) TagList.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some (Query.Pair ("Tags.member", (TagList.to_query v.tags)));
            Some
              (Query.Pair ("ResourceName", (String.to_query v.resource_name)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("tags", (TagList.to_json v.tags));
            Some ("resource_name", (String.to_json v.resource_name))])
-      
     let of_json j =
       {
         resource_name =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "resource_name")));
         tags = (TagList.of_json (Util.of_option_exn (Json.lookup j "tags")))
-      } 
+      }
   end
 module CacheSubnetQuotaExceededFault =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module DescribeReservedCacheNodesMessage =
   struct
@@ -5290,7 +5037,7 @@ module DescribeReservedCacheNodesMessage =
         offering_type;
         max_records;
         marker
-      } 
+      }
     let parse xml =
       Some
         {
@@ -5313,52 +5060,48 @@ module DescribeReservedCacheNodesMessage =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse);
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.marker
-              (fun f  -> Query.Pair ("Marker", (String.to_query f)));
+              (fun f -> Query.Pair ("Marker", (String.to_query f)));
            Util.option_map v.max_records
-             (fun f  -> Query.Pair ("MaxRecords", (Integer.to_query f)));
+             (fun f -> Query.Pair ("MaxRecords", (Integer.to_query f)));
            Util.option_map v.offering_type
-             (fun f  -> Query.Pair ("OfferingType", (String.to_query f)));
+             (fun f -> Query.Pair ("OfferingType", (String.to_query f)));
            Util.option_map v.product_description
-             (fun f  ->
-                Query.Pair ("ProductDescription", (String.to_query f)));
+             (fun f -> Query.Pair ("ProductDescription", (String.to_query f)));
            Util.option_map v.duration
-             (fun f  -> Query.Pair ("Duration", (String.to_query f)));
+             (fun f -> Query.Pair ("Duration", (String.to_query f)));
            Util.option_map v.cache_node_type
-             (fun f  -> Query.Pair ("CacheNodeType", (String.to_query f)));
+             (fun f -> Query.Pair ("CacheNodeType", (String.to_query f)));
            Util.option_map v.reserved_cache_nodes_offering_id
-             (fun f  ->
+             (fun f ->
                 Query.Pair
                   ("ReservedCacheNodesOfferingId", (String.to_query f)));
            Util.option_map v.reserved_cache_node_id
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("ReservedCacheNodeId", (String.to_query f)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.marker
-              (fun f  -> ("marker", (String.to_json f)));
+              (fun f -> ("marker", (String.to_json f)));
            Util.option_map v.max_records
-             (fun f  -> ("max_records", (Integer.to_json f)));
+             (fun f -> ("max_records", (Integer.to_json f)));
            Util.option_map v.offering_type
-             (fun f  -> ("offering_type", (String.to_json f)));
+             (fun f -> ("offering_type", (String.to_json f)));
            Util.option_map v.product_description
-             (fun f  -> ("product_description", (String.to_json f)));
+             (fun f -> ("product_description", (String.to_json f)));
            Util.option_map v.duration
-             (fun f  -> ("duration", (String.to_json f)));
+             (fun f -> ("duration", (String.to_json f)));
            Util.option_map v.cache_node_type
-             (fun f  -> ("cache_node_type", (String.to_json f)));
+             (fun f -> ("cache_node_type", (String.to_json f)));
            Util.option_map v.reserved_cache_nodes_offering_id
-             (fun f  ->
+             (fun f ->
                 ("reserved_cache_nodes_offering_id", (String.to_json f)));
            Util.option_map v.reserved_cache_node_id
-             (fun f  -> ("reserved_cache_node_id", (String.to_json f)))])
-      
+             (fun f -> ("reserved_cache_node_id", (String.to_json f)))])
     let of_json j =
       {
         reserved_cache_node_id =
@@ -5379,31 +5122,31 @@ module DescribeReservedCacheNodesMessage =
         max_records =
           (Util.option_map (Json.lookup j "max_records") Integer.of_json);
         marker = (Util.option_map (Json.lookup j "marker") String.of_json)
-      } 
+      }
   end
 module SubnetInUse =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module InvalidVPCNetworkStateFault =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module CreateCacheClusterResult =
   struct
     type t = {
       cache_cluster: CacheCluster.t option }
-    let make ?cache_cluster  () = { cache_cluster } 
+    let make ?cache_cluster  () = { cache_cluster }
     let parse xml =
       Some
         {
@@ -5411,32 +5154,29 @@ module CreateCacheClusterResult =
             (Util.option_bind (Xml.member "CacheCluster" xml)
                CacheCluster.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.cache_cluster
-              (fun f  ->
+              (fun f ->
                  Query.Pair ("CacheCluster", (CacheCluster.to_query f)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.cache_cluster
-              (fun f  -> ("cache_cluster", (CacheCluster.to_json f)))])
-      
+              (fun f -> ("cache_cluster", (CacheCluster.to_json f)))])
     let of_json j =
       {
         cache_cluster =
           (Util.option_map (Json.lookup j "cache_cluster")
              CacheCluster.of_json)
-      } 
+      }
   end
 module AuthorizeCacheSecurityGroupIngressResult =
   struct
     type t = {
       cache_security_group: CacheSecurityGroup.t option }
-    let make ?cache_security_group  () = { cache_security_group } 
+    let make ?cache_security_group  () = { cache_security_group }
     let parse xml =
       Some
         {
@@ -5444,83 +5184,77 @@ module AuthorizeCacheSecurityGroupIngressResult =
             (Util.option_bind (Xml.member "CacheSecurityGroup" xml)
                CacheSecurityGroup.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.cache_security_group
-              (fun f  ->
+              (fun f ->
                  Query.Pair
                    ("CacheSecurityGroup", (CacheSecurityGroup.to_query f)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.cache_security_group
-              (fun f  ->
+              (fun f ->
                  ("cache_security_group", (CacheSecurityGroup.to_json f)))])
-      
     let of_json j =
       {
         cache_security_group =
           (Util.option_map (Json.lookup j "cache_security_group")
              CacheSecurityGroup.of_json)
-      } 
+      }
   end
 module InvalidParameterCombinationException =
   struct
     type t = {
       message: String.t option }
-    let make ?message  () = { message } 
+    let make ?message  () = { message }
     let parse xml =
       Some
         {
           message =
             (Util.option_bind (Xml.member "message" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.message
-              (fun f  -> Query.Pair ("message", (String.to_query f)))])
-      
+              (fun f -> Query.Pair ("message", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.message
-              (fun f  -> ("message", (String.to_json f)))])
-      
+              (fun f -> ("message", (String.to_json f)))])
     let of_json j =
       { message = (Util.option_map (Json.lookup j "message") String.of_json)
-      } 
+      }
   end
 module CacheClusterNotFoundFault =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module SnapshotFeatureNotSupportedFault =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module CacheParameterGroupNotFoundFault =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module CreateSnapshotMessage =
   struct
@@ -5528,7 +5262,7 @@ module CreateSnapshotMessage =
       cache_cluster_id: String.t ;
       snapshot_name: String.t }
     let make ~cache_cluster_id  ~snapshot_name  () =
-      { cache_cluster_id; snapshot_name } 
+      { cache_cluster_id; snapshot_name }
     let parse xml =
       Some
         {
@@ -5540,7 +5274,6 @@ module CreateSnapshotMessage =
             (Xml.required "SnapshotName"
                (Util.option_bind (Xml.member "SnapshotName" xml) String.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -5549,13 +5282,11 @@ module CreateSnapshotMessage =
            Some
              (Query.Pair
                 ("CacheClusterId", (String.to_query v.cache_cluster_id)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("snapshot_name", (String.to_json v.snapshot_name));
            Some ("cache_cluster_id", (String.to_json v.cache_cluster_id))])
-      
     let of_json j =
       {
         cache_cluster_id =
@@ -5564,25 +5295,25 @@ module CreateSnapshotMessage =
         snapshot_name =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "snapshot_name")))
-      } 
+      }
   end
 module InvalidARNFault =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module InvalidCacheParameterGroupStateFault =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module DescribeSnapshotsMessage =
   struct
@@ -5596,7 +5327,7 @@ module DescribeSnapshotsMessage =
     let make ?cache_cluster_id  ?snapshot_name  ?snapshot_source  ?marker 
       ?max_records  () =
       { cache_cluster_id; snapshot_name; snapshot_source; marker; max_records
-      } 
+      }
     let parse xml =
       Some
         {
@@ -5610,35 +5341,31 @@ module DescribeSnapshotsMessage =
           max_records =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.max_records
-              (fun f  -> Query.Pair ("MaxRecords", (Integer.to_query f)));
+              (fun f -> Query.Pair ("MaxRecords", (Integer.to_query f)));
            Util.option_map v.marker
-             (fun f  -> Query.Pair ("Marker", (String.to_query f)));
+             (fun f -> Query.Pair ("Marker", (String.to_query f)));
            Util.option_map v.snapshot_source
-             (fun f  -> Query.Pair ("SnapshotSource", (String.to_query f)));
+             (fun f -> Query.Pair ("SnapshotSource", (String.to_query f)));
            Util.option_map v.snapshot_name
-             (fun f  -> Query.Pair ("SnapshotName", (String.to_query f)));
+             (fun f -> Query.Pair ("SnapshotName", (String.to_query f)));
            Util.option_map v.cache_cluster_id
-             (fun f  -> Query.Pair ("CacheClusterId", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("CacheClusterId", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.max_records
-              (fun f  -> ("max_records", (Integer.to_json f)));
-           Util.option_map v.marker
-             (fun f  -> ("marker", (String.to_json f)));
+              (fun f -> ("max_records", (Integer.to_json f)));
+           Util.option_map v.marker (fun f -> ("marker", (String.to_json f)));
            Util.option_map v.snapshot_source
-             (fun f  -> ("snapshot_source", (String.to_json f)));
+             (fun f -> ("snapshot_source", (String.to_json f)));
            Util.option_map v.snapshot_name
-             (fun f  -> ("snapshot_name", (String.to_json f)));
+             (fun f -> ("snapshot_name", (String.to_json f)));
            Util.option_map v.cache_cluster_id
-             (fun f  -> ("cache_cluster_id", (String.to_json f)))])
-      
+             (fun f -> ("cache_cluster_id", (String.to_json f)))])
     let of_json j =
       {
         cache_cluster_id =
@@ -5650,7 +5377,7 @@ module DescribeSnapshotsMessage =
         marker = (Util.option_map (Json.lookup j "marker") String.of_json);
         max_records =
           (Util.option_map (Json.lookup j "max_records") Integer.of_json)
-      } 
+      }
   end
 module DescribeCacheSubnetGroupsMessage =
   struct
@@ -5660,7 +5387,7 @@ module DescribeCacheSubnetGroupsMessage =
       max_records: Integer.t option ;
       marker: String.t option }
     let make ?cache_subnet_group_name  ?max_records  ?marker  () =
-      { cache_subnet_group_name; max_records; marker } 
+      { cache_subnet_group_name; max_records; marker }
     let parse xml =
       Some
         {
@@ -5671,28 +5398,25 @@ module DescribeCacheSubnetGroupsMessage =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse);
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.marker
-              (fun f  -> Query.Pair ("Marker", (String.to_query f)));
+              (fun f -> Query.Pair ("Marker", (String.to_query f)));
            Util.option_map v.max_records
-             (fun f  -> Query.Pair ("MaxRecords", (Integer.to_query f)));
+             (fun f -> Query.Pair ("MaxRecords", (Integer.to_query f)));
            Util.option_map v.cache_subnet_group_name
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("CacheSubnetGroupName", (String.to_query f)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.marker
-              (fun f  -> ("marker", (String.to_json f)));
+              (fun f -> ("marker", (String.to_json f)));
            Util.option_map v.max_records
-             (fun f  -> ("max_records", (Integer.to_json f)));
+             (fun f -> ("max_records", (Integer.to_json f)));
            Util.option_map v.cache_subnet_group_name
-             (fun f  -> ("cache_subnet_group_name", (String.to_json f)))])
-      
+             (fun f -> ("cache_subnet_group_name", (String.to_json f)))])
     let of_json j =
       {
         cache_subnet_group_name =
@@ -5701,13 +5425,13 @@ module DescribeCacheSubnetGroupsMessage =
         max_records =
           (Util.option_map (Json.lookup j "max_records") Integer.of_json);
         marker = (Util.option_map (Json.lookup j "marker") String.of_json)
-      } 
+      }
   end
 module DeleteCacheSecurityGroupMessage =
   struct
     type t = {
       cache_security_group_name: String.t }
-    let make ~cache_security_group_name  () = { cache_security_group_name } 
+    let make ~cache_security_group_name  () = { cache_security_group_name }
     let parse xml =
       Some
         {
@@ -5716,7 +5440,6 @@ module DeleteCacheSecurityGroupMessage =
                (Util.option_bind (Xml.member "CacheSecurityGroupName" xml)
                   String.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -5724,27 +5447,25 @@ module DeleteCacheSecurityGroupMessage =
               (Query.Pair
                  ("CacheSecurityGroupName",
                    (String.to_query v.cache_security_group_name)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("cache_security_group_name",
                 (String.to_json v.cache_security_group_name))])
-      
     let of_json j =
       {
         cache_security_group_name =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "cache_security_group_name")))
-      } 
+      }
   end
 module EventsMessage =
   struct
     type t = {
       marker: String.t option ;
       events: EventList.t }
-    let make ?marker  ?(events= [])  () = { marker; events } 
+    let make ?marker  ?(events= [])  () = { marker; events }
     let parse xml =
       Some
         {
@@ -5753,28 +5474,24 @@ module EventsMessage =
             (Util.of_option []
                (Util.option_bind (Xml.member "Events" xml) EventList.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some
               (Query.Pair ("Events.member", (EventList.to_query v.events)));
            Util.option_map v.marker
-             (fun f  -> Query.Pair ("Marker", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("Marker", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("events", (EventList.to_json v.events));
-           Util.option_map v.marker
-             (fun f  -> ("marker", (String.to_json f)))])
-      
+           Util.option_map v.marker (fun f -> ("marker", (String.to_json f)))])
     let of_json j =
       {
         marker = (Util.option_map (Json.lookup j "marker") String.of_json);
         events =
           (EventList.of_json (Util.of_option_exn (Json.lookup j "events")))
-      } 
+      }
   end
 module CopySnapshotMessage =
   struct
@@ -5783,7 +5500,7 @@ module CopySnapshotMessage =
       source_snapshot_name: String.t ;
       target_snapshot_name: String.t }
     let make ~source_snapshot_name  ~target_snapshot_name  () =
-      { source_snapshot_name; target_snapshot_name } 
+      { source_snapshot_name; target_snapshot_name }
     let parse xml =
       Some
         {
@@ -5796,7 +5513,6 @@ module CopySnapshotMessage =
                (Util.option_bind (Xml.member "TargetSnapshotName" xml)
                   String.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -5808,7 +5524,6 @@ module CopySnapshotMessage =
              (Query.Pair
                 ("SourceSnapshotName",
                   (String.to_query v.source_snapshot_name)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -5818,7 +5533,6 @@ module CopySnapshotMessage =
            Some
              ("source_snapshot_name",
                (String.to_json v.source_snapshot_name))])
-      
     let of_json j =
       {
         source_snapshot_name =
@@ -5827,46 +5541,43 @@ module CopySnapshotMessage =
         target_snapshot_name =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "target_snapshot_name")))
-      } 
+      }
   end
 module CreateSnapshotResult =
   struct
     type t = {
       snapshot: Snapshot.t option }
-    let make ?snapshot  () = { snapshot } 
+    let make ?snapshot  () = { snapshot }
     let parse xml =
       Some
         {
           snapshot =
             (Util.option_bind (Xml.member "Snapshot" xml) Snapshot.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.snapshot
-              (fun f  -> Query.Pair ("Snapshot", (Snapshot.to_query f)))])
-      
+              (fun f -> Query.Pair ("Snapshot", (Snapshot.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.snapshot
-              (fun f  -> ("snapshot", (Snapshot.to_json f)))])
-      
+              (fun f -> ("snapshot", (Snapshot.to_json f)))])
     let of_json j =
       {
         snapshot =
           (Util.option_map (Json.lookup j "snapshot") Snapshot.of_json)
-      } 
+      }
   end
 module ReplicationGroupAlreadyExistsFault =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module CreateCacheClusterMessage =
   struct
@@ -5926,7 +5637,7 @@ module CreateCacheClusterMessage =
         auto_minor_version_upgrade;
         snapshot_retention_limit;
         snapshot_window
-      } 
+      }
     let parse xml =
       Some
         {
@@ -5993,29 +5704,28 @@ module CreateCacheClusterMessage =
           snapshot_window =
             (Util.option_bind (Xml.member "SnapshotWindow" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.snapshot_window
-              (fun f  -> Query.Pair ("SnapshotWindow", (String.to_query f)));
+              (fun f -> Query.Pair ("SnapshotWindow", (String.to_query f)));
            Util.option_map v.snapshot_retention_limit
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("SnapshotRetentionLimit", (Integer.to_query f)));
            Util.option_map v.auto_minor_version_upgrade
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("AutoMinorVersionUpgrade", (Boolean.to_query f)));
            Util.option_map v.notification_topic_arn
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("NotificationTopicArn", (String.to_query f)));
            Util.option_map v.port
-             (fun f  -> Query.Pair ("Port", (Integer.to_query f)));
+             (fun f -> Query.Pair ("Port", (Integer.to_query f)));
            Util.option_map v.preferred_maintenance_window
-             (fun f  ->
+             (fun f ->
                 Query.Pair
                   ("PreferredMaintenanceWindow", (String.to_query f)));
            Util.option_map v.snapshot_name
-             (fun f  -> Query.Pair ("SnapshotName", (String.to_query f)));
+             (fun f -> Query.Pair ("SnapshotName", (String.to_query f)));
            Some
              (Query.Pair
                 ("SnapshotArns.member",
@@ -6031,52 +5741,50 @@ module CreateCacheClusterMessage =
                   (CacheSecurityGroupNameList.to_query
                      v.cache_security_group_names)));
            Util.option_map v.cache_subnet_group_name
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("CacheSubnetGroupName", (String.to_query f)));
            Util.option_map v.cache_parameter_group_name
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("CacheParameterGroupName", (String.to_query f)));
            Util.option_map v.engine_version
-             (fun f  -> Query.Pair ("EngineVersion", (String.to_query f)));
+             (fun f -> Query.Pair ("EngineVersion", (String.to_query f)));
            Util.option_map v.engine
-             (fun f  -> Query.Pair ("Engine", (String.to_query f)));
+             (fun f -> Query.Pair ("Engine", (String.to_query f)));
            Util.option_map v.cache_node_type
-             (fun f  -> Query.Pair ("CacheNodeType", (String.to_query f)));
+             (fun f -> Query.Pair ("CacheNodeType", (String.to_query f)));
            Util.option_map v.num_cache_nodes
-             (fun f  -> Query.Pair ("NumCacheNodes", (Integer.to_query f)));
+             (fun f -> Query.Pair ("NumCacheNodes", (Integer.to_query f)));
            Some
              (Query.Pair
                 ("PreferredAvailabilityZones.member",
                   (PreferredAvailabilityZoneList.to_query
                      v.preferred_availability_zones)));
            Util.option_map v.preferred_availability_zone
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("PreferredAvailabilityZone", (String.to_query f)));
            Util.option_map v.a_z_mode
-             (fun f  -> Query.Pair ("AZMode", (AZMode.to_query f)));
+             (fun f -> Query.Pair ("AZMode", (AZMode.to_query f)));
            Util.option_map v.replication_group_id
-             (fun f  ->
-                Query.Pair ("ReplicationGroupId", (String.to_query f)));
+             (fun f -> Query.Pair ("ReplicationGroupId", (String.to_query f)));
            Some
              (Query.Pair
                 ("CacheClusterId", (String.to_query v.cache_cluster_id)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.snapshot_window
-              (fun f  -> ("snapshot_window", (String.to_json f)));
+              (fun f -> ("snapshot_window", (String.to_json f)));
            Util.option_map v.snapshot_retention_limit
-             (fun f  -> ("snapshot_retention_limit", (Integer.to_json f)));
+             (fun f -> ("snapshot_retention_limit", (Integer.to_json f)));
            Util.option_map v.auto_minor_version_upgrade
-             (fun f  -> ("auto_minor_version_upgrade", (Boolean.to_json f)));
+             (fun f -> ("auto_minor_version_upgrade", (Boolean.to_json f)));
            Util.option_map v.notification_topic_arn
-             (fun f  -> ("notification_topic_arn", (String.to_json f)));
-           Util.option_map v.port (fun f  -> ("port", (Integer.to_json f)));
+             (fun f -> ("notification_topic_arn", (String.to_json f)));
+           Util.option_map v.port (fun f -> ("port", (Integer.to_json f)));
            Util.option_map v.preferred_maintenance_window
-             (fun f  -> ("preferred_maintenance_window", (String.to_json f)));
+             (fun f -> ("preferred_maintenance_window", (String.to_json f)));
            Util.option_map v.snapshot_name
-             (fun f  -> ("snapshot_name", (String.to_json f)));
+             (fun f -> ("snapshot_name", (String.to_json f)));
            Some ("snapshot_arns", (SnapshotArnsList.to_json v.snapshot_arns));
            Some ("tags", (TagList.to_json v.tags));
            Some
@@ -6087,29 +5795,27 @@ module CreateCacheClusterMessage =
                (CacheSecurityGroupNameList.to_json
                   v.cache_security_group_names));
            Util.option_map v.cache_subnet_group_name
-             (fun f  -> ("cache_subnet_group_name", (String.to_json f)));
+             (fun f -> ("cache_subnet_group_name", (String.to_json f)));
            Util.option_map v.cache_parameter_group_name
-             (fun f  -> ("cache_parameter_group_name", (String.to_json f)));
+             (fun f -> ("cache_parameter_group_name", (String.to_json f)));
            Util.option_map v.engine_version
-             (fun f  -> ("engine_version", (String.to_json f)));
-           Util.option_map v.engine
-             (fun f  -> ("engine", (String.to_json f)));
+             (fun f -> ("engine_version", (String.to_json f)));
+           Util.option_map v.engine (fun f -> ("engine", (String.to_json f)));
            Util.option_map v.cache_node_type
-             (fun f  -> ("cache_node_type", (String.to_json f)));
+             (fun f -> ("cache_node_type", (String.to_json f)));
            Util.option_map v.num_cache_nodes
-             (fun f  -> ("num_cache_nodes", (Integer.to_json f)));
+             (fun f -> ("num_cache_nodes", (Integer.to_json f)));
            Some
              ("preferred_availability_zones",
                (PreferredAvailabilityZoneList.to_json
                   v.preferred_availability_zones));
            Util.option_map v.preferred_availability_zone
-             (fun f  -> ("preferred_availability_zone", (String.to_json f)));
+             (fun f -> ("preferred_availability_zone", (String.to_json f)));
            Util.option_map v.a_z_mode
-             (fun f  -> ("a_z_mode", (AZMode.to_json f)));
+             (fun f -> ("a_z_mode", (AZMode.to_json f)));
            Util.option_map v.replication_group_id
-             (fun f  -> ("replication_group_id", (String.to_json f)));
+             (fun f -> ("replication_group_id", (String.to_json f)));
            Some ("cache_cluster_id", (String.to_json v.cache_cluster_id))])
-      
     let of_json j =
       {
         cache_cluster_id =
@@ -6167,16 +5873,16 @@ module CreateCacheClusterMessage =
              Integer.of_json);
         snapshot_window =
           (Util.option_map (Json.lookup j "snapshot_window") String.of_json)
-      } 
+      }
   end
 module NodeQuotaForClusterExceededFault =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module DescribeCacheEngineVersionsMessage =
   struct
@@ -6197,7 +5903,7 @@ module DescribeCacheEngineVersionsMessage =
         max_records;
         marker;
         default_only
-      } 
+      }
     let parse xml =
       Some
         {
@@ -6213,40 +5919,35 @@ module DescribeCacheEngineVersionsMessage =
           default_only =
             (Util.option_bind (Xml.member "DefaultOnly" xml) Boolean.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.default_only
-              (fun f  -> Query.Pair ("DefaultOnly", (Boolean.to_query f)));
+              (fun f -> Query.Pair ("DefaultOnly", (Boolean.to_query f)));
            Util.option_map v.marker
-             (fun f  -> Query.Pair ("Marker", (String.to_query f)));
+             (fun f -> Query.Pair ("Marker", (String.to_query f)));
            Util.option_map v.max_records
-             (fun f  -> Query.Pair ("MaxRecords", (Integer.to_query f)));
+             (fun f -> Query.Pair ("MaxRecords", (Integer.to_query f)));
            Util.option_map v.cache_parameter_group_family
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("CacheParameterGroupFamily", (String.to_query f)));
            Util.option_map v.engine_version
-             (fun f  -> Query.Pair ("EngineVersion", (String.to_query f)));
+             (fun f -> Query.Pair ("EngineVersion", (String.to_query f)));
            Util.option_map v.engine
-             (fun f  -> Query.Pair ("Engine", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("Engine", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.default_only
-              (fun f  -> ("default_only", (Boolean.to_json f)));
-           Util.option_map v.marker
-             (fun f  -> ("marker", (String.to_json f)));
+              (fun f -> ("default_only", (Boolean.to_json f)));
+           Util.option_map v.marker (fun f -> ("marker", (String.to_json f)));
            Util.option_map v.max_records
-             (fun f  -> ("max_records", (Integer.to_json f)));
+             (fun f -> ("max_records", (Integer.to_json f)));
            Util.option_map v.cache_parameter_group_family
-             (fun f  -> ("cache_parameter_group_family", (String.to_json f)));
+             (fun f -> ("cache_parameter_group_family", (String.to_json f)));
            Util.option_map v.engine_version
-             (fun f  -> ("engine_version", (String.to_json f)));
-           Util.option_map v.engine
-             (fun f  -> ("engine", (String.to_json f)))])
-      
+             (fun f -> ("engine_version", (String.to_json f)));
+           Util.option_map v.engine (fun f -> ("engine", (String.to_json f)))])
     let of_json j =
       {
         engine = (Util.option_map (Json.lookup j "engine") String.of_json);
@@ -6260,13 +5961,13 @@ module DescribeCacheEngineVersionsMessage =
         marker = (Util.option_map (Json.lookup j "marker") String.of_json);
         default_only =
           (Util.option_map (Json.lookup j "default_only") Boolean.of_json)
-      } 
+      }
   end
 module ModifyCacheClusterResult =
   struct
     type t = {
       cache_cluster: CacheCluster.t option }
-    let make ?cache_cluster  () = { cache_cluster } 
+    let make ?cache_cluster  () = { cache_cluster }
     let parse xml =
       Some
         {
@@ -6274,42 +5975,39 @@ module ModifyCacheClusterResult =
             (Util.option_bind (Xml.member "CacheCluster" xml)
                CacheCluster.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.cache_cluster
-              (fun f  ->
+              (fun f ->
                  Query.Pair ("CacheCluster", (CacheCluster.to_query f)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.cache_cluster
-              (fun f  -> ("cache_cluster", (CacheCluster.to_json f)))])
-      
+              (fun f -> ("cache_cluster", (CacheCluster.to_json f)))])
     let of_json j =
       {
         cache_cluster =
           (Util.option_map (Json.lookup j "cache_cluster")
              CacheCluster.of_json)
-      } 
+      }
   end
 module CacheSubnetGroupInUse =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module RemoveTagsFromResourceMessage =
   struct
     type t = {
       resource_name: String.t ;
       tag_keys: KeyList.t }
-    let make ~resource_name  ~tag_keys  () = { resource_name; tag_keys } 
+    let make ~resource_name  ~tag_keys  () = { resource_name; tag_keys }
     let parse xml =
       Some
         {
@@ -6320,7 +6018,6 @@ module RemoveTagsFromResourceMessage =
             (Xml.required "TagKeys"
                (Util.option_bind (Xml.member "TagKeys" xml) KeyList.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -6328,13 +6025,11 @@ module RemoveTagsFromResourceMessage =
               (Query.Pair ("TagKeys.member", (KeyList.to_query v.tag_keys)));
            Some
              (Query.Pair ("ResourceName", (String.to_query v.resource_name)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("tag_keys", (KeyList.to_json v.tag_keys));
            Some ("resource_name", (String.to_json v.resource_name))])
-      
     let of_json j =
       {
         resource_name =
@@ -6342,7 +6037,7 @@ module RemoveTagsFromResourceMessage =
              (Util.of_option_exn (Json.lookup j "resource_name")));
         tag_keys =
           (KeyList.of_json (Util.of_option_exn (Json.lookup j "tag_keys")))
-      } 
+      }
   end
 module ReplicationGroupMessage =
   struct
@@ -6351,7 +6046,7 @@ module ReplicationGroupMessage =
       marker: String.t option ;
       replication_groups: ReplicationGroupList.t }
     let make ?marker  ?(replication_groups= [])  () =
-      { marker; replication_groups } 
+      { marker; replication_groups }
     let parse xml =
       Some
         {
@@ -6361,7 +6056,6 @@ module ReplicationGroupMessage =
                (Util.option_bind (Xml.member "ReplicationGroups" xml)
                   ReplicationGroupList.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -6370,24 +6064,21 @@ module ReplicationGroupMessage =
                  ("ReplicationGroups.member",
                    (ReplicationGroupList.to_query v.replication_groups)));
            Util.option_map v.marker
-             (fun f  -> Query.Pair ("Marker", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("Marker", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("replication_groups",
                 (ReplicationGroupList.to_json v.replication_groups));
-           Util.option_map v.marker
-             (fun f  -> ("marker", (String.to_json f)))])
-      
+           Util.option_map v.marker (fun f -> ("marker", (String.to_json f)))])
     let of_json j =
       {
         marker = (Util.option_map (Json.lookup j "marker") String.of_json);
         replication_groups =
           (ReplicationGroupList.of_json
              (Util.of_option_exn (Json.lookup j "replication_groups")))
-      } 
+      }
   end
 module DescribeCacheParametersMessage =
   struct
@@ -6398,7 +6089,7 @@ module DescribeCacheParametersMessage =
       max_records: Integer.t option ;
       marker: String.t option }
     let make ~cache_parameter_group_name  ?source  ?max_records  ?marker  ()
-      = { cache_parameter_group_name; source; max_records; marker } 
+      = { cache_parameter_group_name; source; max_records; marker }
     let parse xml =
       Some
         {
@@ -6411,34 +6102,30 @@ module DescribeCacheParametersMessage =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse);
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.marker
-              (fun f  -> Query.Pair ("Marker", (String.to_query f)));
+              (fun f -> Query.Pair ("Marker", (String.to_query f)));
            Util.option_map v.max_records
-             (fun f  -> Query.Pair ("MaxRecords", (Integer.to_query f)));
+             (fun f -> Query.Pair ("MaxRecords", (Integer.to_query f)));
            Util.option_map v.source
-             (fun f  -> Query.Pair ("Source", (String.to_query f)));
+             (fun f -> Query.Pair ("Source", (String.to_query f)));
            Some
              (Query.Pair
                 ("CacheParameterGroupName",
                   (String.to_query v.cache_parameter_group_name)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.marker
-              (fun f  -> ("marker", (String.to_json f)));
+              (fun f -> ("marker", (String.to_json f)));
            Util.option_map v.max_records
-             (fun f  -> ("max_records", (Integer.to_json f)));
-           Util.option_map v.source
-             (fun f  -> ("source", (String.to_json f)));
+             (fun f -> ("max_records", (Integer.to_json f)));
+           Util.option_map v.source (fun f -> ("source", (String.to_json f)));
            Some
              ("cache_parameter_group_name",
                (String.to_json v.cache_parameter_group_name))])
-      
     let of_json j =
       {
         cache_parameter_group_name =
@@ -6448,7 +6135,7 @@ module DescribeCacheParametersMessage =
         max_records =
           (Util.option_map (Json.lookup j "max_records") Integer.of_json);
         marker = (Util.option_map (Json.lookup j "marker") String.of_json)
-      } 
+      }
   end
 module CacheParameterGroupDetails =
   struct
@@ -6460,7 +6147,7 @@ module CacheParameterGroupDetails =
         CacheNodeTypeSpecificParametersList.t }
     let make ?marker  ?(parameters= []) 
       ?(cache_node_type_specific_parameters= [])  () =
-      { marker; parameters; cache_node_type_specific_parameters } 
+      { marker; parameters; cache_node_type_specific_parameters }
     let parse xml =
       Some
         {
@@ -6475,7 +6162,6 @@ module CacheParameterGroupDetails =
                   (Xml.member "CacheNodeTypeSpecificParameters" xml)
                   CacheNodeTypeSpecificParametersList.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -6488,8 +6174,7 @@ module CacheParameterGroupDetails =
              (Query.Pair
                 ("Parameters.member", (ParametersList.to_query v.parameters)));
            Util.option_map v.marker
-             (fun f  -> Query.Pair ("Marker", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("Marker", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -6498,9 +6183,7 @@ module CacheParameterGroupDetails =
                 (CacheNodeTypeSpecificParametersList.to_json
                    v.cache_node_type_specific_parameters));
            Some ("parameters", (ParametersList.to_json v.parameters));
-           Util.option_map v.marker
-             (fun f  -> ("marker", (String.to_json f)))])
-      
+           Util.option_map v.marker (fun f -> ("marker", (String.to_json f)))])
     let of_json j =
       {
         marker = (Util.option_map (Json.lookup j "marker") String.of_json);
@@ -6511,25 +6194,25 @@ module CacheParameterGroupDetails =
           (CacheNodeTypeSpecificParametersList.of_json
              (Util.of_option_exn
                 (Json.lookup j "cache_node_type_specific_parameters")))
-      } 
+      }
   end
 module CacheSubnetGroupQuotaExceededFault =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module CacheClusterAlreadyExistsFault =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module ModifyReplicationGroupMessage =
   struct
@@ -6576,7 +6259,7 @@ module ModifyReplicationGroupMessage =
         auto_minor_version_upgrade;
         snapshot_retention_limit;
         snapshot_window
-      } 
+      }
     let parse xml =
       Some
         {
@@ -6630,33 +6313,32 @@ module ModifyReplicationGroupMessage =
           snapshot_window =
             (Util.option_bind (Xml.member "SnapshotWindow" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.snapshot_window
-              (fun f  -> Query.Pair ("SnapshotWindow", (String.to_query f)));
+              (fun f -> Query.Pair ("SnapshotWindow", (String.to_query f)));
            Util.option_map v.snapshot_retention_limit
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("SnapshotRetentionLimit", (Integer.to_query f)));
            Util.option_map v.auto_minor_version_upgrade
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("AutoMinorVersionUpgrade", (Boolean.to_query f)));
            Util.option_map v.engine_version
-             (fun f  -> Query.Pair ("EngineVersion", (String.to_query f)));
+             (fun f -> Query.Pair ("EngineVersion", (String.to_query f)));
            Util.option_map v.apply_immediately
-             (fun f  -> Query.Pair ("ApplyImmediately", (Boolean.to_query f)));
+             (fun f -> Query.Pair ("ApplyImmediately", (Boolean.to_query f)));
            Util.option_map v.notification_topic_status
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("NotificationTopicStatus", (String.to_query f)));
            Util.option_map v.cache_parameter_group_name
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("CacheParameterGroupName", (String.to_query f)));
            Util.option_map v.notification_topic_arn
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("NotificationTopicArn", (String.to_query f)));
            Util.option_map v.preferred_maintenance_window
-             (fun f  ->
+             (fun f ->
                 Query.Pair
                   ("PreferredMaintenanceWindow", (String.to_query f)));
            Some
@@ -6669,43 +6351,42 @@ module ModifyReplicationGroupMessage =
                   (CacheSecurityGroupNameList.to_query
                      v.cache_security_group_names)));
            Util.option_map v.automatic_failover_enabled
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("AutomaticFailoverEnabled", (Boolean.to_query f)));
            Util.option_map v.snapshotting_cluster_id
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("SnapshottingClusterId", (String.to_query f)));
            Util.option_map v.primary_cluster_id
-             (fun f  -> Query.Pair ("PrimaryClusterId", (String.to_query f)));
+             (fun f -> Query.Pair ("PrimaryClusterId", (String.to_query f)));
            Util.option_map v.replication_group_description
-             (fun f  ->
+             (fun f ->
                 Query.Pair
                   ("ReplicationGroupDescription", (String.to_query f)));
            Some
              (Query.Pair
                 ("ReplicationGroupId",
                   (String.to_query v.replication_group_id)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.snapshot_window
-              (fun f  -> ("snapshot_window", (String.to_json f)));
+              (fun f -> ("snapshot_window", (String.to_json f)));
            Util.option_map v.snapshot_retention_limit
-             (fun f  -> ("snapshot_retention_limit", (Integer.to_json f)));
+             (fun f -> ("snapshot_retention_limit", (Integer.to_json f)));
            Util.option_map v.auto_minor_version_upgrade
-             (fun f  -> ("auto_minor_version_upgrade", (Boolean.to_json f)));
+             (fun f -> ("auto_minor_version_upgrade", (Boolean.to_json f)));
            Util.option_map v.engine_version
-             (fun f  -> ("engine_version", (String.to_json f)));
+             (fun f -> ("engine_version", (String.to_json f)));
            Util.option_map v.apply_immediately
-             (fun f  -> ("apply_immediately", (Boolean.to_json f)));
+             (fun f -> ("apply_immediately", (Boolean.to_json f)));
            Util.option_map v.notification_topic_status
-             (fun f  -> ("notification_topic_status", (String.to_json f)));
+             (fun f -> ("notification_topic_status", (String.to_json f)));
            Util.option_map v.cache_parameter_group_name
-             (fun f  -> ("cache_parameter_group_name", (String.to_json f)));
+             (fun f -> ("cache_parameter_group_name", (String.to_json f)));
            Util.option_map v.notification_topic_arn
-             (fun f  -> ("notification_topic_arn", (String.to_json f)));
+             (fun f -> ("notification_topic_arn", (String.to_json f)));
            Util.option_map v.preferred_maintenance_window
-             (fun f  -> ("preferred_maintenance_window", (String.to_json f)));
+             (fun f -> ("preferred_maintenance_window", (String.to_json f)));
            Some
              ("security_group_ids",
                (SecurityGroupIdsList.to_json v.security_group_ids));
@@ -6714,17 +6395,16 @@ module ModifyReplicationGroupMessage =
                (CacheSecurityGroupNameList.to_json
                   v.cache_security_group_names));
            Util.option_map v.automatic_failover_enabled
-             (fun f  -> ("automatic_failover_enabled", (Boolean.to_json f)));
+             (fun f -> ("automatic_failover_enabled", (Boolean.to_json f)));
            Util.option_map v.snapshotting_cluster_id
-             (fun f  -> ("snapshotting_cluster_id", (String.to_json f)));
+             (fun f -> ("snapshotting_cluster_id", (String.to_json f)));
            Util.option_map v.primary_cluster_id
-             (fun f  -> ("primary_cluster_id", (String.to_json f)));
+             (fun f -> ("primary_cluster_id", (String.to_json f)));
            Util.option_map v.replication_group_description
-             (fun f  -> ("replication_group_description", (String.to_json f)));
+             (fun f -> ("replication_group_description", (String.to_json f)));
            Some
              ("replication_group_id",
                (String.to_json v.replication_group_id))])
-      
     let of_json j =
       {
         replication_group_id =
@@ -6773,7 +6453,7 @@ module ModifyReplicationGroupMessage =
              Integer.of_json);
         snapshot_window =
           (Util.option_map (Json.lookup j "snapshot_window") String.of_json)
-      } 
+      }
   end
 module CreateCacheParameterGroupMessage =
   struct
@@ -6785,7 +6465,7 @@ module CreateCacheParameterGroupMessage =
     let make ~cache_parameter_group_name  ~cache_parameter_group_family 
       ~description  () =
       { cache_parameter_group_name; cache_parameter_group_family; description
-      } 
+      }
     let parse xml =
       Some
         {
@@ -6801,7 +6481,6 @@ module CreateCacheParameterGroupMessage =
             (Xml.required "Description"
                (Util.option_bind (Xml.member "Description" xml) String.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -6815,7 +6494,6 @@ module CreateCacheParameterGroupMessage =
              (Query.Pair
                 ("CacheParameterGroupName",
                   (String.to_query v.cache_parameter_group_name)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -6826,7 +6504,6 @@ module CreateCacheParameterGroupMessage =
            Some
              ("cache_parameter_group_name",
                (String.to_json v.cache_parameter_group_name))])
-      
     let of_json j =
       {
         cache_parameter_group_name =
@@ -6838,16 +6515,16 @@ module CreateCacheParameterGroupMessage =
                 (Json.lookup j "cache_parameter_group_family")));
         description =
           (String.of_json (Util.of_option_exn (Json.lookup j "description")))
-      } 
+      }
   end
 module InvalidCacheSecurityGroupStateFault =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module CacheEngineVersionMessage =
   struct
@@ -6856,7 +6533,7 @@ module CacheEngineVersionMessage =
       marker: String.t option ;
       cache_engine_versions: CacheEngineVersionList.t }
     let make ?marker  ?(cache_engine_versions= [])  () =
-      { marker; cache_engine_versions } 
+      { marker; cache_engine_versions }
     let parse xml =
       Some
         {
@@ -6866,7 +6543,6 @@ module CacheEngineVersionMessage =
                (Util.option_bind (Xml.member "CacheEngineVersions" xml)
                   CacheEngineVersionList.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -6875,30 +6551,27 @@ module CacheEngineVersionMessage =
                  ("CacheEngineVersions.member",
                    (CacheEngineVersionList.to_query v.cache_engine_versions)));
            Util.option_map v.marker
-             (fun f  -> Query.Pair ("Marker", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("Marker", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("cache_engine_versions",
                 (CacheEngineVersionList.to_json v.cache_engine_versions));
-           Util.option_map v.marker
-             (fun f  -> ("marker", (String.to_json f)))])
-      
+           Util.option_map v.marker (fun f -> ("marker", (String.to_json f)))])
     let of_json j =
       {
         marker = (Util.option_map (Json.lookup j "marker") String.of_json);
         cache_engine_versions =
           (CacheEngineVersionList.of_json
              (Util.of_option_exn (Json.lookup j "cache_engine_versions")))
-      } 
+      }
   end
 module PurchaseReservedCacheNodesOfferingResult =
   struct
     type t = {
       reserved_cache_node: ReservedCacheNode.t option }
-    let make ?reserved_cache_node  () = { reserved_cache_node } 
+    let make ?reserved_cache_node  () = { reserved_cache_node }
     let parse xml =
       Some
         {
@@ -6906,34 +6579,31 @@ module PurchaseReservedCacheNodesOfferingResult =
             (Util.option_bind (Xml.member "ReservedCacheNode" xml)
                ReservedCacheNode.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.reserved_cache_node
-              (fun f  ->
+              (fun f ->
                  Query.Pair
                    ("ReservedCacheNode", (ReservedCacheNode.to_query f)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.reserved_cache_node
-              (fun f  ->
+              (fun f ->
                  ("reserved_cache_node", (ReservedCacheNode.to_json f)))])
-      
     let of_json j =
       {
         reserved_cache_node =
           (Util.option_map (Json.lookup j "reserved_cache_node")
              ReservedCacheNode.of_json)
-      } 
+      }
   end
 module ModifyReplicationGroupResult =
   struct
     type t = {
       replication_group: ReplicationGroup.t option }
-    let make ?replication_group  () = { replication_group } 
+    let make ?replication_group  () = { replication_group }
     let parse xml =
       Some
         {
@@ -6941,27 +6611,24 @@ module ModifyReplicationGroupResult =
             (Util.option_bind (Xml.member "ReplicationGroup" xml)
                ReplicationGroup.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.replication_group
-              (fun f  ->
+              (fun f ->
                  Query.Pair
                    ("ReplicationGroup", (ReplicationGroup.to_query f)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.replication_group
-              (fun f  -> ("replication_group", (ReplicationGroup.to_json f)))])
-      
+              (fun f -> ("replication_group", (ReplicationGroup.to_json f)))])
     let of_json j =
       {
         replication_group =
           (Util.option_map (Json.lookup j "replication_group")
              ReplicationGroup.of_json)
-      } 
+      }
   end
 module CacheSecurityGroupMessage =
   struct
@@ -6970,7 +6637,7 @@ module CacheSecurityGroupMessage =
       marker: String.t option ;
       cache_security_groups: CacheSecurityGroups.t }
     let make ?marker  ?(cache_security_groups= [])  () =
-      { marker; cache_security_groups } 
+      { marker; cache_security_groups }
     let parse xml =
       Some
         {
@@ -6980,7 +6647,6 @@ module CacheSecurityGroupMessage =
                (Util.option_bind (Xml.member "CacheSecurityGroups" xml)
                   CacheSecurityGroups.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -6989,39 +6655,36 @@ module CacheSecurityGroupMessage =
                  ("CacheSecurityGroups.member",
                    (CacheSecurityGroups.to_query v.cache_security_groups)));
            Util.option_map v.marker
-             (fun f  -> Query.Pair ("Marker", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("Marker", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("cache_security_groups",
                 (CacheSecurityGroups.to_json v.cache_security_groups));
-           Util.option_map v.marker
-             (fun f  -> ("marker", (String.to_json f)))])
-      
+           Util.option_map v.marker (fun f -> ("marker", (String.to_json f)))])
     let of_json j =
       {
         marker = (Util.option_map (Json.lookup j "marker") String.of_json);
         cache_security_groups =
           (CacheSecurityGroups.of_json
              (Util.of_option_exn (Json.lookup j "cache_security_groups")))
-      } 
+      }
   end
 module InvalidSnapshotStateFault =
   struct
     type t = unit
-    let make () = () 
-    let parse xml = Some () 
-    let to_query v = Query.List (Util.list_filter_opt []) 
-    let to_json v = `Assoc (Util.list_filter_opt []) 
-    let of_json j = () 
+    let make () = ()
+    let parse xml = Some ()
+    let to_query v = Query.List (Util.list_filter_opt [])
+    let to_json v = `Assoc (Util.list_filter_opt [])
+    let of_json j = ()
   end
 module ListTagsForResourceMessage =
   struct
     type t = {
       resource_name: String.t }
-    let make ~resource_name  () = { resource_name } 
+    let make ~resource_name  () = { resource_name }
     let parse xml =
       Some
         {
@@ -7029,30 +6692,27 @@ module ListTagsForResourceMessage =
             (Xml.required "ResourceName"
                (Util.option_bind (Xml.member "ResourceName" xml) String.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some
               (Query.Pair ("ResourceName", (String.to_query v.resource_name)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("resource_name", (String.to_json v.resource_name))])
-      
     let of_json j =
       {
         resource_name =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "resource_name")))
-      } 
+      }
   end
 module DeleteCacheSubnetGroupMessage =
   struct
     type t = {
       cache_subnet_group_name: String.t }
-    let make ~cache_subnet_group_name  () = { cache_subnet_group_name } 
+    let make ~cache_subnet_group_name  () = { cache_subnet_group_name }
     let parse xml =
       Some
         {
@@ -7061,7 +6721,6 @@ module DeleteCacheSubnetGroupMessage =
                (Util.option_bind (Xml.member "CacheSubnetGroupName" xml)
                   String.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -7069,20 +6728,18 @@ module DeleteCacheSubnetGroupMessage =
               (Query.Pair
                  ("CacheSubnetGroupName",
                    (String.to_query v.cache_subnet_group_name)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("cache_subnet_group_name",
                 (String.to_json v.cache_subnet_group_name))])
-      
     let of_json j =
       {
         cache_subnet_group_name =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "cache_subnet_group_name")))
-      } 
+      }
   end
 module DescribeEngineDefaultParametersMessage =
   struct
@@ -7092,7 +6749,7 @@ module DescribeEngineDefaultParametersMessage =
       max_records: Integer.t option ;
       marker: String.t option }
     let make ~cache_parameter_group_family  ?max_records  ?marker  () =
-      { cache_parameter_group_family; max_records; marker } 
+      { cache_parameter_group_family; max_records; marker }
     let parse xml =
       Some
         {
@@ -7104,30 +6761,27 @@ module DescribeEngineDefaultParametersMessage =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse);
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.marker
-              (fun f  -> Query.Pair ("Marker", (String.to_query f)));
+              (fun f -> Query.Pair ("Marker", (String.to_query f)));
            Util.option_map v.max_records
-             (fun f  -> Query.Pair ("MaxRecords", (Integer.to_query f)));
+             (fun f -> Query.Pair ("MaxRecords", (Integer.to_query f)));
            Some
              (Query.Pair
                 ("CacheParameterGroupFamily",
                   (String.to_query v.cache_parameter_group_family)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.marker
-              (fun f  -> ("marker", (String.to_json f)));
+              (fun f -> ("marker", (String.to_json f)));
            Util.option_map v.max_records
-             (fun f  -> ("max_records", (Integer.to_json f)));
+             (fun f -> ("max_records", (Integer.to_json f)));
            Some
              ("cache_parameter_group_family",
                (String.to_json v.cache_parameter_group_family))])
-      
     let of_json j =
       {
         cache_parameter_group_family =
@@ -7137,13 +6791,13 @@ module DescribeEngineDefaultParametersMessage =
         max_records =
           (Util.option_map (Json.lookup j "max_records") Integer.of_json);
         marker = (Util.option_map (Json.lookup j "marker") String.of_json)
-      } 
+      }
   end
 module RebootCacheClusterResult =
   struct
     type t = {
       cache_cluster: CacheCluster.t option }
-    let make ?cache_cluster  () = { cache_cluster } 
+    let make ?cache_cluster  () = { cache_cluster }
     let parse xml =
       Some
         {
@@ -7151,32 +6805,29 @@ module RebootCacheClusterResult =
             (Util.option_bind (Xml.member "CacheCluster" xml)
                CacheCluster.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.cache_cluster
-              (fun f  ->
+              (fun f ->
                  Query.Pair ("CacheCluster", (CacheCluster.to_query f)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.cache_cluster
-              (fun f  -> ("cache_cluster", (CacheCluster.to_json f)))])
-      
+              (fun f -> ("cache_cluster", (CacheCluster.to_json f)))])
     let of_json j =
       {
         cache_cluster =
           (Util.option_map (Json.lookup j "cache_cluster")
              CacheCluster.of_json)
-      } 
+      }
   end
 module DeleteSnapshotMessage =
   struct
     type t = {
       snapshot_name: String.t }
-    let make ~snapshot_name  () = { snapshot_name } 
+    let make ~snapshot_name  () = { snapshot_name }
     let parse xml =
       Some
         {
@@ -7184,24 +6835,21 @@ module DeleteSnapshotMessage =
             (Xml.required "SnapshotName"
                (Util.option_bind (Xml.member "SnapshotName" xml) String.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some
               (Query.Pair ("SnapshotName", (String.to_query v.snapshot_name)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("snapshot_name", (String.to_json v.snapshot_name))])
-      
     let of_json j =
       {
         snapshot_name =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "snapshot_name")))
-      } 
+      }
   end
 module ModifyCacheParameterGroupMessage =
   struct
@@ -7210,7 +6858,7 @@ module ModifyCacheParameterGroupMessage =
       cache_parameter_group_name: String.t ;
       parameter_name_values: ParameterNameValueList.t }
     let make ~cache_parameter_group_name  ~parameter_name_values  () =
-      { cache_parameter_group_name; parameter_name_values } 
+      { cache_parameter_group_name; parameter_name_values }
     let parse xml =
       Some
         {
@@ -7223,7 +6871,6 @@ module ModifyCacheParameterGroupMessage =
                (Util.option_bind (Xml.member "ParameterNameValues" xml)
                   ParameterNameValueList.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -7235,7 +6882,6 @@ module ModifyCacheParameterGroupMessage =
              (Query.Pair
                 ("CacheParameterGroupName",
                   (String.to_query v.cache_parameter_group_name)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -7245,7 +6891,6 @@ module ModifyCacheParameterGroupMessage =
            Some
              ("cache_parameter_group_name",
                (String.to_json v.cache_parameter_group_name))])
-      
     let of_json j =
       {
         cache_parameter_group_name =
@@ -7254,13 +6899,13 @@ module ModifyCacheParameterGroupMessage =
         parameter_name_values =
           (ParameterNameValueList.of_json
              (Util.of_option_exn (Json.lookup j "parameter_name_values")))
-      } 
+      }
   end
 module CreateCacheSubnetGroupResult =
   struct
     type t = {
       cache_subnet_group: CacheSubnetGroup.t option }
-    let make ?cache_subnet_group  () = { cache_subnet_group } 
+    let make ?cache_subnet_group  () = { cache_subnet_group }
     let parse xml =
       Some
         {
@@ -7268,27 +6913,24 @@ module CreateCacheSubnetGroupResult =
             (Util.option_bind (Xml.member "CacheSubnetGroup" xml)
                CacheSubnetGroup.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.cache_subnet_group
-              (fun f  ->
+              (fun f ->
                  Query.Pair
                    ("CacheSubnetGroup", (CacheSubnetGroup.to_query f)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.cache_subnet_group
-              (fun f  -> ("cache_subnet_group", (CacheSubnetGroup.to_json f)))])
-      
+              (fun f -> ("cache_subnet_group", (CacheSubnetGroup.to_json f)))])
     let of_json j =
       {
         cache_subnet_group =
           (Util.option_map (Json.lookup j "cache_subnet_group")
              CacheSubnetGroup.of_json)
-      } 
+      }
   end
 module ModifyCacheClusterMessage =
   struct
@@ -7334,7 +6976,7 @@ module ModifyCacheClusterMessage =
         auto_minor_version_upgrade;
         snapshot_retention_limit;
         snapshot_window
-      } 
+      }
     let parse xml =
       Some
         {
@@ -7388,33 +7030,32 @@ module ModifyCacheClusterMessage =
           snapshot_window =
             (Util.option_bind (Xml.member "SnapshotWindow" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.snapshot_window
-              (fun f  -> Query.Pair ("SnapshotWindow", (String.to_query f)));
+              (fun f -> Query.Pair ("SnapshotWindow", (String.to_query f)));
            Util.option_map v.snapshot_retention_limit
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("SnapshotRetentionLimit", (Integer.to_query f)));
            Util.option_map v.auto_minor_version_upgrade
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("AutoMinorVersionUpgrade", (Boolean.to_query f)));
            Util.option_map v.engine_version
-             (fun f  -> Query.Pair ("EngineVersion", (String.to_query f)));
+             (fun f -> Query.Pair ("EngineVersion", (String.to_query f)));
            Util.option_map v.apply_immediately
-             (fun f  -> Query.Pair ("ApplyImmediately", (Boolean.to_query f)));
+             (fun f -> Query.Pair ("ApplyImmediately", (Boolean.to_query f)));
            Util.option_map v.notification_topic_status
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("NotificationTopicStatus", (String.to_query f)));
            Util.option_map v.cache_parameter_group_name
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("CacheParameterGroupName", (String.to_query f)));
            Util.option_map v.notification_topic_arn
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("NotificationTopicArn", (String.to_query f)));
            Util.option_map v.preferred_maintenance_window
-             (fun f  ->
+             (fun f ->
                 Query.Pair
                   ("PreferredMaintenanceWindow", (String.to_query f)));
            Some
@@ -7432,38 +7073,37 @@ module ModifyCacheClusterMessage =
                   (PreferredAvailabilityZoneList.to_query
                      v.new_availability_zones)));
            Util.option_map v.a_z_mode
-             (fun f  -> Query.Pair ("AZMode", (AZMode.to_query f)));
+             (fun f -> Query.Pair ("AZMode", (AZMode.to_query f)));
            Some
              (Query.Pair
                 ("CacheNodeIdsToRemove.member",
                   (CacheNodeIdsList.to_query v.cache_node_ids_to_remove)));
            Util.option_map v.num_cache_nodes
-             (fun f  -> Query.Pair ("NumCacheNodes", (Integer.to_query f)));
+             (fun f -> Query.Pair ("NumCacheNodes", (Integer.to_query f)));
            Some
              (Query.Pair
                 ("CacheClusterId", (String.to_query v.cache_cluster_id)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.snapshot_window
-              (fun f  -> ("snapshot_window", (String.to_json f)));
+              (fun f -> ("snapshot_window", (String.to_json f)));
            Util.option_map v.snapshot_retention_limit
-             (fun f  -> ("snapshot_retention_limit", (Integer.to_json f)));
+             (fun f -> ("snapshot_retention_limit", (Integer.to_json f)));
            Util.option_map v.auto_minor_version_upgrade
-             (fun f  -> ("auto_minor_version_upgrade", (Boolean.to_json f)));
+             (fun f -> ("auto_minor_version_upgrade", (Boolean.to_json f)));
            Util.option_map v.engine_version
-             (fun f  -> ("engine_version", (String.to_json f)));
+             (fun f -> ("engine_version", (String.to_json f)));
            Util.option_map v.apply_immediately
-             (fun f  -> ("apply_immediately", (Boolean.to_json f)));
+             (fun f -> ("apply_immediately", (Boolean.to_json f)));
            Util.option_map v.notification_topic_status
-             (fun f  -> ("notification_topic_status", (String.to_json f)));
+             (fun f -> ("notification_topic_status", (String.to_json f)));
            Util.option_map v.cache_parameter_group_name
-             (fun f  -> ("cache_parameter_group_name", (String.to_json f)));
+             (fun f -> ("cache_parameter_group_name", (String.to_json f)));
            Util.option_map v.notification_topic_arn
-             (fun f  -> ("notification_topic_arn", (String.to_json f)));
+             (fun f -> ("notification_topic_arn", (String.to_json f)));
            Util.option_map v.preferred_maintenance_window
-             (fun f  -> ("preferred_maintenance_window", (String.to_json f)));
+             (fun f -> ("preferred_maintenance_window", (String.to_json f)));
            Some
              ("security_group_ids",
                (SecurityGroupIdsList.to_json v.security_group_ids));
@@ -7476,14 +7116,13 @@ module ModifyCacheClusterMessage =
                (PreferredAvailabilityZoneList.to_json
                   v.new_availability_zones));
            Util.option_map v.a_z_mode
-             (fun f  -> ("a_z_mode", (AZMode.to_json f)));
+             (fun f -> ("a_z_mode", (AZMode.to_json f)));
            Some
              ("cache_node_ids_to_remove",
                (CacheNodeIdsList.to_json v.cache_node_ids_to_remove));
            Util.option_map v.num_cache_nodes
-             (fun f  -> ("num_cache_nodes", (Integer.to_json f)));
+             (fun f -> ("num_cache_nodes", (Integer.to_json f)));
            Some ("cache_cluster_id", (String.to_json v.cache_cluster_id))])
-      
     let of_json j =
       {
         cache_cluster_id =
@@ -7530,13 +7169,13 @@ module ModifyCacheClusterMessage =
              Integer.of_json);
         snapshot_window =
           (Util.option_map (Json.lookup j "snapshot_window") String.of_json)
-      } 
+      }
   end
 module CacheParameterGroupNameMessage =
   struct
     type t = {
       cache_parameter_group_name: String.t option }
-    let make ?cache_parameter_group_name  () = { cache_parameter_group_name } 
+    let make ?cache_parameter_group_name  () = { cache_parameter_group_name }
     let parse xml =
       Some
         {
@@ -7544,26 +7183,23 @@ module CacheParameterGroupNameMessage =
             (Util.option_bind (Xml.member "CacheParameterGroupName" xml)
                String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.cache_parameter_group_name
-              (fun f  ->
+              (fun f ->
                  Query.Pair ("CacheParameterGroupName", (String.to_query f)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.cache_parameter_group_name
-              (fun f  -> ("cache_parameter_group_name", (String.to_json f)))])
-      
+              (fun f -> ("cache_parameter_group_name", (String.to_json f)))])
     let of_json j =
       {
         cache_parameter_group_name =
           (Util.option_map (Json.lookup j "cache_parameter_group_name")
              String.of_json)
-      } 
+      }
   end
 module DescribeCacheParameterGroupsMessage =
   struct
@@ -7573,7 +7209,7 @@ module DescribeCacheParameterGroupsMessage =
       max_records: Integer.t option ;
       marker: String.t option }
     let make ?cache_parameter_group_name  ?max_records  ?marker  () =
-      { cache_parameter_group_name; max_records; marker } 
+      { cache_parameter_group_name; max_records; marker }
     let parse xml =
       Some
         {
@@ -7584,28 +7220,25 @@ module DescribeCacheParameterGroupsMessage =
             (Util.option_bind (Xml.member "MaxRecords" xml) Integer.parse);
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.marker
-              (fun f  -> Query.Pair ("Marker", (String.to_query f)));
+              (fun f -> Query.Pair ("Marker", (String.to_query f)));
            Util.option_map v.max_records
-             (fun f  -> Query.Pair ("MaxRecords", (Integer.to_query f)));
+             (fun f -> Query.Pair ("MaxRecords", (Integer.to_query f)));
            Util.option_map v.cache_parameter_group_name
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("CacheParameterGroupName", (String.to_query f)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.marker
-              (fun f  -> ("marker", (String.to_json f)));
+              (fun f -> ("marker", (String.to_json f)));
            Util.option_map v.max_records
-             (fun f  -> ("max_records", (Integer.to_json f)));
+             (fun f -> ("max_records", (Integer.to_json f)));
            Util.option_map v.cache_parameter_group_name
-             (fun f  -> ("cache_parameter_group_name", (String.to_json f)))])
-      
+             (fun f -> ("cache_parameter_group_name", (String.to_json f)))])
     let of_json j =
       {
         cache_parameter_group_name =
@@ -7614,7 +7247,7 @@ module DescribeCacheParameterGroupsMessage =
         max_records =
           (Util.option_map (Json.lookup j "max_records") Integer.of_json);
         marker = (Util.option_map (Json.lookup j "marker") String.of_json)
-      } 
+      }
   end
 module ReservedCacheNodeMessage =
   struct
@@ -7623,7 +7256,7 @@ module ReservedCacheNodeMessage =
       marker: String.t option ;
       reserved_cache_nodes: ReservedCacheNodeList.t }
     let make ?marker  ?(reserved_cache_nodes= [])  () =
-      { marker; reserved_cache_nodes } 
+      { marker; reserved_cache_nodes }
     let parse xml =
       Some
         {
@@ -7633,7 +7266,6 @@ module ReservedCacheNodeMessage =
                (Util.option_bind (Xml.member "ReservedCacheNodes" xml)
                   ReservedCacheNodeList.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -7642,22 +7274,19 @@ module ReservedCacheNodeMessage =
                  ("ReservedCacheNodes.member",
                    (ReservedCacheNodeList.to_query v.reserved_cache_nodes)));
            Util.option_map v.marker
-             (fun f  -> Query.Pair ("Marker", (String.to_query f)))])
-      
+             (fun f -> Query.Pair ("Marker", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some
               ("reserved_cache_nodes",
                 (ReservedCacheNodeList.to_json v.reserved_cache_nodes));
-           Util.option_map v.marker
-             (fun f  -> ("marker", (String.to_json f)))])
-      
+           Util.option_map v.marker (fun f -> ("marker", (String.to_json f)))])
     let of_json j =
       {
         marker = (Util.option_map (Json.lookup j "marker") String.of_json);
         reserved_cache_nodes =
           (ReservedCacheNodeList.of_json
              (Util.of_option_exn (Json.lookup j "reserved_cache_nodes")))
-      } 
+      }
   end

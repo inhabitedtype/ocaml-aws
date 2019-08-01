@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = CreateAssociationBatchRequest.t
 type output = CreateAssociationBatchResult.t
 type error = Errors_internal.t

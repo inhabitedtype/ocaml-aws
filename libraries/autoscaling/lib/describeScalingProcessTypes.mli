@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = Aws.BaseTypes.Unit.t
 type output = ProcessesType.t
 type error = Errors_internal.t

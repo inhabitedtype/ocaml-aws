@@ -27,7 +27,7 @@ module TestSuite(Runtime : sig
     | `Ok resp ->
       Printf.printf "%s\n" (Yojson.Basic.to_string (Types.DescribeRegionsResult.(to_json (of_json (to_json resp)))));
       true
-    | `Error err -> begin Printf.printf "Error: %s\n" (Aws.Error.format Errors.to_string err); false end
+    | `Error err -> begin Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err); false end
   end
 
   let describe_regions_error () =
@@ -42,11 +42,11 @@ module TestSuite(Runtime : sig
       false
     (* NOTE(dbp 2015-03-13): I have _NO_ idea why AWS would think that asking for
        a non-existent region is an AuthFailure... But that's what it returns. *)
-    | `Error (HttpError (401, AwsError [Understood Errors.AuthFailure, _])) ->
+    | `Error (HttpError (401, AwsError [Understood Errors_internal.AuthFailure, _])) ->
       true
     | `Error err ->
       begin
-        Printf.printf "Error: %s\n" (Aws.Error.format Errors.to_string err);
+        Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
         false
       end
   end
@@ -65,7 +65,7 @@ module TestSuite(Runtime : sig
     (* let open Types.SecurityGroup in *)
     match result with
     | `Ok a -> Some a
-    | `Error e -> begin print_endline (Aws.Error.format Errors.to_string e); None end
+    | `Error e -> begin print_endline (Aws.Error.format Errors_internal.to_string e); None end
 
   let create_security_group_test () =
     let result = create_security_group() in
@@ -87,7 +87,7 @@ module TestSuite(Runtime : sig
     "Creating security group and then deleting it succeeds"
     @? begin match result with
       | `Ok _ -> true
-      | `Error e -> begin print_endline (Aws.Error.format Errors.to_string e); false end
+      | `Error e -> begin print_endline (Aws.Error.format Errors_internal.to_string e); false end
     end
   ;;
 
@@ -107,7 +107,7 @@ module TestSuite(Runtime : sig
         | [] -> print_endline "No instances in reservation"; None
         | x::xs -> Some x
       end
-    | `Error e -> begin print_endline (Aws.Error.format Errors.to_string e); None end
+    | `Error e -> begin print_endline (Aws.Error.format Errors_internal.to_string e); None end
   ;;
 
   let create () =
@@ -132,7 +132,7 @@ module TestSuite(Runtime : sig
     "Creating ec2 instances and then terminating it succeeds"
     @? begin match result with
       | `Ok _ -> true
-      | `Error e -> begin print_endline (Aws.Error.format Errors.to_string e); false end
+      | `Error e -> begin print_endline (Aws.Error.format Errors_internal.to_string e); false end
     end
   ;;
 

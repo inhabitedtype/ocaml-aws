@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 open Aws
 type input = DescribeDBClustersMessage.t
 type output = DBClusterMessage.t

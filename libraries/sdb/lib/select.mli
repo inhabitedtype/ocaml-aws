@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = SelectRequest.t
 type output = SelectResult.t
 type error = Errors_internal.t

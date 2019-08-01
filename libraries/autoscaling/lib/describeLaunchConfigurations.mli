@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = LaunchConfigurationNamesType.t
 type output = LaunchConfigurationsType.t
 type error = Errors_internal.t

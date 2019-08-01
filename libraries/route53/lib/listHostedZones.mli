@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = ListHostedZonesRequest.t
 type output = ListHostedZonesResponse.t
 type error = Errors_internal.t

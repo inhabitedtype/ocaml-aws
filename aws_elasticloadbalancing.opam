@@ -1,9 +1,12 @@
 opam-version: "2.0"
-maintainer: "Spiros Eliopoulos <spiros@inhabitedtype.com>"
+maintainer: "Tim McGilchrist <timmcgil@gmail.com>"
 authors: [ "Spiros Eliopoulos <spiros@inhabitedtype.com>"
-           "Daniel Patterson <dbp@dbpmail.net>" ]
-synopsis: "Amazon Web Services SDK bindings to ElasticLoadBalancing"
-description: "Amazon Web Services SDK bindings to ElasticLoadBalancing"
+           "Daniel Patterson <dbp@dbpmail.net>"
+           "Tim McGilchrist <timmcgil@gmail.com>"
+         ]
+synopsis: "Amazon Web Services SDK bindings to Elastic Load Balancing"
+description: "Amazon Web Services SDK bindings to Elastic Load Balancing"
+version: "1.1"
 license: "BSD-3-clause"
 homepage: "https://github.com/inhabitedtype/ocaml-aws"
 dev-repo: "git+https://github.com/inhabitedtype/ocaml-aws.git"

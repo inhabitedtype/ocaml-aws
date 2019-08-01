@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = GetBucketLifecycleRequest.t
 type output = GetBucketLifecycleOutput.t
 type error = Errors_internal.t

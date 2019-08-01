@@ -72,7 +72,7 @@ let dune_test ~lib_name =
   let d = "%{deps}" in
   Printf.sprintf {|(executables
  (names test_async test_lwt)
- (flags (:standard -w -27))
+ (flags (:standard -w -27 -w -33))
  (modules test_async test_lwt aws_%s_test)
  (libraries aws aws_%s aws-async aws-lwt
             oUnit yojson

@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = DescribeInternetGatewaysRequest.t
 type output = DescribeInternetGatewaysResult.t
 type error = Errors_internal.t

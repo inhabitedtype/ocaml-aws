@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 open Aws
 type input = ImportVolumeRequest.t
 type output = ImportVolumeResult.t
