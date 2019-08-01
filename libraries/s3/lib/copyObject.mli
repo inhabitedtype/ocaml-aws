@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = CopyObjectRequest.t
 type output = CopyObjectOutput.t
 type error = Errors_internal.t

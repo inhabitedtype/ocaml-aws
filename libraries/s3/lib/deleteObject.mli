@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = DeleteObjectRequest.t
 type output = DeleteObjectOutput.t
 type error = Errors_internal.t

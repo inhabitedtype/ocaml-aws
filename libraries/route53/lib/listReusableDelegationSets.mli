@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = ListReusableDelegationSetsRequest.t
 type output = ListReusableDelegationSetsResponse.t
 type error = Errors_internal.t

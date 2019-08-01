@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 open Aws
 type input = ModifyDBClusterMessage.t
 type output = ModifyDBClusterResult.t

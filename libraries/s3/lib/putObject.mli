@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = PutObjectRequest.t
 type output = PutObjectOutput.t
 type error = Errors_internal.t

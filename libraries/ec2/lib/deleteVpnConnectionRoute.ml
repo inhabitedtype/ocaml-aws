@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 open Aws
 type input = DeleteVpnConnectionRouteRequest.t
 type output = unit

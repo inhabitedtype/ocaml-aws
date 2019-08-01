@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = ListResourceRecordSetsRequest.t
 type output = ListResourceRecordSetsResponse.t
 type error = Errors_internal.t

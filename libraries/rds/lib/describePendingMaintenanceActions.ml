@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 open Aws
 type input = DescribePendingMaintenanceActionsMessage.t
 type output = PendingMaintenanceActionsMessage.t

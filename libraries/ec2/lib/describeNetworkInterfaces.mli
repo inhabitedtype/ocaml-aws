@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = DescribeNetworkInterfacesRequest.t
 type output = DescribeNetworkInterfacesResult.t
 type error = Errors_internal.t

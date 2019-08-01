@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = GetBucketPolicyRequest.t
 type output = GetBucketPolicyOutput.t
 type error = Errors_internal.t

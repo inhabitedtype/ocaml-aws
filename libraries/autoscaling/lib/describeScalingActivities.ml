@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 open Aws
 type input = DescribeScalingActivitiesType.t
 type output = ActivitiesType.t

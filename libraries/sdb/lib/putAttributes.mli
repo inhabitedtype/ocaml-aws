@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = PutAttributesRequest.t
 type output = unit
 type error = Errors_internal.t

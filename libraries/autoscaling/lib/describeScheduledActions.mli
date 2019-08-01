@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = DescribeScheduledActionsType.t
 type output = ScheduledActionsType.t
 type error = Errors_internal.t

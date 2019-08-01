@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = GetBucketRequestPaymentRequest.t
 type output = GetBucketRequestPaymentOutput.t
 type error = Errors_internal.t

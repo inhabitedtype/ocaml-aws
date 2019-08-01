@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = ImportInstanceRequest.t
 type output = ImportInstanceResult.t
 type error = Errors_internal.t

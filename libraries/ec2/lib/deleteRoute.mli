@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = DeleteRouteRequest.t
 type output = unit
 type error = Errors_internal.t

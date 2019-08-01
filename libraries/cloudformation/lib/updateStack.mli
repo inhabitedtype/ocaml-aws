@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = UpdateStackInput.t
 type output = UpdateStackOutput.t
 type error = Errors_internal.t

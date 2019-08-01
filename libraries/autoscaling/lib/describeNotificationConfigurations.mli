@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = DescribeNotificationConfigurationsType.t
 type output = DescribeNotificationConfigurationsAnswer.t
 type error = Errors_internal.t

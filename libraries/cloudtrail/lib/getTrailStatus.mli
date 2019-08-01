@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = GetTrailStatusRequest.t
 type output = GetTrailStatusResponse.t
 type error = Errors_internal.t

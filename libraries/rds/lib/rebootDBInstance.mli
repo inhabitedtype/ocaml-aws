@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = RebootDBInstanceMessage.t
 type output = RebootDBInstanceResult.t
 type error = Errors_internal.t

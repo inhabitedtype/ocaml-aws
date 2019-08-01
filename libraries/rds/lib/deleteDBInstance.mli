@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = DeleteDBInstanceMessage.t
 type output = DeleteDBInstanceResult.t
 type error = Errors_internal.t

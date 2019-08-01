@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = GetBucketLocationRequest.t
 type output = GetBucketLocationOutput.t
 type error = Errors_internal.t

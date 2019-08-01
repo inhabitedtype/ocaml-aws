@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 open Aws
 type input = GetGeoLocationRequest.t
 type output = GetGeoLocationResponse.t

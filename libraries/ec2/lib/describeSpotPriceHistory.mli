@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = DescribeSpotPriceHistoryRequest.t
 type output = DescribeSpotPriceHistoryResult.t
 type error = Errors_internal.t

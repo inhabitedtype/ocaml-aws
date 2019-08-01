@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = GetBucketCorsRequest.t
 type output = GetBucketCorsOutput.t
 type error = Errors_internal.t

@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = DescribeOptionGroupsMessage.t
 type output = OptionGroups.t
 type error = Errors_internal.t

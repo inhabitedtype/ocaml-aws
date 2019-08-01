@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 open Aws
 type input = DescribePoliciesType.t
 type output = PoliciesType.t

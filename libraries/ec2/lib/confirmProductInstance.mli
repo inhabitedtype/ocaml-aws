@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = ConfirmProductInstanceRequest.t
 type output = ConfirmProductInstanceResult.t
 type error = Errors_internal.t

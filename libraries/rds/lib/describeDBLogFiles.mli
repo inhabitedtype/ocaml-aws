@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = DescribeDBLogFilesMessage.t
 type output = DescribeDBLogFilesResponse.t
 type error = Errors_internal.t

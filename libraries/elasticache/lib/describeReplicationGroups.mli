@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = DescribeReplicationGroupsMessage.t
 type output = ReplicationGroupMessage.t
 type error = Errors_internal.t

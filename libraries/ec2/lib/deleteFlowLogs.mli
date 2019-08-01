@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = DeleteFlowLogsRequest.t
 type output = DeleteFlowLogsResult.t
 type error = Errors_internal.t

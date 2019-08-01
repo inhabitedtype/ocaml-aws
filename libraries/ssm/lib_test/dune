@@ -1,6 +1,6 @@
 (executables
  (names test_async test_lwt)
- (flags (:standard -w -27))
+ (flags (:standard -w -27 -w -33))
  (modules test_async test_lwt aws_ssm_test)
  (libraries aws aws_ssm aws-async aws-lwt
             oUnit yojson

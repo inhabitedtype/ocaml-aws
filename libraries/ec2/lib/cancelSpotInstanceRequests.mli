@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = CancelSpotInstanceRequestsRequest.t
 type output = CancelSpotInstanceRequestsResult.t
 type error = Errors_internal.t

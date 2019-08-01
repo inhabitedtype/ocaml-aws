@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = ModifyOptionGroupMessage.t
 type output = ModifyOptionGroupResult.t
 type error = Errors_internal.t

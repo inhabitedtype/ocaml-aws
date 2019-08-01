@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 open Aws
 type input = CreateBucketRequest.t
 type output = CreateBucketOutput.t

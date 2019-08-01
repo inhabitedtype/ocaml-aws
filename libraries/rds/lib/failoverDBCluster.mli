@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = FailoverDBClusterMessage.t
 type output = FailoverDBClusterResult.t
 type error = Errors_internal.t

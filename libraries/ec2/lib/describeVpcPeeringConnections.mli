@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = DescribeVpcPeeringConnectionsRequest.t
 type output = DescribeVpcPeeringConnectionsResult.t
 type error = Errors_internal.t

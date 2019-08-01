@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = CreateNetworkAclRequest.t
 type output = CreateNetworkAclResult.t
 type error = Errors_internal.t

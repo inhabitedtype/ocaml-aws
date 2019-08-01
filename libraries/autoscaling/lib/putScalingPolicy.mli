@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = PutScalingPolicyType.t
 type output = PolicyARNType.t
 type error = Errors_internal.t

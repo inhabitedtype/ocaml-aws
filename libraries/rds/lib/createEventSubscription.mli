@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = CreateEventSubscriptionMessage.t
 type output = CreateEventSubscriptionResult.t
 type error = Errors_internal.t

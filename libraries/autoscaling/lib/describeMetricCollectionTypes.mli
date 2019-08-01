@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = Aws.BaseTypes.Unit.t
 type output = DescribeMetricCollectionTypesAnswer.t
 type error = Errors_internal.t

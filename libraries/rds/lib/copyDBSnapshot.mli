@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = CopyDBSnapshotMessage.t
 type output = CopyDBSnapshotResult.t
 type error = Errors_internal.t

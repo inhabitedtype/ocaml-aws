@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 open Aws
 type input = DeleteInternetGatewayRequest.t
 type output = unit

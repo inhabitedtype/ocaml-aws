@@ -1,5 +1,5 @@
 open OUnit
-open Aws_sts
+open Aws_route53
 
 module TestSuite(Runtime : sig
     type 'a m

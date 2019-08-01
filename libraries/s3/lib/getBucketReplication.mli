@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = GetBucketReplicationRequest.t
 type output = GetBucketReplicationOutput.t
 type error = Errors_internal.t

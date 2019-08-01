@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = GetBucketAclRequest.t
 type output = GetBucketAclOutput.t
 type error = Errors_internal.t

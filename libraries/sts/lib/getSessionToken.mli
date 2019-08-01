@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = GetSessionTokenRequest.t
 type output = GetSessionTokenResponse.t
 type error = Errors_internal.t

@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = CreateSnapshotMessage.t
 type output = CreateSnapshotResult.t
 type error = Errors_internal.t
