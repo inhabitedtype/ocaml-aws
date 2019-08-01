@@ -16,3 +16,4 @@ libraries/**/*.install
 lib/**/.merlin
 .envrc
 **/.merlin
+.idea

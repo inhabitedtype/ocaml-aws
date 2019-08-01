@@ -13,7 +13,7 @@ end
 module Shape = struct
   type contents =
     | Structure of Structure.member list
-    | List of string * string option
+    | List of string * string option * bool
     | Enum of string list
     | Map of (string * string option) * (string * string option)
 
