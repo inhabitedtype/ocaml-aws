@@ -4,7 +4,7 @@
  (modules test_async test_lwt aws_elasticloadbalancing_test)
  (libraries aws aws_elasticloadbalancing aws-async aws-lwt
             oUnit yojson
-            async cohttp-async
+            async async_ssl cohttp-async
             lwt cohttp-lwt cohttp-lwt-unix))
 
 (alias

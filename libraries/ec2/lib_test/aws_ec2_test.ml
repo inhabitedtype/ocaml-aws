@@ -89,7 +89,6 @@ module TestSuite(Runtime : sig
       | `Ok _ -> true
       | `Error e -> begin print_endline (Aws.Error.format Errors_internal.to_string e); false end
     end
-  ;;
 
   let create_instance () =
     let result = Runtime.(un_m (run_request
@@ -108,7 +107,6 @@ module TestSuite(Runtime : sig
         | x::xs -> Some x
       end
     | `Error e -> begin print_endline (Aws.Error.format Errors_internal.to_string e); None end
-  ;;
 
   let create () =
     let result = create_instance () in
@@ -134,7 +132,6 @@ module TestSuite(Runtime : sig
       | `Ok _ -> true
       | `Error e -> begin print_endline (Aws.Error.format Errors_internal.to_string e); false end
     end
-  ;;
 
   let test_cases =
     [ "Describe Regions" >::  describe_regions_json
