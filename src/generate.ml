@@ -388,7 +388,7 @@ let op service version _shapes op =
          (ident "None"))
   in
   (** Tuple corresponding to (mli, ml) *)
-  ([ sopen_ "Types_internal"
+  ([ sopen_ "Types"
    ; stylet "input" (mkty op.Operation.input_shape)
    ; stylet "output" (mkty op.Operation.output_shape)
    ; stylet "error" (ty0 "Errors_internal.t")
@@ -396,7 +396,7 @@ let op service version _shapes op =
                           ; withty "output" "output"
                           ; withty "error" "error"]
    ],
-   [ open_ "Types_internal"
+   [ open_ "Types"
    ; open_ "Aws"
    ; tylet "input" (mkty op.Operation.input_shape)
    ; tylet "output" (mkty op.Operation.output_shape)

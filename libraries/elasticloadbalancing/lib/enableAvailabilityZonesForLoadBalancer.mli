@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = AddAvailabilityZonesInput.t
 type output = AddAvailabilityZonesOutput.t
 type error = Errors_internal.t

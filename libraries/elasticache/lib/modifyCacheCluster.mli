@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = ModifyCacheClusterMessage.t
 type output = ModifyCacheClusterResult.t
 type error = Errors_internal.t

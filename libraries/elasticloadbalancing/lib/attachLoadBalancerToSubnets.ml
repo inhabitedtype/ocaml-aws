@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 open Aws
 type input = AttachLoadBalancerToSubnetsInput.t
 type output = AttachLoadBalancerToSubnetsOutput.t

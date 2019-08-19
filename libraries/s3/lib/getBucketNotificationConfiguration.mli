@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = GetBucketNotificationConfigurationRequest.t
 type output = NotificationConfiguration.t
 type error = Errors_internal.t

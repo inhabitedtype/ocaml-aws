@@ -11,7 +11,7 @@ module Credentials =
       session_token: String.t ;
       expiration: DateTime.t }
     let make ~access_key_id  ~secret_access_key  ~session_token  ~expiration 
-      () = { access_key_id; secret_access_key; session_token; expiration } 
+      () = { access_key_id; secret_access_key; session_token; expiration }
     let parse xml =
       Some
         {
@@ -29,7 +29,6 @@ module Credentials =
             (Xml.required "Expiration"
                (Util.option_bind (Xml.member "Expiration" xml) DateTime.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -42,7 +41,6 @@ module Credentials =
                 ("SecretAccessKey", (String.to_query v.secret_access_key)));
            Some
              (Query.Pair ("AccessKeyId", (String.to_query v.access_key_id)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
@@ -50,7 +48,6 @@ module Credentials =
            Some ("session_token", (String.to_json v.session_token));
            Some ("secret_access_key", (String.to_json v.secret_access_key));
            Some ("access_key_id", (String.to_json v.access_key_id))])
-      
     let of_json j =
       {
         access_key_id =
@@ -64,14 +61,14 @@ module Credentials =
              (Util.of_option_exn (Json.lookup j "session_token")));
         expiration =
           (DateTime.of_json (Util.of_option_exn (Json.lookup j "expiration")))
-      } 
+      }
   end
 module FederatedUser =
   struct
     type t = {
       federated_user_id: String.t ;
       arn: String.t }
-    let make ~federated_user_id  ~arn  () = { federated_user_id; arn } 
+    let make ~federated_user_id  ~arn  () = { federated_user_id; arn }
     let parse xml =
       Some
         {
@@ -83,7 +80,6 @@ module FederatedUser =
             (Xml.required "Arn"
                (Util.option_bind (Xml.member "Arn" xml) String.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -91,27 +87,25 @@ module FederatedUser =
            Some
              (Query.Pair
                 ("FederatedUserId", (String.to_query v.federated_user_id)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("arn", (String.to_json v.arn));
            Some ("federated_user_id", (String.to_json v.federated_user_id))])
-      
     let of_json j =
       {
         federated_user_id =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "federated_user_id")));
         arn = (String.of_json (Util.of_option_exn (Json.lookup j "arn")))
-      } 
+      }
   end
 module AssumedRoleUser =
   struct
     type t = {
       assumed_role_id: String.t ;
       arn: String.t }
-    let make ~assumed_role_id  ~arn  () = { assumed_role_id; arn } 
+    let make ~assumed_role_id  ~arn  () = { assumed_role_id; arn }
     let parse xml =
       Some
         {
@@ -123,7 +117,6 @@ module AssumedRoleUser =
             (Xml.required "Arn"
                (Util.option_bind (Xml.member "Arn" xml) String.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -131,48 +124,43 @@ module AssumedRoleUser =
            Some
              (Query.Pair
                 ("AssumedRoleId", (String.to_query v.assumed_role_id)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("arn", (String.to_json v.arn));
            Some ("assumed_role_id", (String.to_json v.assumed_role_id))])
-      
     let of_json j =
       {
         assumed_role_id =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "assumed_role_id")));
         arn = (String.of_json (Util.of_option_exn (Json.lookup j "arn")))
-      } 
+      }
   end
 module PackedPolicyTooLargeException =
   struct
     type t = {
       message: String.t option }
-    let make ?message  () = { message } 
+    let make ?message  () = { message }
     let parse xml =
       Some
         {
           message =
             (Util.option_bind (Xml.member "message" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.message
-              (fun f  -> Query.Pair ("message", (String.to_query f)))])
-      
+              (fun f -> Query.Pair ("message", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.message
-              (fun f  -> ("message", (String.to_json f)))])
-      
+              (fun f -> ("message", (String.to_json f)))])
     let of_json j =
       { message = (Util.option_map (Json.lookup j "message") String.of_json)
-      } 
+      }
   end
 module GetFederationTokenResponse =
   struct
@@ -182,7 +170,7 @@ module GetFederationTokenResponse =
       federated_user: FederatedUser.t option ;
       packed_policy_size: Integer.t option }
     let make ?credentials  ?federated_user  ?packed_policy_size  () =
-      { credentials; federated_user; packed_policy_size } 
+      { credentials; federated_user; packed_policy_size }
     let parse xml =
       Some
         {
@@ -196,29 +184,25 @@ module GetFederationTokenResponse =
             (Util.option_bind (Xml.member "PackedPolicySize" xml)
                Integer.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.packed_policy_size
-              (fun f  ->
-                 Query.Pair ("PackedPolicySize", (Integer.to_query f)));
+              (fun f -> Query.Pair ("PackedPolicySize", (Integer.to_query f)));
            Util.option_map v.federated_user
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("FederatedUser", (FederatedUser.to_query f)));
            Util.option_map v.credentials
-             (fun f  -> Query.Pair ("Credentials", (Credentials.to_query f)))])
-      
+             (fun f -> Query.Pair ("Credentials", (Credentials.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.packed_policy_size
-              (fun f  -> ("packed_policy_size", (Integer.to_json f)));
+              (fun f -> ("packed_policy_size", (Integer.to_json f)));
            Util.option_map v.federated_user
-             (fun f  -> ("federated_user", (FederatedUser.to_json f)));
+             (fun f -> ("federated_user", (FederatedUser.to_json f)));
            Util.option_map v.credentials
-             (fun f  -> ("credentials", (Credentials.to_json f)))])
-      
+             (fun f -> ("credentials", (Credentials.to_json f)))])
     let of_json j =
       {
         credentials =
@@ -229,35 +213,32 @@ module GetFederationTokenResponse =
         packed_policy_size =
           (Util.option_map (Json.lookup j "packed_policy_size")
              Integer.of_json)
-      } 
+      }
   end
 module InvalidIdentityTokenException =
   struct
     type t = {
       message: String.t option }
-    let make ?message  () = { message } 
+    let make ?message  () = { message }
     let parse xml =
       Some
         {
           message =
             (Util.option_bind (Xml.member "message" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.message
-              (fun f  -> Query.Pair ("message", (String.to_query f)))])
-      
+              (fun f -> Query.Pair ("message", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.message
-              (fun f  -> ("message", (String.to_json f)))])
-      
+              (fun f -> ("message", (String.to_json f)))])
     let of_json j =
       { message = (Util.option_map (Json.lookup j "message") String.of_json)
-      } 
+      }
   end
 module GetFederationTokenRequest =
   struct
@@ -267,7 +248,7 @@ module GetFederationTokenRequest =
       policy: String.t option ;
       duration_seconds: Integer.t option }
     let make ~name  ?policy  ?duration_seconds  () =
-      { name; policy; duration_seconds } 
+      { name; policy; duration_seconds }
     let parse xml =
       Some
         {
@@ -279,60 +260,53 @@ module GetFederationTokenRequest =
             (Util.option_bind (Xml.member "DurationSeconds" xml)
                Integer.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.duration_seconds
-              (fun f  -> Query.Pair ("DurationSeconds", (Integer.to_query f)));
+              (fun f -> Query.Pair ("DurationSeconds", (Integer.to_query f)));
            Util.option_map v.policy
-             (fun f  -> Query.Pair ("Policy", (String.to_query f)));
+             (fun f -> Query.Pair ("Policy", (String.to_query f)));
            Some (Query.Pair ("Name", (String.to_query v.name)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.duration_seconds
-              (fun f  -> ("duration_seconds", (Integer.to_json f)));
-           Util.option_map v.policy
-             (fun f  -> ("policy", (String.to_json f)));
+              (fun f -> ("duration_seconds", (Integer.to_json f)));
+           Util.option_map v.policy (fun f -> ("policy", (String.to_json f)));
            Some ("name", (String.to_json v.name))])
-      
     let of_json j =
       {
         name = (String.of_json (Util.of_option_exn (Json.lookup j "name")));
         policy = (Util.option_map (Json.lookup j "policy") String.of_json);
         duration_seconds =
           (Util.option_map (Json.lookup j "duration_seconds") Integer.of_json)
-      } 
+      }
   end
 module IDPRejectedClaimException =
   struct
     type t = {
       message: String.t option }
-    let make ?message  () = { message } 
+    let make ?message  () = { message }
     let parse xml =
       Some
         {
           message =
             (Util.option_bind (Xml.member "message" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.message
-              (fun f  -> Query.Pair ("message", (String.to_query f)))])
-      
+              (fun f -> Query.Pair ("message", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.message
-              (fun f  -> ("message", (String.to_json f)))])
-      
+              (fun f -> ("message", (String.to_json f)))])
     let of_json j =
       { message = (Util.option_map (Json.lookup j "message") String.of_json)
-      } 
+      }
   end
 module AssumeRoleWithSAMLResponse =
   struct
@@ -357,7 +331,7 @@ module AssumeRoleWithSAMLResponse =
         issuer;
         audience;
         name_qualifier
-      } 
+      }
     let parse xml =
       Some
         {
@@ -380,48 +354,44 @@ module AssumeRoleWithSAMLResponse =
           name_qualifier =
             (Util.option_bind (Xml.member "NameQualifier" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.name_qualifier
-              (fun f  -> Query.Pair ("NameQualifier", (String.to_query f)));
+              (fun f -> Query.Pair ("NameQualifier", (String.to_query f)));
            Util.option_map v.audience
-             (fun f  -> Query.Pair ("Audience", (String.to_query f)));
+             (fun f -> Query.Pair ("Audience", (String.to_query f)));
            Util.option_map v.issuer
-             (fun f  -> Query.Pair ("Issuer", (String.to_query f)));
+             (fun f -> Query.Pair ("Issuer", (String.to_query f)));
            Util.option_map v.subject_type
-             (fun f  -> Query.Pair ("SubjectType", (String.to_query f)));
+             (fun f -> Query.Pair ("SubjectType", (String.to_query f)));
            Util.option_map v.subject
-             (fun f  -> Query.Pair ("Subject", (String.to_query f)));
+             (fun f -> Query.Pair ("Subject", (String.to_query f)));
            Util.option_map v.packed_policy_size
-             (fun f  -> Query.Pair ("PackedPolicySize", (Integer.to_query f)));
+             (fun f -> Query.Pair ("PackedPolicySize", (Integer.to_query f)));
            Util.option_map v.assumed_role_user
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("AssumedRoleUser", (AssumedRoleUser.to_query f)));
            Util.option_map v.credentials
-             (fun f  -> Query.Pair ("Credentials", (Credentials.to_query f)))])
-      
+             (fun f -> Query.Pair ("Credentials", (Credentials.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.name_qualifier
-              (fun f  -> ("name_qualifier", (String.to_json f)));
+              (fun f -> ("name_qualifier", (String.to_json f)));
            Util.option_map v.audience
-             (fun f  -> ("audience", (String.to_json f)));
-           Util.option_map v.issuer
-             (fun f  -> ("issuer", (String.to_json f)));
+             (fun f -> ("audience", (String.to_json f)));
+           Util.option_map v.issuer (fun f -> ("issuer", (String.to_json f)));
            Util.option_map v.subject_type
-             (fun f  -> ("subject_type", (String.to_json f)));
+             (fun f -> ("subject_type", (String.to_json f)));
            Util.option_map v.subject
-             (fun f  -> ("subject", (String.to_json f)));
+             (fun f -> ("subject", (String.to_json f)));
            Util.option_map v.packed_policy_size
-             (fun f  -> ("packed_policy_size", (Integer.to_json f)));
+             (fun f -> ("packed_policy_size", (Integer.to_json f)));
            Util.option_map v.assumed_role_user
-             (fun f  -> ("assumed_role_user", (AssumedRoleUser.to_json f)));
+             (fun f -> ("assumed_role_user", (AssumedRoleUser.to_json f)));
            Util.option_map v.credentials
-             (fun f  -> ("credentials", (Credentials.to_json f)))])
-      
+             (fun f -> ("credentials", (Credentials.to_json f)))])
     let of_json j =
       {
         credentials =
@@ -440,121 +410,109 @@ module AssumeRoleWithSAMLResponse =
           (Util.option_map (Json.lookup j "audience") String.of_json);
         name_qualifier =
           (Util.option_map (Json.lookup j "name_qualifier") String.of_json)
-      } 
+      }
   end
 module MalformedPolicyDocumentException =
   struct
     type t = {
       message: String.t option }
-    let make ?message  () = { message } 
+    let make ?message  () = { message }
     let parse xml =
       Some
         {
           message =
             (Util.option_bind (Xml.member "message" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.message
-              (fun f  -> Query.Pair ("message", (String.to_query f)))])
-      
+              (fun f -> Query.Pair ("message", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.message
-              (fun f  -> ("message", (String.to_json f)))])
-      
+              (fun f -> ("message", (String.to_json f)))])
     let of_json j =
       { message = (Util.option_map (Json.lookup j "message") String.of_json)
-      } 
+      }
   end
 module IDPCommunicationErrorException =
   struct
     type t = {
       message: String.t option }
-    let make ?message  () = { message } 
+    let make ?message  () = { message }
     let parse xml =
       Some
         {
           message =
             (Util.option_bind (Xml.member "message" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.message
-              (fun f  -> Query.Pair ("message", (String.to_query f)))])
-      
+              (fun f -> Query.Pair ("message", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.message
-              (fun f  -> ("message", (String.to_json f)))])
-      
+              (fun f -> ("message", (String.to_json f)))])
     let of_json j =
       { message = (Util.option_map (Json.lookup j "message") String.of_json)
-      } 
+      }
   end
 module ExpiredTokenException =
   struct
     type t = {
       message: String.t option }
-    let make ?message  () = { message } 
+    let make ?message  () = { message }
     let parse xml =
       Some
         {
           message =
             (Util.option_bind (Xml.member "message" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.message
-              (fun f  -> Query.Pair ("message", (String.to_query f)))])
-      
+              (fun f -> Query.Pair ("message", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.message
-              (fun f  -> ("message", (String.to_json f)))])
-      
+              (fun f -> ("message", (String.to_json f)))])
     let of_json j =
       { message = (Util.option_map (Json.lookup j "message") String.of_json)
-      } 
+      }
   end
 module DecodeAuthorizationMessageResponse =
   struct
     type t = {
       decoded_message: String.t option }
-    let make ?decoded_message  () = { decoded_message } 
+    let make ?decoded_message  () = { decoded_message }
     let parse xml =
       Some
         {
           decoded_message =
             (Util.option_bind (Xml.member "DecodedMessage" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.decoded_message
-              (fun f  -> Query.Pair ("DecodedMessage", (String.to_query f)))])
-      
+              (fun f -> Query.Pair ("DecodedMessage", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.decoded_message
-              (fun f  -> ("decoded_message", (String.to_json f)))])
-      
+              (fun f -> ("decoded_message", (String.to_json f)))])
     let of_json j =
       {
         decoded_message =
           (Util.option_map (Json.lookup j "decoded_message") String.of_json)
-      } 
+      }
   end
 module AssumeRoleResponse =
   struct
@@ -564,7 +522,7 @@ module AssumeRoleResponse =
       assumed_role_user: AssumedRoleUser.t option ;
       packed_policy_size: Integer.t option }
     let make ?credentials  ?assumed_role_user  ?packed_policy_size  () =
-      { credentials; assumed_role_user; packed_policy_size } 
+      { credentials; assumed_role_user; packed_policy_size }
     let parse xml =
       Some
         {
@@ -578,29 +536,25 @@ module AssumeRoleResponse =
             (Util.option_bind (Xml.member "PackedPolicySize" xml)
                Integer.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.packed_policy_size
-              (fun f  ->
-                 Query.Pair ("PackedPolicySize", (Integer.to_query f)));
+              (fun f -> Query.Pair ("PackedPolicySize", (Integer.to_query f)));
            Util.option_map v.assumed_role_user
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("AssumedRoleUser", (AssumedRoleUser.to_query f)));
            Util.option_map v.credentials
-             (fun f  -> Query.Pair ("Credentials", (Credentials.to_query f)))])
-      
+             (fun f -> Query.Pair ("Credentials", (Credentials.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.packed_policy_size
-              (fun f  -> ("packed_policy_size", (Integer.to_json f)));
+              (fun f -> ("packed_policy_size", (Integer.to_json f)));
            Util.option_map v.assumed_role_user
-             (fun f  -> ("assumed_role_user", (AssumedRoleUser.to_json f)));
+             (fun f -> ("assumed_role_user", (AssumedRoleUser.to_json f)));
            Util.option_map v.credentials
-             (fun f  -> ("credentials", (Credentials.to_json f)))])
-      
+             (fun f -> ("credentials", (Credentials.to_json f)))])
     let of_json j =
       {
         credentials =
@@ -611,13 +565,13 @@ module AssumeRoleResponse =
         packed_policy_size =
           (Util.option_map (Json.lookup j "packed_policy_size")
              Integer.of_json)
-      } 
+      }
   end
 module DecodeAuthorizationMessageRequest =
   struct
     type t = {
       encoded_message: String.t }
-    let make ~encoded_message  () = { encoded_message } 
+    let make ~encoded_message  () = { encoded_message }
     let parse xml =
       Some
         {
@@ -626,31 +580,28 @@ module DecodeAuthorizationMessageRequest =
                (Util.option_bind (Xml.member "EncodedMessage" xml)
                   String.parse))
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Some
               (Query.Pair
                  ("EncodedMessage", (String.to_query v.encoded_message)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Some ("encoded_message", (String.to_json v.encoded_message))])
-      
     let of_json j =
       {
         encoded_message =
           (String.of_json
              (Util.of_option_exn (Json.lookup j "encoded_message")))
-      } 
+      }
   end
 module GetSessionTokenResponse =
   struct
     type t = {
       credentials: Credentials.t option }
-    let make ?credentials  () = { credentials } 
+    let make ?credentials  () = { credentials }
     let parse xml =
       Some
         {
@@ -658,52 +609,46 @@ module GetSessionTokenResponse =
             (Util.option_bind (Xml.member "Credentials" xml)
                Credentials.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.credentials
-              (fun f  -> Query.Pair ("Credentials", (Credentials.to_query f)))])
-      
+              (fun f -> Query.Pair ("Credentials", (Credentials.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.credentials
-              (fun f  -> ("credentials", (Credentials.to_json f)))])
-      
+              (fun f -> ("credentials", (Credentials.to_json f)))])
     let of_json j =
       {
         credentials =
           (Util.option_map (Json.lookup j "credentials") Credentials.of_json)
-      } 
+      }
   end
 module InvalidAuthorizationMessageException =
   struct
     type t = {
       message: String.t option }
-    let make ?message  () = { message } 
+    let make ?message  () = { message }
     let parse xml =
       Some
         {
           message =
             (Util.option_bind (Xml.member "message" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.message
-              (fun f  -> Query.Pair ("message", (String.to_query f)))])
-      
+              (fun f -> Query.Pair ("message", (String.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.message
-              (fun f  -> ("message", (String.to_json f)))])
-      
+              (fun f -> ("message", (String.to_json f)))])
     let of_json j =
       { message = (Util.option_map (Json.lookup j "message") String.of_json)
-      } 
+      }
   end
 module GetSessionTokenRequest =
   struct
@@ -713,7 +658,7 @@ module GetSessionTokenRequest =
       serial_number: String.t option ;
       token_code: String.t option }
     let make ?duration_seconds  ?serial_number  ?token_code  () =
-      { duration_seconds; serial_number; token_code } 
+      { duration_seconds; serial_number; token_code }
     let parse xml =
       Some
         {
@@ -725,27 +670,24 @@ module GetSessionTokenRequest =
           token_code =
             (Util.option_bind (Xml.member "TokenCode" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.token_code
-              (fun f  -> Query.Pair ("TokenCode", (String.to_query f)));
+              (fun f -> Query.Pair ("TokenCode", (String.to_query f)));
            Util.option_map v.serial_number
-             (fun f  -> Query.Pair ("SerialNumber", (String.to_query f)));
+             (fun f -> Query.Pair ("SerialNumber", (String.to_query f)));
            Util.option_map v.duration_seconds
-             (fun f  -> Query.Pair ("DurationSeconds", (Integer.to_query f)))])
-      
+             (fun f -> Query.Pair ("DurationSeconds", (Integer.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.token_code
-              (fun f  -> ("token_code", (String.to_json f)));
+              (fun f -> ("token_code", (String.to_json f)));
            Util.option_map v.serial_number
-             (fun f  -> ("serial_number", (String.to_json f)));
+             (fun f -> ("serial_number", (String.to_json f)));
            Util.option_map v.duration_seconds
-             (fun f  -> ("duration_seconds", (Integer.to_json f)))])
-      
+             (fun f -> ("duration_seconds", (Integer.to_json f)))])
     let of_json j =
       {
         duration_seconds =
@@ -754,7 +696,7 @@ module GetSessionTokenRequest =
           (Util.option_map (Json.lookup j "serial_number") String.of_json);
         token_code =
           (Util.option_map (Json.lookup j "token_code") String.of_json)
-      } 
+      }
   end
 module AssumeRoleWithSAMLRequest =
   struct
@@ -768,7 +710,7 @@ module AssumeRoleWithSAMLRequest =
     let make ~role_arn  ~principal_arn  ~s_a_m_l_assertion  ?policy 
       ?duration_seconds  () =
       { role_arn; principal_arn; s_a_m_l_assertion; policy; duration_seconds
-      } 
+      }
     let parse xml =
       Some
         {
@@ -787,32 +729,28 @@ module AssumeRoleWithSAMLRequest =
             (Util.option_bind (Xml.member "DurationSeconds" xml)
                Integer.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.duration_seconds
-              (fun f  -> Query.Pair ("DurationSeconds", (Integer.to_query f)));
+              (fun f -> Query.Pair ("DurationSeconds", (Integer.to_query f)));
            Util.option_map v.policy
-             (fun f  -> Query.Pair ("Policy", (String.to_query f)));
+             (fun f -> Query.Pair ("Policy", (String.to_query f)));
            Some
              (Query.Pair
                 ("SAMLAssertion", (String.to_query v.s_a_m_l_assertion)));
            Some
              (Query.Pair ("PrincipalArn", (String.to_query v.principal_arn)));
            Some (Query.Pair ("RoleArn", (String.to_query v.role_arn)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.duration_seconds
-              (fun f  -> ("duration_seconds", (Integer.to_json f)));
-           Util.option_map v.policy
-             (fun f  -> ("policy", (String.to_json f)));
+              (fun f -> ("duration_seconds", (Integer.to_json f)));
+           Util.option_map v.policy (fun f -> ("policy", (String.to_json f)));
            Some ("s_a_m_l_assertion", (String.to_json v.s_a_m_l_assertion));
            Some ("principal_arn", (String.to_json v.principal_arn));
            Some ("role_arn", (String.to_json v.role_arn))])
-      
     let of_json j =
       {
         role_arn =
@@ -826,7 +764,7 @@ module AssumeRoleWithSAMLRequest =
         policy = (Util.option_map (Json.lookup j "policy") String.of_json);
         duration_seconds =
           (Util.option_map (Json.lookup j "duration_seconds") Integer.of_json)
-      } 
+      }
   end
 module AssumeRoleWithWebIdentityResponse =
   struct
@@ -847,7 +785,7 @@ module AssumeRoleWithWebIdentityResponse =
         packed_policy_size;
         provider;
         audience
-      } 
+      }
     let parse xml =
       Some
         {
@@ -868,43 +806,40 @@ module AssumeRoleWithWebIdentityResponse =
           audience =
             (Util.option_bind (Xml.member "Audience" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.audience
-              (fun f  -> Query.Pair ("Audience", (String.to_query f)));
+              (fun f -> Query.Pair ("Audience", (String.to_query f)));
            Util.option_map v.provider
-             (fun f  -> Query.Pair ("Provider", (String.to_query f)));
+             (fun f -> Query.Pair ("Provider", (String.to_query f)));
            Util.option_map v.packed_policy_size
-             (fun f  -> Query.Pair ("PackedPolicySize", (Integer.to_query f)));
+             (fun f -> Query.Pair ("PackedPolicySize", (Integer.to_query f)));
            Util.option_map v.assumed_role_user
-             (fun f  ->
+             (fun f ->
                 Query.Pair ("AssumedRoleUser", (AssumedRoleUser.to_query f)));
            Util.option_map v.subject_from_web_identity_token
-             (fun f  ->
+             (fun f ->
                 Query.Pair
                   ("SubjectFromWebIdentityToken", (String.to_query f)));
            Util.option_map v.credentials
-             (fun f  -> Query.Pair ("Credentials", (Credentials.to_query f)))])
-      
+             (fun f -> Query.Pair ("Credentials", (Credentials.to_query f)))])
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.audience
-              (fun f  -> ("audience", (String.to_json f)));
+              (fun f -> ("audience", (String.to_json f)));
            Util.option_map v.provider
-             (fun f  -> ("provider", (String.to_json f)));
+             (fun f -> ("provider", (String.to_json f)));
            Util.option_map v.packed_policy_size
-             (fun f  -> ("packed_policy_size", (Integer.to_json f)));
+             (fun f -> ("packed_policy_size", (Integer.to_json f)));
            Util.option_map v.assumed_role_user
-             (fun f  -> ("assumed_role_user", (AssumedRoleUser.to_json f)));
+             (fun f -> ("assumed_role_user", (AssumedRoleUser.to_json f)));
            Util.option_map v.subject_from_web_identity_token
-             (fun f  ->
+             (fun f ->
                 ("subject_from_web_identity_token", (String.to_json f)));
            Util.option_map v.credentials
-             (fun f  -> ("credentials", (Credentials.to_json f)))])
-      
+             (fun f -> ("credentials", (Credentials.to_json f)))])
     let of_json j =
       {
         credentials =
@@ -922,7 +857,7 @@ module AssumeRoleWithWebIdentityResponse =
           (Util.option_map (Json.lookup j "provider") String.of_json);
         audience =
           (Util.option_map (Json.lookup j "audience") String.of_json)
-      } 
+      }
   end
 module AssumeRoleWithWebIdentityRequest =
   struct
@@ -943,7 +878,7 @@ module AssumeRoleWithWebIdentityRequest =
         provider_id;
         policy;
         duration_seconds
-      } 
+      }
     let parse xml =
       Some
         {
@@ -965,16 +900,15 @@ module AssumeRoleWithWebIdentityRequest =
             (Util.option_bind (Xml.member "DurationSeconds" xml)
                Integer.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.duration_seconds
-              (fun f  -> Query.Pair ("DurationSeconds", (Integer.to_query f)));
+              (fun f -> Query.Pair ("DurationSeconds", (Integer.to_query f)));
            Util.option_map v.policy
-             (fun f  -> Query.Pair ("Policy", (String.to_query f)));
+             (fun f -> Query.Pair ("Policy", (String.to_query f)));
            Util.option_map v.provider_id
-             (fun f  -> Query.Pair ("ProviderId", (String.to_query f)));
+             (fun f -> Query.Pair ("ProviderId", (String.to_query f)));
            Some
              (Query.Pair
                 ("WebIdentityToken", (String.to_query v.web_identity_token)));
@@ -982,20 +916,17 @@ module AssumeRoleWithWebIdentityRequest =
              (Query.Pair
                 ("RoleSessionName", (String.to_query v.role_session_name)));
            Some (Query.Pair ("RoleArn", (String.to_query v.role_arn)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.duration_seconds
-              (fun f  -> ("duration_seconds", (Integer.to_json f)));
-           Util.option_map v.policy
-             (fun f  -> ("policy", (String.to_json f)));
+              (fun f -> ("duration_seconds", (Integer.to_json f)));
+           Util.option_map v.policy (fun f -> ("policy", (String.to_json f)));
            Util.option_map v.provider_id
-             (fun f  -> ("provider_id", (String.to_json f)));
+             (fun f -> ("provider_id", (String.to_json f)));
            Some ("web_identity_token", (String.to_json v.web_identity_token));
            Some ("role_session_name", (String.to_json v.role_session_name));
            Some ("role_arn", (String.to_json v.role_arn))])
-      
     let of_json j =
       {
         role_arn =
@@ -1011,7 +942,7 @@ module AssumeRoleWithWebIdentityRequest =
         policy = (Util.option_map (Json.lookup j "policy") String.of_json);
         duration_seconds =
           (Util.option_map (Json.lookup j "duration_seconds") Integer.of_json)
-      } 
+      }
   end
 module AssumeRoleRequest =
   struct
@@ -1034,7 +965,7 @@ module AssumeRoleRequest =
         external_id;
         serial_number;
         token_code
-      } 
+      }
     let parse xml =
       Some
         {
@@ -1056,41 +987,37 @@ module AssumeRoleRequest =
           token_code =
             (Util.option_bind (Xml.member "TokenCode" xml) String.parse)
         }
-      
     let to_query v =
       Query.List
         (Util.list_filter_opt
            [Util.option_map v.token_code
-              (fun f  -> Query.Pair ("TokenCode", (String.to_query f)));
+              (fun f -> Query.Pair ("TokenCode", (String.to_query f)));
            Util.option_map v.serial_number
-             (fun f  -> Query.Pair ("SerialNumber", (String.to_query f)));
+             (fun f -> Query.Pair ("SerialNumber", (String.to_query f)));
            Util.option_map v.external_id
-             (fun f  -> Query.Pair ("ExternalId", (String.to_query f)));
+             (fun f -> Query.Pair ("ExternalId", (String.to_query f)));
            Util.option_map v.duration_seconds
-             (fun f  -> Query.Pair ("DurationSeconds", (Integer.to_query f)));
+             (fun f -> Query.Pair ("DurationSeconds", (Integer.to_query f)));
            Util.option_map v.policy
-             (fun f  -> Query.Pair ("Policy", (String.to_query f)));
+             (fun f -> Query.Pair ("Policy", (String.to_query f)));
            Some
              (Query.Pair
                 ("RoleSessionName", (String.to_query v.role_session_name)));
            Some (Query.Pair ("RoleArn", (String.to_query v.role_arn)))])
-      
     let to_json v =
       `Assoc
         (Util.list_filter_opt
            [Util.option_map v.token_code
-              (fun f  -> ("token_code", (String.to_json f)));
+              (fun f -> ("token_code", (String.to_json f)));
            Util.option_map v.serial_number
-             (fun f  -> ("serial_number", (String.to_json f)));
+             (fun f -> ("serial_number", (String.to_json f)));
            Util.option_map v.external_id
-             (fun f  -> ("external_id", (String.to_json f)));
+             (fun f -> ("external_id", (String.to_json f)));
            Util.option_map v.duration_seconds
-             (fun f  -> ("duration_seconds", (Integer.to_json f)));
-           Util.option_map v.policy
-             (fun f  -> ("policy", (String.to_json f)));
+             (fun f -> ("duration_seconds", (Integer.to_json f)));
+           Util.option_map v.policy (fun f -> ("policy", (String.to_json f)));
            Some ("role_session_name", (String.to_json v.role_session_name));
            Some ("role_arn", (String.to_json v.role_arn))])
-      
     let of_json j =
       {
         role_arn =
@@ -1107,5 +1034,5 @@ module AssumeRoleRequest =
           (Util.option_map (Json.lookup j "serial_number") String.of_json);
         token_code =
           (Util.option_map (Json.lookup j "token_code") String.of_json)
-      } 
+      }
   end

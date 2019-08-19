@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = CreateDocumentRequest.t
 type output = CreateDocumentResult.t
 type error = Errors_internal.t

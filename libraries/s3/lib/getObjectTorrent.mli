@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = GetObjectTorrentRequest.t
 type output = GetObjectTorrentOutput.t
 type error = Errors_internal.t

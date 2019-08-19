@@ -17,6 +17,6 @@ depends: [
   "aws"          {>= "1.0.2"}
   "async"
   "cohttp"
-  "cohttp-async" {>= "0.99"}
+  "cohttp-async"
   "dune" {build}
 ]

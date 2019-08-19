@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = DescribeStackResourceInput.t
 type output = DescribeStackResourceOutput.t
 type error = Errors_internal.t

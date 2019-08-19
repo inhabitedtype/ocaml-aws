@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = CreateBucketRequest.t
 type output = CreateBucketOutput.t
 type error = Errors_internal.t

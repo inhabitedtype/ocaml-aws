@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = DescribeLifecycleHooksType.t
 type output = DescribeLifecycleHooksAnswer.t
 type error = Errors_internal.t

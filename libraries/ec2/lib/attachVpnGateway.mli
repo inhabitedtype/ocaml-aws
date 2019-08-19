@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = AttachVpnGatewayRequest.t
 type output = AttachVpnGatewayResult.t
 type error = Errors_internal.t

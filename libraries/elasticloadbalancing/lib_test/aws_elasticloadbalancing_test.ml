@@ -29,7 +29,7 @@ module TestSuite(Runtime : sig
       | `Ok resp ->
         Printf.printf "%s\n" (Yojson.Basic.to_string (Types.DescribeAccessPointsOutput.(to_json (of_json (to_json resp)))));
         true
-      | `Error err -> begin Printf.printf "Error: %s\n" (Aws.Error.format Errors.to_string err); false end
+      | `Error err -> begin Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err); false end
     end
 
   let describe_load_balancers_error () =
@@ -42,7 +42,7 @@ module TestSuite(Runtime : sig
     @? begin
       let open Aws.Error in
       match res with
-      | `Error (HttpError (400, AwsError [Understood Errors.LoadBalancerNotFound, _])) ->
+      | `Error (HttpError (400, AwsError [Understood Errors_internal.LoadBalancerNotFound, _])) ->
         true
       | `Error (HttpError (_, AwsError [Unknown code, message])) ->
         Printf.printf "Couldn't understand error: %s -- %s\n%!" code message;
@@ -57,7 +57,7 @@ module TestSuite(Runtime : sig
         Printf.printf "Got Transport error: %s\n%!" msg;
         false
       | `Error msg ->
-        Printf.printf "Other error: %s\n%!" (Aws.Error.format Errors.to_string msg);
+        Printf.printf "Other error: %s\n%!" (Aws.Error.format Errors_internal.to_string msg);
         false
     end
 
@@ -87,7 +87,7 @@ module TestSuite(Runtime : sig
     "CreateLoadBalancer returns successfully"
     @? begin match res with
       | `Ok resp -> true
-      | `Error err -> begin Printf.printf "Error: %s\n" (Aws.Error.format Errors.to_string err); false end
+      | `Error err -> begin Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err); false end
     end;
     let res = Runtime.(un_m (run_request
                                ~region:"us-east-1"
@@ -103,7 +103,7 @@ module TestSuite(Runtime : sig
           | (_::_) -> true
           | [] -> begin Printf.printf "No tags returned\n"; ignore (kill_lb ()); false end
         end
-      | `Error err -> begin Printf.printf "Error: %s\n" (Aws.Error.format Errors.to_string err); ignore (kill_lb ()); false end
+      | `Error err -> begin Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err); ignore (kill_lb ()); false end
     end;
     let res = Runtime.(un_m (run_request
                                ~region:"us-east-1"
@@ -123,14 +123,14 @@ module TestSuite(Runtime : sig
     "Can ConfigureHealthCheck"
     @? begin match res with
       | `Ok resp -> true
-      | `Error err -> begin Printf.printf "Error: %s\n" (Aws.Error.format Errors.to_string err); false end
+      | `Error err -> begin Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err); false end
     end;
     let res = kill_lb ()
     in
     "DeleteLoadBalancer returns successfully"
     @? begin match res with
       | `Ok resp -> true
-      | `Error err -> begin Printf.printf "Error: %s\n" (Aws.Error.format Errors.to_string err); false end
+      | `Error err -> begin Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err); false end
     end
 
 

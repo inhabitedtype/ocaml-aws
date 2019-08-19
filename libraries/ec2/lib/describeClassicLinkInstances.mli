@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = DescribeClassicLinkInstancesRequest.t
 type output = DescribeClassicLinkInstancesResult.t
 type error = Errors_internal.t

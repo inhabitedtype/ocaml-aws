@@ -1,9 +1,6 @@
 .*.sw[po]
 _build/
-setup.log
-setup.data
-*.native
-*.byte
+_opam/
 *#*
 *.core
 output/

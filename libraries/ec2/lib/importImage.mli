@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = ImportImageRequest.t
 type output = ImportImageResult.t
 type error = Errors_internal.t

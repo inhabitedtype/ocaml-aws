@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = GetBucketTaggingRequest.t
 type output = GetBucketTaggingOutput.t
 type error = Errors_internal.t

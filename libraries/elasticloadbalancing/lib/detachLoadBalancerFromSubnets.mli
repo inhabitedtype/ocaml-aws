@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = DetachLoadBalancerFromSubnetsInput.t
 type output = DetachLoadBalancerFromSubnetsOutput.t
 type error = Errors_internal.t

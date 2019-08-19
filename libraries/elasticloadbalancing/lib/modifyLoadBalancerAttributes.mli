@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = ModifyLoadBalancerAttributesInput.t
 type output = ModifyLoadBalancerAttributesOutput.t
 type error = Errors_internal.t

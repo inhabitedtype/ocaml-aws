@@ -1,4 +1,4 @@
-open Types_internal
+open Types
 type input = DescribeDBClustersMessage.t
 type output = DBClusterMessage.t
 type error = Errors_internal.t
