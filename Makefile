@@ -35,6 +35,7 @@ LIBRARIES := \
 	aws-cloudwatch \
 	aws-elasticache \
 	aws-elasticloadbalancing \
+	aws-emr \
 	aws-rds \
 	aws-sdb \
 	aws-ssm \
