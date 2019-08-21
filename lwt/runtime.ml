@@ -51,6 +51,7 @@ let run_request
   let open Cohttp in
   let headers = Header.of_list headers in
   Lwt.catch (fun () ->
+    Printf.printf "HTTP %s: %s" (Aws.Request.string_of_meth meth) (Uri.to_string uri);
     Cohttp_lwt_unix.Client.call ~headers meth uri >>= fun (resp, body) ->
     Cohttp_lwt.Body.to_string body >|= fun body ->
     let code = Code.code_of_status (Response.status resp) in
