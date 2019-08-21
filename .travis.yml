@@ -21,8 +21,8 @@ env:
   - PACKAGE="aws-async" DISTRO="ubuntu-18.04" OCAML_VERSION="4.06"
   - PACKAGE="aws-gen"   DISTRO="ubuntu-18.04" OCAML_VERSION="4.06"
   # Just run tests against one version of OCaml
-  - PACKAGE="aws_s3"                   DISTRO="ubuntu-18.04" OCAML_VERSION="4.06" TESTS="true"
-  - PACKAGE="aws_elasticloadbalancing" DISTRO="ubuntu-18.04" OCAML_VERSION="4.06" TESTS="true"
+  - PACKAGE="aws_ec2"                  DISTRO="ubuntu-18.04" OCAML_VERSION="4.06" TESTS=true
+  - PACKAGE="aws_elasticloadbalancing" DISTRO="ubuntu-18.04" OCAML_VERSION="4.06" TESTS=true
   - PACKAGE="aws"       DISTRO="ubuntu-18.04" OCAML_VERSION="4.07"
   - PACKAGE="aws-lwt"   DISTRO="ubuntu-18.04" OCAML_VERSION="4.07"
   - PACKAGE="aws-async" DISTRO="ubuntu-18.04" OCAML_VERSION="4.07"

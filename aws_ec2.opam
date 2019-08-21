@@ -15,6 +15,7 @@ doc: "https://github.com/inhabitedtype/ocaml-aws"
 build: [
   ["dune" "subst"] {pinned}
   ["dune" "build" "-p" name "-j" jobs]
+  ["dune" "runtest" "-p" name "-j" jobs] {with-test}
 ]
 depends: [
   "aws" {>= "0.1.0"}
