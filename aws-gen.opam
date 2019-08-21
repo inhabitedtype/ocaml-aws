@@ -13,6 +13,7 @@ build: [
   ["dune" "build" "-p" name "-j" jobs]
 ]
 depends: [
+  "atdgen"
   "yojson"
   "base-unix"
   "cmdliner"
