@@ -1,7 +1,7 @@
 language: c
 sudo: false
 services:
-  - docker
+- docker
 install: wget https://raw.githubusercontent.com/ocaml/ocaml-travisci-skeleton/master/.travis-docker.sh
 script: bash -ex ./.travis-docker.sh
 env:
@@ -12,26 +12,24 @@ env:
   - PACKAGE="aws-lwt"   DISTRO="ubuntu-18.04" OCAML_VERSION="4.04"
   - PACKAGE="aws-async" DISTRO="ubuntu-18.04" OCAML_VERSION="4.04"
   - PACKAGE="aws-gen"   DISTRO="ubuntu-18.04" OCAML_VERSION="4.04"
-
   - PACKAGE="aws"       DISTRO="ubuntu-18.04" OCAML_VERSION="4.05"
   - PACKAGE="aws-lwt"   DISTRO="ubuntu-18.04" OCAML_VERSION="4.05"
   - PACKAGE="aws-async" DISTRO="ubuntu-18.04" OCAML_VERSION="4.05"
   - PACKAGE="aws-gen"   DISTRO="ubuntu-18.04" OCAML_VERSION="4.05"
-
   - PACKAGE="aws"       DISTRO="ubuntu-18.04" OCAML_VERSION="4.06"
   - PACKAGE="aws-lwt"   DISTRO="ubuntu-18.04" OCAML_VERSION="4.06"
   - PACKAGE="aws-async" DISTRO="ubuntu-18.04" OCAML_VERSION="4.06"
   - PACKAGE="aws-gen"   DISTRO="ubuntu-18.04" OCAML_VERSION="4.06"
-
   - PACKAGE="aws"       DISTRO="ubuntu-18.04" OCAML_VERSION="4.07"
   - PACKAGE="aws-lwt"   DISTRO="ubuntu-18.04" OCAML_VERSION="4.07"
   - PACKAGE="aws-async" DISTRO="ubuntu-18.04" OCAML_VERSION="4.07"
   - PACKAGE="aws-gen"   DISTRO="ubuntu-18.04" OCAML_VERSION="4.07"
-
   - PACKAGE="aws"       DISTRO="ubuntu-18.04" OCAML_VERSION="4.08"
   - PACKAGE="aws-lwt"   DISTRO="ubuntu-18.04" OCAML_VERSION="4.08"
   - PACKAGE="aws-async" DISTRO="ubuntu-18.04" OCAML_VERSION="4.08"
   - PACKAGE="aws-gen"   DISTRO="ubuntu-18.04" OCAML_VERSION="4.08"
-
 os:
-  - linux
+- linux
+notifications:
+  slack:
+    secure: q0e1LwtRdmgcbLBwr3gI38CcRUNUZ4WPMUJzDf647rbcASwozle9uBz2O+vbv/KKtNWFQVWU8654NwT5dcC/WAlRRyiAxi1U1AGJE6TQaEI+uDGP/3el3trZ0whUm7N3vqrm2eUgY0yf1EMmJ4BvKsQAt2sBU+nOuvVhlN2XAaQCHoBOMp+xe4+7EFcGJYj9Jj6CYGgxg432jAfINQs+1gmyVSQN/1/W43UJtSN8E+dyIBeAZ/xBl7SIbA+BhOp+bojc5XMUfhRIs3f37eENM2l3ig7O/ZIwHVXIIgvHD5BQPBEuU+38TEUAeZ72pHQnGYetM5f+u8OZ5tEv+SE/RtutlhaqFA4FExMFfhsR8SurWag7+B+A/OLRONlXVJpAmOz5C23yx3awjCP8EAsjbQh+PNpmReMI+dK/H7T8jU7d5jFxCXYINtOwWrWmn7hG2M5gyHoDQ07R3SlOlqqhjI55oSz9456l48Spnt5wEbZBobUQewBsaOy69eKaNJFghjcS13elo9VjaTjxnQjCkpev2xFdL2Bc+5YeIgnSB48dPzGKhRM2O/X0EWaHbiyYzUWgKN6PBdCSTUn/Zq3zpHUdRAjV18ahCgyGuv0BInGVQ12HZQUl6z8qECbdanX0vheqwwQ22fM3Vn792TFgiFdps072aXPZXekHlfRkq34=
