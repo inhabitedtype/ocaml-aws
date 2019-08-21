@@ -9,6 +9,8 @@ module FilterRuleName =
       | Suffix 
     let str_to_t = [("suffix", Suffix); ("prefix", Prefix)]
     let t_to_str = [(Suffix, "suffix"); (Prefix, "prefix")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -67,6 +69,8 @@ module Type =
       [(Group, "Group");
       (AmazonCustomerByEmail, "AmazonCustomerByEmail");
       (CanonicalUser, "CanonicalUser")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -94,6 +98,8 @@ module TransitionStorageClass =
       | GLACIER 
     let str_to_t = [("GLACIER", GLACIER)]
     let t_to_str = [(GLACIER, "GLACIER")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -115,6 +121,8 @@ module BucketLogsPermission =
       [("WRITE", WRITE); ("READ", READ); ("FULL_CONTROL", FULL_CONTROL)]
     let t_to_str =
       [(WRITE, "WRITE"); (READ, "READ"); (FULL_CONTROL, "FULL_CONTROL")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -190,6 +198,8 @@ module Protocol =
       | Https 
     let str_to_t = [("https", Https); ("http", Http)]
     let t_to_str = [(Https, "https"); (Http, "http")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -237,6 +247,8 @@ module Event =
       (S3_ObjectCreated_Put, "s3:ObjectCreated:Put");
       (S3_ObjectCreated__, "s3:ObjectCreated:*");
       (S3_ReducedRedundancyLostObject, "s3:ReducedRedundancyLostObject")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -254,13 +266,7 @@ module S3KeyFilter =
       filter_rules: FilterRuleList.t }
     let make ?(filter_rules= [])  () = { filter_rules }
     let parse xml =
-      Some
-        {
-          filter_rules =
-            (Util.of_option []
-               (Util.option_bind (Xml.member "FilterRule" xml)
-                  FilterRuleList.parse))
-        }
+      Some { filter_rules = (Util.of_option [] (FilterRuleList.parse xml)) }
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -310,6 +316,8 @@ module ReplicationRuleStatus =
       | Disabled 
     let str_to_t = [("Disabled", Disabled); ("Enabled", Enabled)]
     let t_to_str = [(Disabled, "Disabled"); (Enabled, "Enabled")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -328,6 +336,8 @@ module ExpirationStatus =
       | Disabled 
     let str_to_t = [("Disabled", Disabled); ("Enabled", Enabled)]
     let t_to_str = [(Disabled, "Disabled"); (Enabled, "Enabled")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -510,6 +520,8 @@ module Permission =
       (WRITE_ACP, "WRITE_ACP");
       (WRITE, "WRITE");
       (FULL_CONTROL, "FULL_CONTROL")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -823,6 +835,8 @@ module ObjectStorageClass =
       [(GLACIER, "GLACIER");
       (REDUCED_REDUNDANCY, "REDUCED_REDUNDANCY");
       (STANDARD, "STANDARD")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -1058,6 +1072,8 @@ module ObjectVersionStorageClass =
       | STANDARD 
     let str_to_t = [("STANDARD", STANDARD)]
     let t_to_str = [(STANDARD, "STANDARD")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -1145,6 +1161,8 @@ module StorageClass =
       [("REDUCED_REDUNDANCY", REDUCED_REDUNDANCY); ("STANDARD", STANDARD)]
     let t_to_str =
       [(REDUCED_REDUNDANCY, "REDUCED_REDUNDANCY"); (STANDARD, "STANDARD")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -1241,9 +1259,7 @@ module LambdaFunctionConfiguration =
             (Xml.required "CloudFunction"
                (Util.option_bind (Xml.member "CloudFunction" xml)
                   String.parse));
-          events =
-            (Xml.required "Event"
-               (Util.option_bind (Xml.member "Event" xml) EventList.parse));
+          events = (Xml.required "Event" (EventList.parse xml));
           filter =
             (Util.option_bind (Xml.member "Filter" xml)
                NotificationConfigurationFilter.parse)
@@ -1301,9 +1317,7 @@ module QueueConfiguration =
           queue_arn =
             (Xml.required "Queue"
                (Util.option_bind (Xml.member "Queue" xml) String.parse));
-          events =
-            (Xml.required "Event"
-               (Util.option_bind (Xml.member "Event" xml) EventList.parse));
+          events = (Xml.required "Event" (EventList.parse xml));
           filter =
             (Util.option_bind (Xml.member "Filter" xml)
                NotificationConfigurationFilter.parse)
@@ -1357,9 +1371,7 @@ module TopicConfiguration =
           topic_arn =
             (Xml.required "Topic"
                (Util.option_bind (Xml.member "Topic" xml) String.parse));
-          events =
-            (Xml.required "Event"
-               (Util.option_bind (Xml.member "Event" xml) EventList.parse));
+          events = (Xml.required "Event" (EventList.parse xml));
           filter =
             (Util.option_bind (Xml.member "Filter" xml)
                NotificationConfigurationFilter.parse)
@@ -1417,22 +1429,10 @@ module CORSRule =
     let parse xml =
       Some
         {
-          allowed_headers =
-            (Util.of_option []
-               (Util.option_bind (Xml.member "AllowedHeader" xml)
-                  AllowedHeaders.parse));
-          allowed_methods =
-            (Util.of_option []
-               (Util.option_bind (Xml.member "AllowedMethod" xml)
-                  AllowedMethods.parse));
-          allowed_origins =
-            (Util.of_option []
-               (Util.option_bind (Xml.member "AllowedOrigin" xml)
-                  AllowedOrigins.parse));
-          expose_headers =
-            (Util.of_option []
-               (Util.option_bind (Xml.member "ExposeHeader" xml)
-                  ExposeHeaders.parse));
+          allowed_headers = (Util.of_option [] (AllowedHeaders.parse xml));
+          allowed_methods = (Util.of_option [] (AllowedMethods.parse xml));
+          allowed_origins = (Util.of_option [] (AllowedOrigins.parse xml));
+          expose_headers = (Util.of_option [] (ExposeHeaders.parse xml));
           max_age_seconds =
             (Util.option_bind (Xml.member "MaxAgeSeconds" xml) Integer.parse)
         }
@@ -1647,6 +1647,8 @@ module BucketLocationConstraint =
       (Us_west_1, "us-west-1");
       (Eu_west_1, "eu-west-1");
       (EU, "EU")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -1773,9 +1775,7 @@ module CloudFunctionConfiguration =
         {
           id = (Util.option_bind (Xml.member "Id" xml) String.parse);
           event = (Util.option_bind (Xml.member "Event" xml) Event.parse);
-          events =
-            (Util.of_option []
-               (Util.option_bind (Xml.member "Event" xml) EventList.parse));
+          events = (Util.of_option [] (EventList.parse xml));
           cloud_function =
             (Util.option_bind (Xml.member "CloudFunction" xml) String.parse);
           invocation_role =
@@ -1830,9 +1830,7 @@ module QueueConfigurationDeprecated =
         {
           id = (Util.option_bind (Xml.member "Id" xml) String.parse);
           event = (Util.option_bind (Xml.member "Event" xml) Event.parse);
-          events =
-            (Util.of_option []
-               (Util.option_bind (Xml.member "Event" xml) EventList.parse));
+          events = (Util.of_option [] (EventList.parse xml));
           queue = (Util.option_bind (Xml.member "Queue" xml) String.parse)
         }
     let to_query v =
@@ -1875,9 +1873,7 @@ module TopicConfigurationDeprecated =
       Some
         {
           id = (Util.option_bind (Xml.member "Id" xml) String.parse);
-          events =
-            (Util.of_option []
-               (Util.option_bind (Xml.member "Event" xml) EventList.parse));
+          events = (Util.of_option [] (EventList.parse xml));
           event = (Util.option_bind (Xml.member "Event" xml) Event.parse);
           topic = (Util.option_bind (Xml.member "Topic" xml) String.parse)
         }
@@ -2068,6 +2064,8 @@ module BucketVersioningStatus =
       | Suspended 
     let str_to_t = [("Suspended", Suspended); ("Enabled", Enabled)]
     let t_to_str = [(Suspended, "Suspended"); (Enabled, "Enabled")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -2086,6 +2084,8 @@ module MFADelete =
       | Disabled 
     let str_to_t = [("Disabled", Disabled); ("Enabled", Enabled)]
     let t_to_str = [(Disabled, "Disabled"); (Enabled, "Enabled")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -2104,6 +2104,8 @@ module Payer =
       | BucketOwner 
     let str_to_t = [("BucketOwner", BucketOwner); ("Requester", Requester)]
     let t_to_str = [(BucketOwner, "BucketOwner"); (Requester, "Requester")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -2504,6 +2506,8 @@ module RequestPayer =
       | Requester 
     let str_to_t = [("requester", Requester)]
     let t_to_str = [(Requester, "requester")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -2521,6 +2525,8 @@ module RequestCharged =
       | Requester 
     let str_to_t = [("requester", Requester)]
     let t_to_str = [(Requester, "requester")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -2539,6 +2545,8 @@ module ServerSideEncryption =
       | Aws_kms 
     let str_to_t = [("aws:kms", Aws_kms); ("AES256", AES256)]
     let t_to_str = [(Aws_kms, "aws:kms"); (AES256, "AES256")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -2562,10 +2570,7 @@ module ReplicationConfiguration =
           role =
             (Xml.required "Role"
                (Util.option_bind (Xml.member "Role" xml) String.parse));
-          rules =
-            (Xml.required "Rule"
-               (Util.option_bind (Xml.member "Rule" xml)
-                  ReplicationRules.parse))
+          rules = (Xml.required "Rule" (ReplicationRules.parse xml))
         }
     let to_query v =
       Query.List
@@ -2602,6 +2607,8 @@ module EncodingType =
       | Url 
     let str_to_t = [("url", Url)]
     let t_to_str = [(Url, "url")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -2628,12 +2635,16 @@ module Metadata =
     type t = (String.t, String.t) Hashtbl.t
     let make elems () = elems
     let parse xml = None
-    let to_query v = Query.to_query_hashtbl String.to_query v
+    let to_query v =
+      Query.to_query_hashtbl String.to_string String.to_query v
     let to_json v =
       `Assoc
         (Hashtbl.fold
-           (fun k -> fun v -> fun acc -> (k, (String.to_json v)) :: acc) v [])
-    let of_json j = Json.to_hashtbl String.of_json j
+           (fun k ->
+              fun v ->
+                fun acc -> ((String.to_string k), (String.to_json v)) :: acc)
+           v [])
+    let of_json j = Json.to_hashtbl String.of_string String.of_json j
   end
 module ReplicationStatus =
   struct
@@ -2652,6 +2663,8 @@ module ReplicationStatus =
       (FAILED, "FAILED");
       (PENDING, "PENDING");
       (COMPLETE, "COMPLETE")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -2668,13 +2681,7 @@ module LifecycleConfiguration =
     type t = {
       rules: Rules.t }
     let make ~rules  () = { rules }
-    let parse xml =
-      Some
-        {
-          rules =
-            (Xml.required "Rule"
-               (Util.option_bind (Xml.member "Rule" xml) Rules.parse))
-        }
+    let parse xml = Some { rules = (Xml.required "Rule" (Rules.parse xml)) }
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -2742,6 +2749,8 @@ module ObjectCannedACL =
       (Public_read_write, "public-read-write");
       (Public_read, "public-read");
       (Private, "private")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -2770,6 +2779,8 @@ module BucketCannedACL =
       (Public_read_write, "public-read-write");
       (Public_read, "public-read");
       (Private, "private")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -2851,13 +2862,7 @@ module CompletedMultipartUpload =
       parts: CompletedPartList.t }
     let make ?(parts= [])  () = { parts }
     let parse xml =
-      Some
-        {
-          parts =
-            (Util.of_option []
-               (Util.option_bind (Xml.member "Part" xml)
-                  CompletedPartList.parse))
-        }
+      Some { parts = (Util.of_option [] (CompletedPartList.parse xml)) }
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -3125,10 +3130,7 @@ module Delete =
     let parse xml =
       Some
         {
-          objects =
-            (Xml.required "Object"
-               (Util.option_bind (Xml.member "Object" xml)
-                  ObjectIdentifierList.parse));
+          objects = (Xml.required "Object" (ObjectIdentifierList.parse xml));
           quiet = (Util.option_bind (Xml.member "Quiet" xml) Boolean.parse)
         }
     let to_query v =
@@ -3180,6 +3182,8 @@ module MFADeleteStatus =
       | Disabled 
     let str_to_t = [("Disabled", Disabled); ("Enabled", Enabled)]
     let t_to_str = [(Disabled, "Disabled"); (Enabled, "Enabled")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -3198,6 +3202,8 @@ module MetadataDirective =
       | REPLACE 
     let str_to_t = [("REPLACE", REPLACE); ("COPY", COPY)]
     let t_to_str = [(REPLACE, "REPLACE"); (COPY, "COPY")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -3364,18 +3370,11 @@ module NotificationConfiguration =
       Some
         {
           topic_configurations =
-            (Util.of_option []
-               (Util.option_bind (Xml.member "TopicConfiguration" xml)
-                  TopicConfigurationList.parse));
+            (Util.of_option [] (TopicConfigurationList.parse xml));
           queue_configurations =
-            (Util.of_option []
-               (Util.option_bind (Xml.member "QueueConfiguration" xml)
-                  QueueConfigurationList.parse));
+            (Util.of_option [] (QueueConfigurationList.parse xml));
           lambda_function_configurations =
-            (Util.of_option []
-               (Util.option_bind
-                  (Xml.member "CloudFunctionConfiguration" xml)
-                  LambdaFunctionConfigurationList.parse))
+            (Util.of_option [] (LambdaFunctionConfigurationList.parse xml))
         }
     let to_query v =
       Query.List
@@ -3426,12 +3425,7 @@ module CORSConfiguration =
       c_o_r_s_rules: CORSRules.t }
     let make ?(c_o_r_s_rules= [])  () = { c_o_r_s_rules }
     let parse xml =
-      Some
-        {
-          c_o_r_s_rules =
-            (Util.of_option []
-               (Util.option_bind (Xml.member "CORSRule" xml) CORSRules.parse))
-        }
+      Some { c_o_r_s_rules = (Util.of_option [] (CORSRules.parse xml)) }
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -4317,19 +4311,14 @@ module ListObjectsOutput =
           marker = (Util.option_bind (Xml.member "Marker" xml) String.parse);
           next_marker =
             (Util.option_bind (Xml.member "NextMarker" xml) String.parse);
-          contents =
-            (Util.of_option []
-               (Util.option_bind (Xml.member "Contents" xml) ObjectList.parse));
+          contents = (Util.of_option [] (ObjectList.parse xml));
           name = (Util.option_bind (Xml.member "Name" xml) String.parse);
           prefix = (Util.option_bind (Xml.member "Prefix" xml) String.parse);
           delimiter =
             (Util.option_bind (Xml.member "Delimiter" xml) String.parse);
           max_keys =
             (Util.option_bind (Xml.member "MaxKeys" xml) Integer.parse);
-          common_prefixes =
-            (Util.of_option []
-               (Util.option_bind (Xml.member "CommonPrefixes" xml)
-                  CommonPrefixList.parse));
+          common_prefixes = (Util.of_option [] (CommonPrefixList.parse xml));
           encoding_type =
             (Util.option_bind (Xml.member "EncodingType" xml)
                EncodingType.parse)
@@ -4755,13 +4744,7 @@ module GetBucketLifecycleOutput =
     type t = {
       rules: Rules.t }
     let make ?(rules= [])  () = { rules }
-    let parse xml =
-      Some
-        {
-          rules =
-            (Util.of_option []
-               (Util.option_bind (Xml.member "Rule" xml) Rules.parse))
-        }
+    let parse xml = Some { rules = (Util.of_option [] (Rules.parse xml)) }
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -5450,12 +5433,7 @@ module GetBucketCorsOutput =
       c_o_r_s_rules: CORSRules.t }
     let make ?(c_o_r_s_rules= [])  () = { c_o_r_s_rules }
     let parse xml =
-      Some
-        {
-          c_o_r_s_rules =
-            (Util.of_option []
-               (Util.option_bind (Xml.member "CORSRule" xml) CORSRules.parse))
-        }
+      Some { c_o_r_s_rules = (Util.of_option [] (CORSRules.parse xml)) }
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -6646,24 +6624,15 @@ module ListObjectVersionsOutput =
           next_version_id_marker =
             (Util.option_bind (Xml.member "NextVersionIdMarker" xml)
                String.parse);
-          versions =
-            (Util.of_option []
-               (Util.option_bind (Xml.member "Version" xml)
-                  ObjectVersionList.parse));
-          delete_markers =
-            (Util.of_option []
-               (Util.option_bind (Xml.member "DeleteMarker" xml)
-                  DeleteMarkers.parse));
+          versions = (Util.of_option [] (ObjectVersionList.parse xml));
+          delete_markers = (Util.of_option [] (DeleteMarkers.parse xml));
           name = (Util.option_bind (Xml.member "Name" xml) String.parse);
           prefix = (Util.option_bind (Xml.member "Prefix" xml) String.parse);
           delimiter =
             (Util.option_bind (Xml.member "Delimiter" xml) String.parse);
           max_keys =
             (Util.option_bind (Xml.member "MaxKeys" xml) Integer.parse);
-          common_prefixes =
-            (Util.of_option []
-               (Util.option_bind (Xml.member "CommonPrefixes" xml)
-                  CommonPrefixList.parse));
+          common_prefixes = (Util.of_option [] (CommonPrefixList.parse xml));
           encoding_type =
             (Util.option_bind (Xml.member "EncodingType" xml)
                EncodingType.parse)
@@ -6907,16 +6876,11 @@ module DeleteObjectsOutput =
     let parse xml =
       Some
         {
-          deleted =
-            (Util.of_option []
-               (Util.option_bind (Xml.member "Deleted" xml)
-                  DeletedObjects.parse));
+          deleted = (Util.of_option [] (DeletedObjects.parse xml));
           request_charged =
             (Util.option_bind (Xml.member "x-amz-request-charged" xml)
                RequestCharged.parse);
-          errors =
-            (Util.of_option []
-               (Util.option_bind (Xml.member "Error" xml) Errors.parse))
+          errors = (Util.of_option [] (Errors.parse xml))
         }
     let to_query v =
       Query.List
@@ -8180,9 +8144,7 @@ module ListPartsOutput =
             (Util.option_bind (Xml.member "MaxParts" xml) Integer.parse);
           is_truncated =
             (Util.option_bind (Xml.member "IsTruncated" xml) Boolean.parse);
-          parts =
-            (Util.of_option []
-               (Util.option_bind (Xml.member "Part" xml) Parts.parse));
+          parts = (Util.of_option [] (Parts.parse xml));
           initiator =
             (Util.option_bind (Xml.member "Initiator" xml) Initiator.parse);
           owner = (Util.option_bind (Xml.member "Owner" xml) Owner.parse);
@@ -8593,14 +8555,8 @@ module ListMultipartUploadsOutput =
             (Util.option_bind (Xml.member "MaxUploads" xml) Integer.parse);
           is_truncated =
             (Util.option_bind (Xml.member "IsTruncated" xml) Boolean.parse);
-          uploads =
-            (Util.of_option []
-               (Util.option_bind (Xml.member "Upload" xml)
-                  MultipartUploadList.parse));
-          common_prefixes =
-            (Util.of_option []
-               (Util.option_bind (Xml.member "CommonPrefixes" xml)
-                  CommonPrefixList.parse));
+          uploads = (Util.of_option [] (MultipartUploadList.parse xml));
+          common_prefixes = (Util.of_option [] (CommonPrefixList.parse xml));
           encoding_type =
             (Util.option_bind (Xml.member "EncodingType" xml)
                EncodingType.parse)

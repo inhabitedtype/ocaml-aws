@@ -4,9 +4,11 @@ type input = CreateImageRequest.t
 type output = CreateImageResult.t
 type error = Errors_internal.t
 let service = "ec2"
-let to_http req =
+let to_http service region req =
   let uri =
-    Uri.add_query_params (Uri.of_string "https://ec2.amazonaws.com")
+    Uri.add_query_params
+      (Uri.of_string
+         (Aws.Util.of_option_exn (Endpoints.url_of service region)))
       (List.append [("Version", ["2015-04-15"]); ("Action", ["CreateImage"])]
          (Util.drop_empty
             (Uri.query_of_encoded

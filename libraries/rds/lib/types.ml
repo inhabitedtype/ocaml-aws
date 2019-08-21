@@ -386,6 +386,8 @@ module ApplyMethod =
       [("pending-reboot", Pending_reboot); ("immediate", Immediate)]
     let t_to_str =
       [(Pending_reboot, "pending-reboot"); (Immediate, "immediate")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -1649,6 +1651,8 @@ module SourceType =
       (Db_security_group, "db-security-group");
       (Db_parameter_group, "db-parameter-group");
       (Db_instance, "db-instance")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)

@@ -4,9 +4,11 @@ type input = SelectRequest.t
 type output = SelectResult.t
 type error = Errors_internal.t
 let service = "sdb"
-let to_http req =
+let to_http service region req =
   let uri =
-    Uri.add_query_params (Uri.of_string "https://sdb.amazonaws.com")
+    Uri.add_query_params
+      (Uri.of_string
+         (Aws.Util.of_option_exn (Endpoints.url_of service region)))
       (List.append [("Version", ["2009-04-15"]); ("Action", ["Select"])]
          (Util.drop_empty
             (Uri.query_of_encoded (Query.render (SelectRequest.to_query req))))) in

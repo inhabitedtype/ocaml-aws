@@ -136,9 +136,7 @@ module ReplaceableItem =
             (Xml.required "ItemName"
                (Util.option_bind (Xml.member "ItemName" xml) String.parse));
           attributes =
-            (Xml.required "Attributes"
-               (Util.option_bind (Xml.member "Attributes" xml)
-                  ReplaceableAttributeList.parse))
+            (Xml.required "Attributes" (ReplaceableAttributeList.parse xml))
         }
     let to_query v =
       Query.List
@@ -174,10 +172,7 @@ module DeletableItem =
           name =
             (Xml.required "ItemName"
                (Util.option_bind (Xml.member "ItemName" xml) String.parse));
-          attributes =
-            (Util.of_option []
-               (Util.option_bind (Xml.member "Attributes" xml)
-                  AttributeList.parse))
+          attributes = (Util.of_option [] (AttributeList.parse xml))
         }
     let to_query v =
       Query.List
@@ -217,10 +212,7 @@ module Item =
           alternate_name_encoding =
             (Util.option_bind (Xml.member "AlternateNameEncoding" xml)
                String.parse);
-          attributes =
-            (Xml.required "Attributes"
-               (Util.option_bind (Xml.member "Attributes" xml)
-                  AttributeList.parse))
+          attributes = (Xml.required "Attributes" (AttributeList.parse xml))
         }
     let to_query v =
       Query.List
@@ -359,10 +351,7 @@ module DeleteAttributesRequest =
           item_name =
             (Xml.required "ItemName"
                (Util.option_bind (Xml.member "ItemName" xml) String.parse));
-          attributes =
-            (Util.of_option []
-               (Util.option_bind (Xml.member "Attributes" xml)
-                  AttributeList.parse));
+          attributes = (Util.of_option [] (AttributeList.parse xml));
           expected =
             (Util.option_bind (Xml.member "Expected" xml)
                UpdateCondition.parse)
@@ -437,10 +426,7 @@ module BatchPutAttributesRequest =
           domain_name =
             (Xml.required "DomainName"
                (Util.option_bind (Xml.member "DomainName" xml) String.parse));
-          items =
-            (Xml.required "Items"
-               (Util.option_bind (Xml.member "Items" xml)
-                  ReplaceableItemList.parse))
+          items = (Xml.required "Items" (ReplaceableItemList.parse xml))
         }
     let to_query v =
       Query.List
@@ -483,10 +469,7 @@ module GetAttributesRequest =
           item_name =
             (Xml.required "ItemName"
                (Util.option_bind (Xml.member "ItemName" xml) String.parse));
-          attribute_names =
-            (Util.of_option []
-               (Util.option_bind (Xml.member "AttributeNames" xml)
-                  AttributeNameList.parse));
+          attribute_names = (Util.of_option [] (AttributeNameList.parse xml));
           consistent_read =
             (Util.option_bind (Xml.member "ConsistentRead" xml) Boolean.parse)
         }
@@ -530,13 +513,7 @@ module GetAttributesResult =
       attributes: AttributeList.t }
     let make ?(attributes= [])  () = { attributes }
     let parse xml =
-      Some
-        {
-          attributes =
-            (Util.of_option []
-               (Util.option_bind (Xml.member "Attributes" xml)
-                  AttributeList.parse))
-        }
+      Some { attributes = (Util.of_option [] (AttributeList.parse xml)) }
     let to_query v =
       Query.List
         (Util.list_filter_opt
@@ -574,9 +551,7 @@ module PutAttributesRequest =
             (Xml.required "ItemName"
                (Util.option_bind (Xml.member "ItemName" xml) String.parse));
           attributes =
-            (Xml.required "Attributes"
-               (Util.option_bind (Xml.member "Attributes" xml)
-                  ReplaceableAttributeList.parse));
+            (Xml.required "Attributes" (ReplaceableAttributeList.parse xml));
           expected =
             (Util.option_bind (Xml.member "Expected" xml)
                UpdateCondition.parse)
@@ -734,10 +709,7 @@ module BatchDeleteAttributesRequest =
           domain_name =
             (Xml.required "DomainName"
                (Util.option_bind (Xml.member "DomainName" xml) String.parse));
-          items =
-            (Xml.required "Items"
-               (Util.option_bind (Xml.member "Items" xml)
-                  DeletableItemList.parse))
+          items = (Xml.required "Items" (DeletableItemList.parse xml))
         }
     let to_query v =
       Query.List
@@ -849,9 +821,7 @@ module SelectResult =
     let parse xml =
       Some
         {
-          items =
-            (Util.of_option []
-               (Util.option_bind (Xml.member "Items" xml) ItemList.parse));
+          items = (Util.of_option [] (ItemList.parse xml));
           next_token =
             (Util.option_bind (Xml.member "NextToken" xml) String.parse)
         }
@@ -1244,10 +1214,7 @@ module ListDomainsResult =
     let parse xml =
       Some
         {
-          domain_names =
-            (Util.of_option []
-               (Util.option_bind (Xml.member "DomainNames" xml)
-                  DomainNameList.parse));
+          domain_names = (Util.of_option [] (DomainNameList.parse xml));
           next_token =
             (Util.option_bind (Xml.member "NextToken" xml) String.parse)
         }

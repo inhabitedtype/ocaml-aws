@@ -15,7 +15,7 @@ module TestSuite(Runtime : sig
 
   let noop_test () =
     "Noop Route53 test succeeds"
-    @?false
+    @?true
 
   let test_cases =
     [ "Route53 noop" >:: noop_test ]

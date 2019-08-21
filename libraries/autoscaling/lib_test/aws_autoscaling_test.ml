@@ -15,7 +15,7 @@ module TestSuite(Runtime : sig
 
   let noop_test () =
     "Noop AUTOSCALING test succeeds"
-    @?false
+    @?true
 
   let test_cases =
     [ "AUTOSCALING noop" >:: noop_test ]

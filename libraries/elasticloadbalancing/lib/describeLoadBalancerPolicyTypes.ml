@@ -4,10 +4,11 @@ type input = DescribeLoadBalancerPolicyTypesInput.t
 type output = DescribeLoadBalancerPolicyTypesOutput.t
 type error = Errors_internal.t
 let service = "elasticloadbalancing"
-let to_http req =
+let to_http service region req =
   let uri =
     Uri.add_query_params
-      (Uri.of_string "https://elasticloadbalancing.amazonaws.com")
+      (Uri.of_string
+         (Aws.Util.of_option_exn (Endpoints.url_of service region)))
       (List.append
          [("Version", ["2012-06-01"]);
          ("Action", ["DescribeLoadBalancerPolicyTypes"])]

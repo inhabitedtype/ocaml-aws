@@ -4,9 +4,11 @@ type input = DeleteTrailRequest.t
 type output = unit
 type error = Errors_internal.t
 let service = "cloudtrail"
-let to_http req =
+let to_http service region req =
   let uri =
-    Uri.add_query_params (Uri.of_string "https://cloudtrail.amazonaws.com")
+    Uri.add_query_params
+      (Uri.of_string
+         (Aws.Util.of_option_exn (Endpoints.url_of service region)))
       (List.append [("Version", ["2013-11-01"]); ("Action", ["DeleteTrail"])]
          (Util.drop_empty
             (Uri.query_of_encoded

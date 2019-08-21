@@ -4,9 +4,11 @@ type input = DescribeDocumentRequest.t
 type output = DescribeDocumentResult.t
 type error = Errors_internal.t
 let service = "ssm"
-let to_http req =
+let to_http service region req =
   let uri =
-    Uri.add_query_params (Uri.of_string "https://ssm.amazonaws.com")
+    Uri.add_query_params
+      (Uri.of_string
+         (Aws.Util.of_option_exn (Endpoints.url_of service region)))
       (List.append
          [("Version", ["2014-11-06"]); ("Action", ["DescribeDocument"])]
          (Util.drop_empty

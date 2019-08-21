@@ -15,7 +15,7 @@ module TestSuite(Runtime : sig
 
   let noop_test () =
     "Noop CLOUDFORMATION test succeeds"
-    @?false
+    @?true
 
   let test_cases =
     [ "CLOUDFORMATION noop" >:: noop_test ]

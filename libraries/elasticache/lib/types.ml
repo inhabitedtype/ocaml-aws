@@ -597,6 +597,8 @@ module PendingAutomaticFailoverStatus =
       | Disabled 
     let str_to_t = [("disabled", Disabled); ("enabled", Enabled)]
     let t_to_str = [(Disabled, "disabled"); (Enabled, "enabled")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -1113,6 +1115,8 @@ module SourceType =
       (Cache_security_group, "cache-security-group");
       (Cache_parameter_group, "cache-parameter-group");
       (Cache_cluster, "cache-cluster")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -1141,6 +1145,8 @@ module AutomaticFailoverStatus =
       (Enabling, "enabling");
       (Disabled, "disabled");
       (Enabled, "enabled")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -2832,6 +2838,8 @@ module AZMode =
       | Cross_az 
     let str_to_t = [("cross-az", Cross_az); ("single-az", Single_az)]
     let t_to_str = [(Cross_az, "cross-az"); (Single_az, "single-az")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
