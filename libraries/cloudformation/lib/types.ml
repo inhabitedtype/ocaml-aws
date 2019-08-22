@@ -18,6 +18,8 @@ module Capability =
       | CAPABILITY_IAM 
     let str_to_t = [("CAPABILITY_IAM", CAPABILITY_IAM)]
     let t_to_str = [(CAPABILITY_IAM, "CAPABILITY_IAM")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -190,6 +192,8 @@ module ResourceStatus =
       (CREATE_COMPLETE, "CREATE_COMPLETE");
       (CREATE_FAILED, "CREATE_FAILED");
       (CREATE_IN_PROGRESS, "CREATE_IN_PROGRESS")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -258,6 +262,8 @@ module StackStatus =
       (CREATE_COMPLETE, "CREATE_COMPLETE");
       (CREATE_FAILED, "CREATE_FAILED");
       (CREATE_IN_PROGRESS, "CREATE_IN_PROGRESS")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -1197,6 +1203,8 @@ module ResourceSignalStatus =
       | FAILURE 
     let str_to_t = [("FAILURE", FAILURE); ("SUCCESS", SUCCESS)]
     let t_to_str = [(FAILURE, "FAILURE"); (SUCCESS, "SUCCESS")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -1400,6 +1408,8 @@ module OnFailure =
       [(DELETE, "DELETE");
       (ROLLBACK, "ROLLBACK");
       (DO_NOTHING, "DO_NOTHING")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)

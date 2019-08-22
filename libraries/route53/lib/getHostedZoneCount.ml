@@ -4,9 +4,11 @@ type input = unit
 type output = GetHostedZoneCountResponse.t
 type error = Errors_internal.t
 let service = "route53"
-let to_http req =
+let to_http service region req =
   let uri =
-    Uri.add_query_params (Uri.of_string "https://route53.amazonaws.com")
+    Uri.add_query_params
+      (Uri.of_string
+         (Aws.Util.of_option_exn (Endpoints.url_of service region)))
       [("Version", ["2013-04-01"]); ("Action", ["GetHostedZoneCount"])] in
   (`GET, uri, [])
 let of_http body =

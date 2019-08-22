@@ -160,6 +160,8 @@ module RRType =
       (TXT, "TXT");
       (A, "A");
       (SOA, "SOA")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -178,6 +180,8 @@ module ResourceRecordSetFailover =
       | SECONDARY 
     let str_to_t = [("SECONDARY", SECONDARY); ("PRIMARY", PRIMARY)]
     let t_to_str = [(SECONDARY, "SECONDARY"); (PRIMARY, "PRIMARY")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -224,6 +228,8 @@ module ResourceRecordSetRegion =
       (Us_west_2, "us-west-2");
       (Us_west_1, "us-west-1");
       (Us_east_1, "us-east-1")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -266,6 +272,8 @@ module HealthCheckType =
       (HTTP_STR_MATCH, "HTTP_STR_MATCH");
       (HTTPS, "HTTPS");
       (HTTP, "HTTP")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -317,6 +325,8 @@ module ChangeAction =
       [("UPSERT", UPSERT); ("DELETE", DELETE); ("CREATE", CREATE)]
     let t_to_str =
       [(UPSERT, "UPSERT"); (DELETE, "DELETE"); (CREATE, "CREATE")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -658,6 +668,8 @@ module TagResourceType =
       | Hostedzone 
     let str_to_t = [("hostedzone", Hostedzone); ("healthcheck", Healthcheck)]
     let t_to_str = [(Hostedzone, "hostedzone"); (Healthcheck, "healthcheck")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -757,6 +769,8 @@ module VPCRegion =
       (Us_west_2, "us-west-2");
       (Us_west_1, "us-west-1");
       (Us_east_1, "us-east-1")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -844,6 +858,8 @@ module ChangeStatus =
       | INSYNC 
     let str_to_t = [("INSYNC", INSYNC); ("PENDING", PENDING)]
     let t_to_str = [(INSYNC, "INSYNC"); (PENDING, "PENDING")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)

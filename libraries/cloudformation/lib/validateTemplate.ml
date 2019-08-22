@@ -4,10 +4,11 @@ type input = ValidateTemplateInput.t
 type output = ValidateTemplateOutput.t
 type error = Errors_internal.t
 let service = "cloudformation"
-let to_http req =
+let to_http service region req =
   let uri =
     Uri.add_query_params
-      (Uri.of_string "https://cloudformation.amazonaws.com")
+      (Uri.of_string
+         (Aws.Util.of_option_exn (Endpoints.url_of service region)))
       (List.append
          [("Version", ["2010-05-15"]); ("Action", ["ValidateTemplate"])]
          (Util.drop_empty

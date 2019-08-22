@@ -4,9 +4,11 @@ type input = HeadObjectRequest.t
 type output = HeadObjectOutput.t
 type error = Errors_internal.t
 let service = "s3"
-let to_http req =
+let to_http service region req =
   let uri =
-    Uri.add_query_params (Uri.of_string "https://s3.amazonaws.com")
+    Uri.add_query_params
+      (Uri.of_string
+         (Aws.Util.of_option_exn (Endpoints.url_of service region)))
       (List.append [("Version", ["2006-03-01"]); ("Action", ["HeadObject"])]
          (Util.drop_empty
             (Uri.query_of_encoded

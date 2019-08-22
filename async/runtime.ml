@@ -49,7 +49,7 @@ let run_request
     (inp : M.input)
   =
   let meth, uri, headers =
-    Aws.Signing.sign_request ~access_key ~secret_key ~service:M.service ~region (M.to_http inp)
+    Aws.Signing.sign_request ~access_key ~secret_key ~service:M.service ~region (M.to_http M.service region inp)
   in
   let headers = Header.of_list headers in
   try_with begin fun () ->

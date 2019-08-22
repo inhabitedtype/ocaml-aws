@@ -12,6 +12,8 @@ module AssociationStatusName =
       [("Failed", Failed); ("Success", Success); ("Pending", Pending)]
     let t_to_str =
       [(Failed, "Failed"); (Success, "Success"); (Pending, "Pending")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -30,6 +32,8 @@ module AssociationFilterKey =
       | Name 
     let str_to_t = [("Name", Name); ("InstanceId", InstanceId)]
     let t_to_str = [(Name, "Name"); (InstanceId, "InstanceId")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -47,6 +51,8 @@ module DocumentFilterKey =
       | Name 
     let str_to_t = [("Name", Name)]
     let t_to_str = [(Name, "Name")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -156,6 +162,8 @@ module Fault =
       [("Unknown", Unknown); ("Server", Server); ("Client", Client)]
     let t_to_str =
       [(Unknown, "Unknown"); (Server, "Server"); (Client, "Client")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -299,6 +307,8 @@ module DocumentStatus =
       [("Deleting", Deleting); ("Active", Active); ("Creating", Creating)]
     let t_to_str =
       [(Deleting, "Deleting"); (Active, "Active"); (Creating, "Creating")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)

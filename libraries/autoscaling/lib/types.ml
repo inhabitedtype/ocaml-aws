@@ -46,6 +46,8 @@ module LifecycleState =
       (Pending_Proceed, "Pending:Proceed");
       (Pending_Wait, "Pending:Wait");
       (Pending, "Pending")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -565,6 +567,8 @@ module ScalingActivityStatusCode =
       (WaitingForInstanceId, "WaitingForInstanceId");
       (WaitingForSpotInstanceId, "WaitingForSpotInstanceId");
       (WaitingForSpotInstanceRequestId, "WaitingForSpotInstanceRequestId")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)

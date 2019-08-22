@@ -186,7 +186,7 @@ module type Call = sig
   type error
 
   val service : string
-  val to_http : input -> Request.t
+  val to_http : string -> string -> input -> Request.t
   val of_http : string -> [`Ok of output | `Error of error Error.error_response]
   val parse_error : int -> string -> error option
 end
@@ -232,9 +232,9 @@ module Query = struct
     let i = ref 0 in
     List (List.map (fun v -> i := !i + 1; Pair (string_of_int !i, to_query v)) vals)
 
-  let to_query_hashtbl to_query tbl =
+  let to_query_hashtbl key_to_str to_query tbl =
     List (Hashtbl.fold
-            (fun k v acc -> (Pair (k, to_query v)) :: acc) tbl [])
+            (fun k v acc -> (Pair (key_to_str k, to_query v)) :: acc) tbl [])
 end
 
 
@@ -254,14 +254,14 @@ module Json = struct
     | `List l -> List.map f l
     | t       -> raise (Casting_error("list", t))
 
-  let to_hashtbl f = function
+  let to_hashtbl key_f f = function
     | `Assoc m ->
       List.fold_left
-        (fun acc (k,v) -> Hashtbl.add acc k (f v); acc)
+        (fun acc (k,v) -> Hashtbl.add acc (key_f k) (f v); acc)
         (Hashtbl.create (List.length m))
         m
     | t        -> raise (Casting_error("map", t))
-  
+
   let lookup t s =
     try match t with
       | `Assoc l -> Some (List.assoc s l)
@@ -279,6 +279,8 @@ module BaseTypes = struct
     val of_json : Json.t -> t
     val to_query : t -> Query.t
     val parse : Ezxmlm.nodes -> t option
+    val to_string : t -> string
+    val of_string : string -> t
   end
 
   module Unit = struct
@@ -291,6 +293,8 @@ module BaseTypes = struct
 
     let to_query () = List []
     let parse _ = Some () (* XXX(seliopou): Should never be used, maybe assert that? *)
+    let to_string _ = raise (Failure("unit"))
+    let of_string _ = raise (Failure("unit"))
   end
 
   module String = struct
@@ -302,6 +306,8 @@ module BaseTypes = struct
       | t         -> raise (Json.Casting_error("string", t))
     let to_query s = Value (Some s)
     let parse s = Some (data_to_string s)
+    let to_string s = s
+    let of_string s = s
   end
 
   (* NOTE(dbp 2015-01-15): In EC2, Blobs seem to be used for Base64
@@ -328,6 +334,13 @@ module BaseTypes = struct
         | "true"  -> Some true
         | _       -> None
         end
+    let to_string b =
+      if b then "true" else "false"
+    let of_string s =
+      match String.lowercase_ascii s with
+      | "false" -> false
+      | "true" -> true
+      | _ -> raise (Failure("Bad boolean string " ^ s))
   end
 
   module Integer = struct
@@ -342,6 +355,8 @@ module BaseTypes = struct
       match String.parse i with
       | None   -> None
       | Some s -> try Some(int_of_string s) with Failure _ -> None
+    let to_string i = string_of_int i
+    let of_string s = int_of_string s
   end
 
   module Long = Integer
@@ -358,6 +373,8 @@ module BaseTypes = struct
       match String.parse f with
       | None   -> None
       | Some s -> try Some(float_of_string s) with Failure _ -> None
+    let to_string f = string_of_float f
+    let of_string s = float_of_string s
   end
 
   module Double = Float
@@ -371,9 +388,13 @@ module BaseTypes = struct
       match String.parse c with
       | None   -> None
       | Some s -> try Some(Time.parse s) with Invalid_argument _ -> None
+    let to_string c = Time.format c
+    let of_string s = Time.parse s
   end
 
 end
+
+module Endpoints = Endpoints
 
 module Signing = struct
 
@@ -417,7 +438,7 @@ module Signing = struct
      * http://docs.aws.amazon.com/general/latest/gr/sigv4-signed-request-examples.html
      *)
     let sign_request ~access_key ~secret_key ~service ~region (meth, uri, headers) =
-      let host = service ^ ".amazonaws.com" in
+      let host = Util.of_option_exn (Endpoints.endpoint_of service region) in
       let params = encode_query (Uri.query uri) in
       let sign key msg = Hash.sha256 ~key msg in
       let get_signature_key key date region service =
@@ -427,9 +448,9 @@ module Signing = struct
       let datestamp = Time.date_yymmdd now in
       let canonical_uri = "/" in
       let canonical_querystring = params in
-      let canonical_headers = "host:" ^ host ^ "\n" ^ "x-amz-date:" ^ amzdate ^ "\n" in
-      let signed_headers = "host;x-amz-date" in
       let payload_hash = Hash.sha256_hex "" in
+      let canonical_headers = "host:" ^ host ^ "\n" ^ "x-amz-content-sha256:" ^ payload_hash ^ "\nx-amz-date:" ^ amzdate ^ "\n" in
+      let signed_headers = "host;x-amz-content-sha256;x-amz-date" in
       let canonical_request = Request.string_of_meth meth ^ "\n" ^ canonical_uri ^ "\n" ^ canonical_querystring ^ "\n" ^ canonical_headers ^ "\n" ^ signed_headers ^ "\n" ^ payload_hash in
       let algorithm = "AWS4-HMAC-SHA256" in
       let credential_scope = datestamp ^ "/" ^ region ^ "/" ^ service ^ "/" ^ "aws4_request" in
@@ -437,6 +458,8 @@ module Signing = struct
       let signing_key = get_signature_key secret_key datestamp region service in
       let signature = Hash.sha256_hex ~key:signing_key string_to_sign in
       let authorization_header = String.concat "" [algorithm; " "; "Credential="; access_key; "/"; credential_scope; ", "; "SignedHeaders="; signed_headers; ", "; "Signature="; signature] in
-      let headers = ("x-amz-date",amzdate) :: ("Authorization", authorization_header) :: headers in
+      let headers = ("x-amz-date", amzdate) :: ("x-amz-content-sha256", payload_hash) :: ("Authorization", authorization_header) :: headers in
       (meth, uri, headers)
   end
+
+

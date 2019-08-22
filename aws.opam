@@ -1,7 +1,8 @@
 opam-version: "2.0"
-maintainer: "Spiros Eliopoulos <spiros@inhabitedtype.com>"
+maintainer: "Tim McGilchrist <timmcgil@gmail.com>"
 authors: [ "Spiros Eliopoulos <spiros@inhabitedtype.com>"
-           "Daniel Patterson <dbp@dbpmail.net>" ]
+           "Daniel Patterson <dbp@dbpmail.net>"
+           "Tim McGilchrist <timmcgil@gmail.com>"]
 synopsis: "Amazon Web Services SDK"
 description: """
 Amazon Web Services SDK

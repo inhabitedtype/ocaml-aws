@@ -15,7 +15,7 @@ module TestSuite(Runtime : sig
 
   let noop_test () =
     "Noop ELASTICACHE test succeeds"
-    @?false
+    @?true
 
   let test_cases =
     [ "ELASTICACHE noop" >:: noop_test ]

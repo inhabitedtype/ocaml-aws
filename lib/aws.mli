@@ -129,7 +129,7 @@ module type Call = sig
       type. In particular, it is responsible for properly encoding the
       request type into query format. It also sets the Action and
       Version query parameters. *)
-  val to_http : input -> Request.t
+  val to_http : string -> string -> input -> Request.t
 
   (** This function converts from a HTTP response body to an output
       or an error if the response could not be decoded. *)
@@ -189,7 +189,7 @@ module Query : sig
       as [(0, val); (1, val)...]. *)
   val to_query_list : ('a -> t) -> 'a list -> t
 
-  val to_query_hashtbl : ('a -> t) -> (string, 'a) Hashtbl.t -> t
+  val to_query_hashtbl : ('a -> string) -> ('b -> t) -> ('a, 'b) Hashtbl.t -> t
 end
 
 (** This module contains helpers used for XML parsing. It wraps Ezxmlm
@@ -239,8 +239,8 @@ module Json : sig
 
   (** This converts an `Assoc (string * t list) to ('a, 'b) Hashtbl.t, or throws a
       Casting_error in the case that the input is not an `Assoc. *)
-  val to_hashtbl: (t -> 'b) -> t -> (string, 'b) Hashtbl.t
-        
+  val to_hashtbl: (string -> 'a) -> (t -> 'b) -> t -> ('a, 'b) Hashtbl.t
+
   (** If t is an `Assoc, this looks up the field specified. If it
       isn't found, or if the input is not an `Assoc, returns None. *)
   val lookup : t -> string -> t option
@@ -314,6 +314,8 @@ module BaseTypes : sig
     val of_json : Json.t -> t
     val to_query : t -> Query.t
     val parse : Ezxmlm.nodes -> t option
+    val to_string : t -> string
+    val of_string : string -> t
   end
 
   module Unit     : Base with type t = unit
@@ -326,3 +328,5 @@ module BaseTypes : sig
   module Float    : Base with type t = float
   module DateTime : Base with type t = CalendarLib.Calendar.t
 end
+
+module Endpoints = Endpoints

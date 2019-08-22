@@ -4,9 +4,11 @@ type input = DeleteDBInstanceMessage.t
 type output = DeleteDBInstanceResult.t
 type error = Errors_internal.t
 let service = "rds"
-let to_http req =
+let to_http service region req =
   let uri =
-    Uri.add_query_params (Uri.of_string "https://rds.amazonaws.com")
+    Uri.add_query_params
+      (Uri.of_string
+         (Aws.Util.of_option_exn (Endpoints.url_of service region)))
       (List.append
          [("Version", ["2014-10-31"]); ("Action", ["DeleteDBInstance"])]
          (Util.drop_empty

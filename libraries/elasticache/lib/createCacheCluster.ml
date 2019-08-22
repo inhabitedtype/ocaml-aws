@@ -4,9 +4,11 @@ type input = CreateCacheClusterMessage.t
 type output = CreateCacheClusterResult.t
 type error = Errors_internal.t
 let service = "elasticache"
-let to_http req =
+let to_http service region req =
   let uri =
-    Uri.add_query_params (Uri.of_string "https://elasticache.amazonaws.com")
+    Uri.add_query_params
+      (Uri.of_string
+         (Aws.Util.of_option_exn (Endpoints.url_of service region)))
       (List.append
          [("Version", ["2015-02-02"]); ("Action", ["CreateCacheCluster"])]
          (Util.drop_empty

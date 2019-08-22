@@ -10,6 +10,8 @@ module VolumeType =
       | Gp2 
     let str_to_t = [("gp2", Gp2); ("io1", Io1); ("standard", Standard)]
     let t_to_str = [(Gp2, "gp2"); (Io1, "io1"); (Standard, "standard")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -230,6 +232,8 @@ module AttachmentStatus =
       (Detaching, "detaching");
       (Attached, "attached");
       (Attaching, "attaching")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -349,6 +353,8 @@ module DiskImageFormat =
       | VHD 
     let str_to_t = [("VHD", VHD); ("RAW", RAW); ("VMDK", VMDK)]
     let t_to_str = [(VHD, "VHD"); (RAW, "RAW"); (VMDK, "VMDK")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -743,6 +749,8 @@ module NetworkInterfaceStatus =
       (In_use, "in-use");
       (Attaching, "attaching");
       (Available, "available")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -761,6 +769,8 @@ module ProductCodeValues =
       | Marketplace 
     let str_to_t = [("marketplace", Marketplace); ("devpay", Devpay)]
     let t_to_str = [(Marketplace, "marketplace"); (Devpay, "devpay")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -956,6 +966,8 @@ module InstanceType =
       (M1_medium, "m1.medium");
       (M1_small, "m1.small");
       (T1_micro, "t1.micro")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -1064,6 +1076,8 @@ module StatusName =
       | Reachability 
     let str_to_t = [("reachability", Reachability)]
     let t_to_str = [(Reachability, "reachability")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -1092,6 +1106,8 @@ module StatusType =
       (Insufficient_data, "insufficient-data");
       (Failed, "failed");
       (Passed, "passed")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -1329,6 +1345,8 @@ module VolumeStatusName =
       [("io-performance", Io_performance); ("io-enabled", Io_enabled)]
     let t_to_str =
       [(Io_performance, "io-performance"); (Io_enabled, "io-enabled")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -1597,6 +1615,8 @@ module InstanceStateName =
       (Shutting_down, "shutting-down");
       (Running, "running");
       (Pending, "pending")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -1625,6 +1645,8 @@ module MonitoringState =
       (Enabled, "enabled");
       (Disabling, "disabling");
       (Disabled, "disabled")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -1643,6 +1665,8 @@ module Tenancy =
       | Dedicated 
     let str_to_t = [("dedicated", Dedicated); ("default", Default)]
     let t_to_str = [(Dedicated, "dedicated"); (Default, "default")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -1874,6 +1898,8 @@ module RecurringChargeFrequency =
       | Hourly 
     let str_to_t = [("Hourly", Hourly)]
     let t_to_str = [(Hourly, "Hourly")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -2000,6 +2026,8 @@ module RouteOrigin =
       [(EnableVgwRoutePropagation, "EnableVgwRoutePropagation");
       (CreateRoute, "CreateRoute");
       (CreateRouteTable, "CreateRouteTable")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -2018,6 +2046,8 @@ module RouteState =
       | Blackhole 
     let str_to_t = [("blackhole", Blackhole); ("active", Active)]
     let t_to_str = [(Blackhole, "blackhole"); (Active, "active")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -2046,6 +2076,8 @@ module ListingState =
       (Cancelled, "cancelled");
       (Sold, "sold");
       (Available, "available")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -2063,6 +2095,8 @@ module CurrencyCodeValues =
       | USD 
     let str_to_t = [("USD", USD)]
     let t_to_str = [(USD, "USD")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -2094,6 +2128,8 @@ module EventCode =
       (System_maintenance, "system-maintenance");
       (System_reboot, "system-reboot");
       (Instance_reboot, "instance-reboot")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -2460,6 +2496,8 @@ module VolumeAttachmentState =
       (Detaching, "detaching");
       (Attached, "attached");
       (Attaching, "attaching")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -2478,6 +2516,8 @@ module TelemetryStatus =
       | DOWN 
     let str_to_t = [("DOWN", DOWN); ("UP", UP)]
     let t_to_str = [(DOWN, "DOWN"); (UP, "UP")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -2506,6 +2546,8 @@ module VpnState =
       (Deleting, "deleting");
       (Available, "available");
       (Pending, "pending")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -2523,6 +2565,8 @@ module VpnStaticRouteSource =
       | Static 
     let str_to_t = [("Static", Static)]
     let t_to_str = [(Static, "Static")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -2541,6 +2585,8 @@ module ArchitectureValues =
       | X86_64 
     let str_to_t = [("x86_64", X86_64); ("i386", I386)]
     let t_to_str = [(X86_64, "x86_64"); (I386, "i386")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -2559,6 +2605,8 @@ module DeviceType =
       | Instance_store 
     let str_to_t = [("instance-store", Instance_store); ("ebs", Ebs)]
     let t_to_str = [(Instance_store, "instance-store"); (Ebs, "ebs")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -2577,6 +2625,8 @@ module HypervisorType =
       | Xen 
     let str_to_t = [("xen", Xen); ("ovm", Ovm)]
     let t_to_str = [(Xen, "xen"); (Ovm, "ovm")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -2636,6 +2686,8 @@ module InstanceLifecycleType =
       | Spot 
     let str_to_t = [("spot", Spot)]
     let t_to_str = [(Spot, "spot")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -2773,6 +2825,8 @@ module PlatformValues =
       | Windows 
     let str_to_t = [("Windows", Windows)]
     let t_to_str = [(Windows, "Windows")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -2843,6 +2897,8 @@ module VirtualizationType =
       | Paravirtual 
     let str_to_t = [("paravirtual", Paravirtual); ("hvm", Hvm)]
     let t_to_str = [(Paravirtual, "paravirtual"); (Hvm, "hvm")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -2921,6 +2977,8 @@ module RuleAction =
       | Deny 
     let str_to_t = [("deny", Deny); ("allow", Allow)]
     let t_to_str = [(Deny, "deny"); (Allow, "allow")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -3220,6 +3278,8 @@ module PermissionGroup =
       | All 
     let str_to_t = [("all", All)]
     let t_to_str = [(All, "all")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -3622,6 +3682,8 @@ module SummaryStatus =
       (Insufficient_data, "insufficient-data");
       (Impaired, "impaired");
       (Ok, "ok")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -3664,6 +3726,8 @@ module ContainerFormat =
       | Ova 
     let str_to_t = [("ova", Ova)]
     let t_to_str = [(Ova, "ova")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -3685,6 +3749,8 @@ module ExportEnvironment =
       [("microsoft", Microsoft); ("vmware", Vmware); ("citrix", Citrix)]
     let t_to_str =
       [(Microsoft, "microsoft"); (Vmware, "vmware"); (Citrix, "citrix")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -4075,6 +4141,8 @@ module VolumeStatusInfoStatus =
       [(Insufficient_data, "insufficient-data");
       (Impaired, "impaired");
       (Ok, "ok")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -4825,6 +4893,8 @@ module VpcPeeringConnectionStateReasonCode =
       (Active, "active");
       (Pending_acceptance, "pending-acceptance");
       (Initiating_request, "initiating-request")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -5114,6 +5184,8 @@ module CancelBatchErrorCode =
         "fleetRequestNotInCancellableState");
       (FleetRequestIdMalformed, "fleetRequestIdMalformed");
       (FleetRequestIdDoesNotExist, "fleetRequestIdDoesNotExist")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -5318,6 +5390,8 @@ module ResourceType =
       (Image, "image");
       (Dhcp_options, "dhcp-options");
       (Customer_gateway, "customer-gateway")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -5346,6 +5420,8 @@ module GatewayType =
       | Ipsec_1 
     let str_to_t = [("ipsec.1", Ipsec_1)]
     let t_to_str = [(Ipsec_1, "ipsec.1")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -5416,6 +5492,8 @@ module OfferingTypeValues =
       (Light_Utilization, "Light Utilization");
       (Medium_Utilization, "Medium Utilization");
       (Heavy_Utilization, "Heavy Utilization")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -5444,6 +5522,8 @@ module RIProductDescription =
       (Windows, "Windows");
       (Linux_UNIX__Amazon_VPC_, "Linux/UNIX (Amazon VPC)");
       (Linux_UNIX, "Linux/UNIX")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -5483,6 +5563,8 @@ module ReservedInstanceState =
       (Payment_failed, "payment-failed");
       (Active, "active");
       (Payment_pending, "payment-pending")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -5521,6 +5603,8 @@ module PlacementGroupState =
       (Deleting, "deleting");
       (Available, "available");
       (Pending, "pending")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -5538,6 +5622,8 @@ module PlacementStrategy =
       | Cluster 
     let str_to_t = [("cluster", Cluster)]
     let t_to_str = [(Cluster, "cluster")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -5569,6 +5655,8 @@ module CancelSpotInstanceRequestState =
       (Closed, "closed");
       (Open, "open");
       (Active, "active")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -5631,6 +5719,8 @@ module ConversionTaskState =
       (Cancelled, "cancelled");
       (Cancelling, "cancelling");
       (Active, "active")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -5842,6 +5932,8 @@ module EventType =
       [(Error, "error");
       (FleetRequestChange, "fleetRequestChange");
       (InstanceChange, "instanceChange")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -5945,6 +6037,8 @@ module ListingStatus =
       (Cancelled, "cancelled");
       (Pending, "pending");
       (Active, "active")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -5977,6 +6071,8 @@ module MoveStatus =
     let t_to_str =
       [(RestoringToClassic, "restoringToClassic");
       (MovingToVpc, "movingToVpc")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -6065,6 +6161,8 @@ module ImageState =
       (Invalid, "invalid");
       (Available, "available");
       (Pending, "pending")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -6086,6 +6184,8 @@ module ImageTypeValues =
       [("ramdisk", Ramdisk); ("kernel", Kernel); ("machine", Machine)]
     let t_to_str =
       [(Ramdisk, "ramdisk"); (Kernel, "kernel"); (Machine, "machine")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -6433,6 +6533,8 @@ module SpotInstanceState =
       (Closed, "closed");
       (Active, "active");
       (Open, "open")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -6526,6 +6628,8 @@ module SpotInstanceType =
       | Persistent 
     let str_to_t = [("persistent", Persistent); ("one-time", One_time)]
     let t_to_str = [(Persistent, "persistent"); (One_time, "one-time")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -6554,6 +6658,8 @@ module ExportTaskState =
       (Cancelled, "cancelled");
       (Cancelling, "cancelling");
       (Active, "active")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -6752,6 +6858,8 @@ module BatchState =
       (Cancelled, "cancelled");
       (Active, "active");
       (Submitted, "submitted")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -6899,6 +7007,8 @@ module AvailabilityZoneState =
       | Available 
     let str_to_t = [("available", Available)]
     let t_to_str = [(Available, "available")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -6918,6 +7028,8 @@ module TrafficType =
       | ALL 
     let str_to_t = [("ALL", ALL); ("REJECT", REJECT); ("ACCEPT", ACCEPT)]
     let t_to_str = [(ALL, "ALL"); (REJECT, "REJECT"); (ACCEPT, "ACCEPT")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -6987,6 +7099,8 @@ module BundleTaskState =
       (Bundling, "bundling");
       (Waiting_for_shutdown, "waiting-for-shutdown");
       (Pending, "pending")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -7150,6 +7264,8 @@ module VolumeState =
       (In_use, "in-use");
       (Available, "available");
       (Creating, "creating")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -7168,6 +7284,8 @@ module DomainType =
       | Standard 
     let str_to_t = [("standard", Standard); ("vpc", Vpc)]
     let t_to_str = [(Standard, "standard"); (Vpc, "vpc")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -7342,6 +7460,8 @@ module VpcState =
       | Available 
     let str_to_t = [("available", Available); ("pending", Pending)]
     let t_to_str = [(Available, "available"); (Pending, "pending")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -7382,6 +7502,8 @@ module SubnetState =
       | Available 
     let str_to_t = [("available", Available); ("pending", Pending)]
     let t_to_str = [(Available, "available"); (Pending, "pending")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -7540,6 +7662,8 @@ module State =
       (Deleting, "Deleting");
       (Available, "Available");
       (Pending, "Pending")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -7595,6 +7719,8 @@ module SnapshotState =
       [("error", Error); ("completed", Completed); ("pending", Pending)]
     let t_to_str =
       [(Error, "error"); (Completed, "completed"); (Pending, "pending")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -8536,6 +8662,8 @@ module DatafeedSubscriptionState =
       | Inactive 
     let str_to_t = [("Inactive", Inactive); ("Active", Active)]
     let t_to_str = [(Inactive, "Inactive"); (Active, "Active")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -10215,6 +10343,8 @@ module AccountAttributeName =
     let t_to_str =
       [(Default_vpc, "default-vpc");
       (Supported_platforms, "supported-platforms")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -12286,6 +12416,8 @@ module ReportInstanceReasonCodes =
       (Not_accepting_credentials, "not-accepting-credentials");
       (Unresponsive, "unresponsive");
       (Instance_stuck_in_state, "instance-stuck-in-state")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -12362,6 +12494,8 @@ module ShutdownBehavior =
       | Terminate 
     let str_to_t = [("terminate", Terminate); ("stop", Stop)]
     let t_to_str = [(Terminate, "terminate"); (Stop, "stop")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -12787,6 +12921,8 @@ module VpcAttributeName =
     let t_to_str =
       [(EnableDnsHostnames, "enableDnsHostnames");
       (EnableDnsSupport, "enableDnsSupport")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -13051,6 +13187,8 @@ module OperationType =
       | Remove 
     let str_to_t = [("remove", Remove); ("add", Add)]
     let t_to_str = [(Remove, "remove"); (Add, "add")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -13138,6 +13276,8 @@ module InstanceAttributeName =
       (Ramdisk, "ramdisk");
       (Kernel, "kernel");
       (InstanceType, "instanceType")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -13577,6 +13717,8 @@ module Status =
       [(InClassic, "InClassic");
       (InVpc, "InVpc");
       (MoveInProgress, "MoveInProgress")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -13917,6 +14059,8 @@ module SnapshotAttributeName =
     let t_to_str =
       [(CreateVolumePermission, "createVolumePermission");
       (ProductCodes, "productCodes")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -14058,6 +14202,8 @@ module VolumeAttributeName =
       [("productCodes", ProductCodes); ("autoEnableIO", AutoEnableIO)]
     let t_to_str =
       [(ProductCodes, "productCodes"); (AutoEnableIO, "autoEnableIO")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -14517,6 +14663,8 @@ module FlowLogsResourceType =
       [(NetworkInterface, "NetworkInterface");
       (Subnet, "Subnet");
       (VPC, "VPC")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -14606,6 +14754,8 @@ module ReportStatusType =
       | Impaired 
     let str_to_t = [("impaired", Impaired); ("ok", Ok)]
     let t_to_str = [(Impaired, "impaired"); (Ok, "ok")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -14854,6 +15004,8 @@ module ImageAttributeName =
       (Ramdisk, "ramdisk");
       (Kernel, "kernel");
       (Description, "description")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -14892,6 +15044,8 @@ module NetworkInterfaceAttribute =
       (SourceDestCheck, "sourceDestCheck");
       (GroupSet, "groupSet");
       (Description, "description")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)
@@ -14946,6 +15100,8 @@ module ResetImageAttributeName =
       | LaunchPermission 
     let str_to_t = [("launchPermission", LaunchPermission)]
     let t_to_str = [(LaunchPermission, "launchPermission")]
+    let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+    let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
     let make v () = v
     let parse xml =
       Util.option_bind (String.parse xml)

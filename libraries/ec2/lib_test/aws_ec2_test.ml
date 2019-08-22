@@ -30,27 +30,6 @@ module TestSuite(Runtime : sig
     | `Error err -> begin Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err); false end
   end
 
-  let describe_regions_error () =
-    let open Aws.Error in
-    let res = Runtime.(un_m (run_request
-                               ~region:"mars-western"
-                               (module DescribeRegions)
-                               (Types.DescribeRegionsRequest.make ()))) in
-  "DescribeRegions returns error"
-  @? begin match res with
-    | `Ok resp ->
-      false
-    (* NOTE(dbp 2015-03-13): I have _NO_ idea why AWS would think that asking for
-       a non-existent region is an AuthFailure... But that's what it returns. *)
-    | `Error (HttpError (401, AwsError [Understood Errors_internal.AuthFailure, _])) ->
-      true
-    | `Error err ->
-      begin
-        Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
-        false
-      end
-  end
-
   let create_security_group ()  =
     let result = Runtime.(un_m (run_request
                                   ~region:"us-east-1"
@@ -89,7 +68,6 @@ module TestSuite(Runtime : sig
       | `Ok _ -> true
       | `Error e -> begin print_endline (Aws.Error.format Errors_internal.to_string e); false end
     end
-  ;;
 
   let create_instance () =
     let result = Runtime.(un_m (run_request
@@ -108,7 +86,6 @@ module TestSuite(Runtime : sig
         | x::xs -> Some x
       end
     | `Error e -> begin print_endline (Aws.Error.format Errors_internal.to_string e); None end
-  ;;
 
   let create () =
     let result = create_instance () in
@@ -123,7 +100,9 @@ module TestSuite(Runtime : sig
     in
     (* NOTE(dbp 2015-01-21): In seems that sometimes if you hit it quickly enough,
      * the api doesn't know about the instance and errors. This is obviously bad! *)
+    Printf.printf "waiting for instance to be created";
     Unix.sleep 3;
+
     let result = Runtime.(un_m (run_request
                                   ~region:"us-east-1"
                                   (module TerminateInstances)
@@ -134,11 +113,9 @@ module TestSuite(Runtime : sig
       | `Ok _ -> true
       | `Error e -> begin print_endline (Aws.Error.format Errors_internal.to_string e); false end
     end
-  ;;
 
   let test_cases =
     [ "Describe Regions" >::  describe_regions_json
-    ; "Describe Regions Errors" >::  describe_regions_error
     ; "Create Instance" >:: create
     ; "Find Security Group" >:: create_security_group_test
     ]

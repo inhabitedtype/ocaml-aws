@@ -1,0 +1,37 @@
+type region = {
+  description: string;
+}
+
+type partition_defaults = {
+  ?hostname: string nullable;
+  protocols: string list;
+  signature_versions <json name="signatureVersions">: string list;
+}
+
+type service_defaults = {
+  ?protocols: string list option;
+  ?ssl_common_name: string nullable;
+}
+
+type endpoint = {
+  ?hostname: string nullable;
+}
+
+type service = {
+  ?defaults: service_defaults option;
+  endpoints: (string * endpoint) list <json repr="object">;
+}
+
+type partition = {
+  defaults: partition_defaults;
+  dns_suffix <json name="dnsSuffix">: string;
+  partition: string;
+  partition_name <json name="partitionName">: string;
+  region_regex <json name="regionRegex">: string;
+  regions: (string * region) list <json repr="object">;
+  services: (string * service) list <json repr="object">;
+}
+
+type endpoints = {
+  partitions: partition list;
+}

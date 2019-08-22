@@ -15,7 +15,7 @@ module TestSuite(Runtime : sig
 
   let noop_test () =
     "Noop SDB test succeeds"
-    @?false
+    @?true
 
   let test_cases =
     [ "SDB noop" >:: noop_test ]
