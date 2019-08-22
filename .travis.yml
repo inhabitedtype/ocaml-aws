@@ -23,7 +23,7 @@ env:
   # - PACKAGE="aws-async" DISTRO="ubuntu-18.04" OCAML_VERSION="4.06"
   # - PACKAGE="aws-gen"   DISTRO="ubuntu-18.04" OCAML_VERSION="4.06"
   # Just run tests against one version of OCaml
-  - PRE_INSTALL_HOOK="opam pin add . -y" PACKAGE="aws_ec2"   DISTRO="ubuntu-18.04" OCAML_VERSION="4.06" TESTS=true POST_INSTALL_HOOK="opam install --with-test aws_ec2"
+  - PRE_INSTALL_HOOK="opam pin add . -y" PACKAGE="aws_ec2"   DISTRO="ubuntu-18.04" OCAML_VERSION="4.06" TESTS=true POST_INSTALL_HOOK="dune runtest libraries/ec2/lib_test"
 
   # - PACKAGE="aws"       DISTRO="ubuntu-18.04" OCAML_VERSION="4.07"
   # - PACKAGE="aws-lwt"   DISTRO="ubuntu-18.04" OCAML_VERSION="4.07"
