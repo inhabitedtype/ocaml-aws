@@ -400,19 +400,15 @@ module Signing = struct
 
     module Hash = struct
       let _sha256 ?key str =
-        let open Nocrypto.Hash.SHA256 in
-        let bits = Cstruct.of_string str in
         match key with
-        | None   -> digest bits
-        | Some k -> hmac ~key:(Cstruct.of_string k) bits
+        | Some key -> Digestif.SHA256.hmac_string ~key str
+        | None -> Digestif.SHA256.digest_string str
 
       let sha256 ?key str =
-        Cstruct.to_string (_sha256 ?key str)
+	_sha256 ?key str |> Digestif.SHA256.to_raw_string
 
       let sha256_hex ?key str =
-        let buf = Buffer.create 65 in
-        Cstruct.hexdump_to_buffer buf (_sha256 ?key str);
-        Str.(global_replace (regexp "[ \n]")) "" (Buffer.contents buf)
+        _sha256 ?key str |> Digestif.SHA256.to_hex
     end
 
     let encode_query ps =
