@@ -19,5 +19,5 @@ depends: [
   "async"
   "cohttp"
   "cohttp-async"
-  "dune" {build}
+  "dune"
 ]

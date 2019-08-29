@@ -20,5 +20,5 @@ depends: [
   "cohttp"
   "cohttp-lwt"
   "cohttp-lwt-unix" {>= "0.99.0"}
-  "dune" {build}
+  "dune"
 ]
