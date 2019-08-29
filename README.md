@@ -60,25 +60,25 @@ from AWS and print them to `stdout`. This example uses the Async runtime, but
 the equivalent lwt example is identical in structure.
 
 ```ocaml
-open Async.Std
-open Core.Std
+open Core
+open Async
 open Aws_ec2
 
 let to_result = function
-  | `Ok x    -> Result.Ok x
-  | `Error e -> Result.Error (Aws.Error.format Errors.to_string e)
+  | `Ok x    -> Ok x
+  | `Error e -> Error (Aws.Error.format Errors.to_string e)
 
 let main () =
   Aws_async.Runtime.run_request
     ~region:"us-east-1" ~access_key:"<...>" ~secret_key:"<...>"
     (module DescribeRegions)
     (Types.DescribeRegionsRequest.make ())
-  >>| to_result >>| Option.value_exn
-  >>|? List.iter ~f:(fun x -> Printf.printf "%s\n%!" x.Types.Region.region_name)
+  >>| to_result
+  >>| Option.value_exn
+  >>|? List.iter ~f:(fun x -> Log.Global.info "%s" x.Types.Region.region_name)
   >>> function
-    | Result.Ok ()   -> exit 0
-    | Result.Error e -> Printf.eprintf "%s\n%!" e; exit 1
-;;
+    | Ok ()   -> exit 0
+    | Error e -> Log.Global.error "%s" e; exit 1
 
 Scheduler.go_main ~main ()
 ```
