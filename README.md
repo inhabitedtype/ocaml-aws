@@ -83,22 +83,6 @@ let main () =
 Scheduler.go_main ~main ()
 ```
 
-### FreeBSD
-
-In order to install the library dependencies&mdash;specifically zarith which is
-a transitive dependency of nocrypto&mdash;you must first make the following
-modifications to your system and environment:
-
-```bash
-# zarith asusmes an installation of gcc
-sudo ln /usr/bin/cc /usr/local/bin/gcc
-
-# libgmp-associated files are installed in /usr/local, which is not in the
-# default search path for clang.
-export CLFAGS=-I/usr/local/include
-export LDFLAGS=-L/usr/local/lib
-```
-
 ## License
 
 BSD3, see LICENSE file for its text.
