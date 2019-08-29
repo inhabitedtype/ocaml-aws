@@ -24,6 +24,6 @@ depends: [
   "calendar"
   "ezxmlm"
   "digestif"
-  "dune" {build}
+  "dune"
   "uri" {>= "1.4.0"}
 ]
