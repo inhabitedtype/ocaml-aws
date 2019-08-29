@@ -23,7 +23,7 @@ build: [
 depends: [
   "calendar"
   "ezxmlm"
-  "nocrypto"
+  "digestif"
   "dune" {build}
   "uri" {>= "1.4.0"}
 ]
