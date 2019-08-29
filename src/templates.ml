@@ -51,7 +51,7 @@ build: [
 ]
 depends: [
   "aws" {>= "0.1.0"}
-  "dune" {build}
+  "dune"
 ]
 |} service_name service_name
 
