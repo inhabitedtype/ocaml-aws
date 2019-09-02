@@ -430,7 +430,7 @@ module Signing = struct
             | [x] -> Uri.pct_encode ~component:`Authority x
             | _ -> failwith "AWS query cannot have multiple values for same key" in
           (key, value)) ps in
-      let sorted = List.sort (fun a b -> Pervasives.compare (fst a) (fst b)) encoded in
+      let sorted = List.sort (fun a b -> compare (fst a) (fst b)) encoded in
       let joined = List.map (fun (k,v) -> k ^ "=" ^ v) sorted in
       String.concat "&" joined
 

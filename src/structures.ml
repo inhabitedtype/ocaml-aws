@@ -43,7 +43,7 @@ module Error = struct
     ; http_code : int option }
 
   let compare t1 t2 =
-    Pervasives.compare
+    compare
       (t1.string_name, t1.variant_name, t1.http_code)
       (t2.string_name, t2.variant_name, t2.http_code)
 end
