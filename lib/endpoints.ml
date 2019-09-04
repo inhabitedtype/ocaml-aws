@@ -1919,6 +1919,7 @@ let endpoint_of svc_name region =
       | "us-west-1" -> Some "xray.us-west-1.amazonaws.com"
       | "us-west-2" -> Some "xray.us-west-2.amazonaws.com"
       | _ -> None)
+
   | _ -> None
 
 let url_of svc_name region =
