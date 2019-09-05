@@ -1,8 +1,8 @@
 open Types
 
-type input = ListStepsInput.t
+type input = AddInstanceFleetInput.t
 
-type output = ListStepsOutput.t
+type output = AddInstanceFleetOutput.t
 
 type error = Errors_internal.t
 

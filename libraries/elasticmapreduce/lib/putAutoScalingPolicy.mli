@@ -1,8 +1,8 @@
 open Types
 
-type input = ListStepsInput.t
+type input = PutAutoScalingPolicyInput.t
 
-type output = ListStepsOutput.t
+type output = PutAutoScalingPolicyOutput.t
 
 type error = Errors_internal.t
 

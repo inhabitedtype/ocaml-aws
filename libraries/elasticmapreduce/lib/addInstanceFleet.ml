@@ -1,9 +1,9 @@
 open Types
 open Aws
 
-type input = DescribeJobFlowsInput.t
+type input = AddInstanceFleetInput.t
 
-type output = DescribeJobFlowsOutput.t
+type output = AddInstanceFleetOutput.t
 
 type error = Errors_internal.t
 
@@ -14,29 +14,29 @@ let to_http service region req =
     Uri.add_query_params
       (Uri.of_string (Aws.Util.of_option_exn (Endpoints.url_of service region)))
       (List.append
-         [ "Version", [ "2009-03-31" ]; "Action", [ "DescribeJobFlows" ] ]
+         [ "Version", [ "2009-03-31" ]; "Action", [ "AddInstanceFleet" ] ]
          (Util.drop_empty
-            (Uri.query_of_encoded (Query.render (DescribeJobFlowsInput.to_query req)))))
+            (Uri.query_of_encoded (Query.render (AddInstanceFleetInput.to_query req)))))
   in
   `POST, uri, []
 
 let of_http body =
   try
     let xml = Ezxmlm.from_string body in
-    let resp = Xml.member "DescribeJobFlowsResponse" (snd xml) in
+    let resp = Xml.member "AddInstanceFleetResponse" (snd xml) in
     try
       Util.or_error
-        (Util.option_bind resp DescribeJobFlowsOutput.parse)
+        (Util.option_bind resp AddInstanceFleetOutput.parse)
         (let open Error in
         BadResponse
-          { body; message = "Could not find well formed DescribeJobFlowsOutput." })
+          { body; message = "Could not find well formed AddInstanceFleetOutput." })
     with Xml.RequiredFieldMissing msg ->
       let open Error in
       `Error
         (BadResponse
            { body
            ; message =
-               "Error parsing DescribeJobFlowsOutput - missing field in body or \
+               "Error parsing AddInstanceFleetOutput - missing field in body or \
                 children: "
                ^ msg
            })

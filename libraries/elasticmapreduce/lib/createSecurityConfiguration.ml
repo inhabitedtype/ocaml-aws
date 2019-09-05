@@ -1,9 +1,9 @@
 open Types
 open Aws
 
-type input = DescribeJobFlowsInput.t
+type input = CreateSecurityConfigurationInput.t
 
-type output = DescribeJobFlowsOutput.t
+type output = CreateSecurityConfigurationOutput.t
 
 type error = Errors_internal.t
 
@@ -14,30 +14,33 @@ let to_http service region req =
     Uri.add_query_params
       (Uri.of_string (Aws.Util.of_option_exn (Endpoints.url_of service region)))
       (List.append
-         [ "Version", [ "2009-03-31" ]; "Action", [ "DescribeJobFlows" ] ]
+         [ "Version", [ "2009-03-31" ]; "Action", [ "CreateSecurityConfiguration" ] ]
          (Util.drop_empty
-            (Uri.query_of_encoded (Query.render (DescribeJobFlowsInput.to_query req)))))
+            (Uri.query_of_encoded
+               (Query.render (CreateSecurityConfigurationInput.to_query req)))))
   in
   `POST, uri, []
 
 let of_http body =
   try
     let xml = Ezxmlm.from_string body in
-    let resp = Xml.member "DescribeJobFlowsResponse" (snd xml) in
+    let resp = Xml.member "CreateSecurityConfigurationResponse" (snd xml) in
     try
       Util.or_error
-        (Util.option_bind resp DescribeJobFlowsOutput.parse)
+        (Util.option_bind resp CreateSecurityConfigurationOutput.parse)
         (let open Error in
         BadResponse
-          { body; message = "Could not find well formed DescribeJobFlowsOutput." })
+          { body
+          ; message = "Could not find well formed CreateSecurityConfigurationOutput."
+          })
     with Xml.RequiredFieldMissing msg ->
       let open Error in
       `Error
         (BadResponse
            { body
            ; message =
-               "Error parsing DescribeJobFlowsOutput - missing field in body or \
-                children: "
+               "Error parsing CreateSecurityConfigurationOutput - missing field in body \
+                or children: "
                ^ msg
            })
   with Failure msg ->

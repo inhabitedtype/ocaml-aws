@@ -1,60 +1,64 @@
 type t =
-  | AuthFailure 
-  | Blocked 
-  | DryRunOperation 
-  | IdempotentParameterMismatch 
-  | IncompleteSignature 
-  | InternalFailure 
-  | InternalServerException 
-  | InvalidAction 
-  | InvalidClientTokenId 
-  | InvalidParameter 
-  | InvalidParameterCombination 
-  | InvalidParameterValue 
-  | InvalidQueryParameter 
-  | InvalidRequestException 
-  | MalformedQueryString 
-  | MissingAction 
-  | MissingAuthenticationToken 
-  | MissingParameter 
-  | OptInRequired 
-  | PendingVerification 
-  | RequestExpired 
-  | RequestLimitExceeded 
-  | ServiceUnavailable 
-  | Throttling 
-  | UnauthorizedOperation 
-  | UnknownParameter 
-  | UnsupportedProtocol 
-  | ValidationError 
-  | Uninhabited 
+  | AuthFailure
+  | Blocked
+  | DryRunOperation
+  | IdempotentParameterMismatch
+  | IncompleteSignature
+  | InternalFailure
+  | InternalServerError
+  | InternalServerException
+  | InvalidAction
+  | InvalidClientTokenId
+  | InvalidParameter
+  | InvalidParameterCombination
+  | InvalidParameterValue
+  | InvalidQueryParameter
+  | InvalidRequestException
+  | MalformedQueryString
+  | MissingAction
+  | MissingAuthenticationToken
+  | MissingParameter
+  | OptInRequired
+  | PendingVerification
+  | RequestExpired
+  | RequestLimitExceeded
+  | ServiceUnavailable
+  | Throttling
+  | UnauthorizedOperation
+  | UnknownParameter
+  | UnsupportedProtocol
+  | ValidationError
+  | Uninhabited
+
 let common =
-  [UnsupportedProtocol;
-  UnknownParameter;
-  UnauthorizedOperation;
-  RequestLimitExceeded;
-  PendingVerification;
-  InvalidParameter;
-  IdempotentParameterMismatch;
-  DryRunOperation;
-  Blocked;
-  AuthFailure;
-  ValidationError;
-  Throttling;
-  ServiceUnavailable;
-  RequestExpired;
-  OptInRequired;
-  MissingParameter;
-  MissingAuthenticationToken;
-  MissingAction;
-  MalformedQueryString;
-  InvalidQueryParameter;
-  InvalidParameterValue;
-  InvalidParameterCombination;
-  InvalidClientTokenId;
-  InvalidAction;
-  InternalFailure;
-  IncompleteSignature]
+  [ UnsupportedProtocol
+  ; UnknownParameter
+  ; UnauthorizedOperation
+  ; RequestLimitExceeded
+  ; PendingVerification
+  ; InvalidParameter
+  ; IdempotentParameterMismatch
+  ; DryRunOperation
+  ; Blocked
+  ; AuthFailure
+  ; ValidationError
+  ; Throttling
+  ; ServiceUnavailable
+  ; RequestExpired
+  ; OptInRequired
+  ; MissingParameter
+  ; MissingAuthenticationToken
+  ; MissingAction
+  ; MalformedQueryString
+  ; InvalidQueryParameter
+  ; InvalidParameterValue
+  ; InvalidParameterCombination
+  ; InvalidClientTokenId
+  ; InvalidAction
+  ; InternalFailure
+  ; IncompleteSignature
+  ]
+
 let to_http_code e =
   match e with
   | AuthFailure -> None
@@ -63,6 +67,7 @@ let to_http_code e =
   | IdempotentParameterMismatch -> None
   | IncompleteSignature -> Some 400
   | InternalFailure -> Some 500
+  | InternalServerError -> None
   | InternalServerException -> None
   | InvalidAction -> Some 400
   | InvalidClientTokenId -> Some 403
@@ -86,6 +91,7 @@ let to_http_code e =
   | UnsupportedProtocol -> None
   | ValidationError -> Some 400
   | Uninhabited -> None
+
 let to_string e =
   match e with
   | AuthFailure -> "AuthFailure"
@@ -94,6 +100,7 @@ let to_string e =
   | IdempotentParameterMismatch -> "IdempotentParameterMismatch"
   | IncompleteSignature -> "IncompleteSignature"
   | InternalFailure -> "InternalFailure"
+  | InternalServerError -> "InternalServerError"
   | InternalServerException -> "InternalServerException"
   | InvalidAction -> "InvalidAction"
   | InvalidClientTokenId -> "InvalidClientTokenId"
@@ -117,6 +124,7 @@ let to_string e =
   | UnsupportedProtocol -> "UnsupportedProtocol"
   | ValidationError -> "ValidationError"
   | Uninhabited -> "Uninhabited"
+
 let of_string e =
   match e with
   | "AuthFailure" -> Some AuthFailure
@@ -125,6 +133,7 @@ let of_string e =
   | "IdempotentParameterMismatch" -> Some IdempotentParameterMismatch
   | "IncompleteSignature" -> Some IncompleteSignature
   | "InternalFailure" -> Some InternalFailure
+  | "InternalServerError" -> Some InternalServerError
   | "InternalServerException" -> Some InternalServerException
   | "InvalidAction" -> Some InvalidAction
   | "InvalidClientTokenId" -> Some InvalidClientTokenId

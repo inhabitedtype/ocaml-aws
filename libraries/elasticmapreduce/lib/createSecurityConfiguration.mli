@@ -1,8 +1,8 @@
 open Types
 
-type input = ListStepsInput.t
+type input = CreateSecurityConfigurationInput.t
 
-type output = ListStepsOutput.t
+type output = CreateSecurityConfigurationOutput.t
 
 type error = Errors_internal.t
 

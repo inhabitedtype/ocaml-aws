@@ -1,8 +1,8 @@
 open Types
 
-type input = ListStepsInput.t
+type input = CancelStepsInput.t
 
-type output = ListStepsOutput.t
+type output = CancelStepsOutput.t
 
 type error = Errors_internal.t
 
