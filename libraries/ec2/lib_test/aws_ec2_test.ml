@@ -1,10 +1,6 @@
 open OUnit
 open Aws_ec2
 
-let from_opt = function
-  | None -> assert false
-  | Some(x) -> x
-
 module TestSuite(Runtime : sig
     type 'a m
     val run_request :
