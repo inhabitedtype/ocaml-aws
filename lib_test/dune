@@ -1,0 +1,4 @@
+(library
+ (name aws_test)
+ (public_name aws-test)
+ (libraries qcheck))
