@@ -27,6 +27,9 @@ endpoints:
 aws-ec2:
 	dune exec aws-gen -- --is-ec2 -i input/ec2/latest/service-2.json -r input/ec2/overrides.json -e input/errors.json -o libraries
 
+aws-s3:
+	dune exec aws-gen -- --is-s3 -i input/s3/latest/service-2.json -r input/s3/overrides.json -e input/errors.json -o libraries
+
 # NOTE: This does not include aws-ec2, which is special-cased.
 LIBRARIES := \
 	aws-autoscaling \
@@ -39,7 +42,6 @@ LIBRARIES := \
 	aws-sdb \
 	aws-ssm \
 	aws-sts \
-	aws-s3  \
 	aws-route53 \
 	aws-sqs \
 
@@ -47,7 +49,7 @@ LIBRARIES := \
 $(LIBRARIES): aws-%:
 	dune exec aws-gen -- -i input/$*/latest/service-2.json -r input/$*/overrides.json -e input/errors.json -o libraries
 
-gen: build aws-ec2 $(LIBRARIES)
+gen: build aws-ec2 aws-s3 $(LIBRARIES)
 
 update-version: VERSION=$(shell cat CHANGES.md | grep -E '^[0-9]' | head -n 1 | cut -f1 -d':' )
 update-version:

@@ -127,7 +127,7 @@ let rec mkdir_p ?(root = "") dirs =
       (try Unix.mkdir dir 0o777 with Unix.Unix_error (Unix.EEXIST, _, _) -> ());
       mkdir_p ~root:dir ds
 
-let main input override errors_path outdir is_ec2 =
+let main input override errors_path outdir is_ec2 is_s3 =
   log "## Generating...";
   let overrides =
     match override with
@@ -215,16 +215,15 @@ let main input override errors_path outdir is_ec2 =
     (lib_dir </> "errors_internal.ml")
     (Generate.errors errors common_errors);
   log "## Wrote %d error variants..." (List.length errors);
-  List.iter
-    (fun op ->
-      let mli, ml = Generate.op lib_name api_version shapes op in
-      let modname = uncapitalize op.Operation.name in
-      Printing.write_signature (lib_dir </> modname ^ ".mli") mli;
-      Printing.write_structure (lib_dir </> modname ^ ".ml") ml)
-    ops;
-  log "## Wrote %d/%d ops modules..." (List.length ops) (List.length ops_json);
-  Printing.write_all
-    ~filename:(lib_dir </> "dune")
+  List.iter (fun op ->
+    let (mli, ml) = Generate.op lib_name api_version shapes is_s3 op in
+    let modname = uncapitalize op.Operation.name in
+    Printing.write_signature (lib_dir </> (modname ^ ".mli")) mli;
+    Printing.write_structure (lib_dir </> (modname ^ ".ml")) ml)
+  ops;
+  log "## Wrote %d/%d ops modules..."
+    (List.length ops) (List.length ops_json);
+  Printing.write_all ~filename:(lib_dir </> "dune")
     (Templates.dune ~lib_name:lib_name_dir ~service_name);
   log "## Wrote dune file.";
   Printing.write_all
@@ -280,7 +279,11 @@ module CommandLine = struct
     let doc = "This enables EC2-specific special casing in parts of code generation." in
     Arg.(value & flag & info [ "is-ec2" ] ~docv:"Filename" ~doc)
 
-  let gen_t = Term.(pure main $ input $ override $ errors $ outdir $ is_ec2)
+  let is_s3 =
+    let doc = "This enables S3-specific special casing in parts of code generation." in
+    Arg.(value & flag & info ["is-s3"] ~docv:"Filename" ~doc)
+
+  let gen_t = Term.(pure main $ input $ override $ errors $ outdir $ is_ec2 $ is_s3)
 
   let info =
     let doc = "Generate a library for an AWS schema." in
