@@ -1,7 +1,6 @@
 (library
- (name aws_s3)
+ (name        aws_s3)
  (public_name aws-s3)
  (synopsis "aws-Amazon Simple Storage Service")
- (flags
-  (:standard -w -27))
+ (flags (:standard -w -27))
  (libraries aws))
