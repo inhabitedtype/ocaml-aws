@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-VERSION=$(grep -E '^[0-9]' CHANGES.md | head -1 | cut -f1 -d':')
-
-echo "Set version to ${VERSION}"
-sed -i "s/^version: .*/version: ${VERSION}/" ./*.opam
-sed -i "s/\\(\"aws\"\\).\\+/\\1 {= ${VERSION}}/" "$(find ./libraries -name "*.opam" -type f)"
