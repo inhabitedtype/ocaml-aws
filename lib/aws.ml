@@ -457,5 +457,3 @@ module Signing = struct
       let headers = ("x-amz-date", amzdate) :: ("x-amz-content-sha256", payload_hash) :: ("Authorization", authorization_header) :: headers in
       (meth, uri, headers)
   end
-
-
