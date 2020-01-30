@@ -30,16 +30,11 @@
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
   ----------------------------------------------------------------------------*)
-(** This module contains an {{:https://github.com/janestreet/async} [Async]} based runtime
-    for executing AWS requests. *)
-module Runtime : sig
 
-  (** Run an AWS request, in the [region] with [access_key] and [secret_key]. *)
-  val run_request :
-    region:string ->
-    access_key:string ->
-    secret_key:string ->
-    ('input, 'output, 'error) Aws.call ->
-    'input -> [`Ok of 'output | `Error of 'error Aws.Error.t] Async.Deferred.t
-
-end
+(** Run an AWS request, in the [region] with [access_key] and [secret_key]. *)
+val run_request :
+  region:string ->
+  access_key:string ->
+  secret_key:string ->
+  ('input, 'output, 'error) Aws.call ->
+  'input -> [`Ok of 'output | `Error of 'error Aws.Error.t] Async.Deferred.t
