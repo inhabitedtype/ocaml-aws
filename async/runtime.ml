@@ -31,6 +31,9 @@
     POSSIBILITY OF SUCH DAMAGE.
   ----------------------------------------------------------------------------*)
 
+(** This module contains an {{:https://github.com/janestreet/async} [Async]} based runtime
+    for executing AWS requests. *)
+
 open Core
 open Async
 open Cohttp
