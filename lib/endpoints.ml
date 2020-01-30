@@ -2047,6 +2047,7 @@ let endpoint_of svc_name region =
        | "us-west-2" -> Some "xray.us-west-2.amazonaws.com"
        | _ -> None)
   | _ -> None
+
 let url_of svc_name region =
   match endpoint_of svc_name region with
   | Some var -> Some ("https://" ^ var)
