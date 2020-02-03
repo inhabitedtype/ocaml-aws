@@ -5,9 +5,8 @@ module T = TestSuite(struct
 
     let access_key = Unix.getenv "AWS_ACCESS_KEY"
     let secret_key = Unix.getenv "AWS_SECRET_KEY"
-    (* Get region out of AWS_DEFAULT_REGION and pass into Runtime*)
+    let region = Unix.getenv "AWS_DEFAULT_REGION"
 
-
-    let run_request = Aws_lwt.Runtime.run_request ~access_key ~secret_key
+    let run_request x = Aws_lwt.Runtime.run_request ~access_key ~secret_key ~region x
     let un_m = Lwt_main.run
   end)

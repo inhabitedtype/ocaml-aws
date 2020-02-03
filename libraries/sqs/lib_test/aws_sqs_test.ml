@@ -1,9 +1,6 @@
 open OUnit
 open Aws_sqs
 
-(* TODO Maybe load this from ENV variable *)
-let test_region = "us-east-1"
-
 let from_opt = function
   | None -> assert false
   | Some(x) -> x
@@ -11,8 +8,7 @@ let from_opt = function
 module TestSuite(Runtime : sig
     type 'a m
     val run_request :
-      region:string
-      -> (module Aws.Call with type input = 'input
+      (module Aws.Call with type input = 'input
                            and type output = 'output
                            and type error = 'error)
       -> 'input
@@ -20,57 +16,53 @@ module TestSuite(Runtime : sig
     val un_m : 'a m -> 'a
   end) = struct
 
-  let delete_queue queue_url region =
-    Runtime.(un_m (run_request ~region
+  let delete_queue queue_url =
+    Runtime.(un_m (run_request
                      (module DeleteQueue)
                      (Types.DeleteQueueRequest.make ~queue_url ())))
 
-  let create_queue queue_name region =
-    Runtime.(un_m (run_request ~region
+  (* TODO Tag created queues with project name for later cleanup / tracking *)
+  let create_queue queue_name =
+    Runtime.(un_m (run_request
                      (module CreateQueue)
                      (Types.CreateQueueRequest.make ~queue_name ())))
 
-  let send_message queue_url region message_body =
-    Runtime.(un_m (run_request ~region
+  let send_message queue_url message_body =
+    Runtime.(un_m (run_request
                      (module SendMessage)
                      (Types.SendMessageRequest.make ~queue_url ~message_body ())))
 
-  let receive_message queue_url region =
-    Runtime.(un_m (run_request ~region
+  let receive_message queue_url =
+    Runtime.(un_m (run_request
                      (module ReceiveMessage)
                      (Types.ReceiveMessageRequest.make ~queue_url ())))
 
-  (* TODO
+  let list_queues ~queue_name_prefix =
+    Runtime.(un_m (run_request
+                     (module ListQueues)
+                     (Types.ListQueuesRequest.make ~queue_name_prefix ())))
+  (*
      This only generates simple queue names, it should generate the
      full range of allowable queue_names as per the AWS spec.
 
+     QueueName
+     The name of the new queue. The following limits apply to this name:
 
-QueueName
-The name of the new queue. The following limits apply to this name:
-
-A queue name can have up to 80 characters.
-Valid values: alphanumeric characters, hyphens (-), and underscores (_).
-A FIFO queue name must end with the .fifo suffix.
-
+     A queue name can have up to 80 characters.
+     Valid values: alphanumeric characters, hyphens (-), and underscores (_).
+     A FIFO queue name must end with the .fifo suffix.
    *)
   let arb_queue_name =
     QCheck.Gen.oneofl Aws_test.Corpus.cooking
 
-  (* TODO Write a better message generator
-data NonEmptyMessage = NonEmptyMessage {
-    unMessage :: Text
-  } deriving (Eq, Show)
+  (*
+     Immprove this to generate the full range of valid messages.
 
-instance Arbitrary NonEmptyMessage where
-  arbitrary = do
-    -- http://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/API_SendMessage.html
-    -- invalid unicode values #x9 | #xA | #xD | [#x20 to #xD7FF] | [#xE000 to #xFFFD] | [#x10000 to #x10FFFF]
-    NonEmptyMessage <$> genSQSText
+     http://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/API_SendMessage.html
+     invalid unicode values #x9 | #xA | #xD | [#x20 to #xD7FF] | [#xE000 to #xFFFD] | [#x10000 to #x10FFFF]
 
-genSQSText :: Gen Text
-genSQSText =
-           let invalid = P.concat [['\x9'],['\xA'],['\xD'], ['\x20'..'\xD7FF'], ['\xE000'..'\xFFFD'], ['\x10000'..'\x10FFFF']]
-           in suchThat (pack . P.filter (\x -> P.elem x invalid) <$> arbitrary) (not . Data.Text.null)
+     let invalid = P.concat [['\x9'],['\xA'],['\xD'], ['\x20'..'\xD7FF'], ['\xE000'..'\xFFFD'], ['\x10000'..'\x10FFFF']]
+     in (pack . List.filter (\x -> P.elem x invalid) <$> utf8_char)
    *)
   let arb_message =
     QCheck.Gen.oneofl Aws_test.Corpus.agile
@@ -80,7 +72,7 @@ genSQSText =
       ~name:"SQS create / delete queue"
       QCheck.(QCheck.make @@ QCheck.Gen.pair arb_queue_name arb_message)
       (fun (queue_name, test_message) ->
-        let create_res = create_queue queue_name test_region in
+        let create_res = create_queue queue_name in
 
         match create_res with
         | `Ok resp ->
@@ -93,19 +85,20 @@ genSQSText =
           | `Ok resp -> from_opt resp.queue_url
           | `Error err -> assert false
         in
-        let send_message = send_message queue_url test_region test_message in
+        let send_message = send_message queue_url test_message in
         match send_message with
         | `Ok resp -> true
         | `Error err ->
            Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err)
           ;
-        let receive_message = receive_message queue_url test_region in
+        let receive_message = receive_message queue_url in
         match receive_message with
         | `Ok resp -> true
         | `Error err ->
            Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err)
           ;
-        let delete_res = delete_queue queue_url test_region in
+        (* TODO Delete the message here. *)
+        let delete_res = delete_queue queue_url in
            match delete_res with
            | `Ok resp -> true
            | `Error err ->
@@ -113,14 +106,12 @@ genSQSText =
               false
       )
 
-  (* TODO refactor to assert sent message is the received message *)
-
   let create_delete_queue_test =
     QCheck.Test.make ~count:1
     ~name:"SQS create / delete queue"
     QCheck.(QCheck.make arb_queue_name)
     (fun queue_name ->
-      let create_res = create_queue queue_name test_region in
+      let create_res = create_queue queue_name in
 
       match create_res with
          | `Ok resp ->
@@ -134,17 +125,37 @@ genSQSText =
         | `Error err -> assert false
       in
 
-      let delete_res = delete_queue queue_url test_region in
+      let delete_res = delete_queue queue_url in
       match delete_res with
       | `Ok resp -> true
       | `Error err ->
          Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
          false
     )
+  let create_list_queue_test =
+    QCheck.Test.make ~count:1
+      ~name:"SQS create many queues and list"
+      QCheck.(QCheck.make ~print:(fun (x,y) -> "(" ^ x ^ "," ^ y ^ ")") @@ QCheck.Gen.pair arb_queue_name arb_queue_name)
+      (fun (queue_name_1, queue_name_2) ->
+        let queue_name_prefix = "aws-sqs-test-" in
+        let _create_res_1 = create_queue @@ queue_name_prefix ^ queue_name_1 in
+        let _create_res_2 = create_queue @@ queue_name_prefix ^ queue_name_2 in
+        let list_queue_res = list_queues ~queue_name_prefix in
+
+        match list_queue_res with
+        | `Ok resp ->
+           Printf.printf "List queues: %s\n"  (Yojson.Basic.to_string (Types.QueueUrlList.to_json resp.queue_urls));
+           let _ = List.map delete_queue resp.queue_urls in
+           List.length resp.queue_urls == 2
+        | `Error err ->
+           Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
+           false
+      )
 
   let test_cases =
     [ create_delete_queue_test
     ; send_receive_message_test
+    ; create_list_queue_test
     ]
 
   let rec was_successful =
