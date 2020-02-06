@@ -3,7 +3,6 @@ open Aws_s3
 
 module type Runtime = sig
   type 'a m
-
   val run_request :
        region:string
     -> (module Aws.Call
