@@ -312,6 +312,8 @@ let nfl = [
   ; "Indianapolis Colts"
   ; "Jacksonville Jaguars"
   ; "Kansas City Chiefs"
+  ; "Los Angeles Chargers"
+  ; "Los Angeles Rams"
   ; "Miami Dolphins"
   ; "Minnesota Vikings"
   ; "New England Patriots"
@@ -321,10 +323,8 @@ let nfl = [
   ; "Oakland Raiders"
   ; "Philadelphia Eagles"
   ; "Pittsburgh Steelers"
-  ; "San Diego Chargers"
   ; "San Francisco 49ers"
   ; "Seattle Seahawks"
-  ; "St. Louis Rams"
   ; "Tampa Bay Buccaneers"
   ; "Tennessee Titans"
   ; "Washington Redskins"
@@ -356,6 +356,24 @@ let agile = [
   ; "user story"
   ; "velocity"
   ; "vertical slice"
+  ]
+
+(* Collection of <https://en.wikipedia.org/wiki/Metasyntactic_variable metasyntactic variables>. *)
+let metasyntactic = [
+    "foo"
+  ; "bar"
+  ; "baz"
+  ; "qux"
+  ; "quux"
+  ; "quuz"
+  ; "corge"
+  ; "grault"
+  ; "garply"
+  ; "waldo"
+  ; "fred"
+  ; "plugh"
+  ; "xyzzy"
+  ; "thud"
   ]
 
 (* How to say "I can eat glass, and it doesn't hurt me." in a few different
