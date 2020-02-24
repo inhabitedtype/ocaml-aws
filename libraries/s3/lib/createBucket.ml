@@ -8,8 +8,7 @@ let to_http service region (req : input) =
   let uri =
     Uri.add_query_params
       (Uri.of_string @@
-         ((^) req.bucket
-            (Aws.Util.of_option_exn (Endpoints.url_of service region))))
+         (Aws.Util.of_option_exn (Endpoints.url_with_prefix req.bucket service region)))
       (List.append
          [("Version", ["2006-03-01"]); ("Action", ["CreateBucket"])]
          (Util.drop_empty

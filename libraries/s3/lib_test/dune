@@ -5,14 +5,15 @@
  (libraries aws aws_s3 aws-async aws-lwt
             oUnit yojson
             async cohttp-async
-            lwt cohttp-lwt cohttp-lwt-unix))
+            lwt cohttp-lwt cohttp-lwt-unix
+            qcheck))          
 
 (rule
  (alias runtest)
  (deps test_async.exe)
  (action (run %{deps})))
 
-(rule
- (alias runtest)
- (deps test_lwt.exe)
- (action (run %{deps})))
+;(rule
+; (alias runtest)
+; (deps test_lwt.exe)
+; (action (run %{deps})))

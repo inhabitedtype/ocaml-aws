@@ -1925,3 +1925,9 @@ let url_of svc_name region =
   match endpoint_of svc_name region with
   | Some var -> Some ("https://" ^ var)
   | None -> None
+
+(* Create a URL for *)
+let url_with_prefix prefix svc_name region =
+  match endpoint_of svc_name region with
+  | Some var -> Some ("https://" ^ prefix ^ "." ^ var)
+  | None -> None
