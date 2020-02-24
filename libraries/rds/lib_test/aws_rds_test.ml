@@ -4,8 +4,7 @@ open Aws_rds
 module TestSuite(Runtime : sig
     type 'a m
     val run_request :
-      region:string
-      -> (module Aws.Call with type input = 'input
+         (module Aws.Call with type input = 'input
                            and type output = 'output
                            and type error = 'error)
       -> 'input
@@ -13,23 +12,49 @@ module TestSuite(Runtime : sig
     val un_m : 'a m -> 'a
   end) = struct
 
-  let noop_test () =
-    "Noop RDS test succeeds"
-    @?true
+  let create_instance name =
+    Runtime.(un_m (run_request (module CreateDBInstance)
+                     (Types.CreateDBInstanceMessage.make
+                        ~d_b_instance_identifier:name
+                        ~d_b_instance_class:"db.t2.micro"
+                        ~master_username:"root"
+                        ~master_user_password:"root-password"
+                        ~allocated_storage:10
+                        ~engine:"postgres" ())))
+
+  let delete_instance d_b_instance_identifier =
+    Runtime.(un_m (run_request (module DeleteDBInstance)
+                     (Types.DeleteDBInstanceMessage.make ~d_b_instance_identifier ())))
+
+  let create_rds_test () =
+    let result = create_instance "aws-test-instance" in
+    "Creating RDS instance succeeds"
+    @? begin match result with
+       | `Ok instance -> true
+       | `Error _ -> false
+       end;
+    Unix.sleep 3;
+    let delete_result = delete_instance "aws-test-instance" in
+    "Deleting RDS instance succeeds"
+    @? begin match delete_result with
+       | `Ok instance -> true
+       | `Error _ -> false
+       end
 
   let test_cases =
-    [ "RDS noop" >:: noop_test ]
+    [ "RDS create / delete instance" >:: create_rds_test ]
 
   let rec was_successful =
     function
     | [] -> true
     | RSuccess _::t
-    | RSkip _::t ->
-      was_successful t
+      | RSkip _::t ->
+       was_successful t
     | RFailure _::_
-    | RError _::_
-    | RTodo _::_ ->
-      false
+      | RError _::_
+      | RTodo _::_ ->
+       false
+
   let _ =
     let suite = "Tests" >::: test_cases in
     let verbose = ref false in

@@ -135,7 +135,8 @@ module TestSuite(Runtime : sig
   let create_list_queue_test =
     QCheck.Test.make ~count:1
       ~name:"SQS create many queues and list"
-      QCheck.(QCheck.make ~print:(fun (x,y) -> "(" ^ x ^ "," ^ y ^ ")") @@ QCheck.Gen.pair arb_queue_name arb_queue_name)
+      QCheck.(QCheck.make ~print:(fun (x,y) -> "(" ^ x ^ "," ^ y ^ ")") @@
+                QCheck.Gen.pair arb_queue_name arb_queue_name)
       (fun (queue_name_1, queue_name_2) ->
         let queue_name_prefix = "aws-sqs-test-" in
         let _create_res_1 = create_queue @@ queue_name_prefix ^ queue_name_1 in

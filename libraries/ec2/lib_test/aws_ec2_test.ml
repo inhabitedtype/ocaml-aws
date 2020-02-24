@@ -37,7 +37,6 @@ module TestSuite(Runtime : sig
                                   )
                                ))
     in
-    (* let open Types.SecurityGroup in *)
     match result with
     | `Ok a -> Some a
     | `Error e -> begin print_endline (Aws.Error.format Errors_internal.to_string e); None end
