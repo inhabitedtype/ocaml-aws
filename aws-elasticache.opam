@@ -6,7 +6,7 @@ authors: [ "Spiros Eliopoulos <spiros@inhabitedtype.com>"
          ]
 synopsis: "Amazon Web Services SDK bindings to Amazon ElastiCache"
 description: "Amazon Web Services SDK bindings to Amazon ElastiCache"
-version: "1.2"
+version: "1.1"
 license: "BSD-3-clause"
 homepage: "https://github.com/inhabitedtype/ocaml-aws"
 dev-repo: "git+https://github.com/inhabitedtype/ocaml-aws.git"
