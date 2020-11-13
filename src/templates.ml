@@ -58,7 +58,7 @@ depends: [
 let dune ~lib_name ~service_name =
   Printf.sprintf {|(library
  (name        aws_%s)
- (public_name aws_%s)
+ (public_name aws-%s)
  (synopsis "aws-%s")
  (flags (:standard -w -27))
  (libraries aws))

@@ -220,7 +220,7 @@ let main input override errors_path outdir is_ec2 =
    *   (Templates.service_test ~lib_name:lib_name_dir); *)
 
   log "## Wrote opam file";
-  Printing.write_all ~filename:("./" </> ("aws_" ^ lib_name_dir ^ ".opam"))
+  Printing.write_all ~filename:("./" </> ("aws-" ^ lib_name_dir ^ ".opam"))
     (Templates.opam ~service_name);
 
 module CommandLine = struct
