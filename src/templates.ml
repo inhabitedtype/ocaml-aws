@@ -79,16 +79,14 @@ let dune_test ~lib_name =
             async cohttp-async
             lwt cohttp-lwt cohttp-lwt-unix))
 
-(alias
- (name runtest)
+(rule
+ (alias runtest)
  (deps test_async.exe)
- (locks  m)
  (action (run %s)))
 
-(alias
- (name runtest)
+(rule
+ (alias runtest)
  (deps test_lwt.exe)
- (locks  m)
  (action (run %s)))
 |} lib_name lib_name d d
 
