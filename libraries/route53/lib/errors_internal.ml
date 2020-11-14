@@ -1,89 +1,92 @@
 type t =
-  | AuthFailure 
-  | Blocked 
-  | ConflictingDomainExists 
-  | DelegationSetAlreadyCreated 
-  | DelegationSetAlreadyReusable 
-  | DelegationSetInUse 
-  | DelegationSetNotAvailable 
-  | DelegationSetNotReusable 
-  | DryRunOperation 
-  | HealthCheckAlreadyExists 
-  | HealthCheckInUse 
-  | HealthCheckVersionMismatch 
-  | HostedZoneAlreadyExists 
-  | HostedZoneNotEmpty 
-  | HostedZoneNotFound 
-  | IdempotentParameterMismatch 
-  | IncompatibleVersion 
-  | IncompleteSignature 
-  | InternalFailure 
-  | InvalidAction 
-  | InvalidArgument 
-  | InvalidChangeBatch 
-  | InvalidClientTokenId 
-  | InvalidDomainName 
-  | InvalidInput 
-  | InvalidParameter 
-  | InvalidParameterCombination 
-  | InvalidParameterValue 
-  | InvalidQueryParameter 
-  | InvalidVPCId 
-  | LastVPCAssociation 
-  | LimitsExceeded 
-  | MalformedQueryString 
-  | MissingAction 
-  | MissingAuthenticationToken 
-  | MissingParameter 
-  | NoSuchChange 
-  | NoSuchDelegationSet 
-  | NoSuchGeoLocation 
-  | NoSuchHealthCheck 
-  | NoSuchHostedZone 
-  | OptInRequired 
-  | PendingVerification 
-  | PriorRequestNotComplete 
-  | PublicZoneVPCAssociation 
-  | RequestExpired 
-  | RequestLimitExceeded 
-  | ServiceUnavailable 
-  | Throttling 
-  | ThrottlingException 
-  | TooManyHealthChecks 
-  | TooManyHostedZones 
-  | UnauthorizedOperation 
-  | UnknownParameter 
-  | UnsupportedProtocol 
-  | VPCAssociationNotFound 
-  | ValidationError 
-  | Uninhabited 
+  | AuthFailure
+  | Blocked
+  | ConflictingDomainExists
+  | DelegationSetAlreadyCreated
+  | DelegationSetAlreadyReusable
+  | DelegationSetInUse
+  | DelegationSetNotAvailable
+  | DelegationSetNotReusable
+  | DryRunOperation
+  | HealthCheckAlreadyExists
+  | HealthCheckInUse
+  | HealthCheckVersionMismatch
+  | HostedZoneAlreadyExists
+  | HostedZoneNotEmpty
+  | HostedZoneNotFound
+  | IdempotentParameterMismatch
+  | IncompatibleVersion
+  | IncompleteSignature
+  | InternalFailure
+  | InvalidAction
+  | InvalidArgument
+  | InvalidChangeBatch
+  | InvalidClientTokenId
+  | InvalidDomainName
+  | InvalidInput
+  | InvalidParameter
+  | InvalidParameterCombination
+  | InvalidParameterValue
+  | InvalidQueryParameter
+  | InvalidVPCId
+  | LastVPCAssociation
+  | LimitsExceeded
+  | MalformedQueryString
+  | MissingAction
+  | MissingAuthenticationToken
+  | MissingParameter
+  | NoSuchChange
+  | NoSuchDelegationSet
+  | NoSuchGeoLocation
+  | NoSuchHealthCheck
+  | NoSuchHostedZone
+  | OptInRequired
+  | PendingVerification
+  | PriorRequestNotComplete
+  | PublicZoneVPCAssociation
+  | RequestExpired
+  | RequestLimitExceeded
+  | ServiceUnavailable
+  | Throttling
+  | ThrottlingException
+  | TooManyHealthChecks
+  | TooManyHostedZones
+  | UnauthorizedOperation
+  | UnknownParameter
+  | UnsupportedProtocol
+  | VPCAssociationNotFound
+  | ValidationError
+  | Uninhabited
+
 let common =
-  [UnsupportedProtocol;
-  UnknownParameter;
-  UnauthorizedOperation;
-  RequestLimitExceeded;
-  PendingVerification;
-  InvalidParameter;
-  IdempotentParameterMismatch;
-  DryRunOperation;
-  Blocked;
-  AuthFailure;
-  ValidationError;
-  Throttling;
-  ServiceUnavailable;
-  RequestExpired;
-  OptInRequired;
-  MissingParameter;
-  MissingAuthenticationToken;
-  MissingAction;
-  MalformedQueryString;
-  InvalidQueryParameter;
-  InvalidParameterValue;
-  InvalidParameterCombination;
-  InvalidClientTokenId;
-  InvalidAction;
-  InternalFailure;
-  IncompleteSignature]
+  [ UnsupportedProtocol
+  ; UnknownParameter
+  ; UnauthorizedOperation
+  ; RequestLimitExceeded
+  ; PendingVerification
+  ; InvalidParameter
+  ; IdempotentParameterMismatch
+  ; DryRunOperation
+  ; Blocked
+  ; AuthFailure
+  ; ValidationError
+  ; Throttling
+  ; ServiceUnavailable
+  ; RequestExpired
+  ; OptInRequired
+  ; MissingParameter
+  ; MissingAuthenticationToken
+  ; MissingAction
+  ; MalformedQueryString
+  ; InvalidQueryParameter
+  ; InvalidParameterValue
+  ; InvalidParameterCombination
+  ; InvalidClientTokenId
+  ; InvalidAction
+  ; InternalFailure
+  ; IncompleteSignature
+  ]
+
 let to_http_code e =
   match e with
   | AuthFailure -> None
@@ -144,6 +147,7 @@ let to_http_code e =
   | VPCAssociationNotFound -> Some 404
   | ValidationError -> Some 400
   | Uninhabited -> None
+
 let to_string e =
   match e with
   | AuthFailure -> "AuthFailure"
@@ -204,6 +208,7 @@ let to_string e =
   | VPCAssociationNotFound -> "VPCAssociationNotFound"
   | ValidationError -> "ValidationError"
   | Uninhabited -> "Uninhabited"
+
 let of_string e =
   match e with
   | "AuthFailure" -> Some AuthFailure

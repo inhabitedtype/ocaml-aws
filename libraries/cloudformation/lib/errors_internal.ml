@@ -1,61 +1,64 @@
 type t =
-  | AlreadyExistsException 
-  | AuthFailure 
-  | Blocked 
-  | DryRunOperation 
-  | IdempotentParameterMismatch 
-  | IncompleteSignature 
-  | InsufficientCapabilitiesException 
-  | InternalFailure 
-  | InvalidAction 
-  | InvalidClientTokenId 
-  | InvalidParameter 
-  | InvalidParameterCombination 
-  | InvalidParameterValue 
-  | InvalidQueryParameter 
-  | LimitExceededException 
-  | MalformedQueryString 
-  | MissingAction 
-  | MissingAuthenticationToken 
-  | MissingParameter 
-  | OptInRequired 
-  | PendingVerification 
-  | RequestExpired 
-  | RequestLimitExceeded 
-  | ServiceUnavailable 
-  | Throttling 
-  | UnauthorizedOperation 
-  | UnknownParameter 
-  | UnsupportedProtocol 
-  | ValidationError 
-  | Uninhabited 
+  | AlreadyExistsException
+  | AuthFailure
+  | Blocked
+  | DryRunOperation
+  | IdempotentParameterMismatch
+  | IncompleteSignature
+  | InsufficientCapabilitiesException
+  | InternalFailure
+  | InvalidAction
+  | InvalidClientTokenId
+  | InvalidParameter
+  | InvalidParameterCombination
+  | InvalidParameterValue
+  | InvalidQueryParameter
+  | LimitExceededException
+  | MalformedQueryString
+  | MissingAction
+  | MissingAuthenticationToken
+  | MissingParameter
+  | OptInRequired
+  | PendingVerification
+  | RequestExpired
+  | RequestLimitExceeded
+  | ServiceUnavailable
+  | Throttling
+  | UnauthorizedOperation
+  | UnknownParameter
+  | UnsupportedProtocol
+  | ValidationError
+  | Uninhabited
+
 let common =
-  [UnsupportedProtocol;
-  UnknownParameter;
-  UnauthorizedOperation;
-  RequestLimitExceeded;
-  PendingVerification;
-  InvalidParameter;
-  IdempotentParameterMismatch;
-  DryRunOperation;
-  Blocked;
-  AuthFailure;
-  ValidationError;
-  Throttling;
-  ServiceUnavailable;
-  RequestExpired;
-  OptInRequired;
-  MissingParameter;
-  MissingAuthenticationToken;
-  MissingAction;
-  MalformedQueryString;
-  InvalidQueryParameter;
-  InvalidParameterValue;
-  InvalidParameterCombination;
-  InvalidClientTokenId;
-  InvalidAction;
-  InternalFailure;
-  IncompleteSignature]
+  [ UnsupportedProtocol
+  ; UnknownParameter
+  ; UnauthorizedOperation
+  ; RequestLimitExceeded
+  ; PendingVerification
+  ; InvalidParameter
+  ; IdempotentParameterMismatch
+  ; DryRunOperation
+  ; Blocked
+  ; AuthFailure
+  ; ValidationError
+  ; Throttling
+  ; ServiceUnavailable
+  ; RequestExpired
+  ; OptInRequired
+  ; MissingParameter
+  ; MissingAuthenticationToken
+  ; MissingAction
+  ; MalformedQueryString
+  ; InvalidQueryParameter
+  ; InvalidParameterValue
+  ; InvalidParameterCombination
+  ; InvalidClientTokenId
+  ; InvalidAction
+  ; InternalFailure
+  ; IncompleteSignature
+  ]
+
 let to_http_code e =
   match e with
   | AlreadyExistsException -> Some 400
@@ -88,6 +91,7 @@ let to_http_code e =
   | UnsupportedProtocol -> None
   | ValidationError -> Some 400
   | Uninhabited -> None
+
 let to_string e =
   match e with
   | AlreadyExistsException -> "AlreadyExistsException"
@@ -120,6 +124,7 @@ let to_string e =
   | UnsupportedProtocol -> "UnsupportedProtocol"
   | ValidationError -> "ValidationError"
   | Uninhabited -> "Uninhabited"
+
 let of_string e =
   match e with
   | "AlreadyExistsException" -> Some AlreadyExistsException
@@ -128,8 +133,7 @@ let of_string e =
   | "DryRunOperation" -> Some DryRunOperation
   | "IdempotentParameterMismatch" -> Some IdempotentParameterMismatch
   | "IncompleteSignature" -> Some IncompleteSignature
-  | "InsufficientCapabilitiesException" ->
-      Some InsufficientCapabilitiesException
+  | "InsufficientCapabilitiesException" -> Some InsufficientCapabilitiesException
   | "InternalFailure" -> Some InternalFailure
   | "InvalidAction" -> Some InvalidAction
   | "InvalidClientTokenId" -> Some InvalidClientTokenId

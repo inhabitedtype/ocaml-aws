@@ -24,6 +24,14 @@ out the commit and running:
 opam update aws
 ```
 
+Running individual test suites for a Service
+``` bash
+AWS_ACCESS_KEY=???? \
+AWS_SECRET_KEY=???? \
+AWS_DEFAULT_REGION=ap-southeast-2 \
+dune runtest libraries/ec2/lib_test
+```
+
 ### Code Generation
 
 To generate service libaries during development and in preparation for release,
@@ -82,6 +90,15 @@ let main () =
 
 Scheduler.go_main ~main ()
 ```
+
+## DEBUGGING
+
+If you get this error when running test or example code
+`Fatal error: exception (Failure "No SSL or TLS support compiled into Conduit")`
+
+You need to install the ssl versions of your chosen async framework
+
+`opam install lwt_ssl async_ssl`
 
 ## License
 

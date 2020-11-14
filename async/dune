@@ -1,4 +1,4 @@
 (library
  (name aws_async)
-  (public_name aws-async)
-  (libraries async aws cohttp cohttp-async))
+ (public_name aws-async)
+ (libraries async aws cohttp cohttp-async))

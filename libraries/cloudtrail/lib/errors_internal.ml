@@ -1,75 +1,78 @@
 type t =
-  | AuthFailure 
-  | Blocked 
-  | CloudWatchLogsDeliveryUnavailable 
-  | DryRunOperation 
-  | IdempotentParameterMismatch 
-  | IncompleteSignature 
-  | InsufficientS3BucketPolicy 
-  | InsufficientSnsTopicPolicy 
-  | InternalFailure 
-  | InvalidAction 
-  | InvalidClientTokenId 
-  | InvalidCloudWatchLogsLogGroupArn 
-  | InvalidCloudWatchLogsRoleArn 
-  | InvalidLookupAttributes 
-  | InvalidMaxResults 
-  | InvalidNextToken 
-  | InvalidParameter 
-  | InvalidParameterCombination 
-  | InvalidParameterValue 
-  | InvalidQueryParameter 
-  | InvalidS3BucketName 
-  | InvalidS3Prefix 
-  | InvalidSnsTopicName 
-  | InvalidTimeRange 
-  | InvalidTrailName 
-  | MalformedQueryString 
-  | MaximumNumberOfTrailsExceeded 
-  | MissingAction 
-  | MissingAuthenticationToken 
-  | MissingParameter 
-  | OptInRequired 
-  | PendingVerification 
-  | RequestExpired 
-  | RequestLimitExceeded 
-  | S3BucketDoesNotExist 
-  | ServiceUnavailable 
-  | Throttling 
-  | TrailAlreadyExists 
-  | TrailNotFound 
-  | UnauthorizedOperation 
-  | UnknownParameter 
-  | UnsupportedProtocol 
-  | ValidationError 
-  | Uninhabited 
+  | AuthFailure
+  | Blocked
+  | CloudWatchLogsDeliveryUnavailable
+  | DryRunOperation
+  | IdempotentParameterMismatch
+  | IncompleteSignature
+  | InsufficientS3BucketPolicy
+  | InsufficientSnsTopicPolicy
+  | InternalFailure
+  | InvalidAction
+  | InvalidClientTokenId
+  | InvalidCloudWatchLogsLogGroupArn
+  | InvalidCloudWatchLogsRoleArn
+  | InvalidLookupAttributes
+  | InvalidMaxResults
+  | InvalidNextToken
+  | InvalidParameter
+  | InvalidParameterCombination
+  | InvalidParameterValue
+  | InvalidQueryParameter
+  | InvalidS3BucketName
+  | InvalidS3Prefix
+  | InvalidSnsTopicName
+  | InvalidTimeRange
+  | InvalidTrailName
+  | MalformedQueryString
+  | MaximumNumberOfTrailsExceeded
+  | MissingAction
+  | MissingAuthenticationToken
+  | MissingParameter
+  | OptInRequired
+  | PendingVerification
+  | RequestExpired
+  | RequestLimitExceeded
+  | S3BucketDoesNotExist
+  | ServiceUnavailable
+  | Throttling
+  | TrailAlreadyExists
+  | TrailNotFound
+  | UnauthorizedOperation
+  | UnknownParameter
+  | UnsupportedProtocol
+  | ValidationError
+  | Uninhabited
+
 let common =
-  [UnsupportedProtocol;
-  UnknownParameter;
-  UnauthorizedOperation;
-  RequestLimitExceeded;
-  PendingVerification;
-  InvalidParameter;
-  IdempotentParameterMismatch;
-  DryRunOperation;
-  Blocked;
-  AuthFailure;
-  ValidationError;
-  Throttling;
-  ServiceUnavailable;
-  RequestExpired;
-  OptInRequired;
-  MissingParameter;
-  MissingAuthenticationToken;
-  MissingAction;
-  MalformedQueryString;
-  InvalidQueryParameter;
-  InvalidParameterValue;
-  InvalidParameterCombination;
-  InvalidClientTokenId;
-  InvalidAction;
-  InternalFailure;
-  IncompleteSignature]
+  [ UnsupportedProtocol
+  ; UnknownParameter
+  ; UnauthorizedOperation
+  ; RequestLimitExceeded
+  ; PendingVerification
+  ; InvalidParameter
+  ; IdempotentParameterMismatch
+  ; DryRunOperation
+  ; Blocked
+  ; AuthFailure
+  ; ValidationError
+  ; Throttling
+  ; ServiceUnavailable
+  ; RequestExpired
+  ; OptInRequired
+  ; MissingParameter
+  ; MissingAuthenticationToken
+  ; MissingAction
+  ; MalformedQueryString
+  ; InvalidQueryParameter
+  ; InvalidParameterValue
+  ; InvalidParameterCombination
+  ; InvalidClientTokenId
+  ; InvalidAction
+  ; InternalFailure
+  ; IncompleteSignature
+  ]
+
 let to_http_code e =
   match e with
   | AuthFailure -> None
@@ -116,6 +119,7 @@ let to_http_code e =
   | UnsupportedProtocol -> None
   | ValidationError -> Some 400
   | Uninhabited -> None
+
 let to_string e =
   match e with
   | AuthFailure -> "AuthFailure"
@@ -162,12 +166,12 @@ let to_string e =
   | UnsupportedProtocol -> "UnsupportedProtocol"
   | ValidationError -> "ValidationError"
   | Uninhabited -> "Uninhabited"
+
 let of_string e =
   match e with
   | "AuthFailure" -> Some AuthFailure
   | "Blocked" -> Some Blocked
-  | "CloudWatchLogsDeliveryUnavailable" ->
-      Some CloudWatchLogsDeliveryUnavailable
+  | "CloudWatchLogsDeliveryUnavailable" -> Some CloudWatchLogsDeliveryUnavailable
   | "DryRunOperation" -> Some DryRunOperation
   | "IdempotentParameterMismatch" -> Some IdempotentParameterMismatch
   | "IncompleteSignature" -> Some IncompleteSignature
@@ -176,8 +180,7 @@ let of_string e =
   | "InternalFailure" -> Some InternalFailure
   | "InvalidAction" -> Some InvalidAction
   | "InvalidClientTokenId" -> Some InvalidClientTokenId
-  | "InvalidCloudWatchLogsLogGroupArn" ->
-      Some InvalidCloudWatchLogsLogGroupArn
+  | "InvalidCloudWatchLogsLogGroupArn" -> Some InvalidCloudWatchLogsLogGroupArn
   | "InvalidCloudWatchLogsRoleArn" -> Some InvalidCloudWatchLogsRoleArn
   | "InvalidLookupAttributes" -> Some InvalidLookupAttributes
   | "InvalidMaxResults" -> Some InvalidMaxResults

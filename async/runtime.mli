@@ -31,10 +31,11 @@
     POSSIBILITY OF SUCH DAMAGE.
   ----------------------------------------------------------------------------*)
 
-(** Run an AWS request, in the [region] with [access_key] and [secret_key]. *)
 val run_request :
-  region:string ->
-  access_key:string ->
-  secret_key:string ->
-  ('input, 'output, 'error) Aws.call ->
-  'input -> [`Ok of 'output | `Error of 'error Aws.Error.t] Async.Deferred.t
+     region:string
+  -> access_key:string
+  -> secret_key:string
+  -> ('input, 'output, 'error) Aws.call
+  -> 'input
+  -> [ `Ok of 'output | `Error of 'error Aws.Error.t ] Async.Deferred.t
+(** Run an AWS request, in the [region] with [access_key] and [secret_key]. *)

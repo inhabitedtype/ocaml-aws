@@ -17,8 +17,10 @@ module Shape = struct
     | Enum of string list
     | Map of (string * string option) * (string * string option)
 
-  type t = { name : string; content : contents }
-
+  type t =
+    { name : string
+    ; content : contents
+    }
 
   type parsed = string * string * contents option
 end
@@ -40,7 +42,8 @@ module Error = struct
     { shape_name : string
     ; string_name : string
     ; variant_name : string
-    ; http_code : int option }
+    ; http_code : int option
+    }
 
   let compare t1 t2 =
     compare

@@ -37,52 +37,49 @@
 
 (** This contains errors that are returned from AWS api calls. *)
 module Error : sig
-
   (** An individual error returned from AWS. *)
   type 'a code =
     | Understood of 'a
     | Unknown of string
 
+  type bad_response =
+    { body : string
+    ; message : string
+    }
   (** Contents of a bad response error, containing the body of what
       could not be interpreted and a (potential) reason why. *)
-  type bad_response = { body : string; message: string }
 
   (** An error_response is returned when an HTTP response returns with
       a non-2xx code. *)
   type 'a error_response =
     | BadResponse of bad_response
-    (** A BadResponse is an error response that could not be parsed
+        (** A BadResponse is an error response that could not be parsed
         into AWS error data structures. *)
     | AwsError of ('a code * string) list
-    (** An AwsError is a list of errors parsed out of XML returned in
+        (** An AwsError is a list of errors parsed out of XML returned in
         a non-2xx response. *)
 
   type 'a t =
     | TransportError of string
-    (** TransportError indicate that an error occurred at the level of
+        (** TransportError indicate that an error occurred at the level of
         the HTTP request (and generally, nothing was returned). *)
     | HttpError of int * 'a error_response
-    (** HttpError indicates that a response was recieved with an HTTP
+        (** HttpError indicates that a response was recieved with an HTTP
         error code (non-2xx) *)
 
-  (** Produces a string representation of an error, suitable for printing. *)
   val format : ('a -> string) -> 'a t -> string
+  (** Produces a string representation of an error, suitable for printing. *)
 
+  val parse_aws_error : string -> [ `Ok of (string * string) list | `Error of string ]
   (** Given a string error response, produces (code,message) pairs. If the
       body can't be decoded, produces an `Error reason. This is used
       by runtime implementations in the case they get a non-success
       response code. *)
-  val parse_aws_error : string -> [`Ok of (string * string) list | `Error of string ]
 end
-
 
 (** This contains the http-library agnostic representation of requests
     to be used by runtime implementations. *)
 module Request : sig
-
-  (** HTTP methods. This is (intentionally) compatible with
-      Cohttp.Code.meth to make the cohttp-based runtime implementation
-      easier. *)
   type meth =
     [ `DELETE
     | `GET
@@ -93,55 +90,57 @@ module Request : sig
     | `Other of string
     | `PATCH
     | `POST
-    | `PUT ]
+    | `PUT
+    ]
+  (** HTTP methods. This is (intentionally) compatible with
+      Cohttp.Code.meth to make the cohttp-based runtime implementation
+      easier. *)
 
-  (** Produces a string from the method. This is needed for AWS request signing. *)
   val string_of_meth : meth -> string
+  (** Produces a string from the method. This is needed for AWS request signing. *)
 
-  (** HTTP headers. *)
   type headers = (string * string) list
+  (** HTTP headers. *)
 
+  type t = meth * Uri.t * headers
   (** A request is a method, a uri, and a list of headers. *)
-  type t = (meth * Uri.t * headers)
-
 end
 
 (** All AWS api operations should have type Call. Runtime
     implementation should take as input modules of type Call. *)
 module type Call = sig
-
-  (** The native OCaml datatype input to the Call. *)
   type input
+  (** The native OCaml datatype input to the Call. *)
 
+  type output
   (** The native OCaml datatype that is produced as output to a
       successful Call. *)
-  type output
 
+  type error
   (** The native OCaml error type. This is shared between all calls
       for a single API. *)
-  type error
 
+  val service : string
   (** The AWS service, for example, 'ec2'. This is used for request
       signing, and to determine the endpoint to send the request. *)
-  val service : string
 
+  val to_http : string -> string -> input -> Request.t
   (** This function converts the native input into the HTTP request
       type. In particular, it is responsible for properly encoding the
       request type into query format. It also sets the Action and
       Version query parameters. *)
-  val to_http : string -> string -> input -> Request.t
 
+  val of_http : string -> [ `Ok of output | `Error of error Error.error_response ]
   (** This function converts from a HTTP response body to an output
       or an error if the response could not be decoded. *)
-  val of_http : string -> [`Ok of output | `Error of error Error.error_response]
 
+  val parse_error : int -> string -> error option
   (** This function parses an AWS error (which has been successfully
       deserialized from XML) into an API specific native error that
       could have been triggered by this call. It should fail to parse
       if the error it is given is not one of those listen in the
       specification, or if the passed HTTP status code does not match
       the specified one. *)
-  val parse_error : int -> string -> error option
 end
 
 type ('i, 'o, 'e) call =
@@ -151,24 +150,22 @@ type ('i, 'o, 'e) call =
     For example: 2013-05-24T21:15:31.000Z
     It does not parse the milliseconds (it just truncates them). *)
 module Time : sig
-
+  val parse : string -> CalendarLib.Calendar.t
   (** Produce a Calendar.t from a string formatted like
       2013-05-24T21:15:31.000Z. Note that .000Z (or any milliseconds)
       are truncated.
 
       Raises 'Invalid_argument' if the string does not match the
       format. *)
-  val parse : string -> CalendarLib.Calendar.t
 
+  val format : CalendarLib.Calendar.t -> string
   (** Formats a Calendar.t as 2013-05-24T21:15:31.000Z. Note that
       .000Z is always appended. *)
-  val format : CalendarLib.Calendar.t -> string
 end
 
 (** This module is used to produce the nested url query structure used
     in AWS api requests. *)
 module Query : sig
-
   (** The query type. In the following examples, constructors are
       ellided for brevity.
 
@@ -180,14 +177,14 @@ module Query : sig
     | Pair of (string * t)
     | Value of string option
 
+  val render : t -> string
   (** This is how to turn a Query.t into a string suitable for
       including in a url. It is a query string, ie
       field=val&field=val... *)
-  val render : t -> string
 
+  val to_query_list : ('a -> t) -> 'a list -> t
   (** This is a helper to convert a list into a Query.t. It encodes it
       as [(0, val); (1, val)...]. *)
-  val to_query_list : ('a -> t) -> 'a list -> t
 
   val to_query_hashtbl : ('a -> string) -> ('b -> t) -> ('a, 'b) Hashtbl.t -> t
 end
@@ -195,31 +192,28 @@ end
 (** This module contains helpers used for XML parsing. It wraps Ezxmlm
     and adds helpers. *)
 module Xml : sig
-
+  exception RequiredFieldMissing of string
   (** This is thrown when parsing XML responses. It will be caught in
       response handlers (M.of_http for api call M) and turned into an
       Error.t *)
-  exception RequiredFieldMissing of string
 
+  val member : string -> Ezxmlm.nodes -> Ezxmlm.nodes option
   (** This function is identical to Ezxmlm.member except that in the
       case of an Ezxmlm.Tag_not_found exception it returns None. *)
-  val member : string -> Ezxmlm.nodes -> Ezxmlm.nodes option
 
+  val members : string -> Ezxmlm.nodes -> Ezxmlm.nodes list
   (** This function is identical to Ezxmlm.members except in the case
       of an Ezxmlm.Tag_not_found exception it returns []. *)
-  val members : string -> Ezxmlm.nodes -> Ezxmlm.nodes list
 
+  val required : string -> 'a option -> 'a
   (** This takes an error message and option time, and throws a
       RequiredFieldMissing exception (not exported) if the value is
       None. *)
-  val required : string -> 'a option -> 'a
-
 end
 
 (** This module contains a Json type (compatible with
     Yojson.Basic.t) and helpers. *)
 module Json : sig
-  (** Json type. This is compatible with Yojson.Basic.t *)
   type t =
     [ `Assoc of (string * t) list
     | `Bool of bool
@@ -227,63 +221,70 @@ module Json : sig
     | `Int of int
     | `List of t list
     | `Null
-    | `String of string ]
+    | `String of string
+    ]
+  (** Json type. This is compatible with Yojson.Basic.t *)
 
+  exception Casting_error of string * t
   (** This is thrown in the case that an unsafe cast (like to_list
       below) fails. *)
-  exception Casting_error of string * t
 
+  val to_list : (t -> 't) -> t -> 't list
   (** This converts a `List (t list) to 't list, or throws a
       Casting_error in the case that the input is not a `List. *)
-  val to_list : (t -> 't) -> t -> 't list
 
+  val to_hashtbl : (string -> 'a) -> (t -> 'b) -> t -> ('a, 'b) Hashtbl.t
   (** This converts an `Assoc (string * t list) to ('a, 'b) Hashtbl.t, or throws a
       Casting_error in the case that the input is not an `Assoc. *)
-  val to_hashtbl: (string -> 'a) -> (t -> 'b) -> t -> ('a, 'b) Hashtbl.t
 
+  val lookup : t -> string -> t option
   (** If t is an `Assoc, this looks up the field specified. If it
       isn't found, or if the input is not an `Assoc, returns None. *)
-  val lookup : t -> string -> t option
 end
 
 (** This module contains various helpers used in generated code. *)
 module Util : sig
-
+  val drop_empty : (string * 'a) list -> (string * 'a) list
   (** Filters an association list, dropping any pairs where the key is
       the empty string. *)
-  val drop_empty : (string * 'a) list -> (string * 'a) list
 
+  val or_error : 'a option -> 'b -> [ `Ok of 'a | `Error of 'b ]
   (** If input is Some a, produces `Ok a, else produces `Error b. *)
-  val or_error : 'a option -> 'b -> [`Ok of 'a | `Error of 'b]
 
-  (** Produces the default if the option is None, else the value. *)
   val of_option : 'a -> 'a option -> 'a
+  (** Produces the default if the option is None, else the value. *)
 
-  (** Produces a if Some a, else throws Failure. *)
   val of_option_exn : 'a option -> 'a
+  (** Produces a if Some a, else throws Failure. *)
 
+  val list_find : ('a * 'b) list -> 'a -> 'b option
   (** Looks for key 'a in association list, producing None if it isn't
       there. *)
-  val list_find : ('a * 'b) list -> 'a -> 'b option
 
-  (** Returns list of values that were Some v. *)
   val list_filter_opt : 'a option list -> 'a list
+  (** Returns list of values that were Some v. *)
 
-  (** If a is Some a, applies function. Else, produce None. *)
   val option_bind : 'a option -> ('a -> 'b option) -> 'b option
+  (** If a is Some a, applies function. Else, produce None. *)
 
-  (** Applies function to value is Some, else just produce None. *)
   val option_map : 'a option -> ('a -> 'b) -> 'b option
+  (** Applies function to value is Some, else just produce None. *)
 
+  val option_all : 'a option list -> 'a list option
   (** If all values in list are Some v, produce Some (list_filter_opt
       list), else produce None. *)
-  val option_all : 'a option list -> 'a list option
 end
 
 (** This module contains the V4 Authorization header AWS signature
     algorithm. *)
 module Signing : sig
-
+  val sign_request :
+       access_key:string
+    -> secret_key:string
+    -> service:string
+    -> region:string
+    -> Request.t
+    -> Request.t
   (** Given a service, region, and request, produce a new request with
       an Authorization header constructed according to the V4 Signing
       algorithm. This code is a direct translation of the reference implementation
@@ -297,12 +298,6 @@ module Signing : sig
       Also: Your system time must be accurate. If you are getting invalid
       authorization errors, check your system time!
   *)
-  val sign_request :
-    access_key:string ->
-    secret_key:string ->
-    service:string ->
-    region:string ->
-    Request.t -> Request.t
 end
 
 (** This module contains base case types for the various datatypes
@@ -310,22 +305,36 @@ end
 module BaseTypes : sig
   module type Base = sig
     type t
+
     val to_json : t -> Json.t
+
     val of_json : Json.t -> t
+
     val to_query : t -> Query.t
+
     val parse : Ezxmlm.nodes -> t option
+
     val to_string : t -> string
+
     val of_string : string -> t
   end
 
-  module Unit     : Base with type t = unit
-  module String   : Base with type t = string
-  module Blob     : Base with type t = string
-  module Boolean  : Base with type t = bool
-  module Integer  : Base with type t = int
-  module Long     : Base with type t = int
-  module Double   : Base with type t = float
-  module Float    : Base with type t = float
+  module Unit : Base with type t = unit
+
+  module String : Base with type t = string
+
+  module Blob : Base with type t = string
+
+  module Boolean : Base with type t = bool
+
+  module Integer : Base with type t = int
+
+  module Long : Base with type t = int
+
+  module Double : Base with type t = float
+
+  module Float : Base with type t = float
+
   module DateTime : Base with type t = CalendarLib.Calendar.t
 end
 
