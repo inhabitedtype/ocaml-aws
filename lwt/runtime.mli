@@ -33,10 +33,11 @@
 (** This module contains an {{:https://github.com/ocsigen/lwt} [Lwt]} based runtime
     for executing AWS requests. *)
 
-(** Run an AWS request, in the [region] with [access_key] and [secret_key]. *)
 val run_request :
-  region:string ->
-  access_key:string ->
-  secret_key: string ->
-  ('input, 'output, 'error) Aws.call ->
-  'input -> [`Ok of 'output | `Error of 'error Aws.Error.t] Lwt.t
+     region:string
+  -> access_key:string
+  -> secret_key:string
+  -> ('input, 'output, 'error) Aws.call
+  -> 'input
+  -> [ `Ok of 'output | `Error of 'error Aws.Error.t ] Lwt.t
+(** Run an AWS request, in the [region] with [access_key] and [secret_key]. *)

@@ -31,7 +31,8 @@
     POSSIBILITY OF SUCH DAMAGE.
   ----------------------------------------------------------------------------*)
 let opam ~service_name =
-  Printf.sprintf {|opam-version: "2.0"
+  Printf.sprintf
+    {|opam-version: "2.0"
 maintainer: "Tim McGilchrist <timmcgil@gmail.com>"
 authors: [ "Spiros Eliopoulos <spiros@inhabitedtype.com>"
            "Daniel Patterson <dbp@dbpmail.net>"
@@ -53,24 +54,30 @@ depends: [
   "aws" {>= "0.1.0"}
   "dune"
 ]
-|} service_name service_name
+|}
+    service_name
+    service_name
 
 let dune ~lib_name ~service_name =
-  Printf.sprintf {|(library
+  Printf.sprintf
+    {|(library
  (name        aws_%s)
  (public_name aws-%s)
  (synopsis "aws-%s")
  (flags (:standard -w -27))
  (libraries aws))
 |}
- lib_name lib_name service_name
+    lib_name
+    lib_name
+    service_name
 
 let dune_test ~lib_name =
   (* Necessary cause '%' is reserved string in 'sprintf' and I didn't know
      how to escape it.
   *)
   let d = "%{deps}" in
-  Printf.sprintf {|(executables
+  Printf.sprintf
+    {|(executables
  (names test_async test_lwt)
  (flags (:standard -w -27 -w -33))
  (modules test_async test_lwt aws_%s_test)
@@ -88,10 +95,15 @@ let dune_test ~lib_name =
  (alias runtest)
  (deps test_lwt.exe)
  (action (run %s)))
-|} lib_name lib_name d d
+|}
+    lib_name
+    lib_name
+    d
+    d
 
 let test_async ~lib_name =
-  Printf.sprintf {|open Aws_%s_test
+  Printf.sprintf
+    {|open Aws_%s_test
 
 module T = TestSuite(struct
     type 'a m = 'a Async.Deferred.t
@@ -102,10 +114,12 @@ module T = TestSuite(struct
     let run_request = Aws_async.Runtime.run_request ~access_key ~secret_key
     let un_m v = Async.Thread_safe.block_on_async_exn (fun () -> v)
   end)
-|} lib_name
+|}
+    lib_name
 
 let test_lwt ~lib_name =
-  Printf.sprintf {|open Aws_%s_test
+  Printf.sprintf
+    {|open Aws_%s_test
 
 module T = TestSuite(struct
     type 'a m = 'a Lwt.t
@@ -116,11 +130,13 @@ module T = TestSuite(struct
     let run_request = Aws_lwt.Runtime.run_request ~access_key ~secret_key
     let un_m = Lwt_main.run
   end)
-|} lib_name
+|}
+    lib_name
 
 let service_test ~lib_name =
   let upper_lib_name = String.uppercase_ascii lib_name in
-  Printf.sprintf {|open OUnit
+  Printf.sprintf
+    {|open OUnit
 open Aws_%s
 
 module TestSuite(Runtime : sig
@@ -163,4 +179,7 @@ module TestSuite(Runtime : sig
     if not (was_successful (run_test_tt ~verbose:!verbose suite)) then
       exit 1
 end
-|} lib_name upper_lib_name upper_lib_name
+|}
+    lib_name
+    upper_lib_name
+    upper_lib_name

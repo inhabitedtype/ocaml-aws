@@ -1,63 +1,66 @@
 type t =
-  | AuthFailure 
-  | Blocked 
-  | DryRunOperation 
-  | IdempotentParameterMismatch 
-  | IncompleteSignature 
-  | InternalFailure 
-  | InternalServiceError 
-  | InvalidAction 
-  | InvalidClientTokenId 
-  | InvalidFormat 
-  | InvalidNextToken 
-  | InvalidParameter 
-  | InvalidParameterCombination 
-  | InvalidParameterValue 
-  | InvalidQueryParameter 
-  | LimitExceeded 
-  | MalformedQueryString 
-  | MissingAction 
-  | MissingAuthenticationToken 
-  | MissingParameter 
-  | OptInRequired 
-  | PendingVerification 
-  | RequestExpired 
-  | RequestLimitExceeded 
-  | ResourceNotFound 
-  | ServiceUnavailable 
-  | Throttling 
-  | UnauthorizedOperation 
-  | UnknownParameter 
-  | UnsupportedProtocol 
-  | ValidationError 
-  | Uninhabited 
+  | AuthFailure
+  | Blocked
+  | DryRunOperation
+  | IdempotentParameterMismatch
+  | IncompleteSignature
+  | InternalFailure
+  | InternalServiceError
+  | InvalidAction
+  | InvalidClientTokenId
+  | InvalidFormat
+  | InvalidNextToken
+  | InvalidParameter
+  | InvalidParameterCombination
+  | InvalidParameterValue
+  | InvalidQueryParameter
+  | LimitExceeded
+  | MalformedQueryString
+  | MissingAction
+  | MissingAuthenticationToken
+  | MissingParameter
+  | OptInRequired
+  | PendingVerification
+  | RequestExpired
+  | RequestLimitExceeded
+  | ResourceNotFound
+  | ServiceUnavailable
+  | Throttling
+  | UnauthorizedOperation
+  | UnknownParameter
+  | UnsupportedProtocol
+  | ValidationError
+  | Uninhabited
+
 let common =
-  [UnsupportedProtocol;
-  UnknownParameter;
-  UnauthorizedOperation;
-  RequestLimitExceeded;
-  PendingVerification;
-  InvalidParameter;
-  IdempotentParameterMismatch;
-  DryRunOperation;
-  Blocked;
-  AuthFailure;
-  ValidationError;
-  Throttling;
-  ServiceUnavailable;
-  RequestExpired;
-  OptInRequired;
-  MissingParameter;
-  MissingAuthenticationToken;
-  MissingAction;
-  MalformedQueryString;
-  InvalidQueryParameter;
-  InvalidParameterValue;
-  InvalidParameterCombination;
-  InvalidClientTokenId;
-  InvalidAction;
-  InternalFailure;
-  IncompleteSignature]
+  [ UnsupportedProtocol
+  ; UnknownParameter
+  ; UnauthorizedOperation
+  ; RequestLimitExceeded
+  ; PendingVerification
+  ; InvalidParameter
+  ; IdempotentParameterMismatch
+  ; DryRunOperation
+  ; Blocked
+  ; AuthFailure
+  ; ValidationError
+  ; Throttling
+  ; ServiceUnavailable
+  ; RequestExpired
+  ; OptInRequired
+  ; MissingParameter
+  ; MissingAuthenticationToken
+  ; MissingAction
+  ; MalformedQueryString
+  ; InvalidQueryParameter
+  ; InvalidParameterValue
+  ; InvalidParameterCombination
+  ; InvalidClientTokenId
+  ; InvalidAction
+  ; InternalFailure
+  ; IncompleteSignature
+  ]
+
 let to_http_code e =
   match e with
   | AuthFailure -> None
@@ -92,6 +95,7 @@ let to_http_code e =
   | UnsupportedProtocol -> None
   | ValidationError -> Some 400
   | Uninhabited -> None
+
 let to_string e =
   match e with
   | AuthFailure -> "AuthFailure"
@@ -126,6 +130,7 @@ let to_string e =
   | UnsupportedProtocol -> "UnsupportedProtocol"
   | ValidationError -> "ValidationError"
   | Uninhabited -> "Uninhabited"
+
 let of_string e =
   match e with
   | "AuthFailure" -> Some AuthFailure

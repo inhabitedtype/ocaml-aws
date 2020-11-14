@@ -40,43 +40,50 @@ open Cohttp
 open Cohttp_async
 
 let run_request
-    (type input)
-    (type output)
-    (type error)
+    (type input output error)
     ~region
     ~access_key
     ~secret_key
-    (module M : Aws.Call with type input = input
-                          and type output = output
-                          and type error = error)
-    (inp : M.input)
-  =
+    (module M : Aws.Call
+      with type input = input
+       and type output = output
+       and type error = error)
+    (inp : M.input) =
   let meth, uri, headers =
-    Aws.Signing.sign_request ~access_key ~secret_key ~service:M.service ~region (M.to_http M.service region inp)
+    Aws.Signing.sign_request
+      ~access_key
+      ~secret_key
+      ~service:M.service
+      ~region
+      (M.to_http M.service region inp)
   in
   let headers = Header.of_list headers in
-  try_with begin fun () ->
-    Log.Global.info "HTTP %s: %s" (Aws.Request.string_of_meth meth) (Uri.to_string uri);
-    Client.call ~headers meth uri >>= fun (resp, body_comp) ->
-    Body.to_string body_comp >>| fun body ->
-    let code = Code.code_of_status (Response.status resp) in
-    if code >= 300 then
-      let open Aws.Error in
-      let aws_error =
-        match parse_aws_error body with
-        | `Error message -> BadResponse { body; message }
-        | `Ok ers ->
-          AwsError (List.map ers ~f:(fun (aws_code, message) ->
-            match M.parse_error code aws_code with
-            | None   -> (Unknown aws_code, message)
-            | Some e -> (Understood e    , message)))
-      in
-      `Error (HttpError (code, aws_error))
-    else
-      match M.of_http body with
-      | `Ok v -> `Ok v
-      | `Error t -> `Error (Aws.Error.HttpError (code, t))
-  end >>| function
+  try_with (fun () ->
+      Log.Global.info "HTTP %s: %s" (Aws.Request.string_of_meth meth) (Uri.to_string uri);
+      Client.call ~headers meth uri
+      >>= fun (resp, body_comp) ->
+      Body.to_string body_comp
+      >>| fun body ->
+      let code = Code.code_of_status (Response.status resp) in
+      if code >= 300
+      then
+        let open Aws.Error in
+        let aws_error =
+          match parse_aws_error body with
+          | `Error message -> BadResponse { body; message }
+          | `Ok ers ->
+              AwsError
+                (List.map ers ~f:(fun (aws_code, message) ->
+                     match M.parse_error code aws_code with
+                     | None -> Unknown aws_code, message
+                     | Some e -> Understood e, message))
+        in
+        `Error (HttpError (code, aws_error))
+      else
+        match M.of_http body with
+        | `Ok v -> `Ok v
+        | `Error t -> `Error (Aws.Error.HttpError (code, t)))
+  >>| function
   | Result.Ok v -> v
   | Result.Error (Failure msg) -> `Error (Aws.Error.TransportError msg)
   | Result.Error exn -> raise exn

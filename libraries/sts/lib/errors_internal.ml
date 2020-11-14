@@ -1,65 +1,68 @@
 type t =
-  | AuthFailure 
-  | Blocked 
-  | DryRunOperation 
-  | ExpiredTokenException 
-  | IDPCommunicationError 
-  | IDPRejectedClaim 
-  | IdempotentParameterMismatch 
-  | IncompleteSignature 
-  | InternalFailure 
-  | InvalidAction 
-  | InvalidAuthorizationMessageException 
-  | InvalidClientTokenId 
-  | InvalidIdentityToken 
-  | InvalidParameter 
-  | InvalidParameterCombination 
-  | InvalidParameterValue 
-  | InvalidQueryParameter 
-  | MalformedPolicyDocument 
-  | MalformedQueryString 
-  | MissingAction 
-  | MissingAuthenticationToken 
-  | MissingParameter 
-  | OptInRequired 
-  | PackedPolicyTooLarge 
-  | PendingVerification 
-  | RequestExpired 
-  | RequestLimitExceeded 
-  | ServiceUnavailable 
-  | Throttling 
-  | UnauthorizedOperation 
-  | UnknownParameter 
-  | UnsupportedProtocol 
-  | ValidationError 
-  | Uninhabited 
+  | AuthFailure
+  | Blocked
+  | DryRunOperation
+  | ExpiredTokenException
+  | IDPCommunicationError
+  | IDPRejectedClaim
+  | IdempotentParameterMismatch
+  | IncompleteSignature
+  | InternalFailure
+  | InvalidAction
+  | InvalidAuthorizationMessageException
+  | InvalidClientTokenId
+  | InvalidIdentityToken
+  | InvalidParameter
+  | InvalidParameterCombination
+  | InvalidParameterValue
+  | InvalidQueryParameter
+  | MalformedPolicyDocument
+  | MalformedQueryString
+  | MissingAction
+  | MissingAuthenticationToken
+  | MissingParameter
+  | OptInRequired
+  | PackedPolicyTooLarge
+  | PendingVerification
+  | RequestExpired
+  | RequestLimitExceeded
+  | ServiceUnavailable
+  | Throttling
+  | UnauthorizedOperation
+  | UnknownParameter
+  | UnsupportedProtocol
+  | ValidationError
+  | Uninhabited
+
 let common =
-  [UnsupportedProtocol;
-  UnknownParameter;
-  UnauthorizedOperation;
-  RequestLimitExceeded;
-  PendingVerification;
-  InvalidParameter;
-  IdempotentParameterMismatch;
-  DryRunOperation;
-  Blocked;
-  AuthFailure;
-  ValidationError;
-  Throttling;
-  ServiceUnavailable;
-  RequestExpired;
-  OptInRequired;
-  MissingParameter;
-  MissingAuthenticationToken;
-  MissingAction;
-  MalformedQueryString;
-  InvalidQueryParameter;
-  InvalidParameterValue;
-  InvalidParameterCombination;
-  InvalidClientTokenId;
-  InvalidAction;
-  InternalFailure;
-  IncompleteSignature]
+  [ UnsupportedProtocol
+  ; UnknownParameter
+  ; UnauthorizedOperation
+  ; RequestLimitExceeded
+  ; PendingVerification
+  ; InvalidParameter
+  ; IdempotentParameterMismatch
+  ; DryRunOperation
+  ; Blocked
+  ; AuthFailure
+  ; ValidationError
+  ; Throttling
+  ; ServiceUnavailable
+  ; RequestExpired
+  ; OptInRequired
+  ; MissingParameter
+  ; MissingAuthenticationToken
+  ; MissingAction
+  ; MalformedQueryString
+  ; InvalidQueryParameter
+  ; InvalidParameterValue
+  ; InvalidParameterCombination
+  ; InvalidClientTokenId
+  ; InvalidAction
+  ; InternalFailure
+  ; IncompleteSignature
+  ]
+
 let to_http_code e =
   match e with
   | AuthFailure -> None
@@ -96,6 +99,7 @@ let to_http_code e =
   | UnsupportedProtocol -> None
   | ValidationError -> Some 400
   | Uninhabited -> None
+
 let to_string e =
   match e with
   | AuthFailure -> "AuthFailure"
@@ -108,8 +112,7 @@ let to_string e =
   | IncompleteSignature -> "IncompleteSignature"
   | InternalFailure -> "InternalFailure"
   | InvalidAction -> "InvalidAction"
-  | InvalidAuthorizationMessageException ->
-      "InvalidAuthorizationMessageException"
+  | InvalidAuthorizationMessageException -> "InvalidAuthorizationMessageException"
   | InvalidClientTokenId -> "InvalidClientTokenId"
   | InvalidIdentityToken -> "InvalidIdentityToken"
   | InvalidParameter -> "InvalidParameter"
@@ -133,6 +136,7 @@ let to_string e =
   | UnsupportedProtocol -> "UnsupportedProtocol"
   | ValidationError -> "ValidationError"
   | Uninhabited -> "Uninhabited"
+
 let of_string e =
   match e with
   | "AuthFailure" -> Some AuthFailure
@@ -145,8 +149,7 @@ let of_string e =
   | "IncompleteSignature" -> Some IncompleteSignature
   | "InternalFailure" -> Some InternalFailure
   | "InvalidAction" -> Some InvalidAction
-  | "InvalidAuthorizationMessageException" ->
-      Some InvalidAuthorizationMessageException
+  | "InvalidAuthorizationMessageException" -> Some InvalidAuthorizationMessageException
   | "InvalidClientTokenId" -> Some InvalidClientTokenId
   | "InvalidIdentityToken" -> Some InvalidIdentityToken
   | "InvalidParameter" -> Some InvalidParameter

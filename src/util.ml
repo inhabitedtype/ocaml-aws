@@ -37,16 +37,21 @@ open Structures
 module Printing = struct
   let with_output file f =
     let out = open_out file in
-    try f out; flush out; close_out out with _ -> close_out out
+    try
+      f out;
+      flush out;
+      close_out out
+    with _ -> close_out out
 
   let write_all ~filename contents =
-    with_output filename (fun out ->
-      output_string out contents)
+    with_output filename (fun out -> output_string out contents)
 
   let migration = Versions.migrate Versions.ocaml_404 Versions.ocaml_current
 
   let write_structure filename es =
-    write_all ~filename (Pprintast.string_of_structure (migration.Versions.copy_structure es))
+    write_all
+      ~filename
+      (Pprintast.string_of_structure (migration.Versions.copy_structure es))
 
   let string_of_signature x =
     ignore (Format.flush_str_formatter ());
@@ -54,26 +59,21 @@ module Printing = struct
     Pprintast.signature f (migration.Versions.copy_signature x);
     Format.flush_str_formatter ()
 
-  let write_signature filename es =
-    write_all ~filename (string_of_signature es)
+  let write_signature filename es = write_all ~filename (string_of_signature es)
 end
 
-module StringTable = Map.Make(String)
+module StringTable = Map.Make (String)
 
 module Char = struct
   include Char
 
-  let _is_uppercase i =
-    (i >= 65 && i <= 90)
+  let _is_uppercase i = i >= 65 && i <= 90
 
-  let _is_alpha i =
-    _is_uppercase i || (i >= 97 && i <= 122)
+  let _is_alpha i = _is_uppercase i || (i >= 97 && i <= 122)
 
-  let is_uppercase c =
-    _is_uppercase (code c)
+  let is_uppercase c = _is_uppercase (code c)
 
-  let is_alpha c =
-    _is_alpha (code c)
+  let is_alpha c = _is_alpha (code c)
 
   let is_alphanum c =
     let i = code c in
@@ -81,81 +81,85 @@ module Char = struct
 end
 
 let is_reserved_keyword token =
-  try (List.assoc token
-                  [("and", true);
-                   ("as", true);
-                   ("assert", true);
-                   ("begin", true);
-                   ("class", true);
-                   ("constraint", true);
-                   ("do", true);
-                   ("done", true);
-                   ("downto", true);
-                   ("else", true);
-                   ("end", true);
-                   ("exception", true);
-                   ("external", true);
-                   ("false", true);
-                   ("for", true);
-                   ("fun", true);
-                   ("function", true);
-                   ("functor", true);
-                   ("if", true);
-                   ("in", true);
-                   ("include", true);
-                   ("inherit", true);
-                   ("inherit!", true);
-                   ("initializer", true);
-                   ("lazy", true);
-                   ("let", true);
-                   ("match", true);
-                   ("method", true);
-                   ("method!", true);
-                   ("module", true);
-                   ("mutable", true);
-                   ("new", true);
-                   ("object", true);
-                   ("of", true);
-                   ("open", true);
-                   ("or", true);
-                   ("private", true);
-                   ("rec", true);
-                   ("sig", true);
-                   ("struct", true);
-                   ("then", true);
-                   ("to", true);
-                   ("true", true);
-                   ("try", true);
-                   ("type", true);
-                   ("val", true);
-                   ("val!", true);
-                   ("virtual", true);
-                   ("when", true);
-                   ("while", true);
-                   ("with", true);]) with
-  | Not_found -> false
+  try
+    List.assoc
+      token
+      [ "and", true
+      ; "as", true
+      ; "assert", true
+      ; "begin", true
+      ; "class", true
+      ; "constraint", true
+      ; "do", true
+      ; "done", true
+      ; "downto", true
+      ; "else", true
+      ; "end", true
+      ; "exception", true
+      ; "external", true
+      ; "false", true
+      ; "for", true
+      ; "fun", true
+      ; "function", true
+      ; "functor", true
+      ; "if", true
+      ; "in", true
+      ; "include", true
+      ; "inherit", true
+      ; "inherit!", true
+      ; "initializer", true
+      ; "lazy", true
+      ; "let", true
+      ; "match", true
+      ; "method", true
+      ; "method!", true
+      ; "module", true
+      ; "mutable", true
+      ; "new", true
+      ; "object", true
+      ; "of", true
+      ; "open", true
+      ; "or", true
+      ; "private", true
+      ; "rec", true
+      ; "sig", true
+      ; "struct", true
+      ; "then", true
+      ; "to", true
+      ; "true", true
+      ; "try", true
+      ; "type", true
+      ; "val", true
+      ; "val!", true
+      ; "virtual", true
+      ; "when", true
+      ; "while", true
+      ; "with", true
+      ]
+  with Not_found -> false
 
 let to_variant_name s =
-  String.map (fun c -> if Char.is_alphanum c then c else '_')
-    (if Char.is_alpha (String.get s 0)
-     then String.capitalize_ascii s
-     else "N" ^ s)
+  String.map
+    (fun c -> if Char.is_alphanum c then c else '_')
+    (if Char.is_alpha s.[0] then String.capitalize_ascii s else "N" ^ s)
 
 let to_field_name s =
   let add_underscore = ref false in
   let acc = ref [] in
-  String.iter (fun c ->
-    let c' = Printf.sprintf "%c" Char.(lowercase_ascii c) in
-    let s  = if Char.is_uppercase c && !add_underscore
-      then "_" ^ c'
-      else begin add_underscore := true; c' end
-    in
-    acc := s :: !acc)
-  s;
-  let res = (String.concat "" (List.rev !acc)) in
-  if is_reserved_keyword res then
-    res ^ "_"
-  else res
+  String.iter
+    (fun c ->
+      let c' = Printf.sprintf "%c" Char.(lowercase_ascii c) in
+      let s =
+        if Char.is_uppercase c && !add_underscore
+        then "_" ^ c'
+        else (
+          add_underscore := true;
+          c')
+      in
+      acc := s :: !acc)
+    s;
+  let res = String.concat "" (List.rev !acc) in
+  if is_reserved_keyword res then res ^ "_" else res
 
 (* NOTE(dbp 2015-01-26): Shapes that just have primitive types
    (boolean, integer, etc) types aren't actually useful (they
@@ -175,18 +179,20 @@ let inline_shapes (ops : Operation.t list) (shapes : Shape.parsed StringTable.t)
   let type_map =
     (* NOTE(dbp 2015-01-26): Not all of these have been seen in the
        wild (ex: double, float, datetime) *)
-    [("boolean", "Boolean")
-    ;("string","String")
-    ;("integer","Integer")
-    ;("long","Long")
-    ;("double","Double")
-    ;("float","Float")
-    ;("datetime","DateTime")
-    (* NOTE(dbp 2015-01-26): timestamp is a type used in the
-       CreatedTime shape for elasticloadbalancing, and as far as I can
-       tell from the examples, it is the same as DateTime. *)
-    ;("timestamp","DateTime")
-    ;("blob","Blob")] in
+    [ "boolean", "Boolean"
+    ; "string", "String"
+    ; "integer", "Integer"
+    ; "long", "Long"
+    ; "double", "Double"
+    ; "float", "Float"
+    ; "datetime", "DateTime"
+      (* NOTE(dbp 2015-01-26): timestamp is a type used in the
+         CreatedTime shape for elasticloadbalancing, and as far as I can
+         tell from the examples, it is the same as DateTime. *)
+    ; "timestamp", "DateTime"
+    ; "blob", "Blob"
+    ]
+  in
   let replace_shape default =
     try
       let _, shptyp, _ = StringTable.find default shapes in
@@ -194,35 +200,42 @@ let inline_shapes (ops : Operation.t list) (shapes : Shape.parsed StringTable.t)
     with Not_found -> default
   in
   let new_shapes =
-    StringTable.fold (fun key (nm, ty, contents) acc ->
-      if List.mem_assoc ty type_map then
-        acc
-      else
-        let content =
-          match contents with
-          | None -> assert false
-          | Some (Shape.Structure ms) ->
-            Shape.Structure (List.map (fun member ->
-              { member with Structure.shape = replace_shape member.Structure.shape })
-            ms)
-          | Some (Shape.List (shp, ln, flatten)) ->
-            Shape.List (replace_shape shp, ln, flatten)
-          | Some (Shape.Map ((kshp, kln), (vshp, vln))) ->
-            Shape.Map ((replace_shape kshp, kln), (replace_shape vshp, vln))
-          | Some (Shape.Enum opts) -> Shape.Enum opts
-        in
-        StringTable.add key { Shape.name = nm; content } acc)
-    shapes StringTable.empty
+    StringTable.fold
+      (fun key (nm, ty, contents) acc ->
+        if List.mem_assoc ty type_map
+        then acc
+        else
+          let content =
+            match contents with
+            | None -> assert false
+            | Some (Shape.Structure ms) ->
+                Shape.Structure
+                  (List.map
+                     (fun member ->
+                       { member with
+                         Structure.shape = replace_shape member.Structure.shape
+                       })
+                     ms)
+            | Some (Shape.List (shp, ln, flatten)) ->
+                Shape.List (replace_shape shp, ln, flatten)
+            | Some (Shape.Map ((kshp, kln), (vshp, vln))) ->
+                Shape.Map ((replace_shape kshp, kln), (replace_shape vshp, vln))
+            | Some (Shape.Enum opts) -> Shape.Enum opts
+          in
+          StringTable.add key { Shape.name = nm; content } acc)
+      shapes
+      StringTable.empty
   in
   let is_empty_struct shp =
     try
       match StringTable.find shp shapes with
-      | (_, _, Some (Shape.Structure [])) -> true
-      | _                                 -> false
+      | _, _, Some (Shape.Structure []) -> true
+      | _ -> false
     with Not_found -> false
   in
   let new_ops =
-    List.map (fun op ->
+    List.map
+      (fun op ->
         let input_shape =
           match op.Operation.input_shape with
           | Some shp when is_empty_struct shp -> None
@@ -232,20 +245,18 @@ let inline_shapes (ops : Operation.t list) (shapes : Shape.parsed StringTable.t)
           | Some shp when is_empty_struct shp -> None
           | shp -> shp
         in
-        { op with Operation.input_shape ; output_shape }
-      )
+        { op with Operation.input_shape; output_shape })
       ops
   in
   new_shapes, new_ops
 
 let rec filter_map l ~f =
   match l with
-  | []    -> []
-  | x::xs ->
-    begin match f x with
-    | Some x' -> x' :: filter_map xs ~f
-    | None    -> filter_map xs ~f
-    end
+  | [] -> []
+  | x :: xs -> (
+      match f x with
+      | Some x' -> x' :: filter_map xs ~f
+      | None -> filter_map xs ~f)
 
 let option_map l ~f =
   match l with

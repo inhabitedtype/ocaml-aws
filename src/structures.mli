@@ -32,7 +32,13 @@
   ----------------------------------------------------------------------------*)
 
 module Structure : sig
-
+  type member =
+    { name : string
+    ; shape : string
+    ; loc_name : string option
+    ; field_name : string
+    ; required : bool
+    }
   (** Most shapes are structs (the rest are primitive, lists, maps or
       enums), which have a list of members. The fields are:
 
@@ -44,13 +50,6 @@ module Structure : sig
         valid record field name, so we translate it into upper_cased,
         which is what field_name stores.
   *)
-  type member =
-    { name : string
-    ; shape : string
-    ; loc_name : string option
-    ; field_name : string
-    ; required : bool
-    }
 
   type t = member list
 end
@@ -90,18 +89,29 @@ module Shape : sig
     | Enum of string list
     | Map of (string * string option) * (string * string option)
 
-  type t = { name : string; content : contents }
+  type t =
+    { name : string
+    ; content : contents
+    }
 
+  type parsed = string * string * contents option
   (** We parse all shapes, but after inlining/filtering, the base
       types (Boolean, Double, et) no longer exist, so the bulk of the
       code deals with the [t] above, but we parse into this [parsed]
       type, which is Name, Shape Name, Contents if Structure,List, or
       Enum. *)
-  type parsed = string * string * contents option
-
 end
 
 module Operation : sig
+  type t =
+    { name : string
+    ; http_meth : string
+    ; http_uri : string
+    ; input_shape : string option
+    ; output_shape : string option
+    ; output_wrapper : string option
+    ; errors : string list
+    }
   (** Operations are individual API endpoints. They take an input
       shape, and may produce an output shape. In the generated APIs,
       no output corresponds to a unit return value. The output_wrapper
@@ -112,19 +122,15 @@ module Operation : sig
       that some services (like EC2) don't specify any this way in
       the default input source material.
   *)
-  type t =
-    { name : string
-    ; http_meth : string
-    ; http_uri : string
-    ; input_shape : string option
-    ; output_shape : string option
-    ; output_wrapper : string option
-    ; errors : string list
-    }
 end
 
-
 module Error : sig
+  type t =
+    { shape_name : string
+    ; string_name : string
+    ; variant_name : string
+    ; http_code : int option
+    }
   (** shape_name is the (probably legacy) name that it is referred to
       from operation descriptions.
 
@@ -138,13 +144,7 @@ module Error : sig
       http_code is optional because the EC2 descriptions do not specify the
       code that will come with a given error.
   *)
-  type t =
-    { shape_name : string
-    ; string_name : string
-    ; variant_name : string
-    ; http_code : int option
-    }
 
+  val compare : t -> t -> int
   (** Ignores the legacy shape name to remove duplicates *)
-  val compare: t -> t -> int
 end

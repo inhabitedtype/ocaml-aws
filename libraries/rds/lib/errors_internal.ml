@@ -1,130 +1,133 @@
 type t =
-  | AuthFailure 
-  | AuthorizationAlreadyExists 
-  | AuthorizationNotFound 
-  | AuthorizationQuotaExceeded 
-  | Blocked 
-  | CertificateNotFound 
-  | DBClusterAlreadyExistsFault 
-  | DBClusterNotFoundFault 
-  | DBClusterParameterGroupNotFound 
-  | DBClusterQuotaExceededFault 
-  | DBClusterSnapshotAlreadyExistsFault 
-  | DBClusterSnapshotNotFoundFault 
-  | DBInstanceAlreadyExists 
-  | DBInstanceNotFound 
-  | DBLogFileNotFoundFault 
-  | DBParameterGroupAlreadyExists 
-  | DBParameterGroupNotFound 
-  | DBParameterGroupQuotaExceeded 
-  | DBSecurityGroupAlreadyExists 
-  | DBSecurityGroupNotFound 
-  | DBSecurityGroupNotSupported 
-  | DBSnapshotAlreadyExists 
-  | DBSnapshotNotFound 
-  | DBSubnetGroupAlreadyExists 
-  | DBSubnetGroupDoesNotCoverEnoughAZs 
-  | DBSubnetGroupNotAllowedFault 
-  | DBSubnetGroupNotFoundFault 
-  | DBSubnetGroupQuotaExceeded 
-  | DBSubnetQuotaExceededFault 
-  | DBUpgradeDependencyFailure 
-  | DomainNotFoundFault 
-  | DryRunOperation 
-  | EventSubscriptionQuotaExceeded 
-  | IdempotentParameterMismatch 
-  | IncompleteSignature 
-  | InstanceQuotaExceeded 
-  | InsufficientDBClusterCapacityFault 
-  | InsufficientDBInstanceCapacity 
-  | InsufficientDomainCapacityFault 
-  | InsufficientStorageClusterCapacity 
-  | InternalFailure 
-  | InvalidAction 
-  | InvalidClientTokenId 
-  | InvalidDBClusterSnapshotStateFault 
-  | InvalidDBClusterStateFault 
-  | InvalidDBInstanceState 
-  | InvalidDBParameterGroupState 
-  | InvalidDBSecurityGroupState 
-  | InvalidDBSnapshotState 
-  | InvalidDBSubnetGroupFault 
-  | InvalidDBSubnetGroupStateFault 
-  | InvalidDBSubnetStateFault 
-  | InvalidEventSubscriptionState 
-  | InvalidOptionGroupStateFault 
-  | InvalidParameter 
-  | InvalidParameterCombination 
-  | InvalidParameterValue 
-  | InvalidQueryParameter 
-  | InvalidRestoreFault 
-  | InvalidSubnet 
-  | InvalidVPCNetworkStateFault 
-  | KMSKeyNotAccessibleFault 
-  | MalformedQueryString 
-  | MissingAction 
-  | MissingAuthenticationToken 
-  | MissingParameter 
-  | OptInRequired 
-  | OptionGroupAlreadyExistsFault 
-  | OptionGroupNotFoundFault 
-  | OptionGroupQuotaExceededFault 
-  | PendingVerification 
-  | PointInTimeRestoreNotEnabled 
-  | ProvisionedIopsNotAvailableInAZFault 
-  | QuotaExceeded_DBSecurityGroup 
-  | RequestExpired 
-  | RequestLimitExceeded 
-  | ReservedDBInstanceAlreadyExists 
-  | ReservedDBInstanceNotFound 
-  | ReservedDBInstanceQuotaExceeded 
-  | ReservedDBInstancesOfferingNotFound 
-  | ResourceNotFoundFault 
-  | SNSInvalidTopic 
-  | SNSNoAuthorization 
-  | SNSTopicArnNotFound 
-  | ServiceUnavailable 
-  | SnapshotQuotaExceeded 
-  | SourceNotFound 
-  | StorageQuotaExceeded 
-  | StorageTypeNotSupported 
-  | SubnetAlreadyInUse 
-  | SubscriptionAlreadyExist 
-  | SubscriptionCategoryNotFound 
-  | SubscriptionNotFound 
-  | Throttling 
-  | UnauthorizedOperation 
-  | UnknownParameter 
-  | UnsupportedProtocol 
-  | ValidationError 
-  | Uninhabited 
+  | AuthFailure
+  | AuthorizationAlreadyExists
+  | AuthorizationNotFound
+  | AuthorizationQuotaExceeded
+  | Blocked
+  | CertificateNotFound
+  | DBClusterAlreadyExistsFault
+  | DBClusterNotFoundFault
+  | DBClusterParameterGroupNotFound
+  | DBClusterQuotaExceededFault
+  | DBClusterSnapshotAlreadyExistsFault
+  | DBClusterSnapshotNotFoundFault
+  | DBInstanceAlreadyExists
+  | DBInstanceNotFound
+  | DBLogFileNotFoundFault
+  | DBParameterGroupAlreadyExists
+  | DBParameterGroupNotFound
+  | DBParameterGroupQuotaExceeded
+  | DBSecurityGroupAlreadyExists
+  | DBSecurityGroupNotFound
+  | DBSecurityGroupNotSupported
+  | DBSnapshotAlreadyExists
+  | DBSnapshotNotFound
+  | DBSubnetGroupAlreadyExists
+  | DBSubnetGroupDoesNotCoverEnoughAZs
+  | DBSubnetGroupNotAllowedFault
+  | DBSubnetGroupNotFoundFault
+  | DBSubnetGroupQuotaExceeded
+  | DBSubnetQuotaExceededFault
+  | DBUpgradeDependencyFailure
+  | DomainNotFoundFault
+  | DryRunOperation
+  | EventSubscriptionQuotaExceeded
+  | IdempotentParameterMismatch
+  | IncompleteSignature
+  | InstanceQuotaExceeded
+  | InsufficientDBClusterCapacityFault
+  | InsufficientDBInstanceCapacity
+  | InsufficientDomainCapacityFault
+  | InsufficientStorageClusterCapacity
+  | InternalFailure
+  | InvalidAction
+  | InvalidClientTokenId
+  | InvalidDBClusterSnapshotStateFault
+  | InvalidDBClusterStateFault
+  | InvalidDBInstanceState
+  | InvalidDBParameterGroupState
+  | InvalidDBSecurityGroupState
+  | InvalidDBSnapshotState
+  | InvalidDBSubnetGroupFault
+  | InvalidDBSubnetGroupStateFault
+  | InvalidDBSubnetStateFault
+  | InvalidEventSubscriptionState
+  | InvalidOptionGroupStateFault
+  | InvalidParameter
+  | InvalidParameterCombination
+  | InvalidParameterValue
+  | InvalidQueryParameter
+  | InvalidRestoreFault
+  | InvalidSubnet
+  | InvalidVPCNetworkStateFault
+  | KMSKeyNotAccessibleFault
+  | MalformedQueryString
+  | MissingAction
+  | MissingAuthenticationToken
+  | MissingParameter
+  | OptInRequired
+  | OptionGroupAlreadyExistsFault
+  | OptionGroupNotFoundFault
+  | OptionGroupQuotaExceededFault
+  | PendingVerification
+  | PointInTimeRestoreNotEnabled
+  | ProvisionedIopsNotAvailableInAZFault
+  | QuotaExceeded_DBSecurityGroup
+  | RequestExpired
+  | RequestLimitExceeded
+  | ReservedDBInstanceAlreadyExists
+  | ReservedDBInstanceNotFound
+  | ReservedDBInstanceQuotaExceeded
+  | ReservedDBInstancesOfferingNotFound
+  | ResourceNotFoundFault
+  | SNSInvalidTopic
+  | SNSNoAuthorization
+  | SNSTopicArnNotFound
+  | ServiceUnavailable
+  | SnapshotQuotaExceeded
+  | SourceNotFound
+  | StorageQuotaExceeded
+  | StorageTypeNotSupported
+  | SubnetAlreadyInUse
+  | SubscriptionAlreadyExist
+  | SubscriptionCategoryNotFound
+  | SubscriptionNotFound
+  | Throttling
+  | UnauthorizedOperation
+  | UnknownParameter
+  | UnsupportedProtocol
+  | ValidationError
+  | Uninhabited
+
 let common =
-  [UnsupportedProtocol;
-  UnknownParameter;
-  UnauthorizedOperation;
-  RequestLimitExceeded;
-  PendingVerification;
-  InvalidParameter;
-  IdempotentParameterMismatch;
-  DryRunOperation;
-  Blocked;
-  AuthFailure;
-  ValidationError;
-  Throttling;
-  ServiceUnavailable;
-  RequestExpired;
-  OptInRequired;
-  MissingParameter;
-  MissingAuthenticationToken;
-  MissingAction;
-  MalformedQueryString;
-  InvalidQueryParameter;
-  InvalidParameterValue;
-  InvalidParameterCombination;
-  InvalidClientTokenId;
-  InvalidAction;
-  InternalFailure;
-  IncompleteSignature]
+  [ UnsupportedProtocol
+  ; UnknownParameter
+  ; UnauthorizedOperation
+  ; RequestLimitExceeded
+  ; PendingVerification
+  ; InvalidParameter
+  ; IdempotentParameterMismatch
+  ; DryRunOperation
+  ; Blocked
+  ; AuthFailure
+  ; ValidationError
+  ; Throttling
+  ; ServiceUnavailable
+  ; RequestExpired
+  ; OptInRequired
+  ; MissingParameter
+  ; MissingAuthenticationToken
+  ; MissingAction
+  ; MalformedQueryString
+  ; InvalidQueryParameter
+  ; InvalidParameterValue
+  ; InvalidParameterCombination
+  ; InvalidClientTokenId
+  ; InvalidAction
+  ; InternalFailure
+  ; IncompleteSignature
+  ]
+
 let to_http_code e =
   match e with
   | AuthFailure -> None
@@ -226,6 +229,7 @@ let to_http_code e =
   | UnsupportedProtocol -> None
   | ValidationError -> Some 400
   | Uninhabited -> None
+
 let to_string e =
   match e with
   | AuthFailure -> "AuthFailure"
@@ -238,8 +242,7 @@ let to_string e =
   | DBClusterNotFoundFault -> "DBClusterNotFoundFault"
   | DBClusterParameterGroupNotFound -> "DBClusterParameterGroupNotFound"
   | DBClusterQuotaExceededFault -> "DBClusterQuotaExceededFault"
-  | DBClusterSnapshotAlreadyExistsFault ->
-      "DBClusterSnapshotAlreadyExistsFault"
+  | DBClusterSnapshotAlreadyExistsFault -> "DBClusterSnapshotAlreadyExistsFault"
   | DBClusterSnapshotNotFoundFault -> "DBClusterSnapshotNotFoundFault"
   | DBInstanceAlreadyExists -> "DBInstanceAlreadyExists"
   | DBInstanceNotFound -> "DBInstanceNotFound"
@@ -253,8 +256,7 @@ let to_string e =
   | DBSnapshotAlreadyExists -> "DBSnapshotAlreadyExists"
   | DBSnapshotNotFound -> "DBSnapshotNotFound"
   | DBSubnetGroupAlreadyExists -> "DBSubnetGroupAlreadyExists"
-  | DBSubnetGroupDoesNotCoverEnoughAZs ->
-      "DBSubnetGroupDoesNotCoverEnoughAZs"
+  | DBSubnetGroupDoesNotCoverEnoughAZs -> "DBSubnetGroupDoesNotCoverEnoughAZs"
   | DBSubnetGroupNotAllowedFault -> "DBSubnetGroupNotAllowedFault"
   | DBSubnetGroupNotFoundFault -> "DBSubnetGroupNotFoundFault"
   | DBSubnetGroupQuotaExceeded -> "DBSubnetGroupQuotaExceeded"
@@ -266,17 +268,14 @@ let to_string e =
   | IdempotentParameterMismatch -> "IdempotentParameterMismatch"
   | IncompleteSignature -> "IncompleteSignature"
   | InstanceQuotaExceeded -> "InstanceQuotaExceeded"
-  | InsufficientDBClusterCapacityFault ->
-      "InsufficientDBClusterCapacityFault"
+  | InsufficientDBClusterCapacityFault -> "InsufficientDBClusterCapacityFault"
   | InsufficientDBInstanceCapacity -> "InsufficientDBInstanceCapacity"
   | InsufficientDomainCapacityFault -> "InsufficientDomainCapacityFault"
-  | InsufficientStorageClusterCapacity ->
-      "InsufficientStorageClusterCapacity"
+  | InsufficientStorageClusterCapacity -> "InsufficientStorageClusterCapacity"
   | InternalFailure -> "InternalFailure"
   | InvalidAction -> "InvalidAction"
   | InvalidClientTokenId -> "InvalidClientTokenId"
-  | InvalidDBClusterSnapshotStateFault ->
-      "InvalidDBClusterSnapshotStateFault"
+  | InvalidDBClusterSnapshotStateFault -> "InvalidDBClusterSnapshotStateFault"
   | InvalidDBClusterStateFault -> "InvalidDBClusterStateFault"
   | InvalidDBInstanceState -> "InvalidDBInstanceState"
   | InvalidDBParameterGroupState -> "InvalidDBParameterGroupState"
@@ -305,16 +304,14 @@ let to_string e =
   | OptionGroupQuotaExceededFault -> "OptionGroupQuotaExceededFault"
   | PendingVerification -> "PendingVerification"
   | PointInTimeRestoreNotEnabled -> "PointInTimeRestoreNotEnabled"
-  | ProvisionedIopsNotAvailableInAZFault ->
-      "ProvisionedIopsNotAvailableInAZFault"
+  | ProvisionedIopsNotAvailableInAZFault -> "ProvisionedIopsNotAvailableInAZFault"
   | QuotaExceeded_DBSecurityGroup -> "QuotaExceeded.DBSecurityGroup"
   | RequestExpired -> "RequestExpired"
   | RequestLimitExceeded -> "RequestLimitExceeded"
   | ReservedDBInstanceAlreadyExists -> "ReservedDBInstanceAlreadyExists"
   | ReservedDBInstanceNotFound -> "ReservedDBInstanceNotFound"
   | ReservedDBInstanceQuotaExceeded -> "ReservedDBInstanceQuotaExceeded"
-  | ReservedDBInstancesOfferingNotFound ->
-      "ReservedDBInstancesOfferingNotFound"
+  | ReservedDBInstancesOfferingNotFound -> "ReservedDBInstancesOfferingNotFound"
   | ResourceNotFoundFault -> "ResourceNotFoundFault"
   | SNSInvalidTopic -> "SNSInvalidTopic"
   | SNSNoAuthorization -> "SNSNoAuthorization"
@@ -334,6 +331,7 @@ let to_string e =
   | UnsupportedProtocol -> "UnsupportedProtocol"
   | ValidationError -> "ValidationError"
   | Uninhabited -> "Uninhabited"
+
 let of_string e =
   match e with
   | "AuthFailure" -> Some AuthFailure
@@ -346,8 +344,7 @@ let of_string e =
   | "DBClusterNotFoundFault" -> Some DBClusterNotFoundFault
   | "DBClusterParameterGroupNotFound" -> Some DBClusterParameterGroupNotFound
   | "DBClusterQuotaExceededFault" -> Some DBClusterQuotaExceededFault
-  | "DBClusterSnapshotAlreadyExistsFault" ->
-      Some DBClusterSnapshotAlreadyExistsFault
+  | "DBClusterSnapshotAlreadyExistsFault" -> Some DBClusterSnapshotAlreadyExistsFault
   | "DBClusterSnapshotNotFoundFault" -> Some DBClusterSnapshotNotFoundFault
   | "DBInstanceAlreadyExists" -> Some DBInstanceAlreadyExists
   | "DBInstanceNotFound" -> Some DBInstanceNotFound
@@ -361,8 +358,7 @@ let of_string e =
   | "DBSnapshotAlreadyExists" -> Some DBSnapshotAlreadyExists
   | "DBSnapshotNotFound" -> Some DBSnapshotNotFound
   | "DBSubnetGroupAlreadyExists" -> Some DBSubnetGroupAlreadyExists
-  | "DBSubnetGroupDoesNotCoverEnoughAZs" ->
-      Some DBSubnetGroupDoesNotCoverEnoughAZs
+  | "DBSubnetGroupDoesNotCoverEnoughAZs" -> Some DBSubnetGroupDoesNotCoverEnoughAZs
   | "DBSubnetGroupNotAllowedFault" -> Some DBSubnetGroupNotAllowedFault
   | "DBSubnetGroupNotFoundFault" -> Some DBSubnetGroupNotFoundFault
   | "DBSubnetGroupQuotaExceeded" -> Some DBSubnetGroupQuotaExceeded
@@ -374,17 +370,14 @@ let of_string e =
   | "IdempotentParameterMismatch" -> Some IdempotentParameterMismatch
   | "IncompleteSignature" -> Some IncompleteSignature
   | "InstanceQuotaExceeded" -> Some InstanceQuotaExceeded
-  | "InsufficientDBClusterCapacityFault" ->
-      Some InsufficientDBClusterCapacityFault
+  | "InsufficientDBClusterCapacityFault" -> Some InsufficientDBClusterCapacityFault
   | "InsufficientDBInstanceCapacity" -> Some InsufficientDBInstanceCapacity
   | "InsufficientDomainCapacityFault" -> Some InsufficientDomainCapacityFault
-  | "InsufficientStorageClusterCapacity" ->
-      Some InsufficientStorageClusterCapacity
+  | "InsufficientStorageClusterCapacity" -> Some InsufficientStorageClusterCapacity
   | "InternalFailure" -> Some InternalFailure
   | "InvalidAction" -> Some InvalidAction
   | "InvalidClientTokenId" -> Some InvalidClientTokenId
-  | "InvalidDBClusterSnapshotStateFault" ->
-      Some InvalidDBClusterSnapshotStateFault
+  | "InvalidDBClusterSnapshotStateFault" -> Some InvalidDBClusterSnapshotStateFault
   | "InvalidDBClusterStateFault" -> Some InvalidDBClusterStateFault
   | "InvalidDBInstanceState" -> Some InvalidDBInstanceState
   | "InvalidDBParameterGroupState" -> Some InvalidDBParameterGroupState
@@ -413,16 +406,14 @@ let of_string e =
   | "OptionGroupQuotaExceededFault" -> Some OptionGroupQuotaExceededFault
   | "PendingVerification" -> Some PendingVerification
   | "PointInTimeRestoreNotEnabled" -> Some PointInTimeRestoreNotEnabled
-  | "ProvisionedIopsNotAvailableInAZFault" ->
-      Some ProvisionedIopsNotAvailableInAZFault
+  | "ProvisionedIopsNotAvailableInAZFault" -> Some ProvisionedIopsNotAvailableInAZFault
   | "QuotaExceeded.DBSecurityGroup" -> Some QuotaExceeded_DBSecurityGroup
   | "RequestExpired" -> Some RequestExpired
   | "RequestLimitExceeded" -> Some RequestLimitExceeded
   | "ReservedDBInstanceAlreadyExists" -> Some ReservedDBInstanceAlreadyExists
   | "ReservedDBInstanceNotFound" -> Some ReservedDBInstanceNotFound
   | "ReservedDBInstanceQuotaExceeded" -> Some ReservedDBInstanceQuotaExceeded
-  | "ReservedDBInstancesOfferingNotFound" ->
-      Some ReservedDBInstancesOfferingNotFound
+  | "ReservedDBInstancesOfferingNotFound" -> Some ReservedDBInstancesOfferingNotFound
   | "ResourceNotFoundFault" -> Some ResourceNotFoundFault
   | "SNSInvalidTopic" -> Some SNSInvalidTopic
   | "SNSNoAuthorization" -> Some SNSNoAuthorization
