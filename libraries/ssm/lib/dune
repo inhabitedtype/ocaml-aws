@@ -1,7 +1,6 @@
 (library
- (name aws_ssm)
+ (name        aws_ssm)
  (public_name aws-ssm)
  (synopsis "aws-Amazon Simple Systems Management Service")
- (flags
-  (:standard -w -27))
+ (flags (:standard -w -27))
  (libraries aws))

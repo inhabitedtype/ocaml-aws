@@ -1,7 +1,6 @@
 (library
- (name aws_sqs)
+ (name        aws_sqs)
  (public_name aws-sqs)
  (synopsis "aws-Amazon Simple Queue Service")
- (flags
-  (:standard -w -27))
+ (flags (:standard -w -27))
  (libraries aws))
