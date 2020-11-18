@@ -732,6 +732,50 @@ module KeyValueList = struct
   let of_json j = Json.to_list KeyValue.of_json j
 end
 
+module OnDemandProvisioningAllocationStrategy = struct
+  type t = Lowest_price
+
+  let str_to_t = [ "lowest-price", Lowest_price ]
+
+  let t_to_str = [ Lowest_price, "lowest-price" ]
+
+  let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+
+  let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
+
+  let make v () = v
+
+  let parse xml = Util.option_bind (String.parse xml) (fun s -> Util.list_find str_to_t s)
+
+  let to_query v = Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+
+  let of_json j = Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+end
+
+module SpotProvisioningAllocationStrategy = struct
+  type t = Capacity_optimized
+
+  let str_to_t = [ "capacity-optimized", Capacity_optimized ]
+
+  let t_to_str = [ Capacity_optimized, "capacity-optimized" ]
+
+  let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+
+  let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
+
+  let make v () = v
+
+  let parse xml = Util.option_bind (String.parse xml) (fun s -> Util.list_find str_to_t s)
+
+  let to_query v = Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+
+  let of_json j = Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+end
+
 module SpotProvisioningTimeoutAction = struct
   type t =
     | SWITCH_TO_ON_DEMAND
@@ -758,7 +802,20 @@ module SpotProvisioningTimeoutAction = struct
   let of_json j = Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
 end
 
-module ConfigurationList = struct
+(* TODO Manual hack to introduce recursive module definition. *)
+module rec ConfigurationList : sig
+  type t = Configuration.t list
+
+  val make : 'a -> unit -> 'a
+
+  val parse : Ezxmlm.nodes -> t option
+
+  val to_query : t -> Query.t
+
+  val to_json : t -> Json.t
+
+  val of_json : Json.t -> t
+end = struct
   type t = Configuration.t list
 
   let make elems () = elems
@@ -773,7 +830,28 @@ module ConfigurationList = struct
   let of_json j = Json.to_list Configuration.of_json j
 end
 
-module Configuration = struct
+and Configuration : sig
+  type t =
+    { classification : String.t option
+    ; configurations : ConfigurationList.t
+    ; properties : StringMap.t option
+    }
+
+  val make :
+       ?classification:string
+    -> ?configurations:ConfigurationList.t
+    -> ?properties:StringMap.t
+    -> unit
+    -> t
+
+  val parse : Ezxmlm.nodes -> t option
+
+  val to_query : t -> Query.t
+
+  val to_json : t -> Json.t
+
+  val of_json : Json.t -> t
+end = struct
   type t =
     { classification : String.t option
     ; configurations : ConfigurationList.t
@@ -1033,6 +1111,7 @@ module InstanceGroupState = struct
     | PROVISIONING
     | BOOTSTRAPPING
     | RUNNING
+    | RECONFIGURING
     | RESIZING
     | SUSPENDED
     | TERMINATING
@@ -1049,6 +1128,7 @@ module InstanceGroupState = struct
     ; "TERMINATING", TERMINATING
     ; "SUSPENDED", SUSPENDED
     ; "RESIZING", RESIZING
+    ; "RECONFIGURING", RECONFIGURING
     ; "RUNNING", RUNNING
     ; "BOOTSTRAPPING", BOOTSTRAPPING
     ; "PROVISIONING", PROVISIONING
@@ -1062,6 +1142,7 @@ module InstanceGroupState = struct
     ; TERMINATING, "TERMINATING"
     ; SUSPENDED, "SUSPENDED"
     ; RESIZING, "RESIZING"
+    ; RECONFIGURING, "RECONFIGURING"
     ; RUNNING, "RUNNING"
     ; BOOTSTRAPPING, "BOOTSTRAPPING"
     ; PROVISIONING, "PROVISIONING"
@@ -1238,15 +1319,64 @@ module StepExecutionState = struct
   let of_json j = Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
 end
 
+module OnDemandProvisioningSpecification = struct
+  type t = { allocation_strategy : OnDemandProvisioningAllocationStrategy.t }
+
+  let make ~allocation_strategy () = { allocation_strategy }
+
+  let parse xml =
+    Some
+      { allocation_strategy =
+          Xml.required
+            "AllocationStrategy"
+            (Util.option_bind
+               (Xml.member "AllocationStrategy" xml)
+               OnDemandProvisioningAllocationStrategy.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some
+             (Query.Pair
+                ( "AllocationStrategy"
+                , OnDemandProvisioningAllocationStrategy.to_query v.allocation_strategy ))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some
+             ( "allocation_strategy"
+             , OnDemandProvisioningAllocationStrategy.to_json v.allocation_strategy )
+         ])
+
+  let of_json j =
+    { allocation_strategy =
+        OnDemandProvisioningAllocationStrategy.of_json
+          (Util.of_option_exn (Json.lookup j "allocation_strategy"))
+    }
+end
+
 module SpotProvisioningSpecification = struct
   type t =
     { timeout_duration_minutes : Integer.t
     ; timeout_action : SpotProvisioningTimeoutAction.t
     ; block_duration_minutes : Integer.t option
+    ; allocation_strategy : SpotProvisioningAllocationStrategy.t option
     }
 
-  let make ~timeout_duration_minutes ~timeout_action ?block_duration_minutes () =
-    { timeout_duration_minutes; timeout_action; block_duration_minutes }
+  let make
+      ~timeout_duration_minutes
+      ~timeout_action
+      ?block_duration_minutes
+      ?allocation_strategy
+      () =
+    { timeout_duration_minutes
+    ; timeout_action
+    ; block_duration_minutes
+    ; allocation_strategy
+    }
 
   let parse xml =
     Some
@@ -1262,12 +1392,19 @@ module SpotProvisioningSpecification = struct
                SpotProvisioningTimeoutAction.parse)
       ; block_duration_minutes =
           Util.option_bind (Xml.member "BlockDurationMinutes" xml) Integer.parse
+      ; allocation_strategy =
+          Util.option_bind
+            (Xml.member "AllocationStrategy" xml)
+            SpotProvisioningAllocationStrategy.parse
       }
 
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.block_duration_minutes (fun f ->
+         [ Util.option_map v.allocation_strategy (fun f ->
+               Query.Pair
+                 ("AllocationStrategy", SpotProvisioningAllocationStrategy.to_query f))
+         ; Util.option_map v.block_duration_minutes (fun f ->
                Query.Pair ("BlockDurationMinutes", Integer.to_query f))
          ; Some
              (Query.Pair
@@ -1280,7 +1417,9 @@ module SpotProvisioningSpecification = struct
   let to_json v =
     `Assoc
       (Util.list_filter_opt
-         [ Util.option_map v.block_duration_minutes (fun f ->
+         [ Util.option_map v.allocation_strategy (fun f ->
+               "allocation_strategy", SpotProvisioningAllocationStrategy.to_json f)
+         ; Util.option_map v.block_duration_minutes (fun f ->
                "block_duration_minutes", Integer.to_json f)
          ; Some ("timeout_action", SpotProvisioningTimeoutAction.to_json v.timeout_action)
          ; Some ("timeout_duration_minutes", Integer.to_json v.timeout_duration_minutes)
@@ -1294,6 +1433,10 @@ module SpotProvisioningSpecification = struct
           (Util.of_option_exn (Json.lookup j "timeout_action"))
     ; block_duration_minutes =
         Util.option_map (Json.lookup j "block_duration_minutes") Integer.of_json
+    ; allocation_strategy =
+        Util.option_map
+          (Json.lookup j "allocation_strategy")
+          SpotProvisioningAllocationStrategy.of_json
     }
 end
 
@@ -2104,42 +2247,83 @@ module StringList = struct
   let of_json j = Json.to_list String.of_json j
 end
 
-module InstanceFleetProvisioningSpecifications = struct
-  type t = { spot_specification : SpotProvisioningSpecification.t }
+module PlacementGroupStrategy = struct
+  type t =
+    | SPREAD
+    | PARTITION
+    | CLUSTER
+    | NONE
 
-  let make ~spot_specification () = { spot_specification }
+  let str_to_t =
+    [ "NONE", NONE; "CLUSTER", CLUSTER; "PARTITION", PARTITION; "SPREAD", SPREAD ]
+
+  let t_to_str =
+    [ NONE, "NONE"; CLUSTER, "CLUSTER"; PARTITION, "PARTITION"; SPREAD, "SPREAD" ]
+
+  let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+
+  let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
+
+  let make v () = v
+
+  let parse xml = Util.option_bind (String.parse xml) (fun s -> Util.list_find str_to_t s)
+
+  let to_query v = Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+
+  let of_json j = Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+end
+
+module InstanceFleetProvisioningSpecifications = struct
+  type t =
+    { spot_specification : SpotProvisioningSpecification.t option
+    ; on_demand_specification : OnDemandProvisioningSpecification.t option
+    }
+
+  let make ?spot_specification ?on_demand_specification () =
+    { spot_specification; on_demand_specification }
 
   let parse xml =
     Some
       { spot_specification =
-          Xml.required
-            "SpotSpecification"
-            (Util.option_bind
-               (Xml.member "SpotSpecification" xml)
-               SpotProvisioningSpecification.parse)
+          Util.option_bind
+            (Xml.member "SpotSpecification" xml)
+            SpotProvisioningSpecification.parse
+      ; on_demand_specification =
+          Util.option_bind
+            (Xml.member "OnDemandSpecification" xml)
+            OnDemandProvisioningSpecification.parse
       }
 
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some
-             (Query.Pair
-                ( "SpotSpecification"
-                , SpotProvisioningSpecification.to_query v.spot_specification ))
+         [ Util.option_map v.on_demand_specification (fun f ->
+               Query.Pair
+                 ("OnDemandSpecification", OnDemandProvisioningSpecification.to_query f))
+         ; Util.option_map v.spot_specification (fun f ->
+               Query.Pair ("SpotSpecification", SpotProvisioningSpecification.to_query f))
          ])
 
   let to_json v =
     `Assoc
       (Util.list_filter_opt
-         [ Some
-             ( "spot_specification"
-             , SpotProvisioningSpecification.to_json v.spot_specification )
+         [ Util.option_map v.on_demand_specification (fun f ->
+               "on_demand_specification", OnDemandProvisioningSpecification.to_json f)
+         ; Util.option_map v.spot_specification (fun f ->
+               "spot_specification", SpotProvisioningSpecification.to_json f)
          ])
 
   let of_json j =
     { spot_specification =
-        SpotProvisioningSpecification.of_json
-          (Util.of_option_exn (Json.lookup j "spot_specification"))
+        Util.option_map
+          (Json.lookup j "spot_specification")
+          SpotProvisioningSpecification.of_json
+    ; on_demand_specification =
+        Util.option_map
+          (Json.lookup j "on_demand_specification")
+          OnDemandProvisioningSpecification.of_json
     }
 end
 
@@ -3359,6 +3543,52 @@ module Application = struct
     }
 end
 
+module PlacementGroupConfig = struct
+  type t =
+    { instance_role : InstanceRoleType.t
+    ; placement_strategy : PlacementGroupStrategy.t option
+    }
+
+  let make ~instance_role ?placement_strategy () = { instance_role; placement_strategy }
+
+  let parse xml =
+    Some
+      { instance_role =
+          Xml.required
+            "InstanceRole"
+            (Util.option_bind (Xml.member "InstanceRole" xml) InstanceRoleType.parse)
+      ; placement_strategy =
+          Util.option_bind
+            (Xml.member "PlacementStrategy" xml)
+            PlacementGroupStrategy.parse
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.placement_strategy (fun f ->
+               Query.Pair ("PlacementStrategy", PlacementGroupStrategy.to_query f))
+         ; Some (Query.Pair ("InstanceRole", InstanceRoleType.to_query v.instance_role))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.placement_strategy (fun f ->
+               "placement_strategy", PlacementGroupStrategy.to_json f)
+         ; Some ("instance_role", InstanceRoleType.to_json v.instance_role)
+         ])
+
+  let of_json j =
+    { instance_role =
+        InstanceRoleType.of_json (Util.of_option_exn (Json.lookup j "instance_role"))
+    ; placement_strategy =
+        Util.option_map
+          (Json.lookup j "placement_strategy")
+          PlacementGroupStrategy.of_json
+    }
+end
+
 module Tag = struct
   type t =
     { key : String.t option
@@ -3616,6 +3846,33 @@ module InstanceGroupConfig = struct
     }
 end
 
+module ComputeLimitsUnitType = struct
+  type t =
+    | InstanceFleetUnits
+    | Instances
+    | VCPU
+
+  let str_to_t =
+    [ "VCPU", VCPU; "Instances", Instances; "InstanceFleetUnits", InstanceFleetUnits ]
+
+  let t_to_str =
+    [ VCPU, "VCPU"; Instances, "Instances"; InstanceFleetUnits, "InstanceFleetUnits" ]
+
+  let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+
+  let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
+
+  let make v () = v
+
+  let parse xml = Util.option_bind (String.parse xml) (fun s -> Util.list_find str_to_t s)
+
+  let to_query v = Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+
+  let of_json j = Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+end
+
 module InstanceFleetStatus = struct
   type t =
     { state : InstanceFleetState.t option
@@ -3850,6 +4107,44 @@ module ShrinkPolicy = struct
     }
 end
 
+module PortRange = struct
+  type t =
+    { min_range : Integer.t
+    ; max_range : Integer.t option
+    }
+
+  let make ~min_range ?max_range () = { min_range; max_range }
+
+  let parse xml =
+    Some
+      { min_range =
+          Xml.required
+            "MinRange"
+            (Util.option_bind (Xml.member "MinRange" xml) Integer.parse)
+      ; max_range = Util.option_bind (Xml.member "MaxRange" xml) Integer.parse
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.max_range (fun f ->
+               Query.Pair ("MaxRange", Integer.to_query f))
+         ; Some (Query.Pair ("MinRange", Integer.to_query v.min_range))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.max_range (fun f -> "max_range", Integer.to_json f)
+         ; Some ("min_range", Integer.to_json v.min_range)
+         ])
+
+  let of_json j =
+    { min_range = Integer.of_json (Util.of_option_exn (Json.lookup j "min_range"))
+    ; max_range = Util.option_map (Json.lookup j "max_range") Integer.of_json
+    }
+end
+
 module AutoScalingPolicyDescription = struct
   type t =
     { status : AutoScalingPolicyStatus.t option
@@ -4038,6 +4333,60 @@ module InstanceStatus = struct
     }
 end
 
+module NotebookExecutionStatus = struct
+  type t =
+    | START_PENDING
+    | STARTING
+    | RUNNING
+    | FINISHING
+    | FINISHED
+    | FAILING
+    | FAILED
+    | STOP_PENDING
+    | STOPPING
+    | STOPPED
+
+  let str_to_t =
+    [ "STOPPED", STOPPED
+    ; "STOPPING", STOPPING
+    ; "STOP_PENDING", STOP_PENDING
+    ; "FAILED", FAILED
+    ; "FAILING", FAILING
+    ; "FINISHED", FINISHED
+    ; "FINISHING", FINISHING
+    ; "RUNNING", RUNNING
+    ; "STARTING", STARTING
+    ; "START_PENDING", START_PENDING
+    ]
+
+  let t_to_str =
+    [ STOPPED, "STOPPED"
+    ; STOPPING, "STOPPING"
+    ; STOP_PENDING, "STOP_PENDING"
+    ; FAILED, "FAILED"
+    ; FAILING, "FAILING"
+    ; FINISHED, "FINISHED"
+    ; FINISHING, "FINISHING"
+    ; RUNNING, "RUNNING"
+    ; STARTING, "STARTING"
+    ; START_PENDING, "START_PENDING"
+    ]
+
+  let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+
+  let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
+
+  let make v () = v
+
+  let parse xml = Util.option_bind (String.parse xml) (fun s -> Util.list_find str_to_t s)
+
+  let to_query v = Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+
+  let of_json j = Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+end
+
 module ClusterStatus = struct
   type t =
     { state : ClusterState.t option
@@ -4086,6 +4435,28 @@ module ClusterStatus = struct
           ClusterStateChangeReason.of_json
     ; timeline = Util.option_map (Json.lookup j "timeline") ClusterTimeline.of_json
     }
+end
+
+module ExecutionEngineType = struct
+  type t = EMR
+
+  let str_to_t = [ "EMR", EMR ]
+
+  let t_to_str = [ EMR, "EMR" ]
+
+  let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+
+  let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
+
+  let make v () = v
+
+  let parse xml = Util.option_bind (String.parse xml) (fun s -> Util.list_find str_to_t s)
+
+  let to_query v = Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+
+  let of_json j = Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
 end
 
 module BootstrapActionDetailList = struct
@@ -4728,6 +5099,21 @@ module KerberosAttributes = struct
     }
 end
 
+module PlacementGroupConfigList = struct
+  type t = PlacementGroupConfig.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Util.option_all (List.map PlacementGroupConfig.parse (Xml.members "member" xml))
+
+  let to_query v = Query.to_query_list PlacementGroupConfig.to_query v
+
+  let to_json v = `List (List.map PlacementGroupConfig.to_json v)
+
+  let of_json j = Json.to_list PlacementGroupConfig.of_json j
+end
+
 module RepoUpgradeOnBoot = struct
   type t =
     | SECURITY
@@ -4808,6 +5194,91 @@ module SecurityGroupsList = struct
   let to_json v = `List (List.map String.to_json v)
 
   let of_json j = Json.to_list String.of_json j
+end
+
+module ComputeLimits = struct
+  type t =
+    { unit_type : ComputeLimitsUnitType.t
+    ; minimum_capacity_units : Integer.t
+    ; maximum_capacity_units : Integer.t
+    ; maximum_on_demand_capacity_units : Integer.t option
+    ; maximum_core_capacity_units : Integer.t option
+    }
+
+  let make
+      ~unit_type
+      ~minimum_capacity_units
+      ~maximum_capacity_units
+      ?maximum_on_demand_capacity_units
+      ?maximum_core_capacity_units
+      () =
+    { unit_type
+    ; minimum_capacity_units
+    ; maximum_capacity_units
+    ; maximum_on_demand_capacity_units
+    ; maximum_core_capacity_units
+    }
+
+  let parse xml =
+    Some
+      { unit_type =
+          Xml.required
+            "UnitType"
+            (Util.option_bind (Xml.member "UnitType" xml) ComputeLimitsUnitType.parse)
+      ; minimum_capacity_units =
+          Xml.required
+            "MinimumCapacityUnits"
+            (Util.option_bind (Xml.member "MinimumCapacityUnits" xml) Integer.parse)
+      ; maximum_capacity_units =
+          Xml.required
+            "MaximumCapacityUnits"
+            (Util.option_bind (Xml.member "MaximumCapacityUnits" xml) Integer.parse)
+      ; maximum_on_demand_capacity_units =
+          Util.option_bind (Xml.member "MaximumOnDemandCapacityUnits" xml) Integer.parse
+      ; maximum_core_capacity_units =
+          Util.option_bind (Xml.member "MaximumCoreCapacityUnits" xml) Integer.parse
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.maximum_core_capacity_units (fun f ->
+               Query.Pair ("MaximumCoreCapacityUnits", Integer.to_query f))
+         ; Util.option_map v.maximum_on_demand_capacity_units (fun f ->
+               Query.Pair ("MaximumOnDemandCapacityUnits", Integer.to_query f))
+         ; Some
+             (Query.Pair
+                ("MaximumCapacityUnits", Integer.to_query v.maximum_capacity_units))
+         ; Some
+             (Query.Pair
+                ("MinimumCapacityUnits", Integer.to_query v.minimum_capacity_units))
+         ; Some (Query.Pair ("UnitType", ComputeLimitsUnitType.to_query v.unit_type))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.maximum_core_capacity_units (fun f ->
+               "maximum_core_capacity_units", Integer.to_json f)
+         ; Util.option_map v.maximum_on_demand_capacity_units (fun f ->
+               "maximum_on_demand_capacity_units", Integer.to_json f)
+         ; Some ("maximum_capacity_units", Integer.to_json v.maximum_capacity_units)
+         ; Some ("minimum_capacity_units", Integer.to_json v.minimum_capacity_units)
+         ; Some ("unit_type", ComputeLimitsUnitType.to_json v.unit_type)
+         ])
+
+  let of_json j =
+    { unit_type =
+        ComputeLimitsUnitType.of_json (Util.of_option_exn (Json.lookup j "unit_type"))
+    ; minimum_capacity_units =
+        Integer.of_json (Util.of_option_exn (Json.lookup j "minimum_capacity_units"))
+    ; maximum_capacity_units =
+        Integer.of_json (Util.of_option_exn (Json.lookup j "maximum_capacity_units"))
+    ; maximum_on_demand_capacity_units =
+        Util.option_map (Json.lookup j "maximum_on_demand_capacity_units") Integer.of_json
+    ; maximum_core_capacity_units =
+        Util.option_map (Json.lookup j "maximum_core_capacity_units") Integer.of_json
+    }
 end
 
 module SupportedProductConfig = struct
@@ -5084,6 +5555,7 @@ module InstanceGroupModifyConfig = struct
     ; instance_count : Integer.t option
     ; e_c2_instance_ids_to_terminate : EC2InstanceIdsToTerminateList.t
     ; shrink_policy : ShrinkPolicy.t option
+    ; configurations : ConfigurationList.t
     }
 
   let make
@@ -5091,8 +5563,14 @@ module InstanceGroupModifyConfig = struct
       ?instance_count
       ?(e_c2_instance_ids_to_terminate = [])
       ?shrink_policy
+      ?(configurations = [])
       () =
-    { instance_group_id; instance_count; e_c2_instance_ids_to_terminate; shrink_policy }
+    { instance_group_id
+    ; instance_count
+    ; e_c2_instance_ids_to_terminate
+    ; shrink_policy
+    ; configurations
+    }
 
   let parse xml =
     Some
@@ -5109,12 +5587,19 @@ module InstanceGroupModifyConfig = struct
                EC2InstanceIdsToTerminateList.parse)
       ; shrink_policy =
           Util.option_bind (Xml.member "ShrinkPolicy" xml) ShrinkPolicy.parse
+      ; configurations =
+          Util.of_option
+            []
+            (Util.option_bind (Xml.member "Configurations" xml) ConfigurationList.parse)
       }
 
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.shrink_policy (fun f ->
+         [ Some
+             (Query.Pair
+                ("Configurations.member", ConfigurationList.to_query v.configurations))
+         ; Util.option_map v.shrink_policy (fun f ->
                Query.Pair ("ShrinkPolicy", ShrinkPolicy.to_query f))
          ; Some
              (Query.Pair
@@ -5129,7 +5614,8 @@ module InstanceGroupModifyConfig = struct
   let to_json v =
     `Assoc
       (Util.list_filter_opt
-         [ Util.option_map v.shrink_policy (fun f ->
+         [ Some ("configurations", ConfigurationList.to_json v.configurations)
+         ; Util.option_map v.shrink_policy (fun f ->
                "shrink_policy", ShrinkPolicy.to_json f)
          ; Some
              ( "e_c2_instance_ids_to_terminate"
@@ -5146,7 +5632,23 @@ module InstanceGroupModifyConfig = struct
         EC2InstanceIdsToTerminateList.of_json
           (Util.of_option_exn (Json.lookup j "e_c2_instance_ids_to_terminate"))
     ; shrink_policy = Util.option_map (Json.lookup j "shrink_policy") ShrinkPolicy.of_json
+    ; configurations =
+        ConfigurationList.of_json (Util.of_option_exn (Json.lookup j "configurations"))
     }
+end
+
+module PortRanges = struct
+  type t = PortRange.t list
+
+  let make elems () = elems
+
+  let parse xml = Util.option_all (List.map PortRange.parse (Xml.members "member" xml))
+
+  let to_query v = Query.to_query_list PortRange.to_query v
+
+  let to_json v = `List (List.map PortRange.to_json v)
+
+  let of_json j = Json.to_list PortRange.of_json j
 end
 
 module InstanceGroup = struct
@@ -5161,6 +5663,9 @@ module InstanceGroup = struct
     ; running_instance_count : Integer.t option
     ; status : InstanceGroupStatus.t option
     ; configurations : ConfigurationList.t
+    ; configurations_version : Long.t option
+    ; last_successfully_applied_configurations : ConfigurationList.t
+    ; last_successfully_applied_configurations_version : Long.t option
     ; ebs_block_devices : EbsBlockDeviceList.t
     ; ebs_optimized : Boolean.t option
     ; shrink_policy : ShrinkPolicy.t option
@@ -5178,6 +5683,9 @@ module InstanceGroup = struct
       ?running_instance_count
       ?status
       ?(configurations = [])
+      ?configurations_version
+      ?(last_successfully_applied_configurations = [])
+      ?last_successfully_applied_configurations_version
       ?(ebs_block_devices = [])
       ?ebs_optimized
       ?shrink_policy
@@ -5193,6 +5701,9 @@ module InstanceGroup = struct
     ; running_instance_count
     ; status
     ; configurations
+    ; configurations_version
+    ; last_successfully_applied_configurations
+    ; last_successfully_applied_configurations_version
     ; ebs_block_devices
     ; ebs_optimized
     ; shrink_policy
@@ -5217,6 +5728,18 @@ module InstanceGroup = struct
           Util.of_option
             []
             (Util.option_bind (Xml.member "Configurations" xml) ConfigurationList.parse)
+      ; configurations_version =
+          Util.option_bind (Xml.member "ConfigurationsVersion" xml) Long.parse
+      ; last_successfully_applied_configurations =
+          Util.of_option
+            []
+            (Util.option_bind
+               (Xml.member "LastSuccessfullyAppliedConfigurations" xml)
+               ConfigurationList.parse)
+      ; last_successfully_applied_configurations_version =
+          Util.option_bind
+            (Xml.member "LastSuccessfullyAppliedConfigurationsVersion" xml)
+            Long.parse
       ; ebs_block_devices =
           Util.of_option
             []
@@ -5242,6 +5765,14 @@ module InstanceGroup = struct
          ; Some
              (Query.Pair
                 ("EbsBlockDevices.member", EbsBlockDeviceList.to_query v.ebs_block_devices))
+         ; Util.option_map v.last_successfully_applied_configurations_version (fun f ->
+               Query.Pair ("LastSuccessfullyAppliedConfigurationsVersion", Long.to_query f))
+         ; Some
+             (Query.Pair
+                ( "LastSuccessfullyAppliedConfigurations.member"
+                , ConfigurationList.to_query v.last_successfully_applied_configurations ))
+         ; Util.option_map v.configurations_version (fun f ->
+               Query.Pair ("ConfigurationsVersion", Long.to_query f))
          ; Some
              (Query.Pair
                 ("Configurations.member", ConfigurationList.to_query v.configurations))
@@ -5272,6 +5803,13 @@ module InstanceGroup = struct
                "shrink_policy", ShrinkPolicy.to_json f)
          ; Util.option_map v.ebs_optimized (fun f -> "ebs_optimized", Boolean.to_json f)
          ; Some ("ebs_block_devices", EbsBlockDeviceList.to_json v.ebs_block_devices)
+         ; Util.option_map v.last_successfully_applied_configurations_version (fun f ->
+               "last_successfully_applied_configurations_version", Long.to_json f)
+         ; Some
+             ( "last_successfully_applied_configurations"
+             , ConfigurationList.to_json v.last_successfully_applied_configurations )
+         ; Util.option_map v.configurations_version (fun f ->
+               "configurations_version", Long.to_json f)
          ; Some ("configurations", ConfigurationList.to_json v.configurations)
          ; Util.option_map v.status (fun f -> "status", InstanceGroupStatus.to_json f)
          ; Util.option_map v.running_instance_count (fun f ->
@@ -5302,6 +5840,15 @@ module InstanceGroup = struct
     ; status = Util.option_map (Json.lookup j "status") InstanceGroupStatus.of_json
     ; configurations =
         ConfigurationList.of_json (Util.of_option_exn (Json.lookup j "configurations"))
+    ; configurations_version =
+        Util.option_map (Json.lookup j "configurations_version") Long.of_json
+    ; last_successfully_applied_configurations =
+        ConfigurationList.of_json
+          (Util.of_option_exn (Json.lookup j "last_successfully_applied_configurations"))
+    ; last_successfully_applied_configurations_version =
+        Util.option_map
+          (Json.lookup j "last_successfully_applied_configurations_version")
+          Long.of_json
     ; ebs_block_devices =
         EbsBlockDeviceList.of_json
           (Util.of_option_exn (Json.lookup j "ebs_block_devices"))
@@ -5453,16 +6000,98 @@ module Instance = struct
     }
 end
 
+module NotebookExecutionSummary = struct
+  type t =
+    { notebook_execution_id : String.t option
+    ; editor_id : String.t option
+    ; notebook_execution_name : String.t option
+    ; status : NotebookExecutionStatus.t option
+    ; start_time : DateTime.t option
+    ; end_time : DateTime.t option
+    }
+
+  let make
+      ?notebook_execution_id
+      ?editor_id
+      ?notebook_execution_name
+      ?status
+      ?start_time
+      ?end_time
+      () =
+    { notebook_execution_id
+    ; editor_id
+    ; notebook_execution_name
+    ; status
+    ; start_time
+    ; end_time
+    }
+
+  let parse xml =
+    Some
+      { notebook_execution_id =
+          Util.option_bind (Xml.member "NotebookExecutionId" xml) String.parse
+      ; editor_id = Util.option_bind (Xml.member "EditorId" xml) String.parse
+      ; notebook_execution_name =
+          Util.option_bind (Xml.member "NotebookExecutionName" xml) String.parse
+      ; status = Util.option_bind (Xml.member "Status" xml) NotebookExecutionStatus.parse
+      ; start_time = Util.option_bind (Xml.member "StartTime" xml) DateTime.parse
+      ; end_time = Util.option_bind (Xml.member "EndTime" xml) DateTime.parse
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.end_time (fun f ->
+               Query.Pair ("EndTime", DateTime.to_query f))
+         ; Util.option_map v.start_time (fun f ->
+               Query.Pair ("StartTime", DateTime.to_query f))
+         ; Util.option_map v.status (fun f ->
+               Query.Pair ("Status", NotebookExecutionStatus.to_query f))
+         ; Util.option_map v.notebook_execution_name (fun f ->
+               Query.Pair ("NotebookExecutionName", String.to_query f))
+         ; Util.option_map v.editor_id (fun f ->
+               Query.Pair ("EditorId", String.to_query f))
+         ; Util.option_map v.notebook_execution_id (fun f ->
+               Query.Pair ("NotebookExecutionId", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.end_time (fun f -> "end_time", DateTime.to_json f)
+         ; Util.option_map v.start_time (fun f -> "start_time", DateTime.to_json f)
+         ; Util.option_map v.status (fun f -> "status", NotebookExecutionStatus.to_json f)
+         ; Util.option_map v.notebook_execution_name (fun f ->
+               "notebook_execution_name", String.to_json f)
+         ; Util.option_map v.editor_id (fun f -> "editor_id", String.to_json f)
+         ; Util.option_map v.notebook_execution_id (fun f ->
+               "notebook_execution_id", String.to_json f)
+         ])
+
+  let of_json j =
+    { notebook_execution_id =
+        Util.option_map (Json.lookup j "notebook_execution_id") String.of_json
+    ; editor_id = Util.option_map (Json.lookup j "editor_id") String.of_json
+    ; notebook_execution_name =
+        Util.option_map (Json.lookup j "notebook_execution_name") String.of_json
+    ; status = Util.option_map (Json.lookup j "status") NotebookExecutionStatus.of_json
+    ; start_time = Util.option_map (Json.lookup j "start_time") DateTime.of_json
+    ; end_time = Util.option_map (Json.lookup j "end_time") DateTime.of_json
+    }
+end
+
 module ClusterSummary = struct
   type t =
     { id : String.t option
     ; name : String.t option
     ; status : ClusterStatus.t option
     ; normalized_instance_hours : Integer.t option
+    ; cluster_arn : String.t option
+    ; outpost_arn : String.t option
     }
 
-  let make ?id ?name ?status ?normalized_instance_hours () =
-    { id; name; status; normalized_instance_hours }
+  let make ?id ?name ?status ?normalized_instance_hours ?cluster_arn ?outpost_arn () =
+    { id; name; status; normalized_instance_hours; cluster_arn; outpost_arn }
 
   let parse xml =
     Some
@@ -5471,12 +6100,18 @@ module ClusterSummary = struct
       ; status = Util.option_bind (Xml.member "Status" xml) ClusterStatus.parse
       ; normalized_instance_hours =
           Util.option_bind (Xml.member "NormalizedInstanceHours" xml) Integer.parse
+      ; cluster_arn = Util.option_bind (Xml.member "ClusterArn" xml) String.parse
+      ; outpost_arn = Util.option_bind (Xml.member "OutpostArn" xml) String.parse
       }
 
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.normalized_instance_hours (fun f ->
+         [ Util.option_map v.outpost_arn (fun f ->
+               Query.Pair ("OutpostArn", String.to_query f))
+         ; Util.option_map v.cluster_arn (fun f ->
+               Query.Pair ("ClusterArn", String.to_query f))
+         ; Util.option_map v.normalized_instance_hours (fun f ->
                Query.Pair ("NormalizedInstanceHours", Integer.to_query f))
          ; Util.option_map v.status (fun f ->
                Query.Pair ("Status", ClusterStatus.to_query f))
@@ -5487,7 +6122,9 @@ module ClusterSummary = struct
   let to_json v =
     `Assoc
       (Util.list_filter_opt
-         [ Util.option_map v.normalized_instance_hours (fun f ->
+         [ Util.option_map v.outpost_arn (fun f -> "outpost_arn", String.to_json f)
+         ; Util.option_map v.cluster_arn (fun f -> "cluster_arn", String.to_json f)
+         ; Util.option_map v.normalized_instance_hours (fun f ->
                "normalized_instance_hours", Integer.to_json f)
          ; Util.option_map v.status (fun f -> "status", ClusterStatus.to_json f)
          ; Util.option_map v.name (fun f -> "name", String.to_json f)
@@ -5500,6 +6137,53 @@ module ClusterSummary = struct
     ; status = Util.option_map (Json.lookup j "status") ClusterStatus.of_json
     ; normalized_instance_hours =
         Util.option_map (Json.lookup j "normalized_instance_hours") Integer.of_json
+    ; cluster_arn = Util.option_map (Json.lookup j "cluster_arn") String.of_json
+    ; outpost_arn = Util.option_map (Json.lookup j "outpost_arn") String.of_json
+    }
+end
+
+module ExecutionEngineConfig = struct
+  type t =
+    { id : String.t
+    ; type_ : ExecutionEngineType.t option
+    ; master_instance_security_group_id : String.t option
+    }
+
+  let make ~id ?type_ ?master_instance_security_group_id () =
+    { id; type_; master_instance_security_group_id }
+
+  let parse xml =
+    Some
+      { id = Xml.required "Id" (Util.option_bind (Xml.member "Id" xml) String.parse)
+      ; type_ = Util.option_bind (Xml.member "Type" xml) ExecutionEngineType.parse
+      ; master_instance_security_group_id =
+          Util.option_bind (Xml.member "MasterInstanceSecurityGroupId" xml) String.parse
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.master_instance_security_group_id (fun f ->
+               Query.Pair ("MasterInstanceSecurityGroupId", String.to_query f))
+         ; Util.option_map v.type_ (fun f ->
+               Query.Pair ("Type", ExecutionEngineType.to_query f))
+         ; Some (Query.Pair ("Id", String.to_query v.id))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.master_instance_security_group_id (fun f ->
+               "master_instance_security_group_id", String.to_json f)
+         ; Util.option_map v.type_ (fun f -> "type_", ExecutionEngineType.to_json f)
+         ; Some ("id", String.to_json v.id)
+         ])
+
+  let of_json j =
+    { id = String.of_json (Util.of_option_exn (Json.lookup j "id"))
+    ; type_ = Util.option_map (Json.lookup j "type_") ExecutionEngineType.of_json
+    ; master_instance_security_group_id =
+        Util.option_map (Json.lookup j "master_instance_security_group_id") String.of_json
     }
 end
 
@@ -5508,6 +6192,7 @@ module JobFlowDetail = struct
     { job_flow_id : String.t
     ; name : String.t
     ; log_uri : String.t option
+    ; log_encryption_kms_key_id : String.t option
     ; ami_version : String.t option
     ; execution_status_detail : JobFlowExecutionStatusDetail.t
     ; instances : JobFlowInstancesDetail.t
@@ -5525,6 +6210,7 @@ module JobFlowDetail = struct
       ~job_flow_id
       ~name
       ?log_uri
+      ?log_encryption_kms_key_id
       ?ami_version
       ~execution_status_detail
       ~instances
@@ -5540,6 +6226,7 @@ module JobFlowDetail = struct
     { job_flow_id
     ; name
     ; log_uri
+    ; log_encryption_kms_key_id
     ; ami_version
     ; execution_status_detail
     ; instances
@@ -5561,6 +6248,8 @@ module JobFlowDetail = struct
             (Util.option_bind (Xml.member "JobFlowId" xml) String.parse)
       ; name = Xml.required "Name" (Util.option_bind (Xml.member "Name" xml) String.parse)
       ; log_uri = Util.option_bind (Xml.member "LogUri" xml) String.parse
+      ; log_encryption_kms_key_id =
+          Util.option_bind (Xml.member "LogEncryptionKmsKeyId" xml) String.parse
       ; ami_version = Util.option_bind (Xml.member "AmiVersion" xml) String.parse
       ; execution_status_detail =
           Xml.required
@@ -5627,6 +6316,8 @@ module JobFlowDetail = struct
                 , JobFlowExecutionStatusDetail.to_query v.execution_status_detail ))
          ; Util.option_map v.ami_version (fun f ->
                Query.Pair ("AmiVersion", String.to_query f))
+         ; Util.option_map v.log_encryption_kms_key_id (fun f ->
+               Query.Pair ("LogEncryptionKmsKeyId", String.to_query f))
          ; Util.option_map v.log_uri (fun f -> Query.Pair ("LogUri", String.to_query f))
          ; Some (Query.Pair ("Name", String.to_query v.name))
          ; Some (Query.Pair ("JobFlowId", String.to_query v.job_flow_id))
@@ -5652,6 +6343,8 @@ module JobFlowDetail = struct
              ( "execution_status_detail"
              , JobFlowExecutionStatusDetail.to_json v.execution_status_detail )
          ; Util.option_map v.ami_version (fun f -> "ami_version", String.to_json f)
+         ; Util.option_map v.log_encryption_kms_key_id (fun f ->
+               "log_encryption_kms_key_id", String.to_json f)
          ; Util.option_map v.log_uri (fun f -> "log_uri", String.to_json f)
          ; Some ("name", String.to_json v.name)
          ; Some ("job_flow_id", String.to_json v.job_flow_id)
@@ -5661,6 +6354,8 @@ module JobFlowDetail = struct
     { job_flow_id = String.of_json (Util.of_option_exn (Json.lookup j "job_flow_id"))
     ; name = String.of_json (Util.of_option_exn (Json.lookup j "name"))
     ; log_uri = Util.option_map (Json.lookup j "log_uri") String.of_json
+    ; log_encryption_kms_key_id =
+        Util.option_map (Json.lookup j "log_encryption_kms_key_id") String.of_json
     ; ami_version = Util.option_map (Json.lookup j "ami_version") String.of_json
     ; execution_status_detail =
         JobFlowExecutionStatusDetail.of_json
@@ -5889,6 +6584,32 @@ module Step = struct
     }
 end
 
+module StepCancellationOption = struct
+  type t =
+    | SEND_INTERRUPT
+    | TERMINATE_PROCESS
+
+  let str_to_t =
+    [ "TERMINATE_PROCESS", TERMINATE_PROCESS; "SEND_INTERRUPT", SEND_INTERRUPT ]
+
+  let t_to_str =
+    [ TERMINATE_PROCESS, "TERMINATE_PROCESS"; SEND_INTERRUPT, "SEND_INTERRUPT" ]
+
+  let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+
+  let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
+
+  let make v () = v
+
+  let parse xml = Util.option_bind (String.parse xml) (fun s -> Util.list_find str_to_t s)
+
+  let to_query v = Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+
+  let of_json j = Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+end
+
 module StepIdsList = struct
   type t = String.t list
 
@@ -5911,6 +6632,7 @@ module Cluster = struct
     ; ec2_instance_attributes : Ec2InstanceAttributes.t option
     ; instance_collection_type : InstanceCollectionType.t option
     ; log_uri : String.t option
+    ; log_encryption_kms_key_id : String.t option
     ; requested_ami_version : String.t option
     ; running_ami_version : String.t option
     ; release_label : String.t option
@@ -5930,6 +6652,10 @@ module Cluster = struct
     ; ebs_root_volume_size : Integer.t option
     ; repo_upgrade_on_boot : RepoUpgradeOnBoot.t option
     ; kerberos_attributes : KerberosAttributes.t option
+    ; cluster_arn : String.t option
+    ; outpost_arn : String.t option
+    ; step_concurrency_level : Integer.t option
+    ; placement_groups : PlacementGroupConfigList.t
     }
 
   let make
@@ -5939,6 +6665,7 @@ module Cluster = struct
       ?ec2_instance_attributes
       ?instance_collection_type
       ?log_uri
+      ?log_encryption_kms_key_id
       ?requested_ami_version
       ?running_ami_version
       ?release_label
@@ -5958,6 +6685,10 @@ module Cluster = struct
       ?ebs_root_volume_size
       ?repo_upgrade_on_boot
       ?kerberos_attributes
+      ?cluster_arn
+      ?outpost_arn
+      ?step_concurrency_level
+      ?(placement_groups = [])
       () =
     { id
     ; name
@@ -5965,6 +6696,7 @@ module Cluster = struct
     ; ec2_instance_attributes
     ; instance_collection_type
     ; log_uri
+    ; log_encryption_kms_key_id
     ; requested_ami_version
     ; running_ami_version
     ; release_label
@@ -5984,6 +6716,10 @@ module Cluster = struct
     ; ebs_root_volume_size
     ; repo_upgrade_on_boot
     ; kerberos_attributes
+    ; cluster_arn
+    ; outpost_arn
+    ; step_concurrency_level
+    ; placement_groups
     }
 
   let parse xml =
@@ -6003,6 +6739,8 @@ module Cluster = struct
             (Xml.member "InstanceCollectionType" xml)
             InstanceCollectionType.parse
       ; log_uri = Util.option_bind (Xml.member "LogUri" xml) String.parse
+      ; log_encryption_kms_key_id =
+          Util.option_bind (Xml.member "LogEncryptionKmsKeyId" xml) String.parse
       ; requested_ami_version =
           Util.option_bind (Xml.member "RequestedAmiVersion" xml) String.parse
       ; running_ami_version =
@@ -6040,12 +6778,32 @@ module Cluster = struct
           Util.option_bind (Xml.member "RepoUpgradeOnBoot" xml) RepoUpgradeOnBoot.parse
       ; kerberos_attributes =
           Util.option_bind (Xml.member "KerberosAttributes" xml) KerberosAttributes.parse
+      ; cluster_arn = Util.option_bind (Xml.member "ClusterArn" xml) String.parse
+      ; outpost_arn = Util.option_bind (Xml.member "OutpostArn" xml) String.parse
+      ; step_concurrency_level =
+          Util.option_bind (Xml.member "StepConcurrencyLevel" xml) Integer.parse
+      ; placement_groups =
+          Util.of_option
+            []
+            (Util.option_bind
+               (Xml.member "PlacementGroups" xml)
+               PlacementGroupConfigList.parse)
       }
 
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.kerberos_attributes (fun f ->
+         [ Some
+             (Query.Pair
+                ( "PlacementGroups.member"
+                , PlacementGroupConfigList.to_query v.placement_groups ))
+         ; Util.option_map v.step_concurrency_level (fun f ->
+               Query.Pair ("StepConcurrencyLevel", Integer.to_query f))
+         ; Util.option_map v.outpost_arn (fun f ->
+               Query.Pair ("OutpostArn", String.to_query f))
+         ; Util.option_map v.cluster_arn (fun f ->
+               Query.Pair ("ClusterArn", String.to_query f))
+         ; Util.option_map v.kerberos_attributes (fun f ->
                Query.Pair ("KerberosAttributes", KerberosAttributes.to_query f))
          ; Util.option_map v.repo_upgrade_on_boot (fun f ->
                Query.Pair ("RepoUpgradeOnBoot", RepoUpgradeOnBoot.to_query f))
@@ -6083,6 +6841,8 @@ module Cluster = struct
                Query.Pair ("RunningAmiVersion", String.to_query f))
          ; Util.option_map v.requested_ami_version (fun f ->
                Query.Pair ("RequestedAmiVersion", String.to_query f))
+         ; Util.option_map v.log_encryption_kms_key_id (fun f ->
+               Query.Pair ("LogEncryptionKmsKeyId", String.to_query f))
          ; Util.option_map v.log_uri (fun f -> Query.Pair ("LogUri", String.to_query f))
          ; Util.option_map v.instance_collection_type (fun f ->
                Query.Pair ("InstanceCollectionType", InstanceCollectionType.to_query f))
@@ -6096,7 +6856,12 @@ module Cluster = struct
   let to_json v =
     `Assoc
       (Util.list_filter_opt
-         [ Util.option_map v.kerberos_attributes (fun f ->
+         [ Some ("placement_groups", PlacementGroupConfigList.to_json v.placement_groups)
+         ; Util.option_map v.step_concurrency_level (fun f ->
+               "step_concurrency_level", Integer.to_json f)
+         ; Util.option_map v.outpost_arn (fun f -> "outpost_arn", String.to_json f)
+         ; Util.option_map v.cluster_arn (fun f -> "cluster_arn", String.to_json f)
+         ; Util.option_map v.kerberos_attributes (fun f ->
                "kerberos_attributes", KerberosAttributes.to_json f)
          ; Util.option_map v.repo_upgrade_on_boot (fun f ->
                "repo_upgrade_on_boot", RepoUpgradeOnBoot.to_json f)
@@ -6127,6 +6892,8 @@ module Cluster = struct
                "running_ami_version", String.to_json f)
          ; Util.option_map v.requested_ami_version (fun f ->
                "requested_ami_version", String.to_json f)
+         ; Util.option_map v.log_encryption_kms_key_id (fun f ->
+               "log_encryption_kms_key_id", String.to_json f)
          ; Util.option_map v.log_uri (fun f -> "log_uri", String.to_json f)
          ; Util.option_map v.instance_collection_type (fun f ->
                "instance_collection_type", InstanceCollectionType.to_json f)
@@ -6150,6 +6917,8 @@ module Cluster = struct
           (Json.lookup j "instance_collection_type")
           InstanceCollectionType.of_json
     ; log_uri = Util.option_map (Json.lookup j "log_uri") String.of_json
+    ; log_encryption_kms_key_id =
+        Util.option_map (Json.lookup j "log_encryption_kms_key_id") String.of_json
     ; requested_ami_version =
         Util.option_map (Json.lookup j "requested_ami_version") String.of_json
     ; running_ami_version =
@@ -6183,6 +6952,13 @@ module Cluster = struct
         Util.option_map (Json.lookup j "repo_upgrade_on_boot") RepoUpgradeOnBoot.of_json
     ; kerberos_attributes =
         Util.option_map (Json.lookup j "kerberos_attributes") KerberosAttributes.of_json
+    ; cluster_arn = Util.option_map (Json.lookup j "cluster_arn") String.of_json
+    ; outpost_arn = Util.option_map (Json.lookup j "outpost_arn") String.of_json
+    ; step_concurrency_level =
+        Util.option_map (Json.lookup j "step_concurrency_level") Integer.of_json
+    ; placement_groups =
+        PlacementGroupConfigList.of_json
+          (Util.of_option_exn (Json.lookup j "placement_groups"))
     }
 end
 
@@ -6434,6 +7210,37 @@ module JobFlowInstancesConfig = struct
     }
 end
 
+module ManagedScalingPolicy = struct
+  type t = { compute_limits : ComputeLimits.t option }
+
+  let make ?compute_limits () = { compute_limits }
+
+  let parse xml =
+    Some
+      { compute_limits =
+          Util.option_bind (Xml.member "ComputeLimits" xml) ComputeLimits.parse
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.compute_limits (fun f ->
+               Query.Pair ("ComputeLimits", ComputeLimits.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.compute_limits (fun f ->
+               "compute_limits", ComputeLimits.to_json f)
+         ])
+
+  let of_json j =
+    { compute_limits =
+        Util.option_map (Json.lookup j "compute_limits") ComputeLimits.of_json
+    }
+end
+
 module NewSupportedProductsList = struct
   type t = SupportedProductConfig.t list
 
@@ -6523,6 +7330,111 @@ module InstanceGroupModifyConfigList = struct
   let of_json j = Json.to_list InstanceGroupModifyConfig.of_json j
 end
 
+module BlockPublicAccessConfiguration = struct
+  type t =
+    { block_public_security_group_rules : Boolean.t
+    ; permitted_public_security_group_rule_ranges : PortRanges.t
+    }
+
+  let make
+      ~block_public_security_group_rules
+      ?(permitted_public_security_group_rule_ranges = [])
+      () =
+    { block_public_security_group_rules; permitted_public_security_group_rule_ranges }
+
+  let parse xml =
+    Some
+      { block_public_security_group_rules =
+          Xml.required
+            "BlockPublicSecurityGroupRules"
+            (Util.option_bind
+               (Xml.member "BlockPublicSecurityGroupRules" xml)
+               Boolean.parse)
+      ; permitted_public_security_group_rule_ranges =
+          Util.of_option
+            []
+            (Util.option_bind
+               (Xml.member "PermittedPublicSecurityGroupRuleRanges" xml)
+               PortRanges.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some
+             (Query.Pair
+                ( "PermittedPublicSecurityGroupRuleRanges.member"
+                , PortRanges.to_query v.permitted_public_security_group_rule_ranges ))
+         ; Some
+             (Query.Pair
+                ( "BlockPublicSecurityGroupRules"
+                , Boolean.to_query v.block_public_security_group_rules ))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some
+             ( "permitted_public_security_group_rule_ranges"
+             , PortRanges.to_json v.permitted_public_security_group_rule_ranges )
+         ; Some
+             ( "block_public_security_group_rules"
+             , Boolean.to_json v.block_public_security_group_rules )
+         ])
+
+  let of_json j =
+    { block_public_security_group_rules =
+        Boolean.of_json
+          (Util.of_option_exn (Json.lookup j "block_public_security_group_rules"))
+    ; permitted_public_security_group_rule_ranges =
+        PortRanges.of_json
+          (Util.of_option_exn
+             (Json.lookup j "permitted_public_security_group_rule_ranges"))
+    }
+end
+
+module BlockPublicAccessConfigurationMetadata = struct
+  type t =
+    { creation_date_time : DateTime.t
+    ; created_by_arn : String.t
+    }
+
+  let make ~creation_date_time ~created_by_arn () = { creation_date_time; created_by_arn }
+
+  let parse xml =
+    Some
+      { creation_date_time =
+          Xml.required
+            "CreationDateTime"
+            (Util.option_bind (Xml.member "CreationDateTime" xml) DateTime.parse)
+      ; created_by_arn =
+          Xml.required
+            "CreatedByArn"
+            (Util.option_bind (Xml.member "CreatedByArn" xml) String.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("CreatedByArn", String.to_query v.created_by_arn))
+         ; Some (Query.Pair ("CreationDateTime", DateTime.to_query v.creation_date_time))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("created_by_arn", String.to_json v.created_by_arn)
+         ; Some ("creation_date_time", DateTime.to_json v.creation_date_time)
+         ])
+
+  let of_json j =
+    { creation_date_time =
+        DateTime.of_json (Util.of_option_exn (Json.lookup j "creation_date_time"))
+    ; created_by_arn =
+        String.of_json (Util.of_option_exn (Json.lookup j "created_by_arn"))
+    }
+end
+
 module InstanceGroupList = struct
   type t = InstanceGroup.t list
 
@@ -6552,6 +7464,21 @@ module InstanceList = struct
   let of_json j = Json.to_list Instance.of_json j
 end
 
+module NotebookExecutionSummaryList = struct
+  type t = NotebookExecutionSummary.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Util.option_all (List.map NotebookExecutionSummary.parse (Xml.members "member" xml))
+
+  let to_query v = Query.to_query_list NotebookExecutionSummary.to_query v
+
+  let to_json v = `List (List.map NotebookExecutionSummary.to_json v)
+
+  let of_json j = Json.to_list NotebookExecutionSummary.of_json j
+end
+
 module ClusterSummaryList = struct
   type t = ClusterSummary.t list
 
@@ -6579,6 +7506,155 @@ module StepStateList = struct
   let to_json v = `List (List.map StepState.to_json v)
 
   let of_json j = Json.to_list StepState.of_json j
+end
+
+module NotebookExecution = struct
+  type t =
+    { notebook_execution_id : String.t option
+    ; editor_id : String.t option
+    ; execution_engine : ExecutionEngineConfig.t option
+    ; notebook_execution_name : String.t option
+    ; notebook_params : String.t option
+    ; status : NotebookExecutionStatus.t option
+    ; start_time : DateTime.t option
+    ; end_time : DateTime.t option
+    ; arn : String.t option
+    ; output_notebook_u_r_i : String.t option
+    ; last_state_change_reason : String.t option
+    ; notebook_instance_security_group_id : String.t option
+    ; tags : TagList.t
+    }
+
+  let make
+      ?notebook_execution_id
+      ?editor_id
+      ?execution_engine
+      ?notebook_execution_name
+      ?notebook_params
+      ?status
+      ?start_time
+      ?end_time
+      ?arn
+      ?output_notebook_u_r_i
+      ?last_state_change_reason
+      ?notebook_instance_security_group_id
+      ?(tags = [])
+      () =
+    { notebook_execution_id
+    ; editor_id
+    ; execution_engine
+    ; notebook_execution_name
+    ; notebook_params
+    ; status
+    ; start_time
+    ; end_time
+    ; arn
+    ; output_notebook_u_r_i
+    ; last_state_change_reason
+    ; notebook_instance_security_group_id
+    ; tags
+    }
+
+  let parse xml =
+    Some
+      { notebook_execution_id =
+          Util.option_bind (Xml.member "NotebookExecutionId" xml) String.parse
+      ; editor_id = Util.option_bind (Xml.member "EditorId" xml) String.parse
+      ; execution_engine =
+          Util.option_bind (Xml.member "ExecutionEngine" xml) ExecutionEngineConfig.parse
+      ; notebook_execution_name =
+          Util.option_bind (Xml.member "NotebookExecutionName" xml) String.parse
+      ; notebook_params = Util.option_bind (Xml.member "NotebookParams" xml) String.parse
+      ; status = Util.option_bind (Xml.member "Status" xml) NotebookExecutionStatus.parse
+      ; start_time = Util.option_bind (Xml.member "StartTime" xml) DateTime.parse
+      ; end_time = Util.option_bind (Xml.member "EndTime" xml) DateTime.parse
+      ; arn = Util.option_bind (Xml.member "Arn" xml) String.parse
+      ; output_notebook_u_r_i =
+          Util.option_bind (Xml.member "OutputNotebookURI" xml) String.parse
+      ; last_state_change_reason =
+          Util.option_bind (Xml.member "LastStateChangeReason" xml) String.parse
+      ; notebook_instance_security_group_id =
+          Util.option_bind (Xml.member "NotebookInstanceSecurityGroupId" xml) String.parse
+      ; tags = Util.of_option [] (Util.option_bind (Xml.member "Tags" xml) TagList.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("Tags.member", TagList.to_query v.tags))
+         ; Util.option_map v.notebook_instance_security_group_id (fun f ->
+               Query.Pair ("NotebookInstanceSecurityGroupId", String.to_query f))
+         ; Util.option_map v.last_state_change_reason (fun f ->
+               Query.Pair ("LastStateChangeReason", String.to_query f))
+         ; Util.option_map v.output_notebook_u_r_i (fun f ->
+               Query.Pair ("OutputNotebookURI", String.to_query f))
+         ; Util.option_map v.arn (fun f -> Query.Pair ("Arn", String.to_query f))
+         ; Util.option_map v.end_time (fun f ->
+               Query.Pair ("EndTime", DateTime.to_query f))
+         ; Util.option_map v.start_time (fun f ->
+               Query.Pair ("StartTime", DateTime.to_query f))
+         ; Util.option_map v.status (fun f ->
+               Query.Pair ("Status", NotebookExecutionStatus.to_query f))
+         ; Util.option_map v.notebook_params (fun f ->
+               Query.Pair ("NotebookParams", String.to_query f))
+         ; Util.option_map v.notebook_execution_name (fun f ->
+               Query.Pair ("NotebookExecutionName", String.to_query f))
+         ; Util.option_map v.execution_engine (fun f ->
+               Query.Pair ("ExecutionEngine", ExecutionEngineConfig.to_query f))
+         ; Util.option_map v.editor_id (fun f ->
+               Query.Pair ("EditorId", String.to_query f))
+         ; Util.option_map v.notebook_execution_id (fun f ->
+               Query.Pair ("NotebookExecutionId", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("tags", TagList.to_json v.tags)
+         ; Util.option_map v.notebook_instance_security_group_id (fun f ->
+               "notebook_instance_security_group_id", String.to_json f)
+         ; Util.option_map v.last_state_change_reason (fun f ->
+               "last_state_change_reason", String.to_json f)
+         ; Util.option_map v.output_notebook_u_r_i (fun f ->
+               "output_notebook_u_r_i", String.to_json f)
+         ; Util.option_map v.arn (fun f -> "arn", String.to_json f)
+         ; Util.option_map v.end_time (fun f -> "end_time", DateTime.to_json f)
+         ; Util.option_map v.start_time (fun f -> "start_time", DateTime.to_json f)
+         ; Util.option_map v.status (fun f -> "status", NotebookExecutionStatus.to_json f)
+         ; Util.option_map v.notebook_params (fun f ->
+               "notebook_params", String.to_json f)
+         ; Util.option_map v.notebook_execution_name (fun f ->
+               "notebook_execution_name", String.to_json f)
+         ; Util.option_map v.execution_engine (fun f ->
+               "execution_engine", ExecutionEngineConfig.to_json f)
+         ; Util.option_map v.editor_id (fun f -> "editor_id", String.to_json f)
+         ; Util.option_map v.notebook_execution_id (fun f ->
+               "notebook_execution_id", String.to_json f)
+         ])
+
+  let of_json j =
+    { notebook_execution_id =
+        Util.option_map (Json.lookup j "notebook_execution_id") String.of_json
+    ; editor_id = Util.option_map (Json.lookup j "editor_id") String.of_json
+    ; execution_engine =
+        Util.option_map (Json.lookup j "execution_engine") ExecutionEngineConfig.of_json
+    ; notebook_execution_name =
+        Util.option_map (Json.lookup j "notebook_execution_name") String.of_json
+    ; notebook_params = Util.option_map (Json.lookup j "notebook_params") String.of_json
+    ; status = Util.option_map (Json.lookup j "status") NotebookExecutionStatus.of_json
+    ; start_time = Util.option_map (Json.lookup j "start_time") DateTime.of_json
+    ; end_time = Util.option_map (Json.lookup j "end_time") DateTime.of_json
+    ; arn = Util.option_map (Json.lookup j "arn") String.of_json
+    ; output_notebook_u_r_i =
+        Util.option_map (Json.lookup j "output_notebook_u_r_i") String.of_json
+    ; last_state_change_reason =
+        Util.option_map (Json.lookup j "last_state_change_reason") String.of_json
+    ; notebook_instance_security_group_id =
+        Util.option_map
+          (Json.lookup j "notebook_instance_security_group_id")
+          String.of_json
+    ; tags = TagList.of_json (Util.of_option_exn (Json.lookup j "tags"))
+    }
 end
 
 module JobFlowExecutionStateList = struct
@@ -6878,6 +7954,37 @@ module ModifyInstanceFleetInput = struct
     }
 end
 
+module ModifyClusterOutput = struct
+  type t = { step_concurrency_level : Integer.t option }
+
+  let make ?step_concurrency_level () = { step_concurrency_level }
+
+  let parse xml =
+    Some
+      { step_concurrency_level =
+          Util.option_bind (Xml.member "StepConcurrencyLevel" xml) Integer.parse
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.step_concurrency_level (fun f ->
+               Query.Pair ("StepConcurrencyLevel", Integer.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.step_concurrency_level (fun f ->
+               "step_concurrency_level", Integer.to_json f)
+         ])
+
+  let of_json j =
+    { step_concurrency_level =
+        Util.option_map (Json.lookup j "step_concurrency_level") Integer.of_json
+    }
+end
+
 module DescribeStepOutput = struct
   type t = { step : Step.t option }
 
@@ -6895,6 +8002,58 @@ module DescribeStepOutput = struct
       (Util.list_filter_opt [ Util.option_map v.step (fun f -> "step", Step.to_json f) ])
 
   let of_json j = { step = Util.option_map (Json.lookup j "step") Step.of_json }
+end
+
+module ListNotebookExecutionsInput = struct
+  type t =
+    { editor_id : String.t option
+    ; status : NotebookExecutionStatus.t option
+    ; from : DateTime.t option
+    ; to_ : DateTime.t option
+    ; marker : String.t option
+    }
+
+  let make ?editor_id ?status ?from ?to_ ?marker () =
+    { editor_id; status; from; to_; marker }
+
+  let parse xml =
+    Some
+      { editor_id = Util.option_bind (Xml.member "EditorId" xml) String.parse
+      ; status = Util.option_bind (Xml.member "Status" xml) NotebookExecutionStatus.parse
+      ; from = Util.option_bind (Xml.member "From" xml) DateTime.parse
+      ; to_ = Util.option_bind (Xml.member "To" xml) DateTime.parse
+      ; marker = Util.option_bind (Xml.member "Marker" xml) String.parse
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.marker (fun f -> Query.Pair ("Marker", String.to_query f))
+         ; Util.option_map v.to_ (fun f -> Query.Pair ("To", DateTime.to_query f))
+         ; Util.option_map v.from (fun f -> Query.Pair ("From", DateTime.to_query f))
+         ; Util.option_map v.status (fun f ->
+               Query.Pair ("Status", NotebookExecutionStatus.to_query f))
+         ; Util.option_map v.editor_id (fun f ->
+               Query.Pair ("EditorId", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.marker (fun f -> "marker", String.to_json f)
+         ; Util.option_map v.to_ (fun f -> "to_", DateTime.to_json f)
+         ; Util.option_map v.from (fun f -> "from", DateTime.to_json f)
+         ; Util.option_map v.status (fun f -> "status", NotebookExecutionStatus.to_json f)
+         ; Util.option_map v.editor_id (fun f -> "editor_id", String.to_json f)
+         ])
+
+  let of_json j =
+    { editor_id = Util.option_map (Json.lookup j "editor_id") String.of_json
+    ; status = Util.option_map (Json.lookup j "status") NotebookExecutionStatus.of_json
+    ; from = Util.option_map (Json.lookup j "from") DateTime.of_json
+    ; to_ = Util.option_map (Json.lookup j "to_") DateTime.of_json
+    ; marker = Util.option_map (Json.lookup j "marker") String.of_json
+    }
 end
 
 module AddInstanceGroupsInput = struct
@@ -7002,39 +8161,55 @@ end
 
 module CancelStepsInput = struct
   type t =
-    { cluster_id : String.t option
+    { cluster_id : String.t
     ; step_ids : StepIdsList.t
+    ; step_cancellation_option : StepCancellationOption.t option
     }
 
-  let make ?cluster_id ?(step_ids = []) () = { cluster_id; step_ids }
+  let make ~cluster_id ~step_ids ?step_cancellation_option () =
+    { cluster_id; step_ids; step_cancellation_option }
 
   let parse xml =
     Some
-      { cluster_id = Util.option_bind (Xml.member "ClusterId" xml) String.parse
+      { cluster_id =
+          Xml.required
+            "ClusterId"
+            (Util.option_bind (Xml.member "ClusterId" xml) String.parse)
       ; step_ids =
-          Util.of_option
-            []
+          Xml.required
+            "StepIds"
             (Util.option_bind (Xml.member "StepIds" xml) StepIdsList.parse)
+      ; step_cancellation_option =
+          Util.option_bind
+            (Xml.member "StepCancellationOption" xml)
+            StepCancellationOption.parse
       }
 
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("StepIds.member", StepIdsList.to_query v.step_ids))
-         ; Util.option_map v.cluster_id (fun f ->
-               Query.Pair ("ClusterId", String.to_query f))
+         [ Util.option_map v.step_cancellation_option (fun f ->
+               Query.Pair ("StepCancellationOption", StepCancellationOption.to_query f))
+         ; Some (Query.Pair ("StepIds.member", StepIdsList.to_query v.step_ids))
+         ; Some (Query.Pair ("ClusterId", String.to_query v.cluster_id))
          ])
 
   let to_json v =
     `Assoc
       (Util.list_filter_opt
-         [ Some ("step_ids", StepIdsList.to_json v.step_ids)
-         ; Util.option_map v.cluster_id (fun f -> "cluster_id", String.to_json f)
+         [ Util.option_map v.step_cancellation_option (fun f ->
+               "step_cancellation_option", StepCancellationOption.to_json f)
+         ; Some ("step_ids", StepIdsList.to_json v.step_ids)
+         ; Some ("cluster_id", String.to_json v.cluster_id)
          ])
 
   let of_json j =
-    { cluster_id = Util.option_map (Json.lookup j "cluster_id") String.of_json
+    { cluster_id = String.of_json (Util.of_option_exn (Json.lookup j "cluster_id"))
     ; step_ids = StepIdsList.of_json (Util.of_option_exn (Json.lookup j "step_ids"))
+    ; step_cancellation_option =
+        Util.option_map
+          (Json.lookup j "step_cancellation_option")
+          StepCancellationOption.of_json
     }
 end
 
@@ -7224,6 +8399,7 @@ module RunJobFlowInput = struct
   type t =
     { name : String.t
     ; log_uri : String.t option
+    ; log_encryption_kms_key_id : String.t option
     ; additional_info : String.t option
     ; ami_version : String.t option
     ; release_label : String.t option
@@ -7245,11 +8421,15 @@ module RunJobFlowInput = struct
     ; ebs_root_volume_size : Integer.t option
     ; repo_upgrade_on_boot : RepoUpgradeOnBoot.t option
     ; kerberos_attributes : KerberosAttributes.t option
+    ; step_concurrency_level : Integer.t option
+    ; managed_scaling_policy : ManagedScalingPolicy.t option
+    ; placement_group_configs : PlacementGroupConfigList.t
     }
 
   let make
       ~name
       ?log_uri
+      ?log_encryption_kms_key_id
       ?additional_info
       ?ami_version
       ?release_label
@@ -7271,9 +8451,13 @@ module RunJobFlowInput = struct
       ?ebs_root_volume_size
       ?repo_upgrade_on_boot
       ?kerberos_attributes
+      ?step_concurrency_level
+      ?managed_scaling_policy
+      ?(placement_group_configs = [])
       () =
     { name
     ; log_uri
+    ; log_encryption_kms_key_id
     ; additional_info
     ; ami_version
     ; release_label
@@ -7295,12 +8479,17 @@ module RunJobFlowInput = struct
     ; ebs_root_volume_size
     ; repo_upgrade_on_boot
     ; kerberos_attributes
+    ; step_concurrency_level
+    ; managed_scaling_policy
+    ; placement_group_configs
     }
 
   let parse xml =
     Some
       { name = Xml.required "Name" (Util.option_bind (Xml.member "Name" xml) String.parse)
       ; log_uri = Util.option_bind (Xml.member "LogUri" xml) String.parse
+      ; log_encryption_kms_key_id =
+          Util.option_bind (Xml.member "LogEncryptionKmsKeyId" xml) String.parse
       ; additional_info = Util.option_bind (Xml.member "AdditionalInfo" xml) String.parse
       ; ami_version = Util.option_bind (Xml.member "AmiVersion" xml) String.parse
       ; release_label = Util.option_bind (Xml.member "ReleaseLabel" xml) String.parse
@@ -7356,12 +8545,32 @@ module RunJobFlowInput = struct
           Util.option_bind (Xml.member "RepoUpgradeOnBoot" xml) RepoUpgradeOnBoot.parse
       ; kerberos_attributes =
           Util.option_bind (Xml.member "KerberosAttributes" xml) KerberosAttributes.parse
+      ; step_concurrency_level =
+          Util.option_bind (Xml.member "StepConcurrencyLevel" xml) Integer.parse
+      ; managed_scaling_policy =
+          Util.option_bind
+            (Xml.member "ManagedScalingPolicy" xml)
+            ManagedScalingPolicy.parse
+      ; placement_group_configs =
+          Util.of_option
+            []
+            (Util.option_bind
+               (Xml.member "PlacementGroupConfigs" xml)
+               PlacementGroupConfigList.parse)
       }
 
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.kerberos_attributes (fun f ->
+         [ Some
+             (Query.Pair
+                ( "PlacementGroupConfigs.member"
+                , PlacementGroupConfigList.to_query v.placement_group_configs ))
+         ; Util.option_map v.managed_scaling_policy (fun f ->
+               Query.Pair ("ManagedScalingPolicy", ManagedScalingPolicy.to_query f))
+         ; Util.option_map v.step_concurrency_level (fun f ->
+               Query.Pair ("StepConcurrencyLevel", Integer.to_query f))
+         ; Util.option_map v.kerberos_attributes (fun f ->
                Query.Pair ("KerberosAttributes", KerberosAttributes.to_query f))
          ; Util.option_map v.repo_upgrade_on_boot (fun f ->
                Query.Pair ("RepoUpgradeOnBoot", RepoUpgradeOnBoot.to_query f))
@@ -7407,6 +8616,8 @@ module RunJobFlowInput = struct
                Query.Pair ("AmiVersion", String.to_query f))
          ; Util.option_map v.additional_info (fun f ->
                Query.Pair ("AdditionalInfo", String.to_query f))
+         ; Util.option_map v.log_encryption_kms_key_id (fun f ->
+               Query.Pair ("LogEncryptionKmsKeyId", String.to_query f))
          ; Util.option_map v.log_uri (fun f -> Query.Pair ("LogUri", String.to_query f))
          ; Some (Query.Pair ("Name", String.to_query v.name))
          ])
@@ -7414,7 +8625,14 @@ module RunJobFlowInput = struct
   let to_json v =
     `Assoc
       (Util.list_filter_opt
-         [ Util.option_map v.kerberos_attributes (fun f ->
+         [ Some
+             ( "placement_group_configs"
+             , PlacementGroupConfigList.to_json v.placement_group_configs )
+         ; Util.option_map v.managed_scaling_policy (fun f ->
+               "managed_scaling_policy", ManagedScalingPolicy.to_json f)
+         ; Util.option_map v.step_concurrency_level (fun f ->
+               "step_concurrency_level", Integer.to_json f)
+         ; Util.option_map v.kerberos_attributes (fun f ->
                "kerberos_attributes", KerberosAttributes.to_json f)
          ; Util.option_map v.repo_upgrade_on_boot (fun f ->
                "repo_upgrade_on_boot", RepoUpgradeOnBoot.to_json f)
@@ -7446,6 +8664,8 @@ module RunJobFlowInput = struct
          ; Util.option_map v.ami_version (fun f -> "ami_version", String.to_json f)
          ; Util.option_map v.additional_info (fun f ->
                "additional_info", String.to_json f)
+         ; Util.option_map v.log_encryption_kms_key_id (fun f ->
+               "log_encryption_kms_key_id", String.to_json f)
          ; Util.option_map v.log_uri (fun f -> "log_uri", String.to_json f)
          ; Some ("name", String.to_json v.name)
          ])
@@ -7453,6 +8673,8 @@ module RunJobFlowInput = struct
   let of_json j =
     { name = String.of_json (Util.of_option_exn (Json.lookup j "name"))
     ; log_uri = Util.option_map (Json.lookup j "log_uri") String.of_json
+    ; log_encryption_kms_key_id =
+        Util.option_map (Json.lookup j "log_encryption_kms_key_id") String.of_json
     ; additional_info = Util.option_map (Json.lookup j "additional_info") String.of_json
     ; ami_version = Util.option_map (Json.lookup j "ami_version") String.of_json
     ; release_label = Util.option_map (Json.lookup j "release_label") String.of_json
@@ -7490,6 +8712,15 @@ module RunJobFlowInput = struct
         Util.option_map (Json.lookup j "repo_upgrade_on_boot") RepoUpgradeOnBoot.of_json
     ; kerberos_attributes =
         Util.option_map (Json.lookup j "kerberos_attributes") KerberosAttributes.of_json
+    ; step_concurrency_level =
+        Util.option_map (Json.lookup j "step_concurrency_level") Integer.of_json
+    ; managed_scaling_policy =
+        Util.option_map
+          (Json.lookup j "managed_scaling_policy")
+          ManagedScalingPolicy.of_json
+    ; placement_group_configs =
+        PlacementGroupConfigList.of_json
+          (Util.of_option_exn (Json.lookup j "placement_group_configs"))
     }
 end
 
@@ -7757,6 +8988,205 @@ module AddJobFlowStepsInput = struct
     }
 end
 
+module PutManagedScalingPolicyInput = struct
+  type t =
+    { cluster_id : String.t
+    ; managed_scaling_policy : ManagedScalingPolicy.t
+    }
+
+  let make ~cluster_id ~managed_scaling_policy () = { cluster_id; managed_scaling_policy }
+
+  let parse xml =
+    Some
+      { cluster_id =
+          Xml.required
+            "ClusterId"
+            (Util.option_bind (Xml.member "ClusterId" xml) String.parse)
+      ; managed_scaling_policy =
+          Xml.required
+            "ManagedScalingPolicy"
+            (Util.option_bind
+               (Xml.member "ManagedScalingPolicy" xml)
+               ManagedScalingPolicy.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some
+             (Query.Pair
+                ( "ManagedScalingPolicy"
+                , ManagedScalingPolicy.to_query v.managed_scaling_policy ))
+         ; Some (Query.Pair ("ClusterId", String.to_query v.cluster_id))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some
+             ( "managed_scaling_policy"
+             , ManagedScalingPolicy.to_json v.managed_scaling_policy )
+         ; Some ("cluster_id", String.to_json v.cluster_id)
+         ])
+
+  let of_json j =
+    { cluster_id = String.of_json (Util.of_option_exn (Json.lookup j "cluster_id"))
+    ; managed_scaling_policy =
+        ManagedScalingPolicy.of_json
+          (Util.of_option_exn (Json.lookup j "managed_scaling_policy"))
+    }
+end
+
+module PutBlockPublicAccessConfigurationInput = struct
+  type t = { block_public_access_configuration : BlockPublicAccessConfiguration.t }
+
+  let make ~block_public_access_configuration () = { block_public_access_configuration }
+
+  let parse xml =
+    Some
+      { block_public_access_configuration =
+          Xml.required
+            "BlockPublicAccessConfiguration"
+            (Util.option_bind
+               (Xml.member "BlockPublicAccessConfiguration" xml)
+               BlockPublicAccessConfiguration.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some
+             (Query.Pair
+                ( "BlockPublicAccessConfiguration"
+                , BlockPublicAccessConfiguration.to_query
+                    v.block_public_access_configuration ))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some
+             ( "block_public_access_configuration"
+             , BlockPublicAccessConfiguration.to_json v.block_public_access_configuration
+             )
+         ])
+
+  let of_json j =
+    { block_public_access_configuration =
+        BlockPublicAccessConfiguration.of_json
+          (Util.of_option_exn (Json.lookup j "block_public_access_configuration"))
+    }
+end
+
+module ModifyClusterInput = struct
+  type t =
+    { cluster_id : String.t
+    ; step_concurrency_level : Integer.t option
+    }
+
+  let make ~cluster_id ?step_concurrency_level () = { cluster_id; step_concurrency_level }
+
+  let parse xml =
+    Some
+      { cluster_id =
+          Xml.required
+            "ClusterId"
+            (Util.option_bind (Xml.member "ClusterId" xml) String.parse)
+      ; step_concurrency_level =
+          Util.option_bind (Xml.member "StepConcurrencyLevel" xml) Integer.parse
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.step_concurrency_level (fun f ->
+               Query.Pair ("StepConcurrencyLevel", Integer.to_query f))
+         ; Some (Query.Pair ("ClusterId", String.to_query v.cluster_id))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.step_concurrency_level (fun f ->
+               "step_concurrency_level", Integer.to_json f)
+         ; Some ("cluster_id", String.to_json v.cluster_id)
+         ])
+
+  let of_json j =
+    { cluster_id = String.of_json (Util.of_option_exn (Json.lookup j "cluster_id"))
+    ; step_concurrency_level =
+        Util.option_map (Json.lookup j "step_concurrency_level") Integer.of_json
+    }
+end
+
+module GetBlockPublicAccessConfigurationOutput = struct
+  type t =
+    { block_public_access_configuration : BlockPublicAccessConfiguration.t
+    ; block_public_access_configuration_metadata :
+        BlockPublicAccessConfigurationMetadata.t
+    }
+
+  let make
+      ~block_public_access_configuration
+      ~block_public_access_configuration_metadata
+      () =
+    { block_public_access_configuration; block_public_access_configuration_metadata }
+
+  let parse xml =
+    Some
+      { block_public_access_configuration =
+          Xml.required
+            "BlockPublicAccessConfiguration"
+            (Util.option_bind
+               (Xml.member "BlockPublicAccessConfiguration" xml)
+               BlockPublicAccessConfiguration.parse)
+      ; block_public_access_configuration_metadata =
+          Xml.required
+            "BlockPublicAccessConfigurationMetadata"
+            (Util.option_bind
+               (Xml.member "BlockPublicAccessConfigurationMetadata" xml)
+               BlockPublicAccessConfigurationMetadata.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some
+             (Query.Pair
+                ( "BlockPublicAccessConfigurationMetadata"
+                , BlockPublicAccessConfigurationMetadata.to_query
+                    v.block_public_access_configuration_metadata ))
+         ; Some
+             (Query.Pair
+                ( "BlockPublicAccessConfiguration"
+                , BlockPublicAccessConfiguration.to_query
+                    v.block_public_access_configuration ))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some
+             ( "block_public_access_configuration_metadata"
+             , BlockPublicAccessConfigurationMetadata.to_json
+                 v.block_public_access_configuration_metadata )
+         ; Some
+             ( "block_public_access_configuration"
+             , BlockPublicAccessConfiguration.to_json v.block_public_access_configuration
+             )
+         ])
+
+  let of_json j =
+    { block_public_access_configuration =
+        BlockPublicAccessConfiguration.of_json
+          (Util.of_option_exn (Json.lookup j "block_public_access_configuration"))
+    ; block_public_access_configuration_metadata =
+        BlockPublicAccessConfigurationMetadata.of_json
+          (Util.of_option_exn
+             (Json.lookup j "block_public_access_configuration_metadata"))
+    }
+end
+
 module ListInstanceGroupsOutput = struct
   type t =
     { instance_groups : InstanceGroupList.t
@@ -7899,6 +9329,52 @@ module ListInstancesOutput = struct
 
   let of_json j =
     { instances = InstanceList.of_json (Util.of_option_exn (Json.lookup j "instances"))
+    ; marker = Util.option_map (Json.lookup j "marker") String.of_json
+    }
+end
+
+module ListNotebookExecutionsOutput = struct
+  type t =
+    { notebook_executions : NotebookExecutionSummaryList.t
+    ; marker : String.t option
+    }
+
+  let make ?(notebook_executions = []) ?marker () = { notebook_executions; marker }
+
+  let parse xml =
+    Some
+      { notebook_executions =
+          Util.of_option
+            []
+            (Util.option_bind
+               (Xml.member "NotebookExecutions" xml)
+               NotebookExecutionSummaryList.parse)
+      ; marker = Util.option_bind (Xml.member "Marker" xml) String.parse
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.marker (fun f -> Query.Pair ("Marker", String.to_query f))
+         ; Some
+             (Query.Pair
+                ( "NotebookExecutions.member"
+                , NotebookExecutionSummaryList.to_query v.notebook_executions ))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.marker (fun f -> "marker", String.to_json f)
+         ; Some
+             ( "notebook_executions"
+             , NotebookExecutionSummaryList.to_json v.notebook_executions )
+         ])
+
+  let of_json j =
+    { notebook_executions =
+        NotebookExecutionSummaryList.of_json
+          (Util.of_option_exn (Json.lookup j "notebook_executions"))
     ; marker = Util.option_map (Json.lookup j "marker") String.of_json
     }
 end
@@ -8071,21 +9547,26 @@ module AddInstanceFleetOutput = struct
   type t =
     { cluster_id : String.t option
     ; instance_fleet_id : String.t option
+    ; cluster_arn : String.t option
     }
 
-  let make ?cluster_id ?instance_fleet_id () = { cluster_id; instance_fleet_id }
+  let make ?cluster_id ?instance_fleet_id ?cluster_arn () =
+    { cluster_id; instance_fleet_id; cluster_arn }
 
   let parse xml =
     Some
       { cluster_id = Util.option_bind (Xml.member "ClusterId" xml) String.parse
       ; instance_fleet_id =
           Util.option_bind (Xml.member "InstanceFleetId" xml) String.parse
+      ; cluster_arn = Util.option_bind (Xml.member "ClusterArn" xml) String.parse
       }
 
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.instance_fleet_id (fun f ->
+         [ Util.option_map v.cluster_arn (fun f ->
+               Query.Pair ("ClusterArn", String.to_query f))
+         ; Util.option_map v.instance_fleet_id (fun f ->
                Query.Pair ("InstanceFleetId", String.to_query f))
          ; Util.option_map v.cluster_id (fun f ->
                Query.Pair ("ClusterId", String.to_query f))
@@ -8094,7 +9575,8 @@ module AddInstanceFleetOutput = struct
   let to_json v =
     `Assoc
       (Util.list_filter_opt
-         [ Util.option_map v.instance_fleet_id (fun f ->
+         [ Util.option_map v.cluster_arn (fun f -> "cluster_arn", String.to_json f)
+         ; Util.option_map v.instance_fleet_id (fun f ->
                "instance_fleet_id", String.to_json f)
          ; Util.option_map v.cluster_id (fun f -> "cluster_id", String.to_json f)
          ])
@@ -8103,6 +9585,42 @@ module AddInstanceFleetOutput = struct
     { cluster_id = Util.option_map (Json.lookup j "cluster_id") String.of_json
     ; instance_fleet_id =
         Util.option_map (Json.lookup j "instance_fleet_id") String.of_json
+    ; cluster_arn = Util.option_map (Json.lookup j "cluster_arn") String.of_json
+    }
+end
+
+module GetManagedScalingPolicyOutput = struct
+  type t = { managed_scaling_policy : ManagedScalingPolicy.t option }
+
+  let make ?managed_scaling_policy () = { managed_scaling_policy }
+
+  let parse xml =
+    Some
+      { managed_scaling_policy =
+          Util.option_bind
+            (Xml.member "ManagedScalingPolicy" xml)
+            ManagedScalingPolicy.parse
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.managed_scaling_policy (fun f ->
+               Query.Pair ("ManagedScalingPolicy", ManagedScalingPolicy.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.managed_scaling_policy (fun f ->
+               "managed_scaling_policy", ManagedScalingPolicy.to_json f)
+         ])
+
+  let of_json j =
+    { managed_scaling_policy =
+        Util.option_map
+          (Json.lookup j "managed_scaling_policy")
+          ManagedScalingPolicy.of_json
     }
 end
 
@@ -8120,15 +9638,47 @@ module InternalServerError = struct
   let of_json j = ()
 end
 
+module DescribeNotebookExecutionOutput = struct
+  type t = { notebook_execution : NotebookExecution.t option }
+
+  let make ?notebook_execution () = { notebook_execution }
+
+  let parse xml =
+    Some
+      { notebook_execution =
+          Util.option_bind (Xml.member "NotebookExecution" xml) NotebookExecution.parse
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.notebook_execution (fun f ->
+               Query.Pair ("NotebookExecution", NotebookExecution.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.notebook_execution (fun f ->
+               "notebook_execution", NotebookExecution.to_json f)
+         ])
+
+  let of_json j =
+    { notebook_execution =
+        Util.option_map (Json.lookup j "notebook_execution") NotebookExecution.of_json
+    }
+end
+
 module PutAutoScalingPolicyOutput = struct
   type t =
     { cluster_id : String.t option
     ; instance_group_id : String.t option
     ; auto_scaling_policy : AutoScalingPolicyDescription.t option
+    ; cluster_arn : String.t option
     }
 
-  let make ?cluster_id ?instance_group_id ?auto_scaling_policy () =
-    { cluster_id; instance_group_id; auto_scaling_policy }
+  let make ?cluster_id ?instance_group_id ?auto_scaling_policy ?cluster_arn () =
+    { cluster_id; instance_group_id; auto_scaling_policy; cluster_arn }
 
   let parse xml =
     Some
@@ -8139,12 +9689,15 @@ module PutAutoScalingPolicyOutput = struct
           Util.option_bind
             (Xml.member "AutoScalingPolicy" xml)
             AutoScalingPolicyDescription.parse
+      ; cluster_arn = Util.option_bind (Xml.member "ClusterArn" xml) String.parse
       }
 
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.auto_scaling_policy (fun f ->
+         [ Util.option_map v.cluster_arn (fun f ->
+               Query.Pair ("ClusterArn", String.to_query f))
+         ; Util.option_map v.auto_scaling_policy (fun f ->
                Query.Pair ("AutoScalingPolicy", AutoScalingPolicyDescription.to_query f))
          ; Util.option_map v.instance_group_id (fun f ->
                Query.Pair ("InstanceGroupId", String.to_query f))
@@ -8155,7 +9708,8 @@ module PutAutoScalingPolicyOutput = struct
   let to_json v =
     `Assoc
       (Util.list_filter_opt
-         [ Util.option_map v.auto_scaling_policy (fun f ->
+         [ Util.option_map v.cluster_arn (fun f -> "cluster_arn", String.to_json f)
+         ; Util.option_map v.auto_scaling_policy (fun f ->
                "auto_scaling_policy", AutoScalingPolicyDescription.to_json f)
          ; Util.option_map v.instance_group_id (fun f ->
                "instance_group_id", String.to_json f)
@@ -8170,6 +9724,38 @@ module PutAutoScalingPolicyOutput = struct
         Util.option_map
           (Json.lookup j "auto_scaling_policy")
           AutoScalingPolicyDescription.of_json
+    ; cluster_arn = Util.option_map (Json.lookup j "cluster_arn") String.of_json
+    }
+end
+
+module StartNotebookExecutionOutput = struct
+  type t = { notebook_execution_id : String.t option }
+
+  let make ?notebook_execution_id () = { notebook_execution_id }
+
+  let parse xml =
+    Some
+      { notebook_execution_id =
+          Util.option_bind (Xml.member "NotebookExecutionId" xml) String.parse
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.notebook_execution_id (fun f ->
+               Query.Pair ("NotebookExecutionId", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.notebook_execution_id (fun f ->
+               "notebook_execution_id", String.to_json f)
+         ])
+
+  let of_json j =
+    { notebook_execution_id =
+        Util.option_map (Json.lookup j "notebook_execution_id") String.of_json
     }
 end
 
@@ -8392,37 +9978,50 @@ module ListBootstrapActionsOutput = struct
 end
 
 module RunJobFlowOutput = struct
-  type t = { job_flow_id : String.t option }
+  type t =
+    { job_flow_id : String.t option
+    ; cluster_arn : String.t option
+    }
 
-  let make ?job_flow_id () = { job_flow_id }
+  let make ?job_flow_id ?cluster_arn () = { job_flow_id; cluster_arn }
 
   let parse xml =
-    Some { job_flow_id = Util.option_bind (Xml.member "JobFlowId" xml) String.parse }
+    Some
+      { job_flow_id = Util.option_bind (Xml.member "JobFlowId" xml) String.parse
+      ; cluster_arn = Util.option_bind (Xml.member "ClusterArn" xml) String.parse
+      }
 
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.job_flow_id (fun f ->
+         [ Util.option_map v.cluster_arn (fun f ->
+               Query.Pair ("ClusterArn", String.to_query f))
+         ; Util.option_map v.job_flow_id (fun f ->
                Query.Pair ("JobFlowId", String.to_query f))
          ])
 
   let to_json v =
     `Assoc
       (Util.list_filter_opt
-         [ Util.option_map v.job_flow_id (fun f -> "job_flow_id", String.to_json f) ])
+         [ Util.option_map v.cluster_arn (fun f -> "cluster_arn", String.to_json f)
+         ; Util.option_map v.job_flow_id (fun f -> "job_flow_id", String.to_json f)
+         ])
 
   let of_json j =
-    { job_flow_id = Util.option_map (Json.lookup j "job_flow_id") String.of_json }
+    { job_flow_id = Util.option_map (Json.lookup j "job_flow_id") String.of_json
+    ; cluster_arn = Util.option_map (Json.lookup j "cluster_arn") String.of_json
+    }
 end
 
 module AddInstanceGroupsOutput = struct
   type t =
     { job_flow_id : String.t option
     ; instance_group_ids : InstanceGroupIdsList.t
+    ; cluster_arn : String.t option
     }
 
-  let make ?job_flow_id ?(instance_group_ids = []) () =
-    { job_flow_id; instance_group_ids }
+  let make ?job_flow_id ?(instance_group_ids = []) ?cluster_arn () =
+    { job_flow_id; instance_group_ids; cluster_arn }
 
   let parse xml =
     Some
@@ -8433,12 +10032,15 @@ module AddInstanceGroupsOutput = struct
             (Util.option_bind
                (Xml.member "InstanceGroupIds" xml)
                InstanceGroupIdsList.parse)
+      ; cluster_arn = Util.option_bind (Xml.member "ClusterArn" xml) String.parse
       }
 
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some
+         [ Util.option_map v.cluster_arn (fun f ->
+               Query.Pair ("ClusterArn", String.to_query f))
+         ; Some
              (Query.Pair
                 ( "InstanceGroupIds.member"
                 , InstanceGroupIdsList.to_query v.instance_group_ids ))
@@ -8449,7 +10051,8 @@ module AddInstanceGroupsOutput = struct
   let to_json v =
     `Assoc
       (Util.list_filter_opt
-         [ Some ("instance_group_ids", InstanceGroupIdsList.to_json v.instance_group_ids)
+         [ Util.option_map v.cluster_arn (fun f -> "cluster_arn", String.to_json f)
+         ; Some ("instance_group_ids", InstanceGroupIdsList.to_json v.instance_group_ids)
          ; Util.option_map v.job_flow_id (fun f -> "job_flow_id", String.to_json f)
          ])
 
@@ -8458,6 +10061,164 @@ module AddInstanceGroupsOutput = struct
     ; instance_group_ids =
         InstanceGroupIdsList.of_json
           (Util.of_option_exn (Json.lookup j "instance_group_ids"))
+    ; cluster_arn = Util.option_map (Json.lookup j "cluster_arn") String.of_json
+    }
+end
+
+module PutBlockPublicAccessConfigurationOutput = struct
+  type t = unit
+
+  let make () = ()
+
+  let parse xml = Some ()
+
+  let to_query v = Query.List (Util.list_filter_opt [])
+
+  let to_json v = `Assoc (Util.list_filter_opt [])
+
+  let of_json j = ()
+end
+
+module StartNotebookExecutionInput = struct
+  type t =
+    { editor_id : String.t
+    ; relative_path : String.t
+    ; notebook_execution_name : String.t option
+    ; notebook_params : String.t option
+    ; execution_engine : ExecutionEngineConfig.t
+    ; service_role : String.t
+    ; notebook_instance_security_group_id : String.t option
+    ; tags : TagList.t
+    }
+
+  let make
+      ~editor_id
+      ~relative_path
+      ?notebook_execution_name
+      ?notebook_params
+      ~execution_engine
+      ~service_role
+      ?notebook_instance_security_group_id
+      ?(tags = [])
+      () =
+    { editor_id
+    ; relative_path
+    ; notebook_execution_name
+    ; notebook_params
+    ; execution_engine
+    ; service_role
+    ; notebook_instance_security_group_id
+    ; tags
+    }
+
+  let parse xml =
+    Some
+      { editor_id =
+          Xml.required
+            "EditorId"
+            (Util.option_bind (Xml.member "EditorId" xml) String.parse)
+      ; relative_path =
+          Xml.required
+            "RelativePath"
+            (Util.option_bind (Xml.member "RelativePath" xml) String.parse)
+      ; notebook_execution_name =
+          Util.option_bind (Xml.member "NotebookExecutionName" xml) String.parse
+      ; notebook_params = Util.option_bind (Xml.member "NotebookParams" xml) String.parse
+      ; execution_engine =
+          Xml.required
+            "ExecutionEngine"
+            (Util.option_bind
+               (Xml.member "ExecutionEngine" xml)
+               ExecutionEngineConfig.parse)
+      ; service_role =
+          Xml.required
+            "ServiceRole"
+            (Util.option_bind (Xml.member "ServiceRole" xml) String.parse)
+      ; notebook_instance_security_group_id =
+          Util.option_bind (Xml.member "NotebookInstanceSecurityGroupId" xml) String.parse
+      ; tags = Util.of_option [] (Util.option_bind (Xml.member "Tags" xml) TagList.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("Tags.member", TagList.to_query v.tags))
+         ; Util.option_map v.notebook_instance_security_group_id (fun f ->
+               Query.Pair ("NotebookInstanceSecurityGroupId", String.to_query f))
+         ; Some (Query.Pair ("ServiceRole", String.to_query v.service_role))
+         ; Some
+             (Query.Pair
+                ("ExecutionEngine", ExecutionEngineConfig.to_query v.execution_engine))
+         ; Util.option_map v.notebook_params (fun f ->
+               Query.Pair ("NotebookParams", String.to_query f))
+         ; Util.option_map v.notebook_execution_name (fun f ->
+               Query.Pair ("NotebookExecutionName", String.to_query f))
+         ; Some (Query.Pair ("RelativePath", String.to_query v.relative_path))
+         ; Some (Query.Pair ("EditorId", String.to_query v.editor_id))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("tags", TagList.to_json v.tags)
+         ; Util.option_map v.notebook_instance_security_group_id (fun f ->
+               "notebook_instance_security_group_id", String.to_json f)
+         ; Some ("service_role", String.to_json v.service_role)
+         ; Some ("execution_engine", ExecutionEngineConfig.to_json v.execution_engine)
+         ; Util.option_map v.notebook_params (fun f ->
+               "notebook_params", String.to_json f)
+         ; Util.option_map v.notebook_execution_name (fun f ->
+               "notebook_execution_name", String.to_json f)
+         ; Some ("relative_path", String.to_json v.relative_path)
+         ; Some ("editor_id", String.to_json v.editor_id)
+         ])
+
+  let of_json j =
+    { editor_id = String.of_json (Util.of_option_exn (Json.lookup j "editor_id"))
+    ; relative_path = String.of_json (Util.of_option_exn (Json.lookup j "relative_path"))
+    ; notebook_execution_name =
+        Util.option_map (Json.lookup j "notebook_execution_name") String.of_json
+    ; notebook_params = Util.option_map (Json.lookup j "notebook_params") String.of_json
+    ; execution_engine =
+        ExecutionEngineConfig.of_json
+          (Util.of_option_exn (Json.lookup j "execution_engine"))
+    ; service_role = String.of_json (Util.of_option_exn (Json.lookup j "service_role"))
+    ; notebook_instance_security_group_id =
+        Util.option_map
+          (Json.lookup j "notebook_instance_security_group_id")
+          String.of_json
+    ; tags = TagList.of_json (Util.of_option_exn (Json.lookup j "tags"))
+    }
+end
+
+module DescribeNotebookExecutionInput = struct
+  type t = { notebook_execution_id : String.t }
+
+  let make ~notebook_execution_id () = { notebook_execution_id }
+
+  let parse xml =
+    Some
+      { notebook_execution_id =
+          Xml.required
+            "NotebookExecutionId"
+            (Util.option_bind (Xml.member "NotebookExecutionId" xml) String.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some
+             (Query.Pair ("NotebookExecutionId", String.to_query v.notebook_execution_id))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("notebook_execution_id", String.to_json v.notebook_execution_id) ])
+
+  let of_json j =
+    { notebook_execution_id =
+        String.of_json (Util.of_option_exn (Json.lookup j "notebook_execution_id"))
     }
 end
 
@@ -8500,6 +10261,84 @@ module RemoveAutoScalingPolicyInput = struct
     ; instance_group_id =
         String.of_json (Util.of_option_exn (Json.lookup j "instance_group_id"))
     }
+end
+
+module RemoveManagedScalingPolicyInput = struct
+  type t = { cluster_id : String.t }
+
+  let make ~cluster_id () = { cluster_id }
+
+  let parse xml =
+    Some
+      { cluster_id =
+          Xml.required
+            "ClusterId"
+            (Util.option_bind (Xml.member "ClusterId" xml) String.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("ClusterId", String.to_query v.cluster_id)) ])
+
+  let to_json v =
+    `Assoc (Util.list_filter_opt [ Some ("cluster_id", String.to_json v.cluster_id) ])
+
+  let of_json j =
+    { cluster_id = String.of_json (Util.of_option_exn (Json.lookup j "cluster_id")) }
+end
+
+module GetBlockPublicAccessConfigurationInput = struct
+  type t = unit
+
+  let make () = ()
+
+  let parse xml = Some ()
+
+  let to_query v = Query.List (Util.list_filter_opt [])
+
+  let to_json v = `Assoc (Util.list_filter_opt [])
+
+  let of_json j = ()
+end
+
+module GetManagedScalingPolicyInput = struct
+  type t = { cluster_id : String.t }
+
+  let make ~cluster_id () = { cluster_id }
+
+  let parse xml =
+    Some
+      { cluster_id =
+          Xml.required
+            "ClusterId"
+            (Util.option_bind (Xml.member "ClusterId" xml) String.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("ClusterId", String.to_query v.cluster_id)) ])
+
+  let to_json v =
+    `Assoc (Util.list_filter_opt [ Some ("cluster_id", String.to_json v.cluster_id) ])
+
+  let of_json j =
+    { cluster_id = String.of_json (Util.of_option_exn (Json.lookup j "cluster_id")) }
+end
+
+module RemoveManagedScalingPolicyOutput = struct
+  type t = unit
+
+  let make () = ()
+
+  let parse xml = Some ()
+
+  let to_query v = Query.List (Util.list_filter_opt [])
+
+  let to_json v = `Assoc (Util.list_filter_opt [])
+
+  let of_json j = ()
 end
 
 module DescribeSecurityConfigurationOutput = struct
@@ -8577,6 +10416,37 @@ module TerminateJobFlowsInput = struct
   let of_json j =
     { job_flow_ids =
         XmlStringList.of_json (Util.of_option_exn (Json.lookup j "job_flow_ids"))
+    }
+end
+
+module StopNotebookExecutionInput = struct
+  type t = { notebook_execution_id : String.t }
+
+  let make ~notebook_execution_id () = { notebook_execution_id }
+
+  let parse xml =
+    Some
+      { notebook_execution_id =
+          Xml.required
+            "NotebookExecutionId"
+            (Util.option_bind (Xml.member "NotebookExecutionId" xml) String.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some
+             (Query.Pair ("NotebookExecutionId", String.to_query v.notebook_execution_id))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("notebook_execution_id", String.to_json v.notebook_execution_id) ])
+
+  let of_json j =
+    { notebook_execution_id =
+        String.of_json (Util.of_option_exn (Json.lookup j "notebook_execution_id"))
     }
 end
 
@@ -8847,4 +10717,18 @@ module AddInstanceFleetInput = struct
     ; instance_fleet =
         InstanceFleetConfig.of_json (Util.of_option_exn (Json.lookup j "instance_fleet"))
     }
+end
+
+module PutManagedScalingPolicyOutput = struct
+  type t = unit
+
+  let make () = ()
+
+  let parse xml = Some ()
+
+  let to_query v = Query.List (Util.list_filter_opt [])
+
+  let to_json v = `Assoc (Util.list_filter_opt [])
+
+  let of_json j = ()
 end

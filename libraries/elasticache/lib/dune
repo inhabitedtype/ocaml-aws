@@ -1,7 +1,6 @@
 (library
- (name aws_elasticache)
+ (name        aws_elasticache)
  (public_name aws-elasticache)
  (synopsis "aws-Amazon ElastiCache")
- (flags
-  (:standard -w -27))
+ (flags (:standard -w -27))
  (libraries aws))

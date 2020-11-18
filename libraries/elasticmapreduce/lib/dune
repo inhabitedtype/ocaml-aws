@@ -1,7 +1,6 @@
 (library
- (name aws_elasticmapreduce)
+ (name        aws_elasticmapreduce)
  (public_name aws-elasticmapreduce)
  (synopsis "aws-Amazon Elastic MapReduce")
- (flags
-  (:standard -w -27))
+ (flags (:standard -w -27))
  (libraries aws))

@@ -1,76 +1,73 @@
 type t =
-  | AttributeDoesNotExist
-  | AuthFailure
-  | Blocked
-  | DryRunOperation
-  | DuplicateItemName
-  | IdempotentParameterMismatch
-  | IncompleteSignature
-  | InternalFailure
-  | InvalidAction
-  | InvalidClientTokenId
-  | InvalidNextToken
-  | InvalidNumberPredicates
-  | InvalidNumberValueTests
-  | InvalidParameter
-  | InvalidParameterCombination
-  | InvalidParameterValue
-  | InvalidQueryExpression
-  | InvalidQueryParameter
-  | MalformedQueryString
-  | MissingAction
-  | MissingAuthenticationToken
-  | MissingParameter
-  | NoSuchDomain
-  | NumberDomainAttributesExceeded
-  | NumberDomainBytesExceeded
-  | NumberDomainsExceeded
-  | NumberItemAttributesExceeded
-  | NumberSubmittedAttributesExceeded
-  | NumberSubmittedItemsExceeded
-  | OptInRequired
-  | PendingVerification
-  | RequestExpired
-  | RequestLimitExceeded
-  | RequestTimeout
-  | ServiceUnavailable
-  | Throttling
-  | TooManyRequestedAttributes
-  | UnauthorizedOperation
-  | UnknownParameter
-  | UnsupportedProtocol
-  | ValidationError
-  | Uninhabited
-
+  | AttributeDoesNotExist 
+  | AuthFailure 
+  | Blocked 
+  | DryRunOperation 
+  | DuplicateItemName 
+  | IdempotentParameterMismatch 
+  | IncompleteSignature 
+  | InternalFailure 
+  | InvalidAction 
+  | InvalidClientTokenId 
+  | InvalidNextToken 
+  | InvalidNumberPredicates 
+  | InvalidNumberValueTests 
+  | InvalidParameter 
+  | InvalidParameterCombination 
+  | InvalidParameterValue 
+  | InvalidQueryExpression 
+  | InvalidQueryParameter 
+  | MalformedQueryString 
+  | MissingAction 
+  | MissingAuthenticationToken 
+  | MissingParameter 
+  | NoSuchDomain 
+  | NumberDomainAttributesExceeded 
+  | NumberDomainBytesExceeded 
+  | NumberDomainsExceeded 
+  | NumberItemAttributesExceeded 
+  | NumberSubmittedAttributesExceeded 
+  | NumberSubmittedItemsExceeded 
+  | OptInRequired 
+  | PendingVerification 
+  | RequestExpired 
+  | RequestLimitExceeded 
+  | RequestTimeout 
+  | ServiceUnavailable 
+  | Throttling 
+  | TooManyRequestedAttributes 
+  | UnauthorizedOperation 
+  | UnknownParameter 
+  | UnsupportedProtocol 
+  | ValidationError 
+  | Uninhabited 
 let common =
-  [ UnsupportedProtocol
-  ; UnknownParameter
-  ; UnauthorizedOperation
-  ; RequestLimitExceeded
-  ; PendingVerification
-  ; InvalidParameter
-  ; IdempotentParameterMismatch
-  ; DryRunOperation
-  ; Blocked
-  ; AuthFailure
-  ; ValidationError
-  ; Throttling
-  ; ServiceUnavailable
-  ; RequestExpired
-  ; OptInRequired
-  ; MissingParameter
-  ; MissingAuthenticationToken
-  ; MissingAction
-  ; MalformedQueryString
-  ; InvalidQueryParameter
-  ; InvalidParameterValue
-  ; InvalidParameterCombination
-  ; InvalidClientTokenId
-  ; InvalidAction
-  ; InternalFailure
-  ; IncompleteSignature
-  ]
-
+  [UnsupportedProtocol;
+  UnknownParameter;
+  UnauthorizedOperation;
+  RequestLimitExceeded;
+  PendingVerification;
+  InvalidParameter;
+  IdempotentParameterMismatch;
+  DryRunOperation;
+  Blocked;
+  AuthFailure;
+  ValidationError;
+  Throttling;
+  ServiceUnavailable;
+  RequestExpired;
+  OptInRequired;
+  MissingParameter;
+  MissingAuthenticationToken;
+  MissingAction;
+  MalformedQueryString;
+  InvalidQueryParameter;
+  InvalidParameterValue;
+  InvalidParameterCombination;
+  InvalidClientTokenId;
+  InvalidAction;
+  InternalFailure;
+  IncompleteSignature]
 let to_http_code e =
   match e with
   | AttributeDoesNotExist -> Some 404
@@ -115,7 +112,6 @@ let to_http_code e =
   | UnsupportedProtocol -> None
   | ValidationError -> Some 400
   | Uninhabited -> None
-
 let to_string e =
   match e with
   | AttributeDoesNotExist -> "AttributeDoesNotExist"
@@ -160,7 +156,6 @@ let to_string e =
   | UnsupportedProtocol -> "UnsupportedProtocol"
   | ValidationError -> "ValidationError"
   | Uninhabited -> "Uninhabited"
-
 let of_string e =
   match e with
   | "AttributeDoesNotExist" -> Some AttributeDoesNotExist
@@ -190,7 +185,8 @@ let of_string e =
   | "NumberDomainBytesExceeded" -> Some NumberDomainBytesExceeded
   | "NumberDomainsExceeded" -> Some NumberDomainsExceeded
   | "NumberItemAttributesExceeded" -> Some NumberItemAttributesExceeded
-  | "NumberSubmittedAttributesExceeded" -> Some NumberSubmittedAttributesExceeded
+  | "NumberSubmittedAttributesExceeded" ->
+      Some NumberSubmittedAttributesExceeded
   | "NumberSubmittedItemsExceeded" -> Some NumberSubmittedItemsExceeded
   | "OptInRequired" -> Some OptInRequired
   | "PendingVerification" -> Some PendingVerification

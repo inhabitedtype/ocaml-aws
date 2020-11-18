@@ -1,76 +1,73 @@
 type t =
-  | AssociatedInstances
-  | AssociationAlreadyExists
-  | AssociationDoesNotExist
-  | AssociationLimitExceeded
-  | AuthFailure
-  | Blocked
-  | DocumentAlreadyExists
-  | DocumentLimitExceeded
-  | DryRunOperation
-  | DuplicateInstanceId
-  | IdempotentParameterMismatch
-  | IncompleteSignature
-  | InternalFailure
-  | InternalServerError
-  | InvalidAction
-  | InvalidClientTokenId
-  | InvalidDocument
-  | InvalidDocumentContent
-  | InvalidInstanceId
-  | InvalidNextToken
-  | InvalidParameter
-  | InvalidParameterCombination
-  | InvalidParameterValue
-  | InvalidQueryParameter
-  | MalformedQueryString
-  | MaxDocumentSizeExceeded
-  | MissingAction
-  | MissingAuthenticationToken
-  | MissingParameter
-  | OptInRequired
-  | PendingVerification
-  | RequestExpired
-  | RequestLimitExceeded
-  | ServiceUnavailable
-  | StatusUnchanged
-  | Throttling
-  | TooManyUpdates
-  | UnauthorizedOperation
-  | UnknownParameter
-  | UnsupportedProtocol
-  | ValidationError
-  | Uninhabited
-
+  | AssociatedInstances 
+  | AssociationAlreadyExists 
+  | AssociationDoesNotExist 
+  | AssociationLimitExceeded 
+  | AuthFailure 
+  | Blocked 
+  | DocumentAlreadyExists 
+  | DocumentLimitExceeded 
+  | DryRunOperation 
+  | DuplicateInstanceId 
+  | IdempotentParameterMismatch 
+  | IncompleteSignature 
+  | InternalFailure 
+  | InternalServerError 
+  | InvalidAction 
+  | InvalidClientTokenId 
+  | InvalidDocument 
+  | InvalidDocumentContent 
+  | InvalidInstanceId 
+  | InvalidNextToken 
+  | InvalidParameter 
+  | InvalidParameterCombination 
+  | InvalidParameterValue 
+  | InvalidQueryParameter 
+  | MalformedQueryString 
+  | MaxDocumentSizeExceeded 
+  | MissingAction 
+  | MissingAuthenticationToken 
+  | MissingParameter 
+  | OptInRequired 
+  | PendingVerification 
+  | RequestExpired 
+  | RequestLimitExceeded 
+  | ServiceUnavailable 
+  | StatusUnchanged 
+  | Throttling 
+  | TooManyUpdates 
+  | UnauthorizedOperation 
+  | UnknownParameter 
+  | UnsupportedProtocol 
+  | ValidationError 
+  | Uninhabited 
 let common =
-  [ UnsupportedProtocol
-  ; UnknownParameter
-  ; UnauthorizedOperation
-  ; RequestLimitExceeded
-  ; PendingVerification
-  ; InvalidParameter
-  ; IdempotentParameterMismatch
-  ; DryRunOperation
-  ; Blocked
-  ; AuthFailure
-  ; ValidationError
-  ; Throttling
-  ; ServiceUnavailable
-  ; RequestExpired
-  ; OptInRequired
-  ; MissingParameter
-  ; MissingAuthenticationToken
-  ; MissingAction
-  ; MalformedQueryString
-  ; InvalidQueryParameter
-  ; InvalidParameterValue
-  ; InvalidParameterCombination
-  ; InvalidClientTokenId
-  ; InvalidAction
-  ; InternalFailure
-  ; IncompleteSignature
-  ]
-
+  [UnsupportedProtocol;
+  UnknownParameter;
+  UnauthorizedOperation;
+  RequestLimitExceeded;
+  PendingVerification;
+  InvalidParameter;
+  IdempotentParameterMismatch;
+  DryRunOperation;
+  Blocked;
+  AuthFailure;
+  ValidationError;
+  Throttling;
+  ServiceUnavailable;
+  RequestExpired;
+  OptInRequired;
+  MissingParameter;
+  MissingAuthenticationToken;
+  MissingAction;
+  MalformedQueryString;
+  InvalidQueryParameter;
+  InvalidParameterValue;
+  InvalidParameterCombination;
+  InvalidClientTokenId;
+  InvalidAction;
+  InternalFailure;
+  IncompleteSignature]
 let to_http_code e =
   match e with
   | AssociatedInstances -> Some 400
@@ -115,7 +112,6 @@ let to_http_code e =
   | UnsupportedProtocol -> None
   | ValidationError -> Some 400
   | Uninhabited -> None
-
 let to_string e =
   match e with
   | AssociatedInstances -> "AssociatedInstances"
@@ -160,7 +156,6 @@ let to_string e =
   | UnsupportedProtocol -> "UnsupportedProtocol"
   | ValidationError -> "ValidationError"
   | Uninhabited -> "Uninhabited"
-
 let of_string e =
   match e with
   | "AssociatedInstances" -> Some AssociatedInstances

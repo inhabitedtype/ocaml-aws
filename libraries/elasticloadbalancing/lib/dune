@@ -1,7 +1,6 @@
 (library
- (name aws_elasticloadbalancing)
+ (name        aws_elasticloadbalancing)
  (public_name aws-elasticloadbalancing)
  (synopsis "aws-Elastic Load Balancing")
- (flags
-  (:standard -w -27))
+ (flags (:standard -w -27))
  (libraries aws))
