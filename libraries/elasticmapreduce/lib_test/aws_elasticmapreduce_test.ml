@@ -19,28 +19,81 @@ struct
   (* Tag for test EMR instances *)
   let test_tag = Types.Tag.make ~key:"client" ~value:"ocaml-aws" ()
 
+  let region = "ap-southeast-2"
+
+  let steps =
+    Types.StepConfig.make
+      ~name:"Example Streaming Step"
+      ~action_on_failure:Types.ActionOnFailure.CANCEL_AND_WAIT
+      ~hadoop_jar_step:
+        (Types.HadoopJarStepConfig.make
+           ~jar:"/home/hadoop/contrib/streaming/hadoop-streaming.jar"
+           ~args:
+             (Types.XmlStringList.make
+                [ "-input"
+                ; "s3://elasticmapreduce/samples/wordcount/input"
+                ; "-output"
+                ; "s3://examples-bucket/example-output"
+                ; "-mapper"
+                ; "s3://elasticmapreduce/samples/wordcount/wordSplitter.py"
+                ; "-reducer"
+                ; "aggregate"
+                ]
+                ())
+           ())
+      ()
+
+  (* TODO The response from Create
+   * {
+   *  "ClusterId": "j-3RQ0GU8ICBSW2",
+   *  "ClusterArn": "arn:aws:elasticmapreduce:ap-southeast-2:779241156015:cluster/j-3RQ0GU8ICBSW2"
+   * } *)
+
+  let list_emr_test () =
+    let res =
+      Runtime.(
+        un_m
+          (run_request
+             ~region
+             (module ListClusters)
+             (Types.(
+                ListClustersInput.make
+                  ~cluster_states:(ClusterStateList.make ClusterState.[ TERMINATED ] ()))
+                ())))
+    in
+    "List terminated EMR Clusters"
+    @?
+    match res with
+    | `Ok resp ->
+        Printf.printf
+          "%s\n"
+          (Yojson.Basic.to_string
+             Types.ListClustersOutput.(to_json (of_json (to_json resp))));
+        true
+    | `Error err ->
+        Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
+        false
+
   let create_describe_shutdown_test () =
     let res =
       Runtime.(
         un_m
           (run_request
-             ~region:"us-east-1"
+             ~region
              (module RunJobFlow)
              (Types.RunJobFlowInput.make
                 ~name:"ocaml-aws test EMR"
-                ~release_label:"emr-5.20.0"
-                ~applications:[ Types.Application.make () ]
-                ~tags:(Types.TagList.make [ test_tag ] ())
-                ~service_role:"EMR_DefaultRole"
-                ~job_flow_role:
-                  "EMR_EC2_DefaultRole"
-                  (* TODO Invalid instance profile? What should this be? *)
                 ~instances:
                   (Types.JobFlowInstancesConfig.make
                      ~instance_count:1
-                     ~master_instance_type:"t1.micro"
-                     ~slave_instance_type:"t1.micro"
+                     ~master_instance_type:"m1.medium"
+                     ~slave_instance_type:"m1.medium"
                      ())
+                ~release_label:"emr-5.31.0"
+                ~service_role:"EMR_DefaultRole"
+                ~steps:(Types.StepConfigList.make [ steps ] ())
+                ~job_flow_role:"EMR_EC2_DefaultRole"
+                ~scale_down_behavior:Types.ScaleDownBehavior.TERMINATE_AT_TASK_COMPLETION
                 ())))
     in
     ("Create EMR"
@@ -69,7 +122,7 @@ struct
       Runtime.(
         un_m
           (run_request
-             ~region:"us-east-1"
+             ~region
              (module TerminateJobFlows)
              (Types.TerminateJobFlowsInput.make ~job_flow_ids:[ instance_id ] ())))
     in
@@ -84,7 +137,11 @@ struct
         Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
         false
 
-  let test_cases = [ "Create EMR" >:: create_describe_shutdown_test ]
+  let test_cases =
+    [ (* "Create EMR" >:: create_describe_shutdown_test *)
+      (* , *)
+      "List EMR" >:: list_emr_test
+    ]
 
   let rec was_successful = function
     | [] -> true
