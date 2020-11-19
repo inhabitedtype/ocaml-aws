@@ -9,8 +9,7 @@ module type Runtime = sig
   type 'a m
 
   val run_request :
-       region:string
-    -> (module Aws.Call
+    (module Aws.Call
           with type input = 'input
            and type output = 'output
            and type error = 'error)
@@ -30,7 +29,6 @@ functor
         Runtime.(
           un_m
             (run_request
-               ~region:"us-east-1"
                (module DescribeRegions)
                (Types.DescribeRegionsRequest.make ())))
       in
@@ -52,7 +50,6 @@ functor
         Runtime.(
           un_m
             (run_request
-               ~region:"us-east-1"
                (module CreateSecurityGroup)
                (Types.CreateSecurityGroupRequest.make
                   ~group_name:"aws-test-security_group"
@@ -83,7 +80,6 @@ functor
         Runtime.(
           un_m
             (run_request
-               ~region:"us-east-1"
                (module DeleteSecurityGroup)
                (Types.DeleteSecurityGroupRequest.make ~group_id ())))
       in
@@ -100,10 +96,9 @@ functor
         Runtime.(
           un_m
             (run_request
-               ~region:"us-east-1"
                (module RunInstances)
                (Types.RunInstancesRequest.make
-                  ~image_id:"ami-b66ed3de"
+                  ~image_id:"ami-07fbdcfe29326c4fb"
                   ~min_count:1
                   ~max_count:1
                   ~instance_type:Types.InstanceType.T2_micro
@@ -142,7 +137,6 @@ functor
         Runtime.(
           un_m
             (run_request
-               ~region:"us-east-1"
                (module TerminateInstances)
                (Types.TerminateInstancesRequest.make ~instance_ids:[ instance_id ] ())))
       in
