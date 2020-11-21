@@ -5,8 +5,7 @@ module type Runtime = sig
   type 'a m
 
   val run_request :
-       region:string
-    -> (module Aws.Call
+       (module Aws.Call
           with type input = 'input
            and type output = 'output
            and type error = 'error)
@@ -21,9 +20,67 @@ functor
   (Runtime : Runtime)
   ->
   struct
-    let noop_test () = "Noop CLOUDFORMATION test succeeds" @? true
+    let parameters =
+      [ Types.Parameter.make ~parameter_key:"KeyName" ~parameter_value:"??" ()
+      ; Types.Parameter.make ~parameter_key:"DBName" ~parameter_value:"railsdb" ()
+      ; Types.Parameter.make ~parameter_key:"DBUser" ~parameter_value:"master" ()
+      ; Types.Parameter.make ~parameter_key:"DBPassword" ~parameter_value:"password" ()
+      ; Types.Parameter.make ~parameter_key:"DBPassword" ~parameter_value:"password" ()
+      ; Types.Parameter.make
+          ~parameter_key:"DBRootPassword"
+          ~parameter_value:"password"
+          ()
+      ; Types.Parameter.make ~parameter_key:"InstanceType" ~parameter_value:"t1.micro" ()
+      ; Types.Parameter.make ~parameter_key:"SSHLocation" ~parameter_value:"0.0.0.0/0" ()
+      ]
 
-    let test_cases = [ "CLOUDFORMATION noop" >:: noop_test ]
+    let from_opt = function
+      | None -> "<no stack id>"
+      | Some x -> x
+
+    let create_stack () =
+      Runtime.(
+        un_m
+          (run_request
+             (module CreateStack)
+             (Types.CreateStackInput.make
+                ~stack_name:"ocaml-aws-test-stack"
+                ~template_u_r_l:
+                  "https://s3.ap-southeast-2.amazonaws.com/cloudformation-templates-ap-southeast-2/Rails_Single_Instance.template"
+                ~parameters:(Types.Parameters.make parameters ())
+                ())))
+
+    let delete_stack () =
+      Runtime.(
+        un_m
+          (run_request
+             (module DeleteStack)
+             (Types.DeleteStackInput.make ~stack_name:"ocaml-aws-test-stack" ())))
+
+    let create_stack_test () =
+      let result = create_stack () in
+      ("Creating Cloudformation stack - ruby on rails flavoured!"
+      @?
+      match result with
+      | `Ok output ->
+          Printf.printf "Success stack %s created.\n" (from_opt output.stack_id);
+          true
+      | `Error err ->
+          Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
+          false);
+      Unix.sleep 30;
+      let delete_result = delete_stack () in
+      "Delete Cloudformation stack"
+      @?
+      match delete_result with
+      | `Ok output ->
+          Printf.printf "Success stack deleted.\n";
+          true
+      | `Error err ->
+          Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
+          false
+
+    let test_cases = [ "Create cloudformation stack" >:: create_stack_test ]
 
     let rec was_successful = function
       | [] -> true
