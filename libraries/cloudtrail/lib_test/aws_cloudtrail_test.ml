@@ -5,8 +5,7 @@ module type Runtime = sig
   type 'a m
 
   val run_request :
-       region:string
-    -> (module Aws.Call
+       (module Aws.Call
           with type input = 'input
            and type output = 'output
            and type error = 'error)
@@ -21,9 +20,53 @@ functor
   (Runtime : Runtime)
   ->
   struct
-    let noop_test () = "Noop CLOUDTRAIL test succeeds" @? true
+    (* Requires s3 bucket to already exist with correct Policy for cloudtrail.*)
+    (* aws cloudtrail create-trail --name Trail1 --s3-bucket-name ocaml-aws-test-trail --is-multi-region-trail *)
+    let create_trail () =
+      Runtime.(
+        un_m
+          (run_request
+             (module CreateTrail)
+             (Types.CreateTrailRequest.make
+                ~name:"ocaml-aws-test-trail"
+                ~s3_bucket_name:"ocaml-aws-test-bucket"
+                ~include_global_service_events:true
+                ())))
 
-    let test_cases = [ "CLOUDTRAIL noop" >:: noop_test ]
+    let delete_trail () =
+      Runtime.(
+        un_m
+          (run_request
+             (module DeleteTrail)
+             (Types.DeleteTrailRequest.make ~name:"ocaml-aws-test-trail" ())))
+
+    let from_opt = function
+      | None -> "<no trail name>"
+      | Some x -> x
+
+    let create_delete_trail_test () =
+      let create_result = create_trail () in
+      ("Creating Cloudtrail"
+      @?
+      match create_result with
+      | `Ok output ->
+          Printf.printf "Success trail %s created.\n" (from_opt output.name);
+          true
+      | `Error err ->
+          Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
+          false);
+      let delete_result = delete_trail () in
+      "Deleting Cloudtrail"
+      @?
+      match delete_result with
+      | `Ok output ->
+          Printf.printf "Success trail deleted.\n";
+          true
+      | `Error err ->
+          Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
+          false
+
+    let test_cases = [ "Create delete trail" >:: create_delete_trail_test ]
 
     let rec was_successful = function
       | [] -> true
