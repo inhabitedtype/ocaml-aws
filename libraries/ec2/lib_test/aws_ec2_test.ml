@@ -9,7 +9,7 @@ module type Runtime = sig
   type 'a m
 
   val run_request :
-    (module Aws.Call
+       (module Aws.Call
           with type input = 'input
            and type output = 'output
            and type error = 'error)
@@ -28,9 +28,7 @@ functor
       let res =
         Runtime.(
           un_m
-            (run_request
-               (module DescribeRegions)
-               (Types.DescribeRegionsRequest.make ())))
+            (run_request (module DescribeRegions) (Types.DescribeRegionsRequest.make ())))
       in
       "DescribeRegions returns values, and to_json / from_json round trips them"
       @?
