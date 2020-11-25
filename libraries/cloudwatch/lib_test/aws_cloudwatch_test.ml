@@ -5,8 +5,7 @@ module type Runtime = sig
   type 'a m
 
   val run_request :
-       region:string
-    -> (module Aws.Call
+       (module Aws.Call
           with type input = 'input
            and type output = 'output
            and type error = 'error)
@@ -21,9 +20,28 @@ functor
   (Runtime : Runtime)
   ->
   struct
-    let noop_test () = "Noop CLOUDWATCH test succeeds" @? true
+    let list_metrics () =
+      Runtime.(
+        un_m
+          (run_request
+             (module ListMetrics)
+             (Types.ListMetricsInput.make ~namespace:"AWS/SQS" ())))
 
-    let test_cases = [ "CLOUDWATCH noop" >:: noop_test ]
+    let list_metrics_test () =
+      let result = list_metrics () in
+      "List metrics"
+      @?
+      match result with
+      | `Ok output ->
+          Printf.printf
+            "%s\n"
+            (Yojson.Basic.pretty_to_string (Types.ListMetricsOutput.to_json output));
+          true
+      | `Error err ->
+          Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
+          false
+
+    let test_cases = [ "CLOUDWATCH list metrics" >:: list_metrics_test ]
 
     let rec was_successful = function
       | [] -> true
