@@ -5,8 +5,7 @@ module type Runtime = sig
   type 'a m
 
   val run_request :
-       region:string
-    -> (module Aws.Call
+       (module Aws.Call
           with type input = 'input
            and type output = 'output
            and type error = 'error)
@@ -21,9 +20,48 @@ functor
   (Runtime : Runtime)
   ->
   struct
-    let noop_test () = "Noop SSM test succeeds" @? true
+    (* aws ssm create-document \
+     * --content file://exampleDocument.yml \
+     * --name "Example" \
+     * --document-type "Automation" \
+     *                 --document-format YAML *)
+    let create_document ~name () =
+      Runtime.(
+        un_m
+          (run_request
+             (module CreateDocument)
+             (Types.CreateDocumentRequest.make ~content:"" ~name ())))
 
-    let test_cases = [ "SSM noop" >:: noop_test ]
+    let list_documents () =
+      Runtime.(
+        un_m
+          (run_request
+             (module ListDocuments)
+             (Types.ListDocumentsRequest.make ~max_results:10 ())))
+
+    let delete_document ~name () =
+      Runtime.(
+        un_m
+          (run_request
+             (module DeleteDocument)
+             (Types.DeleteDocumentRequest.make ~name ())))
+
+    let list_test () =
+      let list_request = list_documents () in
+      ("List Documents returns successfully"
+      @?
+      match list_request with
+      | `Ok resp ->
+          Printf.printf
+            "%s\n"
+            (Yojson.Basic.to_string
+               Types.ListDocumentsResult.(to_json (of_json (to_json resp))));
+          true
+      | `Error err ->
+          Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
+          false)
+
+    let test_cases = [ "SSM list test" >:: list_test ]
 
     let rec was_successful = function
       | [] -> true
