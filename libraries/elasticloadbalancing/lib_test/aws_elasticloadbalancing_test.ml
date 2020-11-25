@@ -9,8 +9,7 @@ module type Runtime = sig
   type 'a m
 
   val run_request :
-       region:string
-    -> (module Aws.Call
+       (module Aws.Call
           with type input = 'input
            and type output = 'output
            and type error = 'error)
@@ -30,7 +29,6 @@ functor
         Runtime.(
           un_m
             (run_request
-               ~region:"us-east-1"
                (module DescribeLoadBalancers)
                (Types.DescribeAccessPointsInput.make ())))
       in
@@ -53,7 +51,6 @@ functor
         Runtime.(
           un_m
             (run_request
-               ~region:"us-east-1"
                (module DescribeLoadBalancers)
                (Types.DescribeAccessPointsInput.make
                   ~load_balancer_names:[ "non-existent-lb" ]
@@ -90,7 +87,6 @@ functor
         Runtime.(
           un_m
             (run_request
-               ~region:"us-east-1"
                (module DeleteLoadBalancer)
                (Types.DeleteAccessPointInput.make ~load_balancer_name:"foobar" ())))
       in
@@ -98,13 +94,12 @@ functor
         Runtime.(
           un_m
             (run_request
-               ~region:"us-east-1"
                (module CreateLoadBalancer)
                (Types.CreateAccessPointInput.make
                   ~load_balancer_name:"foobar"
                   ~availability_zones:
                     (Types.AvailabilityZones.make
-                       [ "us-east-1b"; "us-east-1c"; "us-east-1d"; "us-east-1e" ]
+                       [ "ap-southeast-2a"; "ap-southeast-2b" ]
                        ())
                   ~tags:[ Types.Tag.make ~key:"foo" () ]
                   ~listeners:
@@ -127,7 +122,6 @@ functor
         Runtime.(
           un_m
             (run_request
-               ~region:"us-east-1"
                (module DescribeTags)
                (Types.DescribeTagsInput.make ~load_balancer_names:[ "foobar" ] ())))
       in
@@ -149,7 +143,6 @@ functor
         Runtime.(
           un_m
             (run_request
-               ~region:"us-east-1"
                (module ConfigureHealthCheck)
                (Types.ConfigureHealthCheckInput.make
                   ~load_balancer_name:"foobar"
