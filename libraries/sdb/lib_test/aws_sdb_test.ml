@@ -5,8 +5,7 @@ module type Runtime = sig
   type 'a m
 
   val run_request :
-       region:string
-    -> (module Aws.Call
+       (module Aws.Call
           with type input = 'input
            and type output = 'output
            and type error = 'error)
@@ -21,9 +20,59 @@ functor
   (Runtime : Runtime)
   ->
   struct
-    let noop_test () = "Noop SDB test succeeds" @? true
+    let create_domain () =
+      Runtime.(
+        un_m
+          (run_request
+             (module CreateDomain)
+             (Types.CreateDomainRequest.make ~domain_name:"ocaml-aws-domain-test" ())))
 
-    let test_cases = [ "SDB noop" >:: noop_test ]
+    let list_domains () =
+      Runtime.(
+        un_m
+          (run_request
+             (module ListDomains)
+             (Types.ListDomainsRequest.make ~max_number_of_domains:2 ())))
+
+    let delete_domain () =
+      Runtime.(
+        un_m
+          (run_request
+             (module DeleteDomain)
+             (Types.DeleteDomainRequest.make ~domain_name:"ocaml-aws-domain-test" ())))
+
+    let create_list_delete_test () =
+      let create_request = create_domain () in
+      ("Create Domain returns successfully"
+      @?
+      match create_request with
+      | `Ok resp -> true
+      | `Error err ->
+          Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
+          false);
+      let list_request = list_domains () in
+      ("List Domains returns successfully"
+      @?
+      match list_request with
+      | `Ok resp ->
+          Printf.printf
+            "%s\n"
+            (Yojson.Basic.to_string
+               Types.ListDomainsResult.(to_json (of_json (to_json resp))));
+          true
+      | `Error err ->
+          Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
+          false);
+      let delete_request = delete_domain () in
+      "Delete Domain returns successfully"
+      @?
+      match delete_request with
+      | `Ok resp -> true
+      | `Error err ->
+          Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
+          false
+
+    let test_cases = [ "SDB create/list/delete" >:: create_list_delete_test ]
 
     let rec was_successful = function
       | [] -> true
