@@ -9,10 +9,10 @@ type error = Errors_internal.t
 
 let service = "cloudtrail"
 
-let to_http service region req =
+let to_http service region (req : input) =
   let uri =
     Uri.add_query_params
-      (Uri.of_string (Aws.Util.of_option_exn (Endpoints.url_of service region)))
+      (Uri.of_string @@ Aws.Util.of_option_exn (Endpoints.url_of service region))
       (List.append
          [ "Version", [ "2013-11-01" ]; "Action", [ "CreateTrail" ] ]
          (Util.drop_empty

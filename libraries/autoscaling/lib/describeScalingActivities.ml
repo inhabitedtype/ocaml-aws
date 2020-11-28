@@ -9,10 +9,10 @@ type error = Errors_internal.t
 
 let service = "autoscaling"
 
-let to_http service region req =
+let to_http service region (req : input) =
   let uri =
     Uri.add_query_params
-      (Uri.of_string (Aws.Util.of_option_exn (Endpoints.url_of service region)))
+      (Uri.of_string @@ Aws.Util.of_option_exn (Endpoints.url_of service region))
       (List.append
          [ "Version", [ "2011-01-01" ]; "Action", [ "DescribeScalingActivities" ] ]
          (Util.drop_empty

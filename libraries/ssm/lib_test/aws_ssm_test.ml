@@ -48,7 +48,7 @@ functor
 
     let list_test () =
       let list_request = list_documents () in
-      ("List Documents returns successfully"
+      "List Documents returns successfully"
       @?
       match list_request with
       | `Ok resp ->
@@ -59,7 +59,7 @@ functor
           true
       | `Error err ->
           Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
-          false)
+          false
 
     let test_cases = [ "SSM list test" >:: list_test ]
 

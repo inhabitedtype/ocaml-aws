@@ -93,8 +93,7 @@ module type Runtime = sig
   type 'a m
 
   val run_request :
-       region:string
-    -> (module Aws.Call
+       (module Aws.Call
           with type input = 'input
            and type output = 'output
            and type error = 'error)
@@ -109,25 +108,17 @@ functor
   (Runtime : Runtime)
   ->
   struct
-    let region = "ap-southeast-2"
-
     let create_bucket bucket =
       Runtime.(
         un_m
-          (run_request
-             ~region
-             (module CreateBucket)
-             (Types.CreateBucketRequest.make ~bucket ())))
+          (run_request (module CreateBucket) (Types.CreateBucketRequest.make ~bucket ())))
 
     let delete_bucket bucket =
       Runtime.(
         un_m
-          (run_request
-             ~region
-             (module DeleteBucket)
-             (Types.DeleteBucketRequest.make ~bucket ())))
+          (run_request (module DeleteBucket) (Types.DeleteBucketRequest.make ~bucket ())))
 
-    let list_buckets = Runtime.(un_m (run_request ~region (module ListBuckets) ()))
+    let list_buckets = Runtime.(un_m (run_request (module ListBuckets) ()))
 
     let noop_test () =
       let res = create_bucket "test_bucket" in
