@@ -51,23 +51,7 @@ let of_http body =
       BadResponse { body; message = "Error parsing xml: " ^ msg })
 
 let parse_error code err =
-  let errors =
-    [ Errors_internal.InvalidParameterCombination
-    ; Errors_internal.InvalidParameterValue
-    ; Errors_internal.InvalidVPCNetworkStateFault
-    ; Errors_internal.CacheParameterGroupNotFound
-    ; Errors_internal.CacheSecurityGroupNotFound
-    ; Errors_internal.NodeQuotaForCustomerExceeded
-    ; Errors_internal.NodeQuotaForClusterExceeded
-    ; Errors_internal.CacheClusterNotFound
-    ; Errors_internal.InsufficientCacheClusterCapacity
-    ; Errors_internal.InvalidCacheSecurityGroupState
-    ; Errors_internal.InvalidCacheClusterState
-    ; Errors_internal.InvalidReplicationGroupState
-    ; Errors_internal.ReplicationGroupNotFoundFault
-    ]
-    @ Errors_internal.common
-  in
+  let errors = [] @ Errors_internal.common in
   match Errors_internal.of_string err with
   | Some var ->
       if List.mem var errors

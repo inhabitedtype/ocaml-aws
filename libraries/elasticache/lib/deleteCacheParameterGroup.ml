@@ -24,14 +24,7 @@ let to_http service region req =
 let of_http body = `Ok ()
 
 let parse_error code err =
-  let errors =
-    [ Errors_internal.InvalidParameterCombination
-    ; Errors_internal.InvalidParameterValue
-    ; Errors_internal.CacheParameterGroupNotFound
-    ; Errors_internal.InvalidCacheParameterGroupState
-    ]
-    @ Errors_internal.common
-  in
+  let errors = [] @ Errors_internal.common in
   match Errors_internal.of_string err with
   | Some var ->
       if List.mem var errors

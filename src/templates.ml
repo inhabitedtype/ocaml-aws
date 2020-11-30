@@ -110,8 +110,9 @@ module T = TestSuite(struct
 
     let access_key = Unix.getenv "AWS_ACCESS_KEY"
     let secret_key = Unix.getenv "AWS_SECRET_KEY"
+    let region = Unix.getenv "AWS_DEFAULT_REGION"
 
-    let run_request = Aws_async.Runtime.run_request ~access_key ~secret_key
+    let run_request x = Aws_async.Runtime.run_request ~region ~access_key ~secret_key x
     let un_m v = Async.Thread_safe.block_on_async_exn (fun () -> v)
   end)
 |}
@@ -126,8 +127,9 @@ module T = TestSuite(struct
 
     let access_key = Unix.getenv "AWS_ACCESS_KEY"
     let secret_key = Unix.getenv "AWS_SECRET_KEY"
+    let region = Unix.getenv "AWS_DEFAULT_REGION"
 
-    let run_request = Aws_lwt.Runtime.run_request ~access_key ~secret_key
+    let run_request x = Aws_lwt.Runtime.run_request ~region ~access_key ~secret_key x
     let un_m = Lwt_main.run
   end)
 |}
@@ -142,8 +144,7 @@ open Aws_%s
 module TestSuite(Runtime : sig
     type 'a m
     val run_request :
-      region:string
-      -> (module Aws.Call with type input = 'input
+      (module Aws.Call with type input = 'input
                            and type output = 'output
                            and type error = 'error)
       -> 'input

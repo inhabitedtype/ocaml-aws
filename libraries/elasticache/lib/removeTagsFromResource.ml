@@ -48,14 +48,7 @@ let of_http body =
       BadResponse { body; message = "Error parsing xml: " ^ msg })
 
 let parse_error code err =
-  let errors =
-    [ Errors_internal.TagNotFound
-    ; Errors_internal.InvalidARN
-    ; Errors_internal.SnapshotNotFoundFault
-    ; Errors_internal.CacheClusterNotFound
-    ]
-    @ Errors_internal.common
-  in
+  let errors = [] @ Errors_internal.common in
   match Errors_internal.of_string err with
   | Some var ->
       if List.mem var errors
