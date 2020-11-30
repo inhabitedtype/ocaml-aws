@@ -11,6 +11,7 @@ distribution includes a core runtime API and a code generation tool
 that generates individual libraries from [botocore][] service
 descriptions.
 """
+version: "1.2"
 license: "BSD-3-clause"
 homepage: "https://github.com/inhabitedtype/ocaml-aws"
 dev-repo: "git+https://github.com/inhabitedtype/ocaml-aws.git"
