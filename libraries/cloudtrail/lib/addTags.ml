@@ -1,7 +1,7 @@
 open Types
 open Aws
 
-type input = DeleteTrailRequest.t
+type input = AddTagsRequest.t
 
 type output = unit
 
@@ -14,9 +14,9 @@ let to_http service region req =
     Uri.add_query_params
       (Uri.of_string (Aws.Util.of_option_exn (Endpoints.url_of service region)))
       (List.append
-         [ "Version", [ "2013-11-01" ]; "Action", [ "DeleteTrail" ] ]
+         [ "Version", [ "2013-11-01" ]; "Action", [ "AddTags" ] ]
          (Util.drop_empty
-            (Uri.query_of_encoded (Query.render (DeleteTrailRequest.to_query req)))))
+            (Uri.query_of_encoded (Query.render (AddTagsRequest.to_query req)))))
   in
   `POST, uri, []
 

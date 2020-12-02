@@ -1,45 +1,70 @@
 type t =
   | AuthFailure
   | Blocked
-  | CloudWatchLogsDeliveryUnavailable
+  | CloudTrailARNInvalidException
+  | CloudTrailAccessNotEnabledException
+  | CloudWatchLogsDeliveryUnavailableException
   | DryRunOperation
   | IdempotentParameterMismatch
   | IncompleteSignature
-  | InsufficientS3BucketPolicy
-  | InsufficientSnsTopicPolicy
+  | InsightNotEnabledException
+  | InsufficientDependencyServiceAccessPermissionException
+  | InsufficientEncryptionPolicyException
+  | InsufficientS3BucketPolicyException
+  | InsufficientSnsTopicPolicyException
   | InternalFailure
   | InvalidAction
   | InvalidClientTokenId
-  | InvalidCloudWatchLogsLogGroupArn
-  | InvalidCloudWatchLogsRoleArn
-  | InvalidLookupAttributes
-  | InvalidMaxResults
-  | InvalidNextToken
+  | InvalidCloudWatchLogsLogGroupArnException
+  | InvalidCloudWatchLogsRoleArnException
+  | InvalidEventCategoryException
+  | InvalidEventSelectorsException
+  | InvalidHomeRegionException
+  | InvalidInsightSelectorsException
+  | InvalidKmsKeyIdException
+  | InvalidLookupAttributesException
+  | InvalidMaxResultsException
+  | InvalidNextTokenException
   | InvalidParameter
   | InvalidParameterCombination
+  | InvalidParameterCombinationException
   | InvalidParameterValue
   | InvalidQueryParameter
-  | InvalidS3BucketName
-  | InvalidS3Prefix
-  | InvalidSnsTopicName
-  | InvalidTimeRange
-  | InvalidTrailName
+  | InvalidS3BucketNameException
+  | InvalidS3PrefixException
+  | InvalidSnsTopicNameException
+  | InvalidTagParameterException
+  | InvalidTimeRangeException
+  | InvalidTokenException
+  | InvalidTrailNameException
+  | KmsException
+  | KmsKeyDisabledException
+  | KmsKeyNotFoundException
   | MalformedQueryString
-  | MaximumNumberOfTrailsExceeded
+  | MaximumNumberOfTrailsExceededException
   | MissingAction
   | MissingAuthenticationToken
   | MissingParameter
+  | NotOrganizationMasterAccountException
+  | OperationNotPermittedException
   | OptInRequired
+  | OrganizationNotInAllFeaturesModeException
+  | OrganizationsNotInUseException
   | PendingVerification
   | RequestExpired
   | RequestLimitExceeded
-  | S3BucketDoesNotExist
+  | ResourceNotFoundException
+  | ResourceTypeNotSupportedException
+  | S3BucketDoesNotExistException
   | ServiceUnavailable
+  | TagsLimitExceededException
   | Throttling
-  | TrailAlreadyExists
-  | TrailNotFound
+  | TrailAlreadyExistsException
+  | TrailNotFoundException
+  | TrailNotProvidedException
   | UnauthorizedOperation
   | UnknownParameter
+  | UnsupportedOperationException
   | UnsupportedProtocol
   | ValidationError
   | Uninhabited
@@ -77,45 +102,70 @@ let to_http_code e =
   match e with
   | AuthFailure -> None
   | Blocked -> None
-  | CloudWatchLogsDeliveryUnavailable -> Some 400
+  | CloudTrailARNInvalidException -> None
+  | CloudTrailAccessNotEnabledException -> None
+  | CloudWatchLogsDeliveryUnavailableException -> None
   | DryRunOperation -> None
   | IdempotentParameterMismatch -> None
   | IncompleteSignature -> Some 400
-  | InsufficientS3BucketPolicy -> Some 403
-  | InsufficientSnsTopicPolicy -> Some 403
+  | InsightNotEnabledException -> None
+  | InsufficientDependencyServiceAccessPermissionException -> None
+  | InsufficientEncryptionPolicyException -> None
+  | InsufficientS3BucketPolicyException -> None
+  | InsufficientSnsTopicPolicyException -> None
   | InternalFailure -> Some 500
   | InvalidAction -> Some 400
   | InvalidClientTokenId -> Some 403
-  | InvalidCloudWatchLogsLogGroupArn -> Some 400
-  | InvalidCloudWatchLogsRoleArn -> Some 400
-  | InvalidLookupAttributes -> Some 400
-  | InvalidMaxResults -> Some 400
-  | InvalidNextToken -> Some 400
+  | InvalidCloudWatchLogsLogGroupArnException -> None
+  | InvalidCloudWatchLogsRoleArnException -> None
+  | InvalidEventCategoryException -> None
+  | InvalidEventSelectorsException -> None
+  | InvalidHomeRegionException -> None
+  | InvalidInsightSelectorsException -> None
+  | InvalidKmsKeyIdException -> None
+  | InvalidLookupAttributesException -> None
+  | InvalidMaxResultsException -> None
+  | InvalidNextTokenException -> None
   | InvalidParameter -> None
   | InvalidParameterCombination -> Some 400
+  | InvalidParameterCombinationException -> None
   | InvalidParameterValue -> Some 400
   | InvalidQueryParameter -> Some 400
-  | InvalidS3BucketName -> Some 400
-  | InvalidS3Prefix -> Some 400
-  | InvalidSnsTopicName -> Some 400
-  | InvalidTimeRange -> Some 400
-  | InvalidTrailName -> Some 400
+  | InvalidS3BucketNameException -> None
+  | InvalidS3PrefixException -> None
+  | InvalidSnsTopicNameException -> None
+  | InvalidTagParameterException -> None
+  | InvalidTimeRangeException -> None
+  | InvalidTokenException -> None
+  | InvalidTrailNameException -> None
+  | KmsException -> None
+  | KmsKeyDisabledException -> None
+  | KmsKeyNotFoundException -> None
   | MalformedQueryString -> Some 404
-  | MaximumNumberOfTrailsExceeded -> Some 403
+  | MaximumNumberOfTrailsExceededException -> None
   | MissingAction -> Some 400
   | MissingAuthenticationToken -> Some 403
   | MissingParameter -> Some 400
+  | NotOrganizationMasterAccountException -> None
+  | OperationNotPermittedException -> None
   | OptInRequired -> Some 403
+  | OrganizationNotInAllFeaturesModeException -> None
+  | OrganizationsNotInUseException -> None
   | PendingVerification -> None
   | RequestExpired -> Some 400
   | RequestLimitExceeded -> None
-  | S3BucketDoesNotExist -> Some 404
+  | ResourceNotFoundException -> None
+  | ResourceTypeNotSupportedException -> None
+  | S3BucketDoesNotExistException -> None
   | ServiceUnavailable -> Some 503
+  | TagsLimitExceededException -> None
   | Throttling -> Some 400
-  | TrailAlreadyExists -> Some 400
-  | TrailNotFound -> Some 404
+  | TrailAlreadyExistsException -> None
+  | TrailNotFoundException -> None
+  | TrailNotProvidedException -> None
   | UnauthorizedOperation -> None
   | UnknownParameter -> None
+  | UnsupportedOperationException -> None
   | UnsupportedProtocol -> None
   | ValidationError -> Some 400
   | Uninhabited -> None
@@ -124,45 +174,74 @@ let to_string e =
   match e with
   | AuthFailure -> "AuthFailure"
   | Blocked -> "Blocked"
-  | CloudWatchLogsDeliveryUnavailable -> "CloudWatchLogsDeliveryUnavailable"
+  | CloudTrailARNInvalidException -> "CloudTrailARNInvalidException"
+  | CloudTrailAccessNotEnabledException -> "CloudTrailAccessNotEnabledException"
+  | CloudWatchLogsDeliveryUnavailableException ->
+      "CloudWatchLogsDeliveryUnavailableException"
   | DryRunOperation -> "DryRunOperation"
   | IdempotentParameterMismatch -> "IdempotentParameterMismatch"
   | IncompleteSignature -> "IncompleteSignature"
-  | InsufficientS3BucketPolicy -> "InsufficientS3BucketPolicy"
-  | InsufficientSnsTopicPolicy -> "InsufficientSnsTopicPolicy"
+  | InsightNotEnabledException -> "InsightNotEnabledException"
+  | InsufficientDependencyServiceAccessPermissionException ->
+      "InsufficientDependencyServiceAccessPermissionException"
+  | InsufficientEncryptionPolicyException -> "InsufficientEncryptionPolicyException"
+  | InsufficientS3BucketPolicyException -> "InsufficientS3BucketPolicyException"
+  | InsufficientSnsTopicPolicyException -> "InsufficientSnsTopicPolicyException"
   | InternalFailure -> "InternalFailure"
   | InvalidAction -> "InvalidAction"
   | InvalidClientTokenId -> "InvalidClientTokenId"
-  | InvalidCloudWatchLogsLogGroupArn -> "InvalidCloudWatchLogsLogGroupArn"
-  | InvalidCloudWatchLogsRoleArn -> "InvalidCloudWatchLogsRoleArn"
-  | InvalidLookupAttributes -> "InvalidLookupAttributes"
-  | InvalidMaxResults -> "InvalidMaxResults"
-  | InvalidNextToken -> "InvalidNextToken"
+  | InvalidCloudWatchLogsLogGroupArnException ->
+      "InvalidCloudWatchLogsLogGroupArnException"
+  | InvalidCloudWatchLogsRoleArnException -> "InvalidCloudWatchLogsRoleArnException"
+  | InvalidEventCategoryException -> "InvalidEventCategoryException"
+  | InvalidEventSelectorsException -> "InvalidEventSelectorsException"
+  | InvalidHomeRegionException -> "InvalidHomeRegionException"
+  | InvalidInsightSelectorsException -> "InvalidInsightSelectorsException"
+  | InvalidKmsKeyIdException -> "InvalidKmsKeyIdException"
+  | InvalidLookupAttributesException -> "InvalidLookupAttributesException"
+  | InvalidMaxResultsException -> "InvalidMaxResultsException"
+  | InvalidNextTokenException -> "InvalidNextTokenException"
   | InvalidParameter -> "InvalidParameter"
   | InvalidParameterCombination -> "InvalidParameterCombination"
+  | InvalidParameterCombinationException -> "InvalidParameterCombinationException"
   | InvalidParameterValue -> "InvalidParameterValue"
   | InvalidQueryParameter -> "InvalidQueryParameter"
-  | InvalidS3BucketName -> "InvalidS3BucketName"
-  | InvalidS3Prefix -> "InvalidS3Prefix"
-  | InvalidSnsTopicName -> "InvalidSnsTopicName"
-  | InvalidTimeRange -> "InvalidTimeRange"
-  | InvalidTrailName -> "InvalidTrailName"
+  | InvalidS3BucketNameException -> "InvalidS3BucketNameException"
+  | InvalidS3PrefixException -> "InvalidS3PrefixException"
+  | InvalidSnsTopicNameException -> "InvalidSnsTopicNameException"
+  | InvalidTagParameterException -> "InvalidTagParameterException"
+  | InvalidTimeRangeException -> "InvalidTimeRangeException"
+  | InvalidTokenException -> "InvalidTokenException"
+  | InvalidTrailNameException -> "InvalidTrailNameException"
+  | KmsException -> "KmsException"
+  | KmsKeyDisabledException -> "KmsKeyDisabledException"
+  | KmsKeyNotFoundException -> "KmsKeyNotFoundException"
   | MalformedQueryString -> "MalformedQueryString"
-  | MaximumNumberOfTrailsExceeded -> "MaximumNumberOfTrailsExceeded"
+  | MaximumNumberOfTrailsExceededException -> "MaximumNumberOfTrailsExceededException"
   | MissingAction -> "MissingAction"
   | MissingAuthenticationToken -> "MissingAuthenticationToken"
   | MissingParameter -> "MissingParameter"
+  | NotOrganizationMasterAccountException -> "NotOrganizationMasterAccountException"
+  | OperationNotPermittedException -> "OperationNotPermittedException"
   | OptInRequired -> "OptInRequired"
+  | OrganizationNotInAllFeaturesModeException ->
+      "OrganizationNotInAllFeaturesModeException"
+  | OrganizationsNotInUseException -> "OrganizationsNotInUseException"
   | PendingVerification -> "PendingVerification"
   | RequestExpired -> "RequestExpired"
   | RequestLimitExceeded -> "RequestLimitExceeded"
-  | S3BucketDoesNotExist -> "S3BucketDoesNotExist"
+  | ResourceNotFoundException -> "ResourceNotFoundException"
+  | ResourceTypeNotSupportedException -> "ResourceTypeNotSupportedException"
+  | S3BucketDoesNotExistException -> "S3BucketDoesNotExistException"
   | ServiceUnavailable -> "ServiceUnavailable"
+  | TagsLimitExceededException -> "TagsLimitExceededException"
   | Throttling -> "Throttling"
-  | TrailAlreadyExists -> "TrailAlreadyExists"
-  | TrailNotFound -> "TrailNotFound"
+  | TrailAlreadyExistsException -> "TrailAlreadyExistsException"
+  | TrailNotFoundException -> "TrailNotFoundException"
+  | TrailNotProvidedException -> "TrailNotProvidedException"
   | UnauthorizedOperation -> "UnauthorizedOperation"
   | UnknownParameter -> "UnknownParameter"
+  | UnsupportedOperationException -> "UnsupportedOperationException"
   | UnsupportedProtocol -> "UnsupportedProtocol"
   | ValidationError -> "ValidationError"
   | Uninhabited -> "Uninhabited"
@@ -171,45 +250,75 @@ let of_string e =
   match e with
   | "AuthFailure" -> Some AuthFailure
   | "Blocked" -> Some Blocked
-  | "CloudWatchLogsDeliveryUnavailable" -> Some CloudWatchLogsDeliveryUnavailable
+  | "CloudTrailARNInvalidException" -> Some CloudTrailARNInvalidException
+  | "CloudTrailAccessNotEnabledException" -> Some CloudTrailAccessNotEnabledException
+  | "CloudWatchLogsDeliveryUnavailableException" ->
+      Some CloudWatchLogsDeliveryUnavailableException
   | "DryRunOperation" -> Some DryRunOperation
   | "IdempotentParameterMismatch" -> Some IdempotentParameterMismatch
   | "IncompleteSignature" -> Some IncompleteSignature
-  | "InsufficientS3BucketPolicy" -> Some InsufficientS3BucketPolicy
-  | "InsufficientSnsTopicPolicy" -> Some InsufficientSnsTopicPolicy
+  | "InsightNotEnabledException" -> Some InsightNotEnabledException
+  | "InsufficientDependencyServiceAccessPermissionException" ->
+      Some InsufficientDependencyServiceAccessPermissionException
+  | "InsufficientEncryptionPolicyException" -> Some InsufficientEncryptionPolicyException
+  | "InsufficientS3BucketPolicyException" -> Some InsufficientS3BucketPolicyException
+  | "InsufficientSnsTopicPolicyException" -> Some InsufficientSnsTopicPolicyException
   | "InternalFailure" -> Some InternalFailure
   | "InvalidAction" -> Some InvalidAction
   | "InvalidClientTokenId" -> Some InvalidClientTokenId
-  | "InvalidCloudWatchLogsLogGroupArn" -> Some InvalidCloudWatchLogsLogGroupArn
-  | "InvalidCloudWatchLogsRoleArn" -> Some InvalidCloudWatchLogsRoleArn
-  | "InvalidLookupAttributes" -> Some InvalidLookupAttributes
-  | "InvalidMaxResults" -> Some InvalidMaxResults
-  | "InvalidNextToken" -> Some InvalidNextToken
+  | "InvalidCloudWatchLogsLogGroupArnException" ->
+      Some InvalidCloudWatchLogsLogGroupArnException
+  | "InvalidCloudWatchLogsRoleArnException" -> Some InvalidCloudWatchLogsRoleArnException
+  | "InvalidEventCategoryException" -> Some InvalidEventCategoryException
+  | "InvalidEventSelectorsException" -> Some InvalidEventSelectorsException
+  | "InvalidHomeRegionException" -> Some InvalidHomeRegionException
+  | "InvalidInsightSelectorsException" -> Some InvalidInsightSelectorsException
+  | "InvalidKmsKeyIdException" -> Some InvalidKmsKeyIdException
+  | "InvalidLookupAttributesException" -> Some InvalidLookupAttributesException
+  | "InvalidMaxResultsException" -> Some InvalidMaxResultsException
+  | "InvalidNextTokenException" -> Some InvalidNextTokenException
   | "InvalidParameter" -> Some InvalidParameter
   | "InvalidParameterCombination" -> Some InvalidParameterCombination
+  | "InvalidParameterCombinationException" -> Some InvalidParameterCombinationException
   | "InvalidParameterValue" -> Some InvalidParameterValue
   | "InvalidQueryParameter" -> Some InvalidQueryParameter
-  | "InvalidS3BucketName" -> Some InvalidS3BucketName
-  | "InvalidS3Prefix" -> Some InvalidS3Prefix
-  | "InvalidSnsTopicName" -> Some InvalidSnsTopicName
-  | "InvalidTimeRange" -> Some InvalidTimeRange
-  | "InvalidTrailName" -> Some InvalidTrailName
+  | "InvalidS3BucketNameException" -> Some InvalidS3BucketNameException
+  | "InvalidS3PrefixException" -> Some InvalidS3PrefixException
+  | "InvalidSnsTopicNameException" -> Some InvalidSnsTopicNameException
+  | "InvalidTagParameterException" -> Some InvalidTagParameterException
+  | "InvalidTimeRangeException" -> Some InvalidTimeRangeException
+  | "InvalidTokenException" -> Some InvalidTokenException
+  | "InvalidTrailNameException" -> Some InvalidTrailNameException
+  | "KmsException" -> Some KmsException
+  | "KmsKeyDisabledException" -> Some KmsKeyDisabledException
+  | "KmsKeyNotFoundException" -> Some KmsKeyNotFoundException
   | "MalformedQueryString" -> Some MalformedQueryString
-  | "MaximumNumberOfTrailsExceeded" -> Some MaximumNumberOfTrailsExceeded
+  | "MaximumNumberOfTrailsExceededException" ->
+      Some MaximumNumberOfTrailsExceededException
   | "MissingAction" -> Some MissingAction
   | "MissingAuthenticationToken" -> Some MissingAuthenticationToken
   | "MissingParameter" -> Some MissingParameter
+  | "NotOrganizationMasterAccountException" -> Some NotOrganizationMasterAccountException
+  | "OperationNotPermittedException" -> Some OperationNotPermittedException
   | "OptInRequired" -> Some OptInRequired
+  | "OrganizationNotInAllFeaturesModeException" ->
+      Some OrganizationNotInAllFeaturesModeException
+  | "OrganizationsNotInUseException" -> Some OrganizationsNotInUseException
   | "PendingVerification" -> Some PendingVerification
   | "RequestExpired" -> Some RequestExpired
   | "RequestLimitExceeded" -> Some RequestLimitExceeded
-  | "S3BucketDoesNotExist" -> Some S3BucketDoesNotExist
+  | "ResourceNotFoundException" -> Some ResourceNotFoundException
+  | "ResourceTypeNotSupportedException" -> Some ResourceTypeNotSupportedException
+  | "S3BucketDoesNotExistException" -> Some S3BucketDoesNotExistException
   | "ServiceUnavailable" -> Some ServiceUnavailable
+  | "TagsLimitExceededException" -> Some TagsLimitExceededException
   | "Throttling" -> Some Throttling
-  | "TrailAlreadyExists" -> Some TrailAlreadyExists
-  | "TrailNotFound" -> Some TrailNotFound
+  | "TrailAlreadyExistsException" -> Some TrailAlreadyExistsException
+  | "TrailNotFoundException" -> Some TrailNotFoundException
+  | "TrailNotProvidedException" -> Some TrailNotProvidedException
   | "UnauthorizedOperation" -> Some UnauthorizedOperation
   | "UnknownParameter" -> Some UnknownParameter
+  | "UnsupportedOperationException" -> Some UnsupportedOperationException
   | "UnsupportedProtocol" -> Some UnsupportedProtocol
   | "ValidationError" -> Some ValidationError
   | "Uninhabited" -> Some Uninhabited

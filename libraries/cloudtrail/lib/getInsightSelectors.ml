@@ -1,9 +1,9 @@
 open Types
 open Aws
 
-type input = LookupEventsRequest.t
+type input = GetInsightSelectorsRequest.t
 
-type output = LookupEventsResponse.t
+type output = GetInsightSelectorsResponse.t
 
 type error = Errors_internal.t
 
@@ -14,28 +14,31 @@ let to_http service region req =
     Uri.add_query_params
       (Uri.of_string (Aws.Util.of_option_exn (Endpoints.url_of service region)))
       (List.append
-         [ "Version", [ "2013-11-01" ]; "Action", [ "LookupEvents" ] ]
+         [ "Version", [ "2013-11-01" ]; "Action", [ "GetInsightSelectors" ] ]
          (Util.drop_empty
-            (Uri.query_of_encoded (Query.render (LookupEventsRequest.to_query req)))))
+            (Uri.query_of_encoded
+               (Query.render (GetInsightSelectorsRequest.to_query req)))))
   in
   `POST, uri, []
 
 let of_http body =
   try
     let xml = Ezxmlm.from_string body in
-    let resp = Xml.member "LookupEventsResponse" (snd xml) in
+    let resp = Xml.member "GetInsightSelectorsResponse" (snd xml) in
     try
       Util.or_error
-        (Util.option_bind resp LookupEventsResponse.parse)
+        (Util.option_bind resp GetInsightSelectorsResponse.parse)
         (let open Error in
-        BadResponse { body; message = "Could not find well formed LookupEventsResponse." })
+        BadResponse
+          { body; message = "Could not find well formed GetInsightSelectorsResponse." })
     with Xml.RequiredFieldMissing msg ->
       let open Error in
       `Error
         (BadResponse
            { body
            ; message =
-               "Error parsing LookupEventsResponse - missing field in body or children: "
+               "Error parsing GetInsightSelectorsResponse - missing field in body or \
+                children: "
                ^ msg
            })
   with Failure msg ->
