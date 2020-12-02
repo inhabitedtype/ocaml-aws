@@ -44,22 +44,7 @@ let of_http body =
       BadResponse { body; message = "Error parsing xml: " ^ msg })
 
 let parse_error code err =
-  let errors =
-    [ Errors_internal.CloudWatchLogsDeliveryUnavailable
-    ; Errors_internal.InvalidCloudWatchLogsRoleArn
-    ; Errors_internal.InvalidCloudWatchLogsLogGroupArn
-    ; Errors_internal.InvalidTrailName
-    ; Errors_internal.InvalidSnsTopicName
-    ; Errors_internal.InvalidS3Prefix
-    ; Errors_internal.InvalidS3BucketName
-    ; Errors_internal.InsufficientSnsTopicPolicy
-    ; Errors_internal.InsufficientS3BucketPolicy
-    ; Errors_internal.S3BucketDoesNotExist
-    ; Errors_internal.TrailAlreadyExists
-    ; Errors_internal.MaximumNumberOfTrailsExceeded
-    ]
-    @ Errors_internal.common
-  in
+  let errors = [] @ Errors_internal.common in
   match Errors_internal.of_string err with
   | Some var ->
       if List.mem var errors

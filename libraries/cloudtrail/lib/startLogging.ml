@@ -23,10 +23,7 @@ let to_http service region req =
 let of_http body = `Ok ()
 
 let parse_error code err =
-  let errors =
-    [ Errors_internal.InvalidTrailName; Errors_internal.TrailNotFound ]
-    @ Errors_internal.common
-  in
+  let errors = [] @ Errors_internal.common in
   match Errors_internal.of_string err with
   | Some var ->
       if List.mem var errors
