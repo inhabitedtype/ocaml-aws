@@ -1,9 +1,9 @@
 open Types
 open Aws
 
-type input = UpdateStackInput.t
+type input = ListTypesInput.t
 
-type output = UpdateStackOutput.t
+type output = ListTypesOutput.t
 
 type error = Errors_internal.t
 
@@ -14,9 +14,9 @@ let to_http service region req =
     Uri.add_query_params
       (Uri.of_string (Aws.Util.of_option_exn (Endpoints.url_of service region)))
       (List.append
-         [ "Version", [ "2010-05-15" ]; "Action", [ "UpdateStack" ] ]
+         [ "Version", [ "2010-05-15" ]; "Action", [ "ListTypes" ] ]
          (Util.drop_empty
-            (Uri.query_of_encoded (Query.render (UpdateStackInput.to_query req)))))
+            (Uri.query_of_encoded (Query.render (ListTypesInput.to_query req)))))
   in
   `POST, uri, []
 
@@ -25,22 +25,21 @@ let of_http body =
     let xml = Ezxmlm.from_string body in
     let resp =
       Util.option_bind
-        (Xml.member "UpdateStackResponse" (snd xml))
-        (Xml.member "UpdateStackResult")
+        (Xml.member "ListTypesResponse" (snd xml))
+        (Xml.member "ListTypesResult")
     in
     try
       Util.or_error
-        (Util.option_bind resp UpdateStackOutput.parse)
+        (Util.option_bind resp ListTypesOutput.parse)
         (let open Error in
-        BadResponse { body; message = "Could not find well formed UpdateStackOutput." })
+        BadResponse { body; message = "Could not find well formed ListTypesOutput." })
     with Xml.RequiredFieldMissing msg ->
       let open Error in
       `Error
         (BadResponse
            { body
            ; message =
-               "Error parsing UpdateStackOutput - missing field in body or children: "
-               ^ msg
+               "Error parsing ListTypesOutput - missing field in body or children: " ^ msg
            })
   with Failure msg ->
     `Error
