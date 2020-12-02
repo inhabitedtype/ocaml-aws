@@ -1,6 +1,7 @@
 type t =
   | AuthFailure
   | Blocked
+  | ConcurrentModificationException
   | DryRunOperation
   | IdempotentParameterMismatch
   | IncompleteSignature
@@ -12,9 +13,11 @@ type t =
   | InvalidNextToken
   | InvalidParameter
   | InvalidParameterCombination
+  | InvalidParameterInput
   | InvalidParameterValue
   | InvalidQueryParameter
   | LimitExceeded
+  | LimitExceededException
   | MalformedQueryString
   | MissingAction
   | MissingAuthenticationToken
@@ -24,6 +27,7 @@ type t =
   | RequestExpired
   | RequestLimitExceeded
   | ResourceNotFound
+  | ResourceNotFoundException
   | ServiceUnavailable
   | Throttling
   | UnauthorizedOperation
@@ -65,6 +69,7 @@ let to_http_code e =
   match e with
   | AuthFailure -> None
   | Blocked -> None
+  | ConcurrentModificationException -> Some 429
   | DryRunOperation -> None
   | IdempotentParameterMismatch -> None
   | IncompleteSignature -> Some 400
@@ -76,9 +81,11 @@ let to_http_code e =
   | InvalidNextToken -> Some 400
   | InvalidParameter -> None
   | InvalidParameterCombination -> Some 400
+  | InvalidParameterInput -> Some 400
   | InvalidParameterValue -> Some 400
   | InvalidQueryParameter -> Some 400
   | LimitExceeded -> Some 400
+  | LimitExceededException -> Some 400
   | MalformedQueryString -> Some 404
   | MissingAction -> Some 400
   | MissingAuthenticationToken -> Some 403
@@ -88,6 +95,7 @@ let to_http_code e =
   | RequestExpired -> Some 400
   | RequestLimitExceeded -> None
   | ResourceNotFound -> Some 404
+  | ResourceNotFoundException -> Some 404
   | ServiceUnavailable -> Some 503
   | Throttling -> Some 400
   | UnauthorizedOperation -> None
@@ -100,6 +108,7 @@ let to_string e =
   match e with
   | AuthFailure -> "AuthFailure"
   | Blocked -> "Blocked"
+  | ConcurrentModificationException -> "ConcurrentModificationException"
   | DryRunOperation -> "DryRunOperation"
   | IdempotentParameterMismatch -> "IdempotentParameterMismatch"
   | IncompleteSignature -> "IncompleteSignature"
@@ -111,9 +120,11 @@ let to_string e =
   | InvalidNextToken -> "InvalidNextToken"
   | InvalidParameter -> "InvalidParameter"
   | InvalidParameterCombination -> "InvalidParameterCombination"
+  | InvalidParameterInput -> "InvalidParameterInput"
   | InvalidParameterValue -> "InvalidParameterValue"
   | InvalidQueryParameter -> "InvalidQueryParameter"
   | LimitExceeded -> "LimitExceeded"
+  | LimitExceededException -> "LimitExceededException"
   | MalformedQueryString -> "MalformedQueryString"
   | MissingAction -> "MissingAction"
   | MissingAuthenticationToken -> "MissingAuthenticationToken"
@@ -123,6 +134,7 @@ let to_string e =
   | RequestExpired -> "RequestExpired"
   | RequestLimitExceeded -> "RequestLimitExceeded"
   | ResourceNotFound -> "ResourceNotFound"
+  | ResourceNotFoundException -> "ResourceNotFoundException"
   | ServiceUnavailable -> "ServiceUnavailable"
   | Throttling -> "Throttling"
   | UnauthorizedOperation -> "UnauthorizedOperation"
@@ -135,6 +147,7 @@ let of_string e =
   match e with
   | "AuthFailure" -> Some AuthFailure
   | "Blocked" -> Some Blocked
+  | "ConcurrentModificationException" -> Some ConcurrentModificationException
   | "DryRunOperation" -> Some DryRunOperation
   | "IdempotentParameterMismatch" -> Some IdempotentParameterMismatch
   | "IncompleteSignature" -> Some IncompleteSignature
@@ -146,9 +159,11 @@ let of_string e =
   | "InvalidNextToken" -> Some InvalidNextToken
   | "InvalidParameter" -> Some InvalidParameter
   | "InvalidParameterCombination" -> Some InvalidParameterCombination
+  | "InvalidParameterInput" -> Some InvalidParameterInput
   | "InvalidParameterValue" -> Some InvalidParameterValue
   | "InvalidQueryParameter" -> Some InvalidQueryParameter
   | "LimitExceeded" -> Some LimitExceeded
+  | "LimitExceededException" -> Some LimitExceededException
   | "MalformedQueryString" -> Some MalformedQueryString
   | "MissingAction" -> Some MissingAction
   | "MissingAuthenticationToken" -> Some MissingAuthenticationToken
@@ -158,6 +173,7 @@ let of_string e =
   | "RequestExpired" -> Some RequestExpired
   | "RequestLimitExceeded" -> Some RequestLimitExceeded
   | "ResourceNotFound" -> Some ResourceNotFound
+  | "ResourceNotFoundException" -> Some ResourceNotFoundException
   | "ServiceUnavailable" -> Some ServiceUnavailable
   | "Throttling" -> Some Throttling
   | "UnauthorizedOperation" -> Some UnauthorizedOperation

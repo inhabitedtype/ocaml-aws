@@ -1,7 +1,7 @@
 open Types
 open Aws
 
-type input = DeleteAlarmsInput.t
+type input = PutCompositeAlarmInput.t
 
 type output = unit
 
@@ -14,9 +14,9 @@ let to_http service region req =
     Uri.add_query_params
       (Uri.of_string (Aws.Util.of_option_exn (Endpoints.url_of service region)))
       (List.append
-         [ "Version", [ "2010-08-01" ]; "Action", [ "DeleteAlarms" ] ]
+         [ "Version", [ "2010-08-01" ]; "Action", [ "PutCompositeAlarm" ] ]
          (Util.drop_empty
-            (Uri.query_of_encoded (Query.render (DeleteAlarmsInput.to_query req)))))
+            (Uri.query_of_encoded (Query.render (PutCompositeAlarmInput.to_query req)))))
   in
   `POST, uri, []
 

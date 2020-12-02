@@ -1,9 +1,9 @@
 open Types
 open Aws
 
-type input = ListMetricsInput.t
+type input = DisableInsightRulesInput.t
 
-type output = ListMetricsOutput.t
+type output = DisableInsightRulesOutput.t
 
 type error = Errors_internal.t
 
@@ -14,9 +14,9 @@ let to_http service region req =
     Uri.add_query_params
       (Uri.of_string (Aws.Util.of_option_exn (Endpoints.url_of service region)))
       (List.append
-         [ "Version", [ "2010-08-01" ]; "Action", [ "ListMetrics" ] ]
+         [ "Version", [ "2010-08-01" ]; "Action", [ "DisableInsightRules" ] ]
          (Util.drop_empty
-            (Uri.query_of_encoded (Query.render (ListMetricsInput.to_query req)))))
+            (Uri.query_of_encoded (Query.render (DisableInsightRulesInput.to_query req)))))
   in
   `POST, uri, []
 
@@ -25,21 +25,23 @@ let of_http body =
     let xml = Ezxmlm.from_string body in
     let resp =
       Util.option_bind
-        (Xml.member "ListMetricsResponse" (snd xml))
-        (Xml.member "ListMetricsResult")
+        (Xml.member "DisableInsightRulesResponse" (snd xml))
+        (Xml.member "DisableInsightRulesResult")
     in
     try
       Util.or_error
-        (Util.option_bind resp ListMetricsOutput.parse)
+        (Util.option_bind resp DisableInsightRulesOutput.parse)
         (let open Error in
-        BadResponse { body; message = "Could not find well formed ListMetricsOutput." })
+        BadResponse
+          { body; message = "Could not find well formed DisableInsightRulesOutput." })
     with Xml.RequiredFieldMissing msg ->
       let open Error in
       `Error
         (BadResponse
            { body
            ; message =
-               "Error parsing ListMetricsOutput - missing field in body or children: "
+               "Error parsing DisableInsightRulesOutput - missing field in body or \
+                children: "
                ^ msg
            })
   with Failure msg ->
