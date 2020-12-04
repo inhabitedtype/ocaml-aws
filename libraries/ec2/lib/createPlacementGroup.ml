@@ -3,7 +3,7 @@ open Aws
 
 type input = CreatePlacementGroupRequest.t
 
-type output = unit
+type output = CreatePlacementGroupResult.t
 
 type error = Errors_internal.t
 
@@ -14,14 +14,37 @@ let to_http service region req =
     Uri.add_query_params
       (Uri.of_string (Aws.Util.of_option_exn (Endpoints.url_of service region)))
       (List.append
-         [ "Version", [ "2015-04-15" ]; "Action", [ "CreatePlacementGroup" ] ]
+         [ "Version", [ "2016-11-15" ]; "Action", [ "CreatePlacementGroup" ] ]
          (Util.drop_empty
             (Uri.query_of_encoded
                (Query.render (CreatePlacementGroupRequest.to_query req)))))
   in
   `POST, uri, []
 
-let of_http body = `Ok ()
+let of_http body =
+  try
+    let xml = Ezxmlm.from_string body in
+    let resp = Xml.member "CreatePlacementGroupResponse" (snd xml) in
+    try
+      Util.or_error
+        (Util.option_bind resp CreatePlacementGroupResult.parse)
+        (let open Error in
+        BadResponse
+          { body; message = "Could not find well formed CreatePlacementGroupResult." })
+    with Xml.RequiredFieldMissing msg ->
+      let open Error in
+      `Error
+        (BadResponse
+           { body
+           ; message =
+               "Error parsing CreatePlacementGroupResult - missing field in body or \
+                children: "
+               ^ msg
+           })
+  with Failure msg ->
+    `Error
+      (let open Error in
+      BadResponse { body; message = "Error parsing xml: " ^ msg })
 
 let parse_error code err =
   let errors = [] @ Errors_internal.common in
