@@ -14,7 +14,7 @@ let to_http service region req =
     Uri.add_query_params
       (Uri.of_string (Aws.Util.of_option_exn (Endpoints.url_of service region)))
       (List.append
-         [ "Version", [ "2015-04-15" ]; "Action", [ "ResetImageAttribute" ] ]
+         [ "Version", [ "2016-11-15" ]; "Action", [ "ResetImageAttribute" ] ]
          (Util.drop_empty
             (Uri.query_of_encoded
                (Query.render (ResetImageAttributeRequest.to_query req)))))

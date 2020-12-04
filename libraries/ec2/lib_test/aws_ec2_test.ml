@@ -36,7 +36,7 @@ functor
       | `Ok resp ->
           Printf.printf
             "%s\n"
-            (Yojson.Basic.to_string
+            (Yojson.Basic.pretty_to_string
                Types.DescribeRegionsResult.(to_json (of_json (to_json resp))));
           true
       | `Error err ->

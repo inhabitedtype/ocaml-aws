@@ -14,7 +14,7 @@ let to_http service region req =
     Uri.add_query_params
       (Uri.of_string (Aws.Util.of_option_exn (Endpoints.url_of service region)))
       (List.append
-         [ "Version", [ "2015-04-15" ]
+         [ "Version", [ "2016-11-15" ]
          ; "Action", [ "DescribeReservedInstancesOfferings" ]
          ]
          (Util.drop_empty
