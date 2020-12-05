@@ -24,6 +24,192 @@ module ResourceRecord = struct
   let of_json j = { value = String.of_json (Util.of_option_exn (Json.lookup j "value")) }
 end
 
+module Dimension = struct
+  type t =
+    { name : String.t
+    ; value : String.t
+    }
+
+  let make ~name ~value () = { name; value }
+
+  let parse xml =
+    Some
+      { name = Xml.required "Name" (Util.option_bind (Xml.member "Name" xml) String.parse)
+      ; value =
+          Xml.required "Value" (Util.option_bind (Xml.member "Value" xml) String.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("Value", String.to_query v.value))
+         ; Some (Query.Pair ("Name", String.to_query v.name))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("value", String.to_json v.value); Some ("name", String.to_json v.name) ])
+
+  let of_json j =
+    { name = String.of_json (Util.of_option_exn (Json.lookup j "name"))
+    ; value = String.of_json (Util.of_option_exn (Json.lookup j "value"))
+    }
+end
+
+module CloudWatchRegion = struct
+  type t =
+    | Us_east_1
+    | Us_east_2
+    | Us_west_1
+    | Us_west_2
+    | Ca_central_1
+    | Eu_central_1
+    | Eu_west_1
+    | Eu_west_2
+    | Eu_west_3
+    | Ap_east_1
+    | Me_south_1
+    | Ap_south_1
+    | Ap_southeast_1
+    | Ap_southeast_2
+    | Ap_northeast_1
+    | Ap_northeast_2
+    | Ap_northeast_3
+    | Eu_north_1
+    | Sa_east_1
+    | Cn_northwest_1
+    | Cn_north_1
+    | Af_south_1
+    | Eu_south_1
+    | Us_gov_west_1
+    | Us_gov_east_1
+    | Us_iso_east_1
+    | Us_isob_east_1
+
+  let str_to_t =
+    [ "us-isob-east-1", Us_isob_east_1
+    ; "us-iso-east-1", Us_iso_east_1
+    ; "us-gov-east-1", Us_gov_east_1
+    ; "us-gov-west-1", Us_gov_west_1
+    ; "eu-south-1", Eu_south_1
+    ; "af-south-1", Af_south_1
+    ; "cn-north-1", Cn_north_1
+    ; "cn-northwest-1", Cn_northwest_1
+    ; "sa-east-1", Sa_east_1
+    ; "eu-north-1", Eu_north_1
+    ; "ap-northeast-3", Ap_northeast_3
+    ; "ap-northeast-2", Ap_northeast_2
+    ; "ap-northeast-1", Ap_northeast_1
+    ; "ap-southeast-2", Ap_southeast_2
+    ; "ap-southeast-1", Ap_southeast_1
+    ; "ap-south-1", Ap_south_1
+    ; "me-south-1", Me_south_1
+    ; "ap-east-1", Ap_east_1
+    ; "eu-west-3", Eu_west_3
+    ; "eu-west-2", Eu_west_2
+    ; "eu-west-1", Eu_west_1
+    ; "eu-central-1", Eu_central_1
+    ; "ca-central-1", Ca_central_1
+    ; "us-west-2", Us_west_2
+    ; "us-west-1", Us_west_1
+    ; "us-east-2", Us_east_2
+    ; "us-east-1", Us_east_1
+    ]
+
+  let t_to_str =
+    [ Us_isob_east_1, "us-isob-east-1"
+    ; Us_iso_east_1, "us-iso-east-1"
+    ; Us_gov_east_1, "us-gov-east-1"
+    ; Us_gov_west_1, "us-gov-west-1"
+    ; Eu_south_1, "eu-south-1"
+    ; Af_south_1, "af-south-1"
+    ; Cn_north_1, "cn-north-1"
+    ; Cn_northwest_1, "cn-northwest-1"
+    ; Sa_east_1, "sa-east-1"
+    ; Eu_north_1, "eu-north-1"
+    ; Ap_northeast_3, "ap-northeast-3"
+    ; Ap_northeast_2, "ap-northeast-2"
+    ; Ap_northeast_1, "ap-northeast-1"
+    ; Ap_southeast_2, "ap-southeast-2"
+    ; Ap_southeast_1, "ap-southeast-1"
+    ; Ap_south_1, "ap-south-1"
+    ; Me_south_1, "me-south-1"
+    ; Ap_east_1, "ap-east-1"
+    ; Eu_west_3, "eu-west-3"
+    ; Eu_west_2, "eu-west-2"
+    ; Eu_west_1, "eu-west-1"
+    ; Eu_central_1, "eu-central-1"
+    ; Ca_central_1, "ca-central-1"
+    ; Us_west_2, "us-west-2"
+    ; Us_west_1, "us-west-1"
+    ; Us_east_2, "us-east-2"
+    ; Us_east_1, "us-east-1"
+    ]
+
+  let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+
+  let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
+
+  let make v () = v
+
+  let parse xml = Util.option_bind (String.parse xml) (fun s -> Util.list_find str_to_t s)
+
+  let to_query v = Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+
+  let of_json j = Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+end
+
+module HealthCheckRegion = struct
+  type t =
+    | Us_east_1
+    | Us_west_1
+    | Us_west_2
+    | Eu_west_1
+    | Ap_southeast_1
+    | Ap_southeast_2
+    | Ap_northeast_1
+    | Sa_east_1
+
+  let str_to_t =
+    [ "sa-east-1", Sa_east_1
+    ; "ap-northeast-1", Ap_northeast_1
+    ; "ap-southeast-2", Ap_southeast_2
+    ; "ap-southeast-1", Ap_southeast_1
+    ; "eu-west-1", Eu_west_1
+    ; "us-west-2", Us_west_2
+    ; "us-west-1", Us_west_1
+    ; "us-east-1", Us_east_1
+    ]
+
+  let t_to_str =
+    [ Sa_east_1, "sa-east-1"
+    ; Ap_northeast_1, "ap-northeast-1"
+    ; Ap_southeast_2, "ap-southeast-2"
+    ; Ap_southeast_1, "ap-southeast-1"
+    ; Eu_west_1, "eu-west-1"
+    ; Us_west_2, "us-west-2"
+    ; Us_west_1, "us-west-1"
+    ; Us_east_1, "us-east-1"
+    ]
+
+  let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+
+  let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
+
+  let make v () = v
+
+  let parse xml = Util.option_bind (String.parse xml) (fun s -> Util.list_find str_to_t s)
+
+  let to_query v = Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+
+  let of_json j = Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+end
+
 module AliasTarget = struct
   type t =
     { hosted_zone_id : String.t
@@ -130,16 +316,20 @@ module RRType = struct
     | NS
     | CNAME
     | MX
+    | NAPTR
     | PTR
     | SRV
     | SPF
     | AAAA
+    | CAA
 
   let str_to_t =
-    [ "AAAA", AAAA
+    [ "CAA", CAA
+    ; "AAAA", AAAA
     ; "SPF", SPF
     ; "SRV", SRV
     ; "PTR", PTR
+    ; "NAPTR", NAPTR
     ; "MX", MX
     ; "CNAME", CNAME
     ; "NS", NS
@@ -149,10 +339,12 @@ module RRType = struct
     ]
 
   let t_to_str =
-    [ AAAA, "AAAA"
+    [ CAA, "CAA"
+    ; AAAA, "AAAA"
     ; SPF, "SPF"
     ; SRV, "SRV"
     ; PTR, "PTR"
+    ; NAPTR, "NAPTR"
     ; MX, "MX"
     ; CNAME, "CNAME"
     ; NS, "NS"
@@ -203,39 +395,78 @@ end
 module ResourceRecordSetRegion = struct
   type t =
     | Us_east_1
+    | Us_east_2
     | Us_west_1
     | Us_west_2
+    | Ca_central_1
     | Eu_west_1
+    | Eu_west_2
+    | Eu_west_3
     | Eu_central_1
     | Ap_southeast_1
     | Ap_southeast_2
     | Ap_northeast_1
+    | Ap_northeast_2
+    | Ap_northeast_3
+    | Eu_north_1
     | Sa_east_1
     | Cn_north_1
+    | Cn_northwest_1
+    | Ap_east_1
+    | Me_south_1
+    | Ap_south_1
+    | Af_south_1
+    | Eu_south_1
 
   let str_to_t =
-    [ "cn-north-1", Cn_north_1
+    [ "eu-south-1", Eu_south_1
+    ; "af-south-1", Af_south_1
+    ; "ap-south-1", Ap_south_1
+    ; "me-south-1", Me_south_1
+    ; "ap-east-1", Ap_east_1
+    ; "cn-northwest-1", Cn_northwest_1
+    ; "cn-north-1", Cn_north_1
     ; "sa-east-1", Sa_east_1
+    ; "eu-north-1", Eu_north_1
+    ; "ap-northeast-3", Ap_northeast_3
+    ; "ap-northeast-2", Ap_northeast_2
     ; "ap-northeast-1", Ap_northeast_1
     ; "ap-southeast-2", Ap_southeast_2
     ; "ap-southeast-1", Ap_southeast_1
     ; "eu-central-1", Eu_central_1
+    ; "eu-west-3", Eu_west_3
+    ; "eu-west-2", Eu_west_2
     ; "eu-west-1", Eu_west_1
+    ; "ca-central-1", Ca_central_1
     ; "us-west-2", Us_west_2
     ; "us-west-1", Us_west_1
+    ; "us-east-2", Us_east_2
     ; "us-east-1", Us_east_1
     ]
 
   let t_to_str =
-    [ Cn_north_1, "cn-north-1"
+    [ Eu_south_1, "eu-south-1"
+    ; Af_south_1, "af-south-1"
+    ; Ap_south_1, "ap-south-1"
+    ; Me_south_1, "me-south-1"
+    ; Ap_east_1, "ap-east-1"
+    ; Cn_northwest_1, "cn-northwest-1"
+    ; Cn_north_1, "cn-north-1"
     ; Sa_east_1, "sa-east-1"
+    ; Eu_north_1, "eu-north-1"
+    ; Ap_northeast_3, "ap-northeast-3"
+    ; Ap_northeast_2, "ap-northeast-2"
     ; Ap_northeast_1, "ap-northeast-1"
     ; Ap_southeast_2, "ap-southeast-2"
     ; Ap_southeast_1, "ap-southeast-1"
     ; Eu_central_1, "eu-central-1"
+    ; Eu_west_3, "eu-west-3"
+    ; Eu_west_2, "eu-west-2"
     ; Eu_west_1, "eu-west-1"
+    ; Ca_central_1, "ca-central-1"
     ; Us_west_2, "us-west-2"
     ; Us_west_1, "us-west-1"
+    ; Us_east_2, "us-east-2"
     ; Us_east_1, "us-east-1"
     ]
 
@@ -269,6 +500,162 @@ module ResourceRecords = struct
   let of_json j = Json.to_list ResourceRecord.of_json j
 end
 
+module ComparisonOperator = struct
+  type t =
+    | GreaterThanOrEqualToThreshold
+    | GreaterThanThreshold
+    | LessThanThreshold
+    | LessThanOrEqualToThreshold
+
+  let str_to_t =
+    [ "LessThanOrEqualToThreshold", LessThanOrEqualToThreshold
+    ; "LessThanThreshold", LessThanThreshold
+    ; "GreaterThanThreshold", GreaterThanThreshold
+    ; "GreaterThanOrEqualToThreshold", GreaterThanOrEqualToThreshold
+    ]
+
+  let t_to_str =
+    [ LessThanOrEqualToThreshold, "LessThanOrEqualToThreshold"
+    ; LessThanThreshold, "LessThanThreshold"
+    ; GreaterThanThreshold, "GreaterThanThreshold"
+    ; GreaterThanOrEqualToThreshold, "GreaterThanOrEqualToThreshold"
+    ]
+
+  let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+
+  let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
+
+  let make v () = v
+
+  let parse xml = Util.option_bind (String.parse xml) (fun s -> Util.list_find str_to_t s)
+
+  let to_query v = Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+
+  let of_json j = Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+end
+
+module DimensionList = struct
+  type t = Dimension.t list
+
+  let make elems () = elems
+
+  let parse xml = Util.option_all (List.map Dimension.parse (Xml.members "Dimension" xml))
+
+  let to_query v = Query.to_query_list Dimension.to_query v
+
+  let to_json v = `List (List.map Dimension.to_json v)
+
+  let of_json j = Json.to_list Dimension.of_json j
+end
+
+module Statistic = struct
+  type t =
+    | Average
+    | Sum
+    | SampleCount
+    | Maximum
+    | Minimum
+
+  let str_to_t =
+    [ "Minimum", Minimum
+    ; "Maximum", Maximum
+    ; "SampleCount", SampleCount
+    ; "Sum", Sum
+    ; "Average", Average
+    ]
+
+  let t_to_str =
+    [ Minimum, "Minimum"
+    ; Maximum, "Maximum"
+    ; SampleCount, "SampleCount"
+    ; Sum, "Sum"
+    ; Average, "Average"
+    ]
+
+  let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+
+  let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
+
+  let make v () = v
+
+  let parse xml = Util.option_bind (String.parse xml) (fun s -> Util.list_find str_to_t s)
+
+  let to_query v = Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+
+  let of_json j = Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+end
+
+module AlarmIdentifier = struct
+  type t =
+    { region : CloudWatchRegion.t
+    ; name : String.t
+    }
+
+  let make ~region ~name () = { region; name }
+
+  let parse xml =
+    Some
+      { region =
+          Xml.required
+            "Region"
+            (Util.option_bind (Xml.member "Region" xml) CloudWatchRegion.parse)
+      ; name = Xml.required "Name" (Util.option_bind (Xml.member "Name" xml) String.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("Name", String.to_query v.name))
+         ; Some (Query.Pair ("Region", CloudWatchRegion.to_query v.region))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("name", String.to_json v.name)
+         ; Some ("region", CloudWatchRegion.to_json v.region)
+         ])
+
+  let of_json j =
+    { region = CloudWatchRegion.of_json (Util.of_option_exn (Json.lookup j "region"))
+    ; name = String.of_json (Util.of_option_exn (Json.lookup j "name"))
+    }
+end
+
+module ChildHealthCheckList = struct
+  type t = String.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Util.option_all (List.map String.parse (Xml.members "ChildHealthCheck" xml))
+
+  let to_query v = Query.to_query_list String.to_query v
+
+  let to_json v = `List (List.map String.to_json v)
+
+  let of_json j = Json.to_list String.of_json j
+end
+
+module HealthCheckRegionList = struct
+  type t = HealthCheckRegion.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Util.option_all (List.map HealthCheckRegion.parse (Xml.members "Region" xml))
+
+  let to_query v = Query.to_query_list HealthCheckRegion.to_query v
+
+  let to_json v = `List (List.map HealthCheckRegion.to_json v)
+
+  let of_json j = Json.to_list HealthCheckRegion.of_json j
+end
+
 module HealthCheckType = struct
   type t =
     | HTTP
@@ -276,9 +663,13 @@ module HealthCheckType = struct
     | HTTP_STR_MATCH
     | HTTPS_STR_MATCH
     | TCP
+    | CALCULATED
+    | CLOUDWATCH_METRIC
 
   let str_to_t =
-    [ "TCP", TCP
+    [ "CLOUDWATCH_METRIC", CLOUDWATCH_METRIC
+    ; "CALCULATED", CALCULATED
+    ; "TCP", TCP
     ; "HTTPS_STR_MATCH", HTTPS_STR_MATCH
     ; "HTTP_STR_MATCH", HTTP_STR_MATCH
     ; "HTTPS", HTTPS
@@ -286,12 +677,41 @@ module HealthCheckType = struct
     ]
 
   let t_to_str =
-    [ TCP, "TCP"
+    [ CLOUDWATCH_METRIC, "CLOUDWATCH_METRIC"
+    ; CALCULATED, "CALCULATED"
+    ; TCP, "TCP"
     ; HTTPS_STR_MATCH, "HTTPS_STR_MATCH"
     ; HTTP_STR_MATCH, "HTTP_STR_MATCH"
     ; HTTPS, "HTTPS"
     ; HTTP, "HTTP"
     ]
+
+  let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+
+  let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
+
+  let make v () = v
+
+  let parse xml = Util.option_bind (String.parse xml) (fun s -> Util.list_find str_to_t s)
+
+  let to_query v = Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+
+  let of_json j = Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+end
+
+module InsufficientDataHealthStatus = struct
+  type t =
+    | Healthy
+    | Unhealthy
+    | LastKnownStatus
+
+  let str_to_t =
+    [ "LastKnownStatus", LastKnownStatus; "Unhealthy", Unhealthy; "Healthy", Healthy ]
+
+  let t_to_str =
+    [ LastKnownStatus, "LastKnownStatus"; Unhealthy, "Unhealthy"; Healthy, "Healthy" ]
 
   let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
 
@@ -376,10 +796,12 @@ module ResourceRecordSet = struct
     ; region : ResourceRecordSetRegion.t option
     ; geo_location : GeoLocation.t option
     ; failover : ResourceRecordSetFailover.t option
+    ; multi_value_answer : Boolean.t option
     ; t_t_l : Long.t option
     ; resource_records : ResourceRecords.t
     ; alias_target : AliasTarget.t option
     ; health_check_id : String.t option
+    ; traffic_policy_instance_id : String.t option
     }
 
   let make
@@ -390,10 +812,12 @@ module ResourceRecordSet = struct
       ?region
       ?geo_location
       ?failover
+      ?multi_value_answer
       ?t_t_l
       ?(resource_records = [])
       ?alias_target
       ?health_check_id
+      ?traffic_policy_instance_id
       () =
     { name
     ; type_
@@ -402,10 +826,12 @@ module ResourceRecordSet = struct
     ; region
     ; geo_location
     ; failover
+    ; multi_value_answer
     ; t_t_l
     ; resource_records
     ; alias_target
     ; health_check_id
+    ; traffic_policy_instance_id
     }
 
   let parse xml =
@@ -419,6 +845,8 @@ module ResourceRecordSet = struct
       ; geo_location = Util.option_bind (Xml.member "GeoLocation" xml) GeoLocation.parse
       ; failover =
           Util.option_bind (Xml.member "Failover" xml) ResourceRecordSetFailover.parse
+      ; multi_value_answer =
+          Util.option_bind (Xml.member "MultiValueAnswer" xml) Boolean.parse
       ; t_t_l = Util.option_bind (Xml.member "TTL" xml) Long.parse
       ; resource_records =
           Util.of_option
@@ -426,12 +854,16 @@ module ResourceRecordSet = struct
             (Util.option_bind (Xml.member "ResourceRecords" xml) ResourceRecords.parse)
       ; alias_target = Util.option_bind (Xml.member "AliasTarget" xml) AliasTarget.parse
       ; health_check_id = Util.option_bind (Xml.member "HealthCheckId" xml) String.parse
+      ; traffic_policy_instance_id =
+          Util.option_bind (Xml.member "TrafficPolicyInstanceId" xml) String.parse
       }
 
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.health_check_id (fun f ->
+         [ Util.option_map v.traffic_policy_instance_id (fun f ->
+               Query.Pair ("TrafficPolicyInstanceId", String.to_query f))
+         ; Util.option_map v.health_check_id (fun f ->
                Query.Pair ("HealthCheckId", String.to_query f))
          ; Util.option_map v.alias_target (fun f ->
                Query.Pair ("AliasTarget", AliasTarget.to_query f))
@@ -439,6 +871,8 @@ module ResourceRecordSet = struct
              (Query.Pair
                 ("ResourceRecords.member", ResourceRecords.to_query v.resource_records))
          ; Util.option_map v.t_t_l (fun f -> Query.Pair ("TTL", Long.to_query f))
+         ; Util.option_map v.multi_value_answer (fun f ->
+               Query.Pair ("MultiValueAnswer", Boolean.to_query f))
          ; Util.option_map v.failover (fun f ->
                Query.Pair ("Failover", ResourceRecordSetFailover.to_query f))
          ; Util.option_map v.geo_location (fun f ->
@@ -455,11 +889,15 @@ module ResourceRecordSet = struct
   let to_json v =
     `Assoc
       (Util.list_filter_opt
-         [ Util.option_map v.health_check_id (fun f ->
+         [ Util.option_map v.traffic_policy_instance_id (fun f ->
+               "traffic_policy_instance_id", String.to_json f)
+         ; Util.option_map v.health_check_id (fun f ->
                "health_check_id", String.to_json f)
          ; Util.option_map v.alias_target (fun f -> "alias_target", AliasTarget.to_json f)
          ; Some ("resource_records", ResourceRecords.to_json v.resource_records)
          ; Util.option_map v.t_t_l (fun f -> "t_t_l", Long.to_json f)
+         ; Util.option_map v.multi_value_answer (fun f ->
+               "multi_value_answer", Boolean.to_json f)
          ; Util.option_map v.failover (fun f ->
                "failover", ResourceRecordSetFailover.to_json f)
          ; Util.option_map v.geo_location (fun f -> "geo_location", GeoLocation.to_json f)
@@ -479,11 +917,15 @@ module ResourceRecordSet = struct
     ; geo_location = Util.option_map (Json.lookup j "geo_location") GeoLocation.of_json
     ; failover =
         Util.option_map (Json.lookup j "failover") ResourceRecordSetFailover.of_json
+    ; multi_value_answer =
+        Util.option_map (Json.lookup j "multi_value_answer") Boolean.of_json
     ; t_t_l = Util.option_map (Json.lookup j "t_t_l") Long.of_json
     ; resource_records =
         ResourceRecords.of_json (Util.of_option_exn (Json.lookup j "resource_records"))
     ; alias_target = Util.option_map (Json.lookup j "alias_target") AliasTarget.of_json
     ; health_check_id = Util.option_map (Json.lookup j "health_check_id") String.of_json
+    ; traffic_policy_instance_id =
+        Util.option_map (Json.lookup j "traffic_policy_instance_id") String.of_json
     }
 end
 
@@ -522,6 +964,45 @@ module HostedZoneConfig = struct
     }
 end
 
+module LinkedService = struct
+  type t =
+    { service_principal : String.t option
+    ; description : String.t option
+    }
+
+  let make ?service_principal ?description () = { service_principal; description }
+
+  let parse xml =
+    Some
+      { service_principal =
+          Util.option_bind (Xml.member "ServicePrincipal" xml) String.parse
+      ; description = Util.option_bind (Xml.member "Description" xml) String.parse
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.description (fun f ->
+               Query.Pair ("Description", String.to_query f))
+         ; Util.option_map v.service_principal (fun f ->
+               Query.Pair ("ServicePrincipal", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.description (fun f -> "description", String.to_json f)
+         ; Util.option_map v.service_principal (fun f ->
+               "service_principal", String.to_json f)
+         ])
+
+  let of_json j =
+    { service_principal =
+        Util.option_map (Json.lookup j "service_principal") String.of_json
+    ; description = Util.option_map (Json.lookup j "description") String.of_json
+    }
+end
+
 module StatusReport = struct
   type t =
     { status : String.t option
@@ -557,6 +1038,255 @@ module StatusReport = struct
     }
 end
 
+module HostedZoneOwner = struct
+  type t =
+    { owning_account : String.t option
+    ; owning_service : String.t option
+    }
+
+  let make ?owning_account ?owning_service () = { owning_account; owning_service }
+
+  let parse xml =
+    Some
+      { owning_account = Util.option_bind (Xml.member "OwningAccount" xml) String.parse
+      ; owning_service = Util.option_bind (Xml.member "OwningService" xml) String.parse
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.owning_service (fun f ->
+               Query.Pair ("OwningService", String.to_query f))
+         ; Util.option_map v.owning_account (fun f ->
+               Query.Pair ("OwningAccount", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.owning_service (fun f -> "owning_service", String.to_json f)
+         ; Util.option_map v.owning_account (fun f -> "owning_account", String.to_json f)
+         ])
+
+  let of_json j =
+    { owning_account = Util.option_map (Json.lookup j "owning_account") String.of_json
+    ; owning_service = Util.option_map (Json.lookup j "owning_service") String.of_json
+    }
+end
+
+module VPCRegion = struct
+  type t =
+    | Us_east_1
+    | Us_east_2
+    | Us_west_1
+    | Us_west_2
+    | Eu_west_1
+    | Eu_west_2
+    | Eu_west_3
+    | Eu_central_1
+    | Ap_east_1
+    | Me_south_1
+    | Us_gov_west_1
+    | Us_gov_east_1
+    | Us_iso_east_1
+    | Us_isob_east_1
+    | Ap_southeast_1
+    | Ap_southeast_2
+    | Ap_south_1
+    | Ap_northeast_1
+    | Ap_northeast_2
+    | Ap_northeast_3
+    | Eu_north_1
+    | Sa_east_1
+    | Ca_central_1
+    | Cn_north_1
+    | Af_south_1
+    | Eu_south_1
+
+  let str_to_t =
+    [ "eu-south-1", Eu_south_1
+    ; "af-south-1", Af_south_1
+    ; "cn-north-1", Cn_north_1
+    ; "ca-central-1", Ca_central_1
+    ; "sa-east-1", Sa_east_1
+    ; "eu-north-1", Eu_north_1
+    ; "ap-northeast-3", Ap_northeast_3
+    ; "ap-northeast-2", Ap_northeast_2
+    ; "ap-northeast-1", Ap_northeast_1
+    ; "ap-south-1", Ap_south_1
+    ; "ap-southeast-2", Ap_southeast_2
+    ; "ap-southeast-1", Ap_southeast_1
+    ; "us-isob-east-1", Us_isob_east_1
+    ; "us-iso-east-1", Us_iso_east_1
+    ; "us-gov-east-1", Us_gov_east_1
+    ; "us-gov-west-1", Us_gov_west_1
+    ; "me-south-1", Me_south_1
+    ; "ap-east-1", Ap_east_1
+    ; "eu-central-1", Eu_central_1
+    ; "eu-west-3", Eu_west_3
+    ; "eu-west-2", Eu_west_2
+    ; "eu-west-1", Eu_west_1
+    ; "us-west-2", Us_west_2
+    ; "us-west-1", Us_west_1
+    ; "us-east-2", Us_east_2
+    ; "us-east-1", Us_east_1
+    ]
+
+  let t_to_str =
+    [ Eu_south_1, "eu-south-1"
+    ; Af_south_1, "af-south-1"
+    ; Cn_north_1, "cn-north-1"
+    ; Ca_central_1, "ca-central-1"
+    ; Sa_east_1, "sa-east-1"
+    ; Eu_north_1, "eu-north-1"
+    ; Ap_northeast_3, "ap-northeast-3"
+    ; Ap_northeast_2, "ap-northeast-2"
+    ; Ap_northeast_1, "ap-northeast-1"
+    ; Ap_south_1, "ap-south-1"
+    ; Ap_southeast_2, "ap-southeast-2"
+    ; Ap_southeast_1, "ap-southeast-1"
+    ; Us_isob_east_1, "us-isob-east-1"
+    ; Us_iso_east_1, "us-iso-east-1"
+    ; Us_gov_east_1, "us-gov-east-1"
+    ; Us_gov_west_1, "us-gov-west-1"
+    ; Me_south_1, "me-south-1"
+    ; Ap_east_1, "ap-east-1"
+    ; Eu_central_1, "eu-central-1"
+    ; Eu_west_3, "eu-west-3"
+    ; Eu_west_2, "eu-west-2"
+    ; Eu_west_1, "eu-west-1"
+    ; Us_west_2, "us-west-2"
+    ; Us_west_1, "us-west-1"
+    ; Us_east_2, "us-east-2"
+    ; Us_east_1, "us-east-1"
+    ]
+
+  let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+
+  let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
+
+  let make v () = v
+
+  let parse xml = Util.option_bind (String.parse xml) (fun s -> Util.list_find str_to_t s)
+
+  let to_query v = Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+
+  let of_json j = Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+end
+
+module CloudWatchAlarmConfiguration = struct
+  type t =
+    { evaluation_periods : Integer.t
+    ; threshold : Double.t
+    ; comparison_operator : ComparisonOperator.t
+    ; period : Integer.t
+    ; metric_name : String.t
+    ; namespace : String.t
+    ; statistic : Statistic.t
+    ; dimensions : DimensionList.t
+    }
+
+  let make
+      ~evaluation_periods
+      ~threshold
+      ~comparison_operator
+      ~period
+      ~metric_name
+      ~namespace
+      ~statistic
+      ?(dimensions = [])
+      () =
+    { evaluation_periods
+    ; threshold
+    ; comparison_operator
+    ; period
+    ; metric_name
+    ; namespace
+    ; statistic
+    ; dimensions
+    }
+
+  let parse xml =
+    Some
+      { evaluation_periods =
+          Xml.required
+            "EvaluationPeriods"
+            (Util.option_bind (Xml.member "EvaluationPeriods" xml) Integer.parse)
+      ; threshold =
+          Xml.required
+            "Threshold"
+            (Util.option_bind (Xml.member "Threshold" xml) Double.parse)
+      ; comparison_operator =
+          Xml.required
+            "ComparisonOperator"
+            (Util.option_bind
+               (Xml.member "ComparisonOperator" xml)
+               ComparisonOperator.parse)
+      ; period =
+          Xml.required "Period" (Util.option_bind (Xml.member "Period" xml) Integer.parse)
+      ; metric_name =
+          Xml.required
+            "MetricName"
+            (Util.option_bind (Xml.member "MetricName" xml) String.parse)
+      ; namespace =
+          Xml.required
+            "Namespace"
+            (Util.option_bind (Xml.member "Namespace" xml) String.parse)
+      ; statistic =
+          Xml.required
+            "Statistic"
+            (Util.option_bind (Xml.member "Statistic" xml) Statistic.parse)
+      ; dimensions =
+          Util.of_option
+            []
+            (Util.option_bind (Xml.member "Dimensions" xml) DimensionList.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("Dimensions.member", DimensionList.to_query v.dimensions))
+         ; Some (Query.Pair ("Statistic", Statistic.to_query v.statistic))
+         ; Some (Query.Pair ("Namespace", String.to_query v.namespace))
+         ; Some (Query.Pair ("MetricName", String.to_query v.metric_name))
+         ; Some (Query.Pair ("Period", Integer.to_query v.period))
+         ; Some
+             (Query.Pair
+                ("ComparisonOperator", ComparisonOperator.to_query v.comparison_operator))
+         ; Some (Query.Pair ("Threshold", Double.to_query v.threshold))
+         ; Some (Query.Pair ("EvaluationPeriods", Integer.to_query v.evaluation_periods))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("dimensions", DimensionList.to_json v.dimensions)
+         ; Some ("statistic", Statistic.to_json v.statistic)
+         ; Some ("namespace", String.to_json v.namespace)
+         ; Some ("metric_name", String.to_json v.metric_name)
+         ; Some ("period", Integer.to_json v.period)
+         ; Some ("comparison_operator", ComparisonOperator.to_json v.comparison_operator)
+         ; Some ("threshold", Double.to_json v.threshold)
+         ; Some ("evaluation_periods", Integer.to_json v.evaluation_periods)
+         ])
+
+  let of_json j =
+    { evaluation_periods =
+        Integer.of_json (Util.of_option_exn (Json.lookup j "evaluation_periods"))
+    ; threshold = Double.of_json (Util.of_option_exn (Json.lookup j "threshold"))
+    ; comparison_operator =
+        ComparisonOperator.of_json
+          (Util.of_option_exn (Json.lookup j "comparison_operator"))
+    ; period = Integer.of_json (Util.of_option_exn (Json.lookup j "period"))
+    ; metric_name = String.of_json (Util.of_option_exn (Json.lookup j "metric_name"))
+    ; namespace = String.of_json (Util.of_option_exn (Json.lookup j "namespace"))
+    ; statistic = Statistic.of_json (Util.of_option_exn (Json.lookup j "statistic"))
+    ; dimensions = DimensionList.of_json (Util.of_option_exn (Json.lookup j "dimensions"))
+    }
+end
+
 module HealthCheckConfig = struct
   type t =
     { i_p_address : String.t option
@@ -567,6 +1297,15 @@ module HealthCheckConfig = struct
     ; search_string : String.t option
     ; request_interval : Integer.t option
     ; failure_threshold : Integer.t option
+    ; measure_latency : Boolean.t option
+    ; inverted : Boolean.t option
+    ; disabled : Boolean.t option
+    ; health_threshold : Integer.t option
+    ; child_health_checks : ChildHealthCheckList.t
+    ; enable_s_n_i : Boolean.t option
+    ; regions : HealthCheckRegionList.t
+    ; alarm_identifier : AlarmIdentifier.t option
+    ; insufficient_data_health_status : InsufficientDataHealthStatus.t option
     }
 
   let make
@@ -578,6 +1317,15 @@ module HealthCheckConfig = struct
       ?search_string
       ?request_interval
       ?failure_threshold
+      ?measure_latency
+      ?inverted
+      ?disabled
+      ?health_threshold
+      ?(child_health_checks = [])
+      ?enable_s_n_i
+      ?(regions = [])
+      ?alarm_identifier
+      ?insufficient_data_health_status
       () =
     { i_p_address
     ; port
@@ -587,6 +1335,15 @@ module HealthCheckConfig = struct
     ; search_string
     ; request_interval
     ; failure_threshold
+    ; measure_latency
+    ; inverted
+    ; disabled
+    ; health_threshold
+    ; child_health_checks
+    ; enable_s_n_i
+    ; regions
+    ; alarm_identifier
+    ; insufficient_data_health_status
     }
 
   let parse xml =
@@ -605,12 +1362,54 @@ module HealthCheckConfig = struct
           Util.option_bind (Xml.member "RequestInterval" xml) Integer.parse
       ; failure_threshold =
           Util.option_bind (Xml.member "FailureThreshold" xml) Integer.parse
+      ; measure_latency = Util.option_bind (Xml.member "MeasureLatency" xml) Boolean.parse
+      ; inverted = Util.option_bind (Xml.member "Inverted" xml) Boolean.parse
+      ; disabled = Util.option_bind (Xml.member "Disabled" xml) Boolean.parse
+      ; health_threshold =
+          Util.option_bind (Xml.member "HealthThreshold" xml) Integer.parse
+      ; child_health_checks =
+          Util.of_option
+            []
+            (Util.option_bind
+               (Xml.member "ChildHealthChecks" xml)
+               ChildHealthCheckList.parse)
+      ; enable_s_n_i = Util.option_bind (Xml.member "EnableSNI" xml) Boolean.parse
+      ; regions =
+          Util.of_option
+            []
+            (Util.option_bind (Xml.member "Regions" xml) HealthCheckRegionList.parse)
+      ; alarm_identifier =
+          Util.option_bind (Xml.member "AlarmIdentifier" xml) AlarmIdentifier.parse
+      ; insufficient_data_health_status =
+          Util.option_bind
+            (Xml.member "InsufficientDataHealthStatus" xml)
+            InsufficientDataHealthStatus.parse
       }
 
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.failure_threshold (fun f ->
+         [ Util.option_map v.insufficient_data_health_status (fun f ->
+               Query.Pair
+                 ("InsufficientDataHealthStatus", InsufficientDataHealthStatus.to_query f))
+         ; Util.option_map v.alarm_identifier (fun f ->
+               Query.Pair ("AlarmIdentifier", AlarmIdentifier.to_query f))
+         ; Some (Query.Pair ("Regions.member", HealthCheckRegionList.to_query v.regions))
+         ; Util.option_map v.enable_s_n_i (fun f ->
+               Query.Pair ("EnableSNI", Boolean.to_query f))
+         ; Some
+             (Query.Pair
+                ( "ChildHealthChecks.member"
+                , ChildHealthCheckList.to_query v.child_health_checks ))
+         ; Util.option_map v.health_threshold (fun f ->
+               Query.Pair ("HealthThreshold", Integer.to_query f))
+         ; Util.option_map v.disabled (fun f ->
+               Query.Pair ("Disabled", Boolean.to_query f))
+         ; Util.option_map v.inverted (fun f ->
+               Query.Pair ("Inverted", Boolean.to_query f))
+         ; Util.option_map v.measure_latency (fun f ->
+               Query.Pair ("MeasureLatency", Boolean.to_query f))
+         ; Util.option_map v.failure_threshold (fun f ->
                Query.Pair ("FailureThreshold", Integer.to_query f))
          ; Util.option_map v.request_interval (fun f ->
                Query.Pair ("RequestInterval", Integer.to_query f))
@@ -629,7 +1428,20 @@ module HealthCheckConfig = struct
   let to_json v =
     `Assoc
       (Util.list_filter_opt
-         [ Util.option_map v.failure_threshold (fun f ->
+         [ Util.option_map v.insufficient_data_health_status (fun f ->
+               "insufficient_data_health_status", InsufficientDataHealthStatus.to_json f)
+         ; Util.option_map v.alarm_identifier (fun f ->
+               "alarm_identifier", AlarmIdentifier.to_json f)
+         ; Some ("regions", HealthCheckRegionList.to_json v.regions)
+         ; Util.option_map v.enable_s_n_i (fun f -> "enable_s_n_i", Boolean.to_json f)
+         ; Some ("child_health_checks", ChildHealthCheckList.to_json v.child_health_checks)
+         ; Util.option_map v.health_threshold (fun f ->
+               "health_threshold", Integer.to_json f)
+         ; Util.option_map v.disabled (fun f -> "disabled", Boolean.to_json f)
+         ; Util.option_map v.inverted (fun f -> "inverted", Boolean.to_json f)
+         ; Util.option_map v.measure_latency (fun f ->
+               "measure_latency", Boolean.to_json f)
+         ; Util.option_map v.failure_threshold (fun f ->
                "failure_threshold", Integer.to_json f)
          ; Util.option_map v.request_interval (fun f ->
                "request_interval", Integer.to_json f)
@@ -654,6 +1466,23 @@ module HealthCheckConfig = struct
         Util.option_map (Json.lookup j "request_interval") Integer.of_json
     ; failure_threshold =
         Util.option_map (Json.lookup j "failure_threshold") Integer.of_json
+    ; measure_latency = Util.option_map (Json.lookup j "measure_latency") Boolean.of_json
+    ; inverted = Util.option_map (Json.lookup j "inverted") Boolean.of_json
+    ; disabled = Util.option_map (Json.lookup j "disabled") Boolean.of_json
+    ; health_threshold =
+        Util.option_map (Json.lookup j "health_threshold") Integer.of_json
+    ; child_health_checks =
+        ChildHealthCheckList.of_json
+          (Util.of_option_exn (Json.lookup j "child_health_checks"))
+    ; enable_s_n_i = Util.option_map (Json.lookup j "enable_s_n_i") Boolean.of_json
+    ; regions =
+        HealthCheckRegionList.of_json (Util.of_option_exn (Json.lookup j "regions"))
+    ; alarm_identifier =
+        Util.option_map (Json.lookup j "alarm_identifier") AlarmIdentifier.of_json
+    ; insufficient_data_health_status =
+        Util.option_map
+          (Json.lookup j "insufficient_data_health_status")
+          InsufficientDataHealthStatus.of_json
     }
 end
 
@@ -755,60 +1584,6 @@ module Change = struct
     }
 end
 
-module VPCRegion = struct
-  type t =
-    | Us_east_1
-    | Us_west_1
-    | Us_west_2
-    | Eu_west_1
-    | Eu_central_1
-    | Ap_southeast_1
-    | Ap_southeast_2
-    | Ap_northeast_1
-    | Sa_east_1
-    | Cn_north_1
-
-  let str_to_t =
-    [ "cn-north-1", Cn_north_1
-    ; "sa-east-1", Sa_east_1
-    ; "ap-northeast-1", Ap_northeast_1
-    ; "ap-southeast-2", Ap_southeast_2
-    ; "ap-southeast-1", Ap_southeast_1
-    ; "eu-central-1", Eu_central_1
-    ; "eu-west-1", Eu_west_1
-    ; "us-west-2", Us_west_2
-    ; "us-west-1", Us_west_1
-    ; "us-east-1", Us_east_1
-    ]
-
-  let t_to_str =
-    [ Cn_north_1, "cn-north-1"
-    ; Sa_east_1, "sa-east-1"
-    ; Ap_northeast_1, "ap-northeast-1"
-    ; Ap_southeast_2, "ap-southeast-2"
-    ; Ap_southeast_1, "ap-southeast-1"
-    ; Eu_central_1, "eu-central-1"
-    ; Eu_west_1, "eu-west-1"
-    ; Us_west_2, "us-west-2"
-    ; Us_west_1, "us-west-1"
-    ; Us_east_1, "us-east-1"
-    ]
-
-  let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
-
-  let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
-
-  let make v () = v
-
-  let parse xml = Util.option_bind (String.parse xml) (fun s -> Util.list_find str_to_t s)
-
-  let to_query v = Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
-
-  let to_json v = String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
-
-  let of_json j = Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
-end
-
 module HostedZone = struct
   type t =
     { id : String.t
@@ -816,10 +1591,18 @@ module HostedZone = struct
     ; caller_reference : String.t
     ; config : HostedZoneConfig.t option
     ; resource_record_set_count : Long.t option
+    ; linked_service : LinkedService.t option
     }
 
-  let make ~id ~name ~caller_reference ?config ?resource_record_set_count () =
-    { id; name; caller_reference; config; resource_record_set_count }
+  let make
+      ~id
+      ~name
+      ~caller_reference
+      ?config
+      ?resource_record_set_count
+      ?linked_service
+      () =
+    { id; name; caller_reference; config; resource_record_set_count; linked_service }
 
   let parse xml =
     Some
@@ -832,12 +1615,16 @@ module HostedZone = struct
       ; config = Util.option_bind (Xml.member "Config" xml) HostedZoneConfig.parse
       ; resource_record_set_count =
           Util.option_bind (Xml.member "ResourceRecordSetCount" xml) Long.parse
+      ; linked_service =
+          Util.option_bind (Xml.member "LinkedService" xml) LinkedService.parse
       }
 
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.resource_record_set_count (fun f ->
+         [ Util.option_map v.linked_service (fun f ->
+               Query.Pair ("LinkedService", LinkedService.to_query f))
+         ; Util.option_map v.resource_record_set_count (fun f ->
                Query.Pair ("ResourceRecordSetCount", Long.to_query f))
          ; Util.option_map v.config (fun f ->
                Query.Pair ("Config", HostedZoneConfig.to_query f))
@@ -849,7 +1636,9 @@ module HostedZone = struct
   let to_json v =
     `Assoc
       (Util.list_filter_opt
-         [ Util.option_map v.resource_record_set_count (fun f ->
+         [ Util.option_map v.linked_service (fun f ->
+               "linked_service", LinkedService.to_json f)
+         ; Util.option_map v.resource_record_set_count (fun f ->
                "resource_record_set_count", Long.to_json f)
          ; Util.option_map v.config (fun f -> "config", HostedZoneConfig.to_json f)
          ; Some ("caller_reference", String.to_json v.caller_reference)
@@ -865,6 +1654,8 @@ module HostedZone = struct
     ; config = Util.option_map (Json.lookup j "config") HostedZoneConfig.of_json
     ; resource_record_set_count =
         Util.option_map (Json.lookup j "resource_record_set_count") Long.of_json
+    ; linked_service =
+        Util.option_map (Json.lookup j "linked_service") LinkedService.of_json
     }
 end
 
@@ -892,17 +1683,81 @@ module ChangeStatus = struct
   let of_json j = Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
 end
 
-module HealthCheckObservation = struct
+module TrafficPolicy = struct
   type t =
-    { i_p_address : String.t option
-    ; status_report : StatusReport.t option
+    { id : String.t
+    ; version : Integer.t
+    ; name : String.t
+    ; type_ : RRType.t
+    ; document : String.t
+    ; comment : String.t option
     }
 
-  let make ?i_p_address ?status_report () = { i_p_address; status_report }
+  let make ~id ~version ~name ~type_ ~document ?comment () =
+    { id; version; name; type_; document; comment }
 
   let parse xml =
     Some
-      { i_p_address = Util.option_bind (Xml.member "IPAddress" xml) String.parse
+      { id = Xml.required "Id" (Util.option_bind (Xml.member "Id" xml) String.parse)
+      ; version =
+          Xml.required
+            "Version"
+            (Util.option_bind (Xml.member "Version" xml) Integer.parse)
+      ; name = Xml.required "Name" (Util.option_bind (Xml.member "Name" xml) String.parse)
+      ; type_ =
+          Xml.required "Type" (Util.option_bind (Xml.member "Type" xml) RRType.parse)
+      ; document =
+          Xml.required
+            "Document"
+            (Util.option_bind (Xml.member "Document" xml) String.parse)
+      ; comment = Util.option_bind (Xml.member "Comment" xml) String.parse
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.comment (fun f -> Query.Pair ("Comment", String.to_query f))
+         ; Some (Query.Pair ("Document", String.to_query v.document))
+         ; Some (Query.Pair ("Type", RRType.to_query v.type_))
+         ; Some (Query.Pair ("Name", String.to_query v.name))
+         ; Some (Query.Pair ("Version", Integer.to_query v.version))
+         ; Some (Query.Pair ("Id", String.to_query v.id))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.comment (fun f -> "comment", String.to_json f)
+         ; Some ("document", String.to_json v.document)
+         ; Some ("type_", RRType.to_json v.type_)
+         ; Some ("name", String.to_json v.name)
+         ; Some ("version", Integer.to_json v.version)
+         ; Some ("id", String.to_json v.id)
+         ])
+
+  let of_json j =
+    { id = String.of_json (Util.of_option_exn (Json.lookup j "id"))
+    ; version = Integer.of_json (Util.of_option_exn (Json.lookup j "version"))
+    ; name = String.of_json (Util.of_option_exn (Json.lookup j "name"))
+    ; type_ = RRType.of_json (Util.of_option_exn (Json.lookup j "type_"))
+    ; document = String.of_json (Util.of_option_exn (Json.lookup j "document"))
+    ; comment = Util.option_map (Json.lookup j "comment") String.of_json
+    }
+end
+
+module HealthCheckObservation = struct
+  type t =
+    { region : HealthCheckRegion.t option
+    ; i_p_address : String.t option
+    ; status_report : StatusReport.t option
+    }
+
+  let make ?region ?i_p_address ?status_report () = { region; i_p_address; status_report }
+
+  let parse xml =
+    Some
+      { region = Util.option_bind (Xml.member "Region" xml) HealthCheckRegion.parse
+      ; i_p_address = Util.option_bind (Xml.member "IPAddress" xml) String.parse
       ; status_report =
           Util.option_bind (Xml.member "StatusReport" xml) StatusReport.parse
       }
@@ -914,6 +1769,8 @@ module HealthCheckObservation = struct
                Query.Pair ("StatusReport", StatusReport.to_query f))
          ; Util.option_map v.i_p_address (fun f ->
                Query.Pair ("IPAddress", String.to_query f))
+         ; Util.option_map v.region (fun f ->
+               Query.Pair ("Region", HealthCheckRegion.to_query f))
          ])
 
   let to_json v =
@@ -922,11 +1779,241 @@ module HealthCheckObservation = struct
          [ Util.option_map v.status_report (fun f ->
                "status_report", StatusReport.to_json f)
          ; Util.option_map v.i_p_address (fun f -> "i_p_address", String.to_json f)
+         ; Util.option_map v.region (fun f -> "region", HealthCheckRegion.to_json f)
          ])
 
   let of_json j =
-    { i_p_address = Util.option_map (Json.lookup j "i_p_address") String.of_json
+    { region = Util.option_map (Json.lookup j "region") HealthCheckRegion.of_json
+    ; i_p_address = Util.option_map (Json.lookup j "i_p_address") String.of_json
     ; status_report = Util.option_map (Json.lookup j "status_report") StatusReport.of_json
+    }
+end
+
+module HostedZoneSummary = struct
+  type t =
+    { hosted_zone_id : String.t
+    ; name : String.t
+    ; owner : HostedZoneOwner.t
+    }
+
+  let make ~hosted_zone_id ~name ~owner () = { hosted_zone_id; name; owner }
+
+  let parse xml =
+    Some
+      { hosted_zone_id =
+          Xml.required
+            "HostedZoneId"
+            (Util.option_bind (Xml.member "HostedZoneId" xml) String.parse)
+      ; name = Xml.required "Name" (Util.option_bind (Xml.member "Name" xml) String.parse)
+      ; owner =
+          Xml.required
+            "Owner"
+            (Util.option_bind (Xml.member "Owner" xml) HostedZoneOwner.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("Owner", HostedZoneOwner.to_query v.owner))
+         ; Some (Query.Pair ("Name", String.to_query v.name))
+         ; Some (Query.Pair ("HostedZoneId", String.to_query v.hosted_zone_id))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("owner", HostedZoneOwner.to_json v.owner)
+         ; Some ("name", String.to_json v.name)
+         ; Some ("hosted_zone_id", String.to_json v.hosted_zone_id)
+         ])
+
+  let of_json j =
+    { hosted_zone_id =
+        String.of_json (Util.of_option_exn (Json.lookup j "hosted_zone_id"))
+    ; name = String.of_json (Util.of_option_exn (Json.lookup j "name"))
+    ; owner = HostedZoneOwner.of_json (Util.of_option_exn (Json.lookup j "owner"))
+    }
+end
+
+module TrafficPolicyInstance = struct
+  type t =
+    { id : String.t
+    ; hosted_zone_id : String.t
+    ; name : String.t
+    ; t_t_l : Long.t
+    ; state : String.t
+    ; message : String.t
+    ; traffic_policy_id : String.t
+    ; traffic_policy_version : Integer.t
+    ; traffic_policy_type : RRType.t
+    }
+
+  let make
+      ~id
+      ~hosted_zone_id
+      ~name
+      ~t_t_l
+      ~state
+      ~message
+      ~traffic_policy_id
+      ~traffic_policy_version
+      ~traffic_policy_type
+      () =
+    { id
+    ; hosted_zone_id
+    ; name
+    ; t_t_l
+    ; state
+    ; message
+    ; traffic_policy_id
+    ; traffic_policy_version
+    ; traffic_policy_type
+    }
+
+  let parse xml =
+    Some
+      { id = Xml.required "Id" (Util.option_bind (Xml.member "Id" xml) String.parse)
+      ; hosted_zone_id =
+          Xml.required
+            "HostedZoneId"
+            (Util.option_bind (Xml.member "HostedZoneId" xml) String.parse)
+      ; name = Xml.required "Name" (Util.option_bind (Xml.member "Name" xml) String.parse)
+      ; t_t_l = Xml.required "TTL" (Util.option_bind (Xml.member "TTL" xml) Long.parse)
+      ; state =
+          Xml.required "State" (Util.option_bind (Xml.member "State" xml) String.parse)
+      ; message =
+          Xml.required
+            "Message"
+            (Util.option_bind (Xml.member "Message" xml) String.parse)
+      ; traffic_policy_id =
+          Xml.required
+            "TrafficPolicyId"
+            (Util.option_bind (Xml.member "TrafficPolicyId" xml) String.parse)
+      ; traffic_policy_version =
+          Xml.required
+            "TrafficPolicyVersion"
+            (Util.option_bind (Xml.member "TrafficPolicyVersion" xml) Integer.parse)
+      ; traffic_policy_type =
+          Xml.required
+            "TrafficPolicyType"
+            (Util.option_bind (Xml.member "TrafficPolicyType" xml) RRType.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("TrafficPolicyType", RRType.to_query v.traffic_policy_type))
+         ; Some
+             (Query.Pair
+                ("TrafficPolicyVersion", Integer.to_query v.traffic_policy_version))
+         ; Some (Query.Pair ("TrafficPolicyId", String.to_query v.traffic_policy_id))
+         ; Some (Query.Pair ("Message", String.to_query v.message))
+         ; Some (Query.Pair ("State", String.to_query v.state))
+         ; Some (Query.Pair ("TTL", Long.to_query v.t_t_l))
+         ; Some (Query.Pair ("Name", String.to_query v.name))
+         ; Some (Query.Pair ("HostedZoneId", String.to_query v.hosted_zone_id))
+         ; Some (Query.Pair ("Id", String.to_query v.id))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("traffic_policy_type", RRType.to_json v.traffic_policy_type)
+         ; Some ("traffic_policy_version", Integer.to_json v.traffic_policy_version)
+         ; Some ("traffic_policy_id", String.to_json v.traffic_policy_id)
+         ; Some ("message", String.to_json v.message)
+         ; Some ("state", String.to_json v.state)
+         ; Some ("t_t_l", Long.to_json v.t_t_l)
+         ; Some ("name", String.to_json v.name)
+         ; Some ("hosted_zone_id", String.to_json v.hosted_zone_id)
+         ; Some ("id", String.to_json v.id)
+         ])
+
+  let of_json j =
+    { id = String.of_json (Util.of_option_exn (Json.lookup j "id"))
+    ; hosted_zone_id =
+        String.of_json (Util.of_option_exn (Json.lookup j "hosted_zone_id"))
+    ; name = String.of_json (Util.of_option_exn (Json.lookup j "name"))
+    ; t_t_l = Long.of_json (Util.of_option_exn (Json.lookup j "t_t_l"))
+    ; state = String.of_json (Util.of_option_exn (Json.lookup j "state"))
+    ; message = String.of_json (Util.of_option_exn (Json.lookup j "message"))
+    ; traffic_policy_id =
+        String.of_json (Util.of_option_exn (Json.lookup j "traffic_policy_id"))
+    ; traffic_policy_version =
+        Integer.of_json (Util.of_option_exn (Json.lookup j "traffic_policy_version"))
+    ; traffic_policy_type =
+        RRType.of_json (Util.of_option_exn (Json.lookup j "traffic_policy_type"))
+    }
+end
+
+module ResettableElementName = struct
+  type t =
+    | FullyQualifiedDomainName
+    | Regions
+    | ResourcePath
+    | ChildHealthChecks
+
+  let str_to_t =
+    [ "ChildHealthChecks", ChildHealthChecks
+    ; "ResourcePath", ResourcePath
+    ; "Regions", Regions
+    ; "FullyQualifiedDomainName", FullyQualifiedDomainName
+    ]
+
+  let t_to_str =
+    [ ChildHealthChecks, "ChildHealthChecks"
+    ; ResourcePath, "ResourcePath"
+    ; Regions, "Regions"
+    ; FullyQualifiedDomainName, "FullyQualifiedDomainName"
+    ]
+
+  let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+
+  let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
+
+  let make v () = v
+
+  let parse xml = Util.option_bind (String.parse xml) (fun s -> Util.list_find str_to_t s)
+
+  let to_query v = Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+
+  let of_json j = Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+end
+
+module VPC = struct
+  type t =
+    { v_p_c_region : VPCRegion.t option
+    ; v_p_c_id : String.t option
+    }
+
+  let make ?v_p_c_region ?v_p_c_id () = { v_p_c_region; v_p_c_id }
+
+  let parse xml =
+    Some
+      { v_p_c_region = Util.option_bind (Xml.member "VPCRegion" xml) VPCRegion.parse
+      ; v_p_c_id = Util.option_bind (Xml.member "VPCId" xml) String.parse
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.v_p_c_id (fun f -> Query.Pair ("VPCId", String.to_query f))
+         ; Util.option_map v.v_p_c_region (fun f ->
+               Query.Pair ("VPCRegion", VPCRegion.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.v_p_c_id (fun f -> "v_p_c_id", String.to_json f)
+         ; Util.option_map v.v_p_c_region (fun f -> "v_p_c_region", VPCRegion.to_json f)
+         ])
+
+  let of_json j =
+    { v_p_c_region = Util.option_map (Json.lookup j "v_p_c_region") VPCRegion.of_json
+    ; v_p_c_id = Util.option_map (Json.lookup j "v_p_c_id") String.of_json
     }
 end
 
@@ -1008,16 +2095,61 @@ module GeoLocationDetails = struct
     }
 end
 
+module HostedZoneLimitType = struct
+  type t =
+    | MAX_RRSETS_BY_ZONE
+    | MAX_VPCS_ASSOCIATED_BY_ZONE
+
+  let str_to_t =
+    [ "MAX_VPCS_ASSOCIATED_BY_ZONE", MAX_VPCS_ASSOCIATED_BY_ZONE
+    ; "MAX_RRSETS_BY_ZONE", MAX_RRSETS_BY_ZONE
+    ]
+
+  let t_to_str =
+    [ MAX_VPCS_ASSOCIATED_BY_ZONE, "MAX_VPCS_ASSOCIATED_BY_ZONE"
+    ; MAX_RRSETS_BY_ZONE, "MAX_RRSETS_BY_ZONE"
+    ]
+
+  let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+
+  let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
+
+  let make v () = v
+
+  let parse xml = Util.option_bind (String.parse xml) (fun s -> Util.list_find str_to_t s)
+
+  let to_query v = Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+
+  let of_json j = Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+end
+
 module HealthCheck = struct
   type t =
     { id : String.t
     ; caller_reference : String.t
+    ; linked_service : LinkedService.t option
     ; health_check_config : HealthCheckConfig.t
     ; health_check_version : Long.t
+    ; cloud_watch_alarm_configuration : CloudWatchAlarmConfiguration.t option
     }
 
-  let make ~id ~caller_reference ~health_check_config ~health_check_version () =
-    { id; caller_reference; health_check_config; health_check_version }
+  let make
+      ~id
+      ~caller_reference
+      ?linked_service
+      ~health_check_config
+      ~health_check_version
+      ?cloud_watch_alarm_configuration
+      () =
+    { id
+    ; caller_reference
+    ; linked_service
+    ; health_check_config
+    ; health_check_version
+    ; cloud_watch_alarm_configuration
+    }
 
   let parse xml =
     Some
@@ -1026,6 +2158,8 @@ module HealthCheck = struct
           Xml.required
             "CallerReference"
             (Util.option_bind (Xml.member "CallerReference" xml) String.parse)
+      ; linked_service =
+          Util.option_bind (Xml.member "LinkedService" xml) LinkedService.parse
       ; health_check_config =
           Xml.required
             "HealthCheckConfig"
@@ -1036,15 +2170,24 @@ module HealthCheck = struct
           Xml.required
             "HealthCheckVersion"
             (Util.option_bind (Xml.member "HealthCheckVersion" xml) Long.parse)
+      ; cloud_watch_alarm_configuration =
+          Util.option_bind
+            (Xml.member "CloudWatchAlarmConfiguration" xml)
+            CloudWatchAlarmConfiguration.parse
       }
 
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("HealthCheckVersion", Long.to_query v.health_check_version))
+         [ Util.option_map v.cloud_watch_alarm_configuration (fun f ->
+               Query.Pair
+                 ("CloudWatchAlarmConfiguration", CloudWatchAlarmConfiguration.to_query f))
+         ; Some (Query.Pair ("HealthCheckVersion", Long.to_query v.health_check_version))
          ; Some
              (Query.Pair
                 ("HealthCheckConfig", HealthCheckConfig.to_query v.health_check_config))
+         ; Util.option_map v.linked_service (fun f ->
+               Query.Pair ("LinkedService", LinkedService.to_query f))
          ; Some (Query.Pair ("CallerReference", String.to_query v.caller_reference))
          ; Some (Query.Pair ("Id", String.to_query v.id))
          ])
@@ -1052,8 +2195,12 @@ module HealthCheck = struct
   let to_json v =
     `Assoc
       (Util.list_filter_opt
-         [ Some ("health_check_version", Long.to_json v.health_check_version)
+         [ Util.option_map v.cloud_watch_alarm_configuration (fun f ->
+               "cloud_watch_alarm_configuration", CloudWatchAlarmConfiguration.to_json f)
+         ; Some ("health_check_version", Long.to_json v.health_check_version)
          ; Some ("health_check_config", HealthCheckConfig.to_json v.health_check_config)
+         ; Util.option_map v.linked_service (fun f ->
+               "linked_service", LinkedService.to_json f)
          ; Some ("caller_reference", String.to_json v.caller_reference)
          ; Some ("id", String.to_json v.id)
          ])
@@ -1062,11 +2209,71 @@ module HealthCheck = struct
     { id = String.of_json (Util.of_option_exn (Json.lookup j "id"))
     ; caller_reference =
         String.of_json (Util.of_option_exn (Json.lookup j "caller_reference"))
+    ; linked_service =
+        Util.option_map (Json.lookup j "linked_service") LinkedService.of_json
     ; health_check_config =
         HealthCheckConfig.of_json
           (Util.of_option_exn (Json.lookup j "health_check_config"))
     ; health_check_version =
         Long.of_json (Util.of_option_exn (Json.lookup j "health_check_version"))
+    ; cloud_watch_alarm_configuration =
+        Util.option_map
+          (Json.lookup j "cloud_watch_alarm_configuration")
+          CloudWatchAlarmConfiguration.of_json
+    }
+end
+
+module QueryLoggingConfig = struct
+  type t =
+    { id : String.t
+    ; hosted_zone_id : String.t
+    ; cloud_watch_logs_log_group_arn : String.t
+    }
+
+  let make ~id ~hosted_zone_id ~cloud_watch_logs_log_group_arn () =
+    { id; hosted_zone_id; cloud_watch_logs_log_group_arn }
+
+  let parse xml =
+    Some
+      { id = Xml.required "Id" (Util.option_bind (Xml.member "Id" xml) String.parse)
+      ; hosted_zone_id =
+          Xml.required
+            "HostedZoneId"
+            (Util.option_bind (Xml.member "HostedZoneId" xml) String.parse)
+      ; cloud_watch_logs_log_group_arn =
+          Xml.required
+            "CloudWatchLogsLogGroupArn"
+            (Util.option_bind (Xml.member "CloudWatchLogsLogGroupArn" xml) String.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some
+             (Query.Pair
+                ( "CloudWatchLogsLogGroupArn"
+                , String.to_query v.cloud_watch_logs_log_group_arn ))
+         ; Some (Query.Pair ("HostedZoneId", String.to_query v.hosted_zone_id))
+         ; Some (Query.Pair ("Id", String.to_query v.id))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some
+             ( "cloud_watch_logs_log_group_arn"
+             , String.to_json v.cloud_watch_logs_log_group_arn )
+         ; Some ("hosted_zone_id", String.to_json v.hosted_zone_id)
+         ; Some ("id", String.to_json v.id)
+         ])
+
+  let of_json j =
+    { id = String.of_json (Util.of_option_exn (Json.lookup j "id"))
+    ; hosted_zone_id =
+        String.of_json (Util.of_option_exn (Json.lookup j "hosted_zone_id"))
+    ; cloud_watch_logs_log_group_arn =
+        String.of_json
+          (Util.of_option_exn (Json.lookup j "cloud_watch_logs_log_group_arn"))
     }
 end
 
@@ -1113,6 +2320,69 @@ module ResourceTagSet = struct
     ; resource_id = Util.option_map (Json.lookup j "resource_id") String.of_json
     ; tags = TagList.of_json (Util.of_option_exn (Json.lookup j "tags"))
     }
+end
+
+module AccountLimitType = struct
+  type t =
+    | MAX_HEALTH_CHECKS_BY_OWNER
+    | MAX_HOSTED_ZONES_BY_OWNER
+    | MAX_TRAFFIC_POLICY_INSTANCES_BY_OWNER
+    | MAX_REUSABLE_DELEGATION_SETS_BY_OWNER
+    | MAX_TRAFFIC_POLICIES_BY_OWNER
+
+  let str_to_t =
+    [ "MAX_TRAFFIC_POLICIES_BY_OWNER", MAX_TRAFFIC_POLICIES_BY_OWNER
+    ; "MAX_REUSABLE_DELEGATION_SETS_BY_OWNER", MAX_REUSABLE_DELEGATION_SETS_BY_OWNER
+    ; "MAX_TRAFFIC_POLICY_INSTANCES_BY_OWNER", MAX_TRAFFIC_POLICY_INSTANCES_BY_OWNER
+    ; "MAX_HOSTED_ZONES_BY_OWNER", MAX_HOSTED_ZONES_BY_OWNER
+    ; "MAX_HEALTH_CHECKS_BY_OWNER", MAX_HEALTH_CHECKS_BY_OWNER
+    ]
+
+  let t_to_str =
+    [ MAX_TRAFFIC_POLICIES_BY_OWNER, "MAX_TRAFFIC_POLICIES_BY_OWNER"
+    ; MAX_REUSABLE_DELEGATION_SETS_BY_OWNER, "MAX_REUSABLE_DELEGATION_SETS_BY_OWNER"
+    ; MAX_TRAFFIC_POLICY_INSTANCES_BY_OWNER, "MAX_TRAFFIC_POLICY_INSTANCES_BY_OWNER"
+    ; MAX_HOSTED_ZONES_BY_OWNER, "MAX_HOSTED_ZONES_BY_OWNER"
+    ; MAX_HEALTH_CHECKS_BY_OWNER, "MAX_HEALTH_CHECKS_BY_OWNER"
+    ]
+
+  let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+
+  let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
+
+  let make v () = v
+
+  let parse xml = Util.option_bind (String.parse xml) (fun s -> Util.list_find str_to_t s)
+
+  let to_query v = Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+
+  let of_json j = Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
+end
+
+module ReusableDelegationSetLimitType = struct
+  type t = MAX_ZONES_BY_REUSABLE_DELEGATION_SET
+
+  let str_to_t =
+    [ "MAX_ZONES_BY_REUSABLE_DELEGATION_SET", MAX_ZONES_BY_REUSABLE_DELEGATION_SET ]
+
+  let t_to_str =
+    [ MAX_ZONES_BY_REUSABLE_DELEGATION_SET, "MAX_ZONES_BY_REUSABLE_DELEGATION_SET" ]
+
+  let to_string e = Util.of_option_exn (Util.list_find t_to_str e)
+
+  let of_string s = Util.of_option_exn (Util.list_find str_to_t s)
+
+  let make v () = v
+
+  let parse xml = Util.option_bind (String.parse xml) (fun s -> Util.list_find str_to_t s)
+
+  let to_query v = Query.Value (Some (Util.of_option_exn (Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Util.of_option_exn (Util.list_find t_to_str v))
+
+  let of_json j = Util.of_option_exn (Util.list_find str_to_t (String.of_json j))
 end
 
 module DelegationSet = struct
@@ -1166,6 +2436,66 @@ module DelegationSet = struct
     }
 end
 
+module TrafficPolicySummary = struct
+  type t =
+    { id : String.t
+    ; name : String.t
+    ; type_ : RRType.t
+    ; latest_version : Integer.t
+    ; traffic_policy_count : Integer.t
+    }
+
+  let make ~id ~name ~type_ ~latest_version ~traffic_policy_count () =
+    { id; name; type_; latest_version; traffic_policy_count }
+
+  let parse xml =
+    Some
+      { id = Xml.required "Id" (Util.option_bind (Xml.member "Id" xml) String.parse)
+      ; name = Xml.required "Name" (Util.option_bind (Xml.member "Name" xml) String.parse)
+      ; type_ =
+          Xml.required "Type" (Util.option_bind (Xml.member "Type" xml) RRType.parse)
+      ; latest_version =
+          Xml.required
+            "LatestVersion"
+            (Util.option_bind (Xml.member "LatestVersion" xml) Integer.parse)
+      ; traffic_policy_count =
+          Xml.required
+            "TrafficPolicyCount"
+            (Util.option_bind (Xml.member "TrafficPolicyCount" xml) Integer.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some
+             (Query.Pair ("TrafficPolicyCount", Integer.to_query v.traffic_policy_count))
+         ; Some (Query.Pair ("LatestVersion", Integer.to_query v.latest_version))
+         ; Some (Query.Pair ("Type", RRType.to_query v.type_))
+         ; Some (Query.Pair ("Name", String.to_query v.name))
+         ; Some (Query.Pair ("Id", String.to_query v.id))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("traffic_policy_count", Integer.to_json v.traffic_policy_count)
+         ; Some ("latest_version", Integer.to_json v.latest_version)
+         ; Some ("type_", RRType.to_json v.type_)
+         ; Some ("name", String.to_json v.name)
+         ; Some ("id", String.to_json v.id)
+         ])
+
+  let of_json j =
+    { id = String.of_json (Util.of_option_exn (Json.lookup j "id"))
+    ; name = String.of_json (Util.of_option_exn (Json.lookup j "name"))
+    ; type_ = RRType.of_json (Util.of_option_exn (Json.lookup j "type_"))
+    ; latest_version =
+        Integer.of_json (Util.of_option_exn (Json.lookup j "latest_version"))
+    ; traffic_policy_count =
+        Integer.of_json (Util.of_option_exn (Json.lookup j "traffic_policy_count"))
+    }
+end
+
 module Changes = struct
   type t = Change.t list
 
@@ -1178,41 +2508,6 @@ module Changes = struct
   let to_json v = `List (List.map Change.to_json v)
 
   let of_json j = Json.to_list Change.of_json j
-end
-
-module VPC = struct
-  type t =
-    { v_p_c_region : VPCRegion.t option
-    ; v_p_c_id : String.t option
-    }
-
-  let make ?v_p_c_region ?v_p_c_id () = { v_p_c_region; v_p_c_id }
-
-  let parse xml =
-    Some
-      { v_p_c_region = Util.option_bind (Xml.member "VPCRegion" xml) VPCRegion.parse
-      ; v_p_c_id = Util.option_bind (Xml.member "VPCId" xml) String.parse
-      }
-
-  let to_query v =
-    Query.List
-      (Util.list_filter_opt
-         [ Util.option_map v.v_p_c_id (fun f -> Query.Pair ("VPCId", String.to_query f))
-         ; Util.option_map v.v_p_c_region (fun f ->
-               Query.Pair ("VPCRegion", VPCRegion.to_query f))
-         ])
-
-  let to_json v =
-    `Assoc
-      (Util.list_filter_opt
-         [ Util.option_map v.v_p_c_id (fun f -> "v_p_c_id", String.to_json f)
-         ; Util.option_map v.v_p_c_region (fun f -> "v_p_c_region", VPCRegion.to_json f)
-         ])
-
-  let of_json j =
-    { v_p_c_region = Util.option_map (Json.lookup j "v_p_c_region") VPCRegion.of_json
-    ; v_p_c_id = Util.option_map (Json.lookup j "v_p_c_id") String.of_json
-    }
 end
 
 module HostedZones = struct
@@ -1280,6 +2575,21 @@ module ChangeInfo = struct
     }
 end
 
+module TrafficPolicies = struct
+  type t = TrafficPolicy.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Util.option_all (List.map TrafficPolicy.parse (Xml.members "TrafficPolicy" xml))
+
+  let to_query v = Query.to_query_list TrafficPolicy.to_query v
+
+  let to_json v = `List (List.map TrafficPolicy.to_json v)
+
+  let of_json j = Json.to_list TrafficPolicy.of_json j
+end
+
 module HealthCheckObservations = struct
   type t = HealthCheckObservation.t list
 
@@ -1310,6 +2620,38 @@ module CheckerIpRanges = struct
   let of_json j = Json.to_list String.of_json j
 end
 
+module HostedZoneSummaries = struct
+  type t = HostedZoneSummary.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Util.option_all
+      (List.map HostedZoneSummary.parse (Xml.members "HostedZoneSummary" xml))
+
+  let to_query v = Query.to_query_list HostedZoneSummary.to_query v
+
+  let to_json v = `List (List.map HostedZoneSummary.to_json v)
+
+  let of_json j = Json.to_list HostedZoneSummary.of_json j
+end
+
+module TrafficPolicyInstances = struct
+  type t = TrafficPolicyInstance.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Util.option_all
+      (List.map TrafficPolicyInstance.parse (Xml.members "TrafficPolicyInstance" xml))
+
+  let to_query v = Query.to_query_list TrafficPolicyInstance.to_query v
+
+  let to_json v = `List (List.map TrafficPolicyInstance.to_json v)
+
+  let of_json j = Json.to_list TrafficPolicyInstance.of_json j
+end
+
 module ErrorMessages = struct
   type t = String.t list
 
@@ -1322,6 +2664,36 @@ module ErrorMessages = struct
   let to_json v = `List (List.map String.to_json v)
 
   let of_json j = Json.to_list String.of_json j
+end
+
+module ResettableElementNameList = struct
+  type t = ResettableElementName.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Util.option_all
+      (List.map ResettableElementName.parse (Xml.members "ResettableElementName" xml))
+
+  let to_query v = Query.to_query_list ResettableElementName.to_query v
+
+  let to_json v = `List (List.map ResettableElementName.to_json v)
+
+  let of_json j = Json.to_list ResettableElementName.of_json j
+end
+
+module VPCs = struct
+  type t = VPC.t list
+
+  let make elems () = elems
+
+  let parse xml = Util.option_all (List.map VPC.parse (Xml.members "VPC" xml))
+
+  let to_query v = Query.to_query_list VPC.to_query v
+
+  let to_json v = `List (List.map VPC.to_json v)
+
+  let of_json j = Json.to_list VPC.of_json j
 end
 
 module TagResourceIdList = struct
@@ -1354,6 +2726,44 @@ module GeoLocationDetailsList = struct
   let of_json j = Json.to_list GeoLocationDetails.of_json j
 end
 
+module HostedZoneLimit = struct
+  type t =
+    { type_ : HostedZoneLimitType.t
+    ; value : Long.t
+    }
+
+  let make ~type_ ~value () = { type_; value }
+
+  let parse xml =
+    Some
+      { type_ =
+          Xml.required
+            "Type"
+            (Util.option_bind (Xml.member "Type" xml) HostedZoneLimitType.parse)
+      ; value =
+          Xml.required "Value" (Util.option_bind (Xml.member "Value" xml) Long.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("Value", Long.to_query v.value))
+         ; Some (Query.Pair ("Type", HostedZoneLimitType.to_query v.type_))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("value", Long.to_json v.value)
+         ; Some ("type_", HostedZoneLimitType.to_json v.type_)
+         ])
+
+  let of_json j =
+    { type_ = HostedZoneLimitType.of_json (Util.of_option_exn (Json.lookup j "type_"))
+    ; value = Long.of_json (Util.of_option_exn (Json.lookup j "value"))
+    }
+end
+
 module HealthChecks = struct
   type t = HealthCheck.t list
 
@@ -1367,6 +2777,22 @@ module HealthChecks = struct
   let to_json v = `List (List.map HealthCheck.to_json v)
 
   let of_json j = Json.to_list HealthCheck.of_json j
+end
+
+module QueryLoggingConfigs = struct
+  type t = QueryLoggingConfig.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Util.option_all
+      (List.map QueryLoggingConfig.parse (Xml.members "QueryLoggingConfig" xml))
+
+  let to_query v = Query.to_query_list QueryLoggingConfig.to_query v
+
+  let to_json v = `List (List.map QueryLoggingConfig.to_json v)
+
+  let of_json j = Json.to_list QueryLoggingConfig.of_json j
 end
 
 module TagKeyList = struct
@@ -1398,6 +2824,44 @@ module ResourceTagSetList = struct
   let of_json j = Json.to_list ResourceTagSet.of_json j
 end
 
+module AccountLimit = struct
+  type t =
+    { type_ : AccountLimitType.t
+    ; value : Long.t
+    }
+
+  let make ~type_ ~value () = { type_; value }
+
+  let parse xml =
+    Some
+      { type_ =
+          Xml.required
+            "Type"
+            (Util.option_bind (Xml.member "Type" xml) AccountLimitType.parse)
+      ; value =
+          Xml.required "Value" (Util.option_bind (Xml.member "Value" xml) Long.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("Value", Long.to_query v.value))
+         ; Some (Query.Pair ("Type", AccountLimitType.to_query v.type_))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("value", Long.to_json v.value)
+         ; Some ("type_", AccountLimitType.to_json v.type_)
+         ])
+
+  let of_json j =
+    { type_ = AccountLimitType.of_json (Util.of_option_exn (Json.lookup j "type_"))
+    ; value = Long.of_json (Util.of_option_exn (Json.lookup j "value"))
+    }
+end
+
 module ResourceRecordSets = struct
   type t = ResourceRecordSet.t list
 
@@ -1414,6 +2878,48 @@ module ResourceRecordSets = struct
   let of_json j = Json.to_list ResourceRecordSet.of_json j
 end
 
+module ReusableDelegationSetLimit = struct
+  type t =
+    { type_ : ReusableDelegationSetLimitType.t
+    ; value : Long.t
+    }
+
+  let make ~type_ ~value () = { type_; value }
+
+  let parse xml =
+    Some
+      { type_ =
+          Xml.required
+            "Type"
+            (Util.option_bind
+               (Xml.member "Type" xml)
+               ReusableDelegationSetLimitType.parse)
+      ; value =
+          Xml.required "Value" (Util.option_bind (Xml.member "Value" xml) Long.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("Value", Long.to_query v.value))
+         ; Some (Query.Pair ("Type", ReusableDelegationSetLimitType.to_query v.type_))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("value", Long.to_json v.value)
+         ; Some ("type_", ReusableDelegationSetLimitType.to_json v.type_)
+         ])
+
+  let of_json j =
+    { type_ =
+        ReusableDelegationSetLimitType.of_json
+          (Util.of_option_exn (Json.lookup j "type_"))
+    ; value = Long.of_json (Util.of_option_exn (Json.lookup j "value"))
+    }
+end
+
 module DelegationSets = struct
   type t = DelegationSet.t list
 
@@ -1427,6 +2933,22 @@ module DelegationSets = struct
   let to_json v = `List (List.map DelegationSet.to_json v)
 
   let of_json j = Json.to_list DelegationSet.of_json j
+end
+
+module TrafficPolicySummaries = struct
+  type t = TrafficPolicySummary.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Util.option_all
+      (List.map TrafficPolicySummary.parse (Xml.members "TrafficPolicySummary" xml))
+
+  let to_query v = Query.to_query_list TrafficPolicySummary.to_query v
+
+  let to_json v = `List (List.map TrafficPolicySummary.to_json v)
+
+  let of_json j = Json.to_list TrafficPolicySummary.of_json j
 end
 
 module ChangeBatch = struct
@@ -1466,18 +2988,19 @@ module ChangeBatch = struct
     }
 end
 
-module VPCs = struct
-  type t = VPC.t list
+module RecordData = struct
+  type t = String.t list
 
   let make elems () = elems
 
-  let parse xml = Util.option_all (List.map VPC.parse (Xml.members "VPC" xml))
+  let parse xml =
+    Util.option_all (List.map String.parse (Xml.members "RecordDataEntry" xml))
 
-  let to_query v = Query.to_query_list VPC.to_query v
+  let to_query v = Query.to_query_list String.to_query v
 
-  let to_json v = `List (List.map VPC.to_json v)
+  let to_json v = `List (List.map String.to_json v)
 
-  let of_json j = Json.to_list VPC.of_json j
+  let of_json j = Json.to_list String.of_json j
 end
 
 module ListHostedZonesByNameResponse = struct
@@ -1609,6 +3132,59 @@ module HostedZoneNotFound = struct
   let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
 end
 
+module DeleteQueryLoggingConfigResponse = struct
+  type t = unit
+
+  let make () = ()
+
+  let parse xml = Some ()
+
+  let to_query v = Query.List (Util.list_filter_opt [])
+
+  let to_json v = `Assoc (Util.list_filter_opt [])
+
+  let of_json j = ()
+end
+
+module GetTrafficPolicyInstanceResponse = struct
+  type t = { traffic_policy_instance : TrafficPolicyInstance.t }
+
+  let make ~traffic_policy_instance () = { traffic_policy_instance }
+
+  let parse xml =
+    Some
+      { traffic_policy_instance =
+          Xml.required
+            "TrafficPolicyInstance"
+            (Util.option_bind
+               (Xml.member "TrafficPolicyInstance" xml)
+               TrafficPolicyInstance.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some
+             (Query.Pair
+                ( "TrafficPolicyInstance"
+                , TrafficPolicyInstance.to_query v.traffic_policy_instance ))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some
+             ( "traffic_policy_instance"
+             , TrafficPolicyInstance.to_json v.traffic_policy_instance )
+         ])
+
+  let of_json j =
+    { traffic_policy_instance =
+        TrafficPolicyInstance.of_json
+          (Util.of_option_exn (Json.lookup j "traffic_policy_instance"))
+    }
+end
+
 module ListHealthChecksRequest = struct
   type t =
     { marker : String.t option
@@ -1668,6 +3244,73 @@ module AssociateVPCWithHostedZoneResponse = struct
 
   let of_json j =
     { change_info = ChangeInfo.of_json (Util.of_option_exn (Json.lookup j "change_info"))
+    }
+end
+
+module ListTrafficPolicyVersionsResponse = struct
+  type t =
+    { traffic_policies : TrafficPolicies.t
+    ; is_truncated : Boolean.t
+    ; traffic_policy_version_marker : String.t
+    ; max_items : String.t
+    }
+
+  let make ~traffic_policies ~is_truncated ~traffic_policy_version_marker ~max_items () =
+    { traffic_policies; is_truncated; traffic_policy_version_marker; max_items }
+
+  let parse xml =
+    Some
+      { traffic_policies =
+          Xml.required
+            "TrafficPolicies"
+            (Util.option_bind (Xml.member "TrafficPolicies" xml) TrafficPolicies.parse)
+      ; is_truncated =
+          Xml.required
+            "IsTruncated"
+            (Util.option_bind (Xml.member "IsTruncated" xml) Boolean.parse)
+      ; traffic_policy_version_marker =
+          Xml.required
+            "TrafficPolicyVersionMarker"
+            (Util.option_bind (Xml.member "TrafficPolicyVersionMarker" xml) String.parse)
+      ; max_items =
+          Xml.required
+            "MaxItems"
+            (Util.option_bind (Xml.member "MaxItems" xml) String.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("MaxItems", String.to_query v.max_items))
+         ; Some
+             (Query.Pair
+                ( "TrafficPolicyVersionMarker"
+                , String.to_query v.traffic_policy_version_marker ))
+         ; Some (Query.Pair ("IsTruncated", Boolean.to_query v.is_truncated))
+         ; Some
+             (Query.Pair
+                ("TrafficPolicies.member", TrafficPolicies.to_query v.traffic_policies))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("max_items", String.to_json v.max_items)
+         ; Some
+             ( "traffic_policy_version_marker"
+             , String.to_json v.traffic_policy_version_marker )
+         ; Some ("is_truncated", Boolean.to_json v.is_truncated)
+         ; Some ("traffic_policies", TrafficPolicies.to_json v.traffic_policies)
+         ])
+
+  let of_json j =
+    { traffic_policies =
+        TrafficPolicies.of_json (Util.of_option_exn (Json.lookup j "traffic_policies"))
+    ; is_truncated = Boolean.of_json (Util.of_option_exn (Json.lookup j "is_truncated"))
+    ; traffic_policy_version_marker =
+        String.of_json
+          (Util.of_option_exn (Json.lookup j "traffic_policy_version_marker"))
+    ; max_items = String.of_json (Util.of_option_exn (Json.lookup j "max_items"))
     }
 end
 
@@ -1784,6 +3427,86 @@ module GetHealthCheckLastFailureReasonResponse = struct
     }
 end
 
+module VPCAssociationAuthorizationNotFound = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Util.option_bind (Xml.member "message" xml) String.parse }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> "message", String.to_json f) ])
+
+  let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
+end
+
+module DeleteVPCAssociationAuthorizationRequest = struct
+  type t =
+    { hosted_zone_id : String.t
+    ; v_p_c : VPC.t
+    }
+
+  let make ~hosted_zone_id ~v_p_c () = { hosted_zone_id; v_p_c }
+
+  let parse xml =
+    Some
+      { hosted_zone_id =
+          Xml.required "Id" (Util.option_bind (Xml.member "Id" xml) String.parse)
+      ; v_p_c = Xml.required "VPC" (Util.option_bind (Xml.member "VPC" xml) VPC.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("VPC", VPC.to_query v.v_p_c))
+         ; Some (Query.Pair ("Id", String.to_query v.hosted_zone_id))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("v_p_c", VPC.to_json v.v_p_c)
+         ; Some ("hosted_zone_id", String.to_json v.hosted_zone_id)
+         ])
+
+  let of_json j =
+    { hosted_zone_id =
+        String.of_json (Util.of_option_exn (Json.lookup j "hosted_zone_id"))
+    ; v_p_c = VPC.of_json (Util.of_option_exn (Json.lookup j "v_p_c"))
+    }
+end
+
+module TooManyTrafficPolicyInstances = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Util.option_bind (Xml.member "message" xml) String.parse }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> "message", String.to_json f) ])
+
+  let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
+end
+
 module GetHostedZoneRequest = struct
   type t = { id : String.t }
 
@@ -1822,6 +3545,47 @@ module DelegationSetAlreadyCreated = struct
   let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
 end
 
+module GetAccountLimitRequest = struct
+  type t = { type_ : AccountLimitType.t }
+
+  let make ~type_ () = { type_ }
+
+  let parse xml =
+    Some
+      { type_ =
+          Xml.required
+            "Type"
+            (Util.option_bind (Xml.member "Type" xml) AccountLimitType.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("Type", AccountLimitType.to_query v.type_)) ])
+
+  let to_json v =
+    `Assoc (Util.list_filter_opt [ Some ("type_", AccountLimitType.to_json v.type_) ])
+
+  let of_json j =
+    { type_ = AccountLimitType.of_json (Util.of_option_exn (Json.lookup j "type_")) }
+end
+
+module GetTrafficPolicyInstanceRequest = struct
+  type t = { id : String.t }
+
+  let make ~id () = { id }
+
+  let parse xml =
+    Some { id = Xml.required "Id" (Util.option_bind (Xml.member "Id" xml) String.parse) }
+
+  let to_query v =
+    Query.List (Util.list_filter_opt [ Some (Query.Pair ("Id", String.to_query v.id)) ])
+
+  let to_json v = `Assoc (Util.list_filter_opt [ Some ("id", String.to_json v.id) ])
+
+  let of_json j = { id = String.of_json (Util.of_option_exn (Json.lookup j "id")) }
+end
+
 module ListReusableDelegationSetsRequest = struct
   type t =
     { marker : String.t option
@@ -1855,6 +3619,20 @@ module ListReusableDelegationSetsRequest = struct
     { marker = Util.option_map (Json.lookup j "marker") String.of_json
     ; max_items = Util.option_map (Json.lookup j "max_items") String.of_json
     }
+end
+
+module DeleteTrafficPolicyInstanceResponse = struct
+  type t = unit
+
+  let make () = ()
+
+  let parse xml = Some ()
+
+  let to_query v = Query.List (Util.list_filter_opt [])
+
+  let to_json v = `Assoc (Util.list_filter_opt [])
+
+  let of_json j = ()
 end
 
 module InvalidArgument = struct
@@ -1942,6 +3720,81 @@ module CreateHostedZoneResponse = struct
     }
 end
 
+module GetHostedZoneLimitRequest = struct
+  type t =
+    { type_ : HostedZoneLimitType.t
+    ; hosted_zone_id : String.t
+    }
+
+  let make ~type_ ~hosted_zone_id () = { type_; hosted_zone_id }
+
+  let parse xml =
+    Some
+      { type_ =
+          Xml.required
+            "Type"
+            (Util.option_bind (Xml.member "Type" xml) HostedZoneLimitType.parse)
+      ; hosted_zone_id =
+          Xml.required "Id" (Util.option_bind (Xml.member "Id" xml) String.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("Id", String.to_query v.hosted_zone_id))
+         ; Some (Query.Pair ("Type", HostedZoneLimitType.to_query v.type_))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("hosted_zone_id", String.to_json v.hosted_zone_id)
+         ; Some ("type_", HostedZoneLimitType.to_json v.type_)
+         ])
+
+  let of_json j =
+    { type_ = HostedZoneLimitType.of_json (Util.of_option_exn (Json.lookup j "type_"))
+    ; hosted_zone_id =
+        String.of_json (Util.of_option_exn (Json.lookup j "hosted_zone_id"))
+    }
+end
+
+module GetQueryLoggingConfigResponse = struct
+  type t = { query_logging_config : QueryLoggingConfig.t }
+
+  let make ~query_logging_config () = { query_logging_config }
+
+  let parse xml =
+    Some
+      { query_logging_config =
+          Xml.required
+            "QueryLoggingConfig"
+            (Util.option_bind
+               (Xml.member "QueryLoggingConfig" xml)
+               QueryLoggingConfig.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some
+             (Query.Pair
+                ("QueryLoggingConfig", QueryLoggingConfig.to_query v.query_logging_config))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("query_logging_config", QueryLoggingConfig.to_json v.query_logging_config)
+         ])
+
+  let of_json j =
+    { query_logging_config =
+        QueryLoggingConfig.of_json
+          (Util.of_option_exn (Json.lookup j "query_logging_config"))
+    }
+end
+
 module GetHealthCheckStatusResponse = struct
   type t = { health_check_observations : HealthCheckObservations.t }
 
@@ -2013,6 +3866,163 @@ module GetCheckerIpRangesResponse = struct
     }
 end
 
+module ListHostedZonesByVPCResponse = struct
+  type t =
+    { hosted_zone_summaries : HostedZoneSummaries.t
+    ; max_items : String.t
+    ; next_token : String.t option
+    }
+
+  let make ~hosted_zone_summaries ~max_items ?next_token () =
+    { hosted_zone_summaries; max_items; next_token }
+
+  let parse xml =
+    Some
+      { hosted_zone_summaries =
+          Xml.required
+            "HostedZoneSummaries"
+            (Util.option_bind
+               (Xml.member "HostedZoneSummaries" xml)
+               HostedZoneSummaries.parse)
+      ; max_items =
+          Xml.required
+            "MaxItems"
+            (Util.option_bind (Xml.member "MaxItems" xml) String.parse)
+      ; next_token = Util.option_bind (Xml.member "NextToken" xml) String.parse
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.next_token (fun f ->
+               Query.Pair ("NextToken", String.to_query f))
+         ; Some (Query.Pair ("MaxItems", String.to_query v.max_items))
+         ; Some
+             (Query.Pair
+                ( "HostedZoneSummaries.member"
+                , HostedZoneSummaries.to_query v.hosted_zone_summaries ))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.next_token (fun f -> "next_token", String.to_json f)
+         ; Some ("max_items", String.to_json v.max_items)
+         ; Some
+             ("hosted_zone_summaries", HostedZoneSummaries.to_json v.hosted_zone_summaries)
+         ])
+
+  let of_json j =
+    { hosted_zone_summaries =
+        HostedZoneSummaries.of_json
+          (Util.of_option_exn (Json.lookup j "hosted_zone_summaries"))
+    ; max_items = String.of_json (Util.of_option_exn (Json.lookup j "max_items"))
+    ; next_token = Util.option_map (Json.lookup j "next_token") String.of_json
+    }
+end
+
+module ListTrafficPolicyInstancesResponse = struct
+  type t =
+    { traffic_policy_instances : TrafficPolicyInstances.t
+    ; hosted_zone_id_marker : String.t option
+    ; traffic_policy_instance_name_marker : String.t option
+    ; traffic_policy_instance_type_marker : RRType.t option
+    ; is_truncated : Boolean.t
+    ; max_items : String.t
+    }
+
+  let make
+      ~traffic_policy_instances
+      ?hosted_zone_id_marker
+      ?traffic_policy_instance_name_marker
+      ?traffic_policy_instance_type_marker
+      ~is_truncated
+      ~max_items
+      () =
+    { traffic_policy_instances
+    ; hosted_zone_id_marker
+    ; traffic_policy_instance_name_marker
+    ; traffic_policy_instance_type_marker
+    ; is_truncated
+    ; max_items
+    }
+
+  let parse xml =
+    Some
+      { traffic_policy_instances =
+          Xml.required
+            "TrafficPolicyInstances"
+            (Util.option_bind
+               (Xml.member "TrafficPolicyInstances" xml)
+               TrafficPolicyInstances.parse)
+      ; hosted_zone_id_marker =
+          Util.option_bind (Xml.member "HostedZoneIdMarker" xml) String.parse
+      ; traffic_policy_instance_name_marker =
+          Util.option_bind (Xml.member "TrafficPolicyInstanceNameMarker" xml) String.parse
+      ; traffic_policy_instance_type_marker =
+          Util.option_bind (Xml.member "TrafficPolicyInstanceTypeMarker" xml) RRType.parse
+      ; is_truncated =
+          Xml.required
+            "IsTruncated"
+            (Util.option_bind (Xml.member "IsTruncated" xml) Boolean.parse)
+      ; max_items =
+          Xml.required
+            "MaxItems"
+            (Util.option_bind (Xml.member "MaxItems" xml) String.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("MaxItems", String.to_query v.max_items))
+         ; Some (Query.Pair ("IsTruncated", Boolean.to_query v.is_truncated))
+         ; Util.option_map v.traffic_policy_instance_type_marker (fun f ->
+               Query.Pair ("TrafficPolicyInstanceTypeMarker", RRType.to_query f))
+         ; Util.option_map v.traffic_policy_instance_name_marker (fun f ->
+               Query.Pair ("TrafficPolicyInstanceNameMarker", String.to_query f))
+         ; Util.option_map v.hosted_zone_id_marker (fun f ->
+               Query.Pair ("HostedZoneIdMarker", String.to_query f))
+         ; Some
+             (Query.Pair
+                ( "TrafficPolicyInstances.member"
+                , TrafficPolicyInstances.to_query v.traffic_policy_instances ))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("max_items", String.to_json v.max_items)
+         ; Some ("is_truncated", Boolean.to_json v.is_truncated)
+         ; Util.option_map v.traffic_policy_instance_type_marker (fun f ->
+               "traffic_policy_instance_type_marker", RRType.to_json f)
+         ; Util.option_map v.traffic_policy_instance_name_marker (fun f ->
+               "traffic_policy_instance_name_marker", String.to_json f)
+         ; Util.option_map v.hosted_zone_id_marker (fun f ->
+               "hosted_zone_id_marker", String.to_json f)
+         ; Some
+             ( "traffic_policy_instances"
+             , TrafficPolicyInstances.to_json v.traffic_policy_instances )
+         ])
+
+  let of_json j =
+    { traffic_policy_instances =
+        TrafficPolicyInstances.of_json
+          (Util.of_option_exn (Json.lookup j "traffic_policy_instances"))
+    ; hosted_zone_id_marker =
+        Util.option_map (Json.lookup j "hosted_zone_id_marker") String.of_json
+    ; traffic_policy_instance_name_marker =
+        Util.option_map
+          (Json.lookup j "traffic_policy_instance_name_marker")
+          String.of_json
+    ; traffic_policy_instance_type_marker =
+        Util.option_map
+          (Json.lookup j "traffic_policy_instance_type_marker")
+          RRType.of_json
+    ; is_truncated = Boolean.of_json (Util.of_option_exn (Json.lookup j "is_truncated"))
+    ; max_items = String.of_json (Util.of_option_exn (Json.lookup j "max_items"))
+    }
+end
+
 module ThrottlingException = struct
   type t = { message : String.t option }
 
@@ -2079,6 +4089,41 @@ module NoSuchDelegationSet = struct
   let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
 end
 
+module DeleteTrafficPolicyRequest = struct
+  type t =
+    { id : String.t
+    ; version : Integer.t
+    }
+
+  let make ~id ~version () = { id; version }
+
+  let parse xml =
+    Some
+      { id = Xml.required "Id" (Util.option_bind (Xml.member "Id" xml) String.parse)
+      ; version =
+          Xml.required
+            "Version"
+            (Util.option_bind (Xml.member "Version" xml) Integer.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("Version", Integer.to_query v.version))
+         ; Some (Query.Pair ("Id", String.to_query v.id))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("version", Integer.to_json v.version); Some ("id", String.to_json v.id) ])
+
+  let of_json j =
+    { id = String.of_json (Util.of_option_exn (Json.lookup j "id"))
+    ; version = Integer.of_json (Util.of_option_exn (Json.lookup j "version"))
+    }
+end
+
 module GetHealthCheckResponse = struct
   type t = { health_check : HealthCheck.t }
 
@@ -2133,6 +4178,114 @@ module GetHealthCheckStatusRequest = struct
   let of_json j =
     { health_check_id =
         String.of_json (Util.of_option_exn (Json.lookup j "health_check_id"))
+    }
+end
+
+module CreateTrafficPolicyInstanceRequest = struct
+  type t =
+    { hosted_zone_id : String.t
+    ; name : String.t
+    ; t_t_l : Long.t
+    ; traffic_policy_id : String.t
+    ; traffic_policy_version : Integer.t
+    }
+
+  let make ~hosted_zone_id ~name ~t_t_l ~traffic_policy_id ~traffic_policy_version () =
+    { hosted_zone_id; name; t_t_l; traffic_policy_id; traffic_policy_version }
+
+  let parse xml =
+    Some
+      { hosted_zone_id =
+          Xml.required
+            "HostedZoneId"
+            (Util.option_bind (Xml.member "HostedZoneId" xml) String.parse)
+      ; name = Xml.required "Name" (Util.option_bind (Xml.member "Name" xml) String.parse)
+      ; t_t_l = Xml.required "TTL" (Util.option_bind (Xml.member "TTL" xml) Long.parse)
+      ; traffic_policy_id =
+          Xml.required
+            "TrafficPolicyId"
+            (Util.option_bind (Xml.member "TrafficPolicyId" xml) String.parse)
+      ; traffic_policy_version =
+          Xml.required
+            "TrafficPolicyVersion"
+            (Util.option_bind (Xml.member "TrafficPolicyVersion" xml) Integer.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some
+             (Query.Pair
+                ("TrafficPolicyVersion", Integer.to_query v.traffic_policy_version))
+         ; Some (Query.Pair ("TrafficPolicyId", String.to_query v.traffic_policy_id))
+         ; Some (Query.Pair ("TTL", Long.to_query v.t_t_l))
+         ; Some (Query.Pair ("Name", String.to_query v.name))
+         ; Some (Query.Pair ("HostedZoneId", String.to_query v.hosted_zone_id))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("traffic_policy_version", Integer.to_json v.traffic_policy_version)
+         ; Some ("traffic_policy_id", String.to_json v.traffic_policy_id)
+         ; Some ("t_t_l", Long.to_json v.t_t_l)
+         ; Some ("name", String.to_json v.name)
+         ; Some ("hosted_zone_id", String.to_json v.hosted_zone_id)
+         ])
+
+  let of_json j =
+    { hosted_zone_id =
+        String.of_json (Util.of_option_exn (Json.lookup j "hosted_zone_id"))
+    ; name = String.of_json (Util.of_option_exn (Json.lookup j "name"))
+    ; t_t_l = Long.of_json (Util.of_option_exn (Json.lookup j "t_t_l"))
+    ; traffic_policy_id =
+        String.of_json (Util.of_option_exn (Json.lookup j "traffic_policy_id"))
+    ; traffic_policy_version =
+        Integer.of_json (Util.of_option_exn (Json.lookup j "traffic_policy_version"))
+    }
+end
+
+module ListVPCAssociationAuthorizationsRequest = struct
+  type t =
+    { hosted_zone_id : String.t
+    ; next_token : String.t option
+    ; max_results : String.t option
+    }
+
+  let make ~hosted_zone_id ?next_token ?max_results () =
+    { hosted_zone_id; next_token; max_results }
+
+  let parse xml =
+    Some
+      { hosted_zone_id =
+          Xml.required "Id" (Util.option_bind (Xml.member "Id" xml) String.parse)
+      ; next_token = Util.option_bind (Xml.member "nexttoken" xml) String.parse
+      ; max_results = Util.option_bind (Xml.member "maxresults" xml) String.parse
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.max_results (fun f ->
+               Query.Pair ("maxresults", String.to_query f))
+         ; Util.option_map v.next_token (fun f ->
+               Query.Pair ("nexttoken", String.to_query f))
+         ; Some (Query.Pair ("Id", String.to_query v.hosted_zone_id))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.max_results (fun f -> "max_results", String.to_json f)
+         ; Util.option_map v.next_token (fun f -> "next_token", String.to_json f)
+         ; Some ("hosted_zone_id", String.to_json v.hosted_zone_id)
+         ])
+
+  let of_json j =
+    { hosted_zone_id =
+        String.of_json (Util.of_option_exn (Json.lookup j "hosted_zone_id"))
+    ; next_token = Util.option_map (Json.lookup j "next_token") String.of_json
+    ; max_results = Util.option_map (Json.lookup j "max_results") String.of_json
     }
 end
 
@@ -2242,6 +4395,35 @@ module GetHealthCheckLastFailureReasonRequest = struct
     }
 end
 
+module GetTrafficPolicyResponse = struct
+  type t = { traffic_policy : TrafficPolicy.t }
+
+  let make ~traffic_policy () = { traffic_policy }
+
+  let parse xml =
+    Some
+      { traffic_policy =
+          Xml.required
+            "TrafficPolicy"
+            (Util.option_bind (Xml.member "TrafficPolicy" xml) TrafficPolicy.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("TrafficPolicy", TrafficPolicy.to_query v.traffic_policy)) ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("traffic_policy", TrafficPolicy.to_json v.traffic_policy) ])
+
+  let of_json j =
+    { traffic_policy =
+        TrafficPolicy.of_json (Util.of_option_exn (Json.lookup j "traffic_policy"))
+    }
+end
+
 module LimitsExceeded = struct
   type t = { message : String.t option }
 
@@ -2265,6 +4447,50 @@ module LimitsExceeded = struct
 end
 
 module PublicZoneVPCAssociation = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Util.option_bind (Xml.member "message" xml) String.parse }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> "message", String.to_json f) ])
+
+  let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
+end
+
+module TooManyTrafficPolicyVersionsForCurrentPolicy = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Util.option_bind (Xml.member "message" xml) String.parse }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> "message", String.to_json f) ])
+
+  let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
+end
+
+module NoSuchTrafficPolicyInstance = struct
   type t = { message : String.t option }
 
   let make ?message () = { message }
@@ -2313,6 +4539,28 @@ module GetHealthCheckRequest = struct
     { health_check_id =
         String.of_json (Util.of_option_exn (Json.lookup j "health_check_id"))
     }
+end
+
+module InvalidPaginationToken = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Util.option_bind (Xml.member "message" xml) String.parse }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> "message", String.to_json f) ])
+
+  let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
 end
 
 module ListResourceRecordSetsRequest = struct
@@ -2389,6 +4637,93 @@ module ListResourceRecordSetsRequest = struct
     }
 end
 
+module TestDNSAnswerRequest = struct
+  type t =
+    { hosted_zone_id : String.t
+    ; record_name : String.t
+    ; record_type : RRType.t
+    ; resolver_i_p : String.t option
+    ; e_d_n_s0_client_subnet_i_p : String.t option
+    ; e_d_n_s0_client_subnet_mask : String.t option
+    }
+
+  let make
+      ~hosted_zone_id
+      ~record_name
+      ~record_type
+      ?resolver_i_p
+      ?e_d_n_s0_client_subnet_i_p
+      ?e_d_n_s0_client_subnet_mask
+      () =
+    { hosted_zone_id
+    ; record_name
+    ; record_type
+    ; resolver_i_p
+    ; e_d_n_s0_client_subnet_i_p
+    ; e_d_n_s0_client_subnet_mask
+    }
+
+  let parse xml =
+    Some
+      { hosted_zone_id =
+          Xml.required
+            "hostedzoneid"
+            (Util.option_bind (Xml.member "hostedzoneid" xml) String.parse)
+      ; record_name =
+          Xml.required
+            "recordname"
+            (Util.option_bind (Xml.member "recordname" xml) String.parse)
+      ; record_type =
+          Xml.required
+            "recordtype"
+            (Util.option_bind (Xml.member "recordtype" xml) RRType.parse)
+      ; resolver_i_p = Util.option_bind (Xml.member "resolverip" xml) String.parse
+      ; e_d_n_s0_client_subnet_i_p =
+          Util.option_bind (Xml.member "edns0clientsubnetip" xml) String.parse
+      ; e_d_n_s0_client_subnet_mask =
+          Util.option_bind (Xml.member "edns0clientsubnetmask" xml) String.parse
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.e_d_n_s0_client_subnet_mask (fun f ->
+               Query.Pair ("edns0clientsubnetmask", String.to_query f))
+         ; Util.option_map v.e_d_n_s0_client_subnet_i_p (fun f ->
+               Query.Pair ("edns0clientsubnetip", String.to_query f))
+         ; Util.option_map v.resolver_i_p (fun f ->
+               Query.Pair ("resolverip", String.to_query f))
+         ; Some (Query.Pair ("recordtype", RRType.to_query v.record_type))
+         ; Some (Query.Pair ("recordname", String.to_query v.record_name))
+         ; Some (Query.Pair ("hostedzoneid", String.to_query v.hosted_zone_id))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.e_d_n_s0_client_subnet_mask (fun f ->
+               "e_d_n_s0_client_subnet_mask", String.to_json f)
+         ; Util.option_map v.e_d_n_s0_client_subnet_i_p (fun f ->
+               "e_d_n_s0_client_subnet_i_p", String.to_json f)
+         ; Util.option_map v.resolver_i_p (fun f -> "resolver_i_p", String.to_json f)
+         ; Some ("record_type", RRType.to_json v.record_type)
+         ; Some ("record_name", String.to_json v.record_name)
+         ; Some ("hosted_zone_id", String.to_json v.hosted_zone_id)
+         ])
+
+  let of_json j =
+    { hosted_zone_id =
+        String.of_json (Util.of_option_exn (Json.lookup j "hosted_zone_id"))
+    ; record_name = String.of_json (Util.of_option_exn (Json.lookup j "record_name"))
+    ; record_type = RRType.of_json (Util.of_option_exn (Json.lookup j "record_type"))
+    ; resolver_i_p = Util.option_map (Json.lookup j "resolver_i_p") String.of_json
+    ; e_d_n_s0_client_subnet_i_p =
+        Util.option_map (Json.lookup j "e_d_n_s0_client_subnet_i_p") String.of_json
+    ; e_d_n_s0_client_subnet_mask =
+        Util.option_map (Json.lookup j "e_d_n_s0_client_subnet_mask") String.of_json
+    }
+end
+
 module NoSuchChange = struct
   type t = { message : String.t option }
 
@@ -2409,6 +4744,55 @@ module NoSuchChange = struct
          [ Util.option_map v.message (fun f -> "message", String.to_json f) ])
 
   let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
+end
+
+module CreateQueryLoggingConfigRequest = struct
+  type t =
+    { hosted_zone_id : String.t
+    ; cloud_watch_logs_log_group_arn : String.t
+    }
+
+  let make ~hosted_zone_id ~cloud_watch_logs_log_group_arn () =
+    { hosted_zone_id; cloud_watch_logs_log_group_arn }
+
+  let parse xml =
+    Some
+      { hosted_zone_id =
+          Xml.required
+            "HostedZoneId"
+            (Util.option_bind (Xml.member "HostedZoneId" xml) String.parse)
+      ; cloud_watch_logs_log_group_arn =
+          Xml.required
+            "CloudWatchLogsLogGroupArn"
+            (Util.option_bind (Xml.member "CloudWatchLogsLogGroupArn" xml) String.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some
+             (Query.Pair
+                ( "CloudWatchLogsLogGroupArn"
+                , String.to_query v.cloud_watch_logs_log_group_arn ))
+         ; Some (Query.Pair ("HostedZoneId", String.to_query v.hosted_zone_id))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some
+             ( "cloud_watch_logs_log_group_arn"
+             , String.to_json v.cloud_watch_logs_log_group_arn )
+         ; Some ("hosted_zone_id", String.to_json v.hosted_zone_id)
+         ])
+
+  let of_json j =
+    { hosted_zone_id =
+        String.of_json (Util.of_option_exn (Json.lookup j "hosted_zone_id"))
+    ; cloud_watch_logs_log_group_arn =
+        String.of_json
+          (Util.of_option_exn (Json.lookup j "cloud_watch_logs_log_group_arn"))
+    }
 end
 
 module GetReusableDelegationSetResponse = struct
@@ -2482,9 +4866,12 @@ module ChangeTagsForResourceResponse = struct
 end
 
 module InvalidChangeBatch = struct
-  type t = { messages : ErrorMessages.t }
+  type t =
+    { messages : ErrorMessages.t
+    ; message : String.t option
+    }
 
-  let make ?(messages = []) () = { messages }
+  let make ?(messages = []) ?message () = { messages; message }
 
   let parse xml =
     Some
@@ -2492,18 +4879,140 @@ module InvalidChangeBatch = struct
           Util.of_option
             []
             (Util.option_bind (Xml.member "messages" xml) ErrorMessages.parse)
+      ; message = Util.option_bind (Xml.member "message" xml) String.parse
       }
 
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("messages.member", ErrorMessages.to_query v.messages)) ])
+         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         ; Some (Query.Pair ("messages.member", ErrorMessages.to_query v.messages))
+         ])
 
   let to_json v =
-    `Assoc (Util.list_filter_opt [ Some ("messages", ErrorMessages.to_json v.messages) ])
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> "message", String.to_json f)
+         ; Some ("messages", ErrorMessages.to_json v.messages)
+         ])
 
   let of_json j =
-    { messages = ErrorMessages.of_json (Util.of_option_exn (Json.lookup j "messages")) }
+    { messages = ErrorMessages.of_json (Util.of_option_exn (Json.lookup j "messages"))
+    ; message = Util.option_map (Json.lookup j "message") String.of_json
+    }
+end
+
+module ListTrafficPolicyInstancesByPolicyRequest = struct
+  type t =
+    { traffic_policy_id : String.t
+    ; traffic_policy_version : Integer.t
+    ; hosted_zone_id_marker : String.t option
+    ; traffic_policy_instance_name_marker : String.t option
+    ; traffic_policy_instance_type_marker : RRType.t option
+    ; max_items : String.t option
+    }
+
+  let make
+      ~traffic_policy_id
+      ~traffic_policy_version
+      ?hosted_zone_id_marker
+      ?traffic_policy_instance_name_marker
+      ?traffic_policy_instance_type_marker
+      ?max_items
+      () =
+    { traffic_policy_id
+    ; traffic_policy_version
+    ; hosted_zone_id_marker
+    ; traffic_policy_instance_name_marker
+    ; traffic_policy_instance_type_marker
+    ; max_items
+    }
+
+  let parse xml =
+    Some
+      { traffic_policy_id =
+          Xml.required "id" (Util.option_bind (Xml.member "id" xml) String.parse)
+      ; traffic_policy_version =
+          Xml.required
+            "version"
+            (Util.option_bind (Xml.member "version" xml) Integer.parse)
+      ; hosted_zone_id_marker =
+          Util.option_bind (Xml.member "hostedzoneid" xml) String.parse
+      ; traffic_policy_instance_name_marker =
+          Util.option_bind (Xml.member "trafficpolicyinstancename" xml) String.parse
+      ; traffic_policy_instance_type_marker =
+          Util.option_bind (Xml.member "trafficpolicyinstancetype" xml) RRType.parse
+      ; max_items = Util.option_bind (Xml.member "maxitems" xml) String.parse
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.max_items (fun f ->
+               Query.Pair ("maxitems", String.to_query f))
+         ; Util.option_map v.traffic_policy_instance_type_marker (fun f ->
+               Query.Pair ("trafficpolicyinstancetype", RRType.to_query f))
+         ; Util.option_map v.traffic_policy_instance_name_marker (fun f ->
+               Query.Pair ("trafficpolicyinstancename", String.to_query f))
+         ; Util.option_map v.hosted_zone_id_marker (fun f ->
+               Query.Pair ("hostedzoneid", String.to_query f))
+         ; Some (Query.Pair ("version", Integer.to_query v.traffic_policy_version))
+         ; Some (Query.Pair ("id", String.to_query v.traffic_policy_id))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.max_items (fun f -> "max_items", String.to_json f)
+         ; Util.option_map v.traffic_policy_instance_type_marker (fun f ->
+               "traffic_policy_instance_type_marker", RRType.to_json f)
+         ; Util.option_map v.traffic_policy_instance_name_marker (fun f ->
+               "traffic_policy_instance_name_marker", String.to_json f)
+         ; Util.option_map v.hosted_zone_id_marker (fun f ->
+               "hosted_zone_id_marker", String.to_json f)
+         ; Some ("traffic_policy_version", Integer.to_json v.traffic_policy_version)
+         ; Some ("traffic_policy_id", String.to_json v.traffic_policy_id)
+         ])
+
+  let of_json j =
+    { traffic_policy_id =
+        String.of_json (Util.of_option_exn (Json.lookup j "traffic_policy_id"))
+    ; traffic_policy_version =
+        Integer.of_json (Util.of_option_exn (Json.lookup j "traffic_policy_version"))
+    ; hosted_zone_id_marker =
+        Util.option_map (Json.lookup j "hosted_zone_id_marker") String.of_json
+    ; traffic_policy_instance_name_marker =
+        Util.option_map
+          (Json.lookup j "traffic_policy_instance_name_marker")
+          String.of_json
+    ; traffic_policy_instance_type_marker =
+        Util.option_map
+          (Json.lookup j "traffic_policy_instance_type_marker")
+          RRType.of_json
+    ; max_items = Util.option_map (Json.lookup j "max_items") String.of_json
+    }
+end
+
+module QueryLoggingConfigAlreadyExists = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Util.option_bind (Xml.member "message" xml) String.parse }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> "message", String.to_json f) ])
+
+  let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
 end
 
 module GetGeoLocationRequest = struct
@@ -2551,6 +5060,73 @@ module GetGeoLocationRequest = struct
     }
 end
 
+module NotAuthorizedException = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Util.option_bind (Xml.member "message" xml) String.parse }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> "message", String.to_json f) ])
+
+  let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
+end
+
+module ListTrafficPolicyVersionsRequest = struct
+  type t =
+    { id : String.t
+    ; traffic_policy_version_marker : String.t option
+    ; max_items : String.t option
+    }
+
+  let make ~id ?traffic_policy_version_marker ?max_items () =
+    { id; traffic_policy_version_marker; max_items }
+
+  let parse xml =
+    Some
+      { id = Xml.required "Id" (Util.option_bind (Xml.member "Id" xml) String.parse)
+      ; traffic_policy_version_marker =
+          Util.option_bind (Xml.member "trafficpolicyversion" xml) String.parse
+      ; max_items = Util.option_bind (Xml.member "maxitems" xml) String.parse
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.max_items (fun f ->
+               Query.Pair ("maxitems", String.to_query f))
+         ; Util.option_map v.traffic_policy_version_marker (fun f ->
+               Query.Pair ("trafficpolicyversion", String.to_query f))
+         ; Some (Query.Pair ("Id", String.to_query v.id))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.max_items (fun f -> "max_items", String.to_json f)
+         ; Util.option_map v.traffic_policy_version_marker (fun f ->
+               "traffic_policy_version_marker", String.to_json f)
+         ; Some ("id", String.to_json v.id)
+         ])
+
+  let of_json j =
+    { id = String.of_json (Util.of_option_exn (Json.lookup j "id"))
+    ; traffic_policy_version_marker =
+        Util.option_map (Json.lookup j "traffic_policy_version_marker") String.of_json
+    ; max_items = Util.option_map (Json.lookup j "max_items") String.of_json
+    }
+end
+
 module GetHostedZoneCountRequest = struct
   type t = unit
 
@@ -2565,6 +5141,28 @@ module GetHostedZoneCountRequest = struct
   let of_json j = ()
 end
 
+module TooManyVPCAssociationAuthorizations = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Util.option_bind (Xml.member "message" xml) String.parse }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> "message", String.to_json f) ])
+
+  let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
+end
+
 module UpdateHealthCheckRequest = struct
   type t =
     { health_check_id : String.t
@@ -2575,6 +5173,15 @@ module UpdateHealthCheckRequest = struct
     ; fully_qualified_domain_name : String.t option
     ; search_string : String.t option
     ; failure_threshold : Integer.t option
+    ; inverted : Boolean.t option
+    ; disabled : Boolean.t option
+    ; health_threshold : Integer.t option
+    ; child_health_checks : ChildHealthCheckList.t
+    ; enable_s_n_i : Boolean.t option
+    ; regions : HealthCheckRegionList.t
+    ; alarm_identifier : AlarmIdentifier.t option
+    ; insufficient_data_health_status : InsufficientDataHealthStatus.t option
+    ; reset_elements : ResettableElementNameList.t
     }
 
   let make
@@ -2586,6 +5193,15 @@ module UpdateHealthCheckRequest = struct
       ?fully_qualified_domain_name
       ?search_string
       ?failure_threshold
+      ?inverted
+      ?disabled
+      ?health_threshold
+      ?(child_health_checks = [])
+      ?enable_s_n_i
+      ?(regions = [])
+      ?alarm_identifier
+      ?insufficient_data_health_status
+      ?(reset_elements = [])
       () =
     { health_check_id
     ; health_check_version
@@ -2595,6 +5211,15 @@ module UpdateHealthCheckRequest = struct
     ; fully_qualified_domain_name
     ; search_string
     ; failure_threshold
+    ; inverted
+    ; disabled
+    ; health_threshold
+    ; child_health_checks
+    ; enable_s_n_i
+    ; regions
+    ; alarm_identifier
+    ; insufficient_data_health_status
+    ; reset_elements
     }
 
   let parse xml =
@@ -2613,12 +5238,61 @@ module UpdateHealthCheckRequest = struct
       ; search_string = Util.option_bind (Xml.member "SearchString" xml) String.parse
       ; failure_threshold =
           Util.option_bind (Xml.member "FailureThreshold" xml) Integer.parse
+      ; inverted = Util.option_bind (Xml.member "Inverted" xml) Boolean.parse
+      ; disabled = Util.option_bind (Xml.member "Disabled" xml) Boolean.parse
+      ; health_threshold =
+          Util.option_bind (Xml.member "HealthThreshold" xml) Integer.parse
+      ; child_health_checks =
+          Util.of_option
+            []
+            (Util.option_bind
+               (Xml.member "ChildHealthChecks" xml)
+               ChildHealthCheckList.parse)
+      ; enable_s_n_i = Util.option_bind (Xml.member "EnableSNI" xml) Boolean.parse
+      ; regions =
+          Util.of_option
+            []
+            (Util.option_bind (Xml.member "Regions" xml) HealthCheckRegionList.parse)
+      ; alarm_identifier =
+          Util.option_bind (Xml.member "AlarmIdentifier" xml) AlarmIdentifier.parse
+      ; insufficient_data_health_status =
+          Util.option_bind
+            (Xml.member "InsufficientDataHealthStatus" xml)
+            InsufficientDataHealthStatus.parse
+      ; reset_elements =
+          Util.of_option
+            []
+            (Util.option_bind
+               (Xml.member "ResetElements" xml)
+               ResettableElementNameList.parse)
       }
 
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.failure_threshold (fun f ->
+         [ Some
+             (Query.Pair
+                ( "ResetElements.member"
+                , ResettableElementNameList.to_query v.reset_elements ))
+         ; Util.option_map v.insufficient_data_health_status (fun f ->
+               Query.Pair
+                 ("InsufficientDataHealthStatus", InsufficientDataHealthStatus.to_query f))
+         ; Util.option_map v.alarm_identifier (fun f ->
+               Query.Pair ("AlarmIdentifier", AlarmIdentifier.to_query f))
+         ; Some (Query.Pair ("Regions.member", HealthCheckRegionList.to_query v.regions))
+         ; Util.option_map v.enable_s_n_i (fun f ->
+               Query.Pair ("EnableSNI", Boolean.to_query f))
+         ; Some
+             (Query.Pair
+                ( "ChildHealthChecks.member"
+                , ChildHealthCheckList.to_query v.child_health_checks ))
+         ; Util.option_map v.health_threshold (fun f ->
+               Query.Pair ("HealthThreshold", Integer.to_query f))
+         ; Util.option_map v.disabled (fun f ->
+               Query.Pair ("Disabled", Boolean.to_query f))
+         ; Util.option_map v.inverted (fun f ->
+               Query.Pair ("Inverted", Boolean.to_query f))
+         ; Util.option_map v.failure_threshold (fun f ->
                Query.Pair ("FailureThreshold", Integer.to_query f))
          ; Util.option_map v.search_string (fun f ->
                Query.Pair ("SearchString", String.to_query f))
@@ -2637,7 +5311,19 @@ module UpdateHealthCheckRequest = struct
   let to_json v =
     `Assoc
       (Util.list_filter_opt
-         [ Util.option_map v.failure_threshold (fun f ->
+         [ Some ("reset_elements", ResettableElementNameList.to_json v.reset_elements)
+         ; Util.option_map v.insufficient_data_health_status (fun f ->
+               "insufficient_data_health_status", InsufficientDataHealthStatus.to_json f)
+         ; Util.option_map v.alarm_identifier (fun f ->
+               "alarm_identifier", AlarmIdentifier.to_json f)
+         ; Some ("regions", HealthCheckRegionList.to_json v.regions)
+         ; Util.option_map v.enable_s_n_i (fun f -> "enable_s_n_i", Boolean.to_json f)
+         ; Some ("child_health_checks", ChildHealthCheckList.to_json v.child_health_checks)
+         ; Util.option_map v.health_threshold (fun f ->
+               "health_threshold", Integer.to_json f)
+         ; Util.option_map v.disabled (fun f -> "disabled", Boolean.to_json f)
+         ; Util.option_map v.inverted (fun f -> "inverted", Boolean.to_json f)
+         ; Util.option_map v.failure_threshold (fun f ->
                "failure_threshold", Integer.to_json f)
          ; Util.option_map v.search_string (fun f -> "search_string", String.to_json f)
          ; Util.option_map v.fully_qualified_domain_name (fun f ->
@@ -2663,6 +5349,25 @@ module UpdateHealthCheckRequest = struct
     ; search_string = Util.option_map (Json.lookup j "search_string") String.of_json
     ; failure_threshold =
         Util.option_map (Json.lookup j "failure_threshold") Integer.of_json
+    ; inverted = Util.option_map (Json.lookup j "inverted") Boolean.of_json
+    ; disabled = Util.option_map (Json.lookup j "disabled") Boolean.of_json
+    ; health_threshold =
+        Util.option_map (Json.lookup j "health_threshold") Integer.of_json
+    ; child_health_checks =
+        ChildHealthCheckList.of_json
+          (Util.of_option_exn (Json.lookup j "child_health_checks"))
+    ; enable_s_n_i = Util.option_map (Json.lookup j "enable_s_n_i") Boolean.of_json
+    ; regions =
+        HealthCheckRegionList.of_json (Util.of_option_exn (Json.lookup j "regions"))
+    ; alarm_identifier =
+        Util.option_map (Json.lookup j "alarm_identifier") AlarmIdentifier.of_json
+    ; insufficient_data_health_status =
+        Util.option_map
+          (Json.lookup j "insufficient_data_health_status")
+          InsufficientDataHealthStatus.of_json
+    ; reset_elements =
+        ResettableElementNameList.of_json
+          (Util.of_option_exn (Json.lookup j "reset_elements"))
     }
 end
 
@@ -2695,7 +5400,127 @@ module GetHealthCheckCountResponse = struct
     }
 end
 
+module ListVPCAssociationAuthorizationsResponse = struct
+  type t =
+    { hosted_zone_id : String.t
+    ; next_token : String.t option
+    ; v_p_cs : VPCs.t
+    }
+
+  let make ~hosted_zone_id ?next_token ~v_p_cs () = { hosted_zone_id; next_token; v_p_cs }
+
+  let parse xml =
+    Some
+      { hosted_zone_id =
+          Xml.required
+            "HostedZoneId"
+            (Util.option_bind (Xml.member "HostedZoneId" xml) String.parse)
+      ; next_token = Util.option_bind (Xml.member "NextToken" xml) String.parse
+      ; v_p_cs = Xml.required "VPCs" (Util.option_bind (Xml.member "VPCs" xml) VPCs.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("VPCs.member", VPCs.to_query v.v_p_cs))
+         ; Util.option_map v.next_token (fun f ->
+               Query.Pair ("NextToken", String.to_query f))
+         ; Some (Query.Pair ("HostedZoneId", String.to_query v.hosted_zone_id))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("v_p_cs", VPCs.to_json v.v_p_cs)
+         ; Util.option_map v.next_token (fun f -> "next_token", String.to_json f)
+         ; Some ("hosted_zone_id", String.to_json v.hosted_zone_id)
+         ])
+
+  let of_json j =
+    { hosted_zone_id =
+        String.of_json (Util.of_option_exn (Json.lookup j "hosted_zone_id"))
+    ; next_token = Util.option_map (Json.lookup j "next_token") String.of_json
+    ; v_p_cs = VPCs.of_json (Util.of_option_exn (Json.lookup j "v_p_cs"))
+    }
+end
+
+module CreateVPCAssociationAuthorizationResponse = struct
+  type t =
+    { hosted_zone_id : String.t
+    ; v_p_c : VPC.t
+    }
+
+  let make ~hosted_zone_id ~v_p_c () = { hosted_zone_id; v_p_c }
+
+  let parse xml =
+    Some
+      { hosted_zone_id =
+          Xml.required
+            "HostedZoneId"
+            (Util.option_bind (Xml.member "HostedZoneId" xml) String.parse)
+      ; v_p_c = Xml.required "VPC" (Util.option_bind (Xml.member "VPC" xml) VPC.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("VPC", VPC.to_query v.v_p_c))
+         ; Some (Query.Pair ("HostedZoneId", String.to_query v.hosted_zone_id))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("v_p_c", VPC.to_json v.v_p_c)
+         ; Some ("hosted_zone_id", String.to_json v.hosted_zone_id)
+         ])
+
+  let of_json j =
+    { hosted_zone_id =
+        String.of_json (Util.of_option_exn (Json.lookup j "hosted_zone_id"))
+    ; v_p_c = VPC.of_json (Util.of_option_exn (Json.lookup j "v_p_c"))
+    }
+end
+
+module GetQueryLoggingConfigRequest = struct
+  type t = { id : String.t }
+
+  let make ~id () = { id }
+
+  let parse xml =
+    Some { id = Xml.required "Id" (Util.option_bind (Xml.member "Id" xml) String.parse) }
+
+  let to_query v =
+    Query.List (Util.list_filter_opt [ Some (Query.Pair ("Id", String.to_query v.id)) ])
+
+  let to_json v = `Assoc (Util.list_filter_opt [ Some ("id", String.to_json v.id) ])
+
+  let of_json j = { id = String.of_json (Util.of_option_exn (Json.lookup j "id")) }
+end
+
 module NoSuchHostedZone = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Util.option_bind (Xml.member "message" xml) String.parse }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> "message", String.to_json f) ])
+
+  let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
+end
+
+module TrafficPolicyAlreadyExists = struct
   type t = { message : String.t option }
 
   let make ?message () = { message }
@@ -2733,6 +5558,28 @@ module DeleteReusableDelegationSetRequest = struct
   let of_json j = { id = String.of_json (Util.of_option_exn (Json.lookup j "id")) }
 end
 
+module InvalidTrafficPolicyDocument = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Util.option_bind (Xml.member "message" xml) String.parse }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> "message", String.to_json f) ])
+
+  let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
+end
+
 module VPCAssociationNotFound = struct
   type t = { message : String.t option }
 
@@ -2756,6 +5603,28 @@ module VPCAssociationNotFound = struct
 end
 
 module ConflictingDomainExists = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Util.option_bind (Xml.member "message" xml) String.parse }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> "message", String.to_json f) ])
+
+  let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
+end
+
+module NoSuchCloudWatchLogsLogGroup = struct
   type t = { message : String.t option }
 
   let make ?message () = { message }
@@ -3184,6 +6053,99 @@ module ListGeoLocationsResponse = struct
     }
 end
 
+module UpdateTrafficPolicyInstanceRequest = struct
+  type t =
+    { id : String.t
+    ; t_t_l : Long.t
+    ; traffic_policy_id : String.t
+    ; traffic_policy_version : Integer.t
+    }
+
+  let make ~id ~t_t_l ~traffic_policy_id ~traffic_policy_version () =
+    { id; t_t_l; traffic_policy_id; traffic_policy_version }
+
+  let parse xml =
+    Some
+      { id = Xml.required "Id" (Util.option_bind (Xml.member "Id" xml) String.parse)
+      ; t_t_l = Xml.required "TTL" (Util.option_bind (Xml.member "TTL" xml) Long.parse)
+      ; traffic_policy_id =
+          Xml.required
+            "TrafficPolicyId"
+            (Util.option_bind (Xml.member "TrafficPolicyId" xml) String.parse)
+      ; traffic_policy_version =
+          Xml.required
+            "TrafficPolicyVersion"
+            (Util.option_bind (Xml.member "TrafficPolicyVersion" xml) Integer.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some
+             (Query.Pair
+                ("TrafficPolicyVersion", Integer.to_query v.traffic_policy_version))
+         ; Some (Query.Pair ("TrafficPolicyId", String.to_query v.traffic_policy_id))
+         ; Some (Query.Pair ("TTL", Long.to_query v.t_t_l))
+         ; Some (Query.Pair ("Id", String.to_query v.id))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("traffic_policy_version", Integer.to_json v.traffic_policy_version)
+         ; Some ("traffic_policy_id", String.to_json v.traffic_policy_id)
+         ; Some ("t_t_l", Long.to_json v.t_t_l)
+         ; Some ("id", String.to_json v.id)
+         ])
+
+  let of_json j =
+    { id = String.of_json (Util.of_option_exn (Json.lookup j "id"))
+    ; t_t_l = Long.of_json (Util.of_option_exn (Json.lookup j "t_t_l"))
+    ; traffic_policy_id =
+        String.of_json (Util.of_option_exn (Json.lookup j "traffic_policy_id"))
+    ; traffic_policy_version =
+        Integer.of_json (Util.of_option_exn (Json.lookup j "traffic_policy_version"))
+    }
+end
+
+module GetHostedZoneLimitResponse = struct
+  type t =
+    { limit : HostedZoneLimit.t
+    ; count : Long.t
+    }
+
+  let make ~limit ~count () = { limit; count }
+
+  let parse xml =
+    Some
+      { limit =
+          Xml.required
+            "Limit"
+            (Util.option_bind (Xml.member "Limit" xml) HostedZoneLimit.parse)
+      ; count =
+          Xml.required "Count" (Util.option_bind (Xml.member "Count" xml) Long.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("Count", Long.to_query v.count))
+         ; Some (Query.Pair ("Limit", HostedZoneLimit.to_query v.limit))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("count", Long.to_json v.count)
+         ; Some ("limit", HostedZoneLimit.to_json v.limit)
+         ])
+
+  let of_json j =
+    { limit = HostedZoneLimit.of_json (Util.of_option_exn (Json.lookup j "limit"))
+    ; count = Long.of_json (Util.of_option_exn (Json.lookup j "count"))
+    }
+end
+
 module ListHealthChecksResponse = struct
   type t =
     { health_checks : HealthChecks.t
@@ -3269,6 +6231,101 @@ module IncompatibleVersion = struct
   let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
 end
 
+module ListQueryLoggingConfigsResponse = struct
+  type t =
+    { query_logging_configs : QueryLoggingConfigs.t
+    ; next_token : String.t option
+    }
+
+  let make ~query_logging_configs ?next_token () = { query_logging_configs; next_token }
+
+  let parse xml =
+    Some
+      { query_logging_configs =
+          Xml.required
+            "QueryLoggingConfigs"
+            (Util.option_bind
+               (Xml.member "QueryLoggingConfigs" xml)
+               QueryLoggingConfigs.parse)
+      ; next_token = Util.option_bind (Xml.member "NextToken" xml) String.parse
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.next_token (fun f ->
+               Query.Pair ("NextToken", String.to_query f))
+         ; Some
+             (Query.Pair
+                ( "QueryLoggingConfigs.member"
+                , QueryLoggingConfigs.to_query v.query_logging_configs ))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.next_token (fun f -> "next_token", String.to_json f)
+         ; Some
+             ("query_logging_configs", QueryLoggingConfigs.to_json v.query_logging_configs)
+         ])
+
+  let of_json j =
+    { query_logging_configs =
+        QueryLoggingConfigs.of_json
+          (Util.of_option_exn (Json.lookup j "query_logging_configs"))
+    ; next_token = Util.option_map (Json.lookup j "next_token") String.of_json
+    }
+end
+
+module CreateTrafficPolicyInstanceResponse = struct
+  type t =
+    { traffic_policy_instance : TrafficPolicyInstance.t
+    ; location : String.t
+    }
+
+  let make ~traffic_policy_instance ~location () = { traffic_policy_instance; location }
+
+  let parse xml =
+    Some
+      { traffic_policy_instance =
+          Xml.required
+            "TrafficPolicyInstance"
+            (Util.option_bind
+               (Xml.member "TrafficPolicyInstance" xml)
+               TrafficPolicyInstance.parse)
+      ; location =
+          Xml.required
+            "Location"
+            (Util.option_bind (Xml.member "Location" xml) String.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("Location", String.to_query v.location))
+         ; Some
+             (Query.Pair
+                ( "TrafficPolicyInstance"
+                , TrafficPolicyInstance.to_query v.traffic_policy_instance ))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("location", String.to_json v.location)
+         ; Some
+             ( "traffic_policy_instance"
+             , TrafficPolicyInstance.to_json v.traffic_policy_instance )
+         ])
+
+  let of_json j =
+    { traffic_policy_instance =
+        TrafficPolicyInstance.of_json
+          (Util.of_option_exn (Json.lookup j "traffic_policy_instance"))
+    ; location = String.of_json (Util.of_option_exn (Json.lookup j "location"))
+    }
+end
+
 module HealthCheckInUse = struct
   type t = { message : String.t option }
 
@@ -3311,6 +6368,43 @@ module TooManyHealthChecks = struct
          [ Util.option_map v.message (fun f -> "message", String.to_json f) ])
 
   let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
+end
+
+module GetTrafficPolicyInstanceCountResponse = struct
+  type t = { traffic_policy_instance_count : Integer.t }
+
+  let make ~traffic_policy_instance_count () = { traffic_policy_instance_count }
+
+  let parse xml =
+    Some
+      { traffic_policy_instance_count =
+          Xml.required
+            "TrafficPolicyInstanceCount"
+            (Util.option_bind (Xml.member "TrafficPolicyInstanceCount" xml) Integer.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some
+             (Query.Pair
+                ( "TrafficPolicyInstanceCount"
+                , Integer.to_query v.traffic_policy_instance_count ))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some
+             ( "traffic_policy_instance_count"
+             , Integer.to_json v.traffic_policy_instance_count )
+         ])
+
+  let of_json j =
+    { traffic_policy_instance_count =
+        Integer.of_json
+          (Util.of_option_exn (Json.lookup j "traffic_policy_instance_count"))
+    }
 end
 
 module DeleteHostedZoneRequest = struct
@@ -3415,6 +6509,117 @@ module ChangeTagsForResourceRequest = struct
     }
 end
 
+module CreateQueryLoggingConfigResponse = struct
+  type t =
+    { query_logging_config : QueryLoggingConfig.t
+    ; location : String.t
+    }
+
+  let make ~query_logging_config ~location () = { query_logging_config; location }
+
+  let parse xml =
+    Some
+      { query_logging_config =
+          Xml.required
+            "QueryLoggingConfig"
+            (Util.option_bind
+               (Xml.member "QueryLoggingConfig" xml)
+               QueryLoggingConfig.parse)
+      ; location =
+          Xml.required
+            "Location"
+            (Util.option_bind (Xml.member "Location" xml) String.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("Location", String.to_query v.location))
+         ; Some
+             (Query.Pair
+                ("QueryLoggingConfig", QueryLoggingConfig.to_query v.query_logging_config))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("location", String.to_json v.location)
+         ; Some ("query_logging_config", QueryLoggingConfig.to_json v.query_logging_config)
+         ])
+
+  let of_json j =
+    { query_logging_config =
+        QueryLoggingConfig.of_json
+          (Util.of_option_exn (Json.lookup j "query_logging_config"))
+    ; location = String.of_json (Util.of_option_exn (Json.lookup j "location"))
+    }
+end
+
+module TooManyTrafficPolicies = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Util.option_bind (Xml.member "message" xml) String.parse }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> "message", String.to_json f) ])
+
+  let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
+end
+
+module ListQueryLoggingConfigsRequest = struct
+  type t =
+    { hosted_zone_id : String.t option
+    ; next_token : String.t option
+    ; max_results : String.t option
+    }
+
+  let make ?hosted_zone_id ?next_token ?max_results () =
+    { hosted_zone_id; next_token; max_results }
+
+  let parse xml =
+    Some
+      { hosted_zone_id = Util.option_bind (Xml.member "hostedzoneid" xml) String.parse
+      ; next_token = Util.option_bind (Xml.member "nexttoken" xml) String.parse
+      ; max_results = Util.option_bind (Xml.member "maxresults" xml) String.parse
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.max_results (fun f ->
+               Query.Pair ("maxresults", String.to_query f))
+         ; Util.option_map v.next_token (fun f ->
+               Query.Pair ("nexttoken", String.to_query f))
+         ; Util.option_map v.hosted_zone_id (fun f ->
+               Query.Pair ("hostedzoneid", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.max_results (fun f -> "max_results", String.to_json f)
+         ; Util.option_map v.next_token (fun f -> "next_token", String.to_json f)
+         ; Util.option_map v.hosted_zone_id (fun f -> "hosted_zone_id", String.to_json f)
+         ])
+
+  let of_json j =
+    { hosted_zone_id = Util.option_map (Json.lookup j "hosted_zone_id") String.of_json
+    ; next_token = Util.option_map (Json.lookup j "next_token") String.of_json
+    ; max_results = Util.option_map (Json.lookup j "max_results") String.of_json
+    }
+end
+
 module DelegationSetNotAvailable = struct
   type t = { message : String.t option }
 
@@ -3435,6 +6640,116 @@ module DelegationSetNotAvailable = struct
          [ Util.option_map v.message (fun f -> "message", String.to_json f) ])
 
   let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
+end
+
+module DeleteQueryLoggingConfigRequest = struct
+  type t = { id : String.t }
+
+  let make ~id () = { id }
+
+  let parse xml =
+    Some { id = Xml.required "Id" (Util.option_bind (Xml.member "Id" xml) String.parse) }
+
+  let to_query v =
+    Query.List (Util.list_filter_opt [ Some (Query.Pair ("Id", String.to_query v.id)) ])
+
+  let to_json v = `Assoc (Util.list_filter_opt [ Some ("id", String.to_json v.id) ])
+
+  let of_json j = { id = String.of_json (Util.of_option_exn (Json.lookup j "id")) }
+end
+
+module GetReusableDelegationSetLimitRequest = struct
+  type t =
+    { type_ : ReusableDelegationSetLimitType.t
+    ; delegation_set_id : String.t
+    }
+
+  let make ~type_ ~delegation_set_id () = { type_; delegation_set_id }
+
+  let parse xml =
+    Some
+      { type_ =
+          Xml.required
+            "Type"
+            (Util.option_bind
+               (Xml.member "Type" xml)
+               ReusableDelegationSetLimitType.parse)
+      ; delegation_set_id =
+          Xml.required "Id" (Util.option_bind (Xml.member "Id" xml) String.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("Id", String.to_query v.delegation_set_id))
+         ; Some (Query.Pair ("Type", ReusableDelegationSetLimitType.to_query v.type_))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("delegation_set_id", String.to_json v.delegation_set_id)
+         ; Some ("type_", ReusableDelegationSetLimitType.to_json v.type_)
+         ])
+
+  let of_json j =
+    { type_ =
+        ReusableDelegationSetLimitType.of_json
+          (Util.of_option_exn (Json.lookup j "type_"))
+    ; delegation_set_id =
+        String.of_json (Util.of_option_exn (Json.lookup j "delegation_set_id"))
+    }
+end
+
+module ListHostedZonesByVPCRequest = struct
+  type t =
+    { v_p_c_id : String.t
+    ; v_p_c_region : VPCRegion.t
+    ; max_items : String.t option
+    ; next_token : String.t option
+    }
+
+  let make ~v_p_c_id ~v_p_c_region ?max_items ?next_token () =
+    { v_p_c_id; v_p_c_region; max_items; next_token }
+
+  let parse xml =
+    Some
+      { v_p_c_id =
+          Xml.required "vpcid" (Util.option_bind (Xml.member "vpcid" xml) String.parse)
+      ; v_p_c_region =
+          Xml.required
+            "vpcregion"
+            (Util.option_bind (Xml.member "vpcregion" xml) VPCRegion.parse)
+      ; max_items = Util.option_bind (Xml.member "maxitems" xml) String.parse
+      ; next_token = Util.option_bind (Xml.member "nexttoken" xml) String.parse
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.next_token (fun f ->
+               Query.Pair ("nexttoken", String.to_query f))
+         ; Util.option_map v.max_items (fun f ->
+               Query.Pair ("maxitems", String.to_query f))
+         ; Some (Query.Pair ("vpcregion", VPCRegion.to_query v.v_p_c_region))
+         ; Some (Query.Pair ("vpcid", String.to_query v.v_p_c_id))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.next_token (fun f -> "next_token", String.to_json f)
+         ; Util.option_map v.max_items (fun f -> "max_items", String.to_json f)
+         ; Some ("v_p_c_region", VPCRegion.to_json v.v_p_c_region)
+         ; Some ("v_p_c_id", String.to_json v.v_p_c_id)
+         ])
+
+  let of_json j =
+    { v_p_c_id = String.of_json (Util.of_option_exn (Json.lookup j "v_p_c_id"))
+    ; v_p_c_region = VPCRegion.of_json (Util.of_option_exn (Json.lookup j "v_p_c_region"))
+    ; max_items = Util.option_map (Json.lookup j "max_items") String.of_json
+    ; next_token = Util.option_map (Json.lookup j "next_token") String.of_json
+    }
 end
 
 module ListTagsForResourcesResponse = struct
@@ -3603,6 +6918,20 @@ module DisassociateVPCFromHostedZoneRequest = struct
     }
 end
 
+module GetTrafficPolicyInstanceCountRequest = struct
+  type t = unit
+
+  let make () = ()
+
+  let parse xml = Some ()
+
+  let to_query v = Query.List (Util.list_filter_opt [])
+
+  let to_json v = `Assoc (Util.list_filter_opt [])
+
+  let of_json j = ()
+end
+
 module ListGeoLocationsRequest = struct
   type t =
     { start_continent_code : String.t option
@@ -3662,6 +6991,75 @@ module ListGeoLocationsRequest = struct
     }
 end
 
+module ListTrafficPolicyInstancesByHostedZoneRequest = struct
+  type t =
+    { hosted_zone_id : String.t
+    ; traffic_policy_instance_name_marker : String.t option
+    ; traffic_policy_instance_type_marker : RRType.t option
+    ; max_items : String.t option
+    }
+
+  let make
+      ~hosted_zone_id
+      ?traffic_policy_instance_name_marker
+      ?traffic_policy_instance_type_marker
+      ?max_items
+      () =
+    { hosted_zone_id
+    ; traffic_policy_instance_name_marker
+    ; traffic_policy_instance_type_marker
+    ; max_items
+    }
+
+  let parse xml =
+    Some
+      { hosted_zone_id =
+          Xml.required "id" (Util.option_bind (Xml.member "id" xml) String.parse)
+      ; traffic_policy_instance_name_marker =
+          Util.option_bind (Xml.member "trafficpolicyinstancename" xml) String.parse
+      ; traffic_policy_instance_type_marker =
+          Util.option_bind (Xml.member "trafficpolicyinstancetype" xml) RRType.parse
+      ; max_items = Util.option_bind (Xml.member "maxitems" xml) String.parse
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.max_items (fun f ->
+               Query.Pair ("maxitems", String.to_query f))
+         ; Util.option_map v.traffic_policy_instance_type_marker (fun f ->
+               Query.Pair ("trafficpolicyinstancetype", RRType.to_query f))
+         ; Util.option_map v.traffic_policy_instance_name_marker (fun f ->
+               Query.Pair ("trafficpolicyinstancename", String.to_query f))
+         ; Some (Query.Pair ("id", String.to_query v.hosted_zone_id))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.max_items (fun f -> "max_items", String.to_json f)
+         ; Util.option_map v.traffic_policy_instance_type_marker (fun f ->
+               "traffic_policy_instance_type_marker", RRType.to_json f)
+         ; Util.option_map v.traffic_policy_instance_name_marker (fun f ->
+               "traffic_policy_instance_name_marker", String.to_json f)
+         ; Some ("hosted_zone_id", String.to_json v.hosted_zone_id)
+         ])
+
+  let of_json j =
+    { hosted_zone_id =
+        String.of_json (Util.of_option_exn (Json.lookup j "hosted_zone_id"))
+    ; traffic_policy_instance_name_marker =
+        Util.option_map
+          (Json.lookup j "traffic_policy_instance_name_marker")
+          String.of_json
+    ; traffic_policy_instance_type_marker =
+        Util.option_map
+          (Json.lookup j "traffic_policy_instance_type_marker")
+          RRType.of_json
+    ; max_items = Util.option_map (Json.lookup j "max_items") String.of_json
+    }
+end
+
 module CreateReusableDelegationSetResponse = struct
   type t =
     { delegation_set : DelegationSet.t
@@ -3700,6 +7098,44 @@ module CreateReusableDelegationSetResponse = struct
     { delegation_set =
         DelegationSet.of_json (Util.of_option_exn (Json.lookup j "delegation_set"))
     ; location = String.of_json (Util.of_option_exn (Json.lookup j "location"))
+    }
+end
+
+module GetAccountLimitResponse = struct
+  type t =
+    { limit : AccountLimit.t
+    ; count : Long.t
+    }
+
+  let make ~limit ~count () = { limit; count }
+
+  let parse xml =
+    Some
+      { limit =
+          Xml.required
+            "Limit"
+            (Util.option_bind (Xml.member "Limit" xml) AccountLimit.parse)
+      ; count =
+          Xml.required "Count" (Util.option_bind (Xml.member "Count" xml) Long.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("Count", Long.to_query v.count))
+         ; Some (Query.Pair ("Limit", AccountLimit.to_query v.limit))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("count", Long.to_json v.count)
+         ; Some ("limit", AccountLimit.to_json v.limit)
+         ])
+
+  let of_json j =
+    { limit = AccountLimit.of_json (Util.of_option_exn (Json.lookup j "limit"))
+    ; count = Long.of_json (Util.of_option_exn (Json.lookup j "count"))
     }
 end
 
@@ -3822,6 +7258,46 @@ module ListResourceRecordSetsResponse = struct
     }
 end
 
+module ListTrafficPoliciesRequest = struct
+  type t =
+    { traffic_policy_id_marker : String.t option
+    ; max_items : String.t option
+    }
+
+  let make ?traffic_policy_id_marker ?max_items () =
+    { traffic_policy_id_marker; max_items }
+
+  let parse xml =
+    Some
+      { traffic_policy_id_marker =
+          Util.option_bind (Xml.member "trafficpolicyid" xml) String.parse
+      ; max_items = Util.option_bind (Xml.member "maxitems" xml) String.parse
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.max_items (fun f ->
+               Query.Pair ("maxitems", String.to_query f))
+         ; Util.option_map v.traffic_policy_id_marker (fun f ->
+               Query.Pair ("trafficpolicyid", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.max_items (fun f -> "max_items", String.to_json f)
+         ; Util.option_map v.traffic_policy_id_marker (fun f ->
+               "traffic_policy_id_marker", String.to_json f)
+         ])
+
+  let of_json j =
+    { traffic_policy_id_marker =
+        Util.option_map (Json.lookup j "traffic_policy_id_marker") String.of_json
+    ; max_items = Util.option_map (Json.lookup j "max_items") String.of_json
+    }
+end
+
 module NoSuchGeoLocation = struct
   type t = { message : String.t option }
 
@@ -3844,6 +7320,104 @@ module NoSuchGeoLocation = struct
   let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
 end
 
+module UpdateTrafficPolicyCommentRequest = struct
+  type t =
+    { id : String.t
+    ; version : Integer.t
+    ; comment : String.t
+    }
+
+  let make ~id ~version ~comment () = { id; version; comment }
+
+  let parse xml =
+    Some
+      { id = Xml.required "Id" (Util.option_bind (Xml.member "Id" xml) String.parse)
+      ; version =
+          Xml.required
+            "Version"
+            (Util.option_bind (Xml.member "Version" xml) Integer.parse)
+      ; comment =
+          Xml.required
+            "Comment"
+            (Util.option_bind (Xml.member "Comment" xml) String.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("Comment", String.to_query v.comment))
+         ; Some (Query.Pair ("Version", Integer.to_query v.version))
+         ; Some (Query.Pair ("Id", String.to_query v.id))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("comment", String.to_json v.comment)
+         ; Some ("version", Integer.to_json v.version)
+         ; Some ("id", String.to_json v.id)
+         ])
+
+  let of_json j =
+    { id = String.of_json (Util.of_option_exn (Json.lookup j "id"))
+    ; version = Integer.of_json (Util.of_option_exn (Json.lookup j "version"))
+    ; comment = String.of_json (Util.of_option_exn (Json.lookup j "comment"))
+    }
+end
+
+module UpdateTrafficPolicyInstanceResponse = struct
+  type t = { traffic_policy_instance : TrafficPolicyInstance.t }
+
+  let make ~traffic_policy_instance () = { traffic_policy_instance }
+
+  let parse xml =
+    Some
+      { traffic_policy_instance =
+          Xml.required
+            "TrafficPolicyInstance"
+            (Util.option_bind
+               (Xml.member "TrafficPolicyInstance" xml)
+               TrafficPolicyInstance.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some
+             (Query.Pair
+                ( "TrafficPolicyInstance"
+                , TrafficPolicyInstance.to_query v.traffic_policy_instance ))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some
+             ( "traffic_policy_instance"
+             , TrafficPolicyInstance.to_json v.traffic_policy_instance )
+         ])
+
+  let of_json j =
+    { traffic_policy_instance =
+        TrafficPolicyInstance.of_json
+          (Util.of_option_exn (Json.lookup j "traffic_policy_instance"))
+    }
+end
+
+module DeleteVPCAssociationAuthorizationResponse = struct
+  type t = unit
+
+  let make () = ()
+
+  let parse xml = Some ()
+
+  let to_query v = Query.List (Util.list_filter_opt [])
+
+  let to_json v = `Assoc (Util.list_filter_opt [])
+
+  let of_json j = ()
+end
+
 module GetHealthCheckCountRequest = struct
   type t = unit
 
@@ -3856,6 +7430,70 @@ module GetHealthCheckCountRequest = struct
   let to_json v = `Assoc (Util.list_filter_opt [])
 
   let of_json j = ()
+end
+
+module InsufficientCloudWatchLogsResourcePolicy = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Util.option_bind (Xml.member "message" xml) String.parse }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> "message", String.to_json f) ])
+
+  let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
+end
+
+module CreateTrafficPolicyVersionRequest = struct
+  type t =
+    { id : String.t
+    ; document : String.t
+    ; comment : String.t option
+    }
+
+  let make ~id ~document ?comment () = { id; document; comment }
+
+  let parse xml =
+    Some
+      { id = Xml.required "Id" (Util.option_bind (Xml.member "Id" xml) String.parse)
+      ; document =
+          Xml.required
+            "Document"
+            (Util.option_bind (Xml.member "Document" xml) String.parse)
+      ; comment = Util.option_bind (Xml.member "Comment" xml) String.parse
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.comment (fun f -> Query.Pair ("Comment", String.to_query f))
+         ; Some (Query.Pair ("Document", String.to_query v.document))
+         ; Some (Query.Pair ("Id", String.to_query v.id))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.comment (fun f -> "comment", String.to_json f)
+         ; Some ("document", String.to_json v.document)
+         ; Some ("id", String.to_json v.id)
+         ])
+
+  let of_json j =
+    { id = String.of_json (Util.of_option_exn (Json.lookup j "id"))
+    ; document = String.of_json (Util.of_option_exn (Json.lookup j "document"))
+    ; comment = Util.option_map (Json.lookup j "comment") String.of_json
+    }
 end
 
 module DelegationSetInUse = struct
@@ -3880,6 +7518,77 @@ module DelegationSetInUse = struct
   let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
 end
 
+module ListTrafficPolicyInstancesRequest = struct
+  type t =
+    { hosted_zone_id_marker : String.t option
+    ; traffic_policy_instance_name_marker : String.t option
+    ; traffic_policy_instance_type_marker : RRType.t option
+    ; max_items : String.t option
+    }
+
+  let make
+      ?hosted_zone_id_marker
+      ?traffic_policy_instance_name_marker
+      ?traffic_policy_instance_type_marker
+      ?max_items
+      () =
+    { hosted_zone_id_marker
+    ; traffic_policy_instance_name_marker
+    ; traffic_policy_instance_type_marker
+    ; max_items
+    }
+
+  let parse xml =
+    Some
+      { hosted_zone_id_marker =
+          Util.option_bind (Xml.member "hostedzoneid" xml) String.parse
+      ; traffic_policy_instance_name_marker =
+          Util.option_bind (Xml.member "trafficpolicyinstancename" xml) String.parse
+      ; traffic_policy_instance_type_marker =
+          Util.option_bind (Xml.member "trafficpolicyinstancetype" xml) RRType.parse
+      ; max_items = Util.option_bind (Xml.member "maxitems" xml) String.parse
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.max_items (fun f ->
+               Query.Pair ("maxitems", String.to_query f))
+         ; Util.option_map v.traffic_policy_instance_type_marker (fun f ->
+               Query.Pair ("trafficpolicyinstancetype", RRType.to_query f))
+         ; Util.option_map v.traffic_policy_instance_name_marker (fun f ->
+               Query.Pair ("trafficpolicyinstancename", String.to_query f))
+         ; Util.option_map v.hosted_zone_id_marker (fun f ->
+               Query.Pair ("hostedzoneid", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.max_items (fun f -> "max_items", String.to_json f)
+         ; Util.option_map v.traffic_policy_instance_type_marker (fun f ->
+               "traffic_policy_instance_type_marker", RRType.to_json f)
+         ; Util.option_map v.traffic_policy_instance_name_marker (fun f ->
+               "traffic_policy_instance_name_marker", String.to_json f)
+         ; Util.option_map v.hosted_zone_id_marker (fun f ->
+               "hosted_zone_id_marker", String.to_json f)
+         ])
+
+  let of_json j =
+    { hosted_zone_id_marker =
+        Util.option_map (Json.lookup j "hosted_zone_id_marker") String.of_json
+    ; traffic_policy_instance_name_marker =
+        Util.option_map
+          (Json.lookup j "traffic_policy_instance_name_marker")
+          String.of_json
+    ; traffic_policy_instance_type_marker =
+        Util.option_map
+          (Json.lookup j "traffic_policy_instance_type_marker")
+          RRType.of_json
+    ; max_items = Util.option_map (Json.lookup j "max_items") String.of_json
+    }
+end
+
 module GetReusableDelegationSetRequest = struct
   type t = { id : String.t }
 
@@ -3894,6 +7603,28 @@ module GetReusableDelegationSetRequest = struct
   let to_json v = `Assoc (Util.list_filter_opt [ Some ("id", String.to_json v.id) ])
 
   let of_json j = { id = String.of_json (Util.of_option_exn (Json.lookup j "id")) }
+end
+
+module TrafficPolicyInstanceAlreadyExists = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Util.option_bind (Xml.member "message" xml) String.parse }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> "message", String.to_json f) ])
+
+  let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
 end
 
 module DeleteHostedZoneResponse = struct
@@ -3923,7 +7654,134 @@ module DeleteHostedZoneResponse = struct
     }
 end
 
+module DeleteTrafficPolicyResponse = struct
+  type t = unit
+
+  let make () = ()
+
+  let parse xml = Some ()
+
+  let to_query v = Query.List (Util.list_filter_opt [])
+
+  let to_json v = `Assoc (Util.list_filter_opt [])
+
+  let of_json j = ()
+end
+
+module ListTrafficPolicyInstancesByHostedZoneResponse = struct
+  type t =
+    { traffic_policy_instances : TrafficPolicyInstances.t
+    ; traffic_policy_instance_name_marker : String.t option
+    ; traffic_policy_instance_type_marker : RRType.t option
+    ; is_truncated : Boolean.t
+    ; max_items : String.t
+    }
+
+  let make
+      ~traffic_policy_instances
+      ?traffic_policy_instance_name_marker
+      ?traffic_policy_instance_type_marker
+      ~is_truncated
+      ~max_items
+      () =
+    { traffic_policy_instances
+    ; traffic_policy_instance_name_marker
+    ; traffic_policy_instance_type_marker
+    ; is_truncated
+    ; max_items
+    }
+
+  let parse xml =
+    Some
+      { traffic_policy_instances =
+          Xml.required
+            "TrafficPolicyInstances"
+            (Util.option_bind
+               (Xml.member "TrafficPolicyInstances" xml)
+               TrafficPolicyInstances.parse)
+      ; traffic_policy_instance_name_marker =
+          Util.option_bind (Xml.member "TrafficPolicyInstanceNameMarker" xml) String.parse
+      ; traffic_policy_instance_type_marker =
+          Util.option_bind (Xml.member "TrafficPolicyInstanceTypeMarker" xml) RRType.parse
+      ; is_truncated =
+          Xml.required
+            "IsTruncated"
+            (Util.option_bind (Xml.member "IsTruncated" xml) Boolean.parse)
+      ; max_items =
+          Xml.required
+            "MaxItems"
+            (Util.option_bind (Xml.member "MaxItems" xml) String.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("MaxItems", String.to_query v.max_items))
+         ; Some (Query.Pair ("IsTruncated", Boolean.to_query v.is_truncated))
+         ; Util.option_map v.traffic_policy_instance_type_marker (fun f ->
+               Query.Pair ("TrafficPolicyInstanceTypeMarker", RRType.to_query f))
+         ; Util.option_map v.traffic_policy_instance_name_marker (fun f ->
+               Query.Pair ("TrafficPolicyInstanceNameMarker", String.to_query f))
+         ; Some
+             (Query.Pair
+                ( "TrafficPolicyInstances.member"
+                , TrafficPolicyInstances.to_query v.traffic_policy_instances ))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("max_items", String.to_json v.max_items)
+         ; Some ("is_truncated", Boolean.to_json v.is_truncated)
+         ; Util.option_map v.traffic_policy_instance_type_marker (fun f ->
+               "traffic_policy_instance_type_marker", RRType.to_json f)
+         ; Util.option_map v.traffic_policy_instance_name_marker (fun f ->
+               "traffic_policy_instance_name_marker", String.to_json f)
+         ; Some
+             ( "traffic_policy_instances"
+             , TrafficPolicyInstances.to_json v.traffic_policy_instances )
+         ])
+
+  let of_json j =
+    { traffic_policy_instances =
+        TrafficPolicyInstances.of_json
+          (Util.of_option_exn (Json.lookup j "traffic_policy_instances"))
+    ; traffic_policy_instance_name_marker =
+        Util.option_map
+          (Json.lookup j "traffic_policy_instance_name_marker")
+          String.of_json
+    ; traffic_policy_instance_type_marker =
+        Util.option_map
+          (Json.lookup j "traffic_policy_instance_type_marker")
+          RRType.of_json
+    ; is_truncated = Boolean.of_json (Util.of_option_exn (Json.lookup j "is_truncated"))
+    ; max_items = String.of_json (Util.of_option_exn (Json.lookup j "max_items"))
+    }
+end
+
 module NoSuchHealthCheck = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Util.option_bind (Xml.member "message" xml) String.parse }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> "message", String.to_json f) ])
+
+  let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
+end
+
+module NoSuchTrafficPolicy = struct
   type t = { message : String.t option }
 
   let make ?message () = { message }
@@ -3965,6 +7823,45 @@ module DelegationSetNotReusable = struct
          [ Util.option_map v.message (fun f -> "message", String.to_json f) ])
 
   let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
+end
+
+module GetReusableDelegationSetLimitResponse = struct
+  type t =
+    { limit : ReusableDelegationSetLimit.t
+    ; count : Long.t
+    }
+
+  let make ~limit ~count () = { limit; count }
+
+  let parse xml =
+    Some
+      { limit =
+          Xml.required
+            "Limit"
+            (Util.option_bind (Xml.member "Limit" xml) ReusableDelegationSetLimit.parse)
+      ; count =
+          Xml.required "Count" (Util.option_bind (Xml.member "Count" xml) Long.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("Count", Long.to_query v.count))
+         ; Some (Query.Pair ("Limit", ReusableDelegationSetLimit.to_query v.limit))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("count", Long.to_json v.count)
+         ; Some ("limit", ReusableDelegationSetLimit.to_json v.limit)
+         ])
+
+  let of_json j =
+    { limit =
+        ReusableDelegationSetLimit.of_json (Util.of_option_exn (Json.lookup j "limit"))
+    ; count = Long.of_json (Util.of_option_exn (Json.lookup j "count"))
+    }
 end
 
 module HealthCheckVersionMismatch = struct
@@ -4116,6 +8013,79 @@ module UpdateHostedZoneCommentResponse = struct
     }
 end
 
+module NoSuchQueryLoggingConfig = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Util.option_bind (Xml.member "message" xml) String.parse }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> "message", String.to_json f) ])
+
+  let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
+end
+
+module TrafficPolicyInUse = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Util.option_bind (Xml.member "message" xml) String.parse }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> "message", String.to_json f) ])
+
+  let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
+end
+
+module UpdateTrafficPolicyCommentResponse = struct
+  type t = { traffic_policy : TrafficPolicy.t }
+
+  let make ~traffic_policy () = { traffic_policy }
+
+  let parse xml =
+    Some
+      { traffic_policy =
+          Xml.required
+            "TrafficPolicy"
+            (Util.option_bind (Xml.member "TrafficPolicy" xml) TrafficPolicy.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("TrafficPolicy", TrafficPolicy.to_query v.traffic_policy)) ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("traffic_policy", TrafficPolicy.to_json v.traffic_policy) ])
+
+  let of_json j =
+    { traffic_policy =
+        TrafficPolicy.of_json (Util.of_option_exn (Json.lookup j "traffic_policy"))
+    }
+end
+
 module CreateHealthCheckRequest = struct
   type t =
     { caller_reference : String.t
@@ -4226,6 +8196,140 @@ module CreateHostedZoneRequest = struct
     }
 end
 
+module DeleteTrafficPolicyInstanceRequest = struct
+  type t = { id : String.t }
+
+  let make ~id () = { id }
+
+  let parse xml =
+    Some { id = Xml.required "Id" (Util.option_bind (Xml.member "Id" xml) String.parse) }
+
+  let to_query v =
+    Query.List (Util.list_filter_opt [ Some (Query.Pair ("Id", String.to_query v.id)) ])
+
+  let to_json v = `Assoc (Util.list_filter_opt [ Some ("id", String.to_json v.id) ])
+
+  let of_json j = { id = String.of_json (Util.of_option_exn (Json.lookup j "id")) }
+end
+
+module GetTrafficPolicyRequest = struct
+  type t =
+    { id : String.t
+    ; version : Integer.t
+    }
+
+  let make ~id ~version () = { id; version }
+
+  let parse xml =
+    Some
+      { id = Xml.required "Id" (Util.option_bind (Xml.member "Id" xml) String.parse)
+      ; version =
+          Xml.required
+            "Version"
+            (Util.option_bind (Xml.member "Version" xml) Integer.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("Version", Integer.to_query v.version))
+         ; Some (Query.Pair ("Id", String.to_query v.id))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("version", Integer.to_json v.version); Some ("id", String.to_json v.id) ])
+
+  let of_json j =
+    { id = String.of_json (Util.of_option_exn (Json.lookup j "id"))
+    ; version = Integer.of_json (Util.of_option_exn (Json.lookup j "version"))
+    }
+end
+
+module CreateTrafficPolicyVersionResponse = struct
+  type t =
+    { traffic_policy : TrafficPolicy.t
+    ; location : String.t
+    }
+
+  let make ~traffic_policy ~location () = { traffic_policy; location }
+
+  let parse xml =
+    Some
+      { traffic_policy =
+          Xml.required
+            "TrafficPolicy"
+            (Util.option_bind (Xml.member "TrafficPolicy" xml) TrafficPolicy.parse)
+      ; location =
+          Xml.required
+            "Location"
+            (Util.option_bind (Xml.member "Location" xml) String.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("Location", String.to_query v.location))
+         ; Some (Query.Pair ("TrafficPolicy", TrafficPolicy.to_query v.traffic_policy))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("location", String.to_json v.location)
+         ; Some ("traffic_policy", TrafficPolicy.to_json v.traffic_policy)
+         ])
+
+  let of_json j =
+    { traffic_policy =
+        TrafficPolicy.of_json (Util.of_option_exn (Json.lookup j "traffic_policy"))
+    ; location = String.of_json (Util.of_option_exn (Json.lookup j "location"))
+    }
+end
+
+module CreateTrafficPolicyRequest = struct
+  type t =
+    { name : String.t
+    ; document : String.t
+    ; comment : String.t option
+    }
+
+  let make ~name ~document ?comment () = { name; document; comment }
+
+  let parse xml =
+    Some
+      { name = Xml.required "Name" (Util.option_bind (Xml.member "Name" xml) String.parse)
+      ; document =
+          Xml.required
+            "Document"
+            (Util.option_bind (Xml.member "Document" xml) String.parse)
+      ; comment = Util.option_bind (Xml.member "Comment" xml) String.parse
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.comment (fun f -> Query.Pair ("Comment", String.to_query f))
+         ; Some (Query.Pair ("Document", String.to_query v.document))
+         ; Some (Query.Pair ("Name", String.to_query v.name))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.comment (fun f -> "comment", String.to_json f)
+         ; Some ("document", String.to_json v.document)
+         ; Some ("name", String.to_json v.name)
+         ])
+
+  let of_json j =
+    { name = String.of_json (Util.of_option_exn (Json.lookup j "name"))
+    ; document = String.of_json (Util.of_option_exn (Json.lookup j "document"))
+    ; comment = Util.option_map (Json.lookup j "comment") String.of_json
+    }
+end
+
 module DeleteHealthCheckRequest = struct
   type t = { health_check_id : String.t }
 
@@ -4277,7 +8381,99 @@ module LastVPCAssociation = struct
   let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
 end
 
+module ListTrafficPoliciesResponse = struct
+  type t =
+    { traffic_policy_summaries : TrafficPolicySummaries.t
+    ; is_truncated : Boolean.t
+    ; traffic_policy_id_marker : String.t
+    ; max_items : String.t
+    }
+
+  let make ~traffic_policy_summaries ~is_truncated ~traffic_policy_id_marker ~max_items ()
+      =
+    { traffic_policy_summaries; is_truncated; traffic_policy_id_marker; max_items }
+
+  let parse xml =
+    Some
+      { traffic_policy_summaries =
+          Xml.required
+            "TrafficPolicySummaries"
+            (Util.option_bind
+               (Xml.member "TrafficPolicySummaries" xml)
+               TrafficPolicySummaries.parse)
+      ; is_truncated =
+          Xml.required
+            "IsTruncated"
+            (Util.option_bind (Xml.member "IsTruncated" xml) Boolean.parse)
+      ; traffic_policy_id_marker =
+          Xml.required
+            "TrafficPolicyIdMarker"
+            (Util.option_bind (Xml.member "TrafficPolicyIdMarker" xml) String.parse)
+      ; max_items =
+          Xml.required
+            "MaxItems"
+            (Util.option_bind (Xml.member "MaxItems" xml) String.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("MaxItems", String.to_query v.max_items))
+         ; Some
+             (Query.Pair
+                ("TrafficPolicyIdMarker", String.to_query v.traffic_policy_id_marker))
+         ; Some (Query.Pair ("IsTruncated", Boolean.to_query v.is_truncated))
+         ; Some
+             (Query.Pair
+                ( "TrafficPolicySummaries.member"
+                , TrafficPolicySummaries.to_query v.traffic_policy_summaries ))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("max_items", String.to_json v.max_items)
+         ; Some ("traffic_policy_id_marker", String.to_json v.traffic_policy_id_marker)
+         ; Some ("is_truncated", Boolean.to_json v.is_truncated)
+         ; Some
+             ( "traffic_policy_summaries"
+             , TrafficPolicySummaries.to_json v.traffic_policy_summaries )
+         ])
+
+  let of_json j =
+    { traffic_policy_summaries =
+        TrafficPolicySummaries.of_json
+          (Util.of_option_exn (Json.lookup j "traffic_policy_summaries"))
+    ; is_truncated = Boolean.of_json (Util.of_option_exn (Json.lookup j "is_truncated"))
+    ; traffic_policy_id_marker =
+        String.of_json (Util.of_option_exn (Json.lookup j "traffic_policy_id_marker"))
+    ; max_items = String.of_json (Util.of_option_exn (Json.lookup j "max_items"))
+    }
+end
+
 module PriorRequestNotComplete = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Util.option_bind (Xml.member "message" xml) String.parse }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> "message", String.to_json f) ])
+
+  let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
+end
+
+module HostedZoneNotPrivate = struct
   type t = { message : String.t option }
 
   let make ?message () = { message }
@@ -4386,6 +8582,47 @@ module GetHostedZoneResponse = struct
     }
 end
 
+module CreateTrafficPolicyResponse = struct
+  type t =
+    { traffic_policy : TrafficPolicy.t
+    ; location : String.t
+    }
+
+  let make ~traffic_policy ~location () = { traffic_policy; location }
+
+  let parse xml =
+    Some
+      { traffic_policy =
+          Xml.required
+            "TrafficPolicy"
+            (Util.option_bind (Xml.member "TrafficPolicy" xml) TrafficPolicy.parse)
+      ; location =
+          Xml.required
+            "Location"
+            (Util.option_bind (Xml.member "Location" xml) String.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("Location", String.to_query v.location))
+         ; Some (Query.Pair ("TrafficPolicy", TrafficPolicy.to_query v.traffic_policy))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("location", String.to_json v.location)
+         ; Some ("traffic_policy", TrafficPolicy.to_json v.traffic_policy)
+         ])
+
+  let of_json j =
+    { traffic_policy =
+        TrafficPolicy.of_json (Util.of_option_exn (Json.lookup j "traffic_policy"))
+    ; location = String.of_json (Util.of_option_exn (Json.lookup j "location"))
+    }
+end
+
 module HostedZoneAlreadyExists = struct
   type t = { message : String.t option }
 
@@ -4406,6 +8643,108 @@ module HostedZoneAlreadyExists = struct
          [ Util.option_map v.message (fun f -> "message", String.to_json f) ])
 
   let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
+end
+
+module ListTrafficPolicyInstancesByPolicyResponse = struct
+  type t =
+    { traffic_policy_instances : TrafficPolicyInstances.t
+    ; hosted_zone_id_marker : String.t option
+    ; traffic_policy_instance_name_marker : String.t option
+    ; traffic_policy_instance_type_marker : RRType.t option
+    ; is_truncated : Boolean.t
+    ; max_items : String.t
+    }
+
+  let make
+      ~traffic_policy_instances
+      ?hosted_zone_id_marker
+      ?traffic_policy_instance_name_marker
+      ?traffic_policy_instance_type_marker
+      ~is_truncated
+      ~max_items
+      () =
+    { traffic_policy_instances
+    ; hosted_zone_id_marker
+    ; traffic_policy_instance_name_marker
+    ; traffic_policy_instance_type_marker
+    ; is_truncated
+    ; max_items
+    }
+
+  let parse xml =
+    Some
+      { traffic_policy_instances =
+          Xml.required
+            "TrafficPolicyInstances"
+            (Util.option_bind
+               (Xml.member "TrafficPolicyInstances" xml)
+               TrafficPolicyInstances.parse)
+      ; hosted_zone_id_marker =
+          Util.option_bind (Xml.member "HostedZoneIdMarker" xml) String.parse
+      ; traffic_policy_instance_name_marker =
+          Util.option_bind (Xml.member "TrafficPolicyInstanceNameMarker" xml) String.parse
+      ; traffic_policy_instance_type_marker =
+          Util.option_bind (Xml.member "TrafficPolicyInstanceTypeMarker" xml) RRType.parse
+      ; is_truncated =
+          Xml.required
+            "IsTruncated"
+            (Util.option_bind (Xml.member "IsTruncated" xml) Boolean.parse)
+      ; max_items =
+          Xml.required
+            "MaxItems"
+            (Util.option_bind (Xml.member "MaxItems" xml) String.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("MaxItems", String.to_query v.max_items))
+         ; Some (Query.Pair ("IsTruncated", Boolean.to_query v.is_truncated))
+         ; Util.option_map v.traffic_policy_instance_type_marker (fun f ->
+               Query.Pair ("TrafficPolicyInstanceTypeMarker", RRType.to_query f))
+         ; Util.option_map v.traffic_policy_instance_name_marker (fun f ->
+               Query.Pair ("TrafficPolicyInstanceNameMarker", String.to_query f))
+         ; Util.option_map v.hosted_zone_id_marker (fun f ->
+               Query.Pair ("HostedZoneIdMarker", String.to_query f))
+         ; Some
+             (Query.Pair
+                ( "TrafficPolicyInstances.member"
+                , TrafficPolicyInstances.to_query v.traffic_policy_instances ))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("max_items", String.to_json v.max_items)
+         ; Some ("is_truncated", Boolean.to_json v.is_truncated)
+         ; Util.option_map v.traffic_policy_instance_type_marker (fun f ->
+               "traffic_policy_instance_type_marker", RRType.to_json f)
+         ; Util.option_map v.traffic_policy_instance_name_marker (fun f ->
+               "traffic_policy_instance_name_marker", String.to_json f)
+         ; Util.option_map v.hosted_zone_id_marker (fun f ->
+               "hosted_zone_id_marker", String.to_json f)
+         ; Some
+             ( "traffic_policy_instances"
+             , TrafficPolicyInstances.to_json v.traffic_policy_instances )
+         ])
+
+  let of_json j =
+    { traffic_policy_instances =
+        TrafficPolicyInstances.of_json
+          (Util.of_option_exn (Json.lookup j "traffic_policy_instances"))
+    ; hosted_zone_id_marker =
+        Util.option_map (Json.lookup j "hosted_zone_id_marker") String.of_json
+    ; traffic_policy_instance_name_marker =
+        Util.option_map
+          (Json.lookup j "traffic_policy_instance_name_marker")
+          String.of_json
+    ; traffic_policy_instance_type_marker =
+        Util.option_map
+          (Json.lookup j "traffic_policy_instance_type_marker")
+          RRType.of_json
+    ; is_truncated = Boolean.of_json (Util.of_option_exn (Json.lookup j "is_truncated"))
+    ; max_items = String.of_json (Util.of_option_exn (Json.lookup j "max_items"))
+    }
 end
 
 module ListHostedZonesByNameRequest = struct
@@ -4485,6 +8824,86 @@ module UpdateHostedZoneCommentRequest = struct
     }
 end
 
+module ConflictingTypes = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Util.option_bind (Xml.member "message" xml) String.parse }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> "message", String.to_json f) ])
+
+  let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
+end
+
+module CreateVPCAssociationAuthorizationRequest = struct
+  type t =
+    { hosted_zone_id : String.t
+    ; v_p_c : VPC.t
+    }
+
+  let make ~hosted_zone_id ~v_p_c () = { hosted_zone_id; v_p_c }
+
+  let parse xml =
+    Some
+      { hosted_zone_id =
+          Xml.required "Id" (Util.option_bind (Xml.member "Id" xml) String.parse)
+      ; v_p_c = Xml.required "VPC" (Util.option_bind (Xml.member "VPC" xml) VPC.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("VPC", VPC.to_query v.v_p_c))
+         ; Some (Query.Pair ("Id", String.to_query v.hosted_zone_id))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("v_p_c", VPC.to_json v.v_p_c)
+         ; Some ("hosted_zone_id", String.to_json v.hosted_zone_id)
+         ])
+
+  let of_json j =
+    { hosted_zone_id =
+        String.of_json (Util.of_option_exn (Json.lookup j "hosted_zone_id"))
+    ; v_p_c = VPC.of_json (Util.of_option_exn (Json.lookup j "v_p_c"))
+    }
+end
+
+module ConcurrentModification = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Util.option_bind (Xml.member "message" xml) String.parse }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> "message", String.to_json f) ])
+
+  let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
+end
+
 module HealthCheckAlreadyExists = struct
   type t = { message : String.t option }
 
@@ -4505,4 +8924,78 @@ module HealthCheckAlreadyExists = struct
          [ Util.option_map v.message (fun f -> "message", String.to_json f) ])
 
   let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
+end
+
+module TestDNSAnswerResponse = struct
+  type t =
+    { nameserver : String.t
+    ; record_name : String.t
+    ; record_type : RRType.t
+    ; record_data : RecordData.t
+    ; response_code : String.t
+    ; protocol : String.t
+    }
+
+  let make ~nameserver ~record_name ~record_type ~record_data ~response_code ~protocol ()
+      =
+    { nameserver; record_name; record_type; record_data; response_code; protocol }
+
+  let parse xml =
+    Some
+      { nameserver =
+          Xml.required
+            "Nameserver"
+            (Util.option_bind (Xml.member "Nameserver" xml) String.parse)
+      ; record_name =
+          Xml.required
+            "RecordName"
+            (Util.option_bind (Xml.member "RecordName" xml) String.parse)
+      ; record_type =
+          Xml.required
+            "RecordType"
+            (Util.option_bind (Xml.member "RecordType" xml) RRType.parse)
+      ; record_data =
+          Xml.required
+            "RecordData"
+            (Util.option_bind (Xml.member "RecordData" xml) RecordData.parse)
+      ; response_code =
+          Xml.required
+            "ResponseCode"
+            (Util.option_bind (Xml.member "ResponseCode" xml) String.parse)
+      ; protocol =
+          Xml.required
+            "Protocol"
+            (Util.option_bind (Xml.member "Protocol" xml) String.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("Protocol", String.to_query v.protocol))
+         ; Some (Query.Pair ("ResponseCode", String.to_query v.response_code))
+         ; Some (Query.Pair ("RecordData.member", RecordData.to_query v.record_data))
+         ; Some (Query.Pair ("RecordType", RRType.to_query v.record_type))
+         ; Some (Query.Pair ("RecordName", String.to_query v.record_name))
+         ; Some (Query.Pair ("Nameserver", String.to_query v.nameserver))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("protocol", String.to_json v.protocol)
+         ; Some ("response_code", String.to_json v.response_code)
+         ; Some ("record_data", RecordData.to_json v.record_data)
+         ; Some ("record_type", RRType.to_json v.record_type)
+         ; Some ("record_name", String.to_json v.record_name)
+         ; Some ("nameserver", String.to_json v.nameserver)
+         ])
+
+  let of_json j =
+    { nameserver = String.of_json (Util.of_option_exn (Json.lookup j "nameserver"))
+    ; record_name = String.of_json (Util.of_option_exn (Json.lookup j "record_name"))
+    ; record_type = RRType.of_json (Util.of_option_exn (Json.lookup j "record_type"))
+    ; record_data = RecordData.of_json (Util.of_option_exn (Json.lookup j "record_data"))
+    ; response_code = String.of_json (Util.of_option_exn (Json.lookup j "response_code"))
+    ; protocol = String.of_json (Util.of_option_exn (Json.lookup j "protocol"))
+    }
 end
