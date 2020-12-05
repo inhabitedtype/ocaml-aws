@@ -1,9 +1,9 @@
 open Types
 open Aws
 
-type input = ReceiveMessageRequest.t
+type input = ListQueueTagsRequest.t
 
-type output = ReceiveMessageResult.t
+type output = ListQueueTagsResult.t
 
 type error = Errors_internal.t
 
@@ -14,9 +14,9 @@ let to_http service region req =
     Uri.add_query_params
       (Uri.of_string (Aws.Util.of_option_exn (Endpoints.url_of service region)))
       (List.append
-         [ "Version", [ "2012-11-05" ]; "Action", [ "ReceiveMessage" ] ]
+         [ "Version", [ "2012-11-05" ]; "Action", [ "ListQueueTags" ] ]
          (Util.drop_empty
-            (Uri.query_of_encoded (Query.render (ReceiveMessageRequest.to_query req)))))
+            (Uri.query_of_encoded (Query.render (ListQueueTagsRequest.to_query req)))))
   in
   `POST, uri, []
 
@@ -25,21 +25,21 @@ let of_http body =
     let xml = Ezxmlm.from_string body in
     let resp =
       Util.option_bind
-        (Xml.member "ReceiveMessageResponse" (snd xml))
-        (Xml.member "ReceiveMessageResult")
+        (Xml.member "ListQueueTagsResponse" (snd xml))
+        (Xml.member "ListQueueTagsResult")
     in
     try
       Util.or_error
-        (Util.option_bind resp ReceiveMessageResult.parse)
+        (Util.option_bind resp ListQueueTagsResult.parse)
         (let open Error in
-        BadResponse { body; message = "Could not find well formed ReceiveMessageResult." })
+        BadResponse { body; message = "Could not find well formed ListQueueTagsResult." })
     with Xml.RequiredFieldMissing msg ->
       let open Error in
       `Error
         (BadResponse
            { body
            ; message =
-               "Error parsing ReceiveMessageResult - missing field in body or children: "
+               "Error parsing ListQueueTagsResult - missing field in body or children: "
                ^ msg
            })
   with Failure msg ->

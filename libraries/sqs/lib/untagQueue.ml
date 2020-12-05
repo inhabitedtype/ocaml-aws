@@ -1,7 +1,7 @@
 open Types
 open Aws
 
-type input = AddPermissionRequest.t
+type input = UntagQueueRequest.t
 
 type output = unit
 
@@ -14,9 +14,9 @@ let to_http service region req =
     Uri.add_query_params
       (Uri.of_string (Aws.Util.of_option_exn (Endpoints.url_of service region)))
       (List.append
-         [ "Version", [ "2012-11-05" ]; "Action", [ "AddPermission" ] ]
+         [ "Version", [ "2012-11-05" ]; "Action", [ "UntagQueue" ] ]
          (Util.drop_empty
-            (Uri.query_of_encoded (Query.render (AddPermissionRequest.to_query req)))))
+            (Uri.query_of_encoded (Query.render (UntagQueueRequest.to_query req)))))
   in
   `POST, uri, []
 
