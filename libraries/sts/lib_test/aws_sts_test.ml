@@ -22,26 +22,22 @@ functor
   struct
     let get_session_token () =
       Runtime.(
-        un_m
-          (run_request
-             (module GetSessionToken)
-             (Types.GetSessionTokenRequest.make ())))
+        un_m (run_request (module GetSessionToken) (Types.GetSessionTokenRequest.make ())))
 
     let get_session_token_test () =
       let result = get_session_token () in
-      ("Get Session Token returns successfully"
-       @?
-         match result with
-         | `Ok resp ->
-            Printf.printf
-              "%s\n"
-              (Yojson.Basic.to_string
-                 Types.GetSessionTokenResponse.(to_json (of_json (to_json resp))));
-            true
-         | `Error err ->
-            Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
-            false)
-
+      "Get Session Token returns successfully"
+      @?
+      match result with
+      | `Ok resp ->
+          Printf.printf
+            "%s\n"
+            (Yojson.Basic.to_string
+               Types.GetSessionTokenResponse.(to_json (of_json (to_json resp))));
+          true
+      | `Error err ->
+          Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
+          false
 
     let test_cases = [ "STS get_session_token" >:: get_session_token_test ]
 
