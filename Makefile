@@ -39,7 +39,6 @@ LIBRARIES := \
 	aws-sdb \
 	aws-ssm \
 	aws-sts \
-	aws-s3  \
 	aws-route53 \
 	aws-sqs \
 
