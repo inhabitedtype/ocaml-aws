@@ -281,6 +281,7 @@ module Signing : sig
   val sign_request :
        access_key:string
     -> secret_key:string
+    -> ?token:string
     -> service:string
     -> region:string
     -> Request.t

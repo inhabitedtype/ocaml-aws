@@ -35,6 +35,7 @@ val run_request :
      region:string
   -> access_key:string
   -> secret_key:string
+  -> ?token:string
   -> ('input, 'output, 'error) Aws.call
   -> 'input
   -> [ `Ok of 'output | `Error of 'error Aws.Error.t ] Async.Deferred.t
