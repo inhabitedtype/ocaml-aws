@@ -38,6 +38,7 @@ let run_request
     ~region
     ~access_key
     ~secret_key
+    ?token
     (module M : Aws.Call
       with type input = input
        and type output = output
@@ -47,6 +48,7 @@ let run_request
     Aws.Signing.sign_request
       ~access_key
       ~secret_key
+      ?token
       ~service:M.service
       ~region
       (M.to_http M.service region inp)
