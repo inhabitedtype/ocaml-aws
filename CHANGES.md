@@ -1,3 +1,8 @@
+1.2.1
+----------
+- Increase lower bound on OCaml to 4.08. https://github.com/inhabitedtype/ocaml-aws/pull/104
+- Migrate CI to github actions https://github.com/inhabitedtype/ocaml-aws/pull/104
+
 1.2: (24-01-2020)
 ----------
 - Maintenance

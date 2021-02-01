@@ -1,0 +1,27 @@
+name: AWS CI
+on: [push]
+jobs:
+  run:
+    name: Tests
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest]
+        ocaml-version: [ '4.08.1' ]
+    steps:
+    - uses: actions/checkout@master
+    - uses: avsm/setup-ocaml@v1.1.9
+      with:
+        ocaml-version: ${{ matrix.ocaml-version }}
+    - run: |
+        opam pin add aws.dev -n .
+        opam pin add aws-lwt.dev -n .
+        opam pin add aws-async.dev -n .
+    - name: Packages
+      run: opam depext -yt aws aws-lwt aws-async
+    - name: Dependencies
+      run: opam install -t . --deps-only
+    - name: Build
+      run: opam exec -- dune build
+    - name: Test
+      run: opam exec -- dune runtest
