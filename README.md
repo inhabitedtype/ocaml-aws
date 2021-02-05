@@ -8,6 +8,7 @@ individual libraries from [botocore][] service descriptions.
 
 [![Build Status](https://travis-ci.org/inhabitedtype/ocaml-aws.svg?branch=master)](https://travis-ci.org/inhabitedtype/ocaml-aws)
 
+[API Documentation](http://inhabitedtype.github.io/ocaml-aws/)
 
 ## Development
 
