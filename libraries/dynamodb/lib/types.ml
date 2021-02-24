@@ -3,8 +3,15 @@ module Query = Aws.Query
 open Aws.BaseTypes
 open CalendarLib
 type calendar = Calendar.t
-module BinarySetAttributeValue =
-  struct
+module
+  rec BinarySetAttributeValue : sig
+    type t = Blob.t list
+    val parse : Ezxmlm.nodes -> string list option
+    val to_query : string list -> Query.t
+    val to_json : string list -> [> `List of Json.t list ]
+    val of_json : Json.t -> string list
+    val make : 'a -> unit -> 'a
+  end = struct
     type t = Blob.t list
     let make elems () = elems
     let parse xml =
@@ -13,8 +20,14 @@ module BinarySetAttributeValue =
     let to_json v = `List (List.map Blob.to_json v)
     let of_json j = Json.to_list Blob.of_json j
   end
-module NumberSetAttributeValue =
-  struct
+  and NumberSetAttributeValue : sig
+    type t = String.t list
+    val parse : Ezxmlm.nodes -> string list option
+    val to_query : string list -> Query.t
+    val to_json : string list -> [> `List of Json.t list ]
+    val of_json : Json.t -> string list
+    val make : 'a -> unit -> 'a
+  end = struct
     type t = String.t list
     let make elems () = elems
     let parse xml =
@@ -23,8 +36,14 @@ module NumberSetAttributeValue =
     let to_json v = `List (List.map String.to_json v)
     let of_json j = Json.to_list String.of_json j
   end
-module StringSetAttributeValue =
-  struct
+  and StringSetAttributeValue : sig
+    type t = String.t list
+    val parse : Ezxmlm.nodes -> string list option
+    val to_query : string list -> Query.t
+    val to_json : string list -> [> `List of Json.t list ]
+    val of_json : Json.t -> string list
+    val make : 'a -> unit -> 'a
+  end = struct
     type t = String.t list
     let make elems () = elems
     let parse xml =
@@ -33,8 +52,14 @@ module StringSetAttributeValue =
     let to_json v = `List (List.map String.to_json v)
     let of_json j = Json.to_list String.of_json j
   end
-module MapAttributeValue =
-  struct
+  and MapAttributeValue : sig
+    type t = (String.t, AttributeValue.t) Hashtbl.t
+    val parse : 'a -> 'b option
+    val to_query : (string, AttributeValue.t) Hashtbl.t -> Query.t
+    val to_json : (string, AttributeValue.t) Hashtbl.t -> [> `Assoc of (string * [> `Assoc of (string * Json.t) list ]) list ] 
+    val of_json : Json.t -> (string, AttributeValue.t) Hashtbl.t
+    val make : 'a -> unit -> 'a
+  end = struct
     type t = (String.t, AttributeValue.t) Hashtbl.t
     let make elems () = elems
     let parse xml = None
@@ -49,8 +74,15 @@ module MapAttributeValue =
                   :: acc) v [])
     let of_json j = Json.to_hashtbl String.of_string AttributeValue.of_json j
   end
-module ListAttributeValue =
-  struct
+  and ListAttributeValue : sig
+    type t = AttributeValue.t list
+    val parse : Ezxmlm.nodes -> AttributeValue.t list option
+    val to_query : AttributeValue.t list -> Query.t
+    val to_json : AttributeValue.t list ->
+           [> `List of [> `Assoc of (string * Json.t) list ] list ]
+    val of_json : Json.t -> AttributeValue.t list
+    val make : 'a -> unit -> 'a
+  end = struct
     type t = AttributeValue.t list
     let make elems () = elems
     let parse xml =
@@ -60,8 +92,34 @@ module ListAttributeValue =
     let to_json v = `List (List.map AttributeValue.to_json v)
     let of_json j = Json.to_list AttributeValue.of_json j
   end
-module AttributeValue =
-  struct
+  and AttributeValue : sig
+    type t =
+      {
+      s: String.t option ;
+      n: String.t option ;
+      b: Blob.t option ;
+      s_s: StringSetAttributeValue.t ;
+      n_s: NumberSetAttributeValue.t ;
+      b_s: BinarySetAttributeValue.t ;
+      m: MapAttributeValue.t option ;
+      l: ListAttributeValue.t ;
+      n_u_l_l: Boolean.t option ;
+      b_o_o_l: Boolean.t option }
+    val to_query : t -> Query.t
+    val to_json : t -> [> `Assoc of (string * Json.t) list ]
+    val of_json : Json.t -> t
+    val parse : Ezxmlm.nodes -> t option
+    val make :
+      ?s:string ->
+      ?n:string ->
+      ?b:string ->
+      ?s_s:StringSetAttributeValue.t ->
+      ?n_s:NumberSetAttributeValue.t ->
+      ?b_s:BinarySetAttributeValue.t ->
+      ?m:MapAttributeValue.t ->
+      ?l:ListAttributeValue.t ->
+      ?n_u_l_l:bool -> ?b_o_o_l:bool -> unit -> t
+  end = struct
     type t =
       {
       s: String.t option ;
