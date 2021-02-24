@@ -1,4 +1,5 @@
 open Aws
+module Query = Aws.Query
 open Aws.BaseTypes
 open CalendarLib
 type calendar = Calendar.t
