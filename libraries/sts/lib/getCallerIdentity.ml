@@ -1,7 +1,7 @@
 open Types
 open Aws
-type input = AssumeRoleRequest.t
-type output = AssumeRoleResponse.t
+type input = unit
+type output = GetCallerIdentityResponse.t
 type error = Errors_internal.t
 let service = "sts"
 let to_http service region req =
@@ -9,24 +9,22 @@ let to_http service region req =
     Uri.add_query_params
       (Uri.of_string
          (Aws.Util.of_option_exn (Endpoints.url_of service region)))
-      (List.append [("Version", ["2011-06-15"]); ("Action", ["AssumeRole"])]
-         (Util.drop_empty
-            (Uri.query_of_encoded
-               (Query.render (AssumeRoleRequest.to_query req))))) in
+      [("Version", ["2011-06-15"]); ("Action", ["GetCallerIdentity"])] in
   (`POST, uri, [])
 let of_http body =
   try
     let xml = Ezxmlm.from_string body in
     let resp =
-      Util.option_bind (Xml.member "AssumeRoleResponse" (snd xml))
-        (Xml.member "AssumeRoleResult") in
+      Util.option_bind (Xml.member "GetCallerIdentityResponse" (snd xml))
+        (Xml.member "GetCallerIdentityResult") in
     try
-      Util.or_error (Util.option_bind resp AssumeRoleResponse.parse)
+      Util.or_error (Util.option_bind resp GetCallerIdentityResponse.parse)
         (let open Error in
            BadResponse
              {
                body;
-               message = "Could not find well formed AssumeRoleResponse."
+               message =
+                 "Could not find well formed GetCallerIdentityResponse."
              })
     with
     | Xml.RequiredFieldMissing msg ->
@@ -36,7 +34,7 @@ let of_http body =
                {
                  body;
                  message =
-                   ("Error parsing AssumeRoleResponse - missing field in body or children: "
+                   ("Error parsing GetCallerIdentityResponse - missing field in body or children: "
                       ^ msg)
                })
   with
