@@ -44,12 +44,21 @@ let run_request
        and type error = error)
     (inp : M.input) =
   let meth, uri, headers =
-    Aws.Signing.sign_request
-      ~access_key
-      ~secret_key
-      ~service:M.service
-      ~region
-      (M.to_http M.service region inp)
+    match M.signature_version with
+    | V4 | S3 ->
+       Aws.Signing.sign_request
+          ~access_key
+          ~secret_key
+          ~service:M.service
+          ~region
+          (M.to_http M.service region inp)
+    | V2 ->
+       Aws.Signing.sign_v2_request
+          ~access_key
+          ~secret_key
+          ~service:M.service
+          ~region
+          (M.to_http M.service region inp)
   in
   let open Cohttp in
   let headers = Header.of_list headers in

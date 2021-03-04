@@ -25,5 +25,6 @@ depends: [
   "ezxmlm"
   "digestif"
   "dune"
+  "base64"
   "uri" {>= "1.4.0"}
 ]

@@ -152,6 +152,7 @@ let main input override errors_path outdir is_ec2 =
   let lib_name_dir = lib_name' meta in
   let service_name = Json.(member_exn "serviceFullName" meta |> to_string) in
   let api_version = Json.(member_exn "apiVersion" meta |> to_string) in
+  let signature_version = Json.(member_exn "signatureVersion" meta |> to_string) in
   let parsed_ops = List.map Reading.op ops_json in
   let common_errors =
     let parse_common common =
@@ -217,7 +218,7 @@ let main input override errors_path outdir is_ec2 =
   log "## Wrote %d error variants..." (List.length errors);
   List.iter
     (fun op ->
-      let mli, ml = Generate.op lib_name api_version shapes op in
+      let mli, ml = Generate.op lib_name api_version shapes op signature_version in
       let modname = uncapitalize op.Operation.name in
       Printing.write_signature (lib_dir </> modname ^ ".mli") mli;
       Printing.write_structure (lib_dir </> modname ^ ".ml") ml)

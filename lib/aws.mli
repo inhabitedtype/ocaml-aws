@@ -102,6 +102,12 @@ module Request : sig
   type headers = (string * string) list
   (** HTTP headers. *)
 
+  type signature_version =
+    | V4
+    | V2
+    | S3
+  (** Signature version *)
+
   type t = meth * Uri.t * headers
   (** A request is a method, a uri, and a list of headers. *)
 end
@@ -119,6 +125,9 @@ module type Call = sig
   type error
   (** The native OCaml error type. This is shared between all calls
       for a single API. *)
+
+  val signature_version : Request.signature_version
+  (** TODO The signing method to use for this call. *)
 
   val service : string
   (** The AWS service, for example, 'ec2'. This is used for request
@@ -158,6 +167,8 @@ module Time : sig
       Raises 'Invalid_argument' if the string does not match the
       format. *)
 
+  val date_time_iso8601 : CalendarLib.Calendar.t -> string
+  val now_utc : unit -> CalendarLib.Calendar.t
   val format : CalendarLib.Calendar.t -> string
   (** Formats a Calendar.t as 2013-05-24T21:15:31.000Z. Note that
       .000Z is always appended. *)
@@ -275,9 +286,18 @@ module Util : sig
       list), else produce None. *)
 end
 
-(** This module contains the V4 Authorization header AWS signature
-    algorithm. *)
+(** This module contains the V2 and V4 Authorization header AWS signature algorithm. *)
 module Signing : sig
+  module Hash : sig
+    val _sha256 : ?key:string -> string -> Digestif.SHA256.t
+    val sha256 : ?key:string -> string -> string
+    val sha256_hex : ?key:string -> string -> string
+    val sha256_base64 : ?key:string -> string -> string
+  end
+
+  val encode_query : (string * string list) list -> string
+
+
   val sign_request :
        access_key:string
     -> secret_key:string
@@ -297,7 +317,27 @@ module Signing : sig
 
       Also: Your system time must be accurate. If you are getting invalid
       authorization errors, check your system time!
-  *)
+   *)
+
+  val sign_v2_request :
+    access_key:string
+    -> secret_key:string
+    -> service:string
+    -> region:string
+    -> Request.t
+    -> Request.t
+  (** Given a service, region, and request, produce a new request with
+      an Authorization header constructed according to the V2 Signing
+      algorithm. This code is a direct translation of the reference description:
+
+      https://docs.aws.amazon.com/general/latest/gr/signature-version-2.html
+
+      Note: This requires AWS_ACCESS_KEY and AWS_SECRET_KEY
+      environment variables to be set.
+
+      Also: Your system time must be accurate. If you are getting invalid
+      authorization errors, check your system time!
+   *)
 end
 
 (** This module contains base case types for the various datatypes
