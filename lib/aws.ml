@@ -516,7 +516,7 @@ module Signing = struct
   (* NOTE(dbp 2015-01-13): This is a direct translation of reference implementation at:
    * http://docs.aws.amazon.com/general/latest/gr/sigv4-signed-request-examples.html
    *)
-  let sign_request ~access_key ~secret_key ~service ~region (meth, uri, headers) =
+  let sign_request ~access_key ~secret_key ?session_token ~service ~region (meth, uri, headers) =
     let host = Util.of_option_exn (Endpoints.endpoint_of service region) in
     let params = encode_query (Uri.query uri) in
     let sign key msg = Hash.sha256 ~key msg in
@@ -534,6 +534,10 @@ module Signing = struct
       ; "x-amz-content-sha256", payload_hash
       ; "x-amz-date", amzdate
       ]
+      @
+      match session_token with
+      | None -> []
+      | Some token -> ["x-amz-security-token", token]
     in
     let signed_headers = String.concat ";" (List.map fst canonical_headers) in
     let canonical_headers_str =
@@ -586,23 +590,25 @@ module Signing = struct
         ]
     in
     let headers =
-      ("x-amz-date", amzdate)
-      :: ("x-amz-content-sha256", payload_hash)
-      :: ("Authorization", authorization_header)
-      :: headers
+      canonical_headers
+      @ ["Authorization", authorization_header]
+      @ headers
     in
     meth, uri, headers
 
-  let sign_v2_request ~access_key ~secret_key ~service ~region (meth, uri, headers) =
+  let sign_v2_request ~access_key ~secret_key ?session_token ~service ~region (meth, uri, headers) =
     let host = Util.of_option_exn (Endpoints.endpoint_of service region) in
     let amzdate = Time.date_time_iso8601 (Time.now_utc ()) in
 
-    let query = Uri.add_query_params' uri
-                  [ "Timestamp", amzdate
+    let query =
+      let params = [ "Timestamp", amzdate
                   ; "AWSAccessKeyId", access_key
                   ; "SignatureMethod", "HmacSHA256"
                   ; "SignatureVersion", "2"
-                  ] in
+                  ]
+                  @ match session_token with None -> [] | Some t -> ["SecurityToken", t]
+      in Uri.add_query_params' uri params
+    in
 
     let params = encode_query (Uri.query query) in
     let canonical_uri = "/" in
