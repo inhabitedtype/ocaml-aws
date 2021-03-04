@@ -301,6 +301,7 @@ module Signing : sig
   val sign_request :
        access_key:string
     -> secret_key:string
+    -> ?session_token:string
     -> service:string
     -> region:string
     -> Request.t
@@ -322,6 +323,7 @@ module Signing : sig
   val sign_v2_request :
     access_key:string
     -> secret_key:string
+    -> ?session_token:string
     -> service:string
     -> region:string
     -> Request.t
