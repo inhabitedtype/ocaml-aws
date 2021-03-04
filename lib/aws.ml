@@ -197,6 +197,8 @@ module Request = struct
 
   type headers = (string * string) list
 
+  type signature_version = V4 | V2 | S3
+
   type t = meth * Uri.t * headers
 end
 
@@ -206,6 +208,8 @@ module type Call = sig
   type output
 
   type error
+
+  val signature_version : Request.signature_version
 
   val service : string
 
@@ -224,6 +228,8 @@ module Time = struct
   module P = CalendarLib.Printer.Calendar
 
   let date_yymmdd = P.sprint "%Y%m%d"
+
+  let date_time_iso8601 = P.sprint "%Y-%m-%dT%H:%M:%S"
 
   let date_time = P.sprint "%Y%m%dT%H%M%SZ"
 
@@ -471,6 +477,7 @@ module Signing = struct
     let sha256 ?key str = _sha256 ?key str |> Digestif.SHA256.to_raw_string
 
     let sha256_hex ?key str = _sha256 ?key str |> Digestif.SHA256.to_hex
+    let sha256_base64 ?key str = Base64.encode_string @@ sha256 ?key str
   end
 
   let encode_query ps =
@@ -577,4 +584,29 @@ module Signing = struct
       :: headers
     in
     meth, uri, headers
+
+  let sign_v2_request ~access_key ~secret_key ~service ~region (meth, uri, headers) =
+    let host = Util.of_option_exn (Endpoints.endpoint_of service region) in
+    let amzdate = Time.date_time_iso8601 (Time.now_utc ()) in
+
+    let query = Uri.add_query_params' uri
+                  [ "Timestamp", amzdate
+                  ; "AWSAccessKeyId", access_key
+                  ; "SignatureMethod", "HmacSHA256"
+                  ; "SignatureVersion", "2"
+                  ] in
+
+    let params = encode_query (Uri.query query) in
+    let canonical_uri = "/" in
+    let string_to_sign =
+      Request.string_of_meth meth
+      ^ "\n"
+      ^ host
+      ^ "\n"
+      ^ canonical_uri
+      ^ "\n"
+      ^ params in
+    let signature = Base64.encode_string @@ Hash.sha256 ~key:secret_key string_to_sign in
+    let new_uri = Uri.add_query_param' query ("Signature", signature) in
+    meth, new_uri, headers
 end
