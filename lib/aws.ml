@@ -530,16 +530,16 @@ module Signing = struct
     let canonical_querystring = params in
     let payload_hash = Hash.sha256_hex "" in
     let canonical_headers =
-      "host:"
-      ^ host
-      ^ "\n"
-      ^ "x-amz-content-sha256:"
-      ^ payload_hash
-      ^ "\nx-amz-date:"
-      ^ amzdate
-      ^ "\n"
+      [ "host", host
+      ; "x-amz-content-sha256", payload_hash
+      ; "x-amz-date", amzdate
+      ]
     in
-    let signed_headers = "host;x-amz-content-sha256;x-amz-date" in
+    let signed_headers = String.concat ";" (List.map fst canonical_headers) in
+    let canonical_headers_str =
+      let add_header acc (name, value) = acc ^ name ^ ":" ^ value ^ "\n" in
+      List.fold_left add_header "" canonical_headers
+    in
     let canonical_request =
       Request.string_of_meth meth
       ^ "\n"
@@ -547,7 +547,7 @@ module Signing = struct
       ^ "\n"
       ^ canonical_querystring
       ^ "\n"
-      ^ canonical_headers
+      ^ canonical_headers_str
       ^ "\n"
       ^ signed_headers
       ^ "\n"
