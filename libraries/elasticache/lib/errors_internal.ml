@@ -1,126 +1,123 @@
 type t =
-  | APICallRateForCustomerExceeded
-  | AuthFailure
-  | AuthorizationAlreadyExists
-  | AuthorizationNotFound
-  | Blocked
-  | CacheClusterAlreadyExists
-  | CacheClusterNotFound
-  | CacheParameterGroupAlreadyExists
-  | CacheParameterGroupNotFound
-  | CacheParameterGroupQuotaExceeded
-  | CacheSecurityGroupAlreadyExists
-  | CacheSecurityGroupNotFound
-  | CacheSubnetGroupAlreadyExists
-  | CacheSubnetGroupInUse
-  | CacheSubnetGroupNotFoundFault
-  | CacheSubnetGroupQuotaExceeded
-  | CacheSubnetQuotaExceededFault
-  | ClusterQuotaForCustomerExceeded
-  | DefaultUserAssociatedToUserGroup
-  | DefaultUserRequired
-  | DryRunOperation
-  | DuplicateUserName
-  | GlobalReplicationGroupAlreadyExistsFault
-  | GlobalReplicationGroupNotFoundFault
-  | IdempotentParameterMismatch
-  | IncompleteSignature
-  | InsufficientCacheClusterCapacity
-  | InternalFailure
-  | InvalidARN
-  | InvalidAction
-  | InvalidCacheClusterState
-  | InvalidCacheParameterGroupState
-  | InvalidCacheSecurityGroupState
-  | InvalidClientTokenId
-  | InvalidGlobalReplicationGroupState
-  | InvalidKMSKeyFault
-  | InvalidParameter
-  | InvalidParameterCombination
-  | InvalidParameterValue
-  | InvalidQueryParameter
-  | InvalidReplicationGroupState
-  | InvalidSnapshotState
-  | InvalidSubnet
-  | InvalidUserGroupState
-  | InvalidUserState
-  | InvalidVPCNetworkStateFault
-  | MalformedQueryString
-  | MissingAction
-  | MissingAuthenticationToken
-  | MissingParameter
-  | NoOperationFault
-  | NodeGroupNotFoundFault
-  | NodeGroupsPerReplicationGroupQuotaExceeded
-  | NodeQuotaForClusterExceeded
-  | NodeQuotaForCustomerExceeded
-  | OptInRequired
-  | PendingVerification
-  | QuotaExceeded_CacheSecurityGroup
-  | ReplicationGroupAlreadyExists
-  | ReplicationGroupAlreadyUnderMigrationFault
-  | ReplicationGroupNotFoundFault
-  | ReplicationGroupNotUnderMigrationFault
-  | RequestExpired
-  | RequestLimitExceeded
-  | ReservedCacheNodeAlreadyExists
-  | ReservedCacheNodeNotFound
-  | ReservedCacheNodeQuotaExceeded
-  | ReservedCacheNodesOfferingNotFound
-  | ServiceLinkedRoleNotFoundFault
-  | ServiceUnavailable
-  | ServiceUpdateNotFoundFault
-  | SnapshotAlreadyExistsFault
-  | SnapshotFeatureNotSupportedFault
-  | SnapshotNotFoundFault
-  | SnapshotQuotaExceededFault
-  | SubnetInUse
-  | SubnetNotAllowedFault
-  | TagNotFound
-  | TagQuotaPerResourceExceeded
-  | TestFailoverNotAvailableFault
-  | Throttling
-  | UnauthorizedOperation
-  | UnknownParameter
-  | UnsupportedProtocol
-  | UserAlreadyExists
-  | UserGroupAlreadyExists
-  | UserGroupNotFound
-  | UserGroupQuotaExceeded
-  | UserNotFound
-  | UserQuotaExceeded
-  | ValidationError
-  | Uninhabited
-
+  | APICallRateForCustomerExceeded 
+  | AuthFailure 
+  | AuthorizationAlreadyExists 
+  | AuthorizationNotFound 
+  | Blocked 
+  | CacheClusterAlreadyExists 
+  | CacheClusterNotFound 
+  | CacheParameterGroupAlreadyExists 
+  | CacheParameterGroupNotFound 
+  | CacheParameterGroupQuotaExceeded 
+  | CacheSecurityGroupAlreadyExists 
+  | CacheSecurityGroupNotFound 
+  | CacheSubnetGroupAlreadyExists 
+  | CacheSubnetGroupInUse 
+  | CacheSubnetGroupNotFoundFault 
+  | CacheSubnetGroupQuotaExceeded 
+  | CacheSubnetQuotaExceededFault 
+  | ClusterQuotaForCustomerExceeded 
+  | DefaultUserAssociatedToUserGroup 
+  | DefaultUserRequired 
+  | DryRunOperation 
+  | DuplicateUserName 
+  | GlobalReplicationGroupAlreadyExistsFault 
+  | GlobalReplicationGroupNotFoundFault 
+  | IdempotentParameterMismatch 
+  | IncompleteSignature 
+  | InsufficientCacheClusterCapacity 
+  | InternalFailure 
+  | InvalidARN 
+  | InvalidAction 
+  | InvalidCacheClusterState 
+  | InvalidCacheParameterGroupState 
+  | InvalidCacheSecurityGroupState 
+  | InvalidClientTokenId 
+  | InvalidGlobalReplicationGroupState 
+  | InvalidKMSKeyFault 
+  | InvalidParameter 
+  | InvalidParameterCombination 
+  | InvalidParameterValue 
+  | InvalidQueryParameter 
+  | InvalidReplicationGroupState 
+  | InvalidSnapshotState 
+  | InvalidSubnet 
+  | InvalidUserGroupState 
+  | InvalidUserState 
+  | InvalidVPCNetworkStateFault 
+  | MalformedQueryString 
+  | MissingAction 
+  | MissingAuthenticationToken 
+  | MissingParameter 
+  | NoOperationFault 
+  | NodeGroupNotFoundFault 
+  | NodeGroupsPerReplicationGroupQuotaExceeded 
+  | NodeQuotaForClusterExceeded 
+  | NodeQuotaForCustomerExceeded 
+  | OptInRequired 
+  | PendingVerification 
+  | QuotaExceeded_CacheSecurityGroup 
+  | ReplicationGroupAlreadyExists 
+  | ReplicationGroupAlreadyUnderMigrationFault 
+  | ReplicationGroupNotFoundFault 
+  | ReplicationGroupNotUnderMigrationFault 
+  | RequestExpired 
+  | RequestLimitExceeded 
+  | ReservedCacheNodeAlreadyExists 
+  | ReservedCacheNodeNotFound 
+  | ReservedCacheNodeQuotaExceeded 
+  | ReservedCacheNodesOfferingNotFound 
+  | ServiceLinkedRoleNotFoundFault 
+  | ServiceUnavailable 
+  | ServiceUpdateNotFoundFault 
+  | SnapshotAlreadyExistsFault 
+  | SnapshotFeatureNotSupportedFault 
+  | SnapshotNotFoundFault 
+  | SnapshotQuotaExceededFault 
+  | SubnetInUse 
+  | SubnetNotAllowedFault 
+  | TagNotFound 
+  | TagQuotaPerResourceExceeded 
+  | TestFailoverNotAvailableFault 
+  | Throttling 
+  | UnauthorizedOperation 
+  | UnknownParameter 
+  | UnsupportedProtocol 
+  | UserAlreadyExists 
+  | UserGroupAlreadyExists 
+  | UserGroupNotFound 
+  | UserGroupQuotaExceeded 
+  | UserNotFound 
+  | UserQuotaExceeded 
+  | ValidationError 
+  | Uninhabited 
 let common =
-  [ UnsupportedProtocol
-  ; UnknownParameter
-  ; UnauthorizedOperation
-  ; RequestLimitExceeded
-  ; PendingVerification
-  ; InvalidParameter
-  ; IdempotentParameterMismatch
-  ; DryRunOperation
-  ; Blocked
-  ; AuthFailure
-  ; ValidationError
-  ; Throttling
-  ; ServiceUnavailable
-  ; RequestExpired
-  ; OptInRequired
-  ; MissingParameter
-  ; MissingAuthenticationToken
-  ; MissingAction
-  ; MalformedQueryString
-  ; InvalidQueryParameter
-  ; InvalidParameterValue
-  ; InvalidParameterCombination
-  ; InvalidClientTokenId
-  ; InvalidAction
-  ; InternalFailure
-  ; IncompleteSignature
-  ]
-
+  [UnsupportedProtocol;
+  UnknownParameter;
+  UnauthorizedOperation;
+  RequestLimitExceeded;
+  PendingVerification;
+  InvalidParameter;
+  IdempotentParameterMismatch;
+  DryRunOperation;
+  Blocked;
+  AuthFailure;
+  ValidationError;
+  Throttling;
+  ServiceUnavailable;
+  RequestExpired;
+  OptInRequired;
+  MissingParameter;
+  MissingAuthenticationToken;
+  MissingAction;
+  MalformedQueryString;
+  InvalidQueryParameter;
+  InvalidParameterValue;
+  InvalidParameterCombination;
+  InvalidClientTokenId;
+  InvalidAction;
+  InternalFailure;
+  IncompleteSignature]
 let to_http_code e =
   match e with
   | APICallRateForCustomerExceeded -> Some 400
@@ -215,7 +212,6 @@ let to_http_code e =
   | UserQuotaExceeded -> Some 400
   | ValidationError -> Some 400
   | Uninhabited -> None
-
 let to_string e =
   match e with
   | APICallRateForCustomerExceeded -> "APICallRateForCustomerExceeded"
@@ -240,8 +236,10 @@ let to_string e =
   | DefaultUserRequired -> "DefaultUserRequired"
   | DryRunOperation -> "DryRunOperation"
   | DuplicateUserName -> "DuplicateUserName"
-  | GlobalReplicationGroupAlreadyExistsFault -> "GlobalReplicationGroupAlreadyExistsFault"
-  | GlobalReplicationGroupNotFoundFault -> "GlobalReplicationGroupNotFoundFault"
+  | GlobalReplicationGroupAlreadyExistsFault ->
+      "GlobalReplicationGroupAlreadyExistsFault"
+  | GlobalReplicationGroupNotFoundFault ->
+      "GlobalReplicationGroupNotFoundFault"
   | IdempotentParameterMismatch -> "IdempotentParameterMismatch"
   | IncompleteSignature -> "IncompleteSignature"
   | InsufficientCacheClusterCapacity -> "InsufficientCacheClusterCapacity"
@@ -252,7 +250,8 @@ let to_string e =
   | InvalidCacheParameterGroupState -> "InvalidCacheParameterGroupState"
   | InvalidCacheSecurityGroupState -> "InvalidCacheSecurityGroupState"
   | InvalidClientTokenId -> "InvalidClientTokenId"
-  | InvalidGlobalReplicationGroupState -> "InvalidGlobalReplicationGroupState"
+  | InvalidGlobalReplicationGroupState ->
+      "InvalidGlobalReplicationGroupState"
   | InvalidKMSKeyFault -> "InvalidKMSKeyFault"
   | InvalidParameter -> "InvalidParameter"
   | InvalidParameterCombination -> "InvalidParameterCombination"
@@ -281,13 +280,15 @@ let to_string e =
   | ReplicationGroupAlreadyUnderMigrationFault ->
       "ReplicationGroupAlreadyUnderMigrationFault"
   | ReplicationGroupNotFoundFault -> "ReplicationGroupNotFoundFault"
-  | ReplicationGroupNotUnderMigrationFault -> "ReplicationGroupNotUnderMigrationFault"
+  | ReplicationGroupNotUnderMigrationFault ->
+      "ReplicationGroupNotUnderMigrationFault"
   | RequestExpired -> "RequestExpired"
   | RequestLimitExceeded -> "RequestLimitExceeded"
   | ReservedCacheNodeAlreadyExists -> "ReservedCacheNodeAlreadyExists"
   | ReservedCacheNodeNotFound -> "ReservedCacheNodeNotFound"
   | ReservedCacheNodeQuotaExceeded -> "ReservedCacheNodeQuotaExceeded"
-  | ReservedCacheNodesOfferingNotFound -> "ReservedCacheNodesOfferingNotFound"
+  | ReservedCacheNodesOfferingNotFound ->
+      "ReservedCacheNodesOfferingNotFound"
   | ServiceLinkedRoleNotFoundFault -> "ServiceLinkedRoleNotFoundFault"
   | ServiceUnavailable -> "ServiceUnavailable"
   | ServiceUpdateNotFoundFault -> "ServiceUpdateNotFoundFault"
@@ -312,7 +313,6 @@ let to_string e =
   | UserQuotaExceeded -> "UserQuotaExceeded"
   | ValidationError -> "ValidationError"
   | Uninhabited -> "Uninhabited"
-
 let of_string e =
   match e with
   | "APICallRateForCustomerExceeded" -> Some APICallRateForCustomerExceeded
@@ -322,9 +322,11 @@ let of_string e =
   | "Blocked" -> Some Blocked
   | "CacheClusterAlreadyExists" -> Some CacheClusterAlreadyExists
   | "CacheClusterNotFound" -> Some CacheClusterNotFound
-  | "CacheParameterGroupAlreadyExists" -> Some CacheParameterGroupAlreadyExists
+  | "CacheParameterGroupAlreadyExists" ->
+      Some CacheParameterGroupAlreadyExists
   | "CacheParameterGroupNotFound" -> Some CacheParameterGroupNotFound
-  | "CacheParameterGroupQuotaExceeded" -> Some CacheParameterGroupQuotaExceeded
+  | "CacheParameterGroupQuotaExceeded" ->
+      Some CacheParameterGroupQuotaExceeded
   | "CacheSecurityGroupAlreadyExists" -> Some CacheSecurityGroupAlreadyExists
   | "CacheSecurityGroupNotFound" -> Some CacheSecurityGroupNotFound
   | "CacheSubnetGroupAlreadyExists" -> Some CacheSubnetGroupAlreadyExists
@@ -333,16 +335,19 @@ let of_string e =
   | "CacheSubnetGroupQuotaExceeded" -> Some CacheSubnetGroupQuotaExceeded
   | "CacheSubnetQuotaExceededFault" -> Some CacheSubnetQuotaExceededFault
   | "ClusterQuotaForCustomerExceeded" -> Some ClusterQuotaForCustomerExceeded
-  | "DefaultUserAssociatedToUserGroup" -> Some DefaultUserAssociatedToUserGroup
+  | "DefaultUserAssociatedToUserGroup" ->
+      Some DefaultUserAssociatedToUserGroup
   | "DefaultUserRequired" -> Some DefaultUserRequired
   | "DryRunOperation" -> Some DryRunOperation
   | "DuplicateUserName" -> Some DuplicateUserName
   | "GlobalReplicationGroupAlreadyExistsFault" ->
       Some GlobalReplicationGroupAlreadyExistsFault
-  | "GlobalReplicationGroupNotFoundFault" -> Some GlobalReplicationGroupNotFoundFault
+  | "GlobalReplicationGroupNotFoundFault" ->
+      Some GlobalReplicationGroupNotFoundFault
   | "IdempotentParameterMismatch" -> Some IdempotentParameterMismatch
   | "IncompleteSignature" -> Some IncompleteSignature
-  | "InsufficientCacheClusterCapacity" -> Some InsufficientCacheClusterCapacity
+  | "InsufficientCacheClusterCapacity" ->
+      Some InsufficientCacheClusterCapacity
   | "InternalFailure" -> Some InternalFailure
   | "InvalidARN" -> Some InvalidARN
   | "InvalidAction" -> Some InvalidAction
@@ -350,7 +355,8 @@ let of_string e =
   | "InvalidCacheParameterGroupState" -> Some InvalidCacheParameterGroupState
   | "InvalidCacheSecurityGroupState" -> Some InvalidCacheSecurityGroupState
   | "InvalidClientTokenId" -> Some InvalidClientTokenId
-  | "InvalidGlobalReplicationGroupState" -> Some InvalidGlobalReplicationGroupState
+  | "InvalidGlobalReplicationGroupState" ->
+      Some InvalidGlobalReplicationGroupState
   | "InvalidKMSKeyFault" -> Some InvalidKMSKeyFault
   | "InvalidParameter" -> Some InvalidParameter
   | "InvalidParameterCombination" -> Some InvalidParameterCombination
@@ -374,7 +380,8 @@ let of_string e =
   | "NodeQuotaForCustomerExceeded" -> Some NodeQuotaForCustomerExceeded
   | "OptInRequired" -> Some OptInRequired
   | "PendingVerification" -> Some PendingVerification
-  | "QuotaExceeded.CacheSecurityGroup" -> Some QuotaExceeded_CacheSecurityGroup
+  | "QuotaExceeded.CacheSecurityGroup" ->
+      Some QuotaExceeded_CacheSecurityGroup
   | "ReplicationGroupAlreadyExists" -> Some ReplicationGroupAlreadyExists
   | "ReplicationGroupAlreadyUnderMigrationFault" ->
       Some ReplicationGroupAlreadyUnderMigrationFault
@@ -386,12 +393,14 @@ let of_string e =
   | "ReservedCacheNodeAlreadyExists" -> Some ReservedCacheNodeAlreadyExists
   | "ReservedCacheNodeNotFound" -> Some ReservedCacheNodeNotFound
   | "ReservedCacheNodeQuotaExceeded" -> Some ReservedCacheNodeQuotaExceeded
-  | "ReservedCacheNodesOfferingNotFound" -> Some ReservedCacheNodesOfferingNotFound
+  | "ReservedCacheNodesOfferingNotFound" ->
+      Some ReservedCacheNodesOfferingNotFound
   | "ServiceLinkedRoleNotFoundFault" -> Some ServiceLinkedRoleNotFoundFault
   | "ServiceUnavailable" -> Some ServiceUnavailable
   | "ServiceUpdateNotFoundFault" -> Some ServiceUpdateNotFoundFault
   | "SnapshotAlreadyExistsFault" -> Some SnapshotAlreadyExistsFault
-  | "SnapshotFeatureNotSupportedFault" -> Some SnapshotFeatureNotSupportedFault
+  | "SnapshotFeatureNotSupportedFault" ->
+      Some SnapshotFeatureNotSupportedFault
   | "SnapshotNotFoundFault" -> Some SnapshotNotFoundFault
   | "SnapshotQuotaExceededFault" -> Some SnapshotQuotaExceededFault
   | "SubnetInUse" -> Some SubnetInUse

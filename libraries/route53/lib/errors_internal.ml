@@ -1,112 +1,109 @@
 type t =
-  | AuthFailure
-  | Blocked
-  | ConcurrentModification
-  | ConflictingDomainExists
-  | ConflictingTypes
-  | DelegationSetAlreadyCreated
-  | DelegationSetAlreadyReusable
-  | DelegationSetInUse
-  | DelegationSetNotAvailable
-  | DelegationSetNotReusable
-  | DryRunOperation
-  | HealthCheckAlreadyExists
-  | HealthCheckInUse
-  | HealthCheckVersionMismatch
-  | HostedZoneAlreadyExists
-  | HostedZoneNotEmpty
-  | HostedZoneNotFound
-  | HostedZoneNotPrivate
-  | IdempotentParameterMismatch
-  | IncompatibleVersion
-  | IncompleteSignature
-  | InsufficientCloudWatchLogsResourcePolicy
-  | InternalFailure
-  | InvalidAction
-  | InvalidArgument
-  | InvalidChangeBatch
-  | InvalidClientTokenId
-  | InvalidDomainName
-  | InvalidInput
-  | InvalidPaginationToken
-  | InvalidParameter
-  | InvalidParameterCombination
-  | InvalidParameterValue
-  | InvalidQueryParameter
-  | InvalidTrafficPolicyDocument
-  | InvalidVPCId
-  | LastVPCAssociation
-  | LimitsExceeded
-  | MalformedQueryString
-  | MissingAction
-  | MissingAuthenticationToken
-  | MissingParameter
-  | NoSuchChange
-  | NoSuchCloudWatchLogsLogGroup
-  | NoSuchDelegationSet
-  | NoSuchGeoLocation
-  | NoSuchHealthCheck
-  | NoSuchHostedZone
-  | NoSuchQueryLoggingConfig
-  | NoSuchTrafficPolicy
-  | NoSuchTrafficPolicyInstance
-  | NotAuthorizedException
-  | OptInRequired
-  | PendingVerification
-  | PriorRequestNotComplete
-  | PublicZoneVPCAssociation
-  | QueryLoggingConfigAlreadyExists
-  | RequestExpired
-  | RequestLimitExceeded
-  | ServiceUnavailable
-  | Throttling
-  | ThrottlingException
-  | TooManyHealthChecks
-  | TooManyHostedZones
-  | TooManyTrafficPolicies
-  | TooManyTrafficPolicyInstances
-  | TooManyTrafficPolicyVersionsForCurrentPolicy
-  | TooManyVPCAssociationAuthorizations
-  | TrafficPolicyAlreadyExists
-  | TrafficPolicyInUse
-  | TrafficPolicyInstanceAlreadyExists
-  | UnauthorizedOperation
-  | UnknownParameter
-  | UnsupportedProtocol
-  | VPCAssociationAuthorizationNotFound
-  | VPCAssociationNotFound
-  | ValidationError
-  | Uninhabited
-
+  | AuthFailure 
+  | Blocked 
+  | ConcurrentModification 
+  | ConflictingDomainExists 
+  | ConflictingTypes 
+  | DelegationSetAlreadyCreated 
+  | DelegationSetAlreadyReusable 
+  | DelegationSetInUse 
+  | DelegationSetNotAvailable 
+  | DelegationSetNotReusable 
+  | DryRunOperation 
+  | HealthCheckAlreadyExists 
+  | HealthCheckInUse 
+  | HealthCheckVersionMismatch 
+  | HostedZoneAlreadyExists 
+  | HostedZoneNotEmpty 
+  | HostedZoneNotFound 
+  | HostedZoneNotPrivate 
+  | IdempotentParameterMismatch 
+  | IncompatibleVersion 
+  | IncompleteSignature 
+  | InsufficientCloudWatchLogsResourcePolicy 
+  | InternalFailure 
+  | InvalidAction 
+  | InvalidArgument 
+  | InvalidChangeBatch 
+  | InvalidClientTokenId 
+  | InvalidDomainName 
+  | InvalidInput 
+  | InvalidPaginationToken 
+  | InvalidParameter 
+  | InvalidParameterCombination 
+  | InvalidParameterValue 
+  | InvalidQueryParameter 
+  | InvalidTrafficPolicyDocument 
+  | InvalidVPCId 
+  | LastVPCAssociation 
+  | LimitsExceeded 
+  | MalformedQueryString 
+  | MissingAction 
+  | MissingAuthenticationToken 
+  | MissingParameter 
+  | NoSuchChange 
+  | NoSuchCloudWatchLogsLogGroup 
+  | NoSuchDelegationSet 
+  | NoSuchGeoLocation 
+  | NoSuchHealthCheck 
+  | NoSuchHostedZone 
+  | NoSuchQueryLoggingConfig 
+  | NoSuchTrafficPolicy 
+  | NoSuchTrafficPolicyInstance 
+  | NotAuthorizedException 
+  | OptInRequired 
+  | PendingVerification 
+  | PriorRequestNotComplete 
+  | PublicZoneVPCAssociation 
+  | QueryLoggingConfigAlreadyExists 
+  | RequestExpired 
+  | RequestLimitExceeded 
+  | ServiceUnavailable 
+  | Throttling 
+  | ThrottlingException 
+  | TooManyHealthChecks 
+  | TooManyHostedZones 
+  | TooManyTrafficPolicies 
+  | TooManyTrafficPolicyInstances 
+  | TooManyTrafficPolicyVersionsForCurrentPolicy 
+  | TooManyVPCAssociationAuthorizations 
+  | TrafficPolicyAlreadyExists 
+  | TrafficPolicyInUse 
+  | TrafficPolicyInstanceAlreadyExists 
+  | UnauthorizedOperation 
+  | UnknownParameter 
+  | UnsupportedProtocol 
+  | VPCAssociationAuthorizationNotFound 
+  | VPCAssociationNotFound 
+  | ValidationError 
+  | Uninhabited 
 let common =
-  [ UnsupportedProtocol
-  ; UnknownParameter
-  ; UnauthorizedOperation
-  ; RequestLimitExceeded
-  ; PendingVerification
-  ; InvalidParameter
-  ; IdempotentParameterMismatch
-  ; DryRunOperation
-  ; Blocked
-  ; AuthFailure
-  ; ValidationError
-  ; Throttling
-  ; ServiceUnavailable
-  ; RequestExpired
-  ; OptInRequired
-  ; MissingParameter
-  ; MissingAuthenticationToken
-  ; MissingAction
-  ; MalformedQueryString
-  ; InvalidQueryParameter
-  ; InvalidParameterValue
-  ; InvalidParameterCombination
-  ; InvalidClientTokenId
-  ; InvalidAction
-  ; InternalFailure
-  ; IncompleteSignature
-  ]
-
+  [UnsupportedProtocol;
+  UnknownParameter;
+  UnauthorizedOperation;
+  RequestLimitExceeded;
+  PendingVerification;
+  InvalidParameter;
+  IdempotentParameterMismatch;
+  DryRunOperation;
+  Blocked;
+  AuthFailure;
+  ValidationError;
+  Throttling;
+  ServiceUnavailable;
+  RequestExpired;
+  OptInRequired;
+  MissingParameter;
+  MissingAuthenticationToken;
+  MissingAction;
+  MalformedQueryString;
+  InvalidQueryParameter;
+  InvalidParameterValue;
+  InvalidParameterCombination;
+  InvalidClientTokenId;
+  InvalidAction;
+  InternalFailure;
+  IncompleteSignature]
 let to_http_code e =
   match e with
   | AuthFailure -> None
@@ -187,7 +184,6 @@ let to_http_code e =
   | VPCAssociationNotFound -> Some 404
   | ValidationError -> Some 400
   | Uninhabited -> None
-
 let to_string e =
   match e with
   | AuthFailure -> "AuthFailure"
@@ -211,7 +207,8 @@ let to_string e =
   | IdempotentParameterMismatch -> "IdempotentParameterMismatch"
   | IncompatibleVersion -> "IncompatibleVersion"
   | IncompleteSignature -> "IncompleteSignature"
-  | InsufficientCloudWatchLogsResourcePolicy -> "InsufficientCloudWatchLogsResourcePolicy"
+  | InsufficientCloudWatchLogsResourcePolicy ->
+      "InsufficientCloudWatchLogsResourcePolicy"
   | InternalFailure -> "InternalFailure"
   | InvalidAction -> "InvalidAction"
   | InvalidArgument -> "InvalidArgument"
@@ -258,18 +255,20 @@ let to_string e =
   | TooManyTrafficPolicyInstances -> "TooManyTrafficPolicyInstances"
   | TooManyTrafficPolicyVersionsForCurrentPolicy ->
       "TooManyTrafficPolicyVersionsForCurrentPolicy"
-  | TooManyVPCAssociationAuthorizations -> "TooManyVPCAssociationAuthorizations"
+  | TooManyVPCAssociationAuthorizations ->
+      "TooManyVPCAssociationAuthorizations"
   | TrafficPolicyAlreadyExists -> "TrafficPolicyAlreadyExists"
   | TrafficPolicyInUse -> "TrafficPolicyInUse"
-  | TrafficPolicyInstanceAlreadyExists -> "TrafficPolicyInstanceAlreadyExists"
+  | TrafficPolicyInstanceAlreadyExists ->
+      "TrafficPolicyInstanceAlreadyExists"
   | UnauthorizedOperation -> "UnauthorizedOperation"
   | UnknownParameter -> "UnknownParameter"
   | UnsupportedProtocol -> "UnsupportedProtocol"
-  | VPCAssociationAuthorizationNotFound -> "VPCAssociationAuthorizationNotFound"
+  | VPCAssociationAuthorizationNotFound ->
+      "VPCAssociationAuthorizationNotFound"
   | VPCAssociationNotFound -> "VPCAssociationNotFound"
   | ValidationError -> "ValidationError"
   | Uninhabited -> "Uninhabited"
-
 let of_string e =
   match e with
   | "AuthFailure" -> Some AuthFailure
@@ -341,14 +340,17 @@ let of_string e =
   | "TooManyTrafficPolicyInstances" -> Some TooManyTrafficPolicyInstances
   | "TooManyTrafficPolicyVersionsForCurrentPolicy" ->
       Some TooManyTrafficPolicyVersionsForCurrentPolicy
-  | "TooManyVPCAssociationAuthorizations" -> Some TooManyVPCAssociationAuthorizations
+  | "TooManyVPCAssociationAuthorizations" ->
+      Some TooManyVPCAssociationAuthorizations
   | "TrafficPolicyAlreadyExists" -> Some TrafficPolicyAlreadyExists
   | "TrafficPolicyInUse" -> Some TrafficPolicyInUse
-  | "TrafficPolicyInstanceAlreadyExists" -> Some TrafficPolicyInstanceAlreadyExists
+  | "TrafficPolicyInstanceAlreadyExists" ->
+      Some TrafficPolicyInstanceAlreadyExists
   | "UnauthorizedOperation" -> Some UnauthorizedOperation
   | "UnknownParameter" -> Some UnknownParameter
   | "UnsupportedProtocol" -> Some UnsupportedProtocol
-  | "VPCAssociationAuthorizationNotFound" -> Some VPCAssociationAuthorizationNotFound
+  | "VPCAssociationAuthorizationNotFound" ->
+      Some VPCAssociationAuthorizationNotFound
   | "VPCAssociationNotFound" -> Some VPCAssociationNotFound
   | "ValidationError" -> Some ValidationError
   | "Uninhabited" -> Some Uninhabited

@@ -127,7 +127,7 @@ module type Call = sig
       for a single API. *)
 
   val signature_version : Request.signature_version
-  (** TODO The signing method to use for this call. *)
+  (** The signing method to use for the Call. *)
 
   val service : string
   (** The AWS service, for example, 'ec2'. This is used for request
