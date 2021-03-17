@@ -1,67 +1,64 @@
 type t =
-  | AuthFailure
-  | Blocked
-  | BucketAlreadyExists
-  | DryRunOperation
-  | IdempotentParameterMismatch
-  | IncompleteSignature
-  | InternalFailure
-  | InvalidAction
-  | InvalidClientTokenId
-  | InvalidParameter
-  | InvalidParameterCombination
-  | InvalidParameterValue
-  | InvalidQueryParameter
-  | MalformedQueryString
-  | MissingAction
-  | MissingAuthenticationToken
-  | MissingParameter
-  | NoSuchBucket
-  | NoSuchKey
-  | NoSuchUpload
-  | ObjectAlreadyInActiveTierError
-  | ObjectNotInActiveTierError
-  | OptInRequired
-  | PendingVerification
-  | RequestExpired
-  | RequestLimitExceeded
-  | ServiceUnavailable
-  | Throttling
-  | UnauthorizedOperation
-  | UnknownParameter
-  | UnsupportedProtocol
-  | ValidationError
-  | Uninhabited
-
+  | AuthFailure 
+  | Blocked 
+  | BucketAlreadyExists 
+  | DryRunOperation 
+  | IdempotentParameterMismatch 
+  | IncompleteSignature 
+  | InternalFailure 
+  | InvalidAction 
+  | InvalidClientTokenId 
+  | InvalidParameter 
+  | InvalidParameterCombination 
+  | InvalidParameterValue 
+  | InvalidQueryParameter 
+  | MalformedQueryString 
+  | MissingAction 
+  | MissingAuthenticationToken 
+  | MissingParameter 
+  | NoSuchBucket 
+  | NoSuchKey 
+  | NoSuchUpload 
+  | ObjectAlreadyInActiveTierError 
+  | ObjectNotInActiveTierError 
+  | OptInRequired 
+  | PendingVerification 
+  | RequestExpired 
+  | RequestLimitExceeded 
+  | ServiceUnavailable 
+  | Throttling 
+  | UnauthorizedOperation 
+  | UnknownParameter 
+  | UnsupportedProtocol 
+  | ValidationError 
+  | Uninhabited 
 let common =
-  [ UnsupportedProtocol
-  ; UnknownParameter
-  ; UnauthorizedOperation
-  ; RequestLimitExceeded
-  ; PendingVerification
-  ; InvalidParameter
-  ; IdempotentParameterMismatch
-  ; DryRunOperation
-  ; Blocked
-  ; AuthFailure
-  ; ValidationError
-  ; Throttling
-  ; ServiceUnavailable
-  ; RequestExpired
-  ; OptInRequired
-  ; MissingParameter
-  ; MissingAuthenticationToken
-  ; MissingAction
-  ; MalformedQueryString
-  ; InvalidQueryParameter
-  ; InvalidParameterValue
-  ; InvalidParameterCombination
-  ; InvalidClientTokenId
-  ; InvalidAction
-  ; InternalFailure
-  ; IncompleteSignature
-  ]
-
+  [UnsupportedProtocol;
+  UnknownParameter;
+  UnauthorizedOperation;
+  RequestLimitExceeded;
+  PendingVerification;
+  InvalidParameter;
+  IdempotentParameterMismatch;
+  DryRunOperation;
+  Blocked;
+  AuthFailure;
+  ValidationError;
+  Throttling;
+  ServiceUnavailable;
+  RequestExpired;
+  OptInRequired;
+  MissingParameter;
+  MissingAuthenticationToken;
+  MissingAction;
+  MalformedQueryString;
+  InvalidQueryParameter;
+  InvalidParameterValue;
+  InvalidParameterCombination;
+  InvalidClientTokenId;
+  InvalidAction;
+  InternalFailure;
+  IncompleteSignature]
 let to_http_code e =
   match e with
   | AuthFailure -> None
@@ -97,7 +94,6 @@ let to_http_code e =
   | UnsupportedProtocol -> None
   | ValidationError -> Some 400
   | Uninhabited -> None
-
 let to_string e =
   match e with
   | AuthFailure -> "AuthFailure"
@@ -133,7 +129,6 @@ let to_string e =
   | UnsupportedProtocol -> "UnsupportedProtocol"
   | ValidationError -> "ValidationError"
   | Uninhabited -> "Uninhabited"
-
 let of_string e =
   match e with
   | "AuthFailure" -> Some AuthFailure

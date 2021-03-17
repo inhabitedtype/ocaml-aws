@@ -1,103 +1,100 @@
 type t =
-  | AuthFailure
-  | Blocked
-  | CloudTrailARNInvalidException
-  | CloudTrailAccessNotEnabledException
-  | CloudWatchLogsDeliveryUnavailableException
-  | DryRunOperation
-  | IdempotentParameterMismatch
-  | IncompleteSignature
-  | InsightNotEnabledException
-  | InsufficientDependencyServiceAccessPermissionException
-  | InsufficientEncryptionPolicyException
-  | InsufficientS3BucketPolicyException
-  | InsufficientSnsTopicPolicyException
-  | InternalFailure
-  | InvalidAction
-  | InvalidClientTokenId
-  | InvalidCloudWatchLogsLogGroupArnException
-  | InvalidCloudWatchLogsRoleArnException
-  | InvalidEventCategoryException
-  | InvalidEventSelectorsException
-  | InvalidHomeRegionException
-  | InvalidInsightSelectorsException
-  | InvalidKmsKeyIdException
-  | InvalidLookupAttributesException
-  | InvalidMaxResultsException
-  | InvalidNextTokenException
-  | InvalidParameter
-  | InvalidParameterCombination
-  | InvalidParameterCombinationException
-  | InvalidParameterValue
-  | InvalidQueryParameter
-  | InvalidS3BucketNameException
-  | InvalidS3PrefixException
-  | InvalidSnsTopicNameException
-  | InvalidTagParameterException
-  | InvalidTimeRangeException
-  | InvalidTokenException
-  | InvalidTrailNameException
-  | KmsException
-  | KmsKeyDisabledException
-  | KmsKeyNotFoundException
-  | MalformedQueryString
-  | MaximumNumberOfTrailsExceededException
-  | MissingAction
-  | MissingAuthenticationToken
-  | MissingParameter
-  | NotOrganizationMasterAccountException
-  | OperationNotPermittedException
-  | OptInRequired
-  | OrganizationNotInAllFeaturesModeException
-  | OrganizationsNotInUseException
-  | PendingVerification
-  | RequestExpired
-  | RequestLimitExceeded
-  | ResourceNotFoundException
-  | ResourceTypeNotSupportedException
-  | S3BucketDoesNotExistException
-  | ServiceUnavailable
-  | TagsLimitExceededException
-  | Throttling
-  | TrailAlreadyExistsException
-  | TrailNotFoundException
-  | TrailNotProvidedException
-  | UnauthorizedOperation
-  | UnknownParameter
-  | UnsupportedOperationException
-  | UnsupportedProtocol
-  | ValidationError
-  | Uninhabited
-
+  | AuthFailure 
+  | Blocked 
+  | CloudTrailARNInvalidException 
+  | CloudTrailAccessNotEnabledException 
+  | CloudWatchLogsDeliveryUnavailableException 
+  | DryRunOperation 
+  | IdempotentParameterMismatch 
+  | IncompleteSignature 
+  | InsightNotEnabledException 
+  | InsufficientDependencyServiceAccessPermissionException 
+  | InsufficientEncryptionPolicyException 
+  | InsufficientS3BucketPolicyException 
+  | InsufficientSnsTopicPolicyException 
+  | InternalFailure 
+  | InvalidAction 
+  | InvalidClientTokenId 
+  | InvalidCloudWatchLogsLogGroupArnException 
+  | InvalidCloudWatchLogsRoleArnException 
+  | InvalidEventCategoryException 
+  | InvalidEventSelectorsException 
+  | InvalidHomeRegionException 
+  | InvalidInsightSelectorsException 
+  | InvalidKmsKeyIdException 
+  | InvalidLookupAttributesException 
+  | InvalidMaxResultsException 
+  | InvalidNextTokenException 
+  | InvalidParameter 
+  | InvalidParameterCombination 
+  | InvalidParameterCombinationException 
+  | InvalidParameterValue 
+  | InvalidQueryParameter 
+  | InvalidS3BucketNameException 
+  | InvalidS3PrefixException 
+  | InvalidSnsTopicNameException 
+  | InvalidTagParameterException 
+  | InvalidTimeRangeException 
+  | InvalidTokenException 
+  | InvalidTrailNameException 
+  | KmsException 
+  | KmsKeyDisabledException 
+  | KmsKeyNotFoundException 
+  | MalformedQueryString 
+  | MaximumNumberOfTrailsExceededException 
+  | MissingAction 
+  | MissingAuthenticationToken 
+  | MissingParameter 
+  | NotOrganizationMasterAccountException 
+  | OperationNotPermittedException 
+  | OptInRequired 
+  | OrganizationNotInAllFeaturesModeException 
+  | OrganizationsNotInUseException 
+  | PendingVerification 
+  | RequestExpired 
+  | RequestLimitExceeded 
+  | ResourceNotFoundException 
+  | ResourceTypeNotSupportedException 
+  | S3BucketDoesNotExistException 
+  | ServiceUnavailable 
+  | TagsLimitExceededException 
+  | Throttling 
+  | TrailAlreadyExistsException 
+  | TrailNotFoundException 
+  | TrailNotProvidedException 
+  | UnauthorizedOperation 
+  | UnknownParameter 
+  | UnsupportedOperationException 
+  | UnsupportedProtocol 
+  | ValidationError 
+  | Uninhabited 
 let common =
-  [ UnsupportedProtocol
-  ; UnknownParameter
-  ; UnauthorizedOperation
-  ; RequestLimitExceeded
-  ; PendingVerification
-  ; InvalidParameter
-  ; IdempotentParameterMismatch
-  ; DryRunOperation
-  ; Blocked
-  ; AuthFailure
-  ; ValidationError
-  ; Throttling
-  ; ServiceUnavailable
-  ; RequestExpired
-  ; OptInRequired
-  ; MissingParameter
-  ; MissingAuthenticationToken
-  ; MissingAction
-  ; MalformedQueryString
-  ; InvalidQueryParameter
-  ; InvalidParameterValue
-  ; InvalidParameterCombination
-  ; InvalidClientTokenId
-  ; InvalidAction
-  ; InternalFailure
-  ; IncompleteSignature
-  ]
-
+  [UnsupportedProtocol;
+  UnknownParameter;
+  UnauthorizedOperation;
+  RequestLimitExceeded;
+  PendingVerification;
+  InvalidParameter;
+  IdempotentParameterMismatch;
+  DryRunOperation;
+  Blocked;
+  AuthFailure;
+  ValidationError;
+  Throttling;
+  ServiceUnavailable;
+  RequestExpired;
+  OptInRequired;
+  MissingParameter;
+  MissingAuthenticationToken;
+  MissingAction;
+  MalformedQueryString;
+  InvalidQueryParameter;
+  InvalidParameterValue;
+  InvalidParameterCombination;
+  InvalidClientTokenId;
+  InvalidAction;
+  InternalFailure;
+  IncompleteSignature]
 let to_http_code e =
   match e with
   | AuthFailure -> None
@@ -169,13 +166,13 @@ let to_http_code e =
   | UnsupportedProtocol -> None
   | ValidationError -> Some 400
   | Uninhabited -> None
-
 let to_string e =
   match e with
   | AuthFailure -> "AuthFailure"
   | Blocked -> "Blocked"
   | CloudTrailARNInvalidException -> "CloudTrailARNInvalidException"
-  | CloudTrailAccessNotEnabledException -> "CloudTrailAccessNotEnabledException"
+  | CloudTrailAccessNotEnabledException ->
+      "CloudTrailAccessNotEnabledException"
   | CloudWatchLogsDeliveryUnavailableException ->
       "CloudWatchLogsDeliveryUnavailableException"
   | DryRunOperation -> "DryRunOperation"
@@ -184,15 +181,19 @@ let to_string e =
   | InsightNotEnabledException -> "InsightNotEnabledException"
   | InsufficientDependencyServiceAccessPermissionException ->
       "InsufficientDependencyServiceAccessPermissionException"
-  | InsufficientEncryptionPolicyException -> "InsufficientEncryptionPolicyException"
-  | InsufficientS3BucketPolicyException -> "InsufficientS3BucketPolicyException"
-  | InsufficientSnsTopicPolicyException -> "InsufficientSnsTopicPolicyException"
+  | InsufficientEncryptionPolicyException ->
+      "InsufficientEncryptionPolicyException"
+  | InsufficientS3BucketPolicyException ->
+      "InsufficientS3BucketPolicyException"
+  | InsufficientSnsTopicPolicyException ->
+      "InsufficientSnsTopicPolicyException"
   | InternalFailure -> "InternalFailure"
   | InvalidAction -> "InvalidAction"
   | InvalidClientTokenId -> "InvalidClientTokenId"
   | InvalidCloudWatchLogsLogGroupArnException ->
       "InvalidCloudWatchLogsLogGroupArnException"
-  | InvalidCloudWatchLogsRoleArnException -> "InvalidCloudWatchLogsRoleArnException"
+  | InvalidCloudWatchLogsRoleArnException ->
+      "InvalidCloudWatchLogsRoleArnException"
   | InvalidEventCategoryException -> "InvalidEventCategoryException"
   | InvalidEventSelectorsException -> "InvalidEventSelectorsException"
   | InvalidHomeRegionException -> "InvalidHomeRegionException"
@@ -203,7 +204,8 @@ let to_string e =
   | InvalidNextTokenException -> "InvalidNextTokenException"
   | InvalidParameter -> "InvalidParameter"
   | InvalidParameterCombination -> "InvalidParameterCombination"
-  | InvalidParameterCombinationException -> "InvalidParameterCombinationException"
+  | InvalidParameterCombinationException ->
+      "InvalidParameterCombinationException"
   | InvalidParameterValue -> "InvalidParameterValue"
   | InvalidQueryParameter -> "InvalidQueryParameter"
   | InvalidS3BucketNameException -> "InvalidS3BucketNameException"
@@ -217,11 +219,13 @@ let to_string e =
   | KmsKeyDisabledException -> "KmsKeyDisabledException"
   | KmsKeyNotFoundException -> "KmsKeyNotFoundException"
   | MalformedQueryString -> "MalformedQueryString"
-  | MaximumNumberOfTrailsExceededException -> "MaximumNumberOfTrailsExceededException"
+  | MaximumNumberOfTrailsExceededException ->
+      "MaximumNumberOfTrailsExceededException"
   | MissingAction -> "MissingAction"
   | MissingAuthenticationToken -> "MissingAuthenticationToken"
   | MissingParameter -> "MissingParameter"
-  | NotOrganizationMasterAccountException -> "NotOrganizationMasterAccountException"
+  | NotOrganizationMasterAccountException ->
+      "NotOrganizationMasterAccountException"
   | OperationNotPermittedException -> "OperationNotPermittedException"
   | OptInRequired -> "OptInRequired"
   | OrganizationNotInAllFeaturesModeException ->
@@ -245,13 +249,13 @@ let to_string e =
   | UnsupportedProtocol -> "UnsupportedProtocol"
   | ValidationError -> "ValidationError"
   | Uninhabited -> "Uninhabited"
-
 let of_string e =
   match e with
   | "AuthFailure" -> Some AuthFailure
   | "Blocked" -> Some Blocked
   | "CloudTrailARNInvalidException" -> Some CloudTrailARNInvalidException
-  | "CloudTrailAccessNotEnabledException" -> Some CloudTrailAccessNotEnabledException
+  | "CloudTrailAccessNotEnabledException" ->
+      Some CloudTrailAccessNotEnabledException
   | "CloudWatchLogsDeliveryUnavailableException" ->
       Some CloudWatchLogsDeliveryUnavailableException
   | "DryRunOperation" -> Some DryRunOperation
@@ -260,26 +264,33 @@ let of_string e =
   | "InsightNotEnabledException" -> Some InsightNotEnabledException
   | "InsufficientDependencyServiceAccessPermissionException" ->
       Some InsufficientDependencyServiceAccessPermissionException
-  | "InsufficientEncryptionPolicyException" -> Some InsufficientEncryptionPolicyException
-  | "InsufficientS3BucketPolicyException" -> Some InsufficientS3BucketPolicyException
-  | "InsufficientSnsTopicPolicyException" -> Some InsufficientSnsTopicPolicyException
+  | "InsufficientEncryptionPolicyException" ->
+      Some InsufficientEncryptionPolicyException
+  | "InsufficientS3BucketPolicyException" ->
+      Some InsufficientS3BucketPolicyException
+  | "InsufficientSnsTopicPolicyException" ->
+      Some InsufficientSnsTopicPolicyException
   | "InternalFailure" -> Some InternalFailure
   | "InvalidAction" -> Some InvalidAction
   | "InvalidClientTokenId" -> Some InvalidClientTokenId
   | "InvalidCloudWatchLogsLogGroupArnException" ->
       Some InvalidCloudWatchLogsLogGroupArnException
-  | "InvalidCloudWatchLogsRoleArnException" -> Some InvalidCloudWatchLogsRoleArnException
+  | "InvalidCloudWatchLogsRoleArnException" ->
+      Some InvalidCloudWatchLogsRoleArnException
   | "InvalidEventCategoryException" -> Some InvalidEventCategoryException
   | "InvalidEventSelectorsException" -> Some InvalidEventSelectorsException
   | "InvalidHomeRegionException" -> Some InvalidHomeRegionException
-  | "InvalidInsightSelectorsException" -> Some InvalidInsightSelectorsException
+  | "InvalidInsightSelectorsException" ->
+      Some InvalidInsightSelectorsException
   | "InvalidKmsKeyIdException" -> Some InvalidKmsKeyIdException
-  | "InvalidLookupAttributesException" -> Some InvalidLookupAttributesException
+  | "InvalidLookupAttributesException" ->
+      Some InvalidLookupAttributesException
   | "InvalidMaxResultsException" -> Some InvalidMaxResultsException
   | "InvalidNextTokenException" -> Some InvalidNextTokenException
   | "InvalidParameter" -> Some InvalidParameter
   | "InvalidParameterCombination" -> Some InvalidParameterCombination
-  | "InvalidParameterCombinationException" -> Some InvalidParameterCombinationException
+  | "InvalidParameterCombinationException" ->
+      Some InvalidParameterCombinationException
   | "InvalidParameterValue" -> Some InvalidParameterValue
   | "InvalidQueryParameter" -> Some InvalidQueryParameter
   | "InvalidS3BucketNameException" -> Some InvalidS3BucketNameException
@@ -298,7 +309,8 @@ let of_string e =
   | "MissingAction" -> Some MissingAction
   | "MissingAuthenticationToken" -> Some MissingAuthenticationToken
   | "MissingParameter" -> Some MissingParameter
-  | "NotOrganizationMasterAccountException" -> Some NotOrganizationMasterAccountException
+  | "NotOrganizationMasterAccountException" ->
+      Some NotOrganizationMasterAccountException
   | "OperationNotPermittedException" -> Some OperationNotPermittedException
   | "OptInRequired" -> Some OptInRequired
   | "OrganizationNotInAllFeaturesModeException" ->
@@ -308,7 +320,8 @@ let of_string e =
   | "RequestExpired" -> Some RequestExpired
   | "RequestLimitExceeded" -> Some RequestLimitExceeded
   | "ResourceNotFoundException" -> Some ResourceNotFoundException
-  | "ResourceTypeNotSupportedException" -> Some ResourceTypeNotSupportedException
+  | "ResourceTypeNotSupportedException" ->
+      Some ResourceTypeNotSupportedException
   | "S3BucketDoesNotExistException" -> Some S3BucketDoesNotExistException
   | "ServiceUnavailable" -> Some ServiceUnavailable
   | "TagsLimitExceededException" -> Some TagsLimitExceededException

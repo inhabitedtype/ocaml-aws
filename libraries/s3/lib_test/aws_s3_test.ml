@@ -5,8 +5,7 @@ module type Runtime = sig
   type 'a m
 
   val run_request :
-       region:string
-    -> (module Aws.Call
+       (module Aws.Call
           with type input = 'input
            and type output = 'output
            and type error = 'error)

@@ -4,6 +4,7 @@ type input = RestoreDBInstanceFromDBSnapshotMessage.t
 type output = RestoreDBInstanceFromDBSnapshotResult.t
 type error = Errors_internal.t
 let service = "rds"
+let signature_version = Request.V4
 let to_http service region req =
   let uri =
     Uri.add_query_params
