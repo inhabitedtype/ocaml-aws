@@ -229,7 +229,15 @@ module Time = struct
 
   let now_utc () = C.(now () |> to_gmt)
 
-  let parse s = P.from_fstring "%Y-%m-%dT%T" (String.sub s 0 (String.length s - 5))
+  (* (tmcgilchrist) This function is expecting datetimes like
+     - "2021-03-17T21:43:32.000Z" from EC2 or
+     - "2021-03-18T09:38:33Z" from STS
+    We regex off the trailing ".000" and parse them. If there are other
+    datetime formats in xml / json there will be trouble and the parser
+    will fail with xml node not present or json attribute not present.
+   *)
+  let parse s = P.from_fstring "%Y-%m-%dT%TZ"
+                  (Str.replace_first (Str.regexp "\\.\\([0-9][0-9][0-9]\\)") "" s)
 
   let format t = P.sprint "%Y-%m-%dT%T.000Z" t
 end
