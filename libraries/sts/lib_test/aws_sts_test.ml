@@ -33,8 +33,7 @@ functor
           Printf.printf
             "%s\n"
             (Yojson.Basic.to_string
-               Types.GetSessionTokenResponse.(to_json resp));
-          (* TODO Note round tripping from resp to json from json to json is broken for date time values. *)
+               Types.GetSessionTokenResponse.(to_json (of_json (to_json resp))));
           true
       | `Error err ->
           Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
