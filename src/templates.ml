@@ -51,7 +51,7 @@ build: [
   ["dune" "build" "-p" name "-j" jobs]
 ]
 depends: [
-  "aws" {>= "0.1.0"}
+  "aws" {>= "1.2.0"}
   "dune"
 ]
 |}
