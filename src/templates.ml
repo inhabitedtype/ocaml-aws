@@ -52,7 +52,7 @@ build: [
 ]
 depends: [
   "aws" {>= "1.2.0"}
-  "dune"
+  "dune" {>= "2.7"}
 ]
 |}
     service_name
