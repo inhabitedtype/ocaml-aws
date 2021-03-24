@@ -18,9 +18,9 @@ build: [
 depends: [
   "ocaml"           {>= "4.04.0"}
   "aws"             {= version}
-  "lwt"             {>= "4.0.0"}
-  "cohttp"
-  "cohttp-lwt"
+  "lwt"             {>= "4.0.0" & < "5.5.0"}
+  "cohttp"          {>= "2.4.0" & < "3.0.0"}
+  "cohttp-lwt"      {>= "2.4.0" & < "3.0.0"}
   "cohttp-lwt-unix" {>= "0.99.0"}
   "dune"            {>= "2.7"}
 ]
