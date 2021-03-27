@@ -4,9 +4,9 @@ authors: [ "Spiros Eliopoulos <spiros@inhabitedtype.com>"
            "Daniel Patterson <dbp@dbpmail.net>"
            "Tim McGilchrist <timmcgil@gmail.com>"
          ]
-synopsis: "Amazon Web Services SDK bindings to AWS Security Token Service"
-description: "Amazon Web Services SDK bindings to AWS Security Token Service"
-version: "1.2"
+synopsis: "Amazon Web Services SDK bindings to AWS Lambda"
+description: "Amazon Web Services SDK bindings to AWS Lambda"
+version: "1.1"
 license: "BSD-3-clause"
 homepage: "https://github.com/inhabitedtype/ocaml-aws"
 dev-repo: "git+https://github.com/inhabitedtype/ocaml-aws.git"
@@ -17,7 +17,6 @@ build: [
   ["dune" "build" "-p" name "-j" jobs]
 ]
 depends: [
-  "ocaml" {>= "4.04.0"}
-  "aws"  {= version}
+  "aws" {>= "1.2.0"}
   "dune" {>= "2.7"}
 ]
