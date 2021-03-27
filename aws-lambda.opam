@@ -1,0 +1,22 @@
+opam-version: "2.0"
+maintainer: "Tim McGilchrist <timmcgil@gmail.com>"
+authors: [ "Spiros Eliopoulos <spiros@inhabitedtype.com>"
+           "Daniel Patterson <dbp@dbpmail.net>"
+           "Tim McGilchrist <timmcgil@gmail.com>"
+         ]
+synopsis: "Amazon Web Services SDK bindings to AWS Lambda"
+description: "Amazon Web Services SDK bindings to AWS Lambda"
+version: "1.1"
+license: "BSD-3-clause"
+homepage: "https://github.com/inhabitedtype/ocaml-aws"
+dev-repo: "git+https://github.com/inhabitedtype/ocaml-aws.git"
+bug-reports: "https://github.com/inhabitedtype/ocaml-aws/issues"
+doc: "https://github.com/inhabitedtype/ocaml-aws"
+build: [
+  ["dune" "subst"] {dev}
+  ["dune" "build" "-p" name "-j" jobs]
+]
+depends: [
+  "aws" {>= version}
+  "dune" {>= "2.7"}
+]
