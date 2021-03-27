@@ -11,14 +11,21 @@ env:
 
   # Support the last 3 major versions of OCaml
   matrix:
+  - PACKAGE="aws"       OCAML_VERSION="4.04"
+  - PACKAGE="aws-lwt"   OCAML_VERSION="4.04"
+  - PACKAGE="aws-async" OCAML_VERSION="4.04"
+  - PACKAGE="aws-gen"   OCAML_VERSION="4.04"
+
   - PACKAGE="aws"       OCAML_VERSION="4.08"
   - PACKAGE="aws-lwt"   OCAML_VERSION="4.08"
   - PACKAGE="aws-async" OCAML_VERSION="4.08"
   - PACKAGE="aws-gen"   OCAML_VERSION="4.08"
+
   - PACKAGE="aws"       OCAML_VERSION="4.09"
   - PACKAGE="aws-lwt"   OCAML_VERSION="4.09"
   - PACKAGE="aws-async" OCAML_VERSION="4.09"
   - PACKAGE="aws-gen"   OCAML_VERSION="4.09"
+
   - PACKAGE="aws"       OCAML_VERSION="4.10"
   - PACKAGE="aws-lwt"   OCAML_VERSION="4.10"
   - PACKAGE="aws-async" OCAML_VERSION="4.10"
