@@ -40,7 +40,7 @@ authors: [ "Spiros Eliopoulos <spiros@inhabitedtype.com>"
          ]
 synopsis: "Amazon Web Services SDK bindings to %s"
 description: "Amazon Web Services SDK bindings to %s"
-version: "1.1"
+version: "1.2"
 license: "BSD-3-clause"
 homepage: "https://github.com/inhabitedtype/ocaml-aws"
 dev-repo: "git+https://github.com/inhabitedtype/ocaml-aws.git"
@@ -51,8 +51,9 @@ build: [
   ["dune" "build" "-p" name "-j" jobs]
 ]
 depends: [
-  "aws" {>= "1.2.0"}
+  "aws" {= version}
   "dune" {>= "2.7"}
+  "ounit" {>= "2.2.4" & with-test}
 ]
 |}
     service_name
