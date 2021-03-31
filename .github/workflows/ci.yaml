@@ -7,7 +7,7 @@ jobs:
     strategy:
       matrix:
         operating-system: [ubuntu-latest]
-        ocaml-version: [ '4.08.1' ]
+        ocaml-version: [ '4.08.1', '4.09.1', '4.10.1', '4.11.2', '4.12.0']
     steps:
     - uses: actions/checkout@master
     - uses: avsm/setup-ocaml@v1.1.9
@@ -17,6 +17,8 @@ jobs:
         opam pin add aws.dev -n .
         opam pin add aws-lwt.dev -n .
         opam pin add aws-async.dev -n .
+
+        # Pin the generated bindings
         opam pin add aws-autoscaling.dev -n .
         opam pin add aws-cloudformation.dev -n .
         opam pin add aws-cloudtrail.dev -n .
@@ -33,14 +35,16 @@ jobs:
 
     - name: Packages
       run: |
-        opam depext -yt aws aws-lwt aws-async aws-autoscaling \
-                        aws-cloudformation aws-cloudtrail aws-cloudwatch \
-                        aws-ec2 aws-elasticache aws-elasticloadbalancing \
+        opam depext -yt aws aws-lwt aws-async \
+                        aws-autoscaling aws-cloudformation aws-cloudtrail \
+                        aws-cloudwatch aws-ec2 aws-elasticache \
+                        aws-elasticloadbalancing \
                         aws-rds aws-route53 aws-sdb aws-sqs aws-ssm aws-sts
 
     - name: Dependencies
       run: opam install -t . --deps-only
     - name: Build
       run: opam exec -- dune build
+    # Running tests requires AWS permissions disabling for now.
     # - name: Test
     #   run: opam exec -- dune runtest
