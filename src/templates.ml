@@ -51,6 +51,7 @@ build: [
   ["dune" "build" "-p" name "-j" jobs]
 ]
 depends: [
+  "ocaml" {>= "4.08"}
   "aws" {= version}
   "dune" {>= "2.7"}
   "ounit" {>= "2.2.4" & with-test}
