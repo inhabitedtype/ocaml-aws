@@ -312,7 +312,7 @@ module Signing : sig
 
       http://docs.aws.amazon.com/general/latest/gr/sigv4-signed-request-examples.html
 
-      Note: This requires AWS_ACCESS_KEY and AWS_SECRET_KEY
+      Note: This requires AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY
       environment variables to be set.
 
       Also: Your system time must be accurate. If you are getting invalid
@@ -332,7 +332,7 @@ module Signing : sig
 
       https://docs.aws.amazon.com/general/latest/gr/signature-version-2.html
 
-      Note: This requires AWS_ACCESS_KEY and AWS_SECRET_KEY
+      Note: This requires AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY
       environment variables to be set.
 
       Also: Your system time must be accurate. If you are getting invalid

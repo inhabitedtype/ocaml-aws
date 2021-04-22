@@ -27,8 +27,8 @@ opam update aws
 
 Running individual test suites for a Service
 ``` bash
-AWS_ACCESS_KEY=???? \
-AWS_SECRET_KEY=???? \
+AWS_ACCESS_KEY_ID=???? \
+AWS_SECRET_ACCESS_KEY=???? \
 AWS_DEFAULT_REGION=ap-southeast-2 \
 dune runtest libraries/ec2/lib_test
 ```
