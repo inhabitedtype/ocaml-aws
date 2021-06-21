@@ -33,6 +33,7 @@ LIBRARIES := \
 	aws-cloudformation \
 	aws-cloudtrail \
 	aws-cloudwatch \
+	aws-dynamodb \
 	aws-elasticache \
 	aws-elasticloadbalancing \
 	aws-rds \

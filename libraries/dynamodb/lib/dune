@@ -1,0 +1,6 @@
+(library
+ (name        aws_dynamodb)
+ (public_name aws-dynamodb)
+ (synopsis "aws-Amazon DynamoDB")
+ (flags (:standard -w -27))
+ (libraries aws))
