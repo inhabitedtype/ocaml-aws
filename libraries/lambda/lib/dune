@@ -1,0 +1,6 @@
+(library
+ (name        aws_lambda)
+ (public_name aws-lambda)
+ (synopsis "aws-AWS Lambda")
+ (flags (:standard -w -27))
+ (libraries aws))

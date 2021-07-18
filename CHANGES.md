@@ -2,6 +2,7 @@
 ----------
 - Increase lower bound on OCaml to 4.08. https://github.com/inhabitedtype/ocaml-aws/pull/104
 - Migrate CI to github actions https://github.com/inhabitedtype/ocaml-aws/pull/104
+- Initial AWS Lambda support https://github.com/inhabitedtype/ocaml-aws/pull/108
 
 1.2: (24-01-2020)
 ----------
