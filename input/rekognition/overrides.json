@@ -1,0 +1,13 @@
+{
+    "referenceUrl": "https://docs.aws.amazon.com/rekognition/latest/dg/API_Reference.html",
+    "operationUrl": "https://docs.aws.amazon.com/rekognition/latest/dg/API_",
+    "libraryName": "aws_rekognition",
+    "libraryVersion": "0.1.0",
+    "typeOverrides": {
+        "DescribeEngineDefaultParametersResult": {
+            "requiredFields": [
+                "EngineDefaults"
+            ]
+        }
+    }
+}

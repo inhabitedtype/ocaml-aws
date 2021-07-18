@@ -1,0 +1,6 @@
+(library
+ (name        aws_rekognition)
+ (public_name aws_rekognition)
+ (synopsis "aws-Amazon Rekognition")
+ (flags (:standard -w -27))
+ (libraries aws))

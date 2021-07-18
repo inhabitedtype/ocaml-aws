@@ -36,6 +36,7 @@ LIBRARIES := \
 	aws-elasticache \
 	aws-elasticloadbalancing \
 	aws-rds \
+	aws-rekognition \
 	aws-sdb \
 	aws-ssm \
 	aws-sts \
