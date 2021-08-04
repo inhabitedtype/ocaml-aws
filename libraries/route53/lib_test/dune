@@ -3,7 +3,7 @@
  (flags
   (:standard -w -27 -w -33))
  (modules test_async test_lwt aws_route53_test)
- (libraries aws aws_route53 aws-async aws-lwt oUnit yojson async cohttp-async
+ (libraries aws aws-route53 aws-async aws-lwt ounit yojson async cohttp-async
    lwt cohttp-lwt cohttp-lwt-unix))
 
 (rule

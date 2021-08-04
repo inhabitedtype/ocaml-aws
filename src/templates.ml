@@ -83,8 +83,8 @@ let dune_test ~lib_name =
  (names test_async test_lwt)
  (flags (:standard -w -27 -w -33))
  (modules test_async test_lwt aws_%s_test)
- (libraries aws aws_%s aws-async aws-lwt
-            oUnit yojson
+ (libraries aws aws-%s aws-async aws-lwt
+            ounit yojson
             async cohttp-async
             lwt cohttp-lwt cohttp-lwt-unix))
 
