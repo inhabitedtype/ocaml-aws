@@ -1,7 +1,6 @@
 open OUnit2
 open Aws_rds
 
-
 let from_opt = function
   | None -> assert false
   | Some x -> x
@@ -10,7 +9,7 @@ type config =
   { access_key : string
   ; secret_key : string
   ; region : string
-}
+  }
 
 let ( @? ) = assert_bool
 
@@ -115,25 +114,24 @@ struct
         Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
         false
 
-  let suite config = 
-    "Test RDS" >:::
-    [ "RDS create / delete instance" >:: create_rds_test config ]
+  let suite config =
+    "Test RDS" >::: [ "RDS create / delete instance" >:: create_rds_test config ]
 
   let () =
     let access_key =
       try Some (Unix.getenv "AWS_ACCESS_KEY_ID") with Not_found -> None
     in
-      let secret_key =
+    let secret_key =
       try Some (Unix.getenv "AWS_SECRET_ACCESS_KEY") with Not_found -> None
     in
-      let region = try Some (Unix.getenv "AWS_DEFAULT_REGION") with Not_found -> None in
-    
-      match access_key, secret_key, region with
-      | Some access_key, Some secret_key, Some region ->
+    let region = try Some (Unix.getenv "AWS_DEFAULT_REGION") with Not_found -> None in
+
+    match access_key, secret_key, region with
+    | Some access_key, Some secret_key, Some region ->
         run_test_tt_main (suite { access_key; secret_key; region })
     | _, _, _ ->
         Printf.eprintf
           "Skipping running tests. Environment variables AWS_ACCESS_KEY_ID, \
-             AWS_SECRET_ACCESS_KEY and AWS_DEFAULT_REGION not available. ";
+           AWS_SECRET_ACCESS_KEY and AWS_DEFAULT_REGION not available. ";
         exit 0
 end

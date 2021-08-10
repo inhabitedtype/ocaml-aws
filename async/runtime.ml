@@ -52,19 +52,19 @@ let run_request
   let meth, uri, headers =
     match M.signature_version with
     | V4 | S3 ->
-       Aws.Signing.sign_request
-         ~access_key
-         ~secret_key
-         ~service:M.service
-         ~region
-         (M.to_http M.service region inp)
+        Aws.Signing.sign_request
+          ~access_key
+          ~secret_key
+          ~service:M.service
+          ~region
+          (M.to_http M.service region inp)
     | V2 ->
-       Aws.Signing.sign_v2_request
-         ~access_key
-         ~secret_key
-         ~service:M.service
-         ~region
-         (M.to_http M.service region inp)
+        Aws.Signing.sign_v2_request
+          ~access_key
+          ~secret_key
+          ~service:M.service
+          ~region
+          (M.to_http M.service region inp)
   in
   let headers = Header.of_list headers in
   try_with (fun () ->
