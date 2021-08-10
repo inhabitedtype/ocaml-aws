@@ -5,7 +5,7 @@ type config =
   { access_key : string
   ; secret_key : string
   ; region : string
-}
+  }
 
 let ( @? ) = assert_bool
 
@@ -13,7 +13,7 @@ module type Runtime = sig
   type 'a m
 
   val run_request :
-    region:string
+       region:string
     -> access_key:string
     -> secret_key:string
     -> (module Aws.Call
@@ -56,8 +56,7 @@ functor
           false
 
     let suite config =
-      "Test Cloudwatch" >:::
-      [ "CLOUDWATCH list metrics" >:: list_metrics_test config ]
+      "Test Cloudwatch" >::: [ "CLOUDWATCH list metrics" >:: list_metrics_test config ]
 
     let () =
       let access_key =
@@ -67,7 +66,7 @@ functor
         try Some (Unix.getenv "AWS_SECRET_ACCESS_KEY") with Not_found -> None
       in
       let region = try Some (Unix.getenv "AWS_DEFAULT_REGION") with Not_found -> None in
-      
+
       match access_key, secret_key, region with
       | Some access_key, Some secret_key, Some region ->
           run_test_tt_main (suite { access_key; secret_key; region })

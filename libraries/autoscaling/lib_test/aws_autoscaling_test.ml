@@ -5,7 +5,11 @@ let from_opt = function
   | None -> OUnit.assert_failure "from_opt is None!"
   | Some x -> x
 
-type config = { access_key : string; secret_key : string; region : string }
+type config =
+  { access_key : string
+  ; secret_key : string
+  ; region : string
+  }
 
 let ( @? ) = assert_bool
 
@@ -13,8 +17,10 @@ module type Runtime = sig
   type 'a m
 
   val run_request :
-    region:string -> access_key:string -> secret_key:string ->
-       (module Aws.Call
+       region:string
+    -> access_key:string
+    -> secret_key:string
+    -> (module Aws.Call
           with type input = 'input
            and type output = 'output
            and type error = 'error)
@@ -32,7 +38,10 @@ functor
     let create_autoscaling ~instance_id ~auto_scaling_group_name config () =
       Runtime.(
         un_m
-          (run_request ~region:config.region ~access_key:config.access_key ~secret_key:config.secret_key
+          (run_request
+             ~region:config.region
+             ~access_key:config.access_key
+             ~secret_key:config.secret_key
              (module CreateAutoScalingGroup)
              (Types.CreateAutoScalingGroupType.make
                 ~auto_scaling_group_name
@@ -44,7 +53,10 @@ functor
     let delete_autoscaling ~auto_scaling_group_name config () =
       Runtime.(
         un_m
-          (run_request ~region:config.region ~access_key:config.access_key ~secret_key:config.secret_key
+          (run_request
+             ~region:config.region
+             ~access_key:config.access_key
+             ~secret_key:config.secret_key
              (module DeleteAutoScalingGroup)
              (Types.DeleteAutoScalingGroupType.make
                 ~auto_scaling_group_name:"aws-test-autoscaling_group"
@@ -55,7 +67,10 @@ functor
       let result =
         Runtime.(
           un_m
-            (run_request ~region:config.region ~access_key:config.access_key ~secret_key:config.secret_key
+            (run_request
+               ~region:config.region
+               ~access_key:config.access_key
+               ~secret_key:config.secret_key
                (module RunInstances)
                (Types.RunInstancesRequest.make
                   ~image_id:"ami-07fbdcfe29326c4fb"
@@ -89,7 +104,8 @@ functor
       let result =
         create_autoscaling
           ~instance_id:instance_id.Aws_ec2.Types.Instance.instance_id
-          ~auto_scaling_group_name config
+          ~auto_scaling_group_name
+          config
           ()
       in
       ("Creating autoscaling group succeeds"
@@ -109,18 +125,24 @@ functor
           false
 
     let suite config =
-      "Test Autoscaling" >:::
-        [ "Create Autoscaling group" >:: create_autoscaling_group_test config ]
+      "Test Autoscaling"
+      >::: [ "Create Autoscaling group" >:: create_autoscaling_group_test config ]
 
     let () =
-      let access_key = try Some (Unix.getenv "AWS_ACCESS_KEY_ID") with Not_found -> None in
-      let secret_key = try Some (Unix.getenv "AWS_SECRET_ACCESS_KEY") with Not_found -> None  in
+      let access_key =
+        try Some (Unix.getenv "AWS_ACCESS_KEY_ID") with Not_found -> None
+      in
+      let secret_key =
+        try Some (Unix.getenv "AWS_SECRET_ACCESS_KEY") with Not_found -> None
+      in
       let region = try Some (Unix.getenv "AWS_DEFAULT_REGION") with Not_found -> None in
 
       match access_key, secret_key, region with
       | Some access_key, Some secret_key, Some region ->
-         run_test_tt_main (suite { access_key; secret_key; region})
-      | _, _, _ -> 
-         Printf.eprintf "Skipping running tests. Environment variables AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY and AWS_DEFAULT_REGION not available. ";
-         exit 0
+          run_test_tt_main (suite { access_key; secret_key; region })
+      | _, _, _ ->
+          Printf.eprintf
+            "Skipping running tests. Environment variables AWS_ACCESS_KEY_ID, \
+             AWS_SECRET_ACCESS_KEY and AWS_DEFAULT_REGION not available. ";
+          exit 0
   end

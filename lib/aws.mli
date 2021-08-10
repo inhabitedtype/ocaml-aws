@@ -105,8 +105,7 @@ module Request : sig
   type signature_version =
     | V4
     | V2
-    | S3
-  (** Signature version *)
+    | S3  (** Signature version *)
 
   type t = meth * Uri.t * headers
   (** A request is a method, a uri, and a list of headers. *)
@@ -168,7 +167,9 @@ module Time : sig
       format. *)
 
   val date_time_iso8601 : CalendarLib.Calendar.t -> string
+
   val now_utc : unit -> CalendarLib.Calendar.t
+
   val format : CalendarLib.Calendar.t -> string
   (** Formats a Calendar.t as 2013-05-24T21:15:31.000Z. Note that
       .000Z is always appended. *)
@@ -290,13 +291,15 @@ end
 module Signing : sig
   module Hash : sig
     val _sha256 : ?key:string -> string -> Digestif.SHA256.t
+
     val sha256 : ?key:string -> string -> string
+
     val sha256_hex : ?key:string -> string -> string
+
     val sha256_base64 : ?key:string -> string -> string
   end
 
   val encode_query : (string * string list) list -> string
-
 
   val sign_request :
        access_key:string
@@ -320,7 +323,7 @@ module Signing : sig
    *)
 
   val sign_v2_request :
-    access_key:string
+       access_key:string
     -> secret_key:string
     -> service:string
     -> region:string

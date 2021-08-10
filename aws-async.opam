@@ -15,14 +15,13 @@ build: [
   ["dune" "subst"] {pinned}
   ["dune" "build" "-p" name "-j" jobs]
 ]
-available: arch != "s390" # cohttp-async doesn't support s390
 depends: [
-  "ocaml"        {>= "4.04.0"}
-  "aws"          {= version}
-  "async"        {>= "v0.9.0" & < "v0.15"}
+  "ocaml" {>= "4.08"}
+  "aws" {= version}
+  "async" {>= "v0.9.0" & < "v0.15"}
   "async_kernel" {>= "v0.9.0" & < "v0.15"}
-  "async_unix"   {>= "v0.9.0" & < "v0.15"}
-  "cohttp"       {>= "2.4.0" & < "3.0.0"}
+  "async_unix" {>= "v0.9.0" & < "v0.15"}
+  "cohttp" {>= "2.4.0" & < "3.0.0"}
   "cohttp-async" {>= "2.4.0" & < "3.0.0"}
-  "dune"         {>= "2.7"}
+  "dune" {>= "2.7"}
 ]

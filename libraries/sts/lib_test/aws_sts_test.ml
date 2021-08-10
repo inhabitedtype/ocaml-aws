@@ -5,7 +5,7 @@ type config =
   { access_key : string
   ; secret_key : string
   ; region : string
-}
+  }
 
 let ( @? ) = assert_bool
 
@@ -33,11 +33,13 @@ functor
   struct
     let get_session_token config () =
       Runtime.(
-        un_m (run_request 
+        un_m
+          (run_request
              ~region:config.region
              ~access_key:config.access_key
              ~secret_key:config.secret_key
-             (module GetSessionToken) (Types.GetSessionTokenRequest.make ())))
+             (module GetSessionToken)
+             (Types.GetSessionTokenRequest.make ())))
 
     let get_session_token_test config _ =
       let result = get_session_token config () in
@@ -54,7 +56,8 @@ functor
           Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
           false
 
-    let suite config = "Test STS" >::: [ "STS get_session_token" >:: get_session_token_test config ]
+    let suite config =
+      "Test STS" >::: [ "STS get_session_token" >:: get_session_token_test config ]
 
     let () =
       let access_key =
@@ -64,7 +67,7 @@ functor
         try Some (Unix.getenv "AWS_SECRET_ACCESS_KEY") with Not_found -> None
       in
       let region = try Some (Unix.getenv "AWS_DEFAULT_REGION") with Not_found -> None in
-      
+
       match access_key, secret_key, region with
       | Some access_key, Some secret_key, Some region ->
           run_test_tt_main (suite { access_key; secret_key; region })
