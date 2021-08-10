@@ -1,11 +1,22 @@
-open OUnit
+open OUnit2
 open Aws_sdb
+
+type config =
+  { access_key : string
+  ; secret_key : string
+  ; region : string
+}
+
+let ( @? ) = assert_bool
 
 module type Runtime = sig
   type 'a m
 
   val run_request :
-       (module Aws.Call
+       region:string
+    -> access_key:string
+    -> secret_key:string
+    -> (module Aws.Call
           with type input = 'input
            and type output = 'output
            and type error = 'error)
@@ -42,29 +53,38 @@ functor
   (Runtime : Runtime)
   ->
   struct
-    let create_domain () =
+    let create_domain config () =
       Runtime.(
         un_m
           (run_request
+             ~region:config.region
+             ~access_key:config.access_key
+             ~secret_key:config.secret_key
              (module CreateDomain)
              (Types.CreateDomainRequest.make ~domain_name:"ocaml-aws-domain-test" ())))
 
-    let list_domains () =
+    let list_domains config () =
       Runtime.(
         un_m
           (run_request
+             ~region:config.region
+             ~access_key:config.access_key
+             ~secret_key:config.secret_key
              (module ListDomains)
              (Types.ListDomainsRequest.make ~max_number_of_domains:2 ())))
 
-    let delete_domain () =
+    let delete_domain config () =
       Runtime.(
         un_m
           (run_request
+             ~region:config.region
+             ~access_key:config.access_key
+             ~secret_key:config.secret_key
              (module DeleteDomain)
              (Types.DeleteDomainRequest.make ~domain_name:"ocaml-aws-domain-test" ())))
 
-    let create_list_delete_test () =
-      let create_request = create_domain () in
+    let create_list_delete_test config _ =
+      let create_request = create_domain config () in
       ("Create Domain returns successfully"
       @?
       match create_request with
@@ -72,7 +92,7 @@ functor
       | `Error err ->
           Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
           false);
-      let list_request = list_domains () in
+      let list_request = list_domains config () in
       ("List Domains returns successfully"
       @?
       match list_request with
@@ -85,7 +105,7 @@ functor
       | `Error err ->
           Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
           false);
-      let delete_request = delete_domain () in
+      let delete_request = delete_domain config () in
       "Delete Domain returns successfully"
       @?
       match delete_request with
@@ -94,7 +114,7 @@ functor
           Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
           false
 
-    let sign_v2_request_test () =
+    let sign_v2_request_test _ =
       (* Example taken from AWS signing V2 documentation.
          https://docs.aws.amazon.com/general/latest/gr/signature-version-2.html
        *)
@@ -114,21 +134,26 @@ functor
       assert_equal (cannonical_query_string,  request) expected
 
 
-    let test_cases = [ "SDB create/list/delete" >:: create_list_delete_test
-                     ; "SDB signing is correct" >:: sign_v2_request_test]
+    let suite config = 
+      "Test SDB" >:::
+      [ "SDB create/list/delete" >:: create_list_delete_test config
+      ; "SDB signing is correct" >:: sign_v2_request_test ]
 
-    let rec was_successful = function
-      | [] -> true
-      | RSuccess _ :: t | RSkip _ :: t -> was_successful t
-      | RFailure _ :: _ | RError _ :: _ | RTodo _ :: _ -> false
-
-    let _ =
-      let suite = "Tests" >::: test_cases in
-      let verbose = ref false in
-      let set_verbose _ = verbose := true in
-      Arg.parse
-        [ "-verbose", Arg.Unit set_verbose, "Run the test in verbose mode." ]
-        (fun x -> raise (Arg.Bad ("Bad argument : " ^ x)))
-        ("Usage: " ^ Sys.argv.(0) ^ " [-verbose]");
-      if not (was_successful (run_test_tt ~verbose:!verbose suite)) then exit 1
+    let () =
+      let access_key =
+        try Some (Unix.getenv "AWS_ACCESS_KEY_ID") with Not_found -> None
+      in
+      let secret_key =
+        try Some (Unix.getenv "AWS_SECRET_ACCESS_KEY") with Not_found -> None
+      in
+      let region = try Some (Unix.getenv "AWS_DEFAULT_REGION") with Not_found -> None in
+      
+      match access_key, secret_key, region with
+      | Some access_key, Some secret_key, Some region ->
+          run_test_tt_main (suite { access_key; secret_key; region })
+      | _, _, _ ->
+          Printf.eprintf
+            "Skipping running tests. Environment variables AWS_ACCESS_KEY_ID, \
+             AWS_SECRET_ACCESS_KEY and AWS_DEFAULT_REGION not available. ";
+          exit 0
   end

@@ -18,7 +18,7 @@ build: [
 ]
 depends: [
   "ocaml" {>= "4.08"}
-  "aws"  {= version}
+  "aws" {= version}
   "dune" {>= "2.7"}
-  "ounit" {>= "2.2.4" & with-test}
+  "ounit2" {>= "2.2.4" & with-test}
 ]

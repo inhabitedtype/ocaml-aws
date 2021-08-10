@@ -1,11 +1,22 @@
-open OUnit
+open OUnit2
 open Aws_elasticache
+
+type config =
+  { access_key : string
+  ; secret_key : string
+  ; region : string
+}
+
+let ( @? ) = assert_bool
 
 module type Runtime = sig
   type 'a m
 
   val run_request :
-       (module Aws.Call
+       region:string
+    -> access_key:string
+    -> secret_key:string
+    -> (module Aws.Call
           with type input = 'input
            and type output = 'output
            and type error = 'error)
@@ -27,10 +38,13 @@ functor
      * --engine redis \
      * --access-string "on ~app::* -@all +@read" *)
 
-    let create_user () =
+    let create_user config () =
       Runtime.(
         un_m
           (run_request
+             ~region:config.region
+             ~access_key:config.access_key
+             ~secret_key:config.secret_key
              (module CreateUser)
              (Types.CreateUserMessage.make
                 ~user_id:"user1"
@@ -40,22 +54,28 @@ functor
                 ~access_string:"on ~app::* -@all"
                 ())))
 
-    let describe_users () =
+    let describe_users config () =
       Runtime.(
         un_m
           (run_request
+             ~region:config.region
+             ~access_key:config.access_key
+             ~secret_key:config.secret_key
              (module DescribeUsers)
              (Types.DescribeUsersMessage.make ~engine:"redis" ())))
 
-    let delete_user () =
+    let delete_user config () =
       Runtime.(
         un_m
           (run_request
+             ~region:config.region
+             ~access_key:config.access_key
+             ~secret_key:config.secret_key
              (module DeleteUser)
              (Types.DeleteUserMessage.make ~user_id:"user1" ())))
 
-    let create_delete_user_test () =
-      let request = create_user () in
+    let create_delete_user_test config _ =
+      let request = create_user config () in
       ("Elasticache create user"
       @?
       match request with
@@ -69,7 +89,7 @@ functor
           false);
       ("Elasticache describe users"
       @?
-      match describe_users () with
+      match describe_users config () with
       | `Ok resp ->
           Printf.printf
             "%s\n"
@@ -81,7 +101,7 @@ functor
             "Describe Error: %s\n"
             (Aws.Error.format Errors_internal.to_string err);
           false);
-      let del_request = delete_user () in
+      let del_request = delete_user config () in
       "Elasticache create user"
       @?
       match del_request with
@@ -94,20 +114,25 @@ functor
             (Aws.Error.format Errors_internal.to_string err);
           false
 
-    let test_cases = [ "ELASTICACHE create/delete user" >:: create_delete_user_test ]
+    let suite config =
+      "Test Elasticache" >:::
+      [ "create/delete user" >:: create_delete_user_test config ]
 
-    let rec was_successful = function
-      | [] -> true
-      | RSuccess _ :: t | RSkip _ :: t -> was_successful t
-      | RFailure _ :: _ | RError _ :: _ | RTodo _ :: _ -> false
-
-    let _ =
-      let suite = "Tests" >::: test_cases in
-      let verbose = ref false in
-      let set_verbose _ = verbose := true in
-      Arg.parse
-        [ "-verbose", Arg.Unit set_verbose, "Run the test in verbose mode." ]
-        (fun x -> raise (Arg.Bad ("Bad argument : " ^ x)))
-        ("Usage: " ^ Sys.argv.(0) ^ " [-verbose]");
-      if not (was_successful (run_test_tt ~verbose:!verbose suite)) then exit 1
+    let () =
+      let access_key =
+        try Some (Unix.getenv "AWS_ACCESS_KEY_ID") with Not_found -> None
+      in
+      let secret_key =
+        try Some (Unix.getenv "AWS_SECRET_ACCESS_KEY") with Not_found -> None
+      in
+      let region = try Some (Unix.getenv "AWS_DEFAULT_REGION") with Not_found -> None in
+      
+      match access_key, secret_key, region with
+      | Some access_key, Some secret_key, Some region ->
+          run_test_tt_main (suite { access_key; secret_key; region })
+      | _, _, _ ->
+          Printf.eprintf
+            "Skipping running tests. Environment variables AWS_ACCESS_KEY_ID, \
+             AWS_SECRET_ACCESS_KEY and AWS_DEFAULT_REGION not available. ";
+          exit 0
   end

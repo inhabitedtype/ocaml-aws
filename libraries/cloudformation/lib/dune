@@ -1,7 +1,6 @@
 (library
- (name aws_cloudformation)
+ (name        aws_cloudformation)
  (public_name aws-cloudformation)
  (synopsis "aws-AWS CloudFormation")
- (flags
-  (:standard -w -27))
+ (flags (:standard -w -27))
  (libraries aws))

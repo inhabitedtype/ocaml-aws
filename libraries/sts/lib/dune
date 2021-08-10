@@ -1,7 +1,6 @@
 (library
- (name aws_sts)
+ (name        aws_sts)
  (public_name aws-sts)
  (synopsis "aws-AWS Security Token Service")
- (flags
-  (:standard -w -27))
+ (flags (:standard -w -27))
  (libraries aws))
