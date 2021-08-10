@@ -1,7 +1,6 @@
 (library
- (name aws_route53)
+ (name        aws_route53)
  (public_name aws-route53)
  (synopsis "aws-Amazon Route 53")
- (flags
-  (:standard -w -27))
+ (flags (:standard -w -27))
  (libraries aws))

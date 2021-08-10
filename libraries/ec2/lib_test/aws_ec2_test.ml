@@ -1,15 +1,26 @@
-open OUnit
+open OUnit2
 open Aws_ec2
 
 let from_opt = function
   | None -> assert false
   | Some x -> x
 
+type config =
+  { access_key : string
+  ; secret_key : string
+  ; region : string
+  }
+
+let ( @? ) = assert_bool
+
 module type Runtime = sig
   type 'a m
 
   val run_request :
-       (module Aws.Call
+       region:string
+    -> access_key:string
+    -> secret_key:string
+    -> (module Aws.Call
           with type input = 'input
            and type output = 'output
            and type error = 'error)
@@ -24,11 +35,16 @@ functor
   (Runtime : Runtime)
   ->
   struct
-    let describe_regions_json () =
+    let describe_regions_json config _ =
       let res =
         Runtime.(
           un_m
-            (run_request (module DescribeRegions) (Types.DescribeRegionsRequest.make ())))
+            (run_request
+               ~region:config.region
+               ~access_key:config.access_key
+               ~secret_key:config.secret_key
+               (module DescribeRegions)
+               (Types.DescribeRegionsRequest.make ())))
       in
       "DescribeRegions returns values, and to_json / from_json round trips them"
       @?
@@ -43,26 +59,28 @@ functor
           Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
           false
 
-    let create_security_group () =
+    let create_security_group config () =
       let result =
         Runtime.(
           un_m
             (run_request
+               ~region:config.region
+               ~access_key:config.access_key
+               ~secret_key:config.secret_key
                (module CreateSecurityGroup)
                (Types.CreateSecurityGroupRequest.make
                   ~group_name:"aws-test-security_group"
                   ~description:"aws-test-security_group"
                   ())))
       in
-      (* let open Types.SecurityGroup in *)
       match result with
       | `Ok a -> Some a
       | `Error e ->
           print_endline (Aws.Error.format Errors_internal.to_string e);
           None
 
-    let create_security_group_test () =
-      let result = create_security_group () in
+    let create_security_group_test config _ =
+      let result = create_security_group config () in
       ("Creating security group succeeds"
       @?
       match result with
@@ -78,6 +96,9 @@ functor
         Runtime.(
           un_m
             (run_request
+               ~region:config.region
+               ~access_key:config.access_key
+               ~secret_key:config.secret_key
                (module DeleteSecurityGroup)
                (Types.DeleteSecurityGroupRequest.make ~group_id ())))
       in
@@ -89,11 +110,14 @@ functor
           print_endline (Aws.Error.format Errors_internal.to_string e);
           false
 
-    let create_instance () =
+    let create_instance config () =
       let result =
         Runtime.(
           un_m
             (run_request
+               ~region:config.region
+               ~access_key:config.access_key
+               ~secret_key:config.secret_key
                (module RunInstances)
                (Types.RunInstancesRequest.make
                   ~image_id:"ami-07fbdcfe29326c4fb"
@@ -114,8 +138,8 @@ functor
           print_endline (Aws.Error.format Errors_internal.to_string e);
           None
 
-    let create () =
-      let result = create_instance () in
+    let create config _ =
+      let result = create_instance config () in
       ("Creating ec2 instance succeeds"
       @?
       match result with
@@ -135,6 +159,9 @@ functor
         Runtime.(
           un_m
             (run_request
+               ~region:config.region
+               ~access_key:config.access_key
+               ~secret_key:config.secret_key
                (module TerminateInstances)
                (Types.TerminateInstancesRequest.make ~instance_ids:[ instance_id ] ())))
       in
@@ -146,24 +173,28 @@ functor
           print_endline (Aws.Error.format Errors_internal.to_string e);
           false
 
-    let test_cases =
-      [ "Describe Regions" >:: describe_regions_json
-      ; "Create Instance" >:: create
-      ; "Find Security Group" >:: create_security_group_test
-      ]
+    let suite config =
+      "Test EC2"
+      >::: [ "Describe Regions" >:: describe_regions_json config
+           ; "Create Instance" >:: create config
+           ; "Find Security Group" >:: create_security_group_test config
+           ]
 
-    let rec was_successful = function
-      | [] -> true
-      | RSuccess _ :: t | RSkip _ :: t -> was_successful t
-      | RFailure _ :: _ | RError _ :: _ | RTodo _ :: _ -> false
+    let () =
+      let access_key =
+        try Some (Unix.getenv "AWS_ACCESS_KEY_ID") with Not_found -> None
+      in
+      let secret_key =
+        try Some (Unix.getenv "AWS_SECRET_ACCESS_KEY") with Not_found -> None
+      in
+      let region = try Some (Unix.getenv "AWS_DEFAULT_REGION") with Not_found -> None in
 
-    let _ =
-      let suite = "Tests" >::: test_cases in
-      let verbose = ref false in
-      let set_verbose _ = verbose := true in
-      Arg.parse
-        [ "-verbose", Arg.Unit set_verbose, "Run the test in verbose mode." ]
-        (fun x -> raise (Arg.Bad ("Bad argument : " ^ x)))
-        ("Usage: " ^ Sys.argv.(0) ^ " [-verbose]");
-      if not (was_successful (run_test_tt ~verbose:!verbose suite)) then exit 1
+      match access_key, secret_key, region with
+      | Some access_key, Some secret_key, Some region ->
+          run_test_tt_main (suite { access_key; secret_key; region })
+      | _, _, _ ->
+          Printf.eprintf
+            "Skipping running tests. Environment variables AWS_ACCESS_KEY_ID, \
+             AWS_SECRET_ACCESS_KEY and AWS_DEFAULT_REGION not available. ";
+          exit 0
   end
