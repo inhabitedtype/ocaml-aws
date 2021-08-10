@@ -18,7 +18,12 @@ build: [
 ]
 depends: [
   "ocaml" {>= "4.08"}
-  "aws"  {= version}
+  "aws" {= version}
   "dune" {>= "2.7"}
-  "ounit" {>= "2.2.4" & with-test}
+  "ounit2" {with-test & >= "2.2.4"}
+  "cohttp-async" {with-test & >= "2.4.0" & < "3.0.0"}
+  "cohttp-lwt" {with-test & >= "2.4.0" & < "3.0.0"}
+  "cohttp-lwt-unix" {with-test & >= "2.4.0" & < "3.0.0"}
+  "lwt" {with-test & >= "4.0.0" & < "5.5.0"}
+  "yojson" {with-test & >= "1.7.0"}
 ]

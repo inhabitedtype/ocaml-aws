@@ -1,11 +1,27 @@
-open OUnit
+open OUnit2
 open Aws_rds
+
+
+let from_opt = function
+  | None -> assert false
+  | Some x -> x
+
+type config =
+  { access_key : string
+  ; secret_key : string
+  ; region : string
+}
+
+let ( @? ) = assert_bool
 
 module TestSuite (Runtime : sig
   type 'a m
 
   val run_request :
-       (module Aws.Call
+       region:string
+    -> access_key:string
+    -> secret_key:string
+    -> (module Aws.Call
           with type input = 'input
            and type output = 'output
            and type error = 'error)
@@ -15,10 +31,13 @@ module TestSuite (Runtime : sig
   val un_m : 'a m -> 'a
 end) =
 struct
-  let create_instance name =
+  let create_instance name config =
     Runtime.(
       un_m
         (run_request
+           ~region:config.region
+           ~access_key:config.access_key
+           ~secret_key:config.secret_key
            (module CreateDBInstance)
            (Types.CreateDBInstanceMessage.make
               ~d_b_instance_identifier:name
@@ -29,24 +48,26 @@ struct
               ~engine:"postgres"
               ())))
 
-  let from_opt = function
-    | None -> ""
-    | Some x -> x
-
-  let delete_instance d_b_instance_identifier =
+  let delete_instance d_b_instance_identifier config =
     Runtime.(
       un_m
         (run_request
+           ~region:config.region
+           ~access_key:config.access_key
+           ~secret_key:config.secret_key
            (module DeleteDBInstance)
            (Types.DeleteDBInstanceMessage.make
               ~d_b_instance_identifier
               ~skip_final_snapshot:true
               ())))
 
-  let describe_instances () =
+  let describe_instances config =
     Runtime.(
       un_m
         (run_request
+           ~region:config.region
+           ~access_key:config.access_key
+           ~secret_key:config.secret_key
            (module DescribeDBInstances)
            (Types.DescribeDBInstancesMessage.make ())))
 
@@ -62,9 +83,9 @@ struct
               (from_opt x.engine))
       x.d_b_instances
 
-  let create_rds_test () =
+  let create_rds_test config _ =
     let instance_name = "aws-test-instance-01" in
-    let result = create_instance instance_name in
+    let result = create_instance instance_name config in
     ("Creating RDS instance succeeds"
     @?
     match result with
@@ -73,7 +94,7 @@ struct
         Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
         false);
     Unix.sleep 30;
-    let list_result = describe_instances () in
+    let list_result = describe_instances config in
     ("Describing RDS instances succeeds"
     @?
     match list_result with
@@ -85,7 +106,7 @@ struct
         Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
         false);
     Unix.sleep 30;
-    let delete_result = delete_instance instance_name in
+    let delete_result = delete_instance instance_name config in
     "Deleting RDS instance succeeds"
     @?
     match delete_result with
@@ -94,20 +115,25 @@ struct
         Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
         false
 
-  let test_cases = [ "RDS create / delete instance" >:: create_rds_test ]
+  let suite config = 
+    "Test RDS" >:::
+    [ "RDS create / delete instance" >:: create_rds_test config ]
 
-  let rec was_successful = function
-    | [] -> true
-    | RSuccess _ :: t | RSkip _ :: t -> was_successful t
-    | RFailure _ :: _ | RError _ :: _ | RTodo _ :: _ -> false
-
-  let _ =
-    let suite = "Tests" >::: test_cases in
-    let verbose = ref false in
-    let set_verbose _ = verbose := true in
-    Arg.parse
-      [ "-verbose", Arg.Unit set_verbose, "Run the test in verbose mode." ]
-      (fun x -> raise (Arg.Bad ("Bad argument : " ^ x)))
-      ("Usage: " ^ Sys.argv.(0) ^ " [-verbose]");
-    if not (was_successful (run_test_tt ~verbose:!verbose suite)) then exit 1
+  let () =
+    let access_key =
+      try Some (Unix.getenv "AWS_ACCESS_KEY_ID") with Not_found -> None
+    in
+      let secret_key =
+      try Some (Unix.getenv "AWS_SECRET_ACCESS_KEY") with Not_found -> None
+    in
+      let region = try Some (Unix.getenv "AWS_DEFAULT_REGION") with Not_found -> None in
+    
+      match access_key, secret_key, region with
+      | Some access_key, Some secret_key, Some region ->
+        run_test_tt_main (suite { access_key; secret_key; region })
+    | _, _, _ ->
+        Printf.eprintf
+          "Skipping running tests. Environment variables AWS_ACCESS_KEY_ID, \
+             AWS_SECRET_ACCESS_KEY and AWS_DEFAULT_REGION not available. ";
+        exit 0
 end
