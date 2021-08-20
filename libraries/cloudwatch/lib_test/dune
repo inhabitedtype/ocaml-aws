@@ -1,7 +1,6 @@
-(executables
+(tests
  (names test_async test_lwt)
- (flags
-  (:standard -w -27 -w -33))
+ (package aws-cloudwatch)
  (modules test_async test_lwt aws_cloudwatch_test)
  (libraries aws aws-cloudwatch aws-async aws-lwt ounit2 yojson async
    cohttp-async lwt cohttp-lwt cohttp-lwt-unix))

@@ -137,7 +137,7 @@ functor
       ("CreateLoadBalancer returns successfully"
       @?
       match res with
-      | `Ok resp -> true
+      | `Ok _ -> true
       | `Error err ->
           Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
           false);
@@ -189,7 +189,7 @@ functor
       ("Can ConfigureHealthCheck"
       @?
       match res with
-      | `Ok resp -> true
+      | `Ok _ -> true
       | `Error err ->
           Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
           false);
@@ -197,7 +197,7 @@ functor
       "DeleteLoadBalancer returns successfully"
       @?
       match res with
-      | `Ok resp -> true
+      | `Ok _ -> true
       | `Error err ->
           Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
           false

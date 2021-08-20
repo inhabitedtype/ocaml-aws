@@ -1,7 +1,6 @@
-(executables
+(tests
  (names test_async test_lwt)
- (flags
-  (:standard -w -27 -w -33))
+ (package aws-ec2)
  (modules test_async test_lwt aws_ec2_test)
  (libraries aws aws-ec2 aws-async aws-lwt ounit2 yojson async cohttp-async
    lwt cohttp-lwt cohttp-lwt-unix))

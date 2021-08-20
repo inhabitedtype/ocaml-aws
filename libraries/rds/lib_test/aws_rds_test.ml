@@ -88,7 +88,7 @@ struct
     ("Creating RDS instance succeeds"
     @?
     match result with
-    | `Ok instance -> true
+    | `Ok _ -> true
     | `Error err ->
         Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
         false);
@@ -109,7 +109,7 @@ struct
     "Deleting RDS instance succeeds"
     @?
     match delete_result with
-    | `Ok instance -> true
+    | `Ok _ -> true
     | `Error err ->
         Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
         false

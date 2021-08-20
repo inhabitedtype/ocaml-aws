@@ -124,7 +124,7 @@ functor
       ("SQS send message"
       @?
       match send_message with
-      | `Ok resp ->
+      | `Ok _ ->
           Printf.printf "Sending message %s\n" test_message;
           true
       | `Error err ->
@@ -151,7 +151,7 @@ functor
       "Delete queue"
       @?
       match delete_res with
-      | `Ok resp ->
+      | `Ok _ ->
           Printf.printf "Queue %s deleted\n" queue_name;
           true
       | `Error err ->
@@ -178,13 +178,13 @@ functor
       let queue_url =
         match create_res with
         | `Ok resp -> from_opt resp.queue_url
-        | `Error err -> assert false
+        | `Error _ -> assert false
       in
       let delete_res = delete_queue config queue_url in
       "Delete queue"
       @?
       match delete_res with
-      | `Ok resp ->
+      | `Ok _ ->
           Printf.printf "Queue %s deleted\n" queue_name;
           true
       | `Error err ->

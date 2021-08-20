@@ -90,7 +90,7 @@ functor
       "Delete Cloudformation stack"
       @?
       match delete_result with
-      | `Ok output ->
+      | `Ok _ ->
           Printf.printf "Success stack deleted.\n";
           true
       | `Error err ->

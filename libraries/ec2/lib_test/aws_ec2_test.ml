@@ -84,7 +84,7 @@ functor
       ("Creating security group succeeds"
       @?
       match result with
-      | Some group -> true
+      | Some _ -> true
       | None -> false);
       let group_id =
         match result with
@@ -133,7 +133,7 @@ functor
           | [] ->
               print_endline "No instances in reservation";
               None
-          | x :: xs -> Some x)
+          | x :: _ -> Some x)
       | `Error e ->
           print_endline (Aws.Error.format Errors_internal.to_string e);
           None
@@ -143,7 +143,7 @@ functor
       ("Creating ec2 instance succeeds"
       @?
       match result with
-      | Some instance -> true
+      | Some _ -> true
       | None -> false);
       let instance_id =
         match result with

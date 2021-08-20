@@ -76,7 +76,7 @@ functor
       "Deleting Cloudtrail"
       @?
       match delete_result with
-      | `Ok output ->
+      | `Ok _ ->
           Printf.printf "Success trail deleted.\n";
           true
       | `Error err ->
@@ -101,6 +101,6 @@ functor
       | _, _, _ ->
           Printf.eprintf
             "Skipping running tests. Environment variables AWS_ACCESS_KEY_ID, \
-             AWS_SECRET_ACCESS_KEY and AWS_DEFAULT_REGION not available. ";
+             AWS_SECRET_ACCESS_KEY and AWS_DEFAULT_REGION not available.";
           exit 0
   end

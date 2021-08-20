@@ -29,9 +29,9 @@ end
 let sign_v2_request
     ~access_key
     ~secret_key
-    ~service
-    ~region
-    (meth, uri, headers)
+    ~service:_
+    ~region:_
+    (meth, uri, _headers)
     ~now
     ~host =
   let open Aws in
@@ -96,7 +96,7 @@ functor
       ("Create Domain returns successfully"
       @?
       match create_request with
-      | `Ok resp -> true
+      | `Ok _ -> true
       | `Error err ->
           Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
           false);
@@ -117,7 +117,7 @@ functor
       "Delete Domain returns successfully"
       @?
       match delete_request with
-      | `Ok resp -> true
+      | `Ok _ -> true
       | `Error err ->
           Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
           false

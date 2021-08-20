@@ -79,7 +79,7 @@ functor
       ("Elasticache create user"
       @?
       match request with
-      | `Ok resp ->
+      | `Ok _ ->
           Printf.printf "User created \n";
           true
       | `Error err ->
@@ -105,7 +105,7 @@ functor
       "Elasticache create user"
       @?
       match del_request with
-      | `Ok resp ->
+      | `Ok _ ->
           Printf.printf "User deleted\n";
           true
       | `Error err ->

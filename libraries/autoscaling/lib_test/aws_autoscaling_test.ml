@@ -50,7 +50,7 @@ functor
                 ~instance_id
                 ())))
 
-    let delete_autoscaling ~auto_scaling_group_name config () =
+    let delete_autoscaling ~auto_scaling_group_name:_ config () =
       Runtime.(
         un_m
           (run_request
@@ -86,7 +86,7 @@ functor
           | [] ->
               print_endline "No instances in reservation";
               None
-          | x :: xs -> Some x)
+          | x :: _ -> Some x)
       | `Error e ->
           print_endline (Aws.Error.format Errors_internal.to_string e);
           None
@@ -111,7 +111,7 @@ functor
       ("Creating autoscaling group succeeds"
       @?
       match result with
-      | `Ok instance -> true
+      | `Ok _ -> true
       | `Error err ->
           Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
           false);
@@ -119,7 +119,7 @@ functor
       "Delete autoscaling group succeeds"
       @?
       match result with
-      | `Ok instance -> true
+      | `Ok _ -> true
       | `Error err ->
           Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
           false
@@ -141,8 +141,8 @@ functor
       | Some access_key, Some secret_key, Some region ->
           run_test_tt_main (suite { access_key; secret_key; region })
       | _, _, _ ->
-          Printf.eprintf
+          Printf.printf
             "Skipping running tests. Environment variables AWS_ACCESS_KEY_ID, \
-             AWS_SECRET_ACCESS_KEY and AWS_DEFAULT_REGION not available. ";
+             AWS_SECRET_ACCESS_KEY and AWS_DEFAULT_REGION not available.";
           exit 0
   end
