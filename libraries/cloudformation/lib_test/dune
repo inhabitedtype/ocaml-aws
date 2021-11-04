@@ -1,9 +1,10 @@
-(executables
+(tests
  (names test_async test_lwt)
+ (package aws-cloudformation)
  (flags
   (:standard -w -27 -w -33))
  (modules test_async test_lwt aws_cloudformation_test)
- (libraries aws aws_cloudformation aws-async aws-lwt oUnit yojson async
+ (libraries aws aws-cloudformation aws-async aws-lwt ounit2 yojson async
    cohttp-async lwt cohttp-lwt cohttp-lwt-unix))
 
 (rule

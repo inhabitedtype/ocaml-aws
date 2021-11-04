@@ -46,7 +46,7 @@ module InstanceIpv6Address = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.ipv6_address (fun f ->
-               Query.Pair ("ipv6Address", String.to_query f))
+               Query.Pair ("Ipv6Address", String.to_query f))
          ])
 
   let to_json v =
@@ -77,8 +77,8 @@ module PrivateIpAddressSpecification = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.private_ip_address (fun f ->
-               Query.Pair ("privateIpAddress", String.to_query f))
-         ; Util.option_map v.primary (fun f -> Query.Pair ("primary", Boolean.to_query f))
+               Query.Pair ("PrivateIpAddress", String.to_query f))
+         ; Util.option_map v.primary (fun f -> Query.Pair ("Primary", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -114,8 +114,8 @@ module Tag = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("value", String.to_query v.value))
-         ; Some (Query.Pair ("key", String.to_query v.key))
+         [ Some (Query.Pair ("Value", String.to_query v.value))
+         ; Some (Query.Pair ("Key", String.to_query v.key))
          ])
 
   let to_json v =
@@ -152,13 +152,13 @@ module InstanceNetworkInterfaceAssociation = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.public_ip (fun f ->
-               Query.Pair ("publicIp", String.to_query f))
+               Query.Pair ("PublicIp", String.to_query f))
          ; Util.option_map v.public_dns_name (fun f ->
-               Query.Pair ("publicDnsName", String.to_query f))
+               Query.Pair ("PublicDnsName", String.to_query f))
          ; Util.option_map v.ip_owner_id (fun f ->
-               Query.Pair ("ipOwnerId", String.to_query f))
+               Query.Pair ("IpOwnerId", String.to_query f))
          ; Util.option_map v.carrier_ip (fun f ->
-               Query.Pair ("carrierIp", String.to_query f))
+               Query.Pair ("CarrierIp", String.to_query f))
          ])
 
   let to_json v =
@@ -224,18 +224,18 @@ module EbsBlockDevice = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.encrypted (fun f ->
-               Query.Pair ("encrypted", Boolean.to_query f))
+               Query.Pair ("Encrypted", Boolean.to_query f))
          ; Util.option_map v.kms_key_id (fun f ->
                Query.Pair ("KmsKeyId", String.to_query f))
          ; Util.option_map v.volume_type (fun f ->
-               Query.Pair ("volumeType", VolumeType.to_query f))
+               Query.Pair ("VolumeType", VolumeType.to_query f))
          ; Util.option_map v.volume_size (fun f ->
-               Query.Pair ("volumeSize", Integer.to_query f))
+               Query.Pair ("VolumeSize", Integer.to_query f))
          ; Util.option_map v.snapshot_id (fun f ->
-               Query.Pair ("snapshotId", String.to_query f))
-         ; Util.option_map v.iops (fun f -> Query.Pair ("iops", Integer.to_query f))
+               Query.Pair ("SnapshotId", String.to_query f))
+         ; Util.option_map v.iops (fun f -> Query.Pair ("Iops", Integer.to_query f))
          ; Util.option_map v.delete_on_termination (fun f ->
-               Query.Pair ("deleteOnTermination", Boolean.to_query f))
+               Query.Pair ("DeleteOnTermination", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -1608,9 +1608,9 @@ module GroupIdentifier = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.group_id (fun f -> Query.Pair ("groupId", String.to_query f))
+         [ Util.option_map v.group_id (fun f -> Query.Pair ("GroupId", String.to_query f))
          ; Util.option_map v.group_name (fun f ->
-               Query.Pair ("groupName", String.to_query f))
+               Query.Pair ("GroupName", String.to_query f))
          ])
 
   let to_json v =
@@ -1653,12 +1653,12 @@ module InstancePrivateIpAddress = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.private_ip_address (fun f ->
-               Query.Pair ("privateIpAddress", String.to_query f))
+               Query.Pair ("PrivateIpAddress", String.to_query f))
          ; Util.option_map v.private_dns_name (fun f ->
-               Query.Pair ("privateDnsName", String.to_query f))
-         ; Util.option_map v.primary (fun f -> Query.Pair ("primary", Boolean.to_query f))
+               Query.Pair ("PrivateDnsName", String.to_query f))
+         ; Util.option_map v.primary (fun f -> Query.Pair ("Primary", Boolean.to_query f))
          ; Util.option_map v.association (fun f ->
-               Query.Pair ("association", InstanceNetworkInterfaceAssociation.to_query f))
+               Query.Pair ("Association", InstanceNetworkInterfaceAssociation.to_query f))
          ])
 
   let to_json v =
@@ -1695,7 +1695,7 @@ module IKEVersionsListValue = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.value (fun f -> Query.Pair ("value", String.to_query f)) ])
+         [ Util.option_map v.value (fun f -> Query.Pair ("Value", String.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -1715,7 +1715,7 @@ module Phase1DHGroupNumbersListValue = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.value (fun f -> Query.Pair ("value", Integer.to_query f)) ])
+         [ Util.option_map v.value (fun f -> Query.Pair ("Value", Integer.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -1735,7 +1735,7 @@ module Phase1EncryptionAlgorithmsListValue = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.value (fun f -> Query.Pair ("value", String.to_query f)) ])
+         [ Util.option_map v.value (fun f -> Query.Pair ("Value", String.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -1755,7 +1755,7 @@ module Phase1IntegrityAlgorithmsListValue = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.value (fun f -> Query.Pair ("value", String.to_query f)) ])
+         [ Util.option_map v.value (fun f -> Query.Pair ("Value", String.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -1775,7 +1775,7 @@ module Phase2DHGroupNumbersListValue = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.value (fun f -> Query.Pair ("value", Integer.to_query f)) ])
+         [ Util.option_map v.value (fun f -> Query.Pair ("Value", Integer.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -1795,7 +1795,7 @@ module Phase2EncryptionAlgorithmsListValue = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.value (fun f -> Query.Pair ("value", String.to_query f)) ])
+         [ Util.option_map v.value (fun f -> Query.Pair ("Value", String.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -1815,7 +1815,7 @@ module Phase2IntegrityAlgorithmsListValue = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.value (fun f -> Query.Pair ("value", String.to_query f)) ])
+         [ Util.option_map v.value (fun f -> Query.Pair ("Value", String.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -1862,7 +1862,7 @@ module PlacementResponse = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.group_name (fun f ->
-               Query.Pair ("groupName", String.to_query f))
+               Query.Pair ("GroupName", String.to_query f))
          ])
 
   let to_json v =
@@ -1900,11 +1900,11 @@ module BlockDeviceMapping = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.no_device (fun f ->
-               Query.Pair ("noDevice", String.to_query f))
-         ; Util.option_map v.ebs (fun f -> Query.Pair ("ebs", EbsBlockDevice.to_query f))
+               Query.Pair ("NoDevice", String.to_query f))
+         ; Util.option_map v.ebs (fun f -> Query.Pair ("Ebs", EbsBlockDevice.to_query f))
          ; Util.option_map v.virtual_name (fun f ->
-               Query.Pair ("virtualName", String.to_query f))
-         ; Some (Query.Pair ("deviceName", String.to_query v.device_name))
+               Query.Pair ("VirtualName", String.to_query f))
+         ; Some (Query.Pair ("DeviceName", String.to_query v.device_name))
          ])
 
   let to_json v =
@@ -2029,32 +2029,32 @@ module InstanceNetworkInterfaceSpecification = struct
          ; Util.option_map v.associate_carrier_ip_address (fun f ->
                Query.Pair ("AssociateCarrierIpAddress", Boolean.to_query f))
          ; Util.option_map v.subnet_id (fun f ->
-               Query.Pair ("subnetId", String.to_query f))
+               Query.Pair ("SubnetId", String.to_query f))
          ; Util.option_map v.secondary_private_ip_address_count (fun f ->
-               Query.Pair ("secondaryPrivateIpAddressCount", Integer.to_query f))
+               Query.Pair ("SecondaryPrivateIpAddressCount", Integer.to_query f))
          ; Some
              (Query.Pair
-                ( "privateIpAddressesSet"
+                ( "PrivateIpAddressesSet"
                 , PrivateIpAddressSpecificationList.to_query v.private_ip_addresses ))
          ; Util.option_map v.private_ip_address (fun f ->
-               Query.Pair ("privateIpAddress", String.to_query f))
+               Query.Pair ("PrivateIpAddress", String.to_query f))
          ; Util.option_map v.network_interface_id (fun f ->
-               Query.Pair ("networkInterfaceId", String.to_query f))
+               Query.Pair ("NetworkInterfaceId", String.to_query f))
          ; Some
              (Query.Pair
-                ("ipv6AddressesSet", InstanceIpv6AddressList.to_query v.ipv6_addresses))
+                ("Ipv6AddressesSet", InstanceIpv6AddressList.to_query v.ipv6_addresses))
          ; Util.option_map v.ipv6_address_count (fun f ->
-               Query.Pair ("ipv6AddressCount", Integer.to_query f))
+               Query.Pair ("Ipv6AddressCount", Integer.to_query f))
          ; Some
              (Query.Pair ("SecurityGroupId", SecurityGroupIdStringList.to_query v.groups))
          ; Util.option_map v.device_index (fun f ->
-               Query.Pair ("deviceIndex", Integer.to_query f))
+               Query.Pair ("DeviceIndex", Integer.to_query f))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
          ; Util.option_map v.delete_on_termination (fun f ->
-               Query.Pair ("deleteOnTermination", Boolean.to_query f))
+               Query.Pair ("DeleteOnTermination", Boolean.to_query f))
          ; Util.option_map v.associate_public_ip_address (fun f ->
-               Query.Pair ("associatePublicIpAddress", Boolean.to_query f))
+               Query.Pair ("AssociatePublicIpAddress", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -2139,9 +2139,9 @@ module SpotFleetTagSpecification = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tag", TagList.to_query v.tags))
+         [ Some (Query.Pair ("Tag", TagList.to_query v.tags))
          ; Util.option_map v.resource_type (fun f ->
-               Query.Pair ("resourceType", ResourceType.to_query f))
+               Query.Pair ("ResourceType", ResourceType.to_query f))
          ])
 
   let to_json v =
@@ -2226,17 +2226,17 @@ module LaunchTemplateOverrides = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.priority (fun f ->
-               Query.Pair ("priority", Double.to_query f))
+               Query.Pair ("Priority", Double.to_query f))
          ; Util.option_map v.weighted_capacity (fun f ->
-               Query.Pair ("weightedCapacity", Double.to_query f))
+               Query.Pair ("WeightedCapacity", Double.to_query f))
          ; Util.option_map v.availability_zone (fun f ->
-               Query.Pair ("availabilityZone", String.to_query f))
+               Query.Pair ("AvailabilityZone", String.to_query f))
          ; Util.option_map v.subnet_id (fun f ->
-               Query.Pair ("subnetId", String.to_query f))
+               Query.Pair ("SubnetId", String.to_query f))
          ; Util.option_map v.spot_price (fun f ->
-               Query.Pair ("spotPrice", String.to_query f))
+               Query.Pair ("SpotPrice", String.to_query f))
          ; Util.option_map v.instance_type (fun f ->
-               Query.Pair ("instanceType", InstanceType.to_query f))
+               Query.Pair ("InstanceType", InstanceType.to_query f))
          ])
 
   let to_json v =
@@ -2275,7 +2275,7 @@ module ClassicLoadBalancer = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.name (fun f -> Query.Pair ("name", String.to_query f)) ])
+         [ Util.option_map v.name (fun f -> Query.Pair ("Name", String.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -2295,7 +2295,7 @@ module TargetGroup = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.arn (fun f -> Query.Pair ("arn", String.to_query f)) ])
+         [ Util.option_map v.arn (fun f -> Query.Pair ("Arn", String.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -2328,13 +2328,13 @@ module EbsInstanceBlockDevice = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.volume_id (fun f ->
-               Query.Pair ("volumeId", String.to_query f))
+               Query.Pair ("VolumeId", String.to_query f))
          ; Util.option_map v.status (fun f ->
-               Query.Pair ("status", AttachmentStatus.to_query f))
+               Query.Pair ("Status", AttachmentStatus.to_query f))
          ; Util.option_map v.delete_on_termination (fun f ->
-               Query.Pair ("deleteOnTermination", Boolean.to_query f))
+               Query.Pair ("DeleteOnTermination", Boolean.to_query f))
          ; Util.option_map v.attach_time (fun f ->
-               Query.Pair ("attachTime", DateTime.to_query f))
+               Query.Pair ("AttachTime", DateTime.to_query f))
          ])
 
   let to_json v =
@@ -2413,17 +2413,17 @@ module InstanceNetworkInterfaceAttachment = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.network_card_index (fun f ->
-               Query.Pair ("networkCardIndex", Integer.to_query f))
+               Query.Pair ("NetworkCardIndex", Integer.to_query f))
          ; Util.option_map v.status (fun f ->
-               Query.Pair ("status", AttachmentStatus.to_query f))
+               Query.Pair ("Status", AttachmentStatus.to_query f))
          ; Util.option_map v.device_index (fun f ->
-               Query.Pair ("deviceIndex", Integer.to_query f))
+               Query.Pair ("DeviceIndex", Integer.to_query f))
          ; Util.option_map v.delete_on_termination (fun f ->
-               Query.Pair ("deleteOnTermination", Boolean.to_query f))
+               Query.Pair ("DeleteOnTermination", Boolean.to_query f))
          ; Util.option_map v.attachment_id (fun f ->
-               Query.Pair ("attachmentId", String.to_query f))
+               Query.Pair ("AttachmentId", String.to_query f))
          ; Util.option_map v.attach_time (fun f ->
-               Query.Pair ("attachTime", DateTime.to_query f))
+               Query.Pair ("AttachTime", DateTime.to_query f))
          ])
 
   let to_json v =
@@ -2539,7 +2539,7 @@ module AttributeValue = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.value (fun f -> Query.Pair ("value", String.to_query f)) ])
+         [ Util.option_map v.value (fun f -> Query.Pair ("Value", String.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -2676,16 +2676,16 @@ module UserIdGroupPair = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.vpc_peering_connection_id (fun f ->
-               Query.Pair ("vpcPeeringConnectionId", String.to_query f))
-         ; Util.option_map v.vpc_id (fun f -> Query.Pair ("vpcId", String.to_query f))
-         ; Util.option_map v.user_id (fun f -> Query.Pair ("userId", String.to_query f))
+               Query.Pair ("VpcPeeringConnectionId", String.to_query f))
+         ; Util.option_map v.vpc_id (fun f -> Query.Pair ("VpcId", String.to_query f))
+         ; Util.option_map v.user_id (fun f -> Query.Pair ("UserId", String.to_query f))
          ; Util.option_map v.peering_status (fun f ->
-               Query.Pair ("peeringStatus", String.to_query f))
+               Query.Pair ("PeeringStatus", String.to_query f))
          ; Util.option_map v.group_name (fun f ->
-               Query.Pair ("groupName", String.to_query f))
-         ; Util.option_map v.group_id (fun f -> Query.Pair ("groupId", String.to_query f))
+               Query.Pair ("GroupName", String.to_query f))
+         ; Util.option_map v.group_id (fun f -> Query.Pair ("GroupId", String.to_query f))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
          ])
 
   let to_json v =
@@ -2725,7 +2725,7 @@ module FpgaDeviceMemoryInfo = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.size_in_mi_b (fun f ->
-               Query.Pair ("sizeInMiB", Integer.to_query f))
+               Query.Pair ("SizeInMiB", Integer.to_query f))
          ])
 
   let to_json v =
@@ -2749,7 +2749,7 @@ module GpuDeviceMemoryInfo = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.size_in_mi_b (fun f ->
-               Query.Pair ("sizeInMiB", Integer.to_query f))
+               Query.Pair ("SizeInMiB", Integer.to_query f))
          ])
 
   let to_json v =
@@ -2919,13 +2919,13 @@ module DiskImageDescription = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.size (fun f -> Query.Pair ("size", Long.to_query f))
+         [ Util.option_map v.size (fun f -> Query.Pair ("Size", Long.to_query f))
          ; Util.option_map v.import_manifest_url (fun f ->
-               Query.Pair ("importManifestUrl", String.to_query f))
+               Query.Pair ("ImportManifestUrl", String.to_query f))
          ; Util.option_map v.format (fun f ->
-               Query.Pair ("format", DiskImageFormat.to_query f))
+               Query.Pair ("Format", DiskImageFormat.to_query f))
          ; Util.option_map v.checksum (fun f ->
-               Query.Pair ("checksum", String.to_query f))
+               Query.Pair ("Checksum", String.to_query f))
          ])
 
   let to_json v =
@@ -2964,8 +2964,8 @@ module DiskImageVolumeDescription = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.size (fun f -> Query.Pair ("size", Long.to_query f))
-         ; Util.option_map v.id (fun f -> Query.Pair ("id", String.to_query f))
+         [ Util.option_map v.size (fun f -> Query.Pair ("Size", Long.to_query f))
+         ; Util.option_map v.id (fun f -> Query.Pair ("Id", String.to_query f))
          ])
 
   let to_json v =
@@ -3065,18 +3065,18 @@ module LaunchTemplateEbsBlockDevice = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.volume_type (fun f ->
-               Query.Pair ("volumeType", VolumeType.to_query f))
+               Query.Pair ("VolumeType", VolumeType.to_query f))
          ; Util.option_map v.volume_size (fun f ->
-               Query.Pair ("volumeSize", Integer.to_query f))
+               Query.Pair ("VolumeSize", Integer.to_query f))
          ; Util.option_map v.snapshot_id (fun f ->
-               Query.Pair ("snapshotId", String.to_query f))
+               Query.Pair ("SnapshotId", String.to_query f))
          ; Util.option_map v.kms_key_id (fun f ->
-               Query.Pair ("kmsKeyId", String.to_query f))
-         ; Util.option_map v.iops (fun f -> Query.Pair ("iops", Integer.to_query f))
+               Query.Pair ("KmsKeyId", String.to_query f))
+         ; Util.option_map v.iops (fun f -> Query.Pair ("Iops", Integer.to_query f))
          ; Util.option_map v.delete_on_termination (fun f ->
-               Query.Pair ("deleteOnTermination", Boolean.to_query f))
+               Query.Pair ("DeleteOnTermination", Boolean.to_query f))
          ; Util.option_map v.encrypted (fun f ->
-               Query.Pair ("encrypted", Boolean.to_query f))
+               Query.Pair ("Encrypted", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -3186,8 +3186,8 @@ module IpRange = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
-         ; Some (Query.Pair ("cidrIp", String.to_query v.cidr_ip))
+               Query.Pair ("Description", String.to_query f))
+         ; Some (Query.Pair ("CidrIp", String.to_query v.cidr_ip))
          ])
 
   let to_json v =
@@ -3221,9 +3221,9 @@ module Ipv6Range = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
          ; Util.option_map v.cidr_ipv6 (fun f ->
-               Query.Pair ("cidrIpv6", String.to_query f))
+               Query.Pair ("CidrIpv6", String.to_query f))
          ])
 
   let to_json v =
@@ -3257,9 +3257,9 @@ module PrefixListId = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.prefix_list_id (fun f ->
-               Query.Pair ("prefixListId", String.to_query f))
+               Query.Pair ("PrefixListId", String.to_query f))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
          ])
 
   let to_json v =
@@ -3322,19 +3322,19 @@ module FleetLaunchTemplateOverrides = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.placement (fun f ->
-               Query.Pair ("placement", PlacementResponse.to_query f))
+               Query.Pair ("Placement", PlacementResponse.to_query f))
          ; Util.option_map v.priority (fun f ->
-               Query.Pair ("priority", Double.to_query f))
+               Query.Pair ("Priority", Double.to_query f))
          ; Util.option_map v.weighted_capacity (fun f ->
-               Query.Pair ("weightedCapacity", Double.to_query f))
+               Query.Pair ("WeightedCapacity", Double.to_query f))
          ; Util.option_map v.availability_zone (fun f ->
-               Query.Pair ("availabilityZone", String.to_query f))
+               Query.Pair ("AvailabilityZone", String.to_query f))
          ; Util.option_map v.subnet_id (fun f ->
-               Query.Pair ("subnetId", String.to_query f))
+               Query.Pair ("SubnetId", String.to_query f))
          ; Util.option_map v.max_price (fun f ->
-               Query.Pair ("maxPrice", String.to_query f))
+               Query.Pair ("MaxPrice", String.to_query f))
          ; Util.option_map v.instance_type (fun f ->
-               Query.Pair ("instanceType", InstanceType.to_query f))
+               Query.Pair ("InstanceType", InstanceType.to_query f))
          ])
 
   let to_json v =
@@ -3387,11 +3387,11 @@ module FleetLaunchTemplateSpecification = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.version (fun f -> Query.Pair ("version", String.to_query f))
+         [ Util.option_map v.version (fun f -> Query.Pair ("Version", String.to_query f))
          ; Util.option_map v.launch_template_name (fun f ->
-               Query.Pair ("launchTemplateName", String.to_query f))
+               Query.Pair ("LaunchTemplateName", String.to_query f))
          ; Util.option_map v.launch_template_id (fun f ->
-               Query.Pair ("launchTemplateId", String.to_query f))
+               Query.Pair ("LaunchTemplateId", String.to_query f))
          ])
 
   let to_json v =
@@ -3467,8 +3467,8 @@ module IamInstanceProfileSpecification = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.name (fun f -> Query.Pair ("name", String.to_query f))
-         ; Util.option_map v.arn (fun f -> Query.Pair ("arn", String.to_query f))
+         [ Util.option_map v.name (fun f -> Query.Pair ("Name", String.to_query f))
+         ; Util.option_map v.arn (fun f -> Query.Pair ("Arn", String.to_query f))
          ])
 
   let to_json v =
@@ -3511,7 +3511,7 @@ module SpotFleetMonitoring = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.enabled (fun f -> Query.Pair ("enabled", Boolean.to_query f))
+         [ Util.option_map v.enabled (fun f -> Query.Pair ("Enabled", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -3558,11 +3558,11 @@ module SpotPlacement = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.tenancy (fun f -> Query.Pair ("tenancy", Tenancy.to_query f))
+         [ Util.option_map v.tenancy (fun f -> Query.Pair ("Tenancy", Tenancy.to_query f))
          ; Util.option_map v.group_name (fun f ->
-               Query.Pair ("groupName", String.to_query f))
+               Query.Pair ("GroupName", String.to_query f))
          ; Util.option_map v.availability_zone (fun f ->
-               Query.Pair ("availabilityZone", String.to_query f))
+               Query.Pair ("AvailabilityZone", String.to_query f))
          ])
 
   let to_json v =
@@ -3719,9 +3719,9 @@ module CapacityReservationTargetResponse = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.capacity_reservation_resource_group_arn (fun f ->
-               Query.Pair ("capacityReservationResourceGroupArn", String.to_query f))
+               Query.Pair ("CapacityReservationResourceGroupArn", String.to_query f))
          ; Util.option_map v.capacity_reservation_id (fun f ->
-               Query.Pair ("capacityReservationId", String.to_query f))
+               Query.Pair ("CapacityReservationId", String.to_query f))
          ])
 
   let to_json v =
@@ -3778,13 +3778,13 @@ module ElasticGpuAssociation = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.elastic_gpu_association_time (fun f ->
-               Query.Pair ("elasticGpuAssociationTime", String.to_query f))
+               Query.Pair ("ElasticGpuAssociationTime", String.to_query f))
          ; Util.option_map v.elastic_gpu_association_state (fun f ->
-               Query.Pair ("elasticGpuAssociationState", String.to_query f))
+               Query.Pair ("ElasticGpuAssociationState", String.to_query f))
          ; Util.option_map v.elastic_gpu_association_id (fun f ->
-               Query.Pair ("elasticGpuAssociationId", String.to_query f))
+               Query.Pair ("ElasticGpuAssociationId", String.to_query f))
          ; Util.option_map v.elastic_gpu_id (fun f ->
-               Query.Pair ("elasticGpuId", String.to_query f))
+               Query.Pair ("ElasticGpuId", String.to_query f))
          ])
 
   let to_json v =
@@ -3853,14 +3853,14 @@ module ElasticInferenceAcceleratorAssociation = struct
       (Util.list_filter_opt
          [ Util.option_map v.elastic_inference_accelerator_association_time (fun f ->
                Query.Pair
-                 ("elasticInferenceAcceleratorAssociationTime", DateTime.to_query f))
+                 ("ElasticInferenceAcceleratorAssociationTime", DateTime.to_query f))
          ; Util.option_map v.elastic_inference_accelerator_association_state (fun f ->
                Query.Pair
-                 ("elasticInferenceAcceleratorAssociationState", String.to_query f))
+                 ("ElasticInferenceAcceleratorAssociationState", String.to_query f))
          ; Util.option_map v.elastic_inference_accelerator_association_id (fun f ->
-               Query.Pair ("elasticInferenceAcceleratorAssociationId", String.to_query f))
+               Query.Pair ("ElasticInferenceAcceleratorAssociationId", String.to_query f))
          ; Util.option_map v.elastic_inference_accelerator_arn (fun f ->
-               Query.Pair ("elasticInferenceAcceleratorArn", String.to_query f))
+               Query.Pair ("ElasticInferenceAcceleratorArn", String.to_query f))
          ])
 
   let to_json v =
@@ -3912,9 +3912,9 @@ module InstanceBlockDeviceMapping = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.ebs (fun f ->
-               Query.Pair ("ebs", EbsInstanceBlockDevice.to_query f))
+               Query.Pair ("Ebs", EbsInstanceBlockDevice.to_query f))
          ; Util.option_map v.device_name (fun f ->
-               Query.Pair ("deviceName", String.to_query f))
+               Query.Pair ("DeviceName", String.to_query f))
          ])
 
   let to_json v =
@@ -4104,37 +4104,37 @@ module InstanceNetworkInterface = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.interface_type (fun f ->
-               Query.Pair ("interfaceType", String.to_query f))
-         ; Util.option_map v.vpc_id (fun f -> Query.Pair ("vpcId", String.to_query f))
+               Query.Pair ("InterfaceType", String.to_query f))
+         ; Util.option_map v.vpc_id (fun f -> Query.Pair ("VpcId", String.to_query f))
          ; Util.option_map v.subnet_id (fun f ->
-               Query.Pair ("subnetId", String.to_query f))
+               Query.Pair ("SubnetId", String.to_query f))
          ; Util.option_map v.status (fun f ->
-               Query.Pair ("status", NetworkInterfaceStatus.to_query f))
+               Query.Pair ("Status", NetworkInterfaceStatus.to_query f))
          ; Util.option_map v.source_dest_check (fun f ->
-               Query.Pair ("sourceDestCheck", Boolean.to_query f))
+               Query.Pair ("SourceDestCheck", Boolean.to_query f))
          ; Some
              (Query.Pair
-                ( "privateIpAddressesSet"
+                ( "PrivateIpAddressesSet"
                 , InstancePrivateIpAddressList.to_query v.private_ip_addresses ))
          ; Util.option_map v.private_ip_address (fun f ->
-               Query.Pair ("privateIpAddress", String.to_query f))
+               Query.Pair ("PrivateIpAddress", String.to_query f))
          ; Util.option_map v.private_dns_name (fun f ->
-               Query.Pair ("privateDnsName", String.to_query f))
-         ; Util.option_map v.owner_id (fun f -> Query.Pair ("ownerId", String.to_query f))
+               Query.Pair ("PrivateDnsName", String.to_query f))
+         ; Util.option_map v.owner_id (fun f -> Query.Pair ("OwnerId", String.to_query f))
          ; Util.option_map v.network_interface_id (fun f ->
-               Query.Pair ("networkInterfaceId", String.to_query f))
+               Query.Pair ("NetworkInterfaceId", String.to_query f))
          ; Util.option_map v.mac_address (fun f ->
-               Query.Pair ("macAddress", String.to_query f))
+               Query.Pair ("MacAddress", String.to_query f))
          ; Some
              (Query.Pair
-                ("ipv6AddressesSet", InstanceIpv6AddressList.to_query v.ipv6_addresses))
-         ; Some (Query.Pair ("groupSet", GroupIdentifierList.to_query v.groups))
+                ("Ipv6AddressesSet", InstanceIpv6AddressList.to_query v.ipv6_addresses))
+         ; Some (Query.Pair ("GroupSet", GroupIdentifierList.to_query v.groups))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
          ; Util.option_map v.attachment (fun f ->
-               Query.Pair ("attachment", InstanceNetworkInterfaceAttachment.to_query f))
+               Query.Pair ("Attachment", InstanceNetworkInterfaceAttachment.to_query f))
          ; Util.option_map v.association (fun f ->
-               Query.Pair ("association", InstanceNetworkInterfaceAssociation.to_query f))
+               Query.Pair ("Association", InstanceNetworkInterfaceAssociation.to_query f))
          ])
 
   let to_json v =
@@ -4256,7 +4256,7 @@ module LicenseConfiguration = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.license_configuration_arn (fun f ->
-               Query.Pair ("licenseConfigurationArn", String.to_query f))
+               Query.Pair ("LicenseConfigurationArn", String.to_query f))
          ])
 
   let to_json v =
@@ -4327,9 +4327,9 @@ module ProductCode = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.product_code_type (fun f ->
-               Query.Pair ("type", ProductCodeValues.to_query f))
+               Query.Pair ("Type", ProductCodeValues.to_query f))
          ; Util.option_map v.product_code_id (fun f ->
-               Query.Pair ("productCode", String.to_query f))
+               Query.Pair ("ProductCode", String.to_query f))
          ])
 
   let to_json v =
@@ -4472,15 +4472,15 @@ module ReservedInstancesConfiguration = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.scope (fun f -> Query.Pair ("scope", Scope.to_query f))
+         [ Util.option_map v.scope (fun f -> Query.Pair ("Scope", Scope.to_query f))
          ; Util.option_map v.platform (fun f ->
-               Query.Pair ("platform", String.to_query f))
+               Query.Pair ("Platform", String.to_query f))
          ; Util.option_map v.instance_type (fun f ->
-               Query.Pair ("instanceType", InstanceType.to_query f))
+               Query.Pair ("InstanceType", InstanceType.to_query f))
          ; Util.option_map v.instance_count (fun f ->
-               Query.Pair ("instanceCount", Integer.to_query f))
+               Query.Pair ("InstanceCount", Integer.to_query f))
          ; Util.option_map v.availability_zone (fun f ->
-               Query.Pair ("availabilityZone", String.to_query f))
+               Query.Pair ("AvailabilityZone", String.to_query f))
          ])
 
   let to_json v =
@@ -4546,9 +4546,9 @@ module TrafficMirrorPortRange = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.to_port (fun f -> Query.Pair ("toPort", Integer.to_query f))
+         [ Util.option_map v.to_port (fun f -> Query.Pair ("ToPort", Integer.to_query f))
          ; Util.option_map v.from_port (fun f ->
-               Query.Pair ("fromPort", Integer.to_query f))
+               Query.Pair ("FromPort", Integer.to_query f))
          ])
 
   let to_json v =
@@ -4697,10 +4697,10 @@ module InstanceStatusDetails = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.status (fun f ->
-               Query.Pair ("status", StatusType.to_query f))
-         ; Util.option_map v.name (fun f -> Query.Pair ("name", StatusName.to_query f))
+               Query.Pair ("Status", StatusType.to_query f))
+         ; Util.option_map v.name (fun f -> Query.Pair ("Name", StatusName.to_query f))
          ; Util.option_map v.impaired_since (fun f ->
-               Query.Pair ("impairedSince", DateTime.to_query f))
+               Query.Pair ("ImpairedSince", DateTime.to_query f))
          ])
 
   let to_json v =
@@ -4741,11 +4741,11 @@ module InstanceCapacity = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.total_capacity (fun f ->
-               Query.Pair ("totalCapacity", Integer.to_query f))
+               Query.Pair ("TotalCapacity", Integer.to_query f))
          ; Util.option_map v.instance_type (fun f ->
-               Query.Pair ("instanceType", String.to_query f))
+               Query.Pair ("InstanceType", String.to_query f))
          ; Util.option_map v.available_capacity (fun f ->
-               Query.Pair ("availableCapacity", Integer.to_query f))
+               Query.Pair ("AvailableCapacity", Integer.to_query f))
          ])
 
   let to_json v =
@@ -4782,8 +4782,8 @@ module DisableFastSnapshotRestoreStateError = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
-         ; Util.option_map v.code (fun f -> Query.Pair ("code", String.to_query f))
+         [ Util.option_map v.message (fun f -> Query.Pair ("Message", String.to_query f))
+         ; Util.option_map v.code (fun f -> Query.Pair ("Code", String.to_query f))
          ])
 
   let to_json v =
@@ -5045,11 +5045,11 @@ module FpgaDeviceInfo = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.memory_info (fun f ->
-               Query.Pair ("memoryInfo", FpgaDeviceMemoryInfo.to_query f))
-         ; Util.option_map v.count (fun f -> Query.Pair ("count", Integer.to_query f))
+               Query.Pair ("MemoryInfo", FpgaDeviceMemoryInfo.to_query f))
+         ; Util.option_map v.count (fun f -> Query.Pair ("Count", Integer.to_query f))
          ; Util.option_map v.manufacturer (fun f ->
-               Query.Pair ("manufacturer", String.to_query f))
-         ; Util.option_map v.name (fun f -> Query.Pair ("name", String.to_query f))
+               Query.Pair ("Manufacturer", String.to_query f))
+         ; Util.option_map v.name (fun f -> Query.Pair ("Name", String.to_query f))
          ])
 
   let to_json v =
@@ -5095,11 +5095,11 @@ module GpuDeviceInfo = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.memory_info (fun f ->
-               Query.Pair ("memoryInfo", GpuDeviceMemoryInfo.to_query f))
-         ; Util.option_map v.count (fun f -> Query.Pair ("count", Integer.to_query f))
+               Query.Pair ("MemoryInfo", GpuDeviceMemoryInfo.to_query f))
+         ; Util.option_map v.count (fun f -> Query.Pair ("Count", Integer.to_query f))
          ; Util.option_map v.manufacturer (fun f ->
-               Query.Pair ("manufacturer", String.to_query f))
-         ; Util.option_map v.name (fun f -> Query.Pair ("name", String.to_query f))
+               Query.Pair ("Manufacturer", String.to_query f))
+         ; Util.option_map v.name (fun f -> Query.Pair ("Name", String.to_query f))
          ])
 
   let to_json v =
@@ -5141,9 +5141,9 @@ module InferenceDeviceInfo = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.manufacturer (fun f ->
-               Query.Pair ("manufacturer", String.to_query f))
-         ; Util.option_map v.name (fun f -> Query.Pair ("name", String.to_query f))
-         ; Util.option_map v.count (fun f -> Query.Pair ("count", Integer.to_query f))
+               Query.Pair ("Manufacturer", String.to_query f))
+         ; Util.option_map v.name (fun f -> Query.Pair ("Name", String.to_query f))
+         ; Util.option_map v.count (fun f -> Query.Pair ("Count", Integer.to_query f))
          ])
 
   let to_json v =
@@ -5180,10 +5180,10 @@ module DiskInfo = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.type_ (fun f -> Query.Pair ("type", DiskType.to_query f))
-         ; Util.option_map v.count (fun f -> Query.Pair ("count", Integer.to_query f))
+         [ Util.option_map v.type_ (fun f -> Query.Pair ("Type", DiskType.to_query f))
+         ; Util.option_map v.count (fun f -> Query.Pair ("Count", Integer.to_query f))
          ; Util.option_map v.size_in_g_b (fun f ->
-               Query.Pair ("sizeInGB", Long.to_query f))
+               Query.Pair ("SizeInGB", Long.to_query f))
          ])
 
   let to_json v =
@@ -5225,11 +5225,11 @@ module NetworkCardInfo = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.maximum_network_interfaces (fun f ->
-               Query.Pair ("maximumNetworkInterfaces", Integer.to_query f))
+               Query.Pair ("MaximumNetworkInterfaces", Integer.to_query f))
          ; Util.option_map v.network_performance (fun f ->
-               Query.Pair ("networkPerformance", String.to_query f))
+               Query.Pair ("NetworkPerformance", String.to_query f))
          ; Util.option_map v.network_card_index (fun f ->
-               Query.Pair ("networkCardIndex", Integer.to_query f))
+               Query.Pair ("NetworkCardIndex", Integer.to_query f))
          ])
 
   let to_json v =
@@ -5462,56 +5462,56 @@ module TunnelOption = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.startup_action (fun f ->
-               Query.Pair ("startupAction", String.to_query f))
-         ; Some (Query.Pair ("ikeVersionSet", IKEVersionsList.to_query v.ike_versions))
+               Query.Pair ("StartupAction", String.to_query f))
+         ; Some (Query.Pair ("IkeVersionSet", IKEVersionsList.to_query v.ike_versions))
          ; Some
              (Query.Pair
-                ( "phase2DHGroupNumberSet"
+                ( "Phase2DHGroupNumberSet"
                 , Phase2DHGroupNumbersList.to_query v.phase2_d_h_group_numbers ))
          ; Some
              (Query.Pair
-                ( "phase1DHGroupNumberSet"
+                ( "Phase1DHGroupNumberSet"
                 , Phase1DHGroupNumbersList.to_query v.phase1_d_h_group_numbers ))
          ; Some
              (Query.Pair
-                ( "phase2IntegrityAlgorithmSet"
+                ( "Phase2IntegrityAlgorithmSet"
                 , Phase2IntegrityAlgorithmsList.to_query v.phase2_integrity_algorithms ))
          ; Some
              (Query.Pair
-                ( "phase1IntegrityAlgorithmSet"
+                ( "Phase1IntegrityAlgorithmSet"
                 , Phase1IntegrityAlgorithmsList.to_query v.phase1_integrity_algorithms ))
          ; Some
              (Query.Pair
-                ( "phase2EncryptionAlgorithmSet"
+                ( "Phase2EncryptionAlgorithmSet"
                 , Phase2EncryptionAlgorithmsList.to_query v.phase2_encryption_algorithms
                 ))
          ; Some
              (Query.Pair
-                ( "phase1EncryptionAlgorithmSet"
+                ( "Phase1EncryptionAlgorithmSet"
                 , Phase1EncryptionAlgorithmsList.to_query v.phase1_encryption_algorithms
                 ))
          ; Util.option_map v.dpd_timeout_action (fun f ->
-               Query.Pair ("dpdTimeoutAction", String.to_query f))
+               Query.Pair ("DpdTimeoutAction", String.to_query f))
          ; Util.option_map v.dpd_timeout_seconds (fun f ->
-               Query.Pair ("dpdTimeoutSeconds", Integer.to_query f))
+               Query.Pair ("DpdTimeoutSeconds", Integer.to_query f))
          ; Util.option_map v.replay_window_size (fun f ->
-               Query.Pair ("replayWindowSize", Integer.to_query f))
+               Query.Pair ("ReplayWindowSize", Integer.to_query f))
          ; Util.option_map v.rekey_fuzz_percentage (fun f ->
-               Query.Pair ("rekeyFuzzPercentage", Integer.to_query f))
+               Query.Pair ("RekeyFuzzPercentage", Integer.to_query f))
          ; Util.option_map v.rekey_margin_time_seconds (fun f ->
-               Query.Pair ("rekeyMarginTimeSeconds", Integer.to_query f))
+               Query.Pair ("RekeyMarginTimeSeconds", Integer.to_query f))
          ; Util.option_map v.phase2_lifetime_seconds (fun f ->
-               Query.Pair ("phase2LifetimeSeconds", Integer.to_query f))
+               Query.Pair ("Phase2LifetimeSeconds", Integer.to_query f))
          ; Util.option_map v.phase1_lifetime_seconds (fun f ->
-               Query.Pair ("phase1LifetimeSeconds", Integer.to_query f))
+               Query.Pair ("Phase1LifetimeSeconds", Integer.to_query f))
          ; Util.option_map v.pre_shared_key (fun f ->
-               Query.Pair ("preSharedKey", String.to_query f))
+               Query.Pair ("PreSharedKey", String.to_query f))
          ; Util.option_map v.tunnel_inside_ipv6_cidr (fun f ->
-               Query.Pair ("tunnelInsideIpv6Cidr", String.to_query f))
+               Query.Pair ("TunnelInsideIpv6Cidr", String.to_query f))
          ; Util.option_map v.tunnel_inside_cidr (fun f ->
-               Query.Pair ("tunnelInsideCidr", String.to_query f))
+               Query.Pair ("TunnelInsideCidr", String.to_query f))
          ; Util.option_map v.outside_ip_address (fun f ->
-               Query.Pair ("outsideIpAddress", String.to_query f))
+               Query.Pair ("OutsideIpAddress", String.to_query f))
          ])
 
   let to_json v =
@@ -5676,7 +5676,7 @@ module CidrBlock = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.cidr_block (fun f ->
-               Query.Pair ("cidrBlock", String.to_query f))
+               Query.Pair ("CidrBlock", String.to_query f))
          ])
 
   let to_json v =
@@ -5701,7 +5701,7 @@ module Ipv6CidrBlock = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.ipv6_cidr_block (fun f ->
-               Query.Pair ("ipv6CidrBlock", String.to_query f))
+               Query.Pair ("Ipv6CidrBlock", String.to_query f))
          ])
 
   let to_json v =
@@ -5732,8 +5732,8 @@ module IcmpTypeCode = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.type_ (fun f -> Query.Pair ("type", Integer.to_query f))
-         ; Util.option_map v.code (fun f -> Query.Pair ("code", Integer.to_query f))
+         [ Util.option_map v.type_ (fun f -> Query.Pair ("Type", Integer.to_query f))
+         ; Util.option_map v.code (fun f -> Query.Pair ("Code", Integer.to_query f))
          ])
 
   let to_json v =
@@ -5766,8 +5766,8 @@ module PortRange = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.to_ (fun f -> Query.Pair ("to", Integer.to_query f))
-         ; Util.option_map v.from (fun f -> Query.Pair ("from", Integer.to_query f))
+         [ Util.option_map v.to_ (fun f -> Query.Pair ("To", Integer.to_query f))
+         ; Util.option_map v.from (fun f -> Query.Pair ("From", Integer.to_query f))
          ])
 
   let to_json v =
@@ -5852,19 +5852,19 @@ module NetworkInterfaceAssociation = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.carrier_ip (fun f ->
-               Query.Pair ("carrierIp", String.to_query f))
+               Query.Pair ("CarrierIp", String.to_query f))
          ; Util.option_map v.customer_owned_ip (fun f ->
-               Query.Pair ("customerOwnedIp", String.to_query f))
+               Query.Pair ("CustomerOwnedIp", String.to_query f))
          ; Util.option_map v.public_ip (fun f ->
-               Query.Pair ("publicIp", String.to_query f))
+               Query.Pair ("PublicIp", String.to_query f))
          ; Util.option_map v.public_dns_name (fun f ->
-               Query.Pair ("publicDnsName", String.to_query f))
+               Query.Pair ("PublicDnsName", String.to_query f))
          ; Util.option_map v.ip_owner_id (fun f ->
-               Query.Pair ("ipOwnerId", String.to_query f))
+               Query.Pair ("IpOwnerId", String.to_query f))
          ; Util.option_map v.association_id (fun f ->
-               Query.Pair ("associationId", String.to_query f))
+               Query.Pair ("AssociationId", String.to_query f))
          ; Util.option_map v.allocation_id (fun f ->
-               Query.Pair ("allocationId", String.to_query f))
+               Query.Pair ("AllocationId", String.to_query f))
          ])
 
   let to_json v =
@@ -5994,18 +5994,18 @@ module ImportInstanceVolumeDetailItem = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.volume (fun f ->
-               Query.Pair ("volume", DiskImageVolumeDescription.to_query f))
+               Query.Pair ("Volume", DiskImageVolumeDescription.to_query f))
          ; Util.option_map v.status_message (fun f ->
-               Query.Pair ("statusMessage", String.to_query f))
-         ; Util.option_map v.status (fun f -> Query.Pair ("status", String.to_query f))
+               Query.Pair ("StatusMessage", String.to_query f))
+         ; Util.option_map v.status (fun f -> Query.Pair ("Status", String.to_query f))
          ; Util.option_map v.image (fun f ->
-               Query.Pair ("image", DiskImageDescription.to_query f))
+               Query.Pair ("Image", DiskImageDescription.to_query f))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
          ; Util.option_map v.bytes_converted (fun f ->
-               Query.Pair ("bytesConverted", Long.to_query f))
+               Query.Pair ("BytesConverted", Long.to_query f))
          ; Util.option_map v.availability_zone (fun f ->
-               Query.Pair ("availabilityZone", String.to_query f))
+               Query.Pair ("AvailabilityZone", String.to_query f))
          ])
 
   let to_json v =
@@ -6090,8 +6090,8 @@ module EnableFastSnapshotRestoreStateError = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
-         ; Util.option_map v.code (fun f -> Query.Pair ("code", String.to_query f))
+         [ Util.option_map v.message (fun f -> Query.Pair ("Message", String.to_query f))
+         ; Util.option_map v.code (fun f -> Query.Pair ("Code", String.to_query f))
          ])
 
   let to_json v =
@@ -6183,9 +6183,9 @@ module RouteTableAssociationState = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.status_message (fun f ->
-               Query.Pair ("statusMessage", String.to_query f))
+               Query.Pair ("StatusMessage", String.to_query f))
          ; Util.option_map v.state (fun f ->
-               Query.Pair ("state", RouteTableAssociationStateCode.to_query f))
+               Query.Pair ("State", RouteTableAssociationStateCode.to_query f))
          ])
 
   let to_json v =
@@ -6213,7 +6213,7 @@ module ElasticGpuSpecificationResponse = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.type_ (fun f -> Query.Pair ("type", String.to_query f)) ])
+         [ Util.option_map v.type_ (fun f -> Query.Pair ("Type", String.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -6246,13 +6246,13 @@ module LaunchTemplateBlockDeviceMapping = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.no_device (fun f ->
-               Query.Pair ("noDevice", String.to_query f))
+               Query.Pair ("NoDevice", String.to_query f))
          ; Util.option_map v.ebs (fun f ->
-               Query.Pair ("ebs", LaunchTemplateEbsBlockDevice.to_query f))
+               Query.Pair ("Ebs", LaunchTemplateEbsBlockDevice.to_query f))
          ; Util.option_map v.virtual_name (fun f ->
-               Query.Pair ("virtualName", String.to_query f))
+               Query.Pair ("VirtualName", String.to_query f))
          ; Util.option_map v.device_name (fun f ->
-               Query.Pair ("deviceName", String.to_query f))
+               Query.Pair ("DeviceName", String.to_query f))
          ])
 
   let to_json v =
@@ -6289,8 +6289,8 @@ module LaunchTemplateElasticInferenceAcceleratorResponse = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.count (fun f -> Query.Pair ("count", Integer.to_query f))
-         ; Util.option_map v.type_ (fun f -> Query.Pair ("type", String.to_query f))
+         [ Util.option_map v.count (fun f -> Query.Pair ("Count", Integer.to_query f))
+         ; Util.option_map v.type_ (fun f -> Query.Pair ("Type", String.to_query f))
          ])
 
   let to_json v =
@@ -6348,15 +6348,15 @@ module LaunchTemplateSpotMarketOptions = struct
       (Util.list_filter_opt
          [ Util.option_map v.instance_interruption_behavior (fun f ->
                Query.Pair
-                 ("instanceInterruptionBehavior", InstanceInterruptionBehavior.to_query f))
+                 ("InstanceInterruptionBehavior", InstanceInterruptionBehavior.to_query f))
          ; Util.option_map v.valid_until (fun f ->
-               Query.Pair ("validUntil", DateTime.to_query f))
+               Query.Pair ("ValidUntil", DateTime.to_query f))
          ; Util.option_map v.block_duration_minutes (fun f ->
-               Query.Pair ("blockDurationMinutes", Integer.to_query f))
+               Query.Pair ("BlockDurationMinutes", Integer.to_query f))
          ; Util.option_map v.spot_instance_type (fun f ->
-               Query.Pair ("spotInstanceType", SpotInstanceType.to_query f))
+               Query.Pair ("SpotInstanceType", SpotInstanceType.to_query f))
          ; Util.option_map v.max_price (fun f ->
-               Query.Pair ("maxPrice", String.to_query f))
+               Query.Pair ("MaxPrice", String.to_query f))
          ])
 
   let to_json v =
@@ -6577,37 +6577,37 @@ module LaunchTemplateInstanceNetworkInterfaceSpecification = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.network_card_index (fun f ->
-               Query.Pair ("networkCardIndex", Integer.to_query f))
+               Query.Pair ("NetworkCardIndex", Integer.to_query f))
          ; Util.option_map v.subnet_id (fun f ->
-               Query.Pair ("subnetId", String.to_query f))
+               Query.Pair ("SubnetId", String.to_query f))
          ; Util.option_map v.secondary_private_ip_address_count (fun f ->
-               Query.Pair ("secondaryPrivateIpAddressCount", Integer.to_query f))
+               Query.Pair ("SecondaryPrivateIpAddressCount", Integer.to_query f))
          ; Some
              (Query.Pair
-                ( "privateIpAddressesSet"
+                ( "PrivateIpAddressesSet"
                 , PrivateIpAddressSpecificationList.to_query v.private_ip_addresses ))
          ; Util.option_map v.private_ip_address (fun f ->
-               Query.Pair ("privateIpAddress", String.to_query f))
+               Query.Pair ("PrivateIpAddress", String.to_query f))
          ; Util.option_map v.network_interface_id (fun f ->
-               Query.Pair ("networkInterfaceId", String.to_query f))
+               Query.Pair ("NetworkInterfaceId", String.to_query f))
          ; Some
              (Query.Pair
-                ("ipv6AddressesSet", InstanceIpv6AddressList.to_query v.ipv6_addresses))
+                ("Ipv6AddressesSet", InstanceIpv6AddressList.to_query v.ipv6_addresses))
          ; Util.option_map v.ipv6_address_count (fun f ->
-               Query.Pair ("ipv6AddressCount", Integer.to_query f))
+               Query.Pair ("Ipv6AddressCount", Integer.to_query f))
          ; Util.option_map v.interface_type (fun f ->
-               Query.Pair ("interfaceType", String.to_query f))
-         ; Some (Query.Pair ("groupSet", GroupIdStringList.to_query v.groups))
+               Query.Pair ("InterfaceType", String.to_query f))
+         ; Some (Query.Pair ("GroupSet", GroupIdStringList.to_query v.groups))
          ; Util.option_map v.device_index (fun f ->
-               Query.Pair ("deviceIndex", Integer.to_query f))
+               Query.Pair ("DeviceIndex", Integer.to_query f))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
          ; Util.option_map v.delete_on_termination (fun f ->
-               Query.Pair ("deleteOnTermination", Boolean.to_query f))
+               Query.Pair ("DeleteOnTermination", Boolean.to_query f))
          ; Util.option_map v.associate_public_ip_address (fun f ->
-               Query.Pair ("associatePublicIpAddress", Boolean.to_query f))
+               Query.Pair ("AssociatePublicIpAddress", Boolean.to_query f))
          ; Util.option_map v.associate_carrier_ip_address (fun f ->
-               Query.Pair ("associateCarrierIpAddress", Boolean.to_query f))
+               Query.Pair ("AssociateCarrierIpAddress", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -6688,7 +6688,7 @@ module LaunchTemplateLicenseConfiguration = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.license_configuration_arn (fun f ->
-               Query.Pair ("licenseConfigurationArn", String.to_query f))
+               Query.Pair ("LicenseConfigurationArn", String.to_query f))
          ])
 
   let to_json v =
@@ -6723,9 +6723,9 @@ module LaunchTemplateTagSpecification = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.resource_type (fun f ->
-               Query.Pair ("resourceType", ResourceType.to_query f))
+               Query.Pair ("ResourceType", ResourceType.to_query f))
          ])
 
   let to_json v =
@@ -6884,7 +6884,7 @@ module CertificateAuthentication = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.client_root_certificate_chain (fun f ->
-               Query.Pair ("clientRootCertificateChain", String.to_query f))
+               Query.Pair ("ClientRootCertificateChain", String.to_query f))
          ])
 
   let to_json v =
@@ -6945,7 +6945,7 @@ module DirectoryServiceAuthentication = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.directory_id (fun f ->
-               Query.Pair ("directoryId", String.to_query f))
+               Query.Pair ("DirectoryId", String.to_query f))
          ])
 
   let to_json v =
@@ -6978,9 +6978,9 @@ module FederatedAuthentication = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.self_service_saml_provider_arn (fun f ->
-               Query.Pair ("selfServiceSamlProviderArn", String.to_query f))
+               Query.Pair ("SelfServiceSamlProviderArn", String.to_query f))
          ; Util.option_map v.saml_provider_arn (fun f ->
-               Query.Pair ("samlProviderArn", String.to_query f))
+               Query.Pair ("SamlProviderArn", String.to_query f))
          ])
 
   let to_json v =
@@ -7051,19 +7051,19 @@ module Placement = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.host_resource_group_arn (fun f ->
-               Query.Pair ("hostResourceGroupArn", String.to_query f))
+               Query.Pair ("HostResourceGroupArn", String.to_query f))
          ; Util.option_map v.spread_domain (fun f ->
-               Query.Pair ("spreadDomain", String.to_query f))
-         ; Util.option_map v.tenancy (fun f -> Query.Pair ("tenancy", Tenancy.to_query f))
-         ; Util.option_map v.host_id (fun f -> Query.Pair ("hostId", String.to_query f))
+               Query.Pair ("SpreadDomain", String.to_query f))
+         ; Util.option_map v.tenancy (fun f -> Query.Pair ("Tenancy", Tenancy.to_query f))
+         ; Util.option_map v.host_id (fun f -> Query.Pair ("HostId", String.to_query f))
          ; Util.option_map v.partition_number (fun f ->
-               Query.Pair ("partitionNumber", Integer.to_query f))
+               Query.Pair ("PartitionNumber", Integer.to_query f))
          ; Util.option_map v.group_name (fun f ->
-               Query.Pair ("groupName", String.to_query f))
+               Query.Pair ("GroupName", String.to_query f))
          ; Util.option_map v.affinity (fun f ->
-               Query.Pair ("affinity", String.to_query f))
+               Query.Pair ("Affinity", String.to_query f))
          ; Util.option_map v.availability_zone (fun f ->
-               Query.Pair ("availabilityZone", String.to_query f))
+               Query.Pair ("AvailabilityZone", String.to_query f))
          ])
 
   let to_json v =
@@ -7144,10 +7144,10 @@ module LaunchTemplateAndOverridesResponse = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.overrides (fun f ->
-               Query.Pair ("overrides", FleetLaunchTemplateOverrides.to_query f))
+               Query.Pair ("Overrides", FleetLaunchTemplateOverrides.to_query f))
          ; Util.option_map v.launch_template_specification (fun f ->
                Query.Pair
-                 ( "launchTemplateSpecification"
+                 ( "LaunchTemplateSpecification"
                  , FleetLaunchTemplateSpecification.to_query f ))
          ])
 
@@ -7260,7 +7260,7 @@ module FleetSpotCapacityRebalance = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.replacement_strategy (fun f ->
-               Query.Pair ("replacementStrategy", FleetReplacementStrategy.to_query f))
+               Query.Pair ("ReplacementStrategy", FleetReplacementStrategy.to_query f))
          ])
 
   let to_json v =
@@ -7391,45 +7391,45 @@ module SpotFleetLaunchSpecification = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "tagSpecificationSet"
+                ( "TagSpecificationSet"
                 , SpotFleetTagSpecificationList.to_query v.tag_specifications ))
          ; Util.option_map v.weighted_capacity (fun f ->
-               Query.Pair ("weightedCapacity", Double.to_query f))
+               Query.Pair ("WeightedCapacity", Double.to_query f))
          ; Util.option_map v.user_data (fun f ->
-               Query.Pair ("userData", String.to_query f))
+               Query.Pair ("UserData", String.to_query f))
          ; Util.option_map v.subnet_id (fun f ->
-               Query.Pair ("subnetId", String.to_query f))
+               Query.Pair ("SubnetId", String.to_query f))
          ; Util.option_map v.spot_price (fun f ->
-               Query.Pair ("spotPrice", String.to_query f))
+               Query.Pair ("SpotPrice", String.to_query f))
          ; Util.option_map v.ramdisk_id (fun f ->
-               Query.Pair ("ramdiskId", String.to_query f))
+               Query.Pair ("RamdiskId", String.to_query f))
          ; Util.option_map v.placement (fun f ->
-               Query.Pair ("placement", SpotPlacement.to_query f))
+               Query.Pair ("Placement", SpotPlacement.to_query f))
          ; Some
              (Query.Pair
-                ( "networkInterfaceSet"
+                ( "NetworkInterfaceSet"
                 , InstanceNetworkInterfaceSpecificationList.to_query v.network_interfaces
                 ))
          ; Util.option_map v.monitoring (fun f ->
-               Query.Pair ("monitoring", SpotFleetMonitoring.to_query f))
-         ; Util.option_map v.key_name (fun f -> Query.Pair ("keyName", String.to_query f))
+               Query.Pair ("Monitoring", SpotFleetMonitoring.to_query f))
+         ; Util.option_map v.key_name (fun f -> Query.Pair ("KeyName", String.to_query f))
          ; Util.option_map v.kernel_id (fun f ->
-               Query.Pair ("kernelId", String.to_query f))
+               Query.Pair ("KernelId", String.to_query f))
          ; Util.option_map v.instance_type (fun f ->
-               Query.Pair ("instanceType", InstanceType.to_query f))
-         ; Util.option_map v.image_id (fun f -> Query.Pair ("imageId", String.to_query f))
+               Query.Pair ("InstanceType", InstanceType.to_query f))
+         ; Util.option_map v.image_id (fun f -> Query.Pair ("ImageId", String.to_query f))
          ; Util.option_map v.iam_instance_profile (fun f ->
                Query.Pair
-                 ("iamInstanceProfile", IamInstanceProfileSpecification.to_query f))
+                 ("IamInstanceProfile", IamInstanceProfileSpecification.to_query f))
          ; Util.option_map v.ebs_optimized (fun f ->
-               Query.Pair ("ebsOptimized", Boolean.to_query f))
+               Query.Pair ("EbsOptimized", Boolean.to_query f))
          ; Some
              (Query.Pair
-                ( "blockDeviceMapping"
+                ( "BlockDeviceMapping"
                 , BlockDeviceMappingList.to_query v.block_device_mappings ))
          ; Util.option_map v.addressing_type (fun f ->
-               Query.Pair ("addressingType", String.to_query f))
-         ; Some (Query.Pair ("groupSet", GroupIdentifierList.to_query v.security_groups))
+               Query.Pair ("AddressingType", String.to_query f))
+         ; Some (Query.Pair ("GroupSet", GroupIdentifierList.to_query v.security_groups))
          ])
 
   let to_json v =
@@ -7527,10 +7527,10 @@ module LaunchTemplateConfig = struct
     Query.List
       (Util.list_filter_opt
          [ Some
-             (Query.Pair ("overrides", LaunchTemplateOverridesList.to_query v.overrides))
+             (Query.Pair ("Overrides", LaunchTemplateOverridesList.to_query v.overrides))
          ; Util.option_map v.launch_template_specification (fun f ->
                Query.Pair
-                 ( "launchTemplateSpecification"
+                 ( "LaunchTemplateSpecification"
                  , FleetLaunchTemplateSpecification.to_query f ))
          ])
 
@@ -7573,7 +7573,7 @@ module ClassicLoadBalancersConfig = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "classicLoadBalancers"
+                ( "ClassicLoadBalancers"
                 , ClassicLoadBalancers.to_query v.classic_load_balancers ))
          ])
 
@@ -7608,7 +7608,7 @@ module TargetGroupsConfig = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("targetGroups", TargetGroups.to_query v.target_groups)) ])
+         [ Some (Query.Pair ("TargetGroups", TargetGroups.to_query v.target_groups)) ])
 
   let to_json v =
     `Assoc
@@ -7638,7 +7638,7 @@ module SpotCapacityRebalance = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.replacement_strategy (fun f ->
-               Query.Pair ("replacementStrategy", ReplacementStrategy.to_query f))
+               Query.Pair ("ReplacementStrategy", ReplacementStrategy.to_query f))
          ])
 
   let to_json v =
@@ -7674,7 +7674,7 @@ module TagSpecification = struct
       (Util.list_filter_opt
          [ Some (Query.Pair ("Tag", TagList.to_query v.tags))
          ; Util.option_map v.resource_type (fun f ->
-               Query.Pair ("resourceType", ResourceType.to_query f))
+               Query.Pair ("ResourceType", ResourceType.to_query f))
          ])
 
   let to_json v =
@@ -7708,9 +7708,9 @@ module VolumeStatusDetails = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.status (fun f -> Query.Pair ("status", String.to_query f))
+         [ Util.option_map v.status (fun f -> Query.Pair ("Status", String.to_query f))
          ; Util.option_map v.name (fun f ->
-               Query.Pair ("name", VolumeStatusName.to_query f))
+               Query.Pair ("Name", VolumeStatusName.to_query f))
          ])
 
   let to_json v =
@@ -7777,11 +7777,11 @@ module CapacityReservationSpecificationResponse = struct
       (Util.list_filter_opt
          [ Util.option_map v.capacity_reservation_target (fun f ->
                Query.Pair
-                 ( "capacityReservationTarget"
+                 ( "CapacityReservationTarget"
                  , CapacityReservationTargetResponse.to_query f ))
          ; Util.option_map v.capacity_reservation_preference (fun f ->
                Query.Pair
-                 ( "capacityReservationPreference"
+                 ( "CapacityReservationPreference"
                  , CapacityReservationPreference.to_query f ))
          ])
 
@@ -7825,9 +7825,9 @@ module CpuOptions = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.threads_per_core (fun f ->
-               Query.Pair ("threadsPerCore", Integer.to_query f))
+               Query.Pair ("ThreadsPerCore", Integer.to_query f))
          ; Util.option_map v.core_count (fun f ->
-               Query.Pair ("coreCount", Integer.to_query f))
+               Query.Pair ("CoreCount", Integer.to_query f))
          ])
 
   let to_json v =
@@ -7911,7 +7911,7 @@ module EnclaveOptions = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.enabled (fun f -> Query.Pair ("enabled", Boolean.to_query f))
+         [ Util.option_map v.enabled (fun f -> Query.Pair ("Enabled", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -7934,7 +7934,7 @@ module HibernationOptions = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.configured (fun f ->
-               Query.Pair ("configured", Boolean.to_query f))
+               Query.Pair ("Configured", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -7987,8 +7987,8 @@ module IamInstanceProfile = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.id (fun f -> Query.Pair ("id", String.to_query f))
-         ; Util.option_map v.arn (fun f -> Query.Pair ("arn", String.to_query f))
+         [ Util.option_map v.id (fun f -> Query.Pair ("Id", String.to_query f))
+         ; Util.option_map v.arn (fun f -> Query.Pair ("Arn", String.to_query f))
          ])
 
   let to_json v =
@@ -8071,13 +8071,13 @@ module InstanceMetadataOptionsResponse = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.http_endpoint (fun f ->
-               Query.Pair ("httpEndpoint", InstanceMetadataEndpointState.to_query f))
+               Query.Pair ("HttpEndpoint", InstanceMetadataEndpointState.to_query f))
          ; Util.option_map v.http_put_response_hop_limit (fun f ->
-               Query.Pair ("httpPutResponseHopLimit", Integer.to_query f))
+               Query.Pair ("HttpPutResponseHopLimit", Integer.to_query f))
          ; Util.option_map v.http_tokens (fun f ->
-               Query.Pair ("httpTokens", HttpTokensState.to_query f))
+               Query.Pair ("HttpTokens", HttpTokensState.to_query f))
          ; Util.option_map v.state (fun f ->
-               Query.Pair ("state", InstanceMetadataOptionsState.to_query f))
+               Query.Pair ("State", InstanceMetadataOptionsState.to_query f))
          ])
 
   let to_json v =
@@ -8141,8 +8141,8 @@ module InstanceState = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("name", InstanceStateName.to_query v.name))
-         ; Some (Query.Pair ("code", Integer.to_query v.code))
+         [ Some (Query.Pair ("Name", InstanceStateName.to_query v.name))
+         ; Some (Query.Pair ("Code", Integer.to_query v.code))
          ])
 
   let to_json v =
@@ -8185,7 +8185,7 @@ module Monitoring = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.state (fun f ->
-               Query.Pair ("state", MonitoringState.to_query f))
+               Query.Pair ("State", MonitoringState.to_query f))
          ])
 
   let to_json v =
@@ -8228,8 +8228,8 @@ module StateReason = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
-         ; Util.option_map v.code (fun f -> Query.Pair ("code", String.to_query f))
+         [ Util.option_map v.message (fun f -> Query.Pair ("Message", String.to_query f))
+         ; Util.option_map v.code (fun f -> Query.Pair ("Code", String.to_query f))
          ])
 
   let to_json v =
@@ -8287,9 +8287,9 @@ module VpcCidrBlockState = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.status_message (fun f ->
-               Query.Pair ("statusMessage", String.to_query f))
+               Query.Pair ("StatusMessage", String.to_query f))
          ; Util.option_map v.state (fun f ->
-               Query.Pair ("state", VpcCidrBlockStateCode.to_query f))
+               Query.Pair ("State", VpcCidrBlockStateCode.to_query f))
          ])
 
   let to_json v =
@@ -8323,9 +8323,9 @@ module SubnetCidrBlockState = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.status_message (fun f ->
-               Query.Pair ("statusMessage", String.to_query f))
+               Query.Pair ("StatusMessage", String.to_query f))
          ; Util.option_map v.state (fun f ->
-               Query.Pair ("state", SubnetCidrBlockStateCode.to_query f))
+               Query.Pair ("State", SubnetCidrBlockStateCode.to_query f))
          ])
 
   let to_json v =
@@ -8358,9 +8358,9 @@ module UserBucketDetails = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.s3_key (fun f -> Query.Pair ("s3Key", String.to_query f))
+         [ Util.option_map v.s3_key (fun f -> Query.Pair ("S3Key", String.to_query f))
          ; Util.option_map v.s3_bucket (fun f ->
-               Query.Pair ("s3Bucket", String.to_query f))
+               Query.Pair ("S3Bucket", String.to_query f))
          ])
 
   let to_json v =
@@ -8460,8 +8460,8 @@ module DhcpConfiguration = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("valueSet", DhcpConfigurationValueList.to_query v.values))
-         ; Util.option_map v.key (fun f -> Query.Pair ("key", String.to_query f))
+         [ Some (Query.Pair ("ValueSet", DhcpConfigurationValueList.to_query v.values))
+         ; Util.option_map v.key (fun f -> Query.Pair ("Key", String.to_query f))
          ])
 
   let to_json v =
@@ -8495,9 +8495,9 @@ module VpcAttachment = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.vpc_id (fun f -> Query.Pair ("vpcId", String.to_query f))
+         [ Util.option_map v.vpc_id (fun f -> Query.Pair ("VpcId", String.to_query f))
          ; Util.option_map v.state (fun f ->
-               Query.Pair ("state", AttachmentStatus.to_query f))
+               Query.Pair ("State", AttachmentStatus.to_query f))
          ])
 
   let to_json v =
@@ -8537,9 +8537,9 @@ module ReservedInstancesModificationResult = struct
       (Util.list_filter_opt
          [ Util.option_map v.target_configuration (fun f ->
                Query.Pair
-                 ("targetConfiguration", ReservedInstancesConfiguration.to_query f))
+                 ("TargetConfiguration", ReservedInstancesConfiguration.to_query f))
          ; Util.option_map v.reserved_instances_id (fun f ->
-               Query.Pair ("reservedInstancesId", String.to_query f))
+               Query.Pair ("ReservedInstancesId", String.to_query f))
          ])
 
   let to_json v =
@@ -8576,7 +8576,7 @@ module ReservedInstancesId = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.reserved_instances_id (fun f ->
-               Query.Pair ("reservedInstancesId", String.to_query f))
+               Query.Pair ("ReservedInstancesId", String.to_query f))
          ])
 
   let to_json v =
@@ -8632,8 +8632,8 @@ module DnsEntry = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.hosted_zone_id (fun f ->
-               Query.Pair ("hostedZoneId", String.to_query f))
-         ; Util.option_map v.dns_name (fun f -> Query.Pair ("dnsName", String.to_query f))
+               Query.Pair ("HostedZoneId", String.to_query f))
+         ; Util.option_map v.dns_name (fun f -> Query.Pair ("DnsName", String.to_query f))
          ])
 
   let to_json v =
@@ -8719,27 +8719,27 @@ module TrafficMirrorFilterRule = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
          ; Util.option_map v.source_cidr_block (fun f ->
-               Query.Pair ("sourceCidrBlock", String.to_query f))
+               Query.Pair ("SourceCidrBlock", String.to_query f))
          ; Util.option_map v.destination_cidr_block (fun f ->
-               Query.Pair ("destinationCidrBlock", String.to_query f))
+               Query.Pair ("DestinationCidrBlock", String.to_query f))
          ; Util.option_map v.source_port_range (fun f ->
-               Query.Pair ("sourcePortRange", TrafficMirrorPortRange.to_query f))
+               Query.Pair ("SourcePortRange", TrafficMirrorPortRange.to_query f))
          ; Util.option_map v.destination_port_range (fun f ->
-               Query.Pair ("destinationPortRange", TrafficMirrorPortRange.to_query f))
+               Query.Pair ("DestinationPortRange", TrafficMirrorPortRange.to_query f))
          ; Util.option_map v.protocol (fun f ->
-               Query.Pair ("protocol", Integer.to_query f))
+               Query.Pair ("Protocol", Integer.to_query f))
          ; Util.option_map v.rule_action (fun f ->
-               Query.Pair ("ruleAction", TrafficMirrorRuleAction.to_query f))
+               Query.Pair ("RuleAction", TrafficMirrorRuleAction.to_query f))
          ; Util.option_map v.rule_number (fun f ->
-               Query.Pair ("ruleNumber", Integer.to_query f))
+               Query.Pair ("RuleNumber", Integer.to_query f))
          ; Util.option_map v.traffic_direction (fun f ->
-               Query.Pair ("trafficDirection", TrafficDirection.to_query f))
+               Query.Pair ("TrafficDirection", TrafficDirection.to_query f))
          ; Util.option_map v.traffic_mirror_filter_id (fun f ->
-               Query.Pair ("trafficMirrorFilterId", String.to_query f))
+               Query.Pair ("TrafficMirrorFilterId", String.to_query f))
          ; Util.option_map v.traffic_mirror_filter_rule_id (fun f ->
-               Query.Pair ("trafficMirrorFilterRuleId", String.to_query f))
+               Query.Pair ("TrafficMirrorFilterRuleId", String.to_query f))
          ])
 
   let to_json v =
@@ -8975,9 +8975,9 @@ module InstanceCount = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.state (fun f ->
-               Query.Pair ("state", ListingState.to_query f))
+               Query.Pair ("State", ListingState.to_query f))
          ; Util.option_map v.instance_count (fun f ->
-               Query.Pair ("instanceCount", Integer.to_query f))
+               Query.Pair ("InstanceCount", Integer.to_query f))
          ])
 
   let to_json v =
@@ -9015,11 +9015,11 @@ module PriceSchedule = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.term (fun f -> Query.Pair ("term", Long.to_query f))
-         ; Util.option_map v.price (fun f -> Query.Pair ("price", Double.to_query f))
+         [ Util.option_map v.term (fun f -> Query.Pair ("Term", Long.to_query f))
+         ; Util.option_map v.price (fun f -> Query.Pair ("Price", Double.to_query f))
          ; Util.option_map v.currency_code (fun f ->
-               Query.Pair ("currencyCode", CurrencyCodeValues.to_query f))
-         ; Util.option_map v.active (fun f -> Query.Pair ("active", Boolean.to_query f))
+               Query.Pair ("CurrencyCode", CurrencyCodeValues.to_query f))
+         ; Util.option_map v.active (fun f -> Query.Pair ("Active", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -9113,16 +9113,16 @@ module InstanceStatusEvent = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.not_before_deadline (fun f ->
-               Query.Pair ("notBeforeDeadline", DateTime.to_query f))
+               Query.Pair ("NotBeforeDeadline", DateTime.to_query f))
          ; Util.option_map v.not_before (fun f ->
-               Query.Pair ("notBefore", DateTime.to_query f))
+               Query.Pair ("NotBefore", DateTime.to_query f))
          ; Util.option_map v.not_after (fun f ->
-               Query.Pair ("notAfter", DateTime.to_query f))
+               Query.Pair ("NotAfter", DateTime.to_query f))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
-         ; Util.option_map v.code (fun f -> Query.Pair ("code", EventCode.to_query f))
+               Query.Pair ("Description", String.to_query f))
+         ; Util.option_map v.code (fun f -> Query.Pair ("Code", EventCode.to_query f))
          ; Util.option_map v.instance_event_id (fun f ->
-               Query.Pair ("instanceEventId", String.to_query f))
+               Query.Pair ("InstanceEventId", String.to_query f))
          ])
 
   let to_json v =
@@ -9267,11 +9267,11 @@ module HostInstance = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.owner_id (fun f -> Query.Pair ("ownerId", String.to_query f))
+         [ Util.option_map v.owner_id (fun f -> Query.Pair ("OwnerId", String.to_query f))
          ; Util.option_map v.instance_type (fun f ->
-               Query.Pair ("instanceType", String.to_query f))
+               Query.Pair ("InstanceType", String.to_query f))
          ; Util.option_map v.instance_id (fun f ->
-               Query.Pair ("instanceId", String.to_query f))
+               Query.Pair ("InstanceId", String.to_query f))
          ])
 
   let to_json v =
@@ -9345,11 +9345,11 @@ module IdFormat = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.use_long_ids (fun f ->
-               Query.Pair ("useLongIds", Boolean.to_query f))
+               Query.Pair ("UseLongIds", Boolean.to_query f))
          ; Util.option_map v.resource (fun f ->
-               Query.Pair ("resource", String.to_query f))
+               Query.Pair ("Resource", String.to_query f))
          ; Util.option_map v.deadline (fun f ->
-               Query.Pair ("deadline", DateTime.to_query f))
+               Query.Pair ("Deadline", DateTime.to_query f))
          ])
 
   let to_json v =
@@ -9425,9 +9425,9 @@ module DisableFastSnapshotRestoreStateErrorItem = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.error (fun f ->
-               Query.Pair ("error", DisableFastSnapshotRestoreStateError.to_query f))
+               Query.Pair ("Error", DisableFastSnapshotRestoreStateError.to_query f))
          ; Util.option_map v.availability_zone (fun f ->
-               Query.Pair ("availabilityZone", String.to_query f))
+               Query.Pair ("AvailabilityZone", String.to_query f))
          ])
 
   let to_json v =
@@ -9491,11 +9491,11 @@ module S3Storage = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.upload_policy_signature (fun f ->
-               Query.Pair ("uploadPolicySignature", String.to_query f))
+               Query.Pair ("UploadPolicySignature", String.to_query f))
          ; Util.option_map v.upload_policy (fun f ->
-               Query.Pair ("uploadPolicy", Blob.to_query f))
-         ; Util.option_map v.prefix (fun f -> Query.Pair ("prefix", String.to_query f))
-         ; Util.option_map v.bucket (fun f -> Query.Pair ("bucket", String.to_query f))
+               Query.Pair ("UploadPolicy", Blob.to_query f))
+         ; Util.option_map v.prefix (fun f -> Query.Pair ("Prefix", String.to_query f))
+         ; Util.option_map v.bucket (fun f -> Query.Pair ("Bucket", String.to_query f))
          ; Util.option_map v.a_w_s_access_key_id (fun f ->
                Query.Pair ("AWSAccessKeyId", String.to_query f))
          ])
@@ -9563,14 +9563,14 @@ module StaleIpPermission = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("groups", UserIdGroupPairSet.to_query v.user_id_group_pairs))
-         ; Util.option_map v.to_port (fun f -> Query.Pair ("toPort", Integer.to_query f))
-         ; Some (Query.Pair ("prefixListIds", PrefixListIdSet.to_query v.prefix_list_ids))
-         ; Some (Query.Pair ("ipRanges", IpRanges.to_query v.ip_ranges))
+         [ Some (Query.Pair ("Groups", UserIdGroupPairSet.to_query v.user_id_group_pairs))
+         ; Util.option_map v.to_port (fun f -> Query.Pair ("ToPort", Integer.to_query f))
+         ; Some (Query.Pair ("PrefixListIds", PrefixListIdSet.to_query v.prefix_list_ids))
+         ; Some (Query.Pair ("IpRanges", IpRanges.to_query v.ip_ranges))
          ; Util.option_map v.ip_protocol (fun f ->
-               Query.Pair ("ipProtocol", String.to_query f))
+               Query.Pair ("IpProtocol", String.to_query f))
          ; Util.option_map v.from_port (fun f ->
-               Query.Pair ("fromPort", Integer.to_query f))
+               Query.Pair ("FromPort", Integer.to_query f))
          ])
 
   let to_json v =
@@ -9625,16 +9625,16 @@ module VolumeAttachment = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.delete_on_termination (fun f ->
-               Query.Pair ("deleteOnTermination", Boolean.to_query f))
+               Query.Pair ("DeleteOnTermination", Boolean.to_query f))
          ; Util.option_map v.volume_id (fun f ->
-               Query.Pair ("volumeId", String.to_query f))
+               Query.Pair ("VolumeId", String.to_query f))
          ; Util.option_map v.state (fun f ->
-               Query.Pair ("status", VolumeAttachmentState.to_query f))
+               Query.Pair ("Status", VolumeAttachmentState.to_query f))
          ; Util.option_map v.instance_id (fun f ->
-               Query.Pair ("instanceId", String.to_query f))
-         ; Util.option_map v.device (fun f -> Query.Pair ("device", String.to_query f))
+               Query.Pair ("InstanceId", String.to_query f))
+         ; Util.option_map v.device (fun f -> Query.Pair ("Device", String.to_query f))
          ; Util.option_map v.attach_time (fun f ->
-               Query.Pair ("attachTime", DateTime.to_query f))
+               Query.Pair ("AttachTime", DateTime.to_query f))
          ])
 
   let to_json v =
@@ -9870,17 +9870,17 @@ module EbsOptimizedInfo = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.maximum_iops (fun f ->
-               Query.Pair ("maximumIops", Integer.to_query f))
+               Query.Pair ("MaximumIops", Integer.to_query f))
          ; Util.option_map v.maximum_throughput_in_m_bps (fun f ->
-               Query.Pair ("maximumThroughputInMBps", Double.to_query f))
+               Query.Pair ("MaximumThroughputInMBps", Double.to_query f))
          ; Util.option_map v.maximum_bandwidth_in_mbps (fun f ->
-               Query.Pair ("maximumBandwidthInMbps", Integer.to_query f))
+               Query.Pair ("MaximumBandwidthInMbps", Integer.to_query f))
          ; Util.option_map v.baseline_iops (fun f ->
-               Query.Pair ("baselineIops", Integer.to_query f))
+               Query.Pair ("BaselineIops", Integer.to_query f))
          ; Util.option_map v.baseline_throughput_in_m_bps (fun f ->
-               Query.Pair ("baselineThroughputInMBps", Double.to_query f))
+               Query.Pair ("BaselineThroughputInMBps", Double.to_query f))
          ; Util.option_map v.baseline_bandwidth_in_mbps (fun f ->
-               Query.Pair ("baselineBandwidthInMbps", Integer.to_query f))
+               Query.Pair ("BaselineBandwidthInMbps", Integer.to_query f))
          ])
 
   let to_json v =
@@ -10242,17 +10242,17 @@ module VgwTelemetry = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.certificate_arn (fun f ->
-               Query.Pair ("certificateArn", String.to_query f))
+               Query.Pair ("CertificateArn", String.to_query f))
          ; Util.option_map v.status_message (fun f ->
-               Query.Pair ("statusMessage", String.to_query f))
+               Query.Pair ("StatusMessage", String.to_query f))
          ; Util.option_map v.status (fun f ->
-               Query.Pair ("status", TelemetryStatus.to_query f))
+               Query.Pair ("Status", TelemetryStatus.to_query f))
          ; Util.option_map v.outside_ip_address (fun f ->
-               Query.Pair ("outsideIpAddress", String.to_query f))
+               Query.Pair ("OutsideIpAddress", String.to_query f))
          ; Util.option_map v.last_status_change (fun f ->
-               Query.Pair ("lastStatusChange", DateTime.to_query f))
+               Query.Pair ("LastStatusChange", DateTime.to_query f))
          ; Util.option_map v.accepted_route_count (fun f ->
-               Query.Pair ("acceptedRouteCount", Integer.to_query f))
+               Query.Pair ("AcceptedRouteCount", Integer.to_query f))
          ])
 
   let to_json v =
@@ -10342,11 +10342,11 @@ module VpnStaticRoute = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.state (fun f -> Query.Pair ("state", VpnState.to_query f))
+         [ Util.option_map v.state (fun f -> Query.Pair ("State", VpnState.to_query f))
          ; Util.option_map v.source (fun f ->
-               Query.Pair ("source", VpnStaticRouteSource.to_query f))
+               Query.Pair ("Source", VpnStaticRouteSource.to_query f))
          ; Util.option_map v.destination_cidr_block (fun f ->
-               Query.Pair ("destinationCidrBlock", String.to_query f))
+               Query.Pair ("DestinationCidrBlock", String.to_query f))
          ])
 
   let to_json v =
@@ -10522,12 +10522,12 @@ module VpcPeeringConnectionOptionsDescription = struct
       (Util.list_filter_opt
          [ Util.option_map v.allow_egress_from_local_vpc_to_remote_classic_link (fun f ->
                Query.Pair
-                 ("allowEgressFromLocalVpcToRemoteClassicLink", Boolean.to_query f))
+                 ("AllowEgressFromLocalVpcToRemoteClassicLink", Boolean.to_query f))
          ; Util.option_map v.allow_egress_from_local_classic_link_to_remote_vpc (fun f ->
                Query.Pair
-                 ("allowEgressFromLocalClassicLinkToRemoteVpc", Boolean.to_query f))
+                 ("AllowEgressFromLocalClassicLinkToRemoteVpc", Boolean.to_query f))
          ; Util.option_map v.allow_dns_resolution_from_remote_vpc (fun f ->
-               Query.Pair ("allowDnsResolutionFromRemoteVpc", Boolean.to_query f))
+               Query.Pair ("AllowDnsResolutionFromRemoteVpc", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -10579,11 +10579,11 @@ module NetworkAclAssociation = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.subnet_id (fun f ->
-               Query.Pair ("subnetId", String.to_query f))
+               Query.Pair ("SubnetId", String.to_query f))
          ; Util.option_map v.network_acl_id (fun f ->
-               Query.Pair ("networkAclId", String.to_query f))
+               Query.Pair ("NetworkAclId", String.to_query f))
          ; Util.option_map v.network_acl_association_id (fun f ->
-               Query.Pair ("networkAclAssociationId", String.to_query f))
+               Query.Pair ("NetworkAclAssociationId", String.to_query f))
          ])
 
   let to_json v =
@@ -10652,20 +10652,20 @@ module NetworkAclEntry = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.rule_number (fun f ->
-               Query.Pair ("ruleNumber", Integer.to_query f))
+               Query.Pair ("RuleNumber", Integer.to_query f))
          ; Util.option_map v.rule_action (fun f ->
-               Query.Pair ("ruleAction", RuleAction.to_query f))
+               Query.Pair ("RuleAction", RuleAction.to_query f))
          ; Util.option_map v.protocol (fun f ->
-               Query.Pair ("protocol", String.to_query f))
+               Query.Pair ("Protocol", String.to_query f))
          ; Util.option_map v.port_range (fun f ->
-               Query.Pair ("portRange", PortRange.to_query f))
+               Query.Pair ("PortRange", PortRange.to_query f))
          ; Util.option_map v.ipv6_cidr_block (fun f ->
-               Query.Pair ("ipv6CidrBlock", String.to_query f))
+               Query.Pair ("Ipv6CidrBlock", String.to_query f))
          ; Util.option_map v.icmp_type_code (fun f ->
-               Query.Pair ("icmpTypeCode", IcmpTypeCode.to_query f))
-         ; Util.option_map v.egress (fun f -> Query.Pair ("egress", Boolean.to_query f))
+               Query.Pair ("IcmpTypeCode", IcmpTypeCode.to_query f))
+         ; Util.option_map v.egress (fun f -> Query.Pair ("Egress", Boolean.to_query f))
          ; Util.option_map v.cidr_block (fun f ->
-               Query.Pair ("cidrBlock", String.to_query f))
+               Query.Pair ("CidrBlock", String.to_query f))
          ])
 
   let to_json v =
@@ -10746,7 +10746,7 @@ module AccountAttributeValue = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.attribute_value (fun f ->
-               Query.Pair ("attributeValue", String.to_query f))
+               Query.Pair ("AttributeValue", String.to_query f))
          ])
 
   let to_json v =
@@ -10778,8 +10778,8 @@ module SecurityGroupIdentifier = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.group_name (fun f ->
-               Query.Pair ("groupName", String.to_query f))
-         ; Util.option_map v.group_id (fun f -> Query.Pair ("groupId", String.to_query f))
+               Query.Pair ("GroupName", String.to_query f))
+         ; Util.option_map v.group_id (fun f -> Query.Pair ("GroupId", String.to_query f))
          ])
 
   let to_json v =
@@ -10843,7 +10843,7 @@ module NetworkInterfaceIpv6Address = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.ipv6_address (fun f ->
-               Query.Pair ("ipv6Address", String.to_query f))
+               Query.Pair ("Ipv6Address", String.to_query f))
          ])
 
   let to_json v =
@@ -10882,12 +10882,12 @@ module NetworkInterfacePrivateIpAddress = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.private_ip_address (fun f ->
-               Query.Pair ("privateIpAddress", String.to_query f))
+               Query.Pair ("PrivateIpAddress", String.to_query f))
          ; Util.option_map v.private_dns_name (fun f ->
-               Query.Pair ("privateDnsName", String.to_query f))
-         ; Util.option_map v.primary (fun f -> Query.Pair ("primary", Boolean.to_query f))
+               Query.Pair ("PrivateDnsName", String.to_query f))
+         ; Util.option_map v.primary (fun f -> Query.Pair ("Primary", Boolean.to_query f))
          ; Util.option_map v.association (fun f ->
-               Query.Pair ("association", NetworkInterfaceAssociation.to_query f))
+               Query.Pair ("Association", NetworkInterfaceAssociation.to_query f))
          ])
 
   let to_json v =
@@ -10931,8 +10931,8 @@ module RecurringCharge = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.frequency (fun f ->
-               Query.Pair ("frequency", RecurringChargeFrequency.to_query f))
-         ; Util.option_map v.amount (fun f -> Query.Pair ("amount", Double.to_query f))
+               Query.Pair ("Frequency", RecurringChargeFrequency.to_query f))
+         ; Util.option_map v.amount (fun f -> Query.Pair ("Amount", Double.to_query f))
          ])
 
   let to_json v =
@@ -10990,7 +10990,7 @@ module ServiceTypeDetail = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.service_type (fun f ->
-               Query.Pair ("serviceType", ServiceType.to_query f))
+               Query.Pair ("ServiceType", ServiceType.to_query f))
          ])
 
   let to_json v =
@@ -11092,11 +11092,11 @@ module TransitGatewayRouteAttachment = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.resource_type (fun f ->
-               Query.Pair ("resourceType", TransitGatewayAttachmentResourceType.to_query f))
+               Query.Pair ("ResourceType", TransitGatewayAttachmentResourceType.to_query f))
          ; Util.option_map v.transit_gateway_attachment_id (fun f ->
-               Query.Pair ("transitGatewayAttachmentId", String.to_query f))
+               Query.Pair ("TransitGatewayAttachmentId", String.to_query f))
          ; Util.option_map v.resource_id (fun f ->
-               Query.Pair ("resourceId", String.to_query f))
+               Query.Pair ("ResourceId", String.to_query f))
          ])
 
   let to_json v =
@@ -11178,9 +11178,9 @@ module EnableFastSnapshotRestoreStateErrorItem = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.error (fun f ->
-               Query.Pair ("error", EnableFastSnapshotRestoreStateError.to_query f))
+               Query.Pair ("Error", EnableFastSnapshotRestoreStateError.to_query f))
          ; Util.option_map v.availability_zone (fun f ->
-               Query.Pair ("availabilityZone", String.to_query f))
+               Query.Pair ("AvailabilityZone", String.to_query f))
          ])
 
   let to_json v =
@@ -11214,7 +11214,7 @@ module PropagatingVgw = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.gateway_id (fun f ->
-               Query.Pair ("gatewayId", String.to_query f))
+               Query.Pair ("GatewayId", String.to_query f))
          ])
 
   let to_json v =
@@ -11311,34 +11311,34 @@ module Route = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.vpc_peering_connection_id (fun f ->
-               Query.Pair ("vpcPeeringConnectionId", String.to_query f))
-         ; Util.option_map v.state (fun f -> Query.Pair ("state", RouteState.to_query f))
+               Query.Pair ("VpcPeeringConnectionId", String.to_query f))
+         ; Util.option_map v.state (fun f -> Query.Pair ("State", RouteState.to_query f))
          ; Util.option_map v.origin (fun f ->
-               Query.Pair ("origin", RouteOrigin.to_query f))
+               Query.Pair ("Origin", RouteOrigin.to_query f))
          ; Util.option_map v.network_interface_id (fun f ->
-               Query.Pair ("networkInterfaceId", String.to_query f))
+               Query.Pair ("NetworkInterfaceId", String.to_query f))
          ; Util.option_map v.carrier_gateway_id (fun f ->
-               Query.Pair ("carrierGatewayId", String.to_query f))
+               Query.Pair ("CarrierGatewayId", String.to_query f))
          ; Util.option_map v.local_gateway_id (fun f ->
-               Query.Pair ("localGatewayId", String.to_query f))
+               Query.Pair ("LocalGatewayId", String.to_query f))
          ; Util.option_map v.transit_gateway_id (fun f ->
-               Query.Pair ("transitGatewayId", String.to_query f))
+               Query.Pair ("TransitGatewayId", String.to_query f))
          ; Util.option_map v.nat_gateway_id (fun f ->
-               Query.Pair ("natGatewayId", String.to_query f))
+               Query.Pair ("NatGatewayId", String.to_query f))
          ; Util.option_map v.instance_owner_id (fun f ->
-               Query.Pair ("instanceOwnerId", String.to_query f))
+               Query.Pair ("InstanceOwnerId", String.to_query f))
          ; Util.option_map v.instance_id (fun f ->
-               Query.Pair ("instanceId", String.to_query f))
+               Query.Pair ("InstanceId", String.to_query f))
          ; Util.option_map v.gateway_id (fun f ->
-               Query.Pair ("gatewayId", String.to_query f))
+               Query.Pair ("GatewayId", String.to_query f))
          ; Util.option_map v.egress_only_internet_gateway_id (fun f ->
-               Query.Pair ("egressOnlyInternetGatewayId", String.to_query f))
+               Query.Pair ("EgressOnlyInternetGatewayId", String.to_query f))
          ; Util.option_map v.destination_prefix_list_id (fun f ->
-               Query.Pair ("destinationPrefixListId", String.to_query f))
+               Query.Pair ("DestinationPrefixListId", String.to_query f))
          ; Util.option_map v.destination_ipv6_cidr_block (fun f ->
-               Query.Pair ("destinationIpv6CidrBlock", String.to_query f))
+               Query.Pair ("DestinationIpv6CidrBlock", String.to_query f))
          ; Util.option_map v.destination_cidr_block (fun f ->
-               Query.Pair ("destinationCidrBlock", String.to_query f))
+               Query.Pair ("DestinationCidrBlock", String.to_query f))
          ])
 
   let to_json v =
@@ -11443,16 +11443,16 @@ module RouteTableAssociation = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.association_state (fun f ->
-               Query.Pair ("associationState", RouteTableAssociationState.to_query f))
+               Query.Pair ("AssociationState", RouteTableAssociationState.to_query f))
          ; Util.option_map v.gateway_id (fun f ->
-               Query.Pair ("gatewayId", String.to_query f))
+               Query.Pair ("GatewayId", String.to_query f))
          ; Util.option_map v.subnet_id (fun f ->
-               Query.Pair ("subnetId", String.to_query f))
+               Query.Pair ("SubnetId", String.to_query f))
          ; Util.option_map v.route_table_id (fun f ->
-               Query.Pair ("routeTableId", String.to_query f))
+               Query.Pair ("RouteTableId", String.to_query f))
          ; Util.option_map v.route_table_association_id (fun f ->
-               Query.Pair ("routeTableAssociationId", String.to_query f))
-         ; Util.option_map v.main (fun f -> Query.Pair ("main", Boolean.to_query f))
+               Query.Pair ("RouteTableAssociationId", String.to_query f))
+         ; Util.option_map v.main (fun f -> Query.Pair ("Main", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -11494,7 +11494,7 @@ module CreditSpecification = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.cpu_credits (fun f ->
-               Query.Pair ("cpuCredits", String.to_query f))
+               Query.Pair ("CpuCredits", String.to_query f))
          ])
 
   let to_json v =
@@ -11564,11 +11564,11 @@ module LaunchTemplateCapacityReservationSpecificationResponse = struct
       (Util.list_filter_opt
          [ Util.option_map v.capacity_reservation_target (fun f ->
                Query.Pair
-                 ( "capacityReservationTarget"
+                 ( "CapacityReservationTarget"
                  , CapacityReservationTargetResponse.to_query f ))
          ; Util.option_map v.capacity_reservation_preference (fun f ->
                Query.Pair
-                 ( "capacityReservationPreference"
+                 ( "CapacityReservationPreference"
                  , CapacityReservationPreference.to_query f ))
          ])
 
@@ -11612,9 +11612,9 @@ module LaunchTemplateCpuOptions = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.threads_per_core (fun f ->
-               Query.Pair ("threadsPerCore", Integer.to_query f))
+               Query.Pair ("ThreadsPerCore", Integer.to_query f))
          ; Util.option_map v.core_count (fun f ->
-               Query.Pair ("coreCount", Integer.to_query f))
+               Query.Pair ("CoreCount", Integer.to_query f))
          ])
 
   let to_json v =
@@ -11663,7 +11663,7 @@ module LaunchTemplateEnclaveOptions = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.enabled (fun f -> Query.Pair ("enabled", Boolean.to_query f))
+         [ Util.option_map v.enabled (fun f -> Query.Pair ("Enabled", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -11686,7 +11686,7 @@ module LaunchTemplateHibernationOptions = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.configured (fun f ->
-               Query.Pair ("configured", Boolean.to_query f))
+               Query.Pair ("Configured", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -11715,8 +11715,8 @@ module LaunchTemplateIamInstanceProfileSpecification = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.name (fun f -> Query.Pair ("name", String.to_query f))
-         ; Util.option_map v.arn (fun f -> Query.Pair ("arn", String.to_query f))
+         [ Util.option_map v.name (fun f -> Query.Pair ("Name", String.to_query f))
+         ; Util.option_map v.arn (fun f -> Query.Pair ("Arn", String.to_query f))
          ])
 
   let to_json v =
@@ -11753,9 +11753,9 @@ module LaunchTemplateInstanceMarketOptions = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.spot_options (fun f ->
-               Query.Pair ("spotOptions", LaunchTemplateSpotMarketOptions.to_query f))
+               Query.Pair ("SpotOptions", LaunchTemplateSpotMarketOptions.to_query f))
          ; Util.option_map v.market_type (fun f ->
-               Query.Pair ("marketType", MarketType.to_query f))
+               Query.Pair ("MarketType", MarketType.to_query f))
          ])
 
   let to_json v =
@@ -11809,13 +11809,13 @@ module LaunchTemplateInstanceMetadataOptions = struct
       (Util.list_filter_opt
          [ Util.option_map v.http_endpoint (fun f ->
                Query.Pair
-                 ("httpEndpoint", LaunchTemplateInstanceMetadataEndpointState.to_query f))
+                 ("HttpEndpoint", LaunchTemplateInstanceMetadataEndpointState.to_query f))
          ; Util.option_map v.http_put_response_hop_limit (fun f ->
-               Query.Pair ("httpPutResponseHopLimit", Integer.to_query f))
+               Query.Pair ("HttpPutResponseHopLimit", Integer.to_query f))
          ; Util.option_map v.http_tokens (fun f ->
-               Query.Pair ("httpTokens", LaunchTemplateHttpTokensState.to_query f))
+               Query.Pair ("HttpTokens", LaunchTemplateHttpTokensState.to_query f))
          ; Util.option_map v.state (fun f ->
-               Query.Pair ("state", LaunchTemplateInstanceMetadataOptionsState.to_query f))
+               Query.Pair ("State", LaunchTemplateInstanceMetadataOptionsState.to_query f))
          ])
 
   let to_json v =
@@ -11937,19 +11937,19 @@ module LaunchTemplatePlacement = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.partition_number (fun f ->
-               Query.Pair ("partitionNumber", Integer.to_query f))
+               Query.Pair ("PartitionNumber", Integer.to_query f))
          ; Util.option_map v.host_resource_group_arn (fun f ->
-               Query.Pair ("hostResourceGroupArn", String.to_query f))
+               Query.Pair ("HostResourceGroupArn", String.to_query f))
          ; Util.option_map v.spread_domain (fun f ->
-               Query.Pair ("spreadDomain", String.to_query f))
-         ; Util.option_map v.tenancy (fun f -> Query.Pair ("tenancy", Tenancy.to_query f))
-         ; Util.option_map v.host_id (fun f -> Query.Pair ("hostId", String.to_query f))
+               Query.Pair ("SpreadDomain", String.to_query f))
+         ; Util.option_map v.tenancy (fun f -> Query.Pair ("Tenancy", Tenancy.to_query f))
+         ; Util.option_map v.host_id (fun f -> Query.Pair ("HostId", String.to_query f))
          ; Util.option_map v.group_name (fun f ->
-               Query.Pair ("groupName", String.to_query f))
+               Query.Pair ("GroupName", String.to_query f))
          ; Util.option_map v.affinity (fun f ->
-               Query.Pair ("affinity", String.to_query f))
+               Query.Pair ("Affinity", String.to_query f))
          ; Util.option_map v.availability_zone (fun f ->
-               Query.Pair ("availabilityZone", String.to_query f))
+               Query.Pair ("AvailabilityZone", String.to_query f))
          ])
 
   let to_json v =
@@ -12010,7 +12010,7 @@ module LaunchTemplatesMonitoring = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.enabled (fun f -> Query.Pair ("enabled", Boolean.to_query f))
+         [ Util.option_map v.enabled (fun f -> Query.Pair ("Enabled", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -12171,7 +12171,7 @@ module PoolCidrBlock = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.cidr (fun f ->
-               Query.Pair ("poolCidrBlock", String.to_query f))
+               Query.Pair ("PoolCidrBlock", String.to_query f))
          ])
 
   let to_json v =
@@ -12239,7 +12239,7 @@ module RunInstancesMonitoringEnabled = struct
 
   let to_query v =
     Query.List
-      (Util.list_filter_opt [ Some (Query.Pair ("enabled", Boolean.to_query v.enabled)) ])
+      (Util.list_filter_opt [ Some (Query.Pair ("Enabled", Boolean.to_query v.enabled)) ])
 
   let to_json v =
     `Assoc (Util.list_filter_opt [ Some ("enabled", Boolean.to_json v.enabled) ])
@@ -12387,15 +12387,15 @@ module IpPermission = struct
     Query.List
       (Util.list_filter_opt
          [ Some
-             (Query.Pair ("groups", UserIdGroupPairList.to_query v.user_id_group_pairs))
-         ; Util.option_map v.to_port (fun f -> Query.Pair ("toPort", Integer.to_query f))
+             (Query.Pair ("Groups", UserIdGroupPairList.to_query v.user_id_group_pairs))
+         ; Util.option_map v.to_port (fun f -> Query.Pair ("ToPort", Integer.to_query f))
          ; Some
-             (Query.Pair ("prefixListIds", PrefixListIdList.to_query v.prefix_list_ids))
-         ; Some (Query.Pair ("ipv6Ranges", Ipv6RangeList.to_query v.ipv6_ranges))
-         ; Some (Query.Pair ("ipRanges", IpRangeList.to_query v.ip_ranges))
-         ; Some (Query.Pair ("ipProtocol", String.to_query v.ip_protocol))
+             (Query.Pair ("PrefixListIds", PrefixListIdList.to_query v.prefix_list_ids))
+         ; Some (Query.Pair ("Ipv6Ranges", Ipv6RangeList.to_query v.ipv6_ranges))
+         ; Some (Query.Pair ("IpRanges", IpRangeList.to_query v.ip_ranges))
+         ; Some (Query.Pair ("IpProtocol", String.to_query v.ip_protocol))
          ; Util.option_map v.from_port (fun f ->
-               Query.Pair ("fromPort", Integer.to_query f))
+               Query.Pair ("FromPort", Integer.to_query f))
          ])
 
   let to_json v =
@@ -12444,9 +12444,9 @@ module AssociatedTargetNetwork = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.network_type (fun f ->
-               Query.Pair ("networkType", AssociatedNetworkType.to_query f))
+               Query.Pair ("NetworkType", AssociatedNetworkType.to_query f))
          ; Util.option_map v.network_id (fun f ->
-               Query.Pair ("networkId", String.to_query f))
+               Query.Pair ("NetworkId", String.to_query f))
          ])
 
   let to_json v =
@@ -12484,9 +12484,9 @@ module ClientVpnEndpointAttributeStatus = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         [ Util.option_map v.message (fun f -> Query.Pair ("Message", String.to_query f))
          ; Util.option_map v.code (fun f ->
-               Query.Pair ("code", ClientVpnEndpointAttributeStatusCode.to_query f))
+               Query.Pair ("Code", ClientVpnEndpointAttributeStatusCode.to_query f))
          ])
 
   let to_json v =
@@ -12538,13 +12538,13 @@ module ClientVpnAuthentication = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.federated_authentication (fun f ->
-               Query.Pair ("federatedAuthentication", FederatedAuthentication.to_query f))
+               Query.Pair ("FederatedAuthentication", FederatedAuthentication.to_query f))
          ; Util.option_map v.mutual_authentication (fun f ->
-               Query.Pair ("mutualAuthentication", CertificateAuthentication.to_query f))
+               Query.Pair ("MutualAuthentication", CertificateAuthentication.to_query f))
          ; Util.option_map v.active_directory (fun f ->
-               Query.Pair ("activeDirectory", DirectoryServiceAuthentication.to_query f))
+               Query.Pair ("ActiveDirectory", DirectoryServiceAuthentication.to_query f))
          ; Util.option_map v.type_ (fun f ->
-               Query.Pair ("type", ClientVpnAuthenticationType.to_query f))
+               Query.Pair ("Type", ClientVpnAuthenticationType.to_query f))
          ])
 
   let to_json v =
@@ -12724,8 +12724,8 @@ module InternetGatewayAttachment = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("vpcId", String.to_query v.vpc_id))
-         ; Some (Query.Pair ("state", AttachmentStatus.to_query v.state))
+         [ Some (Query.Pair ("VpcId", String.to_query v.vpc_id))
+         ; Some (Query.Pair ("State", AttachmentStatus.to_query v.state))
          ])
 
   let to_json v =
@@ -12767,14 +12767,14 @@ module DescribeFleetError = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.error_message (fun f ->
-               Query.Pair ("errorMessage", String.to_query f))
+               Query.Pair ("ErrorMessage", String.to_query f))
          ; Util.option_map v.error_code (fun f ->
-               Query.Pair ("errorCode", String.to_query f))
+               Query.Pair ("ErrorCode", String.to_query f))
          ; Util.option_map v.lifecycle (fun f ->
-               Query.Pair ("lifecycle", InstanceLifecycle.to_query f))
+               Query.Pair ("Lifecycle", InstanceLifecycle.to_query f))
          ; Util.option_map v.launch_template_and_overrides (fun f ->
                Query.Pair
-                 ( "launchTemplateAndOverrides"
+                 ( "LaunchTemplateAndOverrides"
                  , LaunchTemplateAndOverridesResponse.to_query f ))
          ])
 
@@ -12838,15 +12838,15 @@ module DescribeFleetsInstances = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.platform (fun f ->
-               Query.Pair ("platform", PlatformValues.to_query f))
+               Query.Pair ("Platform", PlatformValues.to_query f))
          ; Util.option_map v.instance_type (fun f ->
-               Query.Pair ("instanceType", InstanceType.to_query f))
-         ; Some (Query.Pair ("instanceIds", InstanceIdsSet.to_query v.instance_ids))
+               Query.Pair ("InstanceType", InstanceType.to_query f))
+         ; Some (Query.Pair ("InstanceIds", InstanceIdsSet.to_query v.instance_ids))
          ; Util.option_map v.lifecycle (fun f ->
-               Query.Pair ("lifecycle", InstanceLifecycle.to_query f))
+               Query.Pair ("Lifecycle", InstanceLifecycle.to_query f))
          ; Util.option_map v.launch_template_and_overrides (fun f ->
                Query.Pair
-                 ( "launchTemplateAndOverrides"
+                 ( "LaunchTemplateAndOverrides"
                  , LaunchTemplateAndOverridesResponse.to_query f ))
          ])
 
@@ -12904,10 +12904,10 @@ module FleetLaunchTemplateConfig = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ("overrides", FleetLaunchTemplateOverridesList.to_query v.overrides))
+                ("Overrides", FleetLaunchTemplateOverridesList.to_query v.overrides))
          ; Util.option_map v.launch_template_specification (fun f ->
                Query.Pair
-                 ( "launchTemplateSpecification"
+                 ( "LaunchTemplateSpecification"
                  , FleetLaunchTemplateSpecification.to_query f ))
          ])
 
@@ -12948,7 +12948,7 @@ module CapacityReservationOptions = struct
       (Util.list_filter_opt
          [ Util.option_map v.usage_strategy (fun f ->
                Query.Pair
-                 ("usageStrategy", FleetCapacityReservationUsageStrategy.to_query f))
+                 ("UsageStrategy", FleetCapacityReservationUsageStrategy.to_query f))
          ])
 
   let to_json v =
@@ -13007,7 +13007,7 @@ module FleetSpotMaintenanceStrategies = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.capacity_rebalance (fun f ->
-               Query.Pair ("capacityRebalance", FleetSpotCapacityRebalance.to_query f))
+               Query.Pair ("CapacityRebalance", FleetSpotCapacityRebalance.to_query f))
          ])
 
   let to_json v =
@@ -13242,10 +13242,10 @@ module LoadBalancersConfig = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.target_groups_config (fun f ->
-               Query.Pair ("targetGroupsConfig", TargetGroupsConfig.to_query f))
+               Query.Pair ("TargetGroupsConfig", TargetGroupsConfig.to_query f))
          ; Util.option_map v.classic_load_balancers_config (fun f ->
                Query.Pair
-                 ("classicLoadBalancersConfig", ClassicLoadBalancersConfig.to_query f))
+                 ("ClassicLoadBalancersConfig", ClassicLoadBalancersConfig.to_query f))
          ])
 
   let to_json v =
@@ -13308,7 +13308,7 @@ module SpotMaintenanceStrategies = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.capacity_rebalance (fun f ->
-               Query.Pair ("capacityRebalance", SpotCapacityRebalance.to_query f))
+               Query.Pair ("CapacityRebalance", SpotCapacityRebalance.to_query f))
          ])
 
   let to_json v =
@@ -13350,7 +13350,7 @@ module AvailabilityZoneMessage = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         [ Util.option_map v.message (fun f -> Query.Pair ("Message", String.to_query f))
          ])
 
   let to_json v =
@@ -13384,11 +13384,11 @@ module VolumeStatusAction = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.event_type (fun f ->
-               Query.Pair ("eventType", String.to_query f))
-         ; Util.option_map v.event_id (fun f -> Query.Pair ("eventId", String.to_query f))
+               Query.Pair ("EventType", String.to_query f))
+         ; Util.option_map v.event_id (fun f -> Query.Pair ("EventId", String.to_query f))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
-         ; Util.option_map v.code (fun f -> Query.Pair ("code", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
+         ; Util.option_map v.code (fun f -> Query.Pair ("Code", String.to_query f))
          ])
 
   let to_json v =
@@ -13426,9 +13426,9 @@ module VolumeStatusAttachmentStatus = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.instance_id (fun f ->
-               Query.Pair ("instanceId", String.to_query f))
+               Query.Pair ("InstanceId", String.to_query f))
          ; Util.option_map v.io_performance (fun f ->
-               Query.Pair ("ioPerformance", String.to_query f))
+               Query.Pair ("IoPerformance", String.to_query f))
          ])
 
   let to_json v =
@@ -13471,16 +13471,16 @@ module VolumeStatusEvent = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.instance_id (fun f ->
-               Query.Pair ("instanceId", String.to_query f))
+               Query.Pair ("InstanceId", String.to_query f))
          ; Util.option_map v.not_before (fun f ->
-               Query.Pair ("notBefore", DateTime.to_query f))
+               Query.Pair ("NotBefore", DateTime.to_query f))
          ; Util.option_map v.not_after (fun f ->
-               Query.Pair ("notAfter", DateTime.to_query f))
+               Query.Pair ("NotAfter", DateTime.to_query f))
          ; Util.option_map v.event_type (fun f ->
-               Query.Pair ("eventType", String.to_query f))
-         ; Util.option_map v.event_id (fun f -> Query.Pair ("eventId", String.to_query f))
+               Query.Pair ("EventType", String.to_query f))
+         ; Util.option_map v.event_id (fun f -> Query.Pair ("EventId", String.to_query f))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
          ])
 
   let to_json v =
@@ -13635,8 +13635,8 @@ module PricingDetail = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.price (fun f -> Query.Pair ("price", Double.to_query f))
-         ; Util.option_map v.count (fun f -> Query.Pair ("count", Integer.to_query f))
+         [ Util.option_map v.price (fun f -> Query.Pair ("Price", Double.to_query f))
+         ; Util.option_map v.count (fun f -> Query.Pair ("Count", Integer.to_query f))
          ])
 
   let to_json v =
@@ -13947,96 +13947,96 @@ module Instance = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.enclave_options (fun f ->
-               Query.Pair ("enclaveOptions", EnclaveOptions.to_query f))
+               Query.Pair ("EnclaveOptions", EnclaveOptions.to_query f))
          ; Util.option_map v.metadata_options (fun f ->
-               Query.Pair ("metadataOptions", InstanceMetadataOptionsResponse.to_query f))
-         ; Some (Query.Pair ("licenseSet", LicenseList.to_query v.licenses))
+               Query.Pair ("MetadataOptions", InstanceMetadataOptionsResponse.to_query f))
+         ; Some (Query.Pair ("LicenseSet", LicenseList.to_query v.licenses))
          ; Util.option_map v.hibernation_options (fun f ->
-               Query.Pair ("hibernationOptions", HibernationOptions.to_query f))
+               Query.Pair ("HibernationOptions", HibernationOptions.to_query f))
          ; Util.option_map v.capacity_reservation_specification (fun f ->
                Query.Pair
-                 ( "capacityReservationSpecification"
+                 ( "CapacityReservationSpecification"
                  , CapacityReservationSpecificationResponse.to_query f ))
          ; Util.option_map v.capacity_reservation_id (fun f ->
-               Query.Pair ("capacityReservationId", String.to_query f))
+               Query.Pair ("CapacityReservationId", String.to_query f))
          ; Util.option_map v.cpu_options (fun f ->
-               Query.Pair ("cpuOptions", CpuOptions.to_query f))
+               Query.Pair ("CpuOptions", CpuOptions.to_query f))
          ; Some
              (Query.Pair
-                ("virtualizationType", VirtualizationType.to_query v.virtualization_type))
-         ; Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+                ("VirtualizationType", VirtualizationType.to_query v.virtualization_type))
+         ; Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.state_reason (fun f ->
-               Query.Pair ("stateReason", StateReason.to_query f))
+               Query.Pair ("StateReason", StateReason.to_query f))
          ; Util.option_map v.sriov_net_support (fun f ->
-               Query.Pair ("sriovNetSupport", String.to_query f))
+               Query.Pair ("SriovNetSupport", String.to_query f))
          ; Util.option_map v.spot_instance_request_id (fun f ->
-               Query.Pair ("spotInstanceRequestId", String.to_query f))
+               Query.Pair ("SpotInstanceRequestId", String.to_query f))
          ; Util.option_map v.source_dest_check (fun f ->
-               Query.Pair ("sourceDestCheck", Boolean.to_query f))
-         ; Some (Query.Pair ("groupSet", GroupIdentifierList.to_query v.security_groups))
-         ; Some (Query.Pair ("rootDeviceType", DeviceType.to_query v.root_device_type))
+               Query.Pair ("SourceDestCheck", Boolean.to_query f))
+         ; Some (Query.Pair ("GroupSet", GroupIdentifierList.to_query v.security_groups))
+         ; Some (Query.Pair ("RootDeviceType", DeviceType.to_query v.root_device_type))
          ; Util.option_map v.root_device_name (fun f ->
-               Query.Pair ("rootDeviceName", String.to_query f))
+               Query.Pair ("RootDeviceName", String.to_query f))
          ; Util.option_map v.outpost_arn (fun f ->
-               Query.Pair ("outpostArn", String.to_query f))
+               Query.Pair ("OutpostArn", String.to_query f))
          ; Some
              (Query.Pair
-                ( "networkInterfaceSet"
+                ( "NetworkInterfaceSet"
                 , InstanceNetworkInterfaceList.to_query v.network_interfaces ))
          ; Some
              (Query.Pair
-                ( "elasticInferenceAcceleratorAssociationSet"
+                ( "ElasticInferenceAcceleratorAssociationSet"
                 , ElasticInferenceAcceleratorAssociationList.to_query
                     v.elastic_inference_accelerator_associations ))
          ; Some
              (Query.Pair
-                ( "elasticGpuAssociationSet"
+                ( "ElasticGpuAssociationSet"
                 , ElasticGpuAssociationList.to_query v.elastic_gpu_associations ))
          ; Util.option_map v.instance_lifecycle (fun f ->
-               Query.Pair ("instanceLifecycle", InstanceLifecycleType.to_query f))
+               Query.Pair ("InstanceLifecycle", InstanceLifecycleType.to_query f))
          ; Util.option_map v.iam_instance_profile (fun f ->
-               Query.Pair ("iamInstanceProfile", IamInstanceProfile.to_query f))
-         ; Some (Query.Pair ("hypervisor", HypervisorType.to_query v.hypervisor))
+               Query.Pair ("IamInstanceProfile", IamInstanceProfile.to_query f))
+         ; Some (Query.Pair ("Hypervisor", HypervisorType.to_query v.hypervisor))
          ; Util.option_map v.ena_support (fun f ->
-               Query.Pair ("enaSupport", Boolean.to_query f))
+               Query.Pair ("EnaSupport", Boolean.to_query f))
          ; Util.option_map v.ebs_optimized (fun f ->
-               Query.Pair ("ebsOptimized", Boolean.to_query f))
+               Query.Pair ("EbsOptimized", Boolean.to_query f))
          ; Util.option_map v.client_token (fun f ->
-               Query.Pair ("clientToken", String.to_query f))
+               Query.Pair ("ClientToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "blockDeviceMapping"
+                ( "BlockDeviceMapping"
                 , InstanceBlockDeviceMappingList.to_query v.block_device_mappings ))
-         ; Some (Query.Pair ("architecture", ArchitectureValues.to_query v.architecture))
-         ; Util.option_map v.vpc_id (fun f -> Query.Pair ("vpcId", String.to_query f))
+         ; Some (Query.Pair ("Architecture", ArchitectureValues.to_query v.architecture))
+         ; Util.option_map v.vpc_id (fun f -> Query.Pair ("VpcId", String.to_query f))
          ; Util.option_map v.subnet_id (fun f ->
-               Query.Pair ("subnetId", String.to_query f))
+               Query.Pair ("SubnetId", String.to_query f))
          ; Util.option_map v.state_transition_reason (fun f ->
-               Query.Pair ("reason", String.to_query f))
-         ; Some (Query.Pair ("instanceState", InstanceState.to_query v.state))
+               Query.Pair ("Reason", String.to_query f))
+         ; Some (Query.Pair ("InstanceState", InstanceState.to_query v.state))
          ; Util.option_map v.ramdisk_id (fun f ->
-               Query.Pair ("ramdiskId", String.to_query f))
+               Query.Pair ("RamdiskId", String.to_query f))
          ; Util.option_map v.public_ip_address (fun f ->
-               Query.Pair ("ipAddress", String.to_query f))
+               Query.Pair ("IpAddress", String.to_query f))
          ; Util.option_map v.public_dns_name (fun f ->
-               Query.Pair ("dnsName", String.to_query f))
-         ; Some (Query.Pair ("productCodes", ProductCodeList.to_query v.product_codes))
+               Query.Pair ("DnsName", String.to_query f))
+         ; Some (Query.Pair ("ProductCodes", ProductCodeList.to_query v.product_codes))
          ; Util.option_map v.private_ip_address (fun f ->
-               Query.Pair ("privateIpAddress", String.to_query f))
+               Query.Pair ("PrivateIpAddress", String.to_query f))
          ; Util.option_map v.private_dns_name (fun f ->
-               Query.Pair ("privateDnsName", String.to_query f))
+               Query.Pair ("PrivateDnsName", String.to_query f))
          ; Util.option_map v.platform (fun f ->
-               Query.Pair ("platform", PlatformValues.to_query f))
-         ; Some (Query.Pair ("placement", Placement.to_query v.placement))
-         ; Some (Query.Pair ("monitoring", Monitoring.to_query v.monitoring))
-         ; Some (Query.Pair ("launchTime", DateTime.to_query v.launch_time))
-         ; Util.option_map v.key_name (fun f -> Query.Pair ("keyName", String.to_query f))
+               Query.Pair ("Platform", PlatformValues.to_query f))
+         ; Some (Query.Pair ("Placement", Placement.to_query v.placement))
+         ; Some (Query.Pair ("Monitoring", Monitoring.to_query v.monitoring))
+         ; Some (Query.Pair ("LaunchTime", DateTime.to_query v.launch_time))
+         ; Util.option_map v.key_name (fun f -> Query.Pair ("KeyName", String.to_query f))
          ; Util.option_map v.kernel_id (fun f ->
-               Query.Pair ("kernelId", String.to_query f))
-         ; Some (Query.Pair ("instanceType", InstanceType.to_query v.instance_type))
-         ; Some (Query.Pair ("instanceId", String.to_query v.instance_id))
-         ; Some (Query.Pair ("imageId", String.to_query v.image_id))
-         ; Some (Query.Pair ("amiLaunchIndex", Integer.to_query v.ami_launch_index))
+               Query.Pair ("KernelId", String.to_query f))
+         ; Some (Query.Pair ("InstanceType", InstanceType.to_query v.instance_type))
+         ; Some (Query.Pair ("InstanceId", String.to_query v.instance_id))
+         ; Some (Query.Pair ("ImageId", String.to_query v.image_id))
+         ; Some (Query.Pair ("AmiLaunchIndex", Integer.to_query v.ami_launch_index))
          ])
 
   let to_json v =
@@ -14229,13 +14229,13 @@ module PublicIpv4PoolRange = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.available_address_count (fun f ->
-               Query.Pair ("availableAddressCount", Integer.to_query f))
+               Query.Pair ("AvailableAddressCount", Integer.to_query f))
          ; Util.option_map v.address_count (fun f ->
-               Query.Pair ("addressCount", Integer.to_query f))
+               Query.Pair ("AddressCount", Integer.to_query f))
          ; Util.option_map v.last_address (fun f ->
-               Query.Pair ("lastAddress", String.to_query f))
+               Query.Pair ("LastAddress", String.to_query f))
          ; Util.option_map v.first_address (fun f ->
-               Query.Pair ("firstAddress", String.to_query f))
+               Query.Pair ("FirstAddress", String.to_query f))
          ])
 
   let to_json v =
@@ -14279,11 +14279,11 @@ module VpcCidrBlockAssociation = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.cidr_block_state (fun f ->
-               Query.Pair ("cidrBlockState", VpcCidrBlockState.to_query f))
+               Query.Pair ("CidrBlockState", VpcCidrBlockState.to_query f))
          ; Util.option_map v.cidr_block (fun f ->
-               Query.Pair ("cidrBlock", String.to_query f))
+               Query.Pair ("CidrBlock", String.to_query f))
          ; Util.option_map v.association_id (fun f ->
-               Query.Pair ("associationId", String.to_query f))
+               Query.Pair ("AssociationId", String.to_query f))
          ])
 
   let to_json v =
@@ -14341,15 +14341,15 @@ module VpcIpv6CidrBlockAssociation = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.ipv6_pool (fun f ->
-               Query.Pair ("ipv6Pool", String.to_query f))
+               Query.Pair ("Ipv6Pool", String.to_query f))
          ; Util.option_map v.network_border_group (fun f ->
-               Query.Pair ("networkBorderGroup", String.to_query f))
+               Query.Pair ("NetworkBorderGroup", String.to_query f))
          ; Util.option_map v.ipv6_cidr_block_state (fun f ->
-               Query.Pair ("ipv6CidrBlockState", VpcCidrBlockState.to_query f))
+               Query.Pair ("Ipv6CidrBlockState", VpcCidrBlockState.to_query f))
          ; Util.option_map v.ipv6_cidr_block (fun f ->
-               Query.Pair ("ipv6CidrBlock", String.to_query f))
+               Query.Pair ("Ipv6CidrBlock", String.to_query f))
          ; Util.option_map v.association_id (fun f ->
-               Query.Pair ("associationId", String.to_query f))
+               Query.Pair ("AssociationId", String.to_query f))
          ])
 
   let to_json v =
@@ -14400,11 +14400,11 @@ module SubnetIpv6CidrBlockAssociation = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.ipv6_cidr_block_state (fun f ->
-               Query.Pair ("ipv6CidrBlockState", SubnetCidrBlockState.to_query f))
+               Query.Pair ("Ipv6CidrBlockState", SubnetCidrBlockState.to_query f))
          ; Util.option_map v.ipv6_cidr_block (fun f ->
-               Query.Pair ("ipv6CidrBlock", String.to_query f))
+               Query.Pair ("Ipv6CidrBlock", String.to_query f))
          ; Util.option_map v.association_id (fun f ->
-               Query.Pair ("associationId", String.to_query f))
+               Query.Pair ("AssociationId", String.to_query f))
          ])
 
   let to_json v =
@@ -14466,7 +14466,7 @@ module ImportImageLicenseConfigurationResponse = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.license_configuration_arn (fun f ->
-               Query.Pair ("licenseConfigurationArn", String.to_query f))
+               Query.Pair ("LicenseConfigurationArn", String.to_query f))
          ])
 
   let to_json v =
@@ -14539,22 +14539,22 @@ module SnapshotDetail = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.user_bucket (fun f ->
-               Query.Pair ("userBucket", UserBucketDetails.to_query f))
-         ; Util.option_map v.url (fun f -> Query.Pair ("url", String.to_query f))
+               Query.Pair ("UserBucket", UserBucketDetails.to_query f))
+         ; Util.option_map v.url (fun f -> Query.Pair ("Url", String.to_query f))
          ; Util.option_map v.status_message (fun f ->
-               Query.Pair ("statusMessage", String.to_query f))
-         ; Util.option_map v.status (fun f -> Query.Pair ("status", String.to_query f))
+               Query.Pair ("StatusMessage", String.to_query f))
+         ; Util.option_map v.status (fun f -> Query.Pair ("Status", String.to_query f))
          ; Util.option_map v.snapshot_id (fun f ->
-               Query.Pair ("snapshotId", String.to_query f))
+               Query.Pair ("SnapshotId", String.to_query f))
          ; Util.option_map v.progress (fun f ->
-               Query.Pair ("progress", String.to_query f))
-         ; Util.option_map v.format (fun f -> Query.Pair ("format", String.to_query f))
+               Query.Pair ("Progress", String.to_query f))
+         ; Util.option_map v.format (fun f -> Query.Pair ("Format", String.to_query f))
          ; Util.option_map v.disk_image_size (fun f ->
-               Query.Pair ("diskImageSize", Double.to_query f))
+               Query.Pair ("DiskImageSize", Double.to_query f))
          ; Util.option_map v.device_name (fun f ->
-               Query.Pair ("deviceName", String.to_query f))
+               Query.Pair ("DeviceName", String.to_query f))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
          ])
 
   let to_json v =
@@ -14732,13 +14732,13 @@ module NatGatewayAddress = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.public_ip (fun f ->
-               Query.Pair ("publicIp", String.to_query f))
+               Query.Pair ("PublicIp", String.to_query f))
          ; Util.option_map v.private_ip (fun f ->
-               Query.Pair ("privateIp", String.to_query f))
+               Query.Pair ("PrivateIp", String.to_query f))
          ; Util.option_map v.network_interface_id (fun f ->
-               Query.Pair ("networkInterfaceId", String.to_query f))
+               Query.Pair ("NetworkInterfaceId", String.to_query f))
          ; Util.option_map v.allocation_id (fun f ->
-               Query.Pair ("allocationId", String.to_query f))
+               Query.Pair ("AllocationId", String.to_query f))
          ])
 
   let to_json v =
@@ -15124,8 +15124,8 @@ module ValidationError = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
-         ; Util.option_map v.code (fun f -> Query.Pair ("code", String.to_query f))
+         [ Util.option_map v.message (fun f -> Query.Pair ("Message", String.to_query f))
+         ; Util.option_map v.code (fun f -> Query.Pair ("Code", String.to_query f))
          ])
 
   let to_json v =
@@ -15163,11 +15163,11 @@ module EventInformation = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.instance_id (fun f ->
-               Query.Pair ("instanceId", String.to_query f))
+               Query.Pair ("InstanceId", String.to_query f))
          ; Util.option_map v.event_sub_type (fun f ->
-               Query.Pair ("eventSubType", String.to_query f))
+               Query.Pair ("EventSubType", String.to_query f))
          ; Util.option_map v.event_description (fun f ->
-               Query.Pair ("eventDescription", String.to_query f))
+               Query.Pair ("EventDescription", String.to_query f))
          ])
 
   let to_json v =
@@ -15314,9 +15314,9 @@ module LaunchPermission = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.user_id (fun f -> Query.Pair ("userId", String.to_query f))
+         [ Util.option_map v.user_id (fun f -> Query.Pair ("UserId", String.to_query f))
          ; Util.option_map v.group (fun f ->
-               Query.Pair ("group", PermissionGroup.to_query f))
+               Query.Pair ("Group", PermissionGroup.to_query f))
          ])
 
   let to_json v =
@@ -15412,9 +15412,9 @@ module ExportTaskS3Location = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.s3_prefix (fun f ->
-               Query.Pair ("s3Prefix", String.to_query f))
+               Query.Pair ("S3Prefix", String.to_query f))
          ; Util.option_map v.s3_bucket (fun f ->
-               Query.Pair ("s3Bucket", String.to_query f))
+               Query.Pair ("S3Bucket", String.to_query f))
          ])
 
   let to_json v =
@@ -15447,8 +15447,8 @@ module UnsuccessfulItemError = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
-         ; Util.option_map v.code (fun f -> Query.Pair ("code", String.to_query f))
+         [ Util.option_map v.message (fun f -> Query.Pair ("Message", String.to_query f))
+         ; Util.option_map v.code (fun f -> Query.Pair ("Code", String.to_query f))
          ])
 
   let to_json v =
@@ -15559,29 +15559,29 @@ module TransitGatewayOptions = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.multicast_support (fun f ->
-               Query.Pair ("multicastSupport", MulticastSupportValue.to_query f))
+               Query.Pair ("MulticastSupport", MulticastSupportValue.to_query f))
          ; Util.option_map v.dns_support (fun f ->
-               Query.Pair ("dnsSupport", DnsSupportValue.to_query f))
+               Query.Pair ("DnsSupport", DnsSupportValue.to_query f))
          ; Util.option_map v.vpn_ecmp_support (fun f ->
-               Query.Pair ("vpnEcmpSupport", VpnEcmpSupportValue.to_query f))
+               Query.Pair ("VpnEcmpSupport", VpnEcmpSupportValue.to_query f))
          ; Util.option_map v.propagation_default_route_table_id (fun f ->
-               Query.Pair ("propagationDefaultRouteTableId", String.to_query f))
+               Query.Pair ("PropagationDefaultRouteTableId", String.to_query f))
          ; Util.option_map v.default_route_table_propagation (fun f ->
                Query.Pair
-                 ( "defaultRouteTablePropagation"
+                 ( "DefaultRouteTablePropagation"
                  , DefaultRouteTablePropagationValue.to_query f ))
          ; Util.option_map v.association_default_route_table_id (fun f ->
-               Query.Pair ("associationDefaultRouteTableId", String.to_query f))
+               Query.Pair ("AssociationDefaultRouteTableId", String.to_query f))
          ; Util.option_map v.default_route_table_association (fun f ->
                Query.Pair
-                 ( "defaultRouteTableAssociation"
+                 ( "DefaultRouteTableAssociation"
                  , DefaultRouteTableAssociationValue.to_query f ))
          ; Util.option_map v.auto_accept_shared_attachments (fun f ->
                Query.Pair
-                 ( "autoAcceptSharedAttachments"
+                 ( "AutoAcceptSharedAttachments"
                  , AutoAcceptSharedAttachmentsValue.to_query f ))
          ; Util.option_map v.amazon_side_asn (fun f ->
-               Query.Pair ("amazonSideAsn", Long.to_query f))
+               Query.Pair ("AmazonSideAsn", Long.to_query f))
          ])
 
   let to_json v =
@@ -15910,9 +15910,9 @@ module ClientVpnConnectionStatus = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         [ Util.option_map v.message (fun f -> Query.Pair ("Message", String.to_query f))
          ; Util.option_map v.code (fun f ->
-               Query.Pair ("code", ClientVpnConnectionStatusCode.to_query f))
+               Query.Pair ("Code", ClientVpnConnectionStatusCode.to_query f))
          ])
 
   let to_json v =
@@ -16000,8 +16000,8 @@ module InstanceStatusSummary = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("status", SummaryStatus.to_query v.status))
-         ; Some (Query.Pair ("details", InstanceStatusDetailsList.to_query v.details))
+         [ Some (Query.Pair ("Status", SummaryStatus.to_query v.status))
+         ; Some (Query.Pair ("Details", InstanceStatusDetailsList.to_query v.details))
          ])
 
   let to_json v =
@@ -16043,11 +16043,11 @@ module TransitGatewayPrefixListAttachment = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.resource_id (fun f ->
-               Query.Pair ("resourceId", String.to_query f))
+               Query.Pair ("ResourceId", String.to_query f))
          ; Util.option_map v.resource_type (fun f ->
-               Query.Pair ("resourceType", TransitGatewayAttachmentResourceType.to_query f))
+               Query.Pair ("ResourceType", TransitGatewayAttachmentResourceType.to_query f))
          ; Util.option_map v.transit_gateway_attachment_id (fun f ->
-               Query.Pair ("transitGatewayAttachmentId", String.to_query f))
+               Query.Pair ("TransitGatewayAttachmentId", String.to_query f))
          ])
 
   let to_json v =
@@ -16238,24 +16238,24 @@ module SnapshotTaskDetail = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.user_bucket (fun f ->
-               Query.Pair ("userBucket", UserBucketDetails.to_query f))
-         ; Util.option_map v.url (fun f -> Query.Pair ("url", String.to_query f))
+               Query.Pair ("UserBucket", UserBucketDetails.to_query f))
+         ; Util.option_map v.url (fun f -> Query.Pair ("Url", String.to_query f))
          ; Util.option_map v.status_message (fun f ->
-               Query.Pair ("statusMessage", String.to_query f))
-         ; Util.option_map v.status (fun f -> Query.Pair ("status", String.to_query f))
+               Query.Pair ("StatusMessage", String.to_query f))
+         ; Util.option_map v.status (fun f -> Query.Pair ("Status", String.to_query f))
          ; Util.option_map v.snapshot_id (fun f ->
-               Query.Pair ("snapshotId", String.to_query f))
+               Query.Pair ("SnapshotId", String.to_query f))
          ; Util.option_map v.progress (fun f ->
-               Query.Pair ("progress", String.to_query f))
+               Query.Pair ("Progress", String.to_query f))
          ; Util.option_map v.kms_key_id (fun f ->
-               Query.Pair ("kmsKeyId", String.to_query f))
-         ; Util.option_map v.format (fun f -> Query.Pair ("format", String.to_query f))
+               Query.Pair ("KmsKeyId", String.to_query f))
+         ; Util.option_map v.format (fun f -> Query.Pair ("Format", String.to_query f))
          ; Util.option_map v.encrypted (fun f ->
-               Query.Pair ("encrypted", Boolean.to_query f))
+               Query.Pair ("Encrypted", Boolean.to_query f))
          ; Util.option_map v.disk_image_size (fun f ->
-               Query.Pair ("diskImageSize", Double.to_query f))
+               Query.Pair ("DiskImageSize", Double.to_query f))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
          ])
 
   let to_json v =
@@ -16337,9 +16337,9 @@ module NetworkInterfacePermissionState = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.status_message (fun f ->
-               Query.Pair ("statusMessage", String.to_query f))
+               Query.Pair ("StatusMessage", String.to_query f))
          ; Util.option_map v.state (fun f ->
-               Query.Pair ("state", NetworkInterfacePermissionStateCode.to_query f))
+               Query.Pair ("State", NetworkInterfacePermissionStateCode.to_query f))
          ])
 
   let to_json v =
@@ -16474,10 +16474,10 @@ module AvailableCapacity = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.available_v_cpus (fun f ->
-               Query.Pair ("availableVCpus", Integer.to_query f))
+               Query.Pair ("AvailableVCpus", Integer.to_query f))
          ; Some
              (Query.Pair
-                ( "availableInstanceCapacity"
+                ( "AvailableInstanceCapacity"
                 , AvailableInstanceCapacityList.to_query v.available_instance_capacity ))
          ])
 
@@ -16539,13 +16539,13 @@ module HostProperties = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.total_v_cpus (fun f ->
-               Query.Pair ("totalVCpus", Integer.to_query f))
-         ; Util.option_map v.sockets (fun f -> Query.Pair ("sockets", Integer.to_query f))
+               Query.Pair ("TotalVCpus", Integer.to_query f))
+         ; Util.option_map v.sockets (fun f -> Query.Pair ("Sockets", Integer.to_query f))
          ; Util.option_map v.instance_family (fun f ->
-               Query.Pair ("instanceFamily", String.to_query f))
+               Query.Pair ("InstanceFamily", String.to_query f))
          ; Util.option_map v.instance_type (fun f ->
-               Query.Pair ("instanceType", String.to_query f))
-         ; Util.option_map v.cores (fun f -> Query.Pair ("cores", Integer.to_query f))
+               Query.Pair ("InstanceType", String.to_query f))
+         ; Util.option_map v.cores (fun f -> Query.Pair ("Cores", Integer.to_query f))
          ])
 
   let to_json v =
@@ -16614,9 +16614,9 @@ module SubnetAssociation = struct
       (Util.list_filter_opt
          [ Util.option_map v.state (fun f ->
                Query.Pair
-                 ("state", TransitGatewayMulitcastDomainAssociationState.to_query f))
+                 ("State", TransitGatewayMulitcastDomainAssociationState.to_query f))
          ; Util.option_map v.subnet_id (fun f ->
-               Query.Pair ("subnetId", String.to_query f))
+               Query.Pair ("SubnetId", String.to_query f))
          ])
 
   let to_json v =
@@ -16679,9 +16679,9 @@ module EbsInstanceBlockDeviceSpecification = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.volume_id (fun f ->
-               Query.Pair ("volumeId", String.to_query f))
+               Query.Pair ("VolumeId", String.to_query f))
          ; Util.option_map v.delete_on_termination (fun f ->
-               Query.Pair ("deleteOnTermination", Boolean.to_query f))
+               Query.Pair ("DeleteOnTermination", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -16717,8 +16717,8 @@ module LoadPermission = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.group (fun f ->
-               Query.Pair ("group", PermissionGroup.to_query f))
-         ; Util.option_map v.user_id (fun f -> Query.Pair ("userId", String.to_query f))
+               Query.Pair ("Group", PermissionGroup.to_query f))
+         ; Util.option_map v.user_id (fun f -> Query.Pair ("UserId", String.to_query f))
          ])
 
   let to_json v =
@@ -16891,9 +16891,9 @@ module DeleteFleetError = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         [ Util.option_map v.message (fun f -> Query.Pair ("Message", String.to_query f))
          ; Util.option_map v.code (fun f ->
-               Query.Pair ("code", DeleteFleetErrorCode.to_query f))
+               Query.Pair ("Code", DeleteFleetErrorCode.to_query f))
          ])
 
   let to_json v =
@@ -17049,16 +17049,16 @@ module ScheduledInstanceRecurrence = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.occurrence_unit (fun f ->
-               Query.Pair ("occurrenceUnit", String.to_query f))
+               Query.Pair ("OccurrenceUnit", String.to_query f))
          ; Util.option_map v.occurrence_relative_to_end (fun f ->
-               Query.Pair ("occurrenceRelativeToEnd", Boolean.to_query f))
+               Query.Pair ("OccurrenceRelativeToEnd", Boolean.to_query f))
          ; Some
              (Query.Pair
-                ("occurrenceDaySet", OccurrenceDaySet.to_query v.occurrence_day_set))
+                ("OccurrenceDaySet", OccurrenceDaySet.to_query v.occurrence_day_set))
          ; Util.option_map v.interval (fun f ->
-               Query.Pair ("interval", Integer.to_query f))
+               Query.Pair ("Interval", Integer.to_query f))
          ; Util.option_map v.frequency (fun f ->
-               Query.Pair ("frequency", String.to_query f))
+               Query.Pair ("Frequency", String.to_query f))
          ])
 
   let to_json v =
@@ -17150,8 +17150,8 @@ module BundleTaskError = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
-         ; Util.option_map v.code (fun f -> Query.Pair ("code", String.to_query f))
+         [ Util.option_map v.message (fun f -> Query.Pair ("Message", String.to_query f))
+         ; Util.option_map v.code (fun f -> Query.Pair ("Code", String.to_query f))
          ])
 
   let to_json v =
@@ -17263,9 +17263,9 @@ module CreateVolumePermission = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.user_id (fun f -> Query.Pair ("userId", String.to_query f))
+         [ Util.option_map v.user_id (fun f -> Query.Pair ("UserId", String.to_query f))
          ; Util.option_map v.group (fun f ->
-               Query.Pair ("group", PermissionGroup.to_query f))
+               Query.Pair ("Group", PermissionGroup.to_query f))
          ])
 
   let to_json v =
@@ -17668,13 +17668,13 @@ module EbsInfo = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.nvme_support (fun f ->
-               Query.Pair ("nvmeSupport", EbsNvmeSupport.to_query f))
+               Query.Pair ("NvmeSupport", EbsNvmeSupport.to_query f))
          ; Util.option_map v.ebs_optimized_info (fun f ->
-               Query.Pair ("ebsOptimizedInfo", EbsOptimizedInfo.to_query f))
+               Query.Pair ("EbsOptimizedInfo", EbsOptimizedInfo.to_query f))
          ; Util.option_map v.encryption_support (fun f ->
-               Query.Pair ("encryptionSupport", EbsEncryptionSupport.to_query f))
+               Query.Pair ("EncryptionSupport", EbsEncryptionSupport.to_query f))
          ; Util.option_map v.ebs_optimized_support (fun f ->
-               Query.Pair ("ebsOptimizedSupport", EbsOptimizedSupport.to_query f))
+               Query.Pair ("EbsOptimizedSupport", EbsOptimizedSupport.to_query f))
          ])
 
   let to_json v =
@@ -17726,8 +17726,8 @@ module FpgaInfo = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.total_fpga_memory_in_mi_b (fun f ->
-               Query.Pair ("totalFpgaMemoryInMiB", Integer.to_query f))
-         ; Some (Query.Pair ("fpgas", FpgaDeviceInfoList.to_query v.fpgas))
+               Query.Pair ("TotalFpgaMemoryInMiB", Integer.to_query f))
+         ; Some (Query.Pair ("Fpgas", FpgaDeviceInfoList.to_query v.fpgas))
          ])
 
   let to_json v =
@@ -17767,8 +17767,8 @@ module GpuInfo = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.total_gpu_memory_in_mi_b (fun f ->
-               Query.Pair ("totalGpuMemoryInMiB", Integer.to_query f))
-         ; Some (Query.Pair ("gpus", GpuDeviceInfoList.to_query v.gpus))
+               Query.Pair ("TotalGpuMemoryInMiB", Integer.to_query f))
+         ; Some (Query.Pair ("Gpus", GpuDeviceInfoList.to_query v.gpus))
          ])
 
   let to_json v =
@@ -17805,7 +17805,7 @@ module InferenceAcceleratorInfo = struct
     Query.List
       (Util.list_filter_opt
          [ Some
-             (Query.Pair ("accelerators", InferenceDeviceInfoList.to_query v.accelerators))
+             (Query.Pair ("Accelerators", InferenceDeviceInfoList.to_query v.accelerators))
          ])
 
   let to_json v =
@@ -17843,10 +17843,10 @@ module InstanceStorageInfo = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.nvme_support (fun f ->
-               Query.Pair ("nvmeSupport", EphemeralNvmeSupport.to_query f))
-         ; Some (Query.Pair ("disks", DiskInfoList.to_query v.disks))
+               Query.Pair ("NvmeSupport", EphemeralNvmeSupport.to_query f))
+         ; Some (Query.Pair ("Disks", DiskInfoList.to_query v.disks))
          ; Util.option_map v.total_size_in_g_b (fun f ->
-               Query.Pair ("totalSizeInGB", Long.to_query f))
+               Query.Pair ("TotalSizeInGB", Long.to_query f))
          ])
 
   let to_json v =
@@ -17903,7 +17903,7 @@ module MemoryInfo = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.size_in_mi_b (fun f ->
-               Query.Pair ("sizeInMiB", Long.to_query f))
+               Query.Pair ("SizeInMiB", Long.to_query f))
          ])
 
   let to_json v =
@@ -17980,25 +17980,25 @@ module NetworkInfo = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.efa_supported (fun f ->
-               Query.Pair ("efaSupported", Boolean.to_query f))
+               Query.Pair ("EfaSupported", Boolean.to_query f))
          ; Util.option_map v.ena_support (fun f ->
-               Query.Pair ("enaSupport", EnaSupport.to_query f))
+               Query.Pair ("EnaSupport", EnaSupport.to_query f))
          ; Util.option_map v.ipv6_supported (fun f ->
-               Query.Pair ("ipv6Supported", Boolean.to_query f))
+               Query.Pair ("Ipv6Supported", Boolean.to_query f))
          ; Util.option_map v.ipv6_addresses_per_interface (fun f ->
-               Query.Pair ("ipv6AddressesPerInterface", Integer.to_query f))
+               Query.Pair ("Ipv6AddressesPerInterface", Integer.to_query f))
          ; Util.option_map v.ipv4_addresses_per_interface (fun f ->
-               Query.Pair ("ipv4AddressesPerInterface", Integer.to_query f))
+               Query.Pair ("Ipv4AddressesPerInterface", Integer.to_query f))
          ; Some
-             (Query.Pair ("networkCards", NetworkCardInfoList.to_query v.network_cards))
+             (Query.Pair ("NetworkCards", NetworkCardInfoList.to_query v.network_cards))
          ; Util.option_map v.default_network_card_index (fun f ->
-               Query.Pair ("defaultNetworkCardIndex", Integer.to_query f))
+               Query.Pair ("DefaultNetworkCardIndex", Integer.to_query f))
          ; Util.option_map v.maximum_network_cards (fun f ->
-               Query.Pair ("maximumNetworkCards", Integer.to_query f))
+               Query.Pair ("MaximumNetworkCards", Integer.to_query f))
          ; Util.option_map v.maximum_network_interfaces (fun f ->
-               Query.Pair ("maximumNetworkInterfaces", Integer.to_query f))
+               Query.Pair ("MaximumNetworkInterfaces", Integer.to_query f))
          ; Util.option_map v.network_performance (fun f ->
-               Query.Pair ("networkPerformance", String.to_query f))
+               Query.Pair ("NetworkPerformance", String.to_query f))
          ])
 
   let to_json v =
@@ -18063,7 +18063,7 @@ module PlacementGroupInfo = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "supportedStrategies"
+                ( "SupportedStrategies"
                 , PlacementGroupStrategyList.to_query v.supported_strategies ))
          ])
 
@@ -18107,10 +18107,10 @@ module ProcessorInfo = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.sustained_clock_speed_in_ghz (fun f ->
-               Query.Pair ("sustainedClockSpeedInGhz", Double.to_query f))
+               Query.Pair ("SustainedClockSpeedInGhz", Double.to_query f))
          ; Some
              (Query.Pair
-                ( "supportedArchitectures"
+                ( "SupportedArchitectures"
                 , ArchitectureTypeList.to_query v.supported_architectures ))
          ])
 
@@ -18207,15 +18207,15 @@ module VCpuInfo = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "validThreadsPerCore"
+                ( "ValidThreadsPerCore"
                 , ThreadsPerCoreList.to_query v.valid_threads_per_core ))
-         ; Some (Query.Pair ("validCores", CoreCountList.to_query v.valid_cores))
+         ; Some (Query.Pair ("ValidCores", CoreCountList.to_query v.valid_cores))
          ; Util.option_map v.default_threads_per_core (fun f ->
-               Query.Pair ("defaultThreadsPerCore", Integer.to_query f))
+               Query.Pair ("DefaultThreadsPerCore", Integer.to_query f))
          ; Util.option_map v.default_cores (fun f ->
-               Query.Pair ("defaultCores", Integer.to_query f))
+               Query.Pair ("DefaultCores", Integer.to_query f))
          ; Util.option_map v.default_v_cpus (fun f ->
-               Query.Pair ("defaultVCpus", Integer.to_query f))
+               Query.Pair ("DefaultVCpus", Integer.to_query f))
          ])
 
   let to_json v =
@@ -18276,9 +18276,9 @@ module ClientVpnRouteStatus = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         [ Util.option_map v.message (fun f -> Query.Pair ("Message", String.to_query f))
          ; Util.option_map v.code (fun f ->
-               Query.Pair ("code", ClientVpnRouteStatusCode.to_query f))
+               Query.Pair ("Code", ClientVpnRouteStatusCode.to_query f))
          ])
 
   let to_json v =
@@ -18368,21 +18368,21 @@ module VpnConnectionOptions = struct
     Query.List
       (Util.list_filter_opt
          [ Some
-             (Query.Pair ("tunnelOptionSet", TunnelOptionsList.to_query v.tunnel_options))
+             (Query.Pair ("TunnelOptionSet", TunnelOptionsList.to_query v.tunnel_options))
          ; Util.option_map v.tunnel_inside_ip_version (fun f ->
-               Query.Pair ("tunnelInsideIpVersion", TunnelInsideIpVersion.to_query f))
+               Query.Pair ("TunnelInsideIpVersion", TunnelInsideIpVersion.to_query f))
          ; Util.option_map v.remote_ipv6_network_cidr (fun f ->
-               Query.Pair ("remoteIpv6NetworkCidr", String.to_query f))
+               Query.Pair ("RemoteIpv6NetworkCidr", String.to_query f))
          ; Util.option_map v.local_ipv6_network_cidr (fun f ->
-               Query.Pair ("localIpv6NetworkCidr", String.to_query f))
+               Query.Pair ("LocalIpv6NetworkCidr", String.to_query f))
          ; Util.option_map v.remote_ipv4_network_cidr (fun f ->
-               Query.Pair ("remoteIpv4NetworkCidr", String.to_query f))
+               Query.Pair ("RemoteIpv4NetworkCidr", String.to_query f))
          ; Util.option_map v.local_ipv4_network_cidr (fun f ->
-               Query.Pair ("localIpv4NetworkCidr", String.to_query f))
+               Query.Pair ("LocalIpv4NetworkCidr", String.to_query f))
          ; Util.option_map v.static_routes_only (fun f ->
-               Query.Pair ("staticRoutesOnly", Boolean.to_query f))
+               Query.Pair ("StaticRoutesOnly", Boolean.to_query f))
          ; Util.option_map v.enable_acceleration (fun f ->
-               Query.Pair ("enableAcceleration", Boolean.to_query f))
+               Query.Pair ("EnableAcceleration", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -18458,9 +18458,9 @@ module AssociationStatus = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         [ Util.option_map v.message (fun f -> Query.Pair ("Message", String.to_query f))
          ; Util.option_map v.code (fun f ->
-               Query.Pair ("code", AssociationStatusCode.to_query f))
+               Query.Pair ("Code", AssociationStatusCode.to_query f))
          ])
 
   let to_json v =
@@ -18496,9 +18496,9 @@ module VpcPeeringConnectionStateReason = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         [ Util.option_map v.message (fun f -> Query.Pair ("Message", String.to_query f))
          ; Util.option_map v.code (fun f ->
-               Query.Pair ("code", VpcPeeringConnectionStateReasonCode.to_query f))
+               Query.Pair ("Code", VpcPeeringConnectionStateReasonCode.to_query f))
          ])
 
   let to_json v =
@@ -18568,18 +18568,18 @@ module VpcPeeringConnectionVpcInfo = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.region (fun f -> Query.Pair ("region", String.to_query f))
-         ; Util.option_map v.vpc_id (fun f -> Query.Pair ("vpcId", String.to_query f))
+         [ Util.option_map v.region (fun f -> Query.Pair ("Region", String.to_query f))
+         ; Util.option_map v.vpc_id (fun f -> Query.Pair ("VpcId", String.to_query f))
          ; Util.option_map v.peering_options (fun f ->
                Query.Pair
-                 ("peeringOptions", VpcPeeringConnectionOptionsDescription.to_query f))
-         ; Util.option_map v.owner_id (fun f -> Query.Pair ("ownerId", String.to_query f))
-         ; Some (Query.Pair ("cidrBlockSet", CidrBlockSet.to_query v.cidr_block_set))
+                 ("PeeringOptions", VpcPeeringConnectionOptionsDescription.to_query f))
+         ; Util.option_map v.owner_id (fun f -> Query.Pair ("OwnerId", String.to_query f))
+         ; Some (Query.Pair ("CidrBlockSet", CidrBlockSet.to_query v.cidr_block_set))
          ; Some
              (Query.Pair
-                ("ipv6CidrBlockSet", Ipv6CidrBlockSet.to_query v.ipv6_cidr_block_set))
+                ("Ipv6CidrBlockSet", Ipv6CidrBlockSet.to_query v.ipv6_cidr_block_set))
          ; Util.option_map v.cidr_block (fun f ->
-               Query.Pair ("cidrBlock", String.to_query f))
+               Query.Pair ("CidrBlock", String.to_query f))
          ])
 
   let to_json v =
@@ -18659,9 +18659,9 @@ module CancelSpotFleetRequestsError = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         [ Util.option_map v.message (fun f -> Query.Pair ("Message", String.to_query f))
          ; Util.option_map v.code (fun f ->
-               Query.Pair ("code", CancelBatchErrorCode.to_query f))
+               Query.Pair ("Code", CancelBatchErrorCode.to_query f))
          ])
 
   let to_json v =
@@ -18763,9 +18763,9 @@ module DiskImageDetail = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("importManifestUrl", String.to_query v.import_manifest_url))
-         ; Some (Query.Pair ("format", DiskImageFormat.to_query v.format))
-         ; Some (Query.Pair ("bytes", Long.to_query v.bytes))
+         [ Some (Query.Pair ("ImportManifestUrl", String.to_query v.import_manifest_url))
+         ; Some (Query.Pair ("Format", DiskImageFormat.to_query v.format))
+         ; Some (Query.Pair ("Bytes", Long.to_query v.bytes))
          ])
 
   let to_json v =
@@ -18794,7 +18794,7 @@ module VolumeDetail = struct
       { size = Xml.required "size" (Util.option_bind (Xml.member "size" xml) Long.parse) }
 
   let to_query v =
-    Query.List (Util.list_filter_opt [ Some (Query.Pair ("size", Long.to_query v.size)) ])
+    Query.List (Util.list_filter_opt [ Some (Query.Pair ("Size", Long.to_query v.size)) ])
 
   let to_json v = `Assoc (Util.list_filter_opt [ Some ("size", Long.to_json v.size) ])
 
@@ -18833,8 +18833,8 @@ module LastError = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.code (fun f -> Query.Pair ("code", String.to_query f))
-         ; Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         [ Util.option_map v.code (fun f -> Query.Pair ("Code", String.to_query f))
+         ; Util.option_map v.message (fun f -> Query.Pair ("Message", String.to_query f))
          ])
 
   let to_json v =
@@ -18904,9 +18904,9 @@ module TransitGatewayAttachmentAssociation = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.state (fun f ->
-               Query.Pair ("state", TransitGatewayAssociationState.to_query f))
+               Query.Pair ("State", TransitGatewayAssociationState.to_query f))
          ; Util.option_map v.transit_gateway_route_table_id (fun f ->
-               Query.Pair ("transitGatewayRouteTableId", String.to_query f))
+               Query.Pair ("TransitGatewayRouteTableId", String.to_query f))
          ])
 
   let to_json v =
@@ -19131,21 +19131,21 @@ module NetworkInterfaceAttachment = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.status (fun f ->
-               Query.Pair ("status", AttachmentStatus.to_query f))
+               Query.Pair ("Status", AttachmentStatus.to_query f))
          ; Util.option_map v.instance_owner_id (fun f ->
-               Query.Pair ("instanceOwnerId", String.to_query f))
+               Query.Pair ("InstanceOwnerId", String.to_query f))
          ; Util.option_map v.instance_id (fun f ->
-               Query.Pair ("instanceId", String.to_query f))
+               Query.Pair ("InstanceId", String.to_query f))
          ; Util.option_map v.network_card_index (fun f ->
-               Query.Pair ("networkCardIndex", Integer.to_query f))
+               Query.Pair ("NetworkCardIndex", Integer.to_query f))
          ; Util.option_map v.device_index (fun f ->
-               Query.Pair ("deviceIndex", Integer.to_query f))
+               Query.Pair ("DeviceIndex", Integer.to_query f))
          ; Util.option_map v.delete_on_termination (fun f ->
-               Query.Pair ("deleteOnTermination", Boolean.to_query f))
+               Query.Pair ("DeleteOnTermination", Boolean.to_query f))
          ; Util.option_map v.attachment_id (fun f ->
-               Query.Pair ("attachmentId", String.to_query f))
+               Query.Pair ("AttachmentId", String.to_query f))
          ; Util.option_map v.attach_time (fun f ->
-               Query.Pair ("attachTime", DateTime.to_query f))
+               Query.Pair ("AttachTime", DateTime.to_query f))
          ])
 
   let to_json v =
@@ -19457,8 +19457,8 @@ module PeeringAttachmentStatus = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
-         ; Util.option_map v.code (fun f -> Query.Pair ("code", String.to_query f))
+         [ Util.option_map v.message (fun f -> Query.Pair ("Message", String.to_query f))
+         ; Util.option_map v.code (fun f -> Query.Pair ("Code", String.to_query f))
          ])
 
   let to_json v =
@@ -19495,10 +19495,10 @@ module PeeringTgwInfo = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.region (fun f -> Query.Pair ("region", String.to_query f))
-         ; Util.option_map v.owner_id (fun f -> Query.Pair ("ownerId", String.to_query f))
+         [ Util.option_map v.region (fun f -> Query.Pair ("Region", String.to_query f))
+         ; Util.option_map v.owner_id (fun f -> Query.Pair ("OwnerId", String.to_query f))
          ; Util.option_map v.transit_gateway_id (fun f ->
-               Query.Pair ("transitGatewayId", String.to_query f))
+               Query.Pair ("TransitGatewayId", String.to_query f))
          ])
 
   let to_json v =
@@ -19578,11 +19578,11 @@ module PrivateDnsNameConfiguration = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.name (fun f -> Query.Pair ("name", String.to_query f))
-         ; Util.option_map v.value (fun f -> Query.Pair ("value", String.to_query f))
-         ; Util.option_map v.type_ (fun f -> Query.Pair ("type", String.to_query f))
+         [ Util.option_map v.name (fun f -> Query.Pair ("Name", String.to_query f))
+         ; Util.option_map v.value (fun f -> Query.Pair ("Value", String.to_query f))
+         ; Util.option_map v.type_ (fun f -> Query.Pair ("Type", String.to_query f))
          ; Util.option_map v.state (fun f ->
-               Query.Pair ("state", DnsNameState.to_query f))
+               Query.Pair ("State", DnsNameState.to_query f))
          ])
 
   let to_json v =
@@ -19719,13 +19719,13 @@ module ImportInstanceTaskDetails = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("volumes", ImportInstanceVolumeDetailSet.to_query v.volumes))
+         [ Some (Query.Pair ("Volumes", ImportInstanceVolumeDetailSet.to_query v.volumes))
          ; Util.option_map v.platform (fun f ->
-               Query.Pair ("platform", PlatformValues.to_query f))
+               Query.Pair ("Platform", PlatformValues.to_query f))
          ; Util.option_map v.instance_id (fun f ->
-               Query.Pair ("instanceId", String.to_query f))
+               Query.Pair ("InstanceId", String.to_query f))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
          ])
 
   let to_json v =
@@ -19774,15 +19774,15 @@ module ImportVolumeTaskDetails = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.volume (fun f ->
-               Query.Pair ("volume", DiskImageVolumeDescription.to_query f))
+               Query.Pair ("Volume", DiskImageVolumeDescription.to_query f))
          ; Util.option_map v.image (fun f ->
-               Query.Pair ("image", DiskImageDescription.to_query f))
+               Query.Pair ("Image", DiskImageDescription.to_query f))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
          ; Util.option_map v.bytes_converted (fun f ->
-               Query.Pair ("bytesConverted", Long.to_query f))
+               Query.Pair ("BytesConverted", Long.to_query f))
          ; Util.option_map v.availability_zone (fun f ->
-               Query.Pair ("availabilityZone", String.to_query f))
+               Query.Pair ("AvailabilityZone", String.to_query f))
          ])
 
   let to_json v =
@@ -19832,11 +19832,11 @@ module TransitGatewayVpcAttachmentOptions = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.appliance_mode_support (fun f ->
-               Query.Pair ("applianceModeSupport", ApplianceModeSupportValue.to_query f))
+               Query.Pair ("ApplianceModeSupport", ApplianceModeSupportValue.to_query f))
          ; Util.option_map v.ipv6_support (fun f ->
-               Query.Pair ("ipv6Support", Ipv6SupportValue.to_query f))
+               Query.Pair ("Ipv6Support", Ipv6SupportValue.to_query f))
          ; Util.option_map v.dns_support (fun f ->
-               Query.Pair ("dnsSupport", DnsSupportValue.to_query f))
+               Query.Pair ("DnsSupport", DnsSupportValue.to_query f))
          ])
 
   let to_json v =
@@ -19884,11 +19884,11 @@ module ReservationValue = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.remaining_upfront_value (fun f ->
-               Query.Pair ("remainingUpfrontValue", String.to_query f))
+               Query.Pair ("RemainingUpfrontValue", String.to_query f))
          ; Util.option_map v.remaining_total_value (fun f ->
-               Query.Pair ("remainingTotalValue", String.to_query f))
+               Query.Pair ("RemainingTotalValue", String.to_query f))
          ; Util.option_map v.hourly_price (fun f ->
-               Query.Pair ("hourlyPrice", String.to_query f))
+               Query.Pair ("HourlyPrice", String.to_query f))
          ])
 
   let to_json v =
@@ -19928,9 +19928,9 @@ module TargetConfiguration = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.offering_id (fun f ->
-               Query.Pair ("offeringId", String.to_query f))
+               Query.Pair ("OfferingId", String.to_query f))
          ; Util.option_map v.instance_count (fun f ->
-               Query.Pair ("instanceCount", Integer.to_query f))
+               Query.Pair ("InstanceCount", Integer.to_query f))
          ])
 
   let to_json v =
@@ -20078,9 +20078,9 @@ module FpgaImageState = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         [ Util.option_map v.message (fun f -> Query.Pair ("Message", String.to_query f))
          ; Util.option_map v.code (fun f ->
-               Query.Pair ("code", FpgaImageStateCode.to_query f))
+               Query.Pair ("Code", FpgaImageStateCode.to_query f))
          ])
 
   let to_json v =
@@ -20434,80 +20434,80 @@ module ResponseLaunchTemplateData = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.enclave_options (fun f ->
-               Query.Pair ("enclaveOptions", LaunchTemplateEnclaveOptions.to_query f))
+               Query.Pair ("EnclaveOptions", LaunchTemplateEnclaveOptions.to_query f))
          ; Util.option_map v.metadata_options (fun f ->
                Query.Pair
-                 ("metadataOptions", LaunchTemplateInstanceMetadataOptions.to_query f))
+                 ("MetadataOptions", LaunchTemplateInstanceMetadataOptions.to_query f))
          ; Util.option_map v.hibernation_options (fun f ->
                Query.Pair
-                 ("hibernationOptions", LaunchTemplateHibernationOptions.to_query f))
+                 ("HibernationOptions", LaunchTemplateHibernationOptions.to_query f))
          ; Some
              (Query.Pair
-                ("licenseSet", LaunchTemplateLicenseList.to_query v.license_specifications))
+                ("LicenseSet", LaunchTemplateLicenseList.to_query v.license_specifications))
          ; Util.option_map v.capacity_reservation_specification (fun f ->
                Query.Pair
-                 ( "capacityReservationSpecification"
+                 ( "CapacityReservationSpecification"
                  , LaunchTemplateCapacityReservationSpecificationResponse.to_query f ))
          ; Util.option_map v.cpu_options (fun f ->
-               Query.Pair ("cpuOptions", LaunchTemplateCpuOptions.to_query f))
+               Query.Pair ("CpuOptions", LaunchTemplateCpuOptions.to_query f))
          ; Util.option_map v.credit_specification (fun f ->
-               Query.Pair ("creditSpecification", CreditSpecification.to_query f))
+               Query.Pair ("CreditSpecification", CreditSpecification.to_query f))
          ; Util.option_map v.instance_market_options (fun f ->
                Query.Pair
-                 ("instanceMarketOptions", LaunchTemplateInstanceMarketOptions.to_query f))
+                 ("InstanceMarketOptions", LaunchTemplateInstanceMarketOptions.to_query f))
          ; Some
-             (Query.Pair ("securityGroupSet", ValueStringList.to_query v.security_groups))
-         ; Some
-             (Query.Pair
-                ("securityGroupIdSet", ValueStringList.to_query v.security_group_ids))
+             (Query.Pair ("SecurityGroupSet", ValueStringList.to_query v.security_groups))
          ; Some
              (Query.Pair
-                ( "elasticInferenceAcceleratorSet"
+                ("SecurityGroupIdSet", ValueStringList.to_query v.security_group_ids))
+         ; Some
+             (Query.Pair
+                ( "ElasticInferenceAcceleratorSet"
                 , LaunchTemplateElasticInferenceAcceleratorResponseList.to_query
                     v.elastic_inference_accelerators ))
          ; Some
              (Query.Pair
-                ( "elasticGpuSpecificationSet"
+                ( "ElasticGpuSpecificationSet"
                 , ElasticGpuSpecificationResponseList.to_query
                     v.elastic_gpu_specifications ))
          ; Some
              (Query.Pair
-                ( "tagSpecificationSet"
+                ( "TagSpecificationSet"
                 , LaunchTemplateTagSpecificationList.to_query v.tag_specifications ))
          ; Util.option_map v.user_data (fun f ->
-               Query.Pair ("userData", String.to_query f))
+               Query.Pair ("UserData", String.to_query f))
          ; Util.option_map v.instance_initiated_shutdown_behavior (fun f ->
                Query.Pair
-                 ("instanceInitiatedShutdownBehavior", ShutdownBehavior.to_query f))
+                 ("InstanceInitiatedShutdownBehavior", ShutdownBehavior.to_query f))
          ; Util.option_map v.disable_api_termination (fun f ->
-               Query.Pair ("disableApiTermination", Boolean.to_query f))
+               Query.Pair ("DisableApiTermination", Boolean.to_query f))
          ; Util.option_map v.ram_disk_id (fun f ->
-               Query.Pair ("ramDiskId", String.to_query f))
+               Query.Pair ("RamDiskId", String.to_query f))
          ; Util.option_map v.placement (fun f ->
-               Query.Pair ("placement", LaunchTemplatePlacement.to_query f))
+               Query.Pair ("Placement", LaunchTemplatePlacement.to_query f))
          ; Util.option_map v.monitoring (fun f ->
-               Query.Pair ("monitoring", LaunchTemplatesMonitoring.to_query f))
-         ; Util.option_map v.key_name (fun f -> Query.Pair ("keyName", String.to_query f))
+               Query.Pair ("Monitoring", LaunchTemplatesMonitoring.to_query f))
+         ; Util.option_map v.key_name (fun f -> Query.Pair ("KeyName", String.to_query f))
          ; Util.option_map v.instance_type (fun f ->
-               Query.Pair ("instanceType", InstanceType.to_query f))
-         ; Util.option_map v.image_id (fun f -> Query.Pair ("imageId", String.to_query f))
+               Query.Pair ("InstanceType", InstanceType.to_query f))
+         ; Util.option_map v.image_id (fun f -> Query.Pair ("ImageId", String.to_query f))
          ; Some
              (Query.Pair
-                ( "networkInterfaceSet"
+                ( "NetworkInterfaceSet"
                 , LaunchTemplateInstanceNetworkInterfaceSpecificationList.to_query
                     v.network_interfaces ))
          ; Some
              (Query.Pair
-                ( "blockDeviceMappingSet"
+                ( "BlockDeviceMappingSet"
                 , LaunchTemplateBlockDeviceMappingList.to_query v.block_device_mappings ))
          ; Util.option_map v.iam_instance_profile (fun f ->
                Query.Pair
-                 ( "iamInstanceProfile"
+                 ( "IamInstanceProfile"
                  , LaunchTemplateIamInstanceProfileSpecification.to_query f ))
          ; Util.option_map v.ebs_optimized (fun f ->
-               Query.Pair ("ebsOptimized", Boolean.to_query f))
+               Query.Pair ("EbsOptimized", Boolean.to_query f))
          ; Util.option_map v.kernel_id (fun f ->
-               Query.Pair ("kernelId", String.to_query f))
+               Query.Pair ("KernelId", String.to_query f))
          ])
 
   let to_json v =
@@ -21082,7 +21082,7 @@ module LaunchTemplateInstanceNetworkInterfaceSpecificationRequest = struct
                Query.Pair ("SecondaryPrivateIpAddressCount", Integer.to_query f))
          ; Some
              (Query.Pair
-                ( "PrivateIpAddresses.member"
+                ( "PrivateIpAddresses"
                 , PrivateIpAddressSpecificationList.to_query v.private_ip_addresses ))
          ; Util.option_map v.private_ip_address (fun f ->
                Query.Pair ("PrivateIpAddress", String.to_query f))
@@ -21090,8 +21090,7 @@ module LaunchTemplateInstanceNetworkInterfaceSpecificationRequest = struct
                Query.Pair ("NetworkInterfaceId", String.to_query f))
          ; Some
              (Query.Pair
-                ( "Ipv6Addresses.member"
-                , InstanceIpv6AddressListRequest.to_query v.ipv6_addresses ))
+                ("Ipv6Addresses", InstanceIpv6AddressListRequest.to_query v.ipv6_addresses))
          ; Util.option_map v.ipv6_address_count (fun f ->
                Query.Pair ("Ipv6AddressCount", Integer.to_query f))
          ; Util.option_map v.interface_type (fun f ->
@@ -21273,9 +21272,9 @@ module ResponseError = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         [ Util.option_map v.message (fun f -> Query.Pair ("Message", String.to_query f))
          ; Util.option_map v.code (fun f ->
-               Query.Pair ("code", LaunchTemplateErrorCode.to_query f))
+               Query.Pair ("Code", LaunchTemplateErrorCode.to_query f))
          ])
 
   let to_json v =
@@ -21387,38 +21386,38 @@ module LaunchSpecification = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.monitoring (fun f ->
-               Query.Pair ("monitoring", RunInstancesMonitoringEnabled.to_query f))
+               Query.Pair ("Monitoring", RunInstancesMonitoringEnabled.to_query f))
          ; Util.option_map v.subnet_id (fun f ->
-               Query.Pair ("subnetId", String.to_query f))
+               Query.Pair ("SubnetId", String.to_query f))
          ; Util.option_map v.ramdisk_id (fun f ->
-               Query.Pair ("ramdiskId", String.to_query f))
+               Query.Pair ("RamdiskId", String.to_query f))
          ; Util.option_map v.placement (fun f ->
-               Query.Pair ("placement", SpotPlacement.to_query f))
+               Query.Pair ("Placement", SpotPlacement.to_query f))
          ; Some
              (Query.Pair
-                ( "networkInterfaceSet"
+                ( "NetworkInterfaceSet"
                 , InstanceNetworkInterfaceSpecificationList.to_query v.network_interfaces
                 ))
-         ; Util.option_map v.key_name (fun f -> Query.Pair ("keyName", String.to_query f))
+         ; Util.option_map v.key_name (fun f -> Query.Pair ("KeyName", String.to_query f))
          ; Util.option_map v.kernel_id (fun f ->
-               Query.Pair ("kernelId", String.to_query f))
+               Query.Pair ("KernelId", String.to_query f))
          ; Util.option_map v.instance_type (fun f ->
-               Query.Pair ("instanceType", InstanceType.to_query f))
-         ; Util.option_map v.image_id (fun f -> Query.Pair ("imageId", String.to_query f))
+               Query.Pair ("InstanceType", InstanceType.to_query f))
+         ; Util.option_map v.image_id (fun f -> Query.Pair ("ImageId", String.to_query f))
          ; Util.option_map v.iam_instance_profile (fun f ->
                Query.Pair
-                 ("iamInstanceProfile", IamInstanceProfileSpecification.to_query f))
+                 ("IamInstanceProfile", IamInstanceProfileSpecification.to_query f))
          ; Util.option_map v.ebs_optimized (fun f ->
-               Query.Pair ("ebsOptimized", Boolean.to_query f))
+               Query.Pair ("EbsOptimized", Boolean.to_query f))
          ; Some
              (Query.Pair
-                ( "blockDeviceMapping"
+                ( "BlockDeviceMapping"
                 , BlockDeviceMappingList.to_query v.block_device_mappings ))
          ; Util.option_map v.addressing_type (fun f ->
-               Query.Pair ("addressingType", String.to_query f))
-         ; Some (Query.Pair ("groupSet", GroupIdentifierList.to_query v.security_groups))
+               Query.Pair ("AddressingType", String.to_query f))
+         ; Some (Query.Pair ("GroupSet", GroupIdentifierList.to_query v.security_groups))
          ; Util.option_map v.user_data (fun f ->
-               Query.Pair ("userData", String.to_query f))
+               Query.Pair ("UserData", String.to_query f))
          ])
 
   let to_json v =
@@ -21533,8 +21532,8 @@ module SpotInstanceStateFault = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
-         ; Util.option_map v.code (fun f -> Query.Pair ("code", String.to_query f))
+         [ Util.option_map v.message (fun f -> Query.Pair ("Message", String.to_query f))
+         ; Util.option_map v.code (fun f -> Query.Pair ("Code", String.to_query f))
          ])
 
   let to_json v =
@@ -21570,9 +21569,9 @@ module SpotInstanceStatus = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.update_time (fun f ->
-               Query.Pair ("updateTime", DateTime.to_query f))
-         ; Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
-         ; Util.option_map v.code (fun f -> Query.Pair ("code", String.to_query f))
+               Query.Pair ("UpdateTime", DateTime.to_query f))
+         ; Util.option_map v.message (fun f -> Query.Pair ("Message", String.to_query f))
+         ; Util.option_map v.code (fun f -> Query.Pair ("Code", String.to_query f))
          ])
 
   let to_json v =
@@ -21610,9 +21609,9 @@ module DeleteQueuedReservedInstancesError = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         [ Util.option_map v.message (fun f -> Query.Pair ("Message", String.to_query f))
          ; Util.option_map v.code (fun f ->
-               Query.Pair ("code", DeleteQueuedReservedInstancesErrorCode.to_query f))
+               Query.Pair ("Code", DeleteQueuedReservedInstancesErrorCode.to_query f))
          ])
 
   let to_json v =
@@ -21692,13 +21691,13 @@ module ExportToS3Task = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.s3_key (fun f -> Query.Pair ("s3Key", String.to_query f))
+         [ Util.option_map v.s3_key (fun f -> Query.Pair ("S3Key", String.to_query f))
          ; Util.option_map v.s3_bucket (fun f ->
-               Query.Pair ("s3Bucket", String.to_query f))
+               Query.Pair ("S3Bucket", String.to_query f))
          ; Util.option_map v.disk_image_format (fun f ->
-               Query.Pair ("diskImageFormat", DiskImageFormat.to_query f))
+               Query.Pair ("DiskImageFormat", DiskImageFormat.to_query f))
          ; Util.option_map v.container_format (fun f ->
-               Query.Pair ("containerFormat", ContainerFormat.to_query f))
+               Query.Pair ("ContainerFormat", ContainerFormat.to_query f))
          ])
 
   let to_json v =
@@ -21741,9 +21740,9 @@ module InstanceExportDetails = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.target_environment (fun f ->
-               Query.Pair ("targetEnvironment", ExportEnvironment.to_query f))
+               Query.Pair ("TargetEnvironment", ExportEnvironment.to_query f))
          ; Util.option_map v.instance_id (fun f ->
-               Query.Pair ("instanceId", String.to_query f))
+               Query.Pair ("InstanceId", String.to_query f))
          ])
 
   let to_json v =
@@ -21815,10 +21814,10 @@ module ClientConnectResponseOptions = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.status (fun f ->
-               Query.Pair ("status", ClientVpnEndpointAttributeStatus.to_query f))
+               Query.Pair ("Status", ClientVpnEndpointAttributeStatus.to_query f))
          ; Util.option_map v.lambda_function_arn (fun f ->
-               Query.Pair ("lambdaFunctionArn", String.to_query f))
-         ; Util.option_map v.enabled (fun f -> Query.Pair ("enabled", Boolean.to_query f))
+               Query.Pair ("LambdaFunctionArn", String.to_query f))
+         ; Util.option_map v.enabled (fun f -> Query.Pair ("Enabled", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -21872,9 +21871,9 @@ module ClientVpnEndpointStatus = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         [ Util.option_map v.message (fun f -> Query.Pair ("Message", String.to_query f))
          ; Util.option_map v.code (fun f ->
-               Query.Pair ("code", ClientVpnEndpointStatusCode.to_query f))
+               Query.Pair ("Code", ClientVpnEndpointStatusCode.to_query f))
          ])
 
   let to_json v =
@@ -22266,19 +22265,19 @@ module OnDemandOptions = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.max_total_price (fun f ->
-               Query.Pair ("maxTotalPrice", String.to_query f))
+               Query.Pair ("MaxTotalPrice", String.to_query f))
          ; Util.option_map v.min_target_capacity (fun f ->
-               Query.Pair ("minTargetCapacity", Integer.to_query f))
+               Query.Pair ("MinTargetCapacity", Integer.to_query f))
          ; Util.option_map v.single_availability_zone (fun f ->
-               Query.Pair ("singleAvailabilityZone", Boolean.to_query f))
+               Query.Pair ("SingleAvailabilityZone", Boolean.to_query f))
          ; Util.option_map v.single_instance_type (fun f ->
-               Query.Pair ("singleInstanceType", Boolean.to_query f))
+               Query.Pair ("SingleInstanceType", Boolean.to_query f))
          ; Util.option_map v.capacity_reservation_options (fun f ->
                Query.Pair
-                 ("capacityReservationOptions", CapacityReservationOptions.to_query f))
+                 ("CapacityReservationOptions", CapacityReservationOptions.to_query f))
          ; Util.option_map v.allocation_strategy (fun f ->
                Query.Pair
-                 ("allocationStrategy", FleetOnDemandAllocationStrategy.to_query f))
+                 ("AllocationStrategy", FleetOnDemandAllocationStrategy.to_query f))
          ])
 
   let to_json v =
@@ -22378,24 +22377,24 @@ module SpotOptions = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.max_total_price (fun f ->
-               Query.Pair ("maxTotalPrice", String.to_query f))
+               Query.Pair ("MaxTotalPrice", String.to_query f))
          ; Util.option_map v.min_target_capacity (fun f ->
-               Query.Pair ("minTargetCapacity", Integer.to_query f))
+               Query.Pair ("MinTargetCapacity", Integer.to_query f))
          ; Util.option_map v.single_availability_zone (fun f ->
-               Query.Pair ("singleAvailabilityZone", Boolean.to_query f))
+               Query.Pair ("SingleAvailabilityZone", Boolean.to_query f))
          ; Util.option_map v.single_instance_type (fun f ->
-               Query.Pair ("singleInstanceType", Boolean.to_query f))
+               Query.Pair ("SingleInstanceType", Boolean.to_query f))
          ; Util.option_map v.instance_pools_to_use_count (fun f ->
-               Query.Pair ("instancePoolsToUseCount", Integer.to_query f))
+               Query.Pair ("InstancePoolsToUseCount", Integer.to_query f))
          ; Util.option_map v.instance_interruption_behavior (fun f ->
                Query.Pair
-                 ( "instanceInterruptionBehavior"
+                 ( "InstanceInterruptionBehavior"
                  , SpotInstanceInterruptionBehavior.to_query f ))
          ; Util.option_map v.maintenance_strategies (fun f ->
                Query.Pair
-                 ("maintenanceStrategies", FleetSpotMaintenanceStrategies.to_query f))
+                 ("MaintenanceStrategies", FleetSpotMaintenanceStrategies.to_query f))
          ; Util.option_map v.allocation_strategy (fun f ->
-               Query.Pair ("allocationStrategy", SpotAllocationStrategy.to_query f))
+               Query.Pair ("AllocationStrategy", SpotAllocationStrategy.to_query f))
          ])
 
   let to_json v =
@@ -22484,13 +22483,13 @@ module TargetCapacitySpecification = struct
       (Util.list_filter_opt
          [ Util.option_map v.default_target_capacity_type (fun f ->
                Query.Pair
-                 ("defaultTargetCapacityType", DefaultTargetCapacityType.to_query f))
+                 ("DefaultTargetCapacityType", DefaultTargetCapacityType.to_query f))
          ; Util.option_map v.spot_target_capacity (fun f ->
-               Query.Pair ("spotTargetCapacity", Integer.to_query f))
+               Query.Pair ("SpotTargetCapacity", Integer.to_query f))
          ; Util.option_map v.on_demand_target_capacity (fun f ->
-               Query.Pair ("onDemandTargetCapacity", Integer.to_query f))
+               Query.Pair ("OnDemandTargetCapacity", Integer.to_query f))
          ; Util.option_map v.total_target_capacity (fun f ->
-               Query.Pair ("totalTargetCapacity", Integer.to_query f))
+               Query.Pair ("TotalTargetCapacity", Integer.to_query f))
          ])
 
   let to_json v =
@@ -22718,56 +22717,56 @@ module SpotFleetRequestConfigData = struct
              (Query.Pair
                 ("TagSpecification", TagSpecificationList.to_query v.tag_specifications))
          ; Util.option_map v.instance_pools_to_use_count (fun f ->
-               Query.Pair ("instancePoolsToUseCount", Integer.to_query f))
+               Query.Pair ("InstancePoolsToUseCount", Integer.to_query f))
          ; Util.option_map v.load_balancers_config (fun f ->
-               Query.Pair ("loadBalancersConfig", LoadBalancersConfig.to_query f))
+               Query.Pair ("LoadBalancersConfig", LoadBalancersConfig.to_query f))
          ; Util.option_map v.instance_interruption_behavior (fun f ->
                Query.Pair
-                 ("instanceInterruptionBehavior", InstanceInterruptionBehavior.to_query f))
+                 ("InstanceInterruptionBehavior", InstanceInterruptionBehavior.to_query f))
          ; Util.option_map v.replace_unhealthy_instances (fun f ->
-               Query.Pair ("replaceUnhealthyInstances", Boolean.to_query f))
+               Query.Pair ("ReplaceUnhealthyInstances", Boolean.to_query f))
          ; Util.option_map v.valid_until (fun f ->
-               Query.Pair ("validUntil", DateTime.to_query f))
+               Query.Pair ("ValidUntil", DateTime.to_query f))
          ; Util.option_map v.valid_from (fun f ->
-               Query.Pair ("validFrom", DateTime.to_query f))
-         ; Util.option_map v.type_ (fun f -> Query.Pair ("type", FleetType.to_query f))
+               Query.Pair ("ValidFrom", DateTime.to_query f))
+         ; Util.option_map v.type_ (fun f -> Query.Pair ("Type", FleetType.to_query f))
          ; Util.option_map v.terminate_instances_with_expiration (fun f ->
-               Query.Pair ("terminateInstancesWithExpiration", Boolean.to_query f))
+               Query.Pair ("TerminateInstancesWithExpiration", Boolean.to_query f))
          ; Util.option_map v.spot_max_total_price (fun f ->
-               Query.Pair ("spotMaxTotalPrice", String.to_query f))
+               Query.Pair ("SpotMaxTotalPrice", String.to_query f))
          ; Util.option_map v.on_demand_max_total_price (fun f ->
-               Query.Pair ("onDemandMaxTotalPrice", String.to_query f))
+               Query.Pair ("OnDemandMaxTotalPrice", String.to_query f))
          ; Util.option_map v.on_demand_target_capacity (fun f ->
-               Query.Pair ("onDemandTargetCapacity", Integer.to_query f))
-         ; Some (Query.Pair ("targetCapacity", Integer.to_query v.target_capacity))
+               Query.Pair ("OnDemandTargetCapacity", Integer.to_query f))
+         ; Some (Query.Pair ("TargetCapacity", Integer.to_query v.target_capacity))
          ; Util.option_map v.spot_price (fun f ->
-               Query.Pair ("spotPrice", String.to_query f))
+               Query.Pair ("SpotPrice", String.to_query f))
          ; Some
              (Query.Pair
-                ( "launchTemplateConfigs"
+                ( "LaunchTemplateConfigs"
                 , LaunchTemplateConfigList.to_query v.launch_template_configs ))
          ; Some
              (Query.Pair
-                ("launchSpecifications", LaunchSpecsList.to_query v.launch_specifications))
-         ; Some (Query.Pair ("iamFleetRole", String.to_query v.iam_fleet_role))
+                ("LaunchSpecifications", LaunchSpecsList.to_query v.launch_specifications))
+         ; Some (Query.Pair ("IamFleetRole", String.to_query v.iam_fleet_role))
          ; Util.option_map v.on_demand_fulfilled_capacity (fun f ->
-               Query.Pair ("onDemandFulfilledCapacity", Double.to_query f))
+               Query.Pair ("OnDemandFulfilledCapacity", Double.to_query f))
          ; Util.option_map v.fulfilled_capacity (fun f ->
-               Query.Pair ("fulfilledCapacity", Double.to_query f))
+               Query.Pair ("FulfilledCapacity", Double.to_query f))
          ; Util.option_map v.excess_capacity_termination_policy (fun f ->
                Query.Pair
-                 ( "excessCapacityTerminationPolicy"
+                 ( "ExcessCapacityTerminationPolicy"
                  , ExcessCapacityTerminationPolicy.to_query f ))
          ; Util.option_map v.client_token (fun f ->
-               Query.Pair ("clientToken", String.to_query f))
+               Query.Pair ("ClientToken", String.to_query f))
          ; Util.option_map v.spot_maintenance_strategies (fun f ->
                Query.Pair
-                 ("spotMaintenanceStrategies", SpotMaintenanceStrategies.to_query f))
+                 ("SpotMaintenanceStrategies", SpotMaintenanceStrategies.to_query f))
          ; Util.option_map v.on_demand_allocation_strategy (fun f ->
                Query.Pair
-                 ("onDemandAllocationStrategy", OnDemandAllocationStrategy.to_query f))
+                 ("OnDemandAllocationStrategy", OnDemandAllocationStrategy.to_query f))
          ; Util.option_map v.allocation_strategy (fun f ->
-               Query.Pair ("allocationStrategy", AllocationStrategy.to_query f))
+               Query.Pair ("AllocationStrategy", AllocationStrategy.to_query f))
          ])
 
   let to_json v =
@@ -23028,8 +23027,8 @@ module VolumeStatusInfo = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.status (fun f ->
-               Query.Pair ("status", VolumeStatusInfoStatus.to_query f))
-         ; Some (Query.Pair ("details", VolumeStatusDetailsList.to_query v.details))
+               Query.Pair ("Status", VolumeStatusInfoStatus.to_query f))
+         ; Some (Query.Pair ("Details", VolumeStatusDetailsList.to_query v.details))
          ])
 
   let to_json v =
@@ -23102,9 +23101,9 @@ module ClientVpnAuthorizationRuleStatus = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         [ Util.option_map v.message (fun f -> Query.Pair ("Message", String.to_query f))
          ; Util.option_map v.code (fun f ->
-               Query.Pair ("code", ClientVpnAuthorizationRuleStatusCode.to_query f))
+               Query.Pair ("Code", ClientVpnAuthorizationRuleStatusCode.to_query f))
          ])
 
   let to_json v =
@@ -23144,10 +23143,10 @@ module UnsuccessfulInstanceCreditSpecificationItemError = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         [ Util.option_map v.message (fun f -> Query.Pair ("Message", String.to_query f))
          ; Util.option_map v.code (fun f ->
                Query.Pair
-                 ("code", UnsuccessfulInstanceCreditSpecificationErrorCode.to_query f))
+                 ("Code", UnsuccessfulInstanceCreditSpecificationErrorCode.to_query f))
          ])
 
   let to_json v =
@@ -23316,7 +23315,7 @@ module ElasticGpuHealth = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.status (fun f ->
-               Query.Pair ("status", ElasticGpuStatus.to_query f))
+               Query.Pair ("Status", ElasticGpuStatus.to_query f))
          ])
 
   let to_json v =
@@ -23775,15 +23774,15 @@ module ProvisionedBandwidth = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.status (fun f -> Query.Pair ("status", String.to_query f))
+         [ Util.option_map v.status (fun f -> Query.Pair ("Status", String.to_query f))
          ; Util.option_map v.requested (fun f ->
-               Query.Pair ("requested", String.to_query f))
+               Query.Pair ("Requested", String.to_query f))
          ; Util.option_map v.request_time (fun f ->
-               Query.Pair ("requestTime", DateTime.to_query f))
+               Query.Pair ("RequestTime", DateTime.to_query f))
          ; Util.option_map v.provisioned (fun f ->
-               Query.Pair ("provisioned", String.to_query f))
+               Query.Pair ("Provisioned", String.to_query f))
          ; Util.option_map v.provision_time (fun f ->
-               Query.Pair ("provisionTime", DateTime.to_query f))
+               Query.Pair ("ProvisionTime", DateTime.to_query f))
          ])
 
   let to_json v =
@@ -23907,10 +23906,10 @@ module TagDescription = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("value", String.to_query v.value))
-         ; Some (Query.Pair ("resourceType", ResourceType.to_query v.resource_type))
-         ; Some (Query.Pair ("resourceId", String.to_query v.resource_id))
-         ; Some (Query.Pair ("key", String.to_query v.key))
+         [ Some (Query.Pair ("Value", String.to_query v.value))
+         ; Some (Query.Pair ("ResourceType", ResourceType.to_query v.resource_type))
+         ; Some (Query.Pair ("ResourceId", String.to_query v.resource_id))
+         ; Some (Query.Pair ("Key", String.to_query v.key))
          ])
 
   let to_json v =
@@ -23959,13 +23958,13 @@ module DhcpOptions = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
-         ; Util.option_map v.owner_id (fun f -> Query.Pair ("ownerId", String.to_query f))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
+         ; Util.option_map v.owner_id (fun f -> Query.Pair ("OwnerId", String.to_query f))
          ; Util.option_map v.dhcp_options_id (fun f ->
-               Query.Pair ("dhcpOptionsId", String.to_query f))
+               Query.Pair ("DhcpOptionsId", String.to_query f))
          ; Some
              (Query.Pair
-                ( "dhcpConfigurationSet"
+                ( "DhcpConfigurationSet"
                 , DhcpConfigurationList.to_query v.dhcp_configurations ))
          ])
 
@@ -24038,16 +24037,16 @@ module VpnGateway = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.amazon_side_asn (fun f ->
-               Query.Pair ("amazonSideAsn", Long.to_query f))
+               Query.Pair ("AmazonSideAsn", Long.to_query f))
          ; Util.option_map v.vpn_gateway_id (fun f ->
-               Query.Pair ("vpnGatewayId", String.to_query f))
-         ; Some (Query.Pair ("attachments", VpcAttachmentList.to_query v.vpc_attachments))
-         ; Util.option_map v.type_ (fun f -> Query.Pair ("type", GatewayType.to_query f))
-         ; Util.option_map v.state (fun f -> Query.Pair ("state", VpnState.to_query f))
+               Query.Pair ("VpnGatewayId", String.to_query f))
+         ; Some (Query.Pair ("Attachments", VpcAttachmentList.to_query v.vpc_attachments))
+         ; Util.option_map v.type_ (fun f -> Query.Pair ("Type", GatewayType.to_query f))
+         ; Util.option_map v.state (fun f -> Query.Pair ("State", VpnState.to_query f))
          ; Util.option_map v.availability_zone (fun f ->
-               Query.Pair ("availabilityZone", String.to_query f))
+               Query.Pair ("AvailabilityZone", String.to_query f))
          ])
 
   let to_json v =
@@ -24097,9 +24096,9 @@ module TransitGatewayAttachmentPropagation = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.state (fun f ->
-               Query.Pair ("state", TransitGatewayPropagationState.to_query f))
+               Query.Pair ("State", TransitGatewayPropagationState.to_query f))
          ; Util.option_map v.transit_gateway_route_table_id (fun f ->
-               Query.Pair ("transitGatewayRouteTableId", String.to_query f))
+               Query.Pair ("TransitGatewayRouteTableId", String.to_query f))
          ])
 
   let to_json v =
@@ -24221,41 +24220,41 @@ module CapacityReservation = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.create_date (fun f ->
-               Query.Pair ("createDate", DateTime.to_query f))
+               Query.Pair ("CreateDate", DateTime.to_query f))
          ; Util.option_map v.instance_match_criteria (fun f ->
-               Query.Pair ("instanceMatchCriteria", InstanceMatchCriteria.to_query f))
+               Query.Pair ("InstanceMatchCriteria", InstanceMatchCriteria.to_query f))
          ; Util.option_map v.end_date_type (fun f ->
-               Query.Pair ("endDateType", EndDateType.to_query f))
+               Query.Pair ("EndDateType", EndDateType.to_query f))
          ; Util.option_map v.end_date (fun f ->
-               Query.Pair ("endDate", DateTime.to_query f))
+               Query.Pair ("EndDate", DateTime.to_query f))
          ; Util.option_map v.state (fun f ->
-               Query.Pair ("state", CapacityReservationState.to_query f))
+               Query.Pair ("State", CapacityReservationState.to_query f))
          ; Util.option_map v.ephemeral_storage (fun f ->
-               Query.Pair ("ephemeralStorage", Boolean.to_query f))
+               Query.Pair ("EphemeralStorage", Boolean.to_query f))
          ; Util.option_map v.ebs_optimized (fun f ->
-               Query.Pair ("ebsOptimized", Boolean.to_query f))
+               Query.Pair ("EbsOptimized", Boolean.to_query f))
          ; Util.option_map v.available_instance_count (fun f ->
-               Query.Pair ("availableInstanceCount", Integer.to_query f))
+               Query.Pair ("AvailableInstanceCount", Integer.to_query f))
          ; Util.option_map v.total_instance_count (fun f ->
-               Query.Pair ("totalInstanceCount", Integer.to_query f))
+               Query.Pair ("TotalInstanceCount", Integer.to_query f))
          ; Util.option_map v.tenancy (fun f ->
-               Query.Pair ("tenancy", CapacityReservationTenancy.to_query f))
+               Query.Pair ("Tenancy", CapacityReservationTenancy.to_query f))
          ; Util.option_map v.availability_zone (fun f ->
-               Query.Pair ("availabilityZone", String.to_query f))
+               Query.Pair ("AvailabilityZone", String.to_query f))
          ; Util.option_map v.instance_platform (fun f ->
                Query.Pair
-                 ("instancePlatform", CapacityReservationInstancePlatform.to_query f))
+                 ("InstancePlatform", CapacityReservationInstancePlatform.to_query f))
          ; Util.option_map v.instance_type (fun f ->
-               Query.Pair ("instanceType", String.to_query f))
+               Query.Pair ("InstanceType", String.to_query f))
          ; Util.option_map v.availability_zone_id (fun f ->
-               Query.Pair ("availabilityZoneId", String.to_query f))
+               Query.Pair ("AvailabilityZoneId", String.to_query f))
          ; Util.option_map v.capacity_reservation_arn (fun f ->
-               Query.Pair ("capacityReservationArn", String.to_query f))
-         ; Util.option_map v.owner_id (fun f -> Query.Pair ("ownerId", String.to_query f))
+               Query.Pair ("CapacityReservationArn", String.to_query f))
+         ; Util.option_map v.owner_id (fun f -> Query.Pair ("OwnerId", String.to_query f))
          ; Util.option_map v.capacity_reservation_id (fun f ->
-               Query.Pair ("capacityReservationId", String.to_query f))
+               Query.Pair ("CapacityReservationId", String.to_query f))
          ])
 
   let to_json v =
@@ -24391,27 +24390,27 @@ module ReservedInstancesModification = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.update_date (fun f ->
-               Query.Pair ("updateDate", DateTime.to_query f))
+               Query.Pair ("UpdateDate", DateTime.to_query f))
          ; Util.option_map v.status_message (fun f ->
-               Query.Pair ("statusMessage", String.to_query f))
-         ; Util.option_map v.status (fun f -> Query.Pair ("status", String.to_query f))
+               Query.Pair ("StatusMessage", String.to_query f))
+         ; Util.option_map v.status (fun f -> Query.Pair ("Status", String.to_query f))
          ; Util.option_map v.reserved_instances_modification_id (fun f ->
-               Query.Pair ("reservedInstancesModificationId", String.to_query f))
+               Query.Pair ("ReservedInstancesModificationId", String.to_query f))
          ; Some
              (Query.Pair
-                ( "reservedInstancesSet"
+                ( "ReservedInstancesSet"
                 , ReservedIntancesIds.to_query v.reserved_instances_ids ))
          ; Some
              (Query.Pair
-                ( "modificationResultSet"
+                ( "ModificationResultSet"
                 , ReservedInstancesModificationResultList.to_query v.modification_results
                 ))
          ; Util.option_map v.effective_date (fun f ->
-               Query.Pair ("effectiveDate", DateTime.to_query f))
+               Query.Pair ("EffectiveDate", DateTime.to_query f))
          ; Util.option_map v.create_date (fun f ->
-               Query.Pair ("createDate", DateTime.to_query f))
+               Query.Pair ("CreateDate", DateTime.to_query f))
          ; Util.option_map v.client_token (fun f ->
-               Query.Pair ("clientToken", String.to_query f))
+               Query.Pair ("ClientToken", String.to_query f))
          ])
 
   let to_json v =
@@ -24481,16 +24480,16 @@ module PlacementGroup = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
-         ; Util.option_map v.group_id (fun f -> Query.Pair ("groupId", String.to_query f))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
+         ; Util.option_map v.group_id (fun f -> Query.Pair ("GroupId", String.to_query f))
          ; Util.option_map v.partition_count (fun f ->
-               Query.Pair ("partitionCount", Integer.to_query f))
+               Query.Pair ("PartitionCount", Integer.to_query f))
          ; Util.option_map v.strategy (fun f ->
-               Query.Pair ("strategy", PlacementStrategy.to_query f))
+               Query.Pair ("Strategy", PlacementStrategy.to_query f))
          ; Util.option_map v.state (fun f ->
-               Query.Pair ("state", PlacementGroupState.to_query f))
+               Query.Pair ("State", PlacementGroupState.to_query f))
          ; Util.option_map v.group_name (fun f ->
-               Query.Pair ("groupName", String.to_query f))
+               Query.Pair ("GroupName", String.to_query f))
          ])
 
   let to_json v =
@@ -24543,13 +24542,13 @@ module TransitGatewayRouteTablePropagation = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.state (fun f ->
-               Query.Pair ("state", TransitGatewayPropagationState.to_query f))
+               Query.Pair ("State", TransitGatewayPropagationState.to_query f))
          ; Util.option_map v.resource_type (fun f ->
-               Query.Pair ("resourceType", TransitGatewayAttachmentResourceType.to_query f))
+               Query.Pair ("ResourceType", TransitGatewayAttachmentResourceType.to_query f))
          ; Util.option_map v.resource_id (fun f ->
-               Query.Pair ("resourceId", String.to_query f))
+               Query.Pair ("ResourceId", String.to_query f))
          ; Util.option_map v.transit_gateway_attachment_id (fun f ->
-               Query.Pair ("transitGatewayAttachmentId", String.to_query f))
+               Query.Pair ("TransitGatewayAttachmentId", String.to_query f))
          ])
 
   let to_json v =
@@ -24600,12 +24599,12 @@ module KeyPairInfo = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
-         ; Util.option_map v.key_name (fun f -> Query.Pair ("keyName", String.to_query f))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
+         ; Util.option_map v.key_name (fun f -> Query.Pair ("KeyName", String.to_query f))
          ; Util.option_map v.key_fingerprint (fun f ->
-               Query.Pair ("keyFingerprint", String.to_query f))
+               Query.Pair ("KeyFingerprint", String.to_query f))
          ; Util.option_map v.key_pair_id (fun f ->
-               Query.Pair ("keyPairId", String.to_query f))
+               Query.Pair ("KeyPairId", String.to_query f))
          ])
 
   let to_json v =
@@ -24663,11 +24662,11 @@ module HistoryRecordEntry = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.timestamp (fun f ->
-               Query.Pair ("timestamp", DateTime.to_query f))
+               Query.Pair ("Timestamp", DateTime.to_query f))
          ; Util.option_map v.event_type (fun f ->
-               Query.Pair ("eventType", FleetEventType.to_query f))
+               Query.Pair ("EventType", FleetEventType.to_query f))
          ; Util.option_map v.event_information (fun f ->
-               Query.Pair ("eventInformation", EventInformation.to_query f))
+               Query.Pair ("EventInformation", EventInformation.to_query f))
          ])
 
   let to_json v =
@@ -24765,29 +24764,29 @@ module HostReservation = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.upfront_price (fun f ->
-               Query.Pair ("upfrontPrice", String.to_query f))
+               Query.Pair ("UpfrontPrice", String.to_query f))
          ; Util.option_map v.state (fun f ->
-               Query.Pair ("state", ReservationState.to_query f))
-         ; Util.option_map v.start (fun f -> Query.Pair ("start", DateTime.to_query f))
+               Query.Pair ("State", ReservationState.to_query f))
+         ; Util.option_map v.start (fun f -> Query.Pair ("Start", DateTime.to_query f))
          ; Util.option_map v.payment_option (fun f ->
-               Query.Pair ("paymentOption", PaymentOption.to_query f))
+               Query.Pair ("PaymentOption", PaymentOption.to_query f))
          ; Util.option_map v.offering_id (fun f ->
-               Query.Pair ("offeringId", String.to_query f))
+               Query.Pair ("OfferingId", String.to_query f))
          ; Util.option_map v.instance_family (fun f ->
-               Query.Pair ("instanceFamily", String.to_query f))
+               Query.Pair ("InstanceFamily", String.to_query f))
          ; Util.option_map v.hourly_price (fun f ->
-               Query.Pair ("hourlyPrice", String.to_query f))
+               Query.Pair ("HourlyPrice", String.to_query f))
          ; Util.option_map v.host_reservation_id (fun f ->
-               Query.Pair ("hostReservationId", String.to_query f))
-         ; Some (Query.Pair ("hostIdSet", ResponseHostIdSet.to_query v.host_id_set))
-         ; Util.option_map v.end_ (fun f -> Query.Pair ("end", DateTime.to_query f))
+               Query.Pair ("HostReservationId", String.to_query f))
+         ; Some (Query.Pair ("HostIdSet", ResponseHostIdSet.to_query v.host_id_set))
+         ; Util.option_map v.end_ (fun f -> Query.Pair ("End", DateTime.to_query f))
          ; Util.option_map v.duration (fun f ->
-               Query.Pair ("duration", Integer.to_query f))
+               Query.Pair ("Duration", Integer.to_query f))
          ; Util.option_map v.currency_code (fun f ->
-               Query.Pair ("currencyCode", CurrencyCodeValues.to_query f))
-         ; Util.option_map v.count (fun f -> Query.Pair ("count", Integer.to_query f))
+               Query.Pair ("CurrencyCode", CurrencyCodeValues.to_query f))
+         ; Util.option_map v.count (fun f -> Query.Pair ("Count", Integer.to_query f))
          ])
 
   let to_json v =
@@ -24915,23 +24914,23 @@ module VpcEndpointConnection = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "gatewayLoadBalancerArnSet"
+                ( "GatewayLoadBalancerArnSet"
                 , ValueStringList.to_query v.gateway_load_balancer_arns ))
          ; Some
              (Query.Pair
-                ( "networkLoadBalancerArnSet"
+                ( "NetworkLoadBalancerArnSet"
                 , ValueStringList.to_query v.network_load_balancer_arns ))
-         ; Some (Query.Pair ("dnsEntrySet", DnsEntrySet.to_query v.dns_entries))
+         ; Some (Query.Pair ("DnsEntrySet", DnsEntrySet.to_query v.dns_entries))
          ; Util.option_map v.creation_timestamp (fun f ->
-               Query.Pair ("creationTimestamp", DateTime.to_query f))
+               Query.Pair ("CreationTimestamp", DateTime.to_query f))
          ; Util.option_map v.vpc_endpoint_state (fun f ->
-               Query.Pair ("vpcEndpointState", State.to_query f))
+               Query.Pair ("VpcEndpointState", State.to_query f))
          ; Util.option_map v.vpc_endpoint_owner (fun f ->
-               Query.Pair ("vpcEndpointOwner", String.to_query f))
+               Query.Pair ("VpcEndpointOwner", String.to_query f))
          ; Util.option_map v.vpc_endpoint_id (fun f ->
-               Query.Pair ("vpcEndpointId", String.to_query f))
+               Query.Pair ("VpcEndpointId", String.to_query f))
          ; Util.option_map v.service_id (fun f ->
-               Query.Pair ("serviceId", String.to_query f))
+               Query.Pair ("ServiceId", String.to_query f))
          ])
 
   let to_json v =
@@ -25024,19 +25023,19 @@ module ExportImageTask = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.status_message (fun f ->
-               Query.Pair ("statusMessage", String.to_query f))
-         ; Util.option_map v.status (fun f -> Query.Pair ("status", String.to_query f))
+               Query.Pair ("StatusMessage", String.to_query f))
+         ; Util.option_map v.status (fun f -> Query.Pair ("Status", String.to_query f))
          ; Util.option_map v.s3_export_location (fun f ->
-               Query.Pair ("s3ExportLocation", ExportTaskS3Location.to_query f))
+               Query.Pair ("S3ExportLocation", ExportTaskS3Location.to_query f))
          ; Util.option_map v.progress (fun f ->
-               Query.Pair ("progress", String.to_query f))
-         ; Util.option_map v.image_id (fun f -> Query.Pair ("imageId", String.to_query f))
+               Query.Pair ("Progress", String.to_query f))
+         ; Util.option_map v.image_id (fun f -> Query.Pair ("ImageId", String.to_query f))
          ; Util.option_map v.export_image_task_id (fun f ->
-               Query.Pair ("exportImageTaskId", String.to_query f))
+               Query.Pair ("ExportImageTaskId", String.to_query f))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
          ])
 
   let to_json v =
@@ -25132,13 +25131,13 @@ module AssociatedRole = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.encryption_kms_key_id (fun f ->
-               Query.Pair ("encryptionKmsKeyId", String.to_query f))
+               Query.Pair ("EncryptionKmsKeyId", String.to_query f))
          ; Util.option_map v.certificate_s3_object_key (fun f ->
-               Query.Pair ("certificateS3ObjectKey", String.to_query f))
+               Query.Pair ("CertificateS3ObjectKey", String.to_query f))
          ; Util.option_map v.certificate_s3_bucket_name (fun f ->
-               Query.Pair ("certificateS3BucketName", String.to_query f))
+               Query.Pair ("CertificateS3BucketName", String.to_query f))
          ; Util.option_map v.associated_role_arn (fun f ->
-               Query.Pair ("associatedRoleArn", String.to_query f))
+               Query.Pair ("AssociatedRoleArn", String.to_query f))
          ])
 
   let to_json v =
@@ -25184,9 +25183,9 @@ module UnsuccessfulItem = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.resource_id (fun f ->
-               Query.Pair ("resourceId", String.to_query f))
+               Query.Pair ("ResourceId", String.to_query f))
          ; Util.option_map v.error (fun f ->
-               Query.Pair ("error", UnsuccessfulItemError.to_query f))
+               Query.Pair ("Error", UnsuccessfulItemError.to_query f))
          ])
 
   let to_json v =
@@ -25258,23 +25257,23 @@ module TrafficMirrorFilter = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
          ; Some
              (Query.Pair
-                ( "networkServiceSet"
+                ( "NetworkServiceSet"
                 , TrafficMirrorNetworkServiceList.to_query v.network_services ))
          ; Some
              (Query.Pair
-                ( "egressFilterRuleSet"
+                ( "EgressFilterRuleSet"
                 , TrafficMirrorFilterRuleList.to_query v.egress_filter_rules ))
          ; Some
              (Query.Pair
-                ( "ingressFilterRuleSet"
+                ( "IngressFilterRuleSet"
                 , TrafficMirrorFilterRuleList.to_query v.ingress_filter_rules ))
          ; Util.option_map v.traffic_mirror_filter_id (fun f ->
-               Query.Pair ("trafficMirrorFilterId", String.to_query f))
+               Query.Pair ("TrafficMirrorFilterId", String.to_query f))
          ])
 
   let to_json v =
@@ -25330,8 +25329,8 @@ module PrefixListEntry = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
-         ; Util.option_map v.cidr (fun f -> Query.Pair ("cidr", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
+         ; Util.option_map v.cidr (fun f -> Query.Pair ("Cidr", String.to_query f))
          ])
 
   let to_json v =
@@ -25397,20 +25396,20 @@ module TransitGateway = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.options (fun f ->
-               Query.Pair ("options", TransitGatewayOptions.to_query f))
+               Query.Pair ("Options", TransitGatewayOptions.to_query f))
          ; Util.option_map v.creation_time (fun f ->
-               Query.Pair ("creationTime", DateTime.to_query f))
+               Query.Pair ("CreationTime", DateTime.to_query f))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
-         ; Util.option_map v.owner_id (fun f -> Query.Pair ("ownerId", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
+         ; Util.option_map v.owner_id (fun f -> Query.Pair ("OwnerId", String.to_query f))
          ; Util.option_map v.state (fun f ->
-               Query.Pair ("state", TransitGatewayState.to_query f))
+               Query.Pair ("State", TransitGatewayState.to_query f))
          ; Util.option_map v.transit_gateway_arn (fun f ->
-               Query.Pair ("transitGatewayArn", String.to_query f))
+               Query.Pair ("TransitGatewayArn", String.to_query f))
          ; Util.option_map v.transit_gateway_id (fun f ->
-               Query.Pair ("transitGatewayId", String.to_query f))
+               Query.Pair ("TransitGatewayId", String.to_query f))
          ])
 
   let to_json v =
@@ -25548,9 +25547,9 @@ module ClassicLinkDnsSupport = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.vpc_id (fun f -> Query.Pair ("vpcId", String.to_query f))
+         [ Util.option_map v.vpc_id (fun f -> Query.Pair ("VpcId", String.to_query f))
          ; Util.option_map v.classic_link_dns_supported (fun f ->
-               Query.Pair ("classicLinkDnsSupported", Boolean.to_query f))
+               Query.Pair ("ClassicLinkDnsSupported", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -25624,23 +25623,23 @@ module ManagedPrefixList = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.owner_id (fun f -> Query.Pair ("ownerId", String.to_query f))
-         ; Some (Query.Pair ("tagSet", TagList.to_query v.tags))
-         ; Util.option_map v.version (fun f -> Query.Pair ("version", Long.to_query f))
+         [ Util.option_map v.owner_id (fun f -> Query.Pair ("OwnerId", String.to_query f))
+         ; Some (Query.Pair ("TagSet", TagList.to_query v.tags))
+         ; Util.option_map v.version (fun f -> Query.Pair ("Version", Long.to_query f))
          ; Util.option_map v.max_entries (fun f ->
-               Query.Pair ("maxEntries", Integer.to_query f))
+               Query.Pair ("MaxEntries", Integer.to_query f))
          ; Util.option_map v.prefix_list_name (fun f ->
-               Query.Pair ("prefixListName", String.to_query f))
+               Query.Pair ("PrefixListName", String.to_query f))
          ; Util.option_map v.prefix_list_arn (fun f ->
-               Query.Pair ("prefixListArn", String.to_query f))
+               Query.Pair ("PrefixListArn", String.to_query f))
          ; Util.option_map v.state_message (fun f ->
-               Query.Pair ("stateMessage", String.to_query f))
+               Query.Pair ("StateMessage", String.to_query f))
          ; Util.option_map v.state (fun f ->
-               Query.Pair ("state", PrefixListState.to_query f))
+               Query.Pair ("State", PrefixListState.to_query f))
          ; Util.option_map v.address_family (fun f ->
-               Query.Pair ("addressFamily", String.to_query f))
+               Query.Pair ("AddressFamily", String.to_query f))
          ; Util.option_map v.prefix_list_id (fun f ->
-               Query.Pair ("prefixListId", String.to_query f))
+               Query.Pair ("PrefixListId", String.to_query f))
          ])
 
   let to_json v =
@@ -25739,24 +25738,24 @@ module ReservedInstancesListing = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.update_date (fun f ->
-               Query.Pair ("updateDate", DateTime.to_query f))
-         ; Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+               Query.Pair ("UpdateDate", DateTime.to_query f))
+         ; Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.status_message (fun f ->
-               Query.Pair ("statusMessage", String.to_query f))
+               Query.Pair ("StatusMessage", String.to_query f))
          ; Util.option_map v.status (fun f ->
-               Query.Pair ("status", ListingStatus.to_query f))
+               Query.Pair ("Status", ListingStatus.to_query f))
          ; Util.option_map v.reserved_instances_listing_id (fun f ->
-               Query.Pair ("reservedInstancesListingId", String.to_query f))
+               Query.Pair ("ReservedInstancesListingId", String.to_query f))
          ; Util.option_map v.reserved_instances_id (fun f ->
-               Query.Pair ("reservedInstancesId", String.to_query f))
+               Query.Pair ("ReservedInstancesId", String.to_query f))
          ; Some
-             (Query.Pair ("priceSchedules", PriceScheduleList.to_query v.price_schedules))
+             (Query.Pair ("PriceSchedules", PriceScheduleList.to_query v.price_schedules))
          ; Some
-             (Query.Pair ("instanceCounts", InstanceCountList.to_query v.instance_counts))
+             (Query.Pair ("InstanceCounts", InstanceCountList.to_query v.instance_counts))
          ; Util.option_map v.create_date (fun f ->
-               Query.Pair ("createDate", DateTime.to_query f))
+               Query.Pair ("CreateDate", DateTime.to_query f))
          ; Util.option_map v.client_token (fun f ->
-               Query.Pair ("clientToken", String.to_query f))
+               Query.Pair ("ClientToken", String.to_query f))
          ])
 
   let to_json v =
@@ -25817,11 +25816,11 @@ module InstanceStateChange = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.previous_state (fun f ->
-               Query.Pair ("previousState", InstanceState.to_query f))
+               Query.Pair ("PreviousState", InstanceState.to_query f))
          ; Util.option_map v.instance_id (fun f ->
-               Query.Pair ("instanceId", String.to_query f))
+               Query.Pair ("InstanceId", String.to_query f))
          ; Util.option_map v.current_state (fun f ->
-               Query.Pair ("currentState", InstanceState.to_query f))
+               Query.Pair ("CurrentState", InstanceState.to_query f))
          ])
 
   let to_json v =
@@ -25929,11 +25928,11 @@ module TerminateConnectionStatus = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.current_status (fun f ->
-               Query.Pair ("currentStatus", ClientVpnConnectionStatus.to_query f))
+               Query.Pair ("CurrentStatus", ClientVpnConnectionStatus.to_query f))
          ; Util.option_map v.previous_status (fun f ->
-               Query.Pair ("previousStatus", ClientVpnConnectionStatus.to_query f))
+               Query.Pair ("PreviousStatus", ClientVpnConnectionStatus.to_query f))
          ; Util.option_map v.connection_id (fun f ->
-               Query.Pair ("connectionId", String.to_query f))
+               Query.Pair ("ConnectionId", String.to_query f))
          ])
 
   let to_json v =
@@ -25980,11 +25979,11 @@ module InstanceTypeOffering = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.location (fun f ->
-               Query.Pair ("location", String.to_query f))
+               Query.Pair ("Location", String.to_query f))
          ; Util.option_map v.location_type (fun f ->
-               Query.Pair ("locationType", LocationType.to_query f))
+               Query.Pair ("LocationType", LocationType.to_query f))
          ; Util.option_map v.instance_type (fun f ->
-               Query.Pair ("instanceType", InstanceType.to_query f))
+               Query.Pair ("InstanceType", InstanceType.to_query f))
          ])
 
   let to_json v =
@@ -26055,18 +26054,18 @@ module InstanceStatus = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.system_status (fun f ->
-               Query.Pair ("systemStatus", InstanceStatusSummary.to_query f))
+               Query.Pair ("SystemStatus", InstanceStatusSummary.to_query f))
          ; Util.option_map v.instance_status (fun f ->
-               Query.Pair ("instanceStatus", InstanceStatusSummary.to_query f))
+               Query.Pair ("InstanceStatus", InstanceStatusSummary.to_query f))
          ; Util.option_map v.instance_state (fun f ->
-               Query.Pair ("instanceState", InstanceState.to_query f))
+               Query.Pair ("InstanceState", InstanceState.to_query f))
          ; Util.option_map v.instance_id (fun f ->
-               Query.Pair ("instanceId", String.to_query f))
-         ; Some (Query.Pair ("eventsSet", InstanceStatusEventList.to_query v.events))
+               Query.Pair ("InstanceId", String.to_query f))
+         ; Some (Query.Pair ("EventsSet", InstanceStatusEventList.to_query v.events))
          ; Util.option_map v.outpost_arn (fun f ->
-               Query.Pair ("outpostArn", String.to_query f))
+               Query.Pair ("OutpostArn", String.to_query f))
          ; Util.option_map v.availability_zone (fun f ->
-               Query.Pair ("availabilityZone", String.to_query f))
+               Query.Pair ("AvailabilityZone", String.to_query f))
          ])
 
   let to_json v =
@@ -26150,18 +26149,18 @@ module TransitGatewayPrefixListReference = struct
       (Util.list_filter_opt
          [ Util.option_map v.transit_gateway_attachment (fun f ->
                Query.Pair
-                 ( "transitGatewayAttachment"
+                 ( "TransitGatewayAttachment"
                  , TransitGatewayPrefixListAttachment.to_query f ))
          ; Util.option_map v.blackhole (fun f ->
-               Query.Pair ("blackhole", Boolean.to_query f))
+               Query.Pair ("Blackhole", Boolean.to_query f))
          ; Util.option_map v.state (fun f ->
-               Query.Pair ("state", TransitGatewayPrefixListReferenceState.to_query f))
+               Query.Pair ("State", TransitGatewayPrefixListReferenceState.to_query f))
          ; Util.option_map v.prefix_list_owner_id (fun f ->
-               Query.Pair ("prefixListOwnerId", String.to_query f))
+               Query.Pair ("PrefixListOwnerId", String.to_query f))
          ; Util.option_map v.prefix_list_id (fun f ->
-               Query.Pair ("prefixListId", String.to_query f))
+               Query.Pair ("PrefixListId", String.to_query f))
          ; Util.option_map v.transit_gateway_route_table_id (fun f ->
-               Query.Pair ("transitGatewayRouteTableId", String.to_query f))
+               Query.Pair ("TransitGatewayRouteTableId", String.to_query f))
          ])
 
   let to_json v =
@@ -26362,47 +26361,47 @@ module Image = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ("virtualizationType", VirtualizationType.to_query v.virtualization_type))
-         ; Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+                ("VirtualizationType", VirtualizationType.to_query v.virtualization_type))
+         ; Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.state_reason (fun f ->
-               Query.Pair ("stateReason", StateReason.to_query f))
+               Query.Pair ("StateReason", StateReason.to_query f))
          ; Util.option_map v.sriov_net_support (fun f ->
-               Query.Pair ("sriovNetSupport", String.to_query f))
-         ; Some (Query.Pair ("rootDeviceType", DeviceType.to_query v.root_device_type))
+               Query.Pair ("SriovNetSupport", String.to_query f))
+         ; Some (Query.Pair ("RootDeviceType", DeviceType.to_query v.root_device_type))
          ; Util.option_map v.root_device_name (fun f ->
-               Query.Pair ("rootDeviceName", String.to_query f))
-         ; Util.option_map v.name (fun f -> Query.Pair ("name", String.to_query f))
+               Query.Pair ("RootDeviceName", String.to_query f))
+         ; Util.option_map v.name (fun f -> Query.Pair ("Name", String.to_query f))
          ; Util.option_map v.image_owner_alias (fun f ->
-               Query.Pair ("imageOwnerAlias", String.to_query f))
-         ; Some (Query.Pair ("hypervisor", HypervisorType.to_query v.hypervisor))
+               Query.Pair ("ImageOwnerAlias", String.to_query f))
+         ; Some (Query.Pair ("Hypervisor", HypervisorType.to_query v.hypervisor))
          ; Util.option_map v.ena_support (fun f ->
-               Query.Pair ("enaSupport", Boolean.to_query f))
+               Query.Pair ("EnaSupport", Boolean.to_query f))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
          ; Some
              (Query.Pair
-                ( "blockDeviceMapping"
+                ( "BlockDeviceMapping"
                 , BlockDeviceMappingList.to_query v.block_device_mappings ))
-         ; Some (Query.Pair ("imageState", ImageState.to_query v.state))
+         ; Some (Query.Pair ("ImageState", ImageState.to_query v.state))
          ; Util.option_map v.ramdisk_id (fun f ->
-               Query.Pair ("ramdiskId", String.to_query f))
-         ; Some (Query.Pair ("productCodes", ProductCodeList.to_query v.product_codes))
+               Query.Pair ("RamdiskId", String.to_query f))
+         ; Some (Query.Pair ("ProductCodes", ProductCodeList.to_query v.product_codes))
          ; Util.option_map v.usage_operation (fun f ->
-               Query.Pair ("usageOperation", String.to_query f))
+               Query.Pair ("UsageOperation", String.to_query f))
          ; Util.option_map v.platform_details (fun f ->
-               Query.Pair ("platformDetails", String.to_query f))
+               Query.Pair ("PlatformDetails", String.to_query f))
          ; Util.option_map v.platform (fun f ->
-               Query.Pair ("platform", PlatformValues.to_query f))
-         ; Some (Query.Pair ("imageOwnerId", String.to_query v.owner_id))
+               Query.Pair ("Platform", PlatformValues.to_query f))
+         ; Some (Query.Pair ("ImageOwnerId", String.to_query v.owner_id))
          ; Util.option_map v.kernel_id (fun f ->
-               Query.Pair ("kernelId", String.to_query f))
-         ; Some (Query.Pair ("isPublic", Boolean.to_query v.public))
-         ; Some (Query.Pair ("imageType", ImageTypeValues.to_query v.image_type))
-         ; Some (Query.Pair ("imageLocation", String.to_query v.image_location))
-         ; Some (Query.Pair ("imageId", String.to_query v.image_id))
+               Query.Pair ("KernelId", String.to_query f))
+         ; Some (Query.Pair ("IsPublic", Boolean.to_query v.public))
+         ; Some (Query.Pair ("ImageType", ImageTypeValues.to_query v.image_type))
+         ; Some (Query.Pair ("ImageLocation", String.to_query v.image_location))
+         ; Some (Query.Pair ("ImageId", String.to_query v.image_id))
          ; Util.option_map v.creation_date (fun f ->
-               Query.Pair ("creationDate", String.to_query f))
-         ; Some (Query.Pair ("architecture", ArchitectureValues.to_query v.architecture))
+               Query.Pair ("CreationDate", String.to_query f))
+         ; Some (Query.Pair ("Architecture", ArchitectureValues.to_query v.architecture))
          ])
 
   let to_json v =
@@ -26505,10 +26504,10 @@ module PriceScheduleSpecification = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.term (fun f -> Query.Pair ("term", Long.to_query f))
-         ; Util.option_map v.price (fun f -> Query.Pair ("price", Double.to_query f))
+         [ Util.option_map v.term (fun f -> Query.Pair ("Term", Long.to_query f))
+         ; Util.option_map v.price (fun f -> Query.Pair ("Price", Double.to_query f))
          ; Util.option_map v.currency_code (fun f ->
-               Query.Pair ("currencyCode", CurrencyCodeValues.to_query f))
+               Query.Pair ("CurrencyCode", CurrencyCodeValues.to_query f))
          ])
 
   let to_json v =
@@ -26552,13 +26551,13 @@ module ImportSnapshotTask = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.snapshot_task_detail (fun f ->
-               Query.Pair ("snapshotTaskDetail", SnapshotTaskDetail.to_query f))
+               Query.Pair ("SnapshotTaskDetail", SnapshotTaskDetail.to_query f))
          ; Util.option_map v.import_task_id (fun f ->
-               Query.Pair ("importTaskId", String.to_query f))
+               Query.Pair ("ImportTaskId", String.to_query f))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
          ])
 
   let to_json v =
@@ -26626,17 +26625,17 @@ module NetworkInterfacePermission = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.permission_state (fun f ->
-               Query.Pair ("permissionState", NetworkInterfacePermissionState.to_query f))
+               Query.Pair ("PermissionState", NetworkInterfacePermissionState.to_query f))
          ; Util.option_map v.permission (fun f ->
-               Query.Pair ("permission", InterfacePermissionType.to_query f))
+               Query.Pair ("Permission", InterfacePermissionType.to_query f))
          ; Util.option_map v.aws_service (fun f ->
-               Query.Pair ("awsService", String.to_query f))
+               Query.Pair ("AwsService", String.to_query f))
          ; Util.option_map v.aws_account_id (fun f ->
-               Query.Pair ("awsAccountId", String.to_query f))
+               Query.Pair ("AwsAccountId", String.to_query f))
          ; Util.option_map v.network_interface_id (fun f ->
-               Query.Pair ("networkInterfaceId", String.to_query f))
+               Query.Pair ("NetworkInterfaceId", String.to_query f))
          ; Util.option_map v.network_interface_permission_id (fun f ->
-               Query.Pair ("networkInterfacePermissionId", String.to_query f))
+               Query.Pair ("NetworkInterfacePermissionId", String.to_query f))
          ])
 
   let to_json v =
@@ -26772,36 +26771,36 @@ module Host = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.member_of_service_linked_resource_group (fun f ->
-               Query.Pair ("memberOfServiceLinkedResourceGroup", Boolean.to_query f))
+               Query.Pair ("MemberOfServiceLinkedResourceGroup", Boolean.to_query f))
          ; Util.option_map v.availability_zone_id (fun f ->
-               Query.Pair ("availabilityZoneId", String.to_query f))
-         ; Util.option_map v.owner_id (fun f -> Query.Pair ("ownerId", String.to_query f))
+               Query.Pair ("AvailabilityZoneId", String.to_query f))
+         ; Util.option_map v.owner_id (fun f -> Query.Pair ("OwnerId", String.to_query f))
          ; Util.option_map v.allows_multiple_instance_types (fun f ->
                Query.Pair
-                 ("allowsMultipleInstanceTypes", AllowsMultipleInstanceTypes.to_query f))
+                 ("AllowsMultipleInstanceTypes", AllowsMultipleInstanceTypes.to_query f))
          ; Util.option_map v.host_recovery (fun f ->
-               Query.Pair ("hostRecovery", HostRecovery.to_query f))
-         ; Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+               Query.Pair ("HostRecovery", HostRecovery.to_query f))
+         ; Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.release_time (fun f ->
-               Query.Pair ("releaseTime", DateTime.to_query f))
+               Query.Pair ("ReleaseTime", DateTime.to_query f))
          ; Util.option_map v.allocation_time (fun f ->
-               Query.Pair ("allocationTime", DateTime.to_query f))
+               Query.Pair ("AllocationTime", DateTime.to_query f))
          ; Util.option_map v.state (fun f ->
-               Query.Pair ("state", AllocationState.to_query f))
-         ; Some (Query.Pair ("instances", HostInstanceList.to_query v.instances))
+               Query.Pair ("State", AllocationState.to_query f))
+         ; Some (Query.Pair ("Instances", HostInstanceList.to_query v.instances))
          ; Util.option_map v.host_reservation_id (fun f ->
-               Query.Pair ("hostReservationId", String.to_query f))
+               Query.Pair ("HostReservationId", String.to_query f))
          ; Util.option_map v.host_properties (fun f ->
-               Query.Pair ("hostProperties", HostProperties.to_query f))
-         ; Util.option_map v.host_id (fun f -> Query.Pair ("hostId", String.to_query f))
+               Query.Pair ("HostProperties", HostProperties.to_query f))
+         ; Util.option_map v.host_id (fun f -> Query.Pair ("HostId", String.to_query f))
          ; Util.option_map v.client_token (fun f ->
-               Query.Pair ("clientToken", String.to_query f))
+               Query.Pair ("ClientToken", String.to_query f))
          ; Util.option_map v.available_capacity (fun f ->
-               Query.Pair ("availableCapacity", AvailableCapacity.to_query f))
+               Query.Pair ("AvailableCapacity", AvailableCapacity.to_query f))
          ; Util.option_map v.availability_zone (fun f ->
-               Query.Pair ("availabilityZone", String.to_query f))
+               Query.Pair ("AvailabilityZone", String.to_query f))
          ; Util.option_map v.auto_placement (fun f ->
-               Query.Pair ("autoPlacement", AutoPlacement.to_query f))
+               Query.Pair ("AutoPlacement", AutoPlacement.to_query f))
          ])
 
   let to_json v =
@@ -26933,19 +26932,19 @@ module LaunchTemplate = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.latest_version_number (fun f ->
-               Query.Pair ("latestVersionNumber", Long.to_query f))
+               Query.Pair ("LatestVersionNumber", Long.to_query f))
          ; Util.option_map v.default_version_number (fun f ->
-               Query.Pair ("defaultVersionNumber", Long.to_query f))
+               Query.Pair ("DefaultVersionNumber", Long.to_query f))
          ; Util.option_map v.created_by (fun f ->
-               Query.Pair ("createdBy", String.to_query f))
+               Query.Pair ("CreatedBy", String.to_query f))
          ; Util.option_map v.create_time (fun f ->
-               Query.Pair ("createTime", DateTime.to_query f))
+               Query.Pair ("CreateTime", DateTime.to_query f))
          ; Util.option_map v.launch_template_name (fun f ->
-               Query.Pair ("launchTemplateName", String.to_query f))
+               Query.Pair ("LaunchTemplateName", String.to_query f))
          ; Util.option_map v.launch_template_id (fun f ->
-               Query.Pair ("launchTemplateId", String.to_query f))
+               Query.Pair ("LaunchTemplateId", String.to_query f))
          ])
 
   let to_json v =
@@ -27003,10 +27002,10 @@ module PrefixList = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.prefix_list_name (fun f ->
-               Query.Pair ("prefixListName", String.to_query f))
+               Query.Pair ("PrefixListName", String.to_query f))
          ; Util.option_map v.prefix_list_id (fun f ->
-               Query.Pair ("prefixListId", String.to_query f))
-         ; Some (Query.Pair ("cidrSet", ValueStringList.to_query v.cidrs))
+               Query.Pair ("PrefixListId", String.to_query f))
+         ; Some (Query.Pair ("CidrSet", ValueStringList.to_query v.cidrs))
          ])
 
   let to_json v =
@@ -27076,13 +27075,13 @@ module ActiveInstance = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.instance_health (fun f ->
-               Query.Pair ("instanceHealth", InstanceHealthStatus.to_query f))
+               Query.Pair ("InstanceHealth", InstanceHealthStatus.to_query f))
          ; Util.option_map v.spot_instance_request_id (fun f ->
-               Query.Pair ("spotInstanceRequestId", String.to_query f))
+               Query.Pair ("SpotInstanceRequestId", String.to_query f))
          ; Util.option_map v.instance_type (fun f ->
-               Query.Pair ("instanceType", String.to_query f))
+               Query.Pair ("InstanceType", String.to_query f))
          ; Util.option_map v.instance_id (fun f ->
-               Query.Pair ("instanceId", String.to_query f))
+               Query.Pair ("InstanceId", String.to_query f))
          ])
 
   let to_json v =
@@ -27132,13 +27131,13 @@ module InstanceBlockDeviceMappingSpecification = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.virtual_name (fun f ->
-               Query.Pair ("virtualName", String.to_query f))
+               Query.Pair ("VirtualName", String.to_query f))
          ; Util.option_map v.no_device (fun f ->
-               Query.Pair ("noDevice", String.to_query f))
+               Query.Pair ("NoDevice", String.to_query f))
          ; Util.option_map v.ebs (fun f ->
-               Query.Pair ("ebs", EbsInstanceBlockDeviceSpecification.to_query f))
+               Query.Pair ("Ebs", EbsInstanceBlockDeviceSpecification.to_query f))
          ; Util.option_map v.device_name (fun f ->
-               Query.Pair ("deviceName", String.to_query f))
+               Query.Pair ("DeviceName", String.to_query f))
          ])
 
   let to_json v =
@@ -27215,15 +27214,15 @@ module TransitGatewayMulticastDomain = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.creation_time (fun f ->
-               Query.Pair ("creationTime", DateTime.to_query f))
+               Query.Pair ("CreationTime", DateTime.to_query f))
          ; Util.option_map v.state (fun f ->
-               Query.Pair ("state", TransitGatewayMulticastDomainState.to_query f))
+               Query.Pair ("State", TransitGatewayMulticastDomainState.to_query f))
          ; Util.option_map v.transit_gateway_id (fun f ->
-               Query.Pair ("transitGatewayId", String.to_query f))
+               Query.Pair ("TransitGatewayId", String.to_query f))
          ; Util.option_map v.transit_gateway_multicast_domain_id (fun f ->
-               Query.Pair ("transitGatewayMulticastDomainId", String.to_query f))
+               Query.Pair ("TransitGatewayMulticastDomainId", String.to_query f))
          ])
 
   let to_json v =
@@ -27273,8 +27272,8 @@ module PrincipalIdFormat = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("statusSet", IdFormatList.to_query v.statuses))
-         ; Util.option_map v.arn (fun f -> Query.Pair ("arn", String.to_query f))
+         [ Some (Query.Pair ("StatusSet", IdFormatList.to_query v.statuses))
+         ; Util.option_map v.arn (fun f -> Query.Pair ("Arn", String.to_query f))
          ])
 
   let to_json v =
@@ -27309,9 +27308,9 @@ module AllowedPrincipal = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.principal (fun f ->
-               Query.Pair ("principal", String.to_query f))
+               Query.Pair ("Principal", String.to_query f))
          ; Util.option_map v.principal_type (fun f ->
-               Query.Pair ("principalType", PrincipalType.to_query f))
+               Query.Pair ("PrincipalType", PrincipalType.to_query f))
          ])
 
   let to_json v =
@@ -27352,12 +27351,12 @@ module ByoipCidr = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.state (fun f ->
-               Query.Pair ("state", ByoipCidrState.to_query f))
+               Query.Pair ("State", ByoipCidrState.to_query f))
          ; Util.option_map v.status_message (fun f ->
-               Query.Pair ("statusMessage", String.to_query f))
+               Query.Pair ("StatusMessage", String.to_query f))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
-         ; Util.option_map v.cidr (fun f -> Query.Pair ("cidr", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
+         ; Util.option_map v.cidr (fun f -> Query.Pair ("Cidr", String.to_query f))
          ])
 
   let to_json v =
@@ -27412,12 +27411,12 @@ module CoipPool = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.pool_arn (fun f -> Query.Pair ("poolArn", String.to_query f))
-         ; Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         [ Util.option_map v.pool_arn (fun f -> Query.Pair ("PoolArn", String.to_query f))
+         ; Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.local_gateway_route_table_id (fun f ->
-               Query.Pair ("localGatewayRouteTableId", String.to_query f))
-         ; Some (Query.Pair ("poolCidrSet", ValueStringList.to_query v.pool_cidrs))
-         ; Util.option_map v.pool_id (fun f -> Query.Pair ("poolId", String.to_query f))
+               Query.Pair ("LocalGatewayRouteTableId", String.to_query f))
+         ; Some (Query.Pair ("PoolCidrSet", ValueStringList.to_query v.pool_cidrs))
+         ; Util.option_map v.pool_id (fun f -> Query.Pair ("PoolId", String.to_query f))
          ])
 
   let to_json v =
@@ -27483,9 +27482,9 @@ module DeleteFleetErrorItem = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.fleet_id (fun f -> Query.Pair ("fleetId", String.to_query f))
+         [ Util.option_map v.fleet_id (fun f -> Query.Pair ("FleetId", String.to_query f))
          ; Util.option_map v.error (fun f ->
-               Query.Pair ("error", DeleteFleetError.to_query f))
+               Query.Pair ("Error", DeleteFleetError.to_query f))
          ])
 
   let to_json v =
@@ -27523,11 +27522,11 @@ module DeleteFleetSuccessItem = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.fleet_id (fun f -> Query.Pair ("fleetId", String.to_query f))
+         [ Util.option_map v.fleet_id (fun f -> Query.Pair ("FleetId", String.to_query f))
          ; Util.option_map v.previous_fleet_state (fun f ->
-               Query.Pair ("previousFleetState", FleetStateCode.to_query f))
+               Query.Pair ("PreviousFleetState", FleetStateCode.to_query f))
          ; Util.option_map v.current_fleet_state (fun f ->
-               Query.Pair ("currentFleetState", FleetStateCode.to_query f))
+               Query.Pair ("CurrentFleetState", FleetStateCode.to_query f))
          ])
 
   let to_json v =
@@ -27574,11 +27573,11 @@ module DisableFastSnapshotRestoreErrorItem = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "fastSnapshotRestoreStateErrorSet"
+                ( "FastSnapshotRestoreStateErrorSet"
                 , DisableFastSnapshotRestoreStateErrorSet.to_query
                     v.fast_snapshot_restore_state_errors ))
          ; Util.option_map v.snapshot_id (fun f ->
-               Query.Pair ("snapshotId", String.to_query f))
+               Query.Pair ("SnapshotId", String.to_query f))
          ])
 
   let to_json v =
@@ -27663,26 +27662,26 @@ module DisableFastSnapshotRestoreSuccessItem = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.disabled_time (fun f ->
-               Query.Pair ("disabledTime", DateTime.to_query f))
+               Query.Pair ("DisabledTime", DateTime.to_query f))
          ; Util.option_map v.disabling_time (fun f ->
-               Query.Pair ("disablingTime", DateTime.to_query f))
+               Query.Pair ("DisablingTime", DateTime.to_query f))
          ; Util.option_map v.enabled_time (fun f ->
-               Query.Pair ("enabledTime", DateTime.to_query f))
+               Query.Pair ("EnabledTime", DateTime.to_query f))
          ; Util.option_map v.optimizing_time (fun f ->
-               Query.Pair ("optimizingTime", DateTime.to_query f))
+               Query.Pair ("OptimizingTime", DateTime.to_query f))
          ; Util.option_map v.enabling_time (fun f ->
-               Query.Pair ("enablingTime", DateTime.to_query f))
+               Query.Pair ("EnablingTime", DateTime.to_query f))
          ; Util.option_map v.owner_alias (fun f ->
-               Query.Pair ("ownerAlias", String.to_query f))
-         ; Util.option_map v.owner_id (fun f -> Query.Pair ("ownerId", String.to_query f))
+               Query.Pair ("OwnerAlias", String.to_query f))
+         ; Util.option_map v.owner_id (fun f -> Query.Pair ("OwnerId", String.to_query f))
          ; Util.option_map v.state_transition_reason (fun f ->
-               Query.Pair ("stateTransitionReason", String.to_query f))
+               Query.Pair ("StateTransitionReason", String.to_query f))
          ; Util.option_map v.state (fun f ->
-               Query.Pair ("state", FastSnapshotRestoreStateCode.to_query f))
+               Query.Pair ("State", FastSnapshotRestoreStateCode.to_query f))
          ; Util.option_map v.availability_zone (fun f ->
-               Query.Pair ("availabilityZone", String.to_query f))
+               Query.Pair ("AvailabilityZone", String.to_query f))
          ; Util.option_map v.snapshot_id (fun f ->
-               Query.Pair ("snapshotId", String.to_query f))
+               Query.Pair ("SnapshotId", String.to_query f))
          ])
 
   let to_json v =
@@ -27807,35 +27806,35 @@ module ScheduledInstance = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.total_scheduled_instance_hours (fun f ->
-               Query.Pair ("totalScheduledInstanceHours", Integer.to_query f))
+               Query.Pair ("TotalScheduledInstanceHours", Integer.to_query f))
          ; Util.option_map v.term_start_date (fun f ->
-               Query.Pair ("termStartDate", DateTime.to_query f))
+               Query.Pair ("TermStartDate", DateTime.to_query f))
          ; Util.option_map v.term_end_date (fun f ->
-               Query.Pair ("termEndDate", DateTime.to_query f))
+               Query.Pair ("TermEndDate", DateTime.to_query f))
          ; Util.option_map v.slot_duration_in_hours (fun f ->
-               Query.Pair ("slotDurationInHours", Integer.to_query f))
+               Query.Pair ("SlotDurationInHours", Integer.to_query f))
          ; Util.option_map v.scheduled_instance_id (fun f ->
-               Query.Pair ("scheduledInstanceId", String.to_query f))
+               Query.Pair ("ScheduledInstanceId", String.to_query f))
          ; Util.option_map v.recurrence (fun f ->
-               Query.Pair ("recurrence", ScheduledInstanceRecurrence.to_query f))
+               Query.Pair ("Recurrence", ScheduledInstanceRecurrence.to_query f))
          ; Util.option_map v.previous_slot_end_time (fun f ->
-               Query.Pair ("previousSlotEndTime", DateTime.to_query f))
+               Query.Pair ("PreviousSlotEndTime", DateTime.to_query f))
          ; Util.option_map v.platform (fun f ->
-               Query.Pair ("platform", String.to_query f))
+               Query.Pair ("Platform", String.to_query f))
          ; Util.option_map v.next_slot_start_time (fun f ->
-               Query.Pair ("nextSlotStartTime", DateTime.to_query f))
+               Query.Pair ("NextSlotStartTime", DateTime.to_query f))
          ; Util.option_map v.network_platform (fun f ->
-               Query.Pair ("networkPlatform", String.to_query f))
+               Query.Pair ("NetworkPlatform", String.to_query f))
          ; Util.option_map v.instance_type (fun f ->
-               Query.Pair ("instanceType", String.to_query f))
+               Query.Pair ("InstanceType", String.to_query f))
          ; Util.option_map v.instance_count (fun f ->
-               Query.Pair ("instanceCount", Integer.to_query f))
+               Query.Pair ("InstanceCount", Integer.to_query f))
          ; Util.option_map v.hourly_price (fun f ->
-               Query.Pair ("hourlyPrice", String.to_query f))
+               Query.Pair ("HourlyPrice", String.to_query f))
          ; Util.option_map v.create_date (fun f ->
-               Query.Pair ("createDate", DateTime.to_query f))
+               Query.Pair ("CreateDate", DateTime.to_query f))
          ; Util.option_map v.availability_zone (fun f ->
-               Query.Pair ("availabilityZone", String.to_query f))
+               Query.Pair ("AvailabilityZone", String.to_query f))
          ])
 
   let to_json v =
@@ -27971,32 +27970,32 @@ module FlowLog = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.max_aggregation_interval (fun f ->
-               Query.Pair ("maxAggregationInterval", Integer.to_query f))
-         ; Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+               Query.Pair ("MaxAggregationInterval", Integer.to_query f))
+         ; Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.log_format (fun f ->
-               Query.Pair ("logFormat", String.to_query f))
+               Query.Pair ("LogFormat", String.to_query f))
          ; Util.option_map v.log_destination (fun f ->
-               Query.Pair ("logDestination", String.to_query f))
+               Query.Pair ("LogDestination", String.to_query f))
          ; Util.option_map v.log_destination_type (fun f ->
-               Query.Pair ("logDestinationType", LogDestinationType.to_query f))
+               Query.Pair ("LogDestinationType", LogDestinationType.to_query f))
          ; Util.option_map v.traffic_type (fun f ->
-               Query.Pair ("trafficType", TrafficType.to_query f))
+               Query.Pair ("TrafficType", TrafficType.to_query f))
          ; Util.option_map v.resource_id (fun f ->
-               Query.Pair ("resourceId", String.to_query f))
+               Query.Pair ("ResourceId", String.to_query f))
          ; Util.option_map v.log_group_name (fun f ->
-               Query.Pair ("logGroupName", String.to_query f))
+               Query.Pair ("LogGroupName", String.to_query f))
          ; Util.option_map v.flow_log_status (fun f ->
-               Query.Pair ("flowLogStatus", String.to_query f))
+               Query.Pair ("FlowLogStatus", String.to_query f))
          ; Util.option_map v.flow_log_id (fun f ->
-               Query.Pair ("flowLogId", String.to_query f))
+               Query.Pair ("FlowLogId", String.to_query f))
          ; Util.option_map v.deliver_logs_status (fun f ->
-               Query.Pair ("deliverLogsStatus", String.to_query f))
+               Query.Pair ("DeliverLogsStatus", String.to_query f))
          ; Util.option_map v.deliver_logs_permission_arn (fun f ->
-               Query.Pair ("deliverLogsPermissionArn", String.to_query f))
+               Query.Pair ("DeliverLogsPermissionArn", String.to_query f))
          ; Util.option_map v.deliver_logs_error_message (fun f ->
-               Query.Pair ("deliverLogsErrorMessage", String.to_query f))
+               Query.Pair ("DeliverLogsErrorMessage", String.to_query f))
          ; Util.option_map v.creation_time (fun f ->
-               Query.Pair ("creationTime", DateTime.to_query f))
+               Query.Pair ("CreationTime", DateTime.to_query f))
          ])
 
   let to_json v =
@@ -28117,15 +28116,15 @@ module BundleTask = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("updateTime", DateTime.to_query v.update_time))
-         ; Some (Query.Pair ("storage", Storage.to_query v.storage))
-         ; Some (Query.Pair ("state", BundleTaskState.to_query v.state))
-         ; Some (Query.Pair ("startTime", DateTime.to_query v.start_time))
-         ; Some (Query.Pair ("progress", String.to_query v.progress))
-         ; Some (Query.Pair ("instanceId", String.to_query v.instance_id))
+         [ Some (Query.Pair ("UpdateTime", DateTime.to_query v.update_time))
+         ; Some (Query.Pair ("Storage", Storage.to_query v.storage))
+         ; Some (Query.Pair ("State", BundleTaskState.to_query v.state))
+         ; Some (Query.Pair ("StartTime", DateTime.to_query v.start_time))
+         ; Some (Query.Pair ("Progress", String.to_query v.progress))
+         ; Some (Query.Pair ("InstanceId", String.to_query v.instance_id))
          ; Util.option_map v.bundle_task_error (fun f ->
-               Query.Pair ("error", BundleTaskError.to_query f))
-         ; Some (Query.Pair ("bundleId", String.to_query v.bundle_id))
+               Query.Pair ("Error", BundleTaskError.to_query f))
+         ; Some (Query.Pair ("BundleId", String.to_query v.bundle_id))
          ])
 
   let to_json v =
@@ -28173,9 +28172,9 @@ module InstanceCreditSpecification = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.cpu_credits (fun f ->
-               Query.Pair ("cpuCredits", String.to_query f))
+               Query.Pair ("CpuCredits", String.to_query f))
          ; Util.option_map v.instance_id (fun f ->
-               Query.Pair ("instanceId", String.to_query f))
+               Query.Pair ("InstanceId", String.to_query f))
          ])
 
   let to_json v =
@@ -28213,13 +28212,13 @@ module CoipAddressUsage = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.co_ip (fun f -> Query.Pair ("coIp", String.to_query f))
+         [ Util.option_map v.co_ip (fun f -> Query.Pair ("CoIp", String.to_query f))
          ; Util.option_map v.aws_service (fun f ->
-               Query.Pair ("awsService", String.to_query f))
+               Query.Pair ("AwsService", String.to_query f))
          ; Util.option_map v.aws_account_id (fun f ->
-               Query.Pair ("awsAccountId", String.to_query f))
+               Query.Pair ("AwsAccountId", String.to_query f))
          ; Util.option_map v.allocation_id (fun f ->
-               Query.Pair ("allocationId", String.to_query f))
+               Query.Pair ("AllocationId", String.to_query f))
          ])
 
   let to_json v =
@@ -28326,20 +28325,20 @@ module StaleSecurityGroup = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.vpc_id (fun f -> Query.Pair ("vpcId", String.to_query f))
+         [ Util.option_map v.vpc_id (fun f -> Query.Pair ("VpcId", String.to_query f))
          ; Some
              (Query.Pair
-                ( "staleIpPermissionsEgress"
+                ( "StaleIpPermissionsEgress"
                 , StaleIpPermissionSet.to_query v.stale_ip_permissions_egress ))
          ; Some
              (Query.Pair
-                ( "staleIpPermissions"
+                ( "StaleIpPermissions"
                 , StaleIpPermissionSet.to_query v.stale_ip_permissions ))
          ; Util.option_map v.group_name (fun f ->
-               Query.Pair ("groupName", String.to_query f))
-         ; Util.option_map v.group_id (fun f -> Query.Pair ("groupId", String.to_query f))
+               Query.Pair ("GroupName", String.to_query f))
+         ; Util.option_map v.group_id (fun f -> Query.Pair ("GroupId", String.to_query f))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
          ])
 
   let to_json v =
@@ -28393,10 +28392,10 @@ module SecurityGroupReference = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.vpc_peering_connection_id (fun f ->
-               Query.Pair ("vpcPeeringConnectionId", String.to_query f))
+               Query.Pair ("VpcPeeringConnectionId", String.to_query f))
          ; Util.option_map v.referencing_vpc_id (fun f ->
-               Query.Pair ("referencingVpcId", String.to_query f))
-         ; Util.option_map v.group_id (fun f -> Query.Pair ("groupId", String.to_query f))
+               Query.Pair ("ReferencingVpcId", String.to_query f))
+         ; Util.option_map v.group_id (fun f -> Query.Pair ("GroupId", String.to_query f))
          ])
 
   let to_json v =
@@ -28433,7 +28432,7 @@ module AssignedPrivateIpAddress = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.private_ip_address (fun f ->
-               Query.Pair ("privateIpAddress", String.to_query f))
+               Query.Pair ("PrivateIpAddress", String.to_query f))
          ])
 
   let to_json v =
@@ -28502,18 +28501,18 @@ module LocalGatewayRouteTableVpcAssociation = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
-         ; Util.option_map v.state (fun f -> Query.Pair ("state", String.to_query f))
-         ; Util.option_map v.owner_id (fun f -> Query.Pair ("ownerId", String.to_query f))
-         ; Util.option_map v.vpc_id (fun f -> Query.Pair ("vpcId", String.to_query f))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
+         ; Util.option_map v.state (fun f -> Query.Pair ("State", String.to_query f))
+         ; Util.option_map v.owner_id (fun f -> Query.Pair ("OwnerId", String.to_query f))
+         ; Util.option_map v.vpc_id (fun f -> Query.Pair ("VpcId", String.to_query f))
          ; Util.option_map v.local_gateway_id (fun f ->
-               Query.Pair ("localGatewayId", String.to_query f))
+               Query.Pair ("LocalGatewayId", String.to_query f))
          ; Util.option_map v.local_gateway_route_table_arn (fun f ->
-               Query.Pair ("localGatewayRouteTableArn", String.to_query f))
+               Query.Pair ("LocalGatewayRouteTableArn", String.to_query f))
          ; Util.option_map v.local_gateway_route_table_id (fun f ->
-               Query.Pair ("localGatewayRouteTableId", String.to_query f))
+               Query.Pair ("LocalGatewayRouteTableId", String.to_query f))
          ; Util.option_map v.local_gateway_route_table_vpc_association_id (fun f ->
-               Query.Pair ("localGatewayRouteTableVpcAssociationId", String.to_query f))
+               Query.Pair ("LocalGatewayRouteTableVpcAssociationId", String.to_query f))
          ])
 
   let to_json v =
@@ -28668,25 +28667,25 @@ module Volume = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.multi_attach_enabled (fun f ->
-               Query.Pair ("multiAttachEnabled", Boolean.to_query f))
+               Query.Pair ("MultiAttachEnabled", Boolean.to_query f))
          ; Util.option_map v.fast_restored (fun f ->
-               Query.Pair ("fastRestored", Boolean.to_query f))
-         ; Some (Query.Pair ("volumeType", VolumeType.to_query v.volume_type))
-         ; Some (Query.Pair ("tagSet", TagList.to_query v.tags))
-         ; Util.option_map v.iops (fun f -> Query.Pair ("iops", Integer.to_query f))
-         ; Some (Query.Pair ("volumeId", String.to_query v.volume_id))
-         ; Some (Query.Pair ("status", VolumeState.to_query v.state))
-         ; Some (Query.Pair ("snapshotId", String.to_query v.snapshot_id))
-         ; Some (Query.Pair ("size", Integer.to_query v.size))
+               Query.Pair ("FastRestored", Boolean.to_query f))
+         ; Some (Query.Pair ("VolumeType", VolumeType.to_query v.volume_type))
+         ; Some (Query.Pair ("TagSet", TagList.to_query v.tags))
+         ; Util.option_map v.iops (fun f -> Query.Pair ("Iops", Integer.to_query f))
+         ; Some (Query.Pair ("VolumeId", String.to_query v.volume_id))
+         ; Some (Query.Pair ("Status", VolumeState.to_query v.state))
+         ; Some (Query.Pair ("SnapshotId", String.to_query v.snapshot_id))
+         ; Some (Query.Pair ("Size", Integer.to_query v.size))
          ; Util.option_map v.outpost_arn (fun f ->
-               Query.Pair ("outpostArn", String.to_query f))
+               Query.Pair ("OutpostArn", String.to_query f))
          ; Util.option_map v.kms_key_id (fun f ->
-               Query.Pair ("kmsKeyId", String.to_query f))
-         ; Some (Query.Pair ("encrypted", Boolean.to_query v.encrypted))
-         ; Some (Query.Pair ("createTime", DateTime.to_query v.create_time))
-         ; Some (Query.Pair ("availabilityZone", String.to_query v.availability_zone))
+               Query.Pair ("KmsKeyId", String.to_query f))
+         ; Some (Query.Pair ("Encrypted", Boolean.to_query v.encrypted))
+         ; Some (Query.Pair ("CreateTime", DateTime.to_query v.create_time))
+         ; Some (Query.Pair ("AvailabilityZone", String.to_query v.availability_zone))
          ; Some
-             (Query.Pair ("attachmentSet", VolumeAttachmentList.to_query v.attachments))
+             (Query.Pair ("AttachmentSet", VolumeAttachmentList.to_query v.attachments))
          ])
 
   let to_json v =
@@ -28814,34 +28813,34 @@ module ClientVpnConnection = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "postureComplianceStatusSet"
+                ( "PostureComplianceStatusSet"
                 , ValueStringList.to_query v.posture_compliance_statuses ))
          ; Util.option_map v.connection_end_time (fun f ->
-               Query.Pair ("connectionEndTime", String.to_query f))
+               Query.Pair ("ConnectionEndTime", String.to_query f))
          ; Util.option_map v.status (fun f ->
-               Query.Pair ("status", ClientVpnConnectionStatus.to_query f))
+               Query.Pair ("Status", ClientVpnConnectionStatus.to_query f))
          ; Util.option_map v.common_name (fun f ->
-               Query.Pair ("commonName", String.to_query f))
+               Query.Pair ("CommonName", String.to_query f))
          ; Util.option_map v.client_ip (fun f ->
-               Query.Pair ("clientIp", String.to_query f))
+               Query.Pair ("ClientIp", String.to_query f))
          ; Util.option_map v.egress_packets (fun f ->
-               Query.Pair ("egressPackets", String.to_query f))
+               Query.Pair ("EgressPackets", String.to_query f))
          ; Util.option_map v.ingress_packets (fun f ->
-               Query.Pair ("ingressPackets", String.to_query f))
+               Query.Pair ("IngressPackets", String.to_query f))
          ; Util.option_map v.egress_bytes (fun f ->
-               Query.Pair ("egressBytes", String.to_query f))
+               Query.Pair ("EgressBytes", String.to_query f))
          ; Util.option_map v.ingress_bytes (fun f ->
-               Query.Pair ("ingressBytes", String.to_query f))
+               Query.Pair ("IngressBytes", String.to_query f))
          ; Util.option_map v.connection_established_time (fun f ->
-               Query.Pair ("connectionEstablishedTime", String.to_query f))
+               Query.Pair ("ConnectionEstablishedTime", String.to_query f))
          ; Util.option_map v.username (fun f ->
-               Query.Pair ("username", String.to_query f))
+               Query.Pair ("Username", String.to_query f))
          ; Util.option_map v.connection_id (fun f ->
-               Query.Pair ("connectionId", String.to_query f))
+               Query.Pair ("ConnectionId", String.to_query f))
          ; Util.option_map v.timestamp (fun f ->
-               Query.Pair ("timestamp", String.to_query f))
+               Query.Pair ("Timestamp", String.to_query f))
          ; Util.option_map v.client_vpn_endpoint_id (fun f ->
-               Query.Pair ("clientVpnEndpointId", String.to_query f))
+               Query.Pair ("ClientVpnEndpointId", String.to_query f))
          ])
 
   let to_json v =
@@ -28939,17 +28938,17 @@ module LocalGatewayRouteTable = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
-         ; Util.option_map v.state (fun f -> Query.Pair ("state", String.to_query f))
-         ; Util.option_map v.owner_id (fun f -> Query.Pair ("ownerId", String.to_query f))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
+         ; Util.option_map v.state (fun f -> Query.Pair ("State", String.to_query f))
+         ; Util.option_map v.owner_id (fun f -> Query.Pair ("OwnerId", String.to_query f))
          ; Util.option_map v.outpost_arn (fun f ->
-               Query.Pair ("outpostArn", String.to_query f))
+               Query.Pair ("OutpostArn", String.to_query f))
          ; Util.option_map v.local_gateway_id (fun f ->
-               Query.Pair ("localGatewayId", String.to_query f))
+               Query.Pair ("LocalGatewayId", String.to_query f))
          ; Util.option_map v.local_gateway_route_table_arn (fun f ->
-               Query.Pair ("localGatewayRouteTableArn", String.to_query f))
+               Query.Pair ("LocalGatewayRouteTableArn", String.to_query f))
          ; Util.option_map v.local_gateway_route_table_id (fun f ->
-               Query.Pair ("localGatewayRouteTableId", String.to_query f))
+               Query.Pair ("LocalGatewayRouteTableId", String.to_query f))
          ])
 
   let to_json v =
@@ -29001,11 +29000,11 @@ module Region = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.opt_in_status (fun f ->
-               Query.Pair ("optInStatus", String.to_query f))
+               Query.Pair ("OptInStatus", String.to_query f))
          ; Util.option_map v.region_name (fun f ->
-               Query.Pair ("regionName", String.to_query f))
+               Query.Pair ("RegionName", String.to_query f))
          ; Util.option_map v.endpoint (fun f ->
-               Query.Pair ("regionEndpoint", String.to_query f))
+               Query.Pair ("RegionEndpoint", String.to_query f))
          ])
 
   let to_json v =
@@ -29058,9 +29057,9 @@ module Ipv6CidrAssociation = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.associated_resource (fun f ->
-               Query.Pair ("associatedResource", String.to_query f))
+               Query.Pair ("AssociatedResource", String.to_query f))
          ; Util.option_map v.ipv6_cidr (fun f ->
-               Query.Pair ("ipv6Cidr", String.to_query f))
+               Query.Pair ("Ipv6Cidr", String.to_query f))
          ])
 
   let to_json v =
@@ -29096,9 +29095,9 @@ module PrefixListAssociation = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.resource_owner (fun f ->
-               Query.Pair ("resourceOwner", String.to_query f))
+               Query.Pair ("ResourceOwner", String.to_query f))
          ; Util.option_map v.resource_id (fun f ->
-               Query.Pair ("resourceId", String.to_query f))
+               Query.Pair ("ResourceId", String.to_query f))
          ])
 
   let to_json v =
@@ -29193,32 +29192,32 @@ module Address = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.carrier_ip (fun f ->
-               Query.Pair ("carrierIp", String.to_query f))
+               Query.Pair ("CarrierIp", String.to_query f))
          ; Util.option_map v.customer_owned_ipv4_pool (fun f ->
-               Query.Pair ("customerOwnedIpv4Pool", String.to_query f))
+               Query.Pair ("CustomerOwnedIpv4Pool", String.to_query f))
          ; Util.option_map v.customer_owned_ip (fun f ->
-               Query.Pair ("customerOwnedIp", String.to_query f))
+               Query.Pair ("CustomerOwnedIp", String.to_query f))
          ; Util.option_map v.network_border_group (fun f ->
-               Query.Pair ("networkBorderGroup", String.to_query f))
+               Query.Pair ("NetworkBorderGroup", String.to_query f))
          ; Util.option_map v.public_ipv4_pool (fun f ->
-               Query.Pair ("publicIpv4Pool", String.to_query f))
-         ; Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+               Query.Pair ("PublicIpv4Pool", String.to_query f))
+         ; Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.private_ip_address (fun f ->
-               Query.Pair ("privateIpAddress", String.to_query f))
+               Query.Pair ("PrivateIpAddress", String.to_query f))
          ; Util.option_map v.network_interface_owner_id (fun f ->
-               Query.Pair ("networkInterfaceOwnerId", String.to_query f))
+               Query.Pair ("NetworkInterfaceOwnerId", String.to_query f))
          ; Util.option_map v.network_interface_id (fun f ->
-               Query.Pair ("networkInterfaceId", String.to_query f))
+               Query.Pair ("NetworkInterfaceId", String.to_query f))
          ; Util.option_map v.domain (fun f ->
-               Query.Pair ("domain", DomainType.to_query f))
+               Query.Pair ("Domain", DomainType.to_query f))
          ; Util.option_map v.association_id (fun f ->
-               Query.Pair ("associationId", String.to_query f))
+               Query.Pair ("AssociationId", String.to_query f))
          ; Util.option_map v.allocation_id (fun f ->
-               Query.Pair ("allocationId", String.to_query f))
+               Query.Pair ("AllocationId", String.to_query f))
          ; Util.option_map v.public_ip (fun f ->
-               Query.Pair ("publicIp", String.to_query f))
+               Query.Pair ("PublicIp", String.to_query f))
          ; Util.option_map v.instance_id (fun f ->
-               Query.Pair ("instanceId", String.to_query f))
+               Query.Pair ("InstanceId", String.to_query f))
          ])
 
   let to_json v =
@@ -29411,57 +29410,57 @@ module InstanceTypeInfo = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.auto_recovery_supported (fun f ->
-               Query.Pair ("autoRecoverySupported", Boolean.to_query f))
+               Query.Pair ("AutoRecoverySupported", Boolean.to_query f))
          ; Util.option_map v.dedicated_hosts_supported (fun f ->
-               Query.Pair ("dedicatedHostsSupported", Boolean.to_query f))
+               Query.Pair ("DedicatedHostsSupported", Boolean.to_query f))
          ; Util.option_map v.burstable_performance_supported (fun f ->
-               Query.Pair ("burstablePerformanceSupported", Boolean.to_query f))
+               Query.Pair ("BurstablePerformanceSupported", Boolean.to_query f))
          ; Util.option_map v.hibernation_supported (fun f ->
-               Query.Pair ("hibernationSupported", Boolean.to_query f))
+               Query.Pair ("HibernationSupported", Boolean.to_query f))
          ; Util.option_map v.inference_accelerator_info (fun f ->
-               Query.Pair ("inferenceAcceleratorInfo", InferenceAcceleratorInfo.to_query f))
+               Query.Pair ("InferenceAcceleratorInfo", InferenceAcceleratorInfo.to_query f))
          ; Util.option_map v.placement_group_info (fun f ->
-               Query.Pair ("placementGroupInfo", PlacementGroupInfo.to_query f))
+               Query.Pair ("PlacementGroupInfo", PlacementGroupInfo.to_query f))
          ; Util.option_map v.fpga_info (fun f ->
-               Query.Pair ("fpgaInfo", FpgaInfo.to_query f))
+               Query.Pair ("FpgaInfo", FpgaInfo.to_query f))
          ; Util.option_map v.gpu_info (fun f ->
-               Query.Pair ("gpuInfo", GpuInfo.to_query f))
+               Query.Pair ("GpuInfo", GpuInfo.to_query f))
          ; Util.option_map v.network_info (fun f ->
-               Query.Pair ("networkInfo", NetworkInfo.to_query f))
+               Query.Pair ("NetworkInfo", NetworkInfo.to_query f))
          ; Util.option_map v.ebs_info (fun f ->
-               Query.Pair ("ebsInfo", EbsInfo.to_query f))
+               Query.Pair ("EbsInfo", EbsInfo.to_query f))
          ; Util.option_map v.instance_storage_info (fun f ->
-               Query.Pair ("instanceStorageInfo", InstanceStorageInfo.to_query f))
+               Query.Pair ("InstanceStorageInfo", InstanceStorageInfo.to_query f))
          ; Util.option_map v.instance_storage_supported (fun f ->
-               Query.Pair ("instanceStorageSupported", Boolean.to_query f))
+               Query.Pair ("InstanceStorageSupported", Boolean.to_query f))
          ; Util.option_map v.memory_info (fun f ->
-               Query.Pair ("memoryInfo", MemoryInfo.to_query f))
+               Query.Pair ("MemoryInfo", MemoryInfo.to_query f))
          ; Util.option_map v.v_cpu_info (fun f ->
-               Query.Pair ("vCpuInfo", VCpuInfo.to_query f))
+               Query.Pair ("VCpuInfo", VCpuInfo.to_query f))
          ; Util.option_map v.processor_info (fun f ->
-               Query.Pair ("processorInfo", ProcessorInfo.to_query f))
+               Query.Pair ("ProcessorInfo", ProcessorInfo.to_query f))
          ; Util.option_map v.hypervisor (fun f ->
-               Query.Pair ("hypervisor", InstanceTypeHypervisor.to_query f))
+               Query.Pair ("Hypervisor", InstanceTypeHypervisor.to_query f))
          ; Util.option_map v.bare_metal (fun f ->
-               Query.Pair ("bareMetal", Boolean.to_query f))
+               Query.Pair ("BareMetal", Boolean.to_query f))
          ; Some
              (Query.Pair
-                ( "supportedVirtualizationTypes"
+                ( "SupportedVirtualizationTypes"
                 , VirtualizationTypeList.to_query v.supported_virtualization_types ))
          ; Some
              (Query.Pair
-                ( "supportedRootDeviceTypes"
+                ( "SupportedRootDeviceTypes"
                 , RootDeviceTypeList.to_query v.supported_root_device_types ))
          ; Some
              (Query.Pair
-                ( "supportedUsageClasses"
+                ( "SupportedUsageClasses"
                 , UsageClassTypeList.to_query v.supported_usage_classes ))
          ; Util.option_map v.free_tier_eligible (fun f ->
-               Query.Pair ("freeTierEligible", Boolean.to_query f))
+               Query.Pair ("FreeTierEligible", Boolean.to_query f))
          ; Util.option_map v.current_generation (fun f ->
-               Query.Pair ("currentGeneration", Boolean.to_query f))
+               Query.Pair ("CurrentGeneration", Boolean.to_query f))
          ; Util.option_map v.instance_type (fun f ->
-               Query.Pair ("instanceType", InstanceType.to_query f))
+               Query.Pair ("InstanceType", InstanceType.to_query f))
          ])
 
   let to_json v =
@@ -29606,17 +29605,17 @@ module ClientVpnRoute = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
          ; Util.option_map v.status (fun f ->
-               Query.Pair ("status", ClientVpnRouteStatus.to_query f))
-         ; Util.option_map v.origin (fun f -> Query.Pair ("origin", String.to_query f))
-         ; Util.option_map v.type_ (fun f -> Query.Pair ("type", String.to_query f))
+               Query.Pair ("Status", ClientVpnRouteStatus.to_query f))
+         ; Util.option_map v.origin (fun f -> Query.Pair ("Origin", String.to_query f))
+         ; Util.option_map v.type_ (fun f -> Query.Pair ("Type", String.to_query f))
          ; Util.option_map v.target_subnet (fun f ->
-               Query.Pair ("targetSubnet", String.to_query f))
+               Query.Pair ("TargetSubnet", String.to_query f))
          ; Util.option_map v.destination_cidr (fun f ->
-               Query.Pair ("destinationCidr", String.to_query f))
+               Query.Pair ("DestinationCidr", String.to_query f))
          ; Util.option_map v.client_vpn_endpoint_id (fun f ->
-               Query.Pair ("clientVpnEndpointId", String.to_query f))
+               Query.Pair ("ClientVpnEndpointId", String.to_query f))
          ])
 
   let to_json v =
@@ -29725,23 +29724,23 @@ module VpnConnection = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("vgwTelemetry", VgwTelemetryList.to_query v.vgw_telemetry))
-         ; Some (Query.Pair ("tagSet", TagList.to_query v.tags))
-         ; Some (Query.Pair ("routes", VpnStaticRouteList.to_query v.routes))
+         [ Some (Query.Pair ("VgwTelemetry", VgwTelemetryList.to_query v.vgw_telemetry))
+         ; Some (Query.Pair ("TagSet", TagList.to_query v.tags))
+         ; Some (Query.Pair ("Routes", VpnStaticRouteList.to_query v.routes))
          ; Util.option_map v.options (fun f ->
-               Query.Pair ("options", VpnConnectionOptions.to_query f))
+               Query.Pair ("Options", VpnConnectionOptions.to_query f))
          ; Util.option_map v.transit_gateway_id (fun f ->
-               Query.Pair ("transitGatewayId", String.to_query f))
+               Query.Pair ("TransitGatewayId", String.to_query f))
          ; Util.option_map v.vpn_gateway_id (fun f ->
-               Query.Pair ("vpnGatewayId", String.to_query f))
-         ; Some (Query.Pair ("vpnConnectionId", String.to_query v.vpn_connection_id))
-         ; Some (Query.Pair ("type", GatewayType.to_query v.type_))
-         ; Some (Query.Pair ("state", VpnState.to_query v.state))
+               Query.Pair ("VpnGatewayId", String.to_query f))
+         ; Some (Query.Pair ("VpnConnectionId", String.to_query v.vpn_connection_id))
+         ; Some (Query.Pair ("Type", GatewayType.to_query v.type_))
+         ; Some (Query.Pair ("State", VpnState.to_query v.state))
          ; Util.option_map v.category (fun f ->
-               Query.Pair ("category", String.to_query f))
-         ; Some (Query.Pair ("customerGatewayId", String.to_query v.customer_gateway_id))
+               Query.Pair ("Category", String.to_query f))
+         ; Some (Query.Pair ("CustomerGatewayId", String.to_query v.customer_gateway_id))
          ; Util.option_map v.customer_gateway_configuration (fun f ->
-               Query.Pair ("customerGatewayConfiguration", String.to_query f))
+               Query.Pair ("CustomerGatewayConfiguration", String.to_query f))
          ])
 
   let to_json v =
@@ -29829,16 +29828,16 @@ module TargetNetwork = struct
     Query.List
       (Util.list_filter_opt
          [ Some
-             (Query.Pair ("securityGroups", ValueStringList.to_query v.security_groups))
+             (Query.Pair ("SecurityGroups", ValueStringList.to_query v.security_groups))
          ; Util.option_map v.status (fun f ->
-               Query.Pair ("status", AssociationStatus.to_query f))
+               Query.Pair ("Status", AssociationStatus.to_query f))
          ; Util.option_map v.client_vpn_endpoint_id (fun f ->
-               Query.Pair ("clientVpnEndpointId", String.to_query f))
+               Query.Pair ("ClientVpnEndpointId", String.to_query f))
          ; Util.option_map v.target_network_id (fun f ->
-               Query.Pair ("targetNetworkId", String.to_query f))
-         ; Util.option_map v.vpc_id (fun f -> Query.Pair ("vpcId", String.to_query f))
+               Query.Pair ("TargetNetworkId", String.to_query f))
+         ; Util.option_map v.vpc_id (fun f -> Query.Pair ("VpcId", String.to_query f))
          ; Util.option_map v.association_id (fun f ->
-               Query.Pair ("associationId", String.to_query f))
+               Query.Pair ("AssociationId", String.to_query f))
          ])
 
   let to_json v =
@@ -29917,16 +29916,16 @@ module VpcPeeringConnection = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.vpc_peering_connection_id (fun f ->
-               Query.Pair ("vpcPeeringConnectionId", String.to_query f))
-         ; Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+               Query.Pair ("VpcPeeringConnectionId", String.to_query f))
+         ; Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.status (fun f ->
-               Query.Pair ("status", VpcPeeringConnectionStateReason.to_query f))
+               Query.Pair ("Status", VpcPeeringConnectionStateReason.to_query f))
          ; Util.option_map v.requester_vpc_info (fun f ->
-               Query.Pair ("requesterVpcInfo", VpcPeeringConnectionVpcInfo.to_query f))
+               Query.Pair ("RequesterVpcInfo", VpcPeeringConnectionVpcInfo.to_query f))
          ; Util.option_map v.expiration_time (fun f ->
-               Query.Pair ("expirationTime", DateTime.to_query f))
+               Query.Pair ("ExpirationTime", DateTime.to_query f))
          ; Util.option_map v.accepter_vpc_info (fun f ->
-               Query.Pair ("accepterVpcInfo", VpcPeeringConnectionVpcInfo.to_query f))
+               Query.Pair ("AccepterVpcInfo", VpcPeeringConnectionVpcInfo.to_query f))
          ])
 
   let to_json v =
@@ -30008,17 +30007,17 @@ module NetworkAcl = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.owner_id (fun f -> Query.Pair ("ownerId", String.to_query f))
-         ; Util.option_map v.vpc_id (fun f -> Query.Pair ("vpcId", String.to_query f))
-         ; Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         [ Util.option_map v.owner_id (fun f -> Query.Pair ("OwnerId", String.to_query f))
+         ; Util.option_map v.vpc_id (fun f -> Query.Pair ("VpcId", String.to_query f))
+         ; Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.network_acl_id (fun f ->
-               Query.Pair ("networkAclId", String.to_query f))
+               Query.Pair ("NetworkAclId", String.to_query f))
          ; Util.option_map v.is_default (fun f ->
-               Query.Pair ("default", Boolean.to_query f))
-         ; Some (Query.Pair ("entrySet", NetworkAclEntryList.to_query v.entries))
+               Query.Pair ("Default", Boolean.to_query f))
+         ; Some (Query.Pair ("EntrySet", NetworkAclEntryList.to_query v.entries))
          ; Some
              (Query.Pair
-                ("associationSet", NetworkAclAssociationList.to_query v.associations))
+                ("AssociationSet", NetworkAclAssociationList.to_query v.associations))
          ])
 
   let to_json v =
@@ -30102,22 +30101,22 @@ module LocalGatewayRouteTableVirtualInterfaceGroupAssociation = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
-         ; Util.option_map v.state (fun f -> Query.Pair ("state", String.to_query f))
-         ; Util.option_map v.owner_id (fun f -> Query.Pair ("ownerId", String.to_query f))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
+         ; Util.option_map v.state (fun f -> Query.Pair ("State", String.to_query f))
+         ; Util.option_map v.owner_id (fun f -> Query.Pair ("OwnerId", String.to_query f))
          ; Util.option_map v.local_gateway_route_table_arn (fun f ->
-               Query.Pair ("localGatewayRouteTableArn", String.to_query f))
+               Query.Pair ("LocalGatewayRouteTableArn", String.to_query f))
          ; Util.option_map v.local_gateway_route_table_id (fun f ->
-               Query.Pair ("localGatewayRouteTableId", String.to_query f))
+               Query.Pair ("LocalGatewayRouteTableId", String.to_query f))
          ; Util.option_map v.local_gateway_id (fun f ->
-               Query.Pair ("localGatewayId", String.to_query f))
+               Query.Pair ("LocalGatewayId", String.to_query f))
          ; Util.option_map v.local_gateway_virtual_interface_group_id (fun f ->
-               Query.Pair ("localGatewayVirtualInterfaceGroupId", String.to_query f))
+               Query.Pair ("LocalGatewayVirtualInterfaceGroupId", String.to_query f))
          ; Util.option_map
              v.local_gateway_route_table_virtual_interface_group_association_id
              (fun f ->
                Query.Pair
-                 ( "localGatewayRouteTableVirtualInterfaceGroupAssociationId"
+                 ( "LocalGatewayRouteTableVirtualInterfaceGroupAssociationId"
                  , String.to_query f ))
          ])
 
@@ -30184,9 +30183,9 @@ module CancelSpotFleetRequestsErrorItem = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.spot_fleet_request_id (fun f ->
-               Query.Pair ("spotFleetRequestId", String.to_query f))
+               Query.Pair ("SpotFleetRequestId", String.to_query f))
          ; Util.option_map v.error (fun f ->
-               Query.Pair ("error", CancelSpotFleetRequestsError.to_query f))
+               Query.Pair ("Error", CancelSpotFleetRequestsError.to_query f))
          ])
 
   let to_json v =
@@ -30240,11 +30239,11 @@ module CancelSpotFleetRequestsSuccessItem = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.spot_fleet_request_id (fun f ->
-               Query.Pair ("spotFleetRequestId", String.to_query f))
+               Query.Pair ("SpotFleetRequestId", String.to_query f))
          ; Util.option_map v.previous_spot_fleet_request_state (fun f ->
-               Query.Pair ("previousSpotFleetRequestState", BatchState.to_query f))
+               Query.Pair ("PreviousSpotFleetRequestState", BatchState.to_query f))
          ; Util.option_map v.current_spot_fleet_request_state (fun f ->
-               Query.Pair ("currentSpotFleetRequestState", BatchState.to_query f))
+               Query.Pair ("CurrentSpotFleetRequestState", BatchState.to_query f))
          ])
 
   let to_json v =
@@ -30297,10 +30296,10 @@ module AccountAttribute = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "attributeValueSet"
+                ( "AttributeValueSet"
                 , AccountAttributeValueList.to_query v.attribute_values ))
          ; Util.option_map v.attribute_name (fun f ->
-               Query.Pair ("attributeName", String.to_query f))
+               Query.Pair ("AttributeName", String.to_query f))
          ])
 
   let to_json v =
@@ -30385,7 +30384,7 @@ module UserData = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.data (fun f -> Query.Pair ("data", String.to_query f)) ])
+         [ Util.option_map v.data (fun f -> Query.Pair ("Data", String.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -30501,33 +30500,33 @@ module VpcEndpoint = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.last_error (fun f ->
-               Query.Pair ("lastError", LastError.to_query f))
-         ; Util.option_map v.owner_id (fun f -> Query.Pair ("ownerId", String.to_query f))
-         ; Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+               Query.Pair ("LastError", LastError.to_query f))
+         ; Util.option_map v.owner_id (fun f -> Query.Pair ("OwnerId", String.to_query f))
+         ; Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.creation_timestamp (fun f ->
-               Query.Pair ("creationTimestamp", DateTime.to_query f))
-         ; Some (Query.Pair ("dnsEntrySet", DnsEntrySet.to_query v.dns_entries))
+               Query.Pair ("CreationTimestamp", DateTime.to_query f))
+         ; Some (Query.Pair ("DnsEntrySet", DnsEntrySet.to_query v.dns_entries))
          ; Some
              (Query.Pair
-                ("networkInterfaceIdSet", ValueStringList.to_query v.network_interface_ids))
+                ("NetworkInterfaceIdSet", ValueStringList.to_query v.network_interface_ids))
          ; Util.option_map v.requester_managed (fun f ->
-               Query.Pair ("requesterManaged", Boolean.to_query f))
+               Query.Pair ("RequesterManaged", Boolean.to_query f))
          ; Util.option_map v.private_dns_enabled (fun f ->
-               Query.Pair ("privateDnsEnabled", Boolean.to_query f))
-         ; Some (Query.Pair ("groupSet", GroupIdentifierSet.to_query v.groups))
-         ; Some (Query.Pair ("subnetIdSet", ValueStringList.to_query v.subnet_ids))
+               Query.Pair ("PrivateDnsEnabled", Boolean.to_query f))
+         ; Some (Query.Pair ("GroupSet", GroupIdentifierSet.to_query v.groups))
+         ; Some (Query.Pair ("SubnetIdSet", ValueStringList.to_query v.subnet_ids))
          ; Some
-             (Query.Pair ("routeTableIdSet", ValueStringList.to_query v.route_table_ids))
+             (Query.Pair ("RouteTableIdSet", ValueStringList.to_query v.route_table_ids))
          ; Util.option_map v.policy_document (fun f ->
-               Query.Pair ("policyDocument", String.to_query f))
-         ; Util.option_map v.state (fun f -> Query.Pair ("state", State.to_query f))
+               Query.Pair ("PolicyDocument", String.to_query f))
+         ; Util.option_map v.state (fun f -> Query.Pair ("State", State.to_query f))
          ; Util.option_map v.service_name (fun f ->
-               Query.Pair ("serviceName", String.to_query f))
-         ; Util.option_map v.vpc_id (fun f -> Query.Pair ("vpcId", String.to_query f))
+               Query.Pair ("ServiceName", String.to_query f))
+         ; Util.option_map v.vpc_id (fun f -> Query.Pair ("VpcId", String.to_query f))
          ; Util.option_map v.vpc_endpoint_type (fun f ->
-               Query.Pair ("vpcEndpointType", VpcEndpointType.to_query f))
+               Query.Pair ("VpcEndpointType", VpcEndpointType.to_query f))
          ; Util.option_map v.vpc_endpoint_id (fun f ->
-               Query.Pair ("vpcEndpointId", String.to_query f))
+               Query.Pair ("VpcEndpointId", String.to_query f))
          ])
 
   let to_json v =
@@ -30613,11 +30612,11 @@ module ClassicLinkInstance = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.vpc_id (fun f -> Query.Pair ("vpcId", String.to_query f))
-         ; Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         [ Util.option_map v.vpc_id (fun f -> Query.Pair ("VpcId", String.to_query f))
+         ; Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.instance_id (fun f ->
-               Query.Pair ("instanceId", String.to_query f))
-         ; Some (Query.Pair ("groupSet", GroupIdentifierList.to_query v.groups))
+               Query.Pair ("InstanceId", String.to_query f))
+         ; Some (Query.Pair ("GroupSet", GroupIdentifierList.to_query v.groups))
          ])
 
   let to_json v =
@@ -30691,20 +30690,20 @@ module Purchase = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.upfront_price (fun f ->
-               Query.Pair ("upfrontPrice", String.to_query f))
+               Query.Pair ("UpfrontPrice", String.to_query f))
          ; Util.option_map v.payment_option (fun f ->
-               Query.Pair ("paymentOption", PaymentOption.to_query f))
+               Query.Pair ("PaymentOption", PaymentOption.to_query f))
          ; Util.option_map v.instance_family (fun f ->
-               Query.Pair ("instanceFamily", String.to_query f))
+               Query.Pair ("InstanceFamily", String.to_query f))
          ; Util.option_map v.hourly_price (fun f ->
-               Query.Pair ("hourlyPrice", String.to_query f))
+               Query.Pair ("HourlyPrice", String.to_query f))
          ; Util.option_map v.host_reservation_id (fun f ->
-               Query.Pair ("hostReservationId", String.to_query f))
-         ; Some (Query.Pair ("hostIdSet", ResponseHostIdSet.to_query v.host_id_set))
+               Query.Pair ("HostReservationId", String.to_query f))
+         ; Some (Query.Pair ("HostIdSet", ResponseHostIdSet.to_query v.host_id_set))
          ; Util.option_map v.duration (fun f ->
-               Query.Pair ("duration", Integer.to_query f))
+               Query.Pair ("Duration", Integer.to_query f))
          ; Util.option_map v.currency_code (fun f ->
-               Query.Pair ("currencyCode", CurrencyCodeValues.to_query f))
+               Query.Pair ("CurrencyCode", CurrencyCodeValues.to_query f))
          ])
 
   let to_json v =
@@ -30807,25 +30806,25 @@ module TransitGatewayAttachment = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.creation_time (fun f ->
-               Query.Pair ("creationTime", DateTime.to_query f))
+               Query.Pair ("CreationTime", DateTime.to_query f))
          ; Util.option_map v.association (fun f ->
-               Query.Pair ("association", TransitGatewayAttachmentAssociation.to_query f))
+               Query.Pair ("Association", TransitGatewayAttachmentAssociation.to_query f))
          ; Util.option_map v.state (fun f ->
-               Query.Pair ("state", TransitGatewayAttachmentState.to_query f))
+               Query.Pair ("State", TransitGatewayAttachmentState.to_query f))
          ; Util.option_map v.resource_id (fun f ->
-               Query.Pair ("resourceId", String.to_query f))
+               Query.Pair ("ResourceId", String.to_query f))
          ; Util.option_map v.resource_type (fun f ->
-               Query.Pair ("resourceType", TransitGatewayAttachmentResourceType.to_query f))
+               Query.Pair ("ResourceType", TransitGatewayAttachmentResourceType.to_query f))
          ; Util.option_map v.resource_owner_id (fun f ->
-               Query.Pair ("resourceOwnerId", String.to_query f))
+               Query.Pair ("ResourceOwnerId", String.to_query f))
          ; Util.option_map v.transit_gateway_owner_id (fun f ->
-               Query.Pair ("transitGatewayOwnerId", String.to_query f))
+               Query.Pair ("TransitGatewayOwnerId", String.to_query f))
          ; Util.option_map v.transit_gateway_id (fun f ->
-               Query.Pair ("transitGatewayId", String.to_query f))
+               Query.Pair ("TransitGatewayId", String.to_query f))
          ; Util.option_map v.transit_gateway_attachment_id (fun f ->
-               Query.Pair ("transitGatewayAttachmentId", String.to_query f))
+               Query.Pair ("TransitGatewayAttachmentId", String.to_query f))
          ])
 
   let to_json v =
@@ -30975,24 +30974,24 @@ module Snapshot = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.owner_alias (fun f ->
-               Query.Pair ("ownerAlias", String.to_query f))
-         ; Some (Query.Pair ("volumeSize", Integer.to_query v.volume_size))
-         ; Some (Query.Pair ("volumeId", String.to_query v.volume_id))
+               Query.Pair ("OwnerAlias", String.to_query f))
+         ; Some (Query.Pair ("VolumeSize", Integer.to_query v.volume_size))
+         ; Some (Query.Pair ("VolumeId", String.to_query v.volume_id))
          ; Util.option_map v.state_message (fun f ->
-               Query.Pair ("statusMessage", String.to_query f))
-         ; Some (Query.Pair ("status", SnapshotState.to_query v.state))
-         ; Some (Query.Pair ("startTime", DateTime.to_query v.start_time))
-         ; Some (Query.Pair ("snapshotId", String.to_query v.snapshot_id))
-         ; Some (Query.Pair ("progress", String.to_query v.progress))
-         ; Some (Query.Pair ("ownerId", String.to_query v.owner_id))
+               Query.Pair ("StatusMessage", String.to_query f))
+         ; Some (Query.Pair ("Status", SnapshotState.to_query v.state))
+         ; Some (Query.Pair ("StartTime", DateTime.to_query v.start_time))
+         ; Some (Query.Pair ("SnapshotId", String.to_query v.snapshot_id))
+         ; Some (Query.Pair ("Progress", String.to_query v.progress))
+         ; Some (Query.Pair ("OwnerId", String.to_query v.owner_id))
          ; Util.option_map v.kms_key_id (fun f ->
-               Query.Pair ("kmsKeyId", String.to_query f))
-         ; Some (Query.Pair ("encrypted", Boolean.to_query v.encrypted))
-         ; Some (Query.Pair ("description", String.to_query v.description))
+               Query.Pair ("KmsKeyId", String.to_query f))
+         ; Some (Query.Pair ("Encrypted", Boolean.to_query v.encrypted))
+         ; Some (Query.Pair ("Description", String.to_query v.description))
          ; Util.option_map v.data_encryption_key_id (fun f ->
-               Query.Pair ("dataEncryptionKeyId", String.to_query f))
+               Query.Pair ("DataEncryptionKeyId", String.to_query f))
          ])
 
   let to_json v =
@@ -31060,14 +31059,14 @@ module CreateFleetError = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.error_message (fun f ->
-               Query.Pair ("errorMessage", String.to_query f))
+               Query.Pair ("ErrorMessage", String.to_query f))
          ; Util.option_map v.error_code (fun f ->
-               Query.Pair ("errorCode", String.to_query f))
+               Query.Pair ("ErrorCode", String.to_query f))
          ; Util.option_map v.lifecycle (fun f ->
-               Query.Pair ("lifecycle", InstanceLifecycle.to_query f))
+               Query.Pair ("Lifecycle", InstanceLifecycle.to_query f))
          ; Util.option_map v.launch_template_and_overrides (fun f ->
                Query.Pair
-                 ( "launchTemplateAndOverrides"
+                 ( "LaunchTemplateAndOverrides"
                  , LaunchTemplateAndOverridesResponse.to_query f ))
          ])
 
@@ -31131,15 +31130,15 @@ module CreateFleetInstance = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.platform (fun f ->
-               Query.Pair ("platform", PlatformValues.to_query f))
+               Query.Pair ("Platform", PlatformValues.to_query f))
          ; Util.option_map v.instance_type (fun f ->
-               Query.Pair ("instanceType", InstanceType.to_query f))
-         ; Some (Query.Pair ("instanceIds", InstanceIdsSet.to_query v.instance_ids))
+               Query.Pair ("InstanceType", InstanceType.to_query f))
+         ; Some (Query.Pair ("InstanceIds", InstanceIdsSet.to_query v.instance_ids))
          ; Util.option_map v.lifecycle (fun f ->
-               Query.Pair ("lifecycle", InstanceLifecycle.to_query f))
+               Query.Pair ("Lifecycle", InstanceLifecycle.to_query f))
          ; Util.option_map v.launch_template_and_overrides (fun f ->
                Query.Pair
-                 ( "launchTemplateAndOverrides"
+                 ( "LaunchTemplateAndOverrides"
                  , LaunchTemplateAndOverridesResponse.to_query f ))
          ])
 
@@ -31226,23 +31225,23 @@ module SnapshotInfo = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.snapshot_id (fun f ->
-               Query.Pair ("snapshotId", String.to_query f))
-         ; Util.option_map v.owner_id (fun f -> Query.Pair ("ownerId", String.to_query f))
+               Query.Pair ("SnapshotId", String.to_query f))
+         ; Util.option_map v.owner_id (fun f -> Query.Pair ("OwnerId", String.to_query f))
          ; Util.option_map v.progress (fun f ->
-               Query.Pair ("progress", String.to_query f))
+               Query.Pair ("Progress", String.to_query f))
          ; Util.option_map v.start_time (fun f ->
-               Query.Pair ("startTime", DateTime.to_query f))
+               Query.Pair ("StartTime", DateTime.to_query f))
          ; Util.option_map v.volume_size (fun f ->
-               Query.Pair ("volumeSize", Integer.to_query f))
+               Query.Pair ("VolumeSize", Integer.to_query f))
          ; Util.option_map v.state (fun f ->
-               Query.Pair ("state", SnapshotState.to_query f))
+               Query.Pair ("State", SnapshotState.to_query f))
          ; Util.option_map v.volume_id (fun f ->
-               Query.Pair ("volumeId", String.to_query f))
+               Query.Pair ("VolumeId", String.to_query f))
          ; Util.option_map v.encrypted (fun f ->
-               Query.Pair ("encrypted", Boolean.to_query f))
-         ; Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+               Query.Pair ("Encrypted", Boolean.to_query f))
+         ; Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
          ])
 
   let to_json v =
@@ -31321,18 +31320,18 @@ module TrafficMirrorTarget = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
-         ; Util.option_map v.owner_id (fun f -> Query.Pair ("ownerId", String.to_query f))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
+         ; Util.option_map v.owner_id (fun f -> Query.Pair ("OwnerId", String.to_query f))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
          ; Util.option_map v.type_ (fun f ->
-               Query.Pair ("type", TrafficMirrorTargetType.to_query f))
+               Query.Pair ("Type", TrafficMirrorTargetType.to_query f))
          ; Util.option_map v.network_load_balancer_arn (fun f ->
-               Query.Pair ("networkLoadBalancerArn", String.to_query f))
+               Query.Pair ("NetworkLoadBalancerArn", String.to_query f))
          ; Util.option_map v.network_interface_id (fun f ->
-               Query.Pair ("networkInterfaceId", String.to_query f))
+               Query.Pair ("NetworkInterfaceId", String.to_query f))
          ; Util.option_map v.traffic_mirror_target_id (fun f ->
-               Query.Pair ("trafficMirrorTargetId", String.to_query f))
+               Query.Pair ("TrafficMirrorTargetId", String.to_query f))
          ])
 
   let to_json v =
@@ -31469,28 +31468,28 @@ module VolumeModification = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.end_time (fun f ->
-               Query.Pair ("endTime", DateTime.to_query f))
+               Query.Pair ("EndTime", DateTime.to_query f))
          ; Util.option_map v.start_time (fun f ->
-               Query.Pair ("startTime", DateTime.to_query f))
-         ; Util.option_map v.progress (fun f -> Query.Pair ("progress", Long.to_query f))
+               Query.Pair ("StartTime", DateTime.to_query f))
+         ; Util.option_map v.progress (fun f -> Query.Pair ("Progress", Long.to_query f))
          ; Util.option_map v.original_volume_type (fun f ->
-               Query.Pair ("originalVolumeType", VolumeType.to_query f))
+               Query.Pair ("OriginalVolumeType", VolumeType.to_query f))
          ; Util.option_map v.original_iops (fun f ->
-               Query.Pair ("originalIops", Integer.to_query f))
+               Query.Pair ("OriginalIops", Integer.to_query f))
          ; Util.option_map v.original_size (fun f ->
-               Query.Pair ("originalSize", Integer.to_query f))
+               Query.Pair ("OriginalSize", Integer.to_query f))
          ; Util.option_map v.target_volume_type (fun f ->
-               Query.Pair ("targetVolumeType", VolumeType.to_query f))
+               Query.Pair ("TargetVolumeType", VolumeType.to_query f))
          ; Util.option_map v.target_iops (fun f ->
-               Query.Pair ("targetIops", Integer.to_query f))
+               Query.Pair ("TargetIops", Integer.to_query f))
          ; Util.option_map v.target_size (fun f ->
-               Query.Pair ("targetSize", Integer.to_query f))
+               Query.Pair ("TargetSize", Integer.to_query f))
          ; Util.option_map v.status_message (fun f ->
-               Query.Pair ("statusMessage", String.to_query f))
+               Query.Pair ("StatusMessage", String.to_query f))
          ; Util.option_map v.modification_state (fun f ->
-               Query.Pair ("modificationState", VolumeModificationState.to_query f))
+               Query.Pair ("ModificationState", VolumeModificationState.to_query f))
          ; Util.option_map v.volume_id (fun f ->
-               Query.Pair ("volumeId", String.to_query f))
+               Query.Pair ("VolumeId", String.to_query f))
          ])
 
   let to_json v =
@@ -31555,7 +31554,7 @@ module NewDhcpConfiguration = struct
     Query.List
       (Util.list_filter_opt
          [ Some (Query.Pair ("Value", ValueStringList.to_query v.values))
-         ; Util.option_map v.key (fun f -> Query.Pair ("key", String.to_query f))
+         ; Util.option_map v.key (fun f -> Query.Pair ("Key", String.to_query f))
          ])
 
   let to_json v =
@@ -31694,48 +31693,48 @@ module NetworkInterface = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.vpc_id (fun f -> Query.Pair ("vpcId", String.to_query f))
-         ; Some (Query.Pair ("tagSet", TagList.to_query v.tag_set))
+         [ Util.option_map v.vpc_id (fun f -> Query.Pair ("VpcId", String.to_query f))
+         ; Some (Query.Pair ("TagSet", TagList.to_query v.tag_set))
          ; Util.option_map v.subnet_id (fun f ->
-               Query.Pair ("subnetId", String.to_query f))
+               Query.Pair ("SubnetId", String.to_query f))
          ; Util.option_map v.status (fun f ->
-               Query.Pair ("status", NetworkInterfaceStatus.to_query f))
+               Query.Pair ("Status", NetworkInterfaceStatus.to_query f))
          ; Util.option_map v.source_dest_check (fun f ->
-               Query.Pair ("sourceDestCheck", Boolean.to_query f))
+               Query.Pair ("SourceDestCheck", Boolean.to_query f))
          ; Util.option_map v.requester_managed (fun f ->
-               Query.Pair ("requesterManaged", Boolean.to_query f))
+               Query.Pair ("RequesterManaged", Boolean.to_query f))
          ; Util.option_map v.requester_id (fun f ->
-               Query.Pair ("requesterId", String.to_query f))
+               Query.Pair ("RequesterId", String.to_query f))
          ; Some
              (Query.Pair
-                ( "privateIpAddressesSet"
+                ( "PrivateIpAddressesSet"
                 , NetworkInterfacePrivateIpAddressList.to_query v.private_ip_addresses ))
          ; Util.option_map v.private_ip_address (fun f ->
-               Query.Pair ("privateIpAddress", String.to_query f))
+               Query.Pair ("PrivateIpAddress", String.to_query f))
          ; Util.option_map v.private_dns_name (fun f ->
-               Query.Pair ("privateDnsName", String.to_query f))
-         ; Util.option_map v.owner_id (fun f -> Query.Pair ("ownerId", String.to_query f))
+               Query.Pair ("PrivateDnsName", String.to_query f))
+         ; Util.option_map v.owner_id (fun f -> Query.Pair ("OwnerId", String.to_query f))
          ; Util.option_map v.outpost_arn (fun f ->
-               Query.Pair ("outpostArn", String.to_query f))
+               Query.Pair ("OutpostArn", String.to_query f))
          ; Util.option_map v.network_interface_id (fun f ->
-               Query.Pair ("networkInterfaceId", String.to_query f))
+               Query.Pair ("NetworkInterfaceId", String.to_query f))
          ; Util.option_map v.mac_address (fun f ->
-               Query.Pair ("macAddress", String.to_query f))
+               Query.Pair ("MacAddress", String.to_query f))
          ; Some
              (Query.Pair
-                ( "ipv6AddressesSet"
+                ( "Ipv6AddressesSet"
                 , NetworkInterfaceIpv6AddressesList.to_query v.ipv6_addresses ))
          ; Util.option_map v.interface_type (fun f ->
-               Query.Pair ("interfaceType", NetworkInterfaceType.to_query f))
-         ; Some (Query.Pair ("groupSet", GroupIdentifierList.to_query v.groups))
+               Query.Pair ("InterfaceType", NetworkInterfaceType.to_query f))
+         ; Some (Query.Pair ("GroupSet", GroupIdentifierList.to_query v.groups))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
          ; Util.option_map v.availability_zone (fun f ->
-               Query.Pair ("availabilityZone", String.to_query f))
+               Query.Pair ("AvailabilityZone", String.to_query f))
          ; Util.option_map v.attachment (fun f ->
-               Query.Pair ("attachment", NetworkInterfaceAttachment.to_query f))
+               Query.Pair ("Attachment", NetworkInterfaceAttachment.to_query f))
          ; Util.option_map v.association (fun f ->
-               Query.Pair ("association", NetworkInterfaceAssociation.to_query f))
+               Query.Pair ("Association", NetworkInterfaceAssociation.to_query f))
          ])
 
   let to_json v =
@@ -31869,20 +31868,20 @@ module ConnectionNotification = struct
       (Util.list_filter_opt
          [ Util.option_map v.connection_notification_state (fun f ->
                Query.Pair
-                 ("connectionNotificationState", ConnectionNotificationState.to_query f))
+                 ("ConnectionNotificationState", ConnectionNotificationState.to_query f))
          ; Some
-             (Query.Pair ("connectionEvents", ValueStringList.to_query v.connection_events))
+             (Query.Pair ("ConnectionEvents", ValueStringList.to_query v.connection_events))
          ; Util.option_map v.connection_notification_arn (fun f ->
-               Query.Pair ("connectionNotificationArn", String.to_query f))
+               Query.Pair ("ConnectionNotificationArn", String.to_query f))
          ; Util.option_map v.connection_notification_type (fun f ->
                Query.Pair
-                 ("connectionNotificationType", ConnectionNotificationType.to_query f))
+                 ("ConnectionNotificationType", ConnectionNotificationType.to_query f))
          ; Util.option_map v.vpc_endpoint_id (fun f ->
-               Query.Pair ("vpcEndpointId", String.to_query f))
+               Query.Pair ("VpcEndpointId", String.to_query f))
          ; Util.option_map v.service_id (fun f ->
-               Query.Pair ("serviceId", String.to_query f))
+               Query.Pair ("ServiceId", String.to_query f))
          ; Util.option_map v.connection_notification_id (fun f ->
-               Query.Pair ("connectionNotificationId", String.to_query f))
+               Query.Pair ("ConnectionNotificationId", String.to_query f))
          ])
 
   let to_json v =
@@ -32025,38 +32024,38 @@ module ReservedInstances = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
-         ; Util.option_map v.scope (fun f -> Query.Pair ("scope", Scope.to_query f))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
+         ; Util.option_map v.scope (fun f -> Query.Pair ("Scope", Scope.to_query f))
          ; Some
              (Query.Pair
-                ("recurringCharges", RecurringChargesList.to_query v.recurring_charges))
+                ("RecurringCharges", RecurringChargesList.to_query v.recurring_charges))
          ; Util.option_map v.offering_type (fun f ->
-               Query.Pair ("offeringType", OfferingTypeValues.to_query f))
+               Query.Pair ("OfferingType", OfferingTypeValues.to_query f))
          ; Util.option_map v.offering_class (fun f ->
-               Query.Pair ("offeringClass", OfferingClassType.to_query f))
+               Query.Pair ("OfferingClass", OfferingClassType.to_query f))
          ; Util.option_map v.instance_tenancy (fun f ->
-               Query.Pair ("instanceTenancy", Tenancy.to_query f))
+               Query.Pair ("InstanceTenancy", Tenancy.to_query f))
          ; Util.option_map v.currency_code (fun f ->
-               Query.Pair ("currencyCode", CurrencyCodeValues.to_query f))
+               Query.Pair ("CurrencyCode", CurrencyCodeValues.to_query f))
          ; Util.option_map v.usage_price (fun f ->
-               Query.Pair ("usagePrice", Float.to_query f))
+               Query.Pair ("UsagePrice", Float.to_query f))
          ; Util.option_map v.state (fun f ->
-               Query.Pair ("state", ReservedInstanceState.to_query f))
-         ; Util.option_map v.start (fun f -> Query.Pair ("start", DateTime.to_query f))
+               Query.Pair ("State", ReservedInstanceState.to_query f))
+         ; Util.option_map v.start (fun f -> Query.Pair ("Start", DateTime.to_query f))
          ; Util.option_map v.reserved_instances_id (fun f ->
-               Query.Pair ("reservedInstancesId", String.to_query f))
+               Query.Pair ("ReservedInstancesId", String.to_query f))
          ; Util.option_map v.product_description (fun f ->
-               Query.Pair ("productDescription", RIProductDescription.to_query f))
+               Query.Pair ("ProductDescription", RIProductDescription.to_query f))
          ; Util.option_map v.instance_type (fun f ->
-               Query.Pair ("instanceType", InstanceType.to_query f))
+               Query.Pair ("InstanceType", InstanceType.to_query f))
          ; Util.option_map v.instance_count (fun f ->
-               Query.Pair ("instanceCount", Integer.to_query f))
+               Query.Pair ("InstanceCount", Integer.to_query f))
          ; Util.option_map v.fixed_price (fun f ->
-               Query.Pair ("fixedPrice", Float.to_query f))
-         ; Util.option_map v.end_ (fun f -> Query.Pair ("end", DateTime.to_query f))
-         ; Util.option_map v.duration (fun f -> Query.Pair ("duration", Long.to_query f))
+               Query.Pair ("FixedPrice", Float.to_query f))
+         ; Util.option_map v.end_ (fun f -> Query.Pair ("End", DateTime.to_query f))
+         ; Util.option_map v.duration (fun f -> Query.Pair ("Duration", Long.to_query f))
          ; Util.option_map v.availability_zone (fun f ->
-               Query.Pair ("availabilityZone", String.to_query f))
+               Query.Pair ("AvailabilityZone", String.to_query f))
          ])
 
   let to_json v =
@@ -32169,19 +32168,19 @@ module TransitGatewayPeeringAttachment = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.creation_time (fun f ->
-               Query.Pair ("creationTime", DateTime.to_query f))
+               Query.Pair ("CreationTime", DateTime.to_query f))
          ; Util.option_map v.state (fun f ->
-               Query.Pair ("state", TransitGatewayAttachmentState.to_query f))
+               Query.Pair ("State", TransitGatewayAttachmentState.to_query f))
          ; Util.option_map v.status (fun f ->
-               Query.Pair ("status", PeeringAttachmentStatus.to_query f))
+               Query.Pair ("Status", PeeringAttachmentStatus.to_query f))
          ; Util.option_map v.accepter_tgw_info (fun f ->
-               Query.Pair ("accepterTgwInfo", PeeringTgwInfo.to_query f))
+               Query.Pair ("AccepterTgwInfo", PeeringTgwInfo.to_query f))
          ; Util.option_map v.requester_tgw_info (fun f ->
-               Query.Pair ("requesterTgwInfo", PeeringTgwInfo.to_query f))
+               Query.Pair ("RequesterTgwInfo", PeeringTgwInfo.to_query f))
          ; Util.option_map v.transit_gateway_attachment_id (fun f ->
-               Query.Pair ("transitGatewayAttachmentId", String.to_query f))
+               Query.Pair ("TransitGatewayAttachmentId", String.to_query f))
          ])
 
   let to_json v =
@@ -32235,9 +32234,9 @@ module CancelledSpotInstanceRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.state (fun f ->
-               Query.Pair ("state", CancelSpotInstanceRequestState.to_query f))
+               Query.Pair ("State", CancelSpotInstanceRequestState.to_query f))
          ; Util.option_map v.spot_instance_request_id (fun f ->
-               Query.Pair ("spotInstanceRequestId", String.to_query f))
+               Query.Pair ("SpotInstanceRequestId", String.to_query f))
          ])
 
   let to_json v =
@@ -32354,38 +32353,38 @@ module ServiceConfiguration = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.private_dns_name_configuration (fun f ->
                Query.Pair
-                 ("privateDnsNameConfiguration", PrivateDnsNameConfiguration.to_query f))
+                 ("PrivateDnsNameConfiguration", PrivateDnsNameConfiguration.to_query f))
          ; Util.option_map v.private_dns_name (fun f ->
-               Query.Pair ("privateDnsName", String.to_query f))
+               Query.Pair ("PrivateDnsName", String.to_query f))
          ; Some
              (Query.Pair
-                ( "baseEndpointDnsNameSet"
+                ( "BaseEndpointDnsNameSet"
                 , ValueStringList.to_query v.base_endpoint_dns_names ))
          ; Some
              (Query.Pair
-                ( "gatewayLoadBalancerArnSet"
+                ( "GatewayLoadBalancerArnSet"
                 , ValueStringList.to_query v.gateway_load_balancer_arns ))
          ; Some
              (Query.Pair
-                ( "networkLoadBalancerArnSet"
+                ( "NetworkLoadBalancerArnSet"
                 , ValueStringList.to_query v.network_load_balancer_arns ))
          ; Util.option_map v.manages_vpc_endpoints (fun f ->
-               Query.Pair ("managesVpcEndpoints", Boolean.to_query f))
+               Query.Pair ("ManagesVpcEndpoints", Boolean.to_query f))
          ; Util.option_map v.acceptance_required (fun f ->
-               Query.Pair ("acceptanceRequired", Boolean.to_query f))
+               Query.Pair ("AcceptanceRequired", Boolean.to_query f))
          ; Some
              (Query.Pair
-                ("availabilityZoneSet", ValueStringList.to_query v.availability_zones))
+                ("AvailabilityZoneSet", ValueStringList.to_query v.availability_zones))
          ; Util.option_map v.service_state (fun f ->
-               Query.Pair ("serviceState", ServiceState.to_query f))
+               Query.Pair ("ServiceState", ServiceState.to_query f))
          ; Util.option_map v.service_name (fun f ->
-               Query.Pair ("serviceName", String.to_query f))
+               Query.Pair ("ServiceName", String.to_query f))
          ; Util.option_map v.service_id (fun f ->
-               Query.Pair ("serviceId", String.to_query f))
-         ; Some (Query.Pair ("serviceType", ServiceTypeDetailSet.to_query v.service_type))
+               Query.Pair ("ServiceId", String.to_query f))
+         ; Some (Query.Pair ("ServiceType", ServiceTypeDetailSet.to_query v.service_type))
          ])
 
   let to_json v =
@@ -32495,19 +32494,19 @@ module ConversionTask = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.status_message (fun f ->
-               Query.Pair ("statusMessage", String.to_query f))
+               Query.Pair ("StatusMessage", String.to_query f))
          ; Util.option_map v.state (fun f ->
-               Query.Pair ("state", ConversionTaskState.to_query f))
+               Query.Pair ("State", ConversionTaskState.to_query f))
          ; Util.option_map v.import_volume (fun f ->
-               Query.Pair ("importVolume", ImportVolumeTaskDetails.to_query f))
+               Query.Pair ("ImportVolume", ImportVolumeTaskDetails.to_query f))
          ; Util.option_map v.import_instance (fun f ->
-               Query.Pair ("importInstance", ImportInstanceTaskDetails.to_query f))
+               Query.Pair ("ImportInstance", ImportInstanceTaskDetails.to_query f))
          ; Util.option_map v.expiration_time (fun f ->
-               Query.Pair ("expirationTime", String.to_query f))
+               Query.Pair ("ExpirationTime", String.to_query f))
          ; Util.option_map v.conversion_task_id (fun f ->
-               Query.Pair ("conversionTaskId", String.to_query f))
+               Query.Pair ("ConversionTaskId", String.to_query f))
          ])
 
   let to_json v =
@@ -32603,21 +32602,21 @@ module TransitGatewayVpcAttachment = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.options (fun f ->
-               Query.Pair ("options", TransitGatewayVpcAttachmentOptions.to_query f))
+               Query.Pair ("Options", TransitGatewayVpcAttachmentOptions.to_query f))
          ; Util.option_map v.creation_time (fun f ->
-               Query.Pair ("creationTime", DateTime.to_query f))
-         ; Some (Query.Pair ("subnetIds", ValueStringList.to_query v.subnet_ids))
+               Query.Pair ("CreationTime", DateTime.to_query f))
+         ; Some (Query.Pair ("SubnetIds", ValueStringList.to_query v.subnet_ids))
          ; Util.option_map v.state (fun f ->
-               Query.Pair ("state", TransitGatewayAttachmentState.to_query f))
+               Query.Pair ("State", TransitGatewayAttachmentState.to_query f))
          ; Util.option_map v.vpc_owner_id (fun f ->
-               Query.Pair ("vpcOwnerId", String.to_query f))
-         ; Util.option_map v.vpc_id (fun f -> Query.Pair ("vpcId", String.to_query f))
+               Query.Pair ("VpcOwnerId", String.to_query f))
+         ; Util.option_map v.vpc_id (fun f -> Query.Pair ("VpcId", String.to_query f))
          ; Util.option_map v.transit_gateway_id (fun f ->
-               Query.Pair ("transitGatewayId", String.to_query f))
+               Query.Pair ("TransitGatewayId", String.to_query f))
          ; Util.option_map v.transit_gateway_attachment_id (fun f ->
-               Query.Pair ("transitGatewayAttachmentId", String.to_query f))
+               Query.Pair ("TransitGatewayAttachmentId", String.to_query f))
          ])
 
   let to_json v =
@@ -32679,9 +32678,9 @@ module ReservedInstanceReservationValue = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.reserved_instance_id (fun f ->
-               Query.Pair ("reservedInstanceId", String.to_query f))
+               Query.Pair ("ReservedInstanceId", String.to_query f))
          ; Util.option_map v.reservation_value (fun f ->
-               Query.Pair ("reservationValue", ReservationValue.to_query f))
+               Query.Pair ("ReservationValue", ReservationValue.to_query f))
          ])
 
   let to_json v =
@@ -32724,9 +32723,9 @@ module TargetReservationValue = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.target_configuration (fun f ->
-               Query.Pair ("targetConfiguration", TargetConfiguration.to_query f))
+               Query.Pair ("TargetConfiguration", TargetConfiguration.to_query f))
          ; Util.option_map v.reservation_value (fun f ->
-               Query.Pair ("reservationValue", ReservationValue.to_query f))
+               Query.Pair ("ReservationValue", ReservationValue.to_query f))
          ])
 
   let to_json v =
@@ -32783,18 +32782,18 @@ module TransitGatewayRoute = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.state (fun f ->
-               Query.Pair ("state", TransitGatewayRouteState.to_query f))
+               Query.Pair ("State", TransitGatewayRouteState.to_query f))
          ; Util.option_map v.type_ (fun f ->
-               Query.Pair ("type", TransitGatewayRouteType.to_query f))
+               Query.Pair ("Type", TransitGatewayRouteType.to_query f))
          ; Some
              (Query.Pair
-                ( "transitGatewayAttachments"
+                ( "TransitGatewayAttachments"
                 , TransitGatewayRouteAttachmentList.to_query v.transit_gateway_attachments
                 ))
          ; Util.option_map v.prefix_list_id (fun f ->
-               Query.Pair ("prefixListId", String.to_query f))
+               Query.Pair ("PrefixListId", String.to_query f))
          ; Util.option_map v.destination_cidr_block (fun f ->
-               Query.Pair ("destinationCidrBlock", String.to_query f))
+               Query.Pair ("DestinationCidrBlock", String.to_query f))
          ])
 
   let to_json v =
@@ -32844,11 +32843,11 @@ module HistoryRecord = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.timestamp (fun f ->
-               Query.Pair ("timestamp", DateTime.to_query f))
+               Query.Pair ("Timestamp", DateTime.to_query f))
          ; Util.option_map v.event_type (fun f ->
-               Query.Pair ("eventType", EventType.to_query f))
+               Query.Pair ("EventType", EventType.to_query f))
          ; Util.option_map v.event_information (fun f ->
-               Query.Pair ("eventInformation", EventInformation.to_query f))
+               Query.Pair ("EventInformation", EventInformation.to_query f))
          ])
 
   let to_json v =
@@ -32949,29 +32948,29 @@ module FpgaImage = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.data_retention_support (fun f ->
-               Query.Pair ("dataRetentionSupport", Boolean.to_query f))
-         ; Util.option_map v.public (fun f -> Query.Pair ("public", Boolean.to_query f))
-         ; Some (Query.Pair ("tags", TagList.to_query v.tags))
-         ; Some (Query.Pair ("productCodes", ProductCodeList.to_query v.product_codes))
+               Query.Pair ("DataRetentionSupport", Boolean.to_query f))
+         ; Util.option_map v.public (fun f -> Query.Pair ("Public", Boolean.to_query f))
+         ; Some (Query.Pair ("Tags", TagList.to_query v.tags))
+         ; Some (Query.Pair ("ProductCodes", ProductCodeList.to_query v.product_codes))
          ; Util.option_map v.owner_alias (fun f ->
-               Query.Pair ("ownerAlias", String.to_query f))
-         ; Util.option_map v.owner_id (fun f -> Query.Pair ("ownerId", String.to_query f))
+               Query.Pair ("OwnerAlias", String.to_query f))
+         ; Util.option_map v.owner_id (fun f -> Query.Pair ("OwnerId", String.to_query f))
          ; Util.option_map v.update_time (fun f ->
-               Query.Pair ("updateTime", DateTime.to_query f))
+               Query.Pair ("UpdateTime", DateTime.to_query f))
          ; Util.option_map v.create_time (fun f ->
-               Query.Pair ("createTime", DateTime.to_query f))
+               Query.Pair ("CreateTime", DateTime.to_query f))
          ; Util.option_map v.state (fun f ->
-               Query.Pair ("state", FpgaImageState.to_query f))
-         ; Util.option_map v.pci_id (fun f -> Query.Pair ("pciId", PciId.to_query f))
+               Query.Pair ("State", FpgaImageState.to_query f))
+         ; Util.option_map v.pci_id (fun f -> Query.Pair ("PciId", PciId.to_query f))
          ; Util.option_map v.shell_version (fun f ->
-               Query.Pair ("shellVersion", String.to_query f))
+               Query.Pair ("ShellVersion", String.to_query f))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
-         ; Util.option_map v.name (fun f -> Query.Pair ("name", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
+         ; Util.option_map v.name (fun f -> Query.Pair ("Name", String.to_query f))
          ; Util.option_map v.fpga_image_global_id (fun f ->
-               Query.Pair ("fpgaImageGlobalId", String.to_query f))
+               Query.Pair ("FpgaImageGlobalId", String.to_query f))
          ; Util.option_map v.fpga_image_id (fun f ->
-               Query.Pair ("fpgaImageId", String.to_query f))
+               Query.Pair ("FpgaImageId", String.to_query f))
          ])
 
   let to_json v =
@@ -33043,11 +33042,11 @@ module EnableFastSnapshotRestoreErrorItem = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "fastSnapshotRestoreStateErrorSet"
+                ( "FastSnapshotRestoreStateErrorSet"
                 , EnableFastSnapshotRestoreStateErrorSet.to_query
                     v.fast_snapshot_restore_state_errors ))
          ; Util.option_map v.snapshot_id (fun f ->
-               Query.Pair ("snapshotId", String.to_query f))
+               Query.Pair ("SnapshotId", String.to_query f))
          ])
 
   let to_json v =
@@ -33132,26 +33131,26 @@ module EnableFastSnapshotRestoreSuccessItem = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.disabled_time (fun f ->
-               Query.Pair ("disabledTime", DateTime.to_query f))
+               Query.Pair ("DisabledTime", DateTime.to_query f))
          ; Util.option_map v.disabling_time (fun f ->
-               Query.Pair ("disablingTime", DateTime.to_query f))
+               Query.Pair ("DisablingTime", DateTime.to_query f))
          ; Util.option_map v.enabled_time (fun f ->
-               Query.Pair ("enabledTime", DateTime.to_query f))
+               Query.Pair ("EnabledTime", DateTime.to_query f))
          ; Util.option_map v.optimizing_time (fun f ->
-               Query.Pair ("optimizingTime", DateTime.to_query f))
+               Query.Pair ("OptimizingTime", DateTime.to_query f))
          ; Util.option_map v.enabling_time (fun f ->
-               Query.Pair ("enablingTime", DateTime.to_query f))
+               Query.Pair ("EnablingTime", DateTime.to_query f))
          ; Util.option_map v.owner_alias (fun f ->
-               Query.Pair ("ownerAlias", String.to_query f))
-         ; Util.option_map v.owner_id (fun f -> Query.Pair ("ownerId", String.to_query f))
+               Query.Pair ("OwnerAlias", String.to_query f))
+         ; Util.option_map v.owner_id (fun f -> Query.Pair ("OwnerId", String.to_query f))
          ; Util.option_map v.state_transition_reason (fun f ->
-               Query.Pair ("stateTransitionReason", String.to_query f))
+               Query.Pair ("StateTransitionReason", String.to_query f))
          ; Util.option_map v.state (fun f ->
-               Query.Pair ("state", FastSnapshotRestoreStateCode.to_query f))
+               Query.Pair ("State", FastSnapshotRestoreStateCode.to_query f))
          ; Util.option_map v.availability_zone (fun f ->
-               Query.Pair ("availabilityZone", String.to_query f))
+               Query.Pair ("AvailabilityZone", String.to_query f))
          ; Util.option_map v.snapshot_id (fun f ->
-               Query.Pair ("snapshotId", String.to_query f))
+               Query.Pair ("SnapshotId", String.to_query f))
          ])
 
   let to_json v =
@@ -33240,18 +33239,18 @@ module RouteTable = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.owner_id (fun f -> Query.Pair ("ownerId", String.to_query f))
-         ; Util.option_map v.vpc_id (fun f -> Query.Pair ("vpcId", String.to_query f))
-         ; Some (Query.Pair ("tagSet", TagList.to_query v.tags))
-         ; Some (Query.Pair ("routeSet", RouteList.to_query v.routes))
+         [ Util.option_map v.owner_id (fun f -> Query.Pair ("OwnerId", String.to_query f))
+         ; Util.option_map v.vpc_id (fun f -> Query.Pair ("VpcId", String.to_query f))
+         ; Some (Query.Pair ("TagSet", TagList.to_query v.tags))
+         ; Some (Query.Pair ("RouteSet", RouteList.to_query v.routes))
          ; Util.option_map v.route_table_id (fun f ->
-               Query.Pair ("routeTableId", String.to_query f))
+               Query.Pair ("RouteTableId", String.to_query f))
          ; Some
              (Query.Pair
-                ("propagatingVgwSet", PropagatingVgwList.to_query v.propagating_vgws))
+                ("PropagatingVgwSet", PropagatingVgwList.to_query v.propagating_vgws))
          ; Some
              (Query.Pair
-                ("associationSet", RouteTableAssociationList.to_query v.associations))
+                ("AssociationSet", RouteTableAssociationList.to_query v.associations))
          ])
 
   let to_json v =
@@ -33309,15 +33308,15 @@ module IamInstanceProfileAssociation = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.timestamp (fun f ->
-               Query.Pair ("timestamp", DateTime.to_query f))
+               Query.Pair ("Timestamp", DateTime.to_query f))
          ; Util.option_map v.state (fun f ->
-               Query.Pair ("state", IamInstanceProfileAssociationState.to_query f))
+               Query.Pair ("State", IamInstanceProfileAssociationState.to_query f))
          ; Util.option_map v.iam_instance_profile (fun f ->
-               Query.Pair ("iamInstanceProfile", IamInstanceProfile.to_query f))
+               Query.Pair ("IamInstanceProfile", IamInstanceProfile.to_query f))
          ; Util.option_map v.instance_id (fun f ->
-               Query.Pair ("instanceId", String.to_query f))
+               Query.Pair ("InstanceId", String.to_query f))
          ; Util.option_map v.association_id (fun f ->
-               Query.Pair ("associationId", String.to_query f))
+               Query.Pair ("AssociationId", String.to_query f))
          ])
 
   let to_json v =
@@ -33397,21 +33396,21 @@ module LaunchTemplateVersion = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.launch_template_data (fun f ->
-               Query.Pair ("launchTemplateData", ResponseLaunchTemplateData.to_query f))
+               Query.Pair ("LaunchTemplateData", ResponseLaunchTemplateData.to_query f))
          ; Util.option_map v.default_version (fun f ->
-               Query.Pair ("defaultVersion", Boolean.to_query f))
+               Query.Pair ("DefaultVersion", Boolean.to_query f))
          ; Util.option_map v.created_by (fun f ->
-               Query.Pair ("createdBy", String.to_query f))
+               Query.Pair ("CreatedBy", String.to_query f))
          ; Util.option_map v.create_time (fun f ->
-               Query.Pair ("createTime", DateTime.to_query f))
+               Query.Pair ("CreateTime", DateTime.to_query f))
          ; Util.option_map v.version_description (fun f ->
-               Query.Pair ("versionDescription", String.to_query f))
+               Query.Pair ("VersionDescription", String.to_query f))
          ; Util.option_map v.version_number (fun f ->
-               Query.Pair ("versionNumber", Long.to_query f))
+               Query.Pair ("VersionNumber", Long.to_query f))
          ; Util.option_map v.launch_template_name (fun f ->
-               Query.Pair ("launchTemplateName", String.to_query f))
+               Query.Pair ("LaunchTemplateName", String.to_query f))
          ; Util.option_map v.launch_template_id (fun f ->
-               Query.Pair ("launchTemplateId", String.to_query f))
+               Query.Pair ("LaunchTemplateId", String.to_query f))
          ])
 
   let to_json v =
@@ -33476,13 +33475,13 @@ module CarrierGateway = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
-         ; Util.option_map v.owner_id (fun f -> Query.Pair ("ownerId", String.to_query f))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
+         ; Util.option_map v.owner_id (fun f -> Query.Pair ("OwnerId", String.to_query f))
          ; Util.option_map v.state (fun f ->
-               Query.Pair ("state", CarrierGatewayState.to_query f))
-         ; Util.option_map v.vpc_id (fun f -> Query.Pair ("vpcId", String.to_query f))
+               Query.Pair ("State", CarrierGatewayState.to_query f))
+         ; Util.option_map v.vpc_id (fun f -> Query.Pair ("VpcId", String.to_query f))
          ; Util.option_map v.carrier_gateway_id (fun f ->
-               Query.Pair ("carrierGatewayId", String.to_query f))
+               Query.Pair ("CarrierGatewayId", String.to_query f))
          ])
 
   let to_json v =
@@ -33523,9 +33522,9 @@ module CapacityReservationGroup = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.owner_id (fun f -> Query.Pair ("ownerId", String.to_query f))
+         [ Util.option_map v.owner_id (fun f -> Query.Pair ("OwnerId", String.to_query f))
          ; Util.option_map v.group_arn (fun f ->
-               Query.Pair ("groupArn", String.to_query f))
+               Query.Pair ("GroupArn", String.to_query f))
          ])
 
   let to_json v =
@@ -33602,25 +33601,25 @@ module TransitGatewayMulticastGroup = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.source_type (fun f ->
-               Query.Pair ("sourceType", MembershipType.to_query f))
+               Query.Pair ("SourceType", MembershipType.to_query f))
          ; Util.option_map v.member_type (fun f ->
-               Query.Pair ("memberType", MembershipType.to_query f))
+               Query.Pair ("MemberType", MembershipType.to_query f))
          ; Util.option_map v.group_source (fun f ->
-               Query.Pair ("groupSource", Boolean.to_query f))
+               Query.Pair ("GroupSource", Boolean.to_query f))
          ; Util.option_map v.group_member (fun f ->
-               Query.Pair ("groupMember", Boolean.to_query f))
+               Query.Pair ("GroupMember", Boolean.to_query f))
          ; Util.option_map v.network_interface_id (fun f ->
-               Query.Pair ("networkInterfaceId", String.to_query f))
+               Query.Pair ("NetworkInterfaceId", String.to_query f))
          ; Util.option_map v.resource_type (fun f ->
-               Query.Pair ("resourceType", TransitGatewayAttachmentResourceType.to_query f))
+               Query.Pair ("ResourceType", TransitGatewayAttachmentResourceType.to_query f))
          ; Util.option_map v.resource_id (fun f ->
-               Query.Pair ("resourceId", String.to_query f))
+               Query.Pair ("ResourceId", String.to_query f))
          ; Util.option_map v.subnet_id (fun f ->
-               Query.Pair ("subnetId", String.to_query f))
+               Query.Pair ("SubnetId", String.to_query f))
          ; Util.option_map v.transit_gateway_attachment_id (fun f ->
-               Query.Pair ("transitGatewayAttachmentId", String.to_query f))
+               Query.Pair ("TransitGatewayAttachmentId", String.to_query f))
          ; Util.option_map v.group_ip_address (fun f ->
-               Query.Pair ("groupIpAddress", String.to_query f))
+               Query.Pair ("GroupIpAddress", String.to_query f))
          ])
 
   let to_json v =
@@ -33716,21 +33715,21 @@ module LocalGatewayVirtualInterface = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
-         ; Util.option_map v.owner_id (fun f -> Query.Pair ("ownerId", String.to_query f))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
+         ; Util.option_map v.owner_id (fun f -> Query.Pair ("OwnerId", String.to_query f))
          ; Util.option_map v.peer_bgp_asn (fun f ->
-               Query.Pair ("peerBgpAsn", Integer.to_query f))
+               Query.Pair ("PeerBgpAsn", Integer.to_query f))
          ; Util.option_map v.local_bgp_asn (fun f ->
-               Query.Pair ("localBgpAsn", Integer.to_query f))
+               Query.Pair ("LocalBgpAsn", Integer.to_query f))
          ; Util.option_map v.peer_address (fun f ->
-               Query.Pair ("peerAddress", String.to_query f))
+               Query.Pair ("PeerAddress", String.to_query f))
          ; Util.option_map v.local_address (fun f ->
-               Query.Pair ("localAddress", String.to_query f))
-         ; Util.option_map v.vlan (fun f -> Query.Pair ("vlan", Integer.to_query f))
+               Query.Pair ("LocalAddress", String.to_query f))
+         ; Util.option_map v.vlan (fun f -> Query.Pair ("Vlan", Integer.to_query f))
          ; Util.option_map v.local_gateway_id (fun f ->
-               Query.Pair ("localGatewayId", String.to_query f))
+               Query.Pair ("LocalGatewayId", String.to_query f))
          ; Util.option_map v.local_gateway_virtual_interface_id (fun f ->
-               Query.Pair ("localGatewayVirtualInterfaceId", String.to_query f))
+               Query.Pair ("LocalGatewayVirtualInterfaceId", String.to_query f))
          ])
 
   let to_json v =
@@ -33955,17 +33954,17 @@ module LocalGatewayVirtualInterfaceGroup = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
-         ; Util.option_map v.owner_id (fun f -> Query.Pair ("ownerId", String.to_query f))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
+         ; Util.option_map v.owner_id (fun f -> Query.Pair ("OwnerId", String.to_query f))
          ; Util.option_map v.local_gateway_id (fun f ->
-               Query.Pair ("localGatewayId", String.to_query f))
+               Query.Pair ("LocalGatewayId", String.to_query f))
          ; Some
              (Query.Pair
-                ( "localGatewayVirtualInterfaceIdSet"
+                ( "LocalGatewayVirtualInterfaceIdSet"
                 , LocalGatewayVirtualInterfaceIdSet.to_query
                     v.local_gateway_virtual_interface_ids ))
          ; Util.option_map v.local_gateway_virtual_interface_group_id (fun f ->
-               Query.Pair ("localGatewayVirtualInterfaceGroupId", String.to_query f))
+               Query.Pair ("LocalGatewayVirtualInterfaceGroupId", String.to_query f))
          ])
 
   let to_json v =
@@ -34015,9 +34014,9 @@ module MovingAddressStatus = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.public_ip (fun f ->
-               Query.Pair ("publicIp", String.to_query f))
+               Query.Pair ("PublicIp", String.to_query f))
          ; Util.option_map v.move_status (fun f ->
-               Query.Pair ("moveStatus", MoveStatus.to_query f))
+               Query.Pair ("MoveStatus", MoveStatus.to_query f))
          ])
 
   let to_json v =
@@ -34625,24 +34624,24 @@ module TrafficMirrorSession = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
          ; Util.option_map v.virtual_network_id (fun f ->
-               Query.Pair ("virtualNetworkId", Integer.to_query f))
+               Query.Pair ("VirtualNetworkId", Integer.to_query f))
          ; Util.option_map v.session_number (fun f ->
-               Query.Pair ("sessionNumber", Integer.to_query f))
+               Query.Pair ("SessionNumber", Integer.to_query f))
          ; Util.option_map v.packet_length (fun f ->
-               Query.Pair ("packetLength", Integer.to_query f))
-         ; Util.option_map v.owner_id (fun f -> Query.Pair ("ownerId", String.to_query f))
+               Query.Pair ("PacketLength", Integer.to_query f))
+         ; Util.option_map v.owner_id (fun f -> Query.Pair ("OwnerId", String.to_query f))
          ; Util.option_map v.network_interface_id (fun f ->
-               Query.Pair ("networkInterfaceId", String.to_query f))
+               Query.Pair ("NetworkInterfaceId", String.to_query f))
          ; Util.option_map v.traffic_mirror_filter_id (fun f ->
-               Query.Pair ("trafficMirrorFilterId", String.to_query f))
+               Query.Pair ("TrafficMirrorFilterId", String.to_query f))
          ; Util.option_map v.traffic_mirror_target_id (fun f ->
-               Query.Pair ("trafficMirrorTargetId", String.to_query f))
+               Query.Pair ("TrafficMirrorTargetId", String.to_query f))
          ; Util.option_map v.traffic_mirror_session_id (fun f ->
-               Query.Pair ("trafficMirrorSessionId", String.to_query f))
+               Query.Pair ("TrafficMirrorSessionId", String.to_query f))
          ])
 
   let to_json v =
@@ -34710,13 +34709,13 @@ module Ipv6Pool = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Some
              (Query.Pair
-                ("poolCidrBlockSet", PoolCidrBlocksSet.to_query v.pool_cidr_blocks))
+                ("PoolCidrBlockSet", PoolCidrBlocksSet.to_query v.pool_cidr_blocks))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
-         ; Util.option_map v.pool_id (fun f -> Query.Pair ("poolId", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
+         ; Util.option_map v.pool_id (fun f -> Query.Pair ("PoolId", String.to_query f))
          ])
 
   let to_json v =
@@ -34763,13 +34762,13 @@ module DeleteLaunchTemplateVersionsResponseErrorItem = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.response_error (fun f ->
-               Query.Pair ("responseError", ResponseError.to_query f))
+               Query.Pair ("ResponseError", ResponseError.to_query f))
          ; Util.option_map v.version_number (fun f ->
-               Query.Pair ("versionNumber", Long.to_query f))
+               Query.Pair ("VersionNumber", Long.to_query f))
          ; Util.option_map v.launch_template_name (fun f ->
-               Query.Pair ("launchTemplateName", String.to_query f))
+               Query.Pair ("LaunchTemplateName", String.to_query f))
          ; Util.option_map v.launch_template_id (fun f ->
-               Query.Pair ("launchTemplateId", String.to_query f))
+               Query.Pair ("LaunchTemplateId", String.to_query f))
          ])
 
   let to_json v =
@@ -34818,11 +34817,11 @@ module DeleteLaunchTemplateVersionsResponseSuccessItem = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.version_number (fun f ->
-               Query.Pair ("versionNumber", Long.to_query f))
+               Query.Pair ("VersionNumber", Long.to_query f))
          ; Util.option_map v.launch_template_name (fun f ->
-               Query.Pair ("launchTemplateName", String.to_query f))
+               Query.Pair ("LaunchTemplateName", String.to_query f))
          ; Util.option_map v.launch_template_id (fun f ->
-               Query.Pair ("launchTemplateId", String.to_query f))
+               Query.Pair ("LaunchTemplateId", String.to_query f))
          ])
 
   let to_json v =
@@ -34952,42 +34951,42 @@ module SpotInstanceRequest = struct
       (Util.list_filter_opt
          [ Util.option_map v.instance_interruption_behavior (fun f ->
                Query.Pair
-                 ("instanceInterruptionBehavior", InstanceInterruptionBehavior.to_query f))
+                 ("InstanceInterruptionBehavior", InstanceInterruptionBehavior.to_query f))
          ; Util.option_map v.valid_until (fun f ->
-               Query.Pair ("validUntil", DateTime.to_query f))
+               Query.Pair ("ValidUntil", DateTime.to_query f))
          ; Util.option_map v.valid_from (fun f ->
-               Query.Pair ("validFrom", DateTime.to_query f))
+               Query.Pair ("ValidFrom", DateTime.to_query f))
          ; Util.option_map v.type_ (fun f ->
-               Query.Pair ("type", SpotInstanceType.to_query f))
-         ; Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+               Query.Pair ("Type", SpotInstanceType.to_query f))
+         ; Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.status (fun f ->
-               Query.Pair ("status", SpotInstanceStatus.to_query f))
+               Query.Pair ("Status", SpotInstanceStatus.to_query f))
          ; Util.option_map v.state (fun f ->
-               Query.Pair ("state", SpotInstanceState.to_query f))
+               Query.Pair ("State", SpotInstanceState.to_query f))
          ; Util.option_map v.spot_price (fun f ->
-               Query.Pair ("spotPrice", String.to_query f))
+               Query.Pair ("SpotPrice", String.to_query f))
          ; Util.option_map v.spot_instance_request_id (fun f ->
-               Query.Pair ("spotInstanceRequestId", String.to_query f))
+               Query.Pair ("SpotInstanceRequestId", String.to_query f))
          ; Util.option_map v.product_description (fun f ->
-               Query.Pair ("productDescription", RIProductDescription.to_query f))
+               Query.Pair ("ProductDescription", RIProductDescription.to_query f))
          ; Util.option_map v.launched_availability_zone (fun f ->
-               Query.Pair ("launchedAvailabilityZone", String.to_query f))
+               Query.Pair ("LaunchedAvailabilityZone", String.to_query f))
          ; Util.option_map v.launch_specification (fun f ->
-               Query.Pair ("launchSpecification", LaunchSpecification.to_query f))
+               Query.Pair ("LaunchSpecification", LaunchSpecification.to_query f))
          ; Util.option_map v.launch_group (fun f ->
-               Query.Pair ("launchGroup", String.to_query f))
+               Query.Pair ("LaunchGroup", String.to_query f))
          ; Util.option_map v.instance_id (fun f ->
-               Query.Pair ("instanceId", String.to_query f))
+               Query.Pair ("InstanceId", String.to_query f))
          ; Util.option_map v.fault (fun f ->
-               Query.Pair ("fault", SpotInstanceStateFault.to_query f))
+               Query.Pair ("Fault", SpotInstanceStateFault.to_query f))
          ; Util.option_map v.create_time (fun f ->
-               Query.Pair ("createTime", DateTime.to_query f))
+               Query.Pair ("CreateTime", DateTime.to_query f))
          ; Util.option_map v.block_duration_minutes (fun f ->
-               Query.Pair ("blockDurationMinutes", Integer.to_query f))
+               Query.Pair ("BlockDurationMinutes", Integer.to_query f))
          ; Util.option_map v.availability_zone_group (fun f ->
-               Query.Pair ("availabilityZoneGroup", String.to_query f))
+               Query.Pair ("AvailabilityZoneGroup", String.to_query f))
          ; Util.option_map v.actual_block_hourly_price (fun f ->
-               Query.Pair ("actualBlockHourlyPrice", String.to_query f))
+               Query.Pair ("ActualBlockHourlyPrice", String.to_query f))
          ])
 
   let to_json v =
@@ -35077,9 +35076,9 @@ module FailedQueuedPurchaseDeletion = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.reserved_instances_id (fun f ->
-               Query.Pair ("reservedInstancesId", String.to_query f))
+               Query.Pair ("ReservedInstancesId", String.to_query f))
          ; Util.option_map v.error (fun f ->
-               Query.Pair ("error", DeleteQueuedReservedInstancesError.to_query f))
+               Query.Pair ("Error", DeleteQueuedReservedInstancesError.to_query f))
          ])
 
   let to_json v =
@@ -35114,7 +35113,7 @@ module SuccessfulQueuedPurchaseDeletion = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.reserved_instances_id (fun f ->
-               Query.Pair ("reservedInstancesId", String.to_query f))
+               Query.Pair ("ReservedInstancesId", String.to_query f))
          ])
 
   let to_json v =
@@ -35194,16 +35193,16 @@ module ExportTask = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
-         ; Some (Query.Pair ("statusMessage", String.to_query v.status_message))
-         ; Some (Query.Pair ("state", ExportTaskState.to_query v.state))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
+         ; Some (Query.Pair ("StatusMessage", String.to_query v.status_message))
+         ; Some (Query.Pair ("State", ExportTaskState.to_query v.state))
          ; Some
              (Query.Pair
-                ( "instanceExport"
+                ( "InstanceExport"
                 , InstanceExportDetails.to_query v.instance_export_details ))
-         ; Some (Query.Pair ("exportToS3", ExportToS3Task.to_query v.export_to_s3_task))
-         ; Some (Query.Pair ("exportTaskId", String.to_query v.export_task_id))
-         ; Some (Query.Pair ("description", String.to_query v.description))
+         ; Some (Query.Pair ("ExportToS3", ExportToS3Task.to_query v.export_to_s3_task))
+         ; Some (Query.Pair ("ExportTaskId", String.to_query v.export_task_id))
+         ; Some (Query.Pair ("Description", String.to_query v.description))
          ])
 
   let to_json v =
@@ -35254,9 +35253,9 @@ module InstanceMonitoring = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.monitoring (fun f ->
-               Query.Pair ("monitoring", Monitoring.to_query f))
+               Query.Pair ("Monitoring", Monitoring.to_query f))
          ; Util.option_map v.instance_id (fun f ->
-               Query.Pair ("instanceId", String.to_query f))
+               Query.Pair ("InstanceId", String.to_query f))
          ])
 
   let to_json v =
@@ -35340,16 +35339,16 @@ module SecurityGroup = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.vpc_id (fun f -> Query.Pair ("vpcId", String.to_query f))
-         ; Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         [ Util.option_map v.vpc_id (fun f -> Query.Pair ("VpcId", String.to_query f))
+         ; Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Some
              (Query.Pair
-                ("ipPermissionsEgress", IpPermissionList.to_query v.ip_permissions_egress))
-         ; Some (Query.Pair ("groupId", String.to_query v.group_id))
-         ; Some (Query.Pair ("ownerId", String.to_query v.owner_id))
-         ; Some (Query.Pair ("ipPermissions", IpPermissionList.to_query v.ip_permissions))
-         ; Some (Query.Pair ("groupName", String.to_query v.group_name))
-         ; Some (Query.Pair ("groupDescription", String.to_query v.description))
+                ("IpPermissionsEgress", IpPermissionList.to_query v.ip_permissions_egress))
+         ; Some (Query.Pair ("GroupId", String.to_query v.group_id))
+         ; Some (Query.Pair ("OwnerId", String.to_query v.owner_id))
+         ; Some (Query.Pair ("IpPermissions", IpPermissionList.to_query v.ip_permissions))
+         ; Some (Query.Pair ("GroupName", String.to_query v.group_name))
+         ; Some (Query.Pair ("GroupDescription", String.to_query v.description))
          ])
 
   let to_json v =
@@ -35464,29 +35463,29 @@ module ServiceDetail = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.private_dns_name_verification_state (fun f ->
-               Query.Pair ("privateDnsNameVerificationState", DnsNameState.to_query f))
-         ; Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+               Query.Pair ("PrivateDnsNameVerificationState", DnsNameState.to_query f))
+         ; Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.manages_vpc_endpoints (fun f ->
-               Query.Pair ("managesVpcEndpoints", Boolean.to_query f))
+               Query.Pair ("ManagesVpcEndpoints", Boolean.to_query f))
          ; Util.option_map v.acceptance_required (fun f ->
-               Query.Pair ("acceptanceRequired", Boolean.to_query f))
+               Query.Pair ("AcceptanceRequired", Boolean.to_query f))
          ; Util.option_map v.vpc_endpoint_policy_supported (fun f ->
-               Query.Pair ("vpcEndpointPolicySupported", Boolean.to_query f))
+               Query.Pair ("VpcEndpointPolicySupported", Boolean.to_query f))
          ; Util.option_map v.private_dns_name (fun f ->
-               Query.Pair ("privateDnsName", String.to_query f))
+               Query.Pair ("PrivateDnsName", String.to_query f))
          ; Some
              (Query.Pair
-                ( "baseEndpointDnsNameSet"
+                ( "BaseEndpointDnsNameSet"
                 , ValueStringList.to_query v.base_endpoint_dns_names ))
-         ; Util.option_map v.owner (fun f -> Query.Pair ("owner", String.to_query f))
+         ; Util.option_map v.owner (fun f -> Query.Pair ("Owner", String.to_query f))
          ; Some
              (Query.Pair
-                ("availabilityZoneSet", ValueStringList.to_query v.availability_zones))
-         ; Some (Query.Pair ("serviceType", ServiceTypeDetailSet.to_query v.service_type))
+                ("AvailabilityZoneSet", ValueStringList.to_query v.availability_zones))
+         ; Some (Query.Pair ("ServiceType", ServiceTypeDetailSet.to_query v.service_type))
          ; Util.option_map v.service_id (fun f ->
-               Query.Pair ("serviceId", String.to_query f))
+               Query.Pair ("ServiceId", String.to_query f))
          ; Util.option_map v.service_name (fun f ->
-               Query.Pair ("serviceName", String.to_query f))
+               Query.Pair ("ServiceName", String.to_query f))
          ])
 
   let to_json v =
@@ -35668,49 +35667,49 @@ module ClientVpnEndpoint = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.client_connect_options (fun f ->
-               Query.Pair ("clientConnectOptions", ClientConnectResponseOptions.to_query f))
+               Query.Pair ("ClientConnectOptions", ClientConnectResponseOptions.to_query f))
          ; Util.option_map v.self_service_portal_url (fun f ->
-               Query.Pair ("selfServicePortalUrl", String.to_query f))
-         ; Util.option_map v.vpc_id (fun f -> Query.Pair ("vpcId", String.to_query f))
+               Query.Pair ("SelfServicePortalUrl", String.to_query f))
+         ; Util.option_map v.vpc_id (fun f -> Query.Pair ("VpcId", String.to_query f))
          ; Some
              (Query.Pair
-                ( "securityGroupIdSet"
+                ( "SecurityGroupIdSet"
                 , ClientVpnSecurityGroupIdSet.to_query v.security_group_ids ))
-         ; Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         ; Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.connection_log_options (fun f ->
-               Query.Pair ("connectionLogOptions", ConnectionLogResponseOptions.to_query f))
+               Query.Pair ("ConnectionLogOptions", ConnectionLogResponseOptions.to_query f))
          ; Some
              (Query.Pair
-                ( "authenticationOptions"
+                ( "AuthenticationOptions"
                 , ClientVpnAuthenticationList.to_query v.authentication_options ))
          ; Util.option_map v.server_certificate_arn (fun f ->
-               Query.Pair ("serverCertificateArn", String.to_query f))
+               Query.Pair ("ServerCertificateArn", String.to_query f))
          ; Some
              (Query.Pair
-                ( "associatedTargetNetwork"
+                ( "AssociatedTargetNetwork"
                 , AssociatedTargetNetworkSet.to_query v.associated_target_networks ))
          ; Util.option_map v.vpn_port (fun f ->
-               Query.Pair ("vpnPort", Integer.to_query f))
+               Query.Pair ("VpnPort", Integer.to_query f))
          ; Util.option_map v.transport_protocol (fun f ->
-               Query.Pair ("transportProtocol", TransportProtocol.to_query f))
+               Query.Pair ("TransportProtocol", TransportProtocol.to_query f))
          ; Util.option_map v.vpn_protocol (fun f ->
-               Query.Pair ("vpnProtocol", VpnProtocol.to_query f))
+               Query.Pair ("VpnProtocol", VpnProtocol.to_query f))
          ; Util.option_map v.split_tunnel (fun f ->
-               Query.Pair ("splitTunnel", Boolean.to_query f))
-         ; Some (Query.Pair ("dnsServer", ValueStringList.to_query v.dns_servers))
+               Query.Pair ("SplitTunnel", Boolean.to_query f))
+         ; Some (Query.Pair ("DnsServer", ValueStringList.to_query v.dns_servers))
          ; Util.option_map v.client_cidr_block (fun f ->
-               Query.Pair ("clientCidrBlock", String.to_query f))
-         ; Util.option_map v.dns_name (fun f -> Query.Pair ("dnsName", String.to_query f))
+               Query.Pair ("ClientCidrBlock", String.to_query f))
+         ; Util.option_map v.dns_name (fun f -> Query.Pair ("DnsName", String.to_query f))
          ; Util.option_map v.deletion_time (fun f ->
-               Query.Pair ("deletionTime", String.to_query f))
+               Query.Pair ("DeletionTime", String.to_query f))
          ; Util.option_map v.creation_time (fun f ->
-               Query.Pair ("creationTime", String.to_query f))
+               Query.Pair ("CreationTime", String.to_query f))
          ; Util.option_map v.status (fun f ->
-               Query.Pair ("status", ClientVpnEndpointStatus.to_query f))
+               Query.Pair ("Status", ClientVpnEndpointStatus.to_query f))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
          ; Util.option_map v.client_vpn_endpoint_id (fun f ->
-               Query.Pair ("clientVpnEndpointId", String.to_query f))
+               Query.Pair ("ClientVpnEndpointId", String.to_query f))
          ])
 
   let to_json v =
@@ -35823,8 +35822,7 @@ module FleetLaunchTemplateConfigRequest = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "Overrides.member"
-                , FleetLaunchTemplateOverridesListRequest.to_query v.overrides ))
+                ("Overrides", FleetLaunchTemplateOverridesListRequest.to_query v.overrides))
          ; Util.option_map v.launch_template_specification (fun f ->
                Query.Pair
                  ( "LaunchTemplateSpecification"
@@ -35954,12 +35952,12 @@ module InternetGateway = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
-         ; Util.option_map v.owner_id (fun f -> Query.Pair ("ownerId", String.to_query f))
-         ; Some (Query.Pair ("internetGatewayId", String.to_query v.internet_gateway_id))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
+         ; Util.option_map v.owner_id (fun f -> Query.Pair ("OwnerId", String.to_query f))
+         ; Some (Query.Pair ("InternetGatewayId", String.to_query v.internet_gateway_id))
          ; Some
              (Query.Pair
-                ("attachmentSet", InternetGatewayAttachmentList.to_query v.attachments))
+                ("AttachmentSet", InternetGatewayAttachmentList.to_query v.attachments))
          ])
 
   let to_json v =
@@ -36133,46 +36131,46 @@ module FleetData = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ("fleetInstanceSet", DescribeFleetsInstancesSet.to_query v.instances))
-         ; Some (Query.Pair ("errorSet", DescribeFleetsErrorSet.to_query v.errors))
-         ; Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+                ("FleetInstanceSet", DescribeFleetsInstancesSet.to_query v.instances))
+         ; Some (Query.Pair ("ErrorSet", DescribeFleetsErrorSet.to_query v.errors))
+         ; Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.on_demand_options (fun f ->
-               Query.Pair ("onDemandOptions", OnDemandOptions.to_query f))
+               Query.Pair ("OnDemandOptions", OnDemandOptions.to_query f))
          ; Util.option_map v.spot_options (fun f ->
-               Query.Pair ("spotOptions", SpotOptions.to_query f))
+               Query.Pair ("SpotOptions", SpotOptions.to_query f))
          ; Util.option_map v.replace_unhealthy_instances (fun f ->
-               Query.Pair ("replaceUnhealthyInstances", Boolean.to_query f))
+               Query.Pair ("ReplaceUnhealthyInstances", Boolean.to_query f))
          ; Util.option_map v.valid_until (fun f ->
-               Query.Pair ("validUntil", DateTime.to_query f))
+               Query.Pair ("ValidUntil", DateTime.to_query f))
          ; Util.option_map v.valid_from (fun f ->
-               Query.Pair ("validFrom", DateTime.to_query f))
-         ; Util.option_map v.type_ (fun f -> Query.Pair ("type", FleetType.to_query f))
+               Query.Pair ("ValidFrom", DateTime.to_query f))
+         ; Util.option_map v.type_ (fun f -> Query.Pair ("Type", FleetType.to_query f))
          ; Util.option_map v.terminate_instances_with_expiration (fun f ->
-               Query.Pair ("terminateInstancesWithExpiration", Boolean.to_query f))
+               Query.Pair ("TerminateInstancesWithExpiration", Boolean.to_query f))
          ; Util.option_map v.target_capacity_specification (fun f ->
                Query.Pair
-                 ("targetCapacitySpecification", TargetCapacitySpecification.to_query f))
+                 ("TargetCapacitySpecification", TargetCapacitySpecification.to_query f))
          ; Some
              (Query.Pair
-                ( "launchTemplateConfigs"
+                ( "LaunchTemplateConfigs"
                 , FleetLaunchTemplateConfigList.to_query v.launch_template_configs ))
          ; Util.option_map v.fulfilled_on_demand_capacity (fun f ->
-               Query.Pair ("fulfilledOnDemandCapacity", Double.to_query f))
+               Query.Pair ("FulfilledOnDemandCapacity", Double.to_query f))
          ; Util.option_map v.fulfilled_capacity (fun f ->
-               Query.Pair ("fulfilledCapacity", Double.to_query f))
+               Query.Pair ("FulfilledCapacity", Double.to_query f))
          ; Util.option_map v.excess_capacity_termination_policy (fun f ->
                Query.Pair
-                 ( "excessCapacityTerminationPolicy"
+                 ( "ExcessCapacityTerminationPolicy"
                  , FleetExcessCapacityTerminationPolicy.to_query f ))
          ; Util.option_map v.client_token (fun f ->
-               Query.Pair ("clientToken", String.to_query f))
+               Query.Pair ("ClientToken", String.to_query f))
          ; Util.option_map v.fleet_state (fun f ->
-               Query.Pair ("fleetState", FleetStateCode.to_query f))
-         ; Util.option_map v.fleet_id (fun f -> Query.Pair ("fleetId", String.to_query f))
+               Query.Pair ("FleetState", FleetStateCode.to_query f))
+         ; Util.option_map v.fleet_id (fun f -> Query.Pair ("FleetId", String.to_query f))
          ; Util.option_map v.create_time (fun f ->
-               Query.Pair ("createTime", DateTime.to_query f))
+               Query.Pair ("CreateTime", DateTime.to_query f))
          ; Util.option_map v.activity_status (fun f ->
-               Query.Pair ("activityStatus", FleetActivityStatus.to_query f))
+               Query.Pair ("ActivityStatus", FleetActivityStatus.to_query f))
          ])
 
   let to_json v =
@@ -36301,17 +36299,17 @@ module SpotFleetRequestConfig = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.spot_fleet_request_state (fun f ->
-               Query.Pair ("spotFleetRequestState", BatchState.to_query f))
+               Query.Pair ("SpotFleetRequestState", BatchState.to_query f))
          ; Util.option_map v.spot_fleet_request_id (fun f ->
-               Query.Pair ("spotFleetRequestId", String.to_query f))
+               Query.Pair ("SpotFleetRequestId", String.to_query f))
          ; Util.option_map v.spot_fleet_request_config (fun f ->
-               Query.Pair ("spotFleetRequestConfig", SpotFleetRequestConfigData.to_query f))
+               Query.Pair ("SpotFleetRequestConfig", SpotFleetRequestConfigData.to_query f))
          ; Util.option_map v.create_time (fun f ->
-               Query.Pair ("createTime", DateTime.to_query f))
+               Query.Pair ("CreateTime", DateTime.to_query f))
          ; Util.option_map v.activity_status (fun f ->
-               Query.Pair ("activityStatus", ActivityStatus.to_query f))
+               Query.Pair ("ActivityStatus", ActivityStatus.to_query f))
          ])
 
   let to_json v =
@@ -36456,26 +36454,26 @@ module AvailabilityZone = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.parent_zone_id (fun f ->
-               Query.Pair ("parentZoneId", String.to_query f))
+               Query.Pair ("ParentZoneId", String.to_query f))
          ; Util.option_map v.parent_zone_name (fun f ->
-               Query.Pair ("parentZoneName", String.to_query f))
+               Query.Pair ("ParentZoneName", String.to_query f))
          ; Util.option_map v.zone_type (fun f ->
-               Query.Pair ("zoneType", String.to_query f))
+               Query.Pair ("ZoneType", String.to_query f))
          ; Util.option_map v.network_border_group (fun f ->
-               Query.Pair ("networkBorderGroup", String.to_query f))
+               Query.Pair ("NetworkBorderGroup", String.to_query f))
          ; Util.option_map v.group_name (fun f ->
-               Query.Pair ("groupName", String.to_query f))
-         ; Util.option_map v.zone_id (fun f -> Query.Pair ("zoneId", String.to_query f))
+               Query.Pair ("GroupName", String.to_query f))
+         ; Util.option_map v.zone_id (fun f -> Query.Pair ("ZoneId", String.to_query f))
          ; Util.option_map v.zone_name (fun f ->
-               Query.Pair ("zoneName", String.to_query f))
+               Query.Pair ("ZoneName", String.to_query f))
          ; Util.option_map v.region_name (fun f ->
-               Query.Pair ("regionName", String.to_query f))
+               Query.Pair ("RegionName", String.to_query f))
          ; Some
-             (Query.Pair ("messageSet", AvailabilityZoneMessageList.to_query v.messages))
+             (Query.Pair ("MessageSet", AvailabilityZoneMessageList.to_query v.messages))
          ; Util.option_map v.opt_in_status (fun f ->
-               Query.Pair ("optInStatus", AvailabilityZoneOptInStatus.to_query f))
+               Query.Pair ("OptInStatus", AvailabilityZoneOptInStatus.to_query f))
          ; Util.option_map v.state (fun f ->
-               Query.Pair ("zoneState", AvailabilityZoneState.to_query f))
+               Query.Pair ("ZoneState", AvailabilityZoneState.to_query f))
          ])
 
   let to_json v =
@@ -36575,16 +36573,16 @@ module CustomerGateway = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.device_name (fun f ->
-               Query.Pair ("deviceName", String.to_query f))
-         ; Some (Query.Pair ("type", String.to_query v.type_))
-         ; Some (Query.Pair ("state", String.to_query v.state))
+               Query.Pair ("DeviceName", String.to_query f))
+         ; Some (Query.Pair ("Type", String.to_query v.type_))
+         ; Some (Query.Pair ("State", String.to_query v.state))
          ; Util.option_map v.certificate_arn (fun f ->
-               Query.Pair ("certificateArn", String.to_query f))
-         ; Some (Query.Pair ("ipAddress", String.to_query v.ip_address))
-         ; Some (Query.Pair ("customerGatewayId", String.to_query v.customer_gateway_id))
-         ; Some (Query.Pair ("bgpAsn", String.to_query v.bgp_asn))
+               Query.Pair ("CertificateArn", String.to_query f))
+         ; Some (Query.Pair ("IpAddress", String.to_query v.ip_address))
+         ; Some (Query.Pair ("CustomerGatewayId", String.to_query v.customer_gateway_id))
+         ; Some (Query.Pair ("BgpAsn", String.to_query v.bgp_asn))
          ])
 
   let to_json v =
@@ -36672,18 +36670,18 @@ module VolumeStatusItem = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "attachmentStatuses"
+                ( "AttachmentStatuses"
                 , VolumeStatusAttachmentStatusList.to_query v.attachment_statuses ))
          ; Util.option_map v.volume_status (fun f ->
-               Query.Pair ("volumeStatus", VolumeStatusInfo.to_query f))
+               Query.Pair ("VolumeStatus", VolumeStatusInfo.to_query f))
          ; Util.option_map v.volume_id (fun f ->
-               Query.Pair ("volumeId", String.to_query f))
-         ; Some (Query.Pair ("eventsSet", VolumeStatusEventsList.to_query v.events))
+               Query.Pair ("VolumeId", String.to_query f))
+         ; Some (Query.Pair ("EventsSet", VolumeStatusEventsList.to_query v.events))
          ; Util.option_map v.outpost_arn (fun f ->
-               Query.Pair ("outpostArn", String.to_query f))
+               Query.Pair ("OutpostArn", String.to_query f))
          ; Util.option_map v.availability_zone (fun f ->
-               Query.Pair ("availabilityZone", String.to_query f))
-         ; Some (Query.Pair ("actionsSet", VolumeStatusActionsList.to_query v.actions))
+               Query.Pair ("AvailabilityZone", String.to_query f))
+         ; Some (Query.Pair ("ActionsSet", VolumeStatusActionsList.to_query v.actions))
          ])
 
   let to_json v =
@@ -36747,13 +36745,13 @@ module TransitGatewayRouteTableAssociation = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.state (fun f ->
-               Query.Pair ("state", TransitGatewayAssociationState.to_query f))
+               Query.Pair ("State", TransitGatewayAssociationState.to_query f))
          ; Util.option_map v.resource_type (fun f ->
-               Query.Pair ("resourceType", TransitGatewayAttachmentResourceType.to_query f))
+               Query.Pair ("ResourceType", TransitGatewayAttachmentResourceType.to_query f))
          ; Util.option_map v.resource_id (fun f ->
-               Query.Pair ("resourceId", String.to_query f))
+               Query.Pair ("ResourceId", String.to_query f))
          ; Util.option_map v.transit_gateway_attachment_id (fun f ->
-               Query.Pair ("transitGatewayAttachmentId", String.to_query f))
+               Query.Pair ("TransitGatewayAttachmentId", String.to_query f))
          ])
 
   let to_json v =
@@ -36827,19 +36825,19 @@ module HostOffering = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.upfront_price (fun f ->
-               Query.Pair ("upfrontPrice", String.to_query f))
+               Query.Pair ("UpfrontPrice", String.to_query f))
          ; Util.option_map v.payment_option (fun f ->
-               Query.Pair ("paymentOption", PaymentOption.to_query f))
+               Query.Pair ("PaymentOption", PaymentOption.to_query f))
          ; Util.option_map v.offering_id (fun f ->
-               Query.Pair ("offeringId", String.to_query f))
+               Query.Pair ("OfferingId", String.to_query f))
          ; Util.option_map v.instance_family (fun f ->
-               Query.Pair ("instanceFamily", String.to_query f))
+               Query.Pair ("InstanceFamily", String.to_query f))
          ; Util.option_map v.hourly_price (fun f ->
-               Query.Pair ("hourlyPrice", String.to_query f))
+               Query.Pair ("HourlyPrice", String.to_query f))
          ; Util.option_map v.duration (fun f ->
-               Query.Pair ("duration", Integer.to_query f))
+               Query.Pair ("Duration", Integer.to_query f))
          ; Util.option_map v.currency_code (fun f ->
-               Query.Pair ("currencyCode", CurrencyCodeValues.to_query f))
+               Query.Pair ("CurrencyCode", CurrencyCodeValues.to_query f))
          ])
 
   let to_json v =
@@ -36919,19 +36917,19 @@ module TransitGatewayRouteTable = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.creation_time (fun f ->
-               Query.Pair ("creationTime", DateTime.to_query f))
+               Query.Pair ("CreationTime", DateTime.to_query f))
          ; Util.option_map v.default_propagation_route_table (fun f ->
-               Query.Pair ("defaultPropagationRouteTable", Boolean.to_query f))
+               Query.Pair ("DefaultPropagationRouteTable", Boolean.to_query f))
          ; Util.option_map v.default_association_route_table (fun f ->
-               Query.Pair ("defaultAssociationRouteTable", Boolean.to_query f))
+               Query.Pair ("DefaultAssociationRouteTable", Boolean.to_query f))
          ; Util.option_map v.state (fun f ->
-               Query.Pair ("state", TransitGatewayRouteTableState.to_query f))
+               Query.Pair ("State", TransitGatewayRouteTableState.to_query f))
          ; Util.option_map v.transit_gateway_id (fun f ->
-               Query.Pair ("transitGatewayId", String.to_query f))
+               Query.Pair ("TransitGatewayId", String.to_query f))
          ; Util.option_map v.transit_gateway_route_table_id (fun f ->
-               Query.Pair ("transitGatewayRouteTableId", String.to_query f))
+               Query.Pair ("TransitGatewayRouteTableId", String.to_query f))
          ])
 
   let to_json v =
@@ -37031,16 +37029,16 @@ module AuthorizationRule = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.status (fun f ->
-               Query.Pair ("status", ClientVpnAuthorizationRuleStatus.to_query f))
+               Query.Pair ("Status", ClientVpnAuthorizationRuleStatus.to_query f))
          ; Util.option_map v.destination_cidr (fun f ->
-               Query.Pair ("destinationCidr", String.to_query f))
+               Query.Pair ("DestinationCidr", String.to_query f))
          ; Util.option_map v.access_all (fun f ->
-               Query.Pair ("accessAll", Boolean.to_query f))
-         ; Util.option_map v.group_id (fun f -> Query.Pair ("groupId", String.to_query f))
+               Query.Pair ("AccessAll", Boolean.to_query f))
+         ; Util.option_map v.group_id (fun f -> Query.Pair ("GroupId", String.to_query f))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
          ; Util.option_map v.client_vpn_endpoint_id (fun f ->
-               Query.Pair ("clientVpnEndpointId", String.to_query f))
+               Query.Pair ("ClientVpnEndpointId", String.to_query f))
          ])
 
   let to_json v =
@@ -37096,13 +37094,13 @@ module TransitGatewayMulticastDomainAssociation = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.subnet (fun f ->
-               Query.Pair ("subnet", SubnetAssociation.to_query f))
+               Query.Pair ("Subnet", SubnetAssociation.to_query f))
          ; Util.option_map v.resource_type (fun f ->
-               Query.Pair ("resourceType", TransitGatewayAttachmentResourceType.to_query f))
+               Query.Pair ("ResourceType", TransitGatewayAttachmentResourceType.to_query f))
          ; Util.option_map v.resource_id (fun f ->
-               Query.Pair ("resourceId", String.to_query f))
+               Query.Pair ("ResourceId", String.to_query f))
          ; Util.option_map v.transit_gateway_attachment_id (fun f ->
-               Query.Pair ("transitGatewayAttachmentId", String.to_query f))
+               Query.Pair ("TransitGatewayAttachmentId", String.to_query f))
          ])
 
   let to_json v =
@@ -37173,7 +37171,7 @@ module SuccessfulInstanceCreditSpecificationItem = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.instance_id (fun f ->
-               Query.Pair ("instanceId", String.to_query f))
+               Query.Pair ("InstanceId", String.to_query f))
          ])
 
   let to_json v =
@@ -37207,9 +37205,9 @@ module UnsuccessfulInstanceCreditSpecificationItem = struct
       (Util.list_filter_opt
          [ Util.option_map v.error (fun f ->
                Query.Pair
-                 ("error", UnsuccessfulInstanceCreditSpecificationItemError.to_query f))
+                 ("Error", UnsuccessfulInstanceCreditSpecificationItemError.to_query f))
          ; Util.option_map v.instance_id (fun f ->
-               Query.Pair ("instanceId", String.to_query f))
+               Query.Pair ("InstanceId", String.to_query f))
          ])
 
   let to_json v =
@@ -37324,36 +37322,36 @@ module ReservedInstancesOffering = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.scope (fun f -> Query.Pair ("scope", Scope.to_query f))
+         [ Util.option_map v.scope (fun f -> Query.Pair ("Scope", Scope.to_query f))
          ; Some
              (Query.Pair
-                ("recurringCharges", RecurringChargesList.to_query v.recurring_charges))
+                ("RecurringCharges", RecurringChargesList.to_query v.recurring_charges))
          ; Some
              (Query.Pair
-                ("pricingDetailsSet", PricingDetailsList.to_query v.pricing_details))
+                ("PricingDetailsSet", PricingDetailsList.to_query v.pricing_details))
          ; Util.option_map v.offering_type (fun f ->
-               Query.Pair ("offeringType", OfferingTypeValues.to_query f))
+               Query.Pair ("OfferingType", OfferingTypeValues.to_query f))
          ; Util.option_map v.offering_class (fun f ->
-               Query.Pair ("offeringClass", OfferingClassType.to_query f))
+               Query.Pair ("OfferingClass", OfferingClassType.to_query f))
          ; Util.option_map v.marketplace (fun f ->
-               Query.Pair ("marketplace", Boolean.to_query f))
+               Query.Pair ("Marketplace", Boolean.to_query f))
          ; Util.option_map v.instance_tenancy (fun f ->
-               Query.Pair ("instanceTenancy", Tenancy.to_query f))
+               Query.Pair ("InstanceTenancy", Tenancy.to_query f))
          ; Util.option_map v.currency_code (fun f ->
-               Query.Pair ("currencyCode", CurrencyCodeValues.to_query f))
+               Query.Pair ("CurrencyCode", CurrencyCodeValues.to_query f))
          ; Util.option_map v.usage_price (fun f ->
-               Query.Pair ("usagePrice", Float.to_query f))
+               Query.Pair ("UsagePrice", Float.to_query f))
          ; Util.option_map v.reserved_instances_offering_id (fun f ->
-               Query.Pair ("reservedInstancesOfferingId", String.to_query f))
+               Query.Pair ("ReservedInstancesOfferingId", String.to_query f))
          ; Util.option_map v.product_description (fun f ->
-               Query.Pair ("productDescription", RIProductDescription.to_query f))
+               Query.Pair ("ProductDescription", RIProductDescription.to_query f))
          ; Util.option_map v.instance_type (fun f ->
-               Query.Pair ("instanceType", InstanceType.to_query f))
+               Query.Pair ("InstanceType", InstanceType.to_query f))
          ; Util.option_map v.fixed_price (fun f ->
-               Query.Pair ("fixedPrice", Float.to_query f))
-         ; Util.option_map v.duration (fun f -> Query.Pair ("duration", Long.to_query f))
+               Query.Pair ("FixedPrice", Float.to_query f))
+         ; Util.option_map v.duration (fun f -> Query.Pair ("Duration", Long.to_query f))
          ; Util.option_map v.availability_zone (fun f ->
-               Query.Pair ("availabilityZone", String.to_query f))
+               Query.Pair ("AvailabilityZone", String.to_query f))
          ])
 
   let to_json v =
@@ -37490,31 +37488,31 @@ module ScheduledInstanceAvailability = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.total_scheduled_instance_hours (fun f ->
-               Query.Pair ("totalScheduledInstanceHours", Integer.to_query f))
+               Query.Pair ("TotalScheduledInstanceHours", Integer.to_query f))
          ; Util.option_map v.slot_duration_in_hours (fun f ->
-               Query.Pair ("slotDurationInHours", Integer.to_query f))
+               Query.Pair ("SlotDurationInHours", Integer.to_query f))
          ; Util.option_map v.recurrence (fun f ->
-               Query.Pair ("recurrence", ScheduledInstanceRecurrence.to_query f))
+               Query.Pair ("Recurrence", ScheduledInstanceRecurrence.to_query f))
          ; Util.option_map v.purchase_token (fun f ->
-               Query.Pair ("purchaseToken", String.to_query f))
+               Query.Pair ("PurchaseToken", String.to_query f))
          ; Util.option_map v.platform (fun f ->
-               Query.Pair ("platform", String.to_query f))
+               Query.Pair ("Platform", String.to_query f))
          ; Util.option_map v.network_platform (fun f ->
-               Query.Pair ("networkPlatform", String.to_query f))
+               Query.Pair ("NetworkPlatform", String.to_query f))
          ; Util.option_map v.min_term_duration_in_days (fun f ->
-               Query.Pair ("minTermDurationInDays", Integer.to_query f))
+               Query.Pair ("MinTermDurationInDays", Integer.to_query f))
          ; Util.option_map v.max_term_duration_in_days (fun f ->
-               Query.Pair ("maxTermDurationInDays", Integer.to_query f))
+               Query.Pair ("MaxTermDurationInDays", Integer.to_query f))
          ; Util.option_map v.instance_type (fun f ->
-               Query.Pair ("instanceType", String.to_query f))
+               Query.Pair ("InstanceType", String.to_query f))
          ; Util.option_map v.hourly_price (fun f ->
-               Query.Pair ("hourlyPrice", String.to_query f))
+               Query.Pair ("HourlyPrice", String.to_query f))
          ; Util.option_map v.first_slot_start_time (fun f ->
-               Query.Pair ("firstSlotStartTime", DateTime.to_query f))
+               Query.Pair ("FirstSlotStartTime", DateTime.to_query f))
          ; Util.option_map v.available_instance_count (fun f ->
-               Query.Pair ("availableInstanceCount", Integer.to_query f))
+               Query.Pair ("AvailableInstanceCount", Integer.to_query f))
          ; Util.option_map v.availability_zone (fun f ->
-               Query.Pair ("availabilityZone", String.to_query f))
+               Query.Pair ("AvailabilityZone", String.to_query f))
          ])
 
   let to_json v =
@@ -37605,12 +37603,12 @@ module Reservation = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("reservationId", String.to_query v.reservation_id))
+         [ Some (Query.Pair ("ReservationId", String.to_query v.reservation_id))
          ; Util.option_map v.requester_id (fun f ->
-               Query.Pair ("requesterId", String.to_query f))
-         ; Some (Query.Pair ("ownerId", String.to_query v.owner_id))
-         ; Some (Query.Pair ("instancesSet", InstanceList.to_query v.instances))
-         ; Some (Query.Pair ("groupSet", GroupIdentifierList.to_query v.groups))
+               Query.Pair ("RequesterId", String.to_query f))
+         ; Some (Query.Pair ("OwnerId", String.to_query v.owner_id))
+         ; Some (Query.Pair ("InstancesSet", InstanceList.to_query v.instances))
+         ; Some (Query.Pair ("GroupSet", GroupIdentifierList.to_query v.groups))
          ])
 
   let to_json v =
@@ -37685,20 +37683,20 @@ module PublicIpv4Pool = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.network_border_group (fun f ->
-               Query.Pair ("networkBorderGroup", String.to_query f))
+               Query.Pair ("NetworkBorderGroup", String.to_query f))
          ; Util.option_map v.total_available_address_count (fun f ->
-               Query.Pair ("totalAvailableAddressCount", Integer.to_query f))
+               Query.Pair ("TotalAvailableAddressCount", Integer.to_query f))
          ; Util.option_map v.total_address_count (fun f ->
-               Query.Pair ("totalAddressCount", Integer.to_query f))
+               Query.Pair ("TotalAddressCount", Integer.to_query f))
          ; Some
              (Query.Pair
-                ( "poolAddressRangeSet"
+                ( "PoolAddressRangeSet"
                 , PublicIpv4PoolRangeSet.to_query v.pool_address_ranges ))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
-         ; Util.option_map v.pool_id (fun f -> Query.Pair ("poolId", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
+         ; Util.option_map v.pool_id (fun f -> Query.Pair ("PoolId", String.to_query f))
          ])
 
   let to_json v =
@@ -37813,23 +37811,23 @@ module Vpc = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
-         ; Some (Query.Pair ("isDefault", Boolean.to_query v.is_default))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
+         ; Some (Query.Pair ("IsDefault", Boolean.to_query v.is_default))
          ; Some
              (Query.Pair
-                ( "cidrBlockAssociationSet"
+                ( "CidrBlockAssociationSet"
                 , VpcCidrBlockAssociationSet.to_query v.cidr_block_association_set ))
          ; Some
              (Query.Pair
-                ( "ipv6CidrBlockAssociationSet"
+                ( "Ipv6CidrBlockAssociationSet"
                 , VpcIpv6CidrBlockAssociationSet.to_query
                     v.ipv6_cidr_block_association_set ))
-         ; Some (Query.Pair ("instanceTenancy", Tenancy.to_query v.instance_tenancy))
-         ; Util.option_map v.owner_id (fun f -> Query.Pair ("ownerId", String.to_query f))
-         ; Some (Query.Pair ("vpcId", String.to_query v.vpc_id))
-         ; Some (Query.Pair ("state", VpcState.to_query v.state))
-         ; Some (Query.Pair ("dhcpOptionsId", String.to_query v.dhcp_options_id))
-         ; Some (Query.Pair ("cidrBlock", String.to_query v.cidr_block))
+         ; Some (Query.Pair ("InstanceTenancy", Tenancy.to_query v.instance_tenancy))
+         ; Util.option_map v.owner_id (fun f -> Query.Pair ("OwnerId", String.to_query f))
+         ; Some (Query.Pair ("VpcId", String.to_query v.vpc_id))
+         ; Some (Query.Pair ("State", VpcState.to_query v.state))
+         ; Some (Query.Pair ("DhcpOptionsId", String.to_query v.dhcp_options_id))
+         ; Some (Query.Pair ("CidrBlock", String.to_query v.cidr_block))
          ])
 
   let to_json v =
@@ -37896,13 +37894,13 @@ module LocalGateway = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
-         ; Util.option_map v.state (fun f -> Query.Pair ("state", String.to_query f))
-         ; Util.option_map v.owner_id (fun f -> Query.Pair ("ownerId", String.to_query f))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
+         ; Util.option_map v.state (fun f -> Query.Pair ("State", String.to_query f))
+         ; Util.option_map v.owner_id (fun f -> Query.Pair ("OwnerId", String.to_query f))
          ; Util.option_map v.outpost_arn (fun f ->
-               Query.Pair ("outpostArn", String.to_query f))
+               Query.Pair ("OutpostArn", String.to_query f))
          ; Util.option_map v.local_gateway_id (fun f ->
-               Query.Pair ("localGatewayId", String.to_query f))
+               Query.Pair ("LocalGatewayId", String.to_query f))
          ])
 
   let to_json v =
@@ -38041,36 +38039,36 @@ module Subnet = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.outpost_arn (fun f ->
-               Query.Pair ("outpostArn", String.to_query f))
+               Query.Pair ("OutpostArn", String.to_query f))
          ; Util.option_map v.subnet_arn (fun f ->
-               Query.Pair ("subnetArn", String.to_query f))
-         ; Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+               Query.Pair ("SubnetArn", String.to_query f))
+         ; Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Some
              (Query.Pair
-                ( "ipv6CidrBlockAssociationSet"
+                ( "Ipv6CidrBlockAssociationSet"
                 , SubnetIpv6CidrBlockAssociationSet.to_query
                     v.ipv6_cidr_block_association_set ))
          ; Util.option_map v.assign_ipv6_address_on_creation (fun f ->
-               Query.Pair ("assignIpv6AddressOnCreation", Boolean.to_query f))
-         ; Util.option_map v.owner_id (fun f -> Query.Pair ("ownerId", String.to_query f))
-         ; Some (Query.Pair ("vpcId", String.to_query v.vpc_id))
-         ; Some (Query.Pair ("subnetId", String.to_query v.subnet_id))
-         ; Some (Query.Pair ("state", SubnetState.to_query v.state))
+               Query.Pair ("AssignIpv6AddressOnCreation", Boolean.to_query f))
+         ; Util.option_map v.owner_id (fun f -> Query.Pair ("OwnerId", String.to_query f))
+         ; Some (Query.Pair ("VpcId", String.to_query v.vpc_id))
+         ; Some (Query.Pair ("SubnetId", String.to_query v.subnet_id))
+         ; Some (Query.Pair ("State", SubnetState.to_query v.state))
          ; Util.option_map v.customer_owned_ipv4_pool (fun f ->
-               Query.Pair ("customerOwnedIpv4Pool", String.to_query f))
+               Query.Pair ("CustomerOwnedIpv4Pool", String.to_query f))
          ; Util.option_map v.map_customer_owned_ip_on_launch (fun f ->
-               Query.Pair ("mapCustomerOwnedIpOnLaunch", Boolean.to_query f))
+               Query.Pair ("MapCustomerOwnedIpOnLaunch", Boolean.to_query f))
          ; Some
              (Query.Pair
-                ("mapPublicIpOnLaunch", Boolean.to_query v.map_public_ip_on_launch))
-         ; Some (Query.Pair ("defaultForAz", Boolean.to_query v.default_for_az))
-         ; Some (Query.Pair ("cidrBlock", String.to_query v.cidr_block))
+                ("MapPublicIpOnLaunch", Boolean.to_query v.map_public_ip_on_launch))
+         ; Some (Query.Pair ("DefaultForAz", Boolean.to_query v.default_for_az))
+         ; Some (Query.Pair ("CidrBlock", String.to_query v.cidr_block))
          ; Some
              (Query.Pair
-                ("availableIpAddressCount", Integer.to_query v.available_ip_address_count))
+                ("AvailableIpAddressCount", Integer.to_query v.available_ip_address_count))
          ; Util.option_map v.availability_zone_id (fun f ->
-               Query.Pair ("availabilityZoneId", String.to_query f))
-         ; Some (Query.Pair ("availabilityZone", String.to_query v.availability_zone))
+               Query.Pair ("AvailabilityZoneId", String.to_query f))
+         ; Some (Query.Pair ("AvailabilityZone", String.to_query v.availability_zone))
          ])
 
   let to_json v =
@@ -38181,19 +38179,19 @@ module ElasticGpus = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.instance_id (fun f ->
-               Query.Pair ("instanceId", String.to_query f))
+               Query.Pair ("InstanceId", String.to_query f))
          ; Util.option_map v.elastic_gpu_state (fun f ->
-               Query.Pair ("elasticGpuState", ElasticGpuState.to_query f))
+               Query.Pair ("ElasticGpuState", ElasticGpuState.to_query f))
          ; Util.option_map v.elastic_gpu_health (fun f ->
-               Query.Pair ("elasticGpuHealth", ElasticGpuHealth.to_query f))
+               Query.Pair ("ElasticGpuHealth", ElasticGpuHealth.to_query f))
          ; Util.option_map v.elastic_gpu_type (fun f ->
-               Query.Pair ("elasticGpuType", String.to_query f))
+               Query.Pair ("ElasticGpuType", String.to_query f))
          ; Util.option_map v.availability_zone (fun f ->
-               Query.Pair ("availabilityZone", String.to_query f))
+               Query.Pair ("AvailabilityZone", String.to_query f))
          ; Util.option_map v.elastic_gpu_id (fun f ->
-               Query.Pair ("elasticGpuId", String.to_query f))
+               Query.Pair ("ElasticGpuId", String.to_query f))
          ])
 
   let to_json v =
@@ -38248,10 +38246,10 @@ module VpcClassicLink = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.vpc_id (fun f -> Query.Pair ("vpcId", String.to_query f))
-         ; Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         [ Util.option_map v.vpc_id (fun f -> Query.Pair ("VpcId", String.to_query f))
+         ; Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.classic_link_enabled (fun f ->
-               Query.Pair ("classicLinkEnabled", Boolean.to_query f))
+               Query.Pair ("ClassicLinkEnabled", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -38359,35 +38357,35 @@ module ImportImageTask = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "licenseSpecifications"
+                ( "LicenseSpecifications"
                 , ImportImageLicenseSpecificationListResponse.to_query
                     v.license_specifications ))
-         ; Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         ; Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.status_message (fun f ->
-               Query.Pair ("statusMessage", String.to_query f))
-         ; Util.option_map v.status (fun f -> Query.Pair ("status", String.to_query f))
+               Query.Pair ("StatusMessage", String.to_query f))
+         ; Util.option_map v.status (fun f -> Query.Pair ("Status", String.to_query f))
          ; Some
              (Query.Pair
-                ("snapshotDetailSet", SnapshotDetailList.to_query v.snapshot_details))
+                ("SnapshotDetailSet", SnapshotDetailList.to_query v.snapshot_details))
          ; Util.option_map v.progress (fun f ->
-               Query.Pair ("progress", String.to_query f))
+               Query.Pair ("Progress", String.to_query f))
          ; Util.option_map v.platform (fun f ->
-               Query.Pair ("platform", String.to_query f))
+               Query.Pair ("Platform", String.to_query f))
          ; Util.option_map v.license_type (fun f ->
-               Query.Pair ("licenseType", String.to_query f))
+               Query.Pair ("LicenseType", String.to_query f))
          ; Util.option_map v.kms_key_id (fun f ->
-               Query.Pair ("kmsKeyId", String.to_query f))
+               Query.Pair ("KmsKeyId", String.to_query f))
          ; Util.option_map v.import_task_id (fun f ->
-               Query.Pair ("importTaskId", String.to_query f))
-         ; Util.option_map v.image_id (fun f -> Query.Pair ("imageId", String.to_query f))
+               Query.Pair ("ImportTaskId", String.to_query f))
+         ; Util.option_map v.image_id (fun f -> Query.Pair ("ImageId", String.to_query f))
          ; Util.option_map v.hypervisor (fun f ->
-               Query.Pair ("hypervisor", String.to_query f))
+               Query.Pair ("Hypervisor", String.to_query f))
          ; Util.option_map v.encrypted (fun f ->
-               Query.Pair ("encrypted", Boolean.to_query f))
+               Query.Pair ("Encrypted", Boolean.to_query f))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
          ; Util.option_map v.architecture (fun f ->
-               Query.Pair ("architecture", String.to_query f))
+               Query.Pair ("Architecture", String.to_query f))
          ])
 
   let to_json v =
@@ -38471,15 +38469,15 @@ module SpotPrice = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.timestamp (fun f ->
-               Query.Pair ("timestamp", DateTime.to_query f))
+               Query.Pair ("Timestamp", DateTime.to_query f))
          ; Util.option_map v.spot_price (fun f ->
-               Query.Pair ("spotPrice", String.to_query f))
+               Query.Pair ("SpotPrice", String.to_query f))
          ; Util.option_map v.product_description (fun f ->
-               Query.Pair ("productDescription", RIProductDescription.to_query f))
+               Query.Pair ("ProductDescription", RIProductDescription.to_query f))
          ; Util.option_map v.instance_type (fun f ->
-               Query.Pair ("instanceType", InstanceType.to_query f))
+               Query.Pair ("InstanceType", InstanceType.to_query f))
          ; Util.option_map v.availability_zone (fun f ->
-               Query.Pair ("availabilityZone", String.to_query f))
+               Query.Pair ("AvailabilityZone", String.to_query f))
          ])
 
   let to_json v =
@@ -38747,19 +38745,19 @@ module LocalGatewayRoute = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.owner_id (fun f -> Query.Pair ("ownerId", String.to_query f))
+         [ Util.option_map v.owner_id (fun f -> Query.Pair ("OwnerId", String.to_query f))
          ; Util.option_map v.local_gateway_route_table_arn (fun f ->
-               Query.Pair ("localGatewayRouteTableArn", String.to_query f))
+               Query.Pair ("LocalGatewayRouteTableArn", String.to_query f))
          ; Util.option_map v.local_gateway_route_table_id (fun f ->
-               Query.Pair ("localGatewayRouteTableId", String.to_query f))
+               Query.Pair ("LocalGatewayRouteTableId", String.to_query f))
          ; Util.option_map v.state (fun f ->
-               Query.Pair ("state", LocalGatewayRouteState.to_query f))
+               Query.Pair ("State", LocalGatewayRouteState.to_query f))
          ; Util.option_map v.type_ (fun f ->
-               Query.Pair ("type", LocalGatewayRouteType.to_query f))
+               Query.Pair ("Type", LocalGatewayRouteType.to_query f))
          ; Util.option_map v.local_gateway_virtual_interface_group_id (fun f ->
-               Query.Pair ("localGatewayVirtualInterfaceGroupId", String.to_query f))
+               Query.Pair ("LocalGatewayVirtualInterfaceGroupId", String.to_query f))
          ; Util.option_map v.destination_cidr_block (fun f ->
-               Query.Pair ("destinationCidrBlock", String.to_query f))
+               Query.Pair ("DestinationCidrBlock", String.to_query f))
          ])
 
   let to_json v =
@@ -38994,28 +38992,28 @@ module NatGateway = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
-         ; Util.option_map v.vpc_id (fun f -> Query.Pair ("vpcId", String.to_query f))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
+         ; Util.option_map v.vpc_id (fun f -> Query.Pair ("VpcId", String.to_query f))
          ; Util.option_map v.subnet_id (fun f ->
-               Query.Pair ("subnetId", String.to_query f))
+               Query.Pair ("SubnetId", String.to_query f))
          ; Util.option_map v.state (fun f ->
-               Query.Pair ("state", NatGatewayState.to_query f))
+               Query.Pair ("State", NatGatewayState.to_query f))
          ; Util.option_map v.provisioned_bandwidth (fun f ->
-               Query.Pair ("provisionedBandwidth", ProvisionedBandwidth.to_query f))
+               Query.Pair ("ProvisionedBandwidth", ProvisionedBandwidth.to_query f))
          ; Util.option_map v.nat_gateway_id (fun f ->
-               Query.Pair ("natGatewayId", String.to_query f))
+               Query.Pair ("NatGatewayId", String.to_query f))
          ; Some
              (Query.Pair
-                ( "natGatewayAddressSet"
+                ( "NatGatewayAddressSet"
                 , NatGatewayAddressList.to_query v.nat_gateway_addresses ))
          ; Util.option_map v.failure_message (fun f ->
-               Query.Pair ("failureMessage", String.to_query f))
+               Query.Pair ("FailureMessage", String.to_query f))
          ; Util.option_map v.failure_code (fun f ->
-               Query.Pair ("failureCode", String.to_query f))
+               Query.Pair ("FailureCode", String.to_query f))
          ; Util.option_map v.delete_time (fun f ->
-               Query.Pair ("deleteTime", DateTime.to_query f))
+               Query.Pair ("DeleteTime", DateTime.to_query f))
          ; Util.option_map v.create_time (fun f ->
-               Query.Pair ("createTime", DateTime.to_query f))
+               Query.Pair ("CreateTime", DateTime.to_query f))
          ])
 
   let to_json v =
@@ -39077,9 +39075,9 @@ module InstanceUsage = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.used_instance_count (fun f ->
-               Query.Pair ("usedInstanceCount", Integer.to_query f))
+               Query.Pair ("UsedInstanceCount", Integer.to_query f))
          ; Util.option_map v.account_id (fun f ->
-               Query.Pair ("accountId", String.to_query f))
+               Query.Pair ("AccountId", String.to_query f))
          ])
 
   let to_json v =
@@ -39161,26 +39159,26 @@ module DescribeFastSnapshotRestoreSuccessItem = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.disabled_time (fun f ->
-               Query.Pair ("disabledTime", DateTime.to_query f))
+               Query.Pair ("DisabledTime", DateTime.to_query f))
          ; Util.option_map v.disabling_time (fun f ->
-               Query.Pair ("disablingTime", DateTime.to_query f))
+               Query.Pair ("DisablingTime", DateTime.to_query f))
          ; Util.option_map v.enabled_time (fun f ->
-               Query.Pair ("enabledTime", DateTime.to_query f))
+               Query.Pair ("EnabledTime", DateTime.to_query f))
          ; Util.option_map v.optimizing_time (fun f ->
-               Query.Pair ("optimizingTime", DateTime.to_query f))
+               Query.Pair ("OptimizingTime", DateTime.to_query f))
          ; Util.option_map v.enabling_time (fun f ->
-               Query.Pair ("enablingTime", DateTime.to_query f))
+               Query.Pair ("EnablingTime", DateTime.to_query f))
          ; Util.option_map v.owner_alias (fun f ->
-               Query.Pair ("ownerAlias", String.to_query f))
-         ; Util.option_map v.owner_id (fun f -> Query.Pair ("ownerId", String.to_query f))
+               Query.Pair ("OwnerAlias", String.to_query f))
+         ; Util.option_map v.owner_id (fun f -> Query.Pair ("OwnerId", String.to_query f))
          ; Util.option_map v.state_transition_reason (fun f ->
-               Query.Pair ("stateTransitionReason", String.to_query f))
+               Query.Pair ("StateTransitionReason", String.to_query f))
          ; Util.option_map v.state (fun f ->
-               Query.Pair ("state", FastSnapshotRestoreStateCode.to_query f))
+               Query.Pair ("State", FastSnapshotRestoreStateCode.to_query f))
          ; Util.option_map v.availability_zone (fun f ->
-               Query.Pair ("availabilityZone", String.to_query f))
+               Query.Pair ("AvailabilityZone", String.to_query f))
          ; Util.option_map v.snapshot_id (fun f ->
-               Query.Pair ("snapshotId", String.to_query f))
+               Query.Pair ("SnapshotId", String.to_query f))
          ])
 
   let to_json v =
@@ -39248,12 +39246,12 @@ module EgressOnlyInternetGateway = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.egress_only_internet_gateway_id (fun f ->
-               Query.Pair ("egressOnlyInternetGatewayId", String.to_query f))
+               Query.Pair ("EgressOnlyInternetGatewayId", String.to_query f))
          ; Some
              (Query.Pair
-                ("attachmentSet", InternetGatewayAttachmentList.to_query v.attachments))
+                ("AttachmentSet", InternetGatewayAttachmentList.to_query v.attachments))
          ])
 
   let to_json v =
@@ -39495,7 +39493,7 @@ module ValidationWarning = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("errorSet", ErrorSet.to_query v.errors)) ])
+         [ Some (Query.Pair ("ErrorSet", ErrorSet.to_query v.errors)) ])
 
   let to_json v =
     `Assoc (Util.list_filter_opt [ Some ("errors", ErrorSet.to_json v.errors) ])
@@ -39557,8 +39555,8 @@ module LaunchPermissionModifications = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("Remove.member", LaunchPermissionList.to_query v.remove))
-         ; Some (Query.Pair ("Add.member", LaunchPermissionList.to_query v.add))
+         [ Some (Query.Pair ("Remove", LaunchPermissionList.to_query v.remove))
+         ; Some (Query.Pair ("Add", LaunchPermissionList.to_query v.add))
          ])
 
   let to_json v =
@@ -40025,37 +40023,37 @@ module RequestSpotLaunchSpecification = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.user_data (fun f ->
-               Query.Pair ("userData", String.to_query f))
+               Query.Pair ("UserData", String.to_query f))
          ; Util.option_map v.subnet_id (fun f ->
-               Query.Pair ("subnetId", String.to_query f))
+               Query.Pair ("SubnetId", String.to_query f))
          ; Util.option_map v.ramdisk_id (fun f ->
-               Query.Pair ("ramdiskId", String.to_query f))
+               Query.Pair ("RamdiskId", String.to_query f))
          ; Util.option_map v.placement (fun f ->
-               Query.Pair ("placement", SpotPlacement.to_query f))
+               Query.Pair ("Placement", SpotPlacement.to_query f))
          ; Some
              (Query.Pair
                 ( "NetworkInterface"
                 , InstanceNetworkInterfaceSpecificationList.to_query v.network_interfaces
                 ))
          ; Util.option_map v.monitoring (fun f ->
-               Query.Pair ("monitoring", RunInstancesMonitoringEnabled.to_query f))
-         ; Util.option_map v.key_name (fun f -> Query.Pair ("keyName", String.to_query f))
+               Query.Pair ("Monitoring", RunInstancesMonitoringEnabled.to_query f))
+         ; Util.option_map v.key_name (fun f -> Query.Pair ("KeyName", String.to_query f))
          ; Util.option_map v.kernel_id (fun f ->
-               Query.Pair ("kernelId", String.to_query f))
+               Query.Pair ("KernelId", String.to_query f))
          ; Util.option_map v.instance_type (fun f ->
-               Query.Pair ("instanceType", InstanceType.to_query f))
-         ; Util.option_map v.image_id (fun f -> Query.Pair ("imageId", String.to_query f))
+               Query.Pair ("InstanceType", InstanceType.to_query f))
+         ; Util.option_map v.image_id (fun f -> Query.Pair ("ImageId", String.to_query f))
          ; Util.option_map v.iam_instance_profile (fun f ->
                Query.Pair
-                 ("iamInstanceProfile", IamInstanceProfileSpecification.to_query f))
+                 ("IamInstanceProfile", IamInstanceProfileSpecification.to_query f))
          ; Util.option_map v.ebs_optimized (fun f ->
-               Query.Pair ("ebsOptimized", Boolean.to_query f))
+               Query.Pair ("EbsOptimized", Boolean.to_query f))
          ; Some
              (Query.Pair
-                ( "blockDeviceMapping"
+                ( "BlockDeviceMapping"
                 , BlockDeviceMappingList.to_query v.block_device_mappings ))
          ; Util.option_map v.addressing_type (fun f ->
-               Query.Pair ("addressingType", String.to_query f))
+               Query.Pair ("AddressingType", String.to_query f))
          ; Some
              (Query.Pair
                 ( "SecurityGroup"
@@ -40331,10 +40329,10 @@ module InstanceTagNotificationAttribute = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.include_all_tags_of_instance (fun f ->
-               Query.Pair ("includeAllTagsOfInstance", Boolean.to_query f))
+               Query.Pair ("IncludeAllTagsOfInstance", Boolean.to_query f))
          ; Some
              (Query.Pair
-                ("instanceTagKeySet", InstanceTagKeySet.to_query v.instance_tag_keys))
+                ("InstanceTagKeySet", InstanceTagKeySet.to_query v.instance_tag_keys))
          ])
 
   let to_json v =
@@ -40521,15 +40519,15 @@ module TransitGatewayPropagation = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.state (fun f ->
-               Query.Pair ("state", TransitGatewayPropagationState.to_query f))
+               Query.Pair ("State", TransitGatewayPropagationState.to_query f))
          ; Util.option_map v.transit_gateway_route_table_id (fun f ->
-               Query.Pair ("transitGatewayRouteTableId", String.to_query f))
+               Query.Pair ("TransitGatewayRouteTableId", String.to_query f))
          ; Util.option_map v.resource_type (fun f ->
-               Query.Pair ("resourceType", TransitGatewayAttachmentResourceType.to_query f))
+               Query.Pair ("ResourceType", TransitGatewayAttachmentResourceType.to_query f))
          ; Util.option_map v.resource_id (fun f ->
-               Query.Pair ("resourceId", String.to_query f))
+               Query.Pair ("ResourceId", String.to_query f))
          ; Util.option_map v.transit_gateway_attachment_id (fun f ->
-               Query.Pair ("transitGatewayAttachmentId", String.to_query f))
+               Query.Pair ("TransitGatewayAttachmentId", String.to_query f))
          ])
 
   let to_json v =
@@ -40684,9 +40682,9 @@ module ClientCertificateRevocationListStatus = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         [ Util.option_map v.message (fun f -> Query.Pair ("Message", String.to_query f))
          ; Util.option_map v.code (fun f ->
-               Query.Pair ("code", ClientCertificateRevocationListStatusCode.to_query f))
+               Query.Pair ("Code", ClientCertificateRevocationListStatusCode.to_query f))
          ])
 
   let to_json v =
@@ -40896,15 +40894,15 @@ module TransitGatewayAssociation = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.state (fun f ->
-               Query.Pair ("state", TransitGatewayAssociationState.to_query f))
+               Query.Pair ("State", TransitGatewayAssociationState.to_query f))
          ; Util.option_map v.resource_type (fun f ->
-               Query.Pair ("resourceType", TransitGatewayAttachmentResourceType.to_query f))
+               Query.Pair ("ResourceType", TransitGatewayAttachmentResourceType.to_query f))
          ; Util.option_map v.resource_id (fun f ->
-               Query.Pair ("resourceId", String.to_query f))
+               Query.Pair ("ResourceId", String.to_query f))
          ; Util.option_map v.transit_gateway_attachment_id (fun f ->
-               Query.Pair ("transitGatewayAttachmentId", String.to_query f))
+               Query.Pair ("TransitGatewayAttachmentId", String.to_query f))
          ; Util.option_map v.transit_gateway_route_table_id (fun f ->
-               Query.Pair ("transitGatewayRouteTableId", String.to_query f))
+               Query.Pair ("TransitGatewayRouteTableId", String.to_query f))
          ])
 
   let to_json v =
@@ -41050,15 +41048,15 @@ module TransitGatewayMulticastDomainAssociations = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("subnets", SubnetAssociationList.to_query v.subnets))
+         [ Some (Query.Pair ("Subnets", SubnetAssociationList.to_query v.subnets))
          ; Util.option_map v.resource_type (fun f ->
-               Query.Pair ("resourceType", TransitGatewayAttachmentResourceType.to_query f))
+               Query.Pair ("ResourceType", TransitGatewayAttachmentResourceType.to_query f))
          ; Util.option_map v.resource_id (fun f ->
-               Query.Pair ("resourceId", String.to_query f))
+               Query.Pair ("ResourceId", String.to_query f))
          ; Util.option_map v.transit_gateway_attachment_id (fun f ->
-               Query.Pair ("transitGatewayAttachmentId", String.to_query f))
+               Query.Pair ("TransitGatewayAttachmentId", String.to_query f))
          ; Util.option_map v.transit_gateway_multicast_domain_id (fun f ->
-               Query.Pair ("transitGatewayMulticastDomainId", String.to_query f))
+               Query.Pair ("TransitGatewayMulticastDomainId", String.to_query f))
          ])
 
   let to_json v =
@@ -41169,9 +41167,9 @@ module InstanceFamilyCreditSpecification = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.cpu_credits (fun f ->
-               Query.Pair ("cpuCredits", String.to_query f))
+               Query.Pair ("CpuCredits", String.to_query f))
          ; Util.option_map v.instance_family (fun f ->
-               Query.Pair ("instanceFamily", UnlimitedSupportedInstanceFamily.to_query f))
+               Query.Pair ("InstanceFamily", UnlimitedSupportedInstanceFamily.to_query f))
          ])
 
   let to_json v =
@@ -41241,7 +41239,7 @@ module AttributeBooleanValue = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.value (fun f -> Query.Pair ("value", Boolean.to_query f)) ])
+         [ Util.option_map v.value (fun f -> Query.Pair ("Value", Boolean.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -41261,7 +41259,7 @@ module BlobAttributeValue = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.value (fun f -> Query.Pair ("value", Blob.to_query f)) ])
+         [ Util.option_map v.value (fun f -> Query.Pair ("Value", Blob.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -41323,15 +41321,15 @@ module FpgaImageAttribute = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("productCodes", ProductCodeList.to_query v.product_codes))
+         [ Some (Query.Pair ("ProductCodes", ProductCodeList.to_query v.product_codes))
          ; Some
              (Query.Pair
-                ("loadPermissions", LoadPermissionList.to_query v.load_permissions))
+                ("LoadPermissions", LoadPermissionList.to_query v.load_permissions))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
-         ; Util.option_map v.name (fun f -> Query.Pair ("name", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
+         ; Util.option_map v.name (fun f -> Query.Pair ("Name", String.to_query f))
          ; Util.option_map v.fpga_image_id (fun f ->
-               Query.Pair ("fpgaImageId", String.to_query f))
+               Query.Pair ("FpgaImageId", String.to_query f))
          ])
 
   let to_json v =
@@ -41585,12 +41583,12 @@ module SpotDatafeedSubscription = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.state (fun f ->
-               Query.Pair ("state", DatafeedSubscriptionState.to_query f))
-         ; Util.option_map v.prefix (fun f -> Query.Pair ("prefix", String.to_query f))
-         ; Util.option_map v.owner_id (fun f -> Query.Pair ("ownerId", String.to_query f))
+               Query.Pair ("State", DatafeedSubscriptionState.to_query f))
+         ; Util.option_map v.prefix (fun f -> Query.Pair ("Prefix", String.to_query f))
+         ; Util.option_map v.owner_id (fun f -> Query.Pair ("OwnerId", String.to_query f))
          ; Util.option_map v.fault (fun f ->
-               Query.Pair ("fault", SpotInstanceStateFault.to_query f))
-         ; Util.option_map v.bucket (fun f -> Query.Pair ("bucket", String.to_query f))
+               Query.Pair ("Fault", SpotInstanceStateFault.to_query f))
+         ; Util.option_map v.bucket (fun f -> Query.Pair ("Bucket", String.to_query f))
          ])
 
   let to_json v =
@@ -41959,13 +41957,13 @@ module TransitGatewayMulticastRegisteredGroupMembers = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.group_ip_address (fun f ->
-               Query.Pair ("groupIpAddress", String.to_query f))
+               Query.Pair ("GroupIpAddress", String.to_query f))
          ; Some
              (Query.Pair
-                ( "registeredNetworkInterfaceIds"
+                ( "RegisteredNetworkInterfaceIds"
                 , ValueStringList.to_query v.registered_network_interface_ids ))
          ; Util.option_map v.transit_gateway_multicast_domain_id (fun f ->
-               Query.Pair ("transitGatewayMulticastDomainId", String.to_query f))
+               Query.Pair ("TransitGatewayMulticastDomainId", String.to_query f))
          ])
 
   let to_json v =
@@ -42046,9 +42044,8 @@ module CreateVolumePermissionModifications = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some
-             (Query.Pair ("Remove.member", CreateVolumePermissionList.to_query v.remove))
-         ; Some (Query.Pair ("Add.member", CreateVolumePermissionList.to_query v.add))
+         [ Some (Query.Pair ("Remove", CreateVolumePermissionList.to_query v.remove))
+         ; Some (Query.Pair ("Add", CreateVolumePermissionList.to_query v.add))
          ])
 
   let to_json v =
@@ -42286,12 +42283,12 @@ module VpnConnectionOptionsSpecification = struct
                Query.Pair ("LocalIpv4NetworkCidr", String.to_query f))
          ; Some
              (Query.Pair
-                ( "TunnelOptions.member"
+                ( "TunnelOptions"
                 , VpnTunnelOptionsSpecificationsList.to_query v.tunnel_options ))
          ; Util.option_map v.tunnel_inside_ip_version (fun f ->
                Query.Pair ("TunnelInsideIpVersion", TunnelInsideIpVersion.to_query f))
          ; Util.option_map v.static_routes_only (fun f ->
-               Query.Pair ("staticRoutesOnly", Boolean.to_query f))
+               Query.Pair ("StaticRoutesOnly", Boolean.to_query f))
          ; Util.option_map v.enable_acceleration (fun f ->
                Query.Pair ("EnableAcceleration", Boolean.to_query f))
          ])
@@ -42714,7 +42711,7 @@ module DnsServersOptionsModifyStructure = struct
          [ Util.option_map v.enabled (fun f -> Query.Pair ("Enabled", Boolean.to_query f))
          ; Some
              (Query.Pair
-                ("CustomDnsServers.member", ValueStringList.to_query v.custom_dns_servers))
+                ("CustomDnsServers", ValueStringList.to_query v.custom_dns_servers))
          ])
 
   let to_json v =
@@ -43008,12 +43005,12 @@ module PeeringConnectionOptions = struct
       (Util.list_filter_opt
          [ Util.option_map v.allow_egress_from_local_vpc_to_remote_classic_link (fun f ->
                Query.Pair
-                 ("allowEgressFromLocalVpcToRemoteClassicLink", Boolean.to_query f))
+                 ("AllowEgressFromLocalVpcToRemoteClassicLink", Boolean.to_query f))
          ; Util.option_map v.allow_egress_from_local_classic_link_to_remote_vpc (fun f ->
                Query.Pair
-                 ("allowEgressFromLocalClassicLinkToRemoteVpc", Boolean.to_query f))
+                 ("AllowEgressFromLocalClassicLinkToRemoteVpc", Boolean.to_query f))
          ; Util.option_map v.allow_dns_resolution_from_remote_vpc (fun f ->
-               Query.Pair ("allowDnsResolutionFromRemoteVpc", Boolean.to_query f))
+               Query.Pair ("AllowDnsResolutionFromRemoteVpc", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -43143,26 +43140,26 @@ module ImportInstanceLaunchSpecification = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.user_data (fun f ->
-               Query.Pair ("userData", UserData.to_query f))
+               Query.Pair ("UserData", UserData.to_query f))
          ; Util.option_map v.subnet_id (fun f ->
-               Query.Pair ("subnetId", String.to_query f))
+               Query.Pair ("SubnetId", String.to_query f))
          ; Util.option_map v.private_ip_address (fun f ->
-               Query.Pair ("privateIpAddress", String.to_query f))
+               Query.Pair ("PrivateIpAddress", String.to_query f))
          ; Util.option_map v.placement (fun f ->
-               Query.Pair ("placement", Placement.to_query f))
+               Query.Pair ("Placement", Placement.to_query f))
          ; Util.option_map v.monitoring (fun f ->
-               Query.Pair ("monitoring", Boolean.to_query f))
+               Query.Pair ("Monitoring", Boolean.to_query f))
          ; Util.option_map v.instance_type (fun f ->
-               Query.Pair ("instanceType", InstanceType.to_query f))
+               Query.Pair ("InstanceType", InstanceType.to_query f))
          ; Util.option_map v.instance_initiated_shutdown_behavior (fun f ->
                Query.Pair
-                 ("instanceInitiatedShutdownBehavior", ShutdownBehavior.to_query f))
+                 ("InstanceInitiatedShutdownBehavior", ShutdownBehavior.to_query f))
          ; Some (Query.Pair ("GroupName", SecurityGroupStringList.to_query v.group_names))
          ; Some (Query.Pair ("GroupId", SecurityGroupIdStringList.to_query v.group_ids))
          ; Util.option_map v.architecture (fun f ->
-               Query.Pair ("architecture", ArchitectureValues.to_query f))
+               Query.Pair ("Architecture", ArchitectureValues.to_query f))
          ; Util.option_map v.additional_info (fun f ->
-               Query.Pair ("additionalInfo", String.to_query f))
+               Query.Pair ("AdditionalInfo", String.to_query f))
          ])
 
   let to_json v =
@@ -43926,13 +43923,13 @@ module ExportToS3TaskSpecification = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.s3_prefix (fun f ->
-               Query.Pair ("s3Prefix", String.to_query f))
+               Query.Pair ("S3Prefix", String.to_query f))
          ; Util.option_map v.s3_bucket (fun f ->
-               Query.Pair ("s3Bucket", String.to_query f))
+               Query.Pair ("S3Bucket", String.to_query f))
          ; Util.option_map v.disk_image_format (fun f ->
-               Query.Pair ("diskImageFormat", DiskImageFormat.to_query f))
+               Query.Pair ("DiskImageFormat", DiskImageFormat.to_query f))
          ; Util.option_map v.container_format (fun f ->
-               Query.Pair ("containerFormat", ContainerFormat.to_query f))
+               Query.Pair ("ContainerFormat", ContainerFormat.to_query f))
          ])
 
   let to_json v =
@@ -45246,9 +45243,9 @@ module NetworkInterfaceAttachmentChanges = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.delete_on_termination (fun f ->
-               Query.Pair ("deleteOnTermination", Boolean.to_query f))
+               Query.Pair ("DeleteOnTermination", Boolean.to_query f))
          ; Util.option_map v.attachment_id (fun f ->
-               Query.Pair ("attachmentId", String.to_query f))
+               Query.Pair ("AttachmentId", String.to_query f))
          ])
 
   let to_json v =
@@ -45395,13 +45392,13 @@ module TransitGatewayMulticastRegisteredGroupSources = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.group_ip_address (fun f ->
-               Query.Pair ("groupIpAddress", String.to_query f))
+               Query.Pair ("GroupIpAddress", String.to_query f))
          ; Some
              (Query.Pair
-                ( "registeredNetworkInterfaceIds"
+                ( "RegisteredNetworkInterfaceIds"
                 , ValueStringList.to_query v.registered_network_interface_ids ))
          ; Util.option_map v.transit_gateway_multicast_domain_id (fun f ->
-               Query.Pair ("transitGatewayMulticastDomainId", String.to_query f))
+               Query.Pair ("TransitGatewayMulticastDomainId", String.to_query f))
          ])
 
   let to_json v =
@@ -45902,13 +45899,13 @@ module TransitGatewayMulticastDeregisteredGroupSources = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.group_ip_address (fun f ->
-               Query.Pair ("groupIpAddress", String.to_query f))
+               Query.Pair ("GroupIpAddress", String.to_query f))
          ; Some
              (Query.Pair
-                ( "deregisteredNetworkInterfaceIds"
+                ( "DeregisteredNetworkInterfaceIds"
                 , ValueStringList.to_query v.deregistered_network_interface_ids ))
          ; Util.option_map v.transit_gateway_multicast_domain_id (fun f ->
-               Query.Pair ("transitGatewayMulticastDomainId", String.to_query f))
+               Query.Pair ("TransitGatewayMulticastDomainId", String.to_query f))
          ])
 
   let to_json v =
@@ -46929,13 +46926,13 @@ module TransitGatewayMulticastDeregisteredGroupMembers = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.group_ip_address (fun f ->
-               Query.Pair ("groupIpAddress", String.to_query f))
+               Query.Pair ("GroupIpAddress", String.to_query f))
          ; Some
              (Query.Pair
-                ( "deregisteredNetworkInterfaceIds"
+                ( "DeregisteredNetworkInterfaceIds"
                 , ValueStringList.to_query v.deregistered_network_interface_ids ))
          ; Util.option_map v.transit_gateway_multicast_domain_id (fun f ->
-               Query.Pair ("transitGatewayMulticastDomainId", String.to_query f))
+               Query.Pair ("TransitGatewayMulticastDomainId", String.to_query f))
          ])
 
   let to_json v =
@@ -47896,8 +47893,8 @@ module ReservedInstanceLimitPrice = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.currency_code (fun f ->
-               Query.Pair ("currencyCode", CurrencyCodeValues.to_query f))
-         ; Util.option_map v.amount (fun f -> Query.Pair ("amount", Double.to_query f))
+               Query.Pair ("CurrencyCode", CurrencyCodeValues.to_query f))
+         ; Util.option_map v.amount (fun f -> Query.Pair ("Amount", Double.to_query f))
          ])
 
   let to_json v =
@@ -47967,9 +47964,8 @@ module LoadPermissionModifications = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some
-             (Query.Pair ("Remove.member", LoadPermissionListRequest.to_query v.remove))
-         ; Some (Query.Pair ("Add.member", LoadPermissionListRequest.to_query v.add))
+         [ Some (Query.Pair ("Remove", LoadPermissionListRequest.to_query v.remove))
+         ; Some (Query.Pair ("Add", LoadPermissionListRequest.to_query v.add))
          ])
 
   let to_json v =
@@ -48077,8 +48073,8 @@ module DeleteNetworkAclRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("networkAclId", String.to_query v.network_acl_id))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Some (Query.Pair ("NetworkAclId", String.to_query v.network_acl_id))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -48137,15 +48133,15 @@ module CreateImageRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.no_reboot (fun f ->
-               Query.Pair ("noReboot", Boolean.to_query f))
-         ; Some (Query.Pair ("name", String.to_query v.name))
-         ; Some (Query.Pair ("instanceId", String.to_query v.instance_id))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+               Query.Pair ("NoReboot", Boolean.to_query f))
+         ; Some (Query.Pair ("Name", String.to_query v.name))
+         ; Some (Query.Pair ("InstanceId", String.to_query v.instance_id))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
          ; Some
              (Query.Pair
-                ( "blockDeviceMapping"
+                ( "BlockDeviceMapping"
                 , BlockDeviceMappingRequestList.to_query v.block_device_mappings ))
          ])
 
@@ -48271,8 +48267,7 @@ module CreateCapacityReservationRequest = struct
          [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some
              (Query.Pair
-                ( "TagSpecifications.member"
-                , TagSpecificationList.to_query v.tag_specifications ))
+                ("TagSpecifications", TagSpecificationList.to_query v.tag_specifications))
          ; Util.option_map v.instance_match_criteria (fun f ->
                Query.Pair ("InstanceMatchCriteria", InstanceMatchCriteria.to_query f))
          ; Util.option_map v.end_date_type (fun f ->
@@ -48378,9 +48373,9 @@ module CreateTrafficMirrorFilterResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.client_token (fun f ->
-               Query.Pair ("clientToken", String.to_query f))
+               Query.Pair ("ClientToken", String.to_query f))
          ; Util.option_map v.traffic_mirror_filter (fun f ->
-               Query.Pair ("trafficMirrorFilter", TrafficMirrorFilter.to_query f))
+               Query.Pair ("TrafficMirrorFilter", TrafficMirrorFilter.to_query f))
          ])
 
   let to_json v =
@@ -48420,9 +48415,9 @@ module DescribeTagsResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagDescriptionList.to_query v.tags))
+         [ Some (Query.Pair ("TagSet", TagDescriptionList.to_query v.tags))
          ; Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ])
 
   let to_json v =
@@ -48459,8 +48454,8 @@ module DescribeDhcpOptionsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
-         ; Some (Query.Pair ("dhcpOptionsSet", DhcpOptionsList.to_query v.dhcp_options))
+               Query.Pair ("NextToken", String.to_query f))
+         ; Some (Query.Pair ("DhcpOptionsSet", DhcpOptionsList.to_query v.dhcp_options))
          ])
 
   let to_json v =
@@ -48493,7 +48488,7 @@ module DescribeVpnGatewaysResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("vpnGatewaySet", VpnGatewayList.to_query v.vpn_gateways)) ])
+         [ Some (Query.Pair ("VpnGatewaySet", VpnGatewayList.to_query v.vpn_gateways)) ])
 
   let to_json v =
     `Assoc
@@ -48530,10 +48525,10 @@ module GetTransitGatewayAttachmentPropagationsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "transitGatewayAttachmentPropagations"
+                ( "TransitGatewayAttachmentPropagations"
                 , TransitGatewayAttachmentPropagationList.to_query
                     v.transit_gateway_attachment_propagations ))
          ])
@@ -48650,10 +48645,10 @@ module DescribeCapacityReservationsResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "capacityReservationSet"
+                ( "CapacityReservationSet"
                 , CapacityReservationSet.to_query v.capacity_reservations ))
          ; Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ])
 
   let to_json v =
@@ -48838,18 +48833,18 @@ module AuthorizeSecurityGroupEgressRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.source_security_group_owner_id (fun f ->
-               Query.Pair ("sourceSecurityGroupOwnerId", String.to_query f))
+               Query.Pair ("SourceSecurityGroupOwnerId", String.to_query f))
          ; Util.option_map v.source_security_group_name (fun f ->
-               Query.Pair ("sourceSecurityGroupName", String.to_query f))
-         ; Util.option_map v.to_port (fun f -> Query.Pair ("toPort", Integer.to_query f))
+               Query.Pair ("SourceSecurityGroupName", String.to_query f))
+         ; Util.option_map v.to_port (fun f -> Query.Pair ("ToPort", Integer.to_query f))
          ; Util.option_map v.ip_protocol (fun f ->
-               Query.Pair ("ipProtocol", String.to_query f))
+               Query.Pair ("IpProtocol", String.to_query f))
          ; Util.option_map v.from_port (fun f ->
-               Query.Pair ("fromPort", Integer.to_query f))
-         ; Util.option_map v.cidr_ip (fun f -> Query.Pair ("cidrIp", String.to_query f))
-         ; Some (Query.Pair ("ipPermissions", IpPermissionList.to_query v.ip_permissions))
-         ; Some (Query.Pair ("groupId", String.to_query v.group_id))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+               Query.Pair ("FromPort", Integer.to_query f))
+         ; Util.option_map v.cidr_ip (fun f -> Query.Pair ("CidrIp", String.to_query f))
+         ; Some (Query.Pair ("IpPermissions", IpPermissionList.to_query v.ip_permissions))
+         ; Some (Query.Pair ("GroupId", String.to_query v.group_id))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -48909,11 +48904,11 @@ module DescribeReservedInstancesModificationsResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "reservedInstancesModificationsSet"
+                ( "ReservedInstancesModificationsSet"
                 , ReservedInstancesModificationList.to_query
                     v.reserved_instances_modifications ))
          ; Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ])
 
   let to_json v =
@@ -49002,20 +48997,20 @@ module CreateNetworkAclEntryRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("ruleNumber", Integer.to_query v.rule_number))
-         ; Some (Query.Pair ("ruleAction", RuleAction.to_query v.rule_action))
-         ; Some (Query.Pair ("protocol", String.to_query v.protocol))
+         [ Some (Query.Pair ("RuleNumber", Integer.to_query v.rule_number))
+         ; Some (Query.Pair ("RuleAction", RuleAction.to_query v.rule_action))
+         ; Some (Query.Pair ("Protocol", String.to_query v.protocol))
          ; Util.option_map v.port_range (fun f ->
-               Query.Pair ("portRange", PortRange.to_query f))
-         ; Some (Query.Pair ("networkAclId", String.to_query v.network_acl_id))
+               Query.Pair ("PortRange", PortRange.to_query f))
+         ; Some (Query.Pair ("NetworkAclId", String.to_query v.network_acl_id))
          ; Util.option_map v.ipv6_cidr_block (fun f ->
-               Query.Pair ("ipv6CidrBlock", String.to_query f))
+               Query.Pair ("Ipv6CidrBlock", String.to_query f))
          ; Util.option_map v.icmp_type_code (fun f ->
                Query.Pair ("Icmp", IcmpTypeCode.to_query f))
-         ; Some (Query.Pair ("egress", Boolean.to_query v.egress))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         ; Some (Query.Pair ("Egress", Boolean.to_query v.egress))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Util.option_map v.cidr_block (fun f ->
-               Query.Pair ("cidrBlock", String.to_query f))
+               Query.Pair ("CidrBlock", String.to_query f))
          ])
 
   let to_json v =
@@ -49075,11 +49070,11 @@ module DescribeTagsRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Util.option_map v.max_results (fun f ->
-               Query.Pair ("maxResults", Integer.to_query f))
+               Query.Pair ("MaxResults", Integer.to_query f))
          ; Some (Query.Pair ("Filter", FilterList.to_query v.filters))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -49119,7 +49114,7 @@ module DescribePlacementGroupsResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ("placementGroupSet", PlacementGroupList.to_query v.placement_groups))
+                ("PlacementGroupSet", PlacementGroupList.to_query v.placement_groups))
          ])
 
   let to_json v =
@@ -49157,10 +49152,10 @@ module GetTransitGatewayRouteTablePropagationsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "transitGatewayRouteTablePropagations"
+                ( "TransitGatewayRouteTablePropagations"
                 , TransitGatewayRouteTablePropagationList.to_query
                     v.transit_gateway_route_table_propagations ))
          ])
@@ -49241,7 +49236,7 @@ module CreateSubnetRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("VpcId", String.to_query v.vpc_id))
          ; Util.option_map v.outpost_arn (fun f ->
                Query.Pair ("OutpostArn", String.to_query f))
@@ -49309,8 +49304,8 @@ module DeletePlacementGroupRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("groupName", String.to_query v.group_name))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Some (Query.Pair ("GroupName", String.to_query v.group_name))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -49340,7 +49335,7 @@ module DescribeKeyPairsResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("keySet", KeyPairList.to_query v.key_pairs)) ])
+         [ Some (Query.Pair ("KeySet", KeyPairList.to_query v.key_pairs)) ])
 
   let to_json v =
     `Assoc (Util.list_filter_opt [ Some ("key_pairs", KeyPairList.to_json v.key_pairs) ])
@@ -49368,9 +49363,9 @@ module CreateLaunchTemplateResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.warning (fun f ->
-               Query.Pair ("warning", ValidationWarning.to_query f))
+               Query.Pair ("Warning", ValidationWarning.to_query f))
          ; Util.option_map v.launch_template (fun f ->
-               Query.Pair ("launchTemplate", LaunchTemplate.to_query f))
+               Query.Pair ("LaunchTemplate", LaunchTemplate.to_query f))
          ])
 
   let to_json v =
@@ -49423,14 +49418,14 @@ module DescribeFleetHistoryResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.start_time (fun f ->
-               Query.Pair ("startTime", DateTime.to_query f))
-         ; Util.option_map v.fleet_id (fun f -> Query.Pair ("fleetId", String.to_query f))
+               Query.Pair ("StartTime", DateTime.to_query f))
+         ; Util.option_map v.fleet_id (fun f -> Query.Pair ("FleetId", String.to_query f))
          ; Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Util.option_map v.last_evaluated_time (fun f ->
-               Query.Pair ("lastEvaluatedTime", DateTime.to_query f))
+               Query.Pair ("LastEvaluatedTime", DateTime.to_query f))
          ; Some
-             (Query.Pair ("historyRecordSet", HistoryRecordSet.to_query v.history_records))
+             (Query.Pair ("HistoryRecordSet", HistoryRecordSet.to_query v.history_records))
          ])
 
   let to_json v =
@@ -49479,10 +49474,10 @@ module DescribeHostReservationsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ("hostReservationSet", HostReservationSet.to_query v.host_reservation_set))
+                ("HostReservationSet", HostReservationSet.to_query v.host_reservation_set))
          ])
 
   let to_json v =
@@ -49571,7 +49566,7 @@ module ModifyImageAttributeRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Util.option_map v.value (fun f -> Query.Pair ("Value", String.to_query f))
          ; Some (Query.Pair ("UserId", UserIdStringList.to_query v.user_ids))
          ; Some (Query.Pair ("UserGroup", UserGroupStringList.to_query v.user_groups))
@@ -49651,9 +49646,9 @@ module DescribeInstanceAttributeRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("instanceId", String.to_query v.instance_id))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
-         ; Some (Query.Pair ("attribute", InstanceAttributeName.to_query v.attribute))
+         [ Some (Query.Pair ("InstanceId", String.to_query v.instance_id))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
+         ; Some (Query.Pair ("Attribute", InstanceAttributeName.to_query v.attribute))
          ])
 
   let to_json v =
@@ -49731,10 +49726,10 @@ module ResetNetworkInterfaceAttributeRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.source_dest_check (fun f ->
-               Query.Pair ("sourceDestCheck", String.to_query f))
+               Query.Pair ("SourceDestCheck", String.to_query f))
          ; Some
-             (Query.Pair ("networkInterfaceId", String.to_query v.network_interface_id))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+             (Query.Pair ("NetworkInterfaceId", String.to_query v.network_interface_id))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -49771,7 +49766,7 @@ module ReleaseHostsRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("hostId", RequestHostIdList.to_query v.host_ids)) ])
+         [ Some (Query.Pair ("HostId", RequestHostIdList.to_query v.host_ids)) ])
 
   let to_json v =
     `Assoc
@@ -49835,14 +49830,12 @@ module CreateTransitGatewayVpcAttachmentRequest = struct
          [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some
              (Query.Pair
-                ( "TagSpecifications.member"
-                , TagSpecificationList.to_query v.tag_specifications ))
+                ("TagSpecifications", TagSpecificationList.to_query v.tag_specifications))
          ; Util.option_map v.options (fun f ->
                Query.Pair
                  ("Options", CreateTransitGatewayVpcAttachmentRequestOptions.to_query f))
          ; Some
-             (Query.Pair
-                ("SubnetIds.member", TransitGatewaySubnetIdList.to_query v.subnet_ids))
+             (Query.Pair ("SubnetIds", TransitGatewaySubnetIdList.to_query v.subnet_ids))
          ; Some (Query.Pair ("VpcId", String.to_query v.vpc_id))
          ; Some (Query.Pair ("TransitGatewayId", String.to_query v.transit_gateway_id))
          ])
@@ -49971,7 +49964,7 @@ module ModifyReservedInstancesRequest = struct
                 ( "ReservedInstancesConfigurationSetItemType"
                 , ReservedInstancesConfigurationList.to_query v.target_configurations ))
          ; Util.option_map v.client_token (fun f ->
-               Query.Pair ("clientToken", String.to_query f))
+               Query.Pair ("ClientToken", String.to_query f))
          ; Some
              (Query.Pair
                 ( "ReservedInstancesId"
@@ -50025,10 +50018,10 @@ module DescribeVpcEndpointConnectionsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "vpcEndpointConnectionSet"
+                ( "VpcEndpointConnectionSet"
                 , VpcEndpointConnectionSet.to_query v.vpc_endpoint_connections ))
          ])
 
@@ -50077,9 +50070,9 @@ module AssociateRouteTableRequest = struct
          [ Util.option_map v.gateway_id (fun f ->
                Query.Pair ("GatewayId", String.to_query f))
          ; Util.option_map v.subnet_id (fun f ->
-               Query.Pair ("subnetId", String.to_query f))
-         ; Some (Query.Pair ("routeTableId", String.to_query v.route_table_id))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+               Query.Pair ("SubnetId", String.to_query f))
+         ; Some (Query.Pair ("RouteTableId", String.to_query v.route_table_id))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -50177,7 +50170,7 @@ module AssociateAddressResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.association_id (fun f ->
-               Query.Pair ("associationId", String.to_query f))
+               Query.Pair ("AssociationId", String.to_query f))
          ])
 
   let to_json v =
@@ -50240,7 +50233,7 @@ module CreateCustomerGatewayRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Util.option_map v.device_name (fun f ->
                Query.Pair ("DeviceName", String.to_query f))
          ; Some
@@ -50387,7 +50380,7 @@ module DescribeSecurityGroupsRequest = struct
                Query.Pair ("MaxResults", Integer.to_query f))
          ; Util.option_map v.next_token (fun f ->
                Query.Pair ("NextToken", String.to_query f))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("GroupName", GroupNameStringList.to_query v.group_names))
          ; Some (Query.Pair ("GroupId", GroupIdStringList.to_query v.group_ids))
          ; Some (Query.Pair ("Filter", FilterList.to_query v.filters))
@@ -50439,10 +50432,10 @@ module DescribeExportImageTasksResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ("exportImageTaskSet", ExportImageTaskList.to_query v.export_image_tasks))
+                ("ExportImageTaskSet", ExportImageTaskList.to_query v.export_image_tasks))
          ])
 
   let to_json v =
@@ -50661,27 +50654,27 @@ module RequestSpotInstancesRequest = struct
              (Query.Pair
                 ("TagSpecification", TagSpecificationList.to_query v.tag_specifications))
          ; Util.option_map v.valid_until (fun f ->
-               Query.Pair ("validUntil", DateTime.to_query f))
+               Query.Pair ("ValidUntil", DateTime.to_query f))
          ; Util.option_map v.valid_from (fun f ->
-               Query.Pair ("validFrom", DateTime.to_query f))
+               Query.Pair ("ValidFrom", DateTime.to_query f))
          ; Util.option_map v.type_ (fun f ->
-               Query.Pair ("type", SpotInstanceType.to_query f))
+               Query.Pair ("Type", SpotInstanceType.to_query f))
          ; Util.option_map v.spot_price (fun f ->
-               Query.Pair ("spotPrice", String.to_query f))
+               Query.Pair ("SpotPrice", String.to_query f))
          ; Util.option_map v.launch_specification (fun f ->
                Query.Pair
                  ("LaunchSpecification", RequestSpotLaunchSpecification.to_query f))
          ; Util.option_map v.launch_group (fun f ->
-               Query.Pair ("launchGroup", String.to_query f))
+               Query.Pair ("LaunchGroup", String.to_query f))
          ; Util.option_map v.instance_count (fun f ->
-               Query.Pair ("instanceCount", Integer.to_query f))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+               Query.Pair ("InstanceCount", Integer.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Util.option_map v.client_token (fun f ->
-               Query.Pair ("clientToken", String.to_query f))
+               Query.Pair ("ClientToken", String.to_query f))
          ; Util.option_map v.block_duration_minutes (fun f ->
-               Query.Pair ("blockDurationMinutes", Integer.to_query f))
+               Query.Pair ("BlockDurationMinutes", Integer.to_query f))
          ; Util.option_map v.availability_zone_group (fun f ->
-               Query.Pair ("availabilityZoneGroup", String.to_query f))
+               Query.Pair ("AvailabilityZoneGroup", String.to_query f))
          ])
 
   let to_json v =
@@ -50753,7 +50746,7 @@ module GetAssociatedEnclaveCertificateIamRolesResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ("associatedRoleSet", AssociatedRolesList.to_query v.associated_roles))
+                ("AssociatedRoleSet", AssociatedRolesList.to_query v.associated_roles))
          ])
 
   let to_json v =
@@ -50794,10 +50787,10 @@ module CreateFlowLogsResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("unsuccessful", UnsuccessfulItemSet.to_query v.unsuccessful))
-         ; Some (Query.Pair ("flowLogIdSet", ValueStringList.to_query v.flow_log_ids))
+         [ Some (Query.Pair ("Unsuccessful", UnsuccessfulItemSet.to_query v.unsuccessful))
+         ; Some (Query.Pair ("FlowLogIdSet", ValueStringList.to_query v.flow_log_ids))
          ; Util.option_map v.client_token (fun f ->
-               Query.Pair ("clientToken", String.to_query f))
+               Query.Pair ("ClientToken", String.to_query f))
          ])
 
   let to_json v =
@@ -50832,7 +50825,7 @@ module CreateNetworkInterfaceResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.network_interface (fun f ->
-               Query.Pair ("networkInterface", NetworkInterface.to_query f))
+               Query.Pair ("NetworkInterface", NetworkInterface.to_query f))
          ])
 
   let to_json v =
@@ -50865,9 +50858,9 @@ module RestoreAddressToClassicResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.status (fun f -> Query.Pair ("status", Status.to_query f))
+         [ Util.option_map v.status (fun f -> Query.Pair ("Status", Status.to_query f))
          ; Util.option_map v.public_ip (fun f ->
-               Query.Pair ("publicIp", String.to_query f))
+               Query.Pair ("PublicIp", String.to_query f))
          ])
 
   let to_json v =
@@ -50927,7 +50920,7 @@ module DescribeTransitGatewayRouteTablesRequest = struct
          ; Some (Query.Pair ("Filter", FilterList.to_query v.filters))
          ; Some
              (Query.Pair
-                ( "TransitGatewayRouteTableIds.member"
+                ( "TransitGatewayRouteTableIds"
                 , TransitGatewayRouteTableIdStringList.to_query
                     v.transit_gateway_route_table_ids ))
          ])
@@ -51158,7 +51151,7 @@ module DeleteVpnGatewayRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("VpnGatewayId", String.to_query v.vpn_gateway_id))
          ])
 
@@ -51200,10 +51193,10 @@ module DescribeTrafficMirrorFiltersResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "trafficMirrorFilterSet"
+                ( "TrafficMirrorFilterSet"
                 , TrafficMirrorFilterSet.to_query v.traffic_mirror_filters ))
          ])
 
@@ -51323,10 +51316,10 @@ module UnassignPrivateIpAddressesRequest = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "privateIpAddress"
+                ( "PrivateIpAddress"
                 , PrivateIpAddressStringList.to_query v.private_ip_addresses ))
          ; Some
-             (Query.Pair ("networkInterfaceId", String.to_query v.network_interface_id))
+             (Query.Pair ("NetworkInterfaceId", String.to_query v.network_interface_id))
          ])
 
   let to_json v =
@@ -51407,7 +51400,7 @@ module ReplaceNetworkAclAssociationResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.new_association_id (fun f ->
-               Query.Pair ("newAssociationId", String.to_query f))
+               Query.Pair ("NewAssociationId", String.to_query f))
          ])
 
   let to_json v =
@@ -51434,7 +51427,7 @@ module AttachClassicLinkVpcResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.return (fun f -> Query.Pair ("return", Boolean.to_query f)) ])
+         [ Util.option_map v.return (fun f -> Query.Pair ("Return", Boolean.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -51459,7 +51452,7 @@ module CreateManagedPrefixListResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.prefix_list (fun f ->
-               Query.Pair ("prefixList", ManagedPrefixList.to_query f))
+               Query.Pair ("PrefixList", ManagedPrefixList.to_query f))
          ])
 
   let to_json v =
@@ -51486,7 +51479,7 @@ module DeleteSpotDatafeedSubscriptionRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -51517,8 +51510,8 @@ module DeleteRouteTableRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("routeTableId", String.to_query v.route_table_id))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Some (Query.Pair ("RouteTableId", String.to_query v.route_table_id))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -51597,7 +51590,7 @@ module DisassociateVpcCidrBlockRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("associationId", String.to_query v.association_id)) ])
+         [ Some (Query.Pair ("AssociationId", String.to_query v.association_id)) ])
 
   let to_json v =
     `Assoc
@@ -51646,7 +51639,7 @@ module AssociateTransitGatewayMulticastDomainRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
-         ; Some (Query.Pair ("SubnetIds.member", ValueStringList.to_query v.subnet_ids))
+         ; Some (Query.Pair ("SubnetIds", ValueStringList.to_query v.subnet_ids))
          ; Util.option_map v.transit_gateway_attachment_id (fun f ->
                Query.Pair ("TransitGatewayAttachmentId", String.to_query f))
          ; Util.option_map v.transit_gateway_multicast_domain_id (fun f ->
@@ -51706,12 +51699,12 @@ module CancelSpotFleetRequestsRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Some
-             (Query.Pair ("terminateInstances", Boolean.to_query v.terminate_instances))
+             (Query.Pair ("TerminateInstances", Boolean.to_query v.terminate_instances))
          ; Some
              (Query.Pair
-                ( "spotFleetRequestId"
+                ( "SpotFleetRequestId"
                 , SpotFleetRequestIdList.to_query v.spot_fleet_request_ids ))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -51755,8 +51748,8 @@ module GetManagedPrefixListEntriesResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
-         ; Some (Query.Pair ("entrySet", PrefixListEntrySet.to_query v.entries))
+               Query.Pair ("NextToken", String.to_query f))
+         ; Some (Query.Pair ("EntrySet", PrefixListEntrySet.to_query v.entries))
          ])
 
   let to_json v =
@@ -51843,7 +51836,7 @@ module ModifyManagedPrefixListResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.prefix_list (fun f ->
-               Query.Pair ("prefixList", ManagedPrefixList.to_query f))
+               Query.Pair ("PrefixList", ManagedPrefixList.to_query f))
          ])
 
   let to_json v =
@@ -51882,10 +51875,10 @@ module DescribeTransitGatewaysResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ("transitGatewaySet", TransitGatewayList.to_query v.transit_gateways))
+                ("TransitGatewaySet", TransitGatewayList.to_query v.transit_gateways))
          ])
 
   let to_json v =
@@ -51913,7 +51906,7 @@ module ModifyVpcEndpointServiceConfigurationResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.return (fun f -> Query.Pair ("return", Boolean.to_query f)) ])
+         [ Util.option_map v.return (fun f -> Query.Pair ("Return", Boolean.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -51943,7 +51936,7 @@ module CancelBundleTaskRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("BundleId", String.to_query v.bundle_id))
          ])
 
@@ -51971,7 +51964,7 @@ module CopyImageResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.image_id (fun f -> Query.Pair ("imageId", String.to_query f))
+         [ Util.option_map v.image_id (fun f -> Query.Pair ("ImageId", String.to_query f))
          ])
 
   let to_json v =
@@ -52000,7 +51993,7 @@ module RegisterInstanceEventNotificationAttributesResult = struct
       (Util.list_filter_opt
          [ Util.option_map v.instance_tag_attribute (fun f ->
                Query.Pair
-                 ("instanceTagAttribute", InstanceTagNotificationAttribute.to_query f))
+                 ("InstanceTagAttribute", InstanceTagNotificationAttribute.to_query f))
          ])
 
   let to_json v =
@@ -52154,7 +52147,7 @@ module CreateClientVpnEndpointRequest = struct
                Query.Pair ("VpnPort", Integer.to_query f))
          ; Util.option_map v.transport_protocol (fun f ->
                Query.Pair ("TransportProtocol", TransportProtocol.to_query f))
-         ; Some (Query.Pair ("DnsServers.member", ValueStringList.to_query v.dns_servers))
+         ; Some (Query.Pair ("DnsServers", ValueStringList.to_query v.dns_servers))
          ; Some
              (Query.Pair
                 ( "ConnectionLogOptions"
@@ -52246,7 +52239,7 @@ module CreateInstanceExportTaskResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.export_task (fun f ->
-               Query.Pair ("exportTask", ExportTask.to_query f))
+               Query.Pair ("ExportTask", ExportTask.to_query f))
          ])
 
   let to_json v =
@@ -52273,7 +52266,7 @@ module DisableTransitGatewayRouteTablePropagationResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.propagation (fun f ->
-               Query.Pair ("propagation", TransitGatewayPropagation.to_query f))
+               Query.Pair ("Propagation", TransitGatewayPropagation.to_query f))
          ])
 
   let to_json v =
@@ -52354,9 +52347,9 @@ module DescribeVpcClassicLinkDnsSupportResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("vpcs", ClassicLinkDnsSupportList.to_query v.vpcs))
+         [ Some (Query.Pair ("Vpcs", ClassicLinkDnsSupportList.to_query v.vpcs))
          ; Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ])
 
   let to_json v =
@@ -52466,12 +52459,12 @@ module DisassociateVpcCidrBlockResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.vpc_id (fun f -> Query.Pair ("vpcId", String.to_query f))
+         [ Util.option_map v.vpc_id (fun f -> Query.Pair ("VpcId", String.to_query f))
          ; Util.option_map v.cidr_block_association (fun f ->
-               Query.Pair ("cidrBlockAssociation", VpcCidrBlockAssociation.to_query f))
+               Query.Pair ("CidrBlockAssociation", VpcCidrBlockAssociation.to_query f))
          ; Util.option_map v.ipv6_cidr_block_association (fun f ->
                Query.Pair
-                 ("ipv6CidrBlockAssociation", VpcIpv6CidrBlockAssociation.to_query f))
+                 ("Ipv6CidrBlockAssociation", VpcIpv6CidrBlockAssociation.to_query f))
          ])
 
   let to_json v =
@@ -52534,7 +52527,7 @@ module DescribeImportSnapshotTasksRequest = struct
          ; Some
              (Query.Pair
                 ("ImportTaskId", ImportSnapshotTaskIdList.to_query v.import_task_ids))
-         ; Some (Query.Pair ("Filters.member", FilterList.to_query v.filters))
+         ; Some (Query.Pair ("Filters", FilterList.to_query v.filters))
          ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
@@ -52580,9 +52573,9 @@ module DescribeManagedPrefixListsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Some
-             (Query.Pair ("prefixListSet", ManagedPrefixListSet.to_query v.prefix_lists))
+             (Query.Pair ("PrefixListSet", ManagedPrefixListSet.to_query v.prefix_lists))
          ; Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ])
 
   let to_json v =
@@ -52623,9 +52616,9 @@ module RequestSpotFleetRequest = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "spotFleetRequestConfig"
+                ( "SpotFleetRequestConfig"
                 , SpotFleetRequestConfigData.to_query v.spot_fleet_request_config ))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -52665,7 +52658,7 @@ module DescribeReservedInstancesListingsResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "reservedInstancesListingsSet"
+                ( "ReservedInstancesListingsSet"
                 , ReservedInstancesListingList.to_query v.reserved_instances_listings ))
          ])
 
@@ -52857,9 +52850,9 @@ module CreateVpcEndpointServiceConfigurationResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.client_token (fun f ->
-               Query.Pair ("clientToken", String.to_query f))
+               Query.Pair ("ClientToken", String.to_query f))
          ; Util.option_map v.service_configuration (fun f ->
-               Query.Pair ("serviceConfiguration", ServiceConfiguration.to_query f))
+               Query.Pair ("ServiceConfiguration", ServiceConfiguration.to_query f))
          ])
 
   let to_json v =
@@ -52961,8 +52954,8 @@ module DisableVpcClassicLinkRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("vpcId", String.to_query v.vpc_id))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Some (Query.Pair ("VpcId", String.to_query v.vpc_id))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -53007,10 +53000,10 @@ module DeleteNetworkAclEntryRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("ruleNumber", Integer.to_query v.rule_number))
-         ; Some (Query.Pair ("networkAclId", String.to_query v.network_acl_id))
-         ; Some (Query.Pair ("egress", Boolean.to_query v.egress))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Some (Query.Pair ("RuleNumber", Integer.to_query v.rule_number))
+         ; Some (Query.Pair ("NetworkAclId", String.to_query v.network_acl_id))
+         ; Some (Query.Pair ("Egress", Boolean.to_query v.egress))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -53049,7 +53042,7 @@ module DeregisterInstanceEventNotificationAttributesResult = struct
       (Util.list_filter_opt
          [ Util.option_map v.instance_tag_attribute (fun f ->
                Query.Pair
-                 ("instanceTagAttribute", InstanceTagNotificationAttribute.to_query f))
+                 ("InstanceTagAttribute", InstanceTagNotificationAttribute.to_query f))
          ])
 
   let to_json v =
@@ -53118,21 +53111,21 @@ module AllocateAddressResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.carrier_ip (fun f ->
-               Query.Pair ("carrierIp", String.to_query f))
+               Query.Pair ("CarrierIp", String.to_query f))
          ; Util.option_map v.customer_owned_ipv4_pool (fun f ->
-               Query.Pair ("customerOwnedIpv4Pool", String.to_query f))
+               Query.Pair ("CustomerOwnedIpv4Pool", String.to_query f))
          ; Util.option_map v.customer_owned_ip (fun f ->
-               Query.Pair ("customerOwnedIp", String.to_query f))
+               Query.Pair ("CustomerOwnedIp", String.to_query f))
          ; Util.option_map v.domain (fun f ->
-               Query.Pair ("domain", DomainType.to_query f))
+               Query.Pair ("Domain", DomainType.to_query f))
          ; Util.option_map v.network_border_group (fun f ->
-               Query.Pair ("networkBorderGroup", String.to_query f))
+               Query.Pair ("NetworkBorderGroup", String.to_query f))
          ; Util.option_map v.public_ipv4_pool (fun f ->
-               Query.Pair ("publicIpv4Pool", String.to_query f))
+               Query.Pair ("PublicIpv4Pool", String.to_query f))
          ; Util.option_map v.allocation_id (fun f ->
-               Query.Pair ("allocationId", String.to_query f))
+               Query.Pair ("AllocationId", String.to_query f))
          ; Util.option_map v.public_ip (fun f ->
-               Query.Pair ("publicIp", String.to_query f))
+               Query.Pair ("PublicIp", String.to_query f))
          ])
 
   let to_json v =
@@ -53214,8 +53207,7 @@ module DescribeClientVpnTargetNetworksRequest = struct
          ; Util.option_map v.max_results (fun f ->
                Query.Pair ("MaxResults", Integer.to_query f))
          ; Some
-             (Query.Pair
-                ("AssociationIds.member", ValueStringList.to_query v.association_ids))
+             (Query.Pair ("AssociationIds", ValueStringList.to_query v.association_ids))
          ; Some
              (Query.Pair ("ClientVpnEndpointId", String.to_query v.client_vpn_endpoint_id))
          ])
@@ -53260,7 +53252,7 @@ module ModifyTrafficMirrorFilterRuleResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.traffic_mirror_filter_rule (fun f ->
-               Query.Pair ("trafficMirrorFilterRule", TrafficMirrorFilterRule.to_query f))
+               Query.Pair ("TrafficMirrorFilterRule", TrafficMirrorFilterRule.to_query f))
          ])
 
   let to_json v =
@@ -53288,7 +53280,7 @@ module CreateDefaultVpcResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.vpc (fun f -> Query.Pair ("vpc", Vpc.to_query f)) ])
+         [ Util.option_map v.vpc (fun f -> Query.Pair ("Vpc", Vpc.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -53345,8 +53337,7 @@ module CreateVpcEndpointConnectionNotificationRequest = struct
          [ Util.option_map v.client_token (fun f ->
                Query.Pair ("ClientToken", String.to_query f))
          ; Some
-             (Query.Pair
-                ("ConnectionEvents.member", ValueStringList.to_query v.connection_events))
+             (Query.Pair ("ConnectionEvents", ValueStringList.to_query v.connection_events))
          ; Some
              (Query.Pair
                 ( "ConnectionNotificationArn"
@@ -53442,7 +53433,7 @@ module TerminateInstancesResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ("instancesSet", InstanceStateChangeList.to_query v.terminating_instances))
+                ("InstancesSet", InstanceStateChangeList.to_query v.terminating_instances))
          ])
 
   let to_json v =
@@ -53667,9 +53658,9 @@ module ExportClientVpnClientCertificateRevocationListResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.status (fun f ->
-               Query.Pair ("status", ClientCertificateRevocationListStatus.to_query f))
+               Query.Pair ("Status", ClientCertificateRevocationListStatus.to_query f))
          ; Util.option_map v.certificate_revocation_list (fun f ->
-               Query.Pair ("certificateRevocationList", String.to_query f))
+               Query.Pair ("CertificateRevocationList", String.to_query f))
          ])
 
   let to_json v =
@@ -53719,12 +53710,12 @@ module TerminateClientVpnConnectionsResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "connectionStatuses"
+                ( "ConnectionStatuses"
                 , TerminateConnectionStatusSet.to_query v.connection_statuses ))
          ; Util.option_map v.username (fun f ->
-               Query.Pair ("username", String.to_query f))
+               Query.Pair ("Username", String.to_query f))
          ; Util.option_map v.client_vpn_endpoint_id (fun f ->
-               Query.Pair ("clientVpnEndpointId", String.to_query f))
+               Query.Pair ("ClientVpnEndpointId", String.to_query f))
          ])
 
   let to_json v =
@@ -53768,7 +53759,7 @@ module CreateTransitGatewayPrefixListReferenceResult = struct
       (Util.list_filter_opt
          [ Util.option_map v.transit_gateway_prefix_list_reference (fun f ->
                Query.Pair
-                 ( "transitGatewayPrefixListReference"
+                 ( "TransitGatewayPrefixListReference"
                  , TransitGatewayPrefixListReference.to_query f ))
          ])
 
@@ -53812,10 +53803,10 @@ module DescribeInstanceTypeOfferingsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "instanceTypeOfferingSet"
+                ( "InstanceTypeOfferingSet"
                 , InstanceTypeOfferingsList.to_query v.instance_type_offerings ))
          ])
 
@@ -53859,10 +53850,10 @@ module DescribeInstanceStatusResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ("instanceStatusSet", InstanceStatusList.to_query v.instance_statuses))
+                ("InstanceStatusSet", InstanceStatusList.to_query v.instance_statuses))
          ])
 
   let to_json v =
@@ -53900,7 +53891,7 @@ module CreateReservedInstancesListingResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "reservedInstancesListingsSet"
+                ( "ReservedInstancesListingsSet"
                 , ReservedInstancesListingList.to_query v.reserved_instances_listings ))
          ])
 
@@ -53938,7 +53929,7 @@ module RejectTransitGatewayPeeringAttachmentResult = struct
       (Util.list_filter_opt
          [ Util.option_map v.transit_gateway_peering_attachment (fun f ->
                Query.Pair
-                 ( "transitGatewayPeeringAttachment"
+                 ( "TransitGatewayPeeringAttachment"
                  , TransitGatewayPeeringAttachment.to_query f ))
          ])
 
@@ -53978,8 +53969,8 @@ module DeleteInternetGatewayRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("internetGatewayId", String.to_query v.internet_gateway_id))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Some (Query.Pair ("InternetGatewayId", String.to_query v.internet_gateway_id))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -54051,7 +54042,7 @@ module ModifyFleetResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.return (fun f -> Query.Pair ("return", Boolean.to_query f)) ])
+         [ Util.option_map v.return (fun f -> Query.Pair ("Return", Boolean.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -54086,7 +54077,7 @@ module ConfirmProductInstanceRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("ProductCode", String.to_query v.product_code))
          ; Some (Query.Pair ("InstanceId", String.to_query v.instance_id))
          ])
@@ -54124,7 +54115,7 @@ module DescribeInstanceEventNotificationAttributesResult = struct
       (Util.list_filter_opt
          [ Util.option_map v.instance_tag_attribute (fun f ->
                Query.Pair
-                 ("instanceTagAttribute", InstanceTagNotificationAttribute.to_query f))
+                 ("InstanceTagAttribute", InstanceTagNotificationAttribute.to_query f))
          ])
 
   let to_json v =
@@ -54252,9 +54243,9 @@ module CreateFpgaImageResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.fpga_image_global_id (fun f ->
-               Query.Pair ("fpgaImageGlobalId", String.to_query f))
+               Query.Pair ("FpgaImageGlobalId", String.to_query f))
          ; Util.option_map v.fpga_image_id (fun f ->
-               Query.Pair ("fpgaImageId", String.to_query f))
+               Query.Pair ("FpgaImageId", String.to_query f))
          ])
 
   let to_json v =
@@ -54296,10 +54287,10 @@ module GetTransitGatewayPrefixListReferencesResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "transitGatewayPrefixListReferenceSet"
+                ( "TransitGatewayPrefixListReferenceSet"
                 , TransitGatewayPrefixListReferenceSet.to_query
                     v.transit_gateway_prefix_list_references ))
          ])
@@ -54338,7 +54329,7 @@ module DescribeImagesResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("imagesSet", ImageList.to_query v.images)) ])
+         [ Some (Query.Pair ("ImagesSet", ImageList.to_query v.images)) ])
 
   let to_json v =
     `Assoc (Util.list_filter_opt [ Some ("images", ImageList.to_json v.images) ])
@@ -54495,13 +54486,13 @@ module CreateReservedInstancesListingRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Some
-             (Query.Pair ("reservedInstancesId", String.to_query v.reserved_instances_id))
+             (Query.Pair ("ReservedInstancesId", String.to_query v.reserved_instances_id))
          ; Some
              (Query.Pair
-                ( "priceSchedules"
+                ( "PriceSchedules"
                 , PriceScheduleSpecificationList.to_query v.price_schedules ))
-         ; Some (Query.Pair ("instanceCount", Integer.to_query v.instance_count))
-         ; Some (Query.Pair ("clientToken", String.to_query v.client_token))
+         ; Some (Query.Pair ("InstanceCount", Integer.to_query v.instance_count))
+         ; Some (Query.Pair ("ClientToken", String.to_query v.client_token))
          ])
 
   let to_json v =
@@ -54550,10 +54541,10 @@ module DescribeImportSnapshotTasksResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "importSnapshotTaskSet"
+                ( "ImportSnapshotTaskSet"
                 , ImportSnapshotTaskList.to_query v.import_snapshot_tasks ))
          ])
 
@@ -54596,9 +54587,9 @@ module CreateTrafficMirrorFilterRuleResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.client_token (fun f ->
-               Query.Pair ("clientToken", String.to_query f))
+               Query.Pair ("ClientToken", String.to_query f))
          ; Util.option_map v.traffic_mirror_filter_rule (fun f ->
-               Query.Pair ("trafficMirrorFilterRule", TrafficMirrorFilterRule.to_query f))
+               Query.Pair ("TrafficMirrorFilterRule", TrafficMirrorFilterRule.to_query f))
          ])
 
   let to_json v =
@@ -54642,10 +54633,10 @@ module DescribeNetworkInterfacePermissionsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "networkInterfacePermissions"
+                ( "NetworkInterfacePermissions"
                 , NetworkInterfacePermissionList.to_query v.network_interface_permissions
                 ))
          ])
@@ -54682,7 +54673,7 @@ module CreateTransitGatewayResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.transit_gateway (fun f ->
-               Query.Pair ("transitGateway", TransitGateway.to_query f))
+               Query.Pair ("TransitGateway", TransitGateway.to_query f))
          ])
 
   let to_json v =
@@ -54718,7 +54709,7 @@ module DeleteVpnConnectionRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("VpnConnectionId", String.to_query v.vpn_connection_id))
          ])
 
@@ -54849,7 +54840,7 @@ module CancelSpotInstanceRequestsRequest = struct
              (Query.Pair
                 ( "SpotInstanceRequestId"
                 , SpotInstanceRequestIdList.to_query v.spot_instance_request_ids ))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -54884,7 +54875,7 @@ module AssociateTransitGatewayRouteTableResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.association (fun f ->
-               Query.Pair ("association", TransitGatewayAssociation.to_query f))
+               Query.Pair ("Association", TransitGatewayAssociation.to_query f))
          ])
 
   let to_json v =
@@ -54962,21 +54953,21 @@ module DescribeSpotPriceHistoryRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.start_time (fun f ->
-               Query.Pair ("startTime", DateTime.to_query f))
+               Query.Pair ("StartTime", DateTime.to_query f))
          ; Some
              (Query.Pair
                 ( "ProductDescription"
                 , ProductDescriptionList.to_query v.product_descriptions ))
          ; Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Util.option_map v.max_results (fun f ->
-               Query.Pair ("maxResults", Integer.to_query f))
+               Query.Pair ("MaxResults", Integer.to_query f))
          ; Some (Query.Pair ("InstanceType", InstanceTypeList.to_query v.instance_types))
          ; Util.option_map v.end_time (fun f ->
-               Query.Pair ("endTime", DateTime.to_query f))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+               Query.Pair ("EndTime", DateTime.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Util.option_map v.availability_zone (fun f ->
-               Query.Pair ("availabilityZone", String.to_query f))
+               Query.Pair ("AvailabilityZone", String.to_query f))
          ; Some (Query.Pair ("Filter", FilterList.to_query v.filters))
          ])
 
@@ -55034,11 +55025,11 @@ module CancelImportTaskResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.state (fun f -> Query.Pair ("state", String.to_query f))
+         [ Util.option_map v.state (fun f -> Query.Pair ("State", String.to_query f))
          ; Util.option_map v.previous_state (fun f ->
-               Query.Pair ("previousState", String.to_query f))
+               Query.Pair ("PreviousState", String.to_query f))
          ; Util.option_map v.import_task_id (fun f ->
-               Query.Pair ("importTaskId", String.to_query f))
+               Query.Pair ("ImportTaskId", String.to_query f))
          ])
 
   let to_json v =
@@ -55072,7 +55063,7 @@ module DisassociateSubnetCidrBlockRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("associationId", String.to_query v.association_id)) ])
+         [ Some (Query.Pair ("AssociationId", String.to_query v.association_id)) ])
 
   let to_json v =
     `Assoc
@@ -55101,7 +55092,7 @@ module ModifyTrafficMirrorFilterNetworkServicesResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.traffic_mirror_filter (fun f ->
-               Query.Pair ("trafficMirrorFilter", TrafficMirrorFilter.to_query f))
+               Query.Pair ("TrafficMirrorFilter", TrafficMirrorFilter.to_query f))
          ])
 
   let to_json v =
@@ -55144,9 +55135,9 @@ module ResetInstanceAttributeRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("instanceId", String.to_query v.instance_id))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
-         ; Some (Query.Pair ("attribute", InstanceAttributeName.to_query v.attribute))
+         [ Some (Query.Pair ("InstanceId", String.to_query v.instance_id))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
+         ; Some (Query.Pair ("Attribute", InstanceAttributeName.to_query v.attribute))
          ])
 
   let to_json v =
@@ -55183,9 +55174,9 @@ module CopySnapshotResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.snapshot_id (fun f ->
-               Query.Pair ("snapshotId", String.to_query f))
+               Query.Pair ("SnapshotId", String.to_query f))
          ])
 
   let to_json v =
@@ -55217,7 +55208,7 @@ module AllocateHostsResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("hostIdSet", ResponseHostIdList.to_query v.host_ids)) ])
+         [ Some (Query.Pair ("HostIdSet", ResponseHostIdList.to_query v.host_ids)) ])
 
   let to_json v =
     `Assoc
@@ -55380,7 +55371,7 @@ module CreateVpnGatewayResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.vpn_gateway (fun f ->
-               Query.Pair ("vpnGateway", VpnGateway.to_query f))
+               Query.Pair ("VpnGateway", VpnGateway.to_query f))
          ])
 
   let to_json v =
@@ -55409,7 +55400,7 @@ module CreateCapacityReservationResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.capacity_reservation (fun f ->
-               Query.Pair ("capacityReservation", CapacityReservation.to_query f))
+               Query.Pair ("CapacityReservation", CapacityReservation.to_query f))
          ])
 
   let to_json v =
@@ -55446,9 +55437,9 @@ module CreateLaunchTemplateVersionResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.warning (fun f ->
-               Query.Pair ("warning", ValidationWarning.to_query f))
+               Query.Pair ("Warning", ValidationWarning.to_query f))
          ; Util.option_map v.launch_template_version (fun f ->
-               Query.Pair ("launchTemplateVersion", LaunchTemplateVersion.to_query f))
+               Query.Pair ("LaunchTemplateVersion", LaunchTemplateVersion.to_query f))
          ])
 
   let to_json v =
@@ -55487,8 +55478,8 @@ module DescribeHostsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
-         ; Some (Query.Pair ("hostSet", HostList.to_query v.hosts))
+               Query.Pair ("NextToken", String.to_query f))
+         ; Some (Query.Pair ("HostSet", HostList.to_query v.hosts))
          ])
 
   let to_json v =
@@ -55530,7 +55521,7 @@ module DescribeCustomerGatewaysRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("Filter", FilterList.to_query v.filters))
          ; Some
              (Query.Pair
@@ -55575,7 +55566,7 @@ module DisassociateTransitGatewayMulticastDomainResult = struct
       (Util.list_filter_opt
          [ Util.option_map v.associations (fun f ->
                Query.Pair
-                 ("associations", TransitGatewayMulticastDomainAssociations.to_query f))
+                 ("Associations", TransitGatewayMulticastDomainAssociations.to_query f))
          ])
 
   let to_json v =
@@ -55614,9 +55605,9 @@ module DescribeLaunchTemplatesResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
-             (Query.Pair ("launchTemplates", LaunchTemplateSet.to_query v.launch_templates))
+             (Query.Pair ("LaunchTemplates", LaunchTemplateSet.to_query v.launch_templates))
          ])
 
   let to_json v =
@@ -55653,9 +55644,9 @@ module DescribePrefixListsResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("prefixListSet", PrefixListSet.to_query v.prefix_lists))
+         [ Some (Query.Pair ("PrefixListSet", PrefixListSet.to_query v.prefix_lists))
          ; Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ])
 
   let to_json v =
@@ -55931,7 +55922,7 @@ module DeprovisionByoipCidrResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.byoip_cidr (fun f ->
-               Query.Pair ("byoipCidr", ByoipCidr.to_query f))
+               Query.Pair ("ByoipCidr", ByoipCidr.to_query f))
          ])
 
   let to_json v =
@@ -55969,7 +55960,7 @@ module DescribeVpnConnectionsRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some
              (Query.Pair
                 ( "VpnConnectionId"
@@ -56006,7 +55997,7 @@ module ModifyInstancePlacementResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.return (fun f -> Query.Pair ("return", Boolean.to_query f)) ])
+         [ Util.option_map v.return (fun f -> Query.Pair ("Return", Boolean.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -56090,7 +56081,7 @@ module GetDefaultCreditSpecificationResult = struct
       (Util.list_filter_opt
          [ Util.option_map v.instance_family_credit_specification (fun f ->
                Query.Pair
-                 ( "instanceFamilyCreditSpecification"
+                 ( "InstanceFamilyCreditSpecification"
                  , InstanceFamilyCreditSpecification.to_query f ))
          ])
 
@@ -56125,7 +56116,7 @@ module DeleteLaunchTemplateResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.launch_template (fun f ->
-               Query.Pair ("launchTemplate", LaunchTemplate.to_query f))
+               Query.Pair ("LaunchTemplate", LaunchTemplate.to_query f))
          ])
 
   let to_json v =
@@ -56168,12 +56159,12 @@ module DescribeSpotFleetInstancesResponse = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.spot_fleet_request_id (fun f ->
-               Query.Pair ("spotFleetRequestId", String.to_query f))
+               Query.Pair ("SpotFleetRequestId", String.to_query f))
          ; Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ("activeInstanceSet", ActiveInstanceSet.to_query v.active_instances))
+                ("ActiveInstanceSet", ActiveInstanceSet.to_query v.active_instances))
          ])
 
   let to_json v =
@@ -56219,7 +56210,7 @@ module DescribeSnapshotAttributeRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("SnapshotId", String.to_query v.snapshot_id))
          ; Some (Query.Pair ("Attribute", SnapshotAttributeName.to_query v.attribute))
          ])
@@ -56263,9 +56254,9 @@ module DetachClassicLinkVpcRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("vpcId", String.to_query v.vpc_id))
-         ; Some (Query.Pair ("instanceId", String.to_query v.instance_id))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Some (Query.Pair ("VpcId", String.to_query v.vpc_id))
+         ; Some (Query.Pair ("InstanceId", String.to_query v.instance_id))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -56312,10 +56303,10 @@ module AttachClassicLinkVpcRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("vpcId", String.to_query v.vpc_id))
-         ; Some (Query.Pair ("instanceId", String.to_query v.instance_id))
+         [ Some (Query.Pair ("VpcId", String.to_query v.vpc_id))
+         ; Some (Query.Pair ("InstanceId", String.to_query v.instance_id))
          ; Some (Query.Pair ("SecurityGroupId", GroupIdStringList.to_query v.groups))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -56437,35 +56428,35 @@ module ModifyInstanceAttributeRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.value (fun f -> Query.Pair ("value", String.to_query f))
+         [ Util.option_map v.value (fun f -> Query.Pair ("Value", String.to_query f))
          ; Util.option_map v.user_data (fun f ->
-               Query.Pair ("userData", BlobAttributeValue.to_query f))
+               Query.Pair ("UserData", BlobAttributeValue.to_query f))
          ; Util.option_map v.sriov_net_support (fun f ->
-               Query.Pair ("sriovNetSupport", AttributeValue.to_query f))
+               Query.Pair ("SriovNetSupport", AttributeValue.to_query f))
          ; Util.option_map v.ramdisk (fun f ->
-               Query.Pair ("ramdisk", AttributeValue.to_query f))
+               Query.Pair ("Ramdisk", AttributeValue.to_query f))
          ; Util.option_map v.kernel (fun f ->
-               Query.Pair ("kernel", AttributeValue.to_query f))
+               Query.Pair ("Kernel", AttributeValue.to_query f))
          ; Util.option_map v.instance_type (fun f ->
-               Query.Pair ("instanceType", AttributeValue.to_query f))
+               Query.Pair ("InstanceType", AttributeValue.to_query f))
          ; Util.option_map v.instance_initiated_shutdown_behavior (fun f ->
-               Query.Pair ("instanceInitiatedShutdownBehavior", AttributeValue.to_query f))
-         ; Some (Query.Pair ("instanceId", String.to_query v.instance_id))
+               Query.Pair ("InstanceInitiatedShutdownBehavior", AttributeValue.to_query f))
+         ; Some (Query.Pair ("InstanceId", String.to_query v.instance_id))
          ; Some (Query.Pair ("GroupId", GroupIdStringList.to_query v.groups))
          ; Util.option_map v.ena_support (fun f ->
-               Query.Pair ("enaSupport", AttributeBooleanValue.to_query f))
+               Query.Pair ("EnaSupport", AttributeBooleanValue.to_query f))
          ; Util.option_map v.ebs_optimized (fun f ->
-               Query.Pair ("ebsOptimized", AttributeBooleanValue.to_query f))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+               Query.Pair ("EbsOptimized", AttributeBooleanValue.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Util.option_map v.disable_api_termination (fun f ->
-               Query.Pair ("disableApiTermination", AttributeBooleanValue.to_query f))
+               Query.Pair ("DisableApiTermination", AttributeBooleanValue.to_query f))
          ; Some
              (Query.Pair
-                ( "blockDeviceMapping"
+                ( "BlockDeviceMapping"
                 , InstanceBlockDeviceMappingSpecificationList.to_query
                     v.block_device_mappings ))
          ; Util.option_map v.attribute (fun f ->
-               Query.Pair ("attribute", InstanceAttributeName.to_query f))
+               Query.Pair ("Attribute", InstanceAttributeName.to_query f))
          ; Util.option_map v.source_dest_check (fun f ->
                Query.Pair ("SourceDestCheck", AttributeBooleanValue.to_query f))
          ])
@@ -56552,7 +56543,7 @@ module DescribeFpgaImageAttributeResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.fpga_image_attribute (fun f ->
-               Query.Pair ("fpgaImageAttribute", FpgaImageAttribute.to_query f))
+               Query.Pair ("FpgaImageAttribute", FpgaImageAttribute.to_query f))
          ])
 
   let to_json v =
@@ -56666,7 +56657,7 @@ module CreateDefaultSubnetResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.subnet (fun f -> Query.Pair ("subnet", Subnet.to_query f)) ])
+         [ Util.option_map v.subnet (fun f -> Query.Pair ("Subnet", Subnet.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -56759,7 +56750,7 @@ module AttachVpnGatewayRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("VpnGatewayId", String.to_query v.vpn_gateway_id))
          ; Some (Query.Pair ("VpcId", String.to_query v.vpc_id))
          ])
@@ -56848,7 +56839,7 @@ module DeleteEgressOnlyInternetGatewayResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.return_code (fun f ->
-               Query.Pair ("returnCode", Boolean.to_query f))
+               Query.Pair ("ReturnCode", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -56885,7 +56876,7 @@ module ResetSnapshotAttributeRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("SnapshotId", String.to_query v.snapshot_id))
          ; Some (Query.Pair ("Attribute", SnapshotAttributeName.to_query v.attribute))
          ])
@@ -56944,7 +56935,7 @@ module DescribeAvailabilityZonesRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Util.option_map v.all_availability_zones (fun f ->
                Query.Pair ("AllAvailabilityZones", Boolean.to_query f))
          ; Some (Query.Pair ("ZoneId", ZoneIdStringList.to_query v.zone_ids))
@@ -56999,8 +56990,8 @@ module StopInstancesRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.force (fun f -> Query.Pair ("force", Boolean.to_query f))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.force (fun f -> Query.Pair ("Force", Boolean.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Util.option_map v.hibernate (fun f ->
                Query.Pair ("Hibernate", Boolean.to_query f))
          ; Some (Query.Pair ("InstanceId", InstanceIdStringList.to_query v.instance_ids))
@@ -57048,10 +57039,10 @@ module DescribeTransitGatewayMulticastDomainsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "transitGatewayMulticastDomains"
+                ( "TransitGatewayMulticastDomains"
                 , TransitGatewayMulticastDomainList.to_query
                     v.transit_gateway_multicast_domains ))
          ])
@@ -57140,8 +57131,8 @@ module DescribePrincipalIdFormatResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
-         ; Some (Query.Pair ("principalSet", PrincipalIdFormatList.to_query v.principals))
+               Query.Pair ("NextToken", String.to_query f))
+         ; Some (Query.Pair ("PrincipalSet", PrincipalIdFormatList.to_query v.principals))
          ])
 
   let to_json v =
@@ -57198,7 +57189,7 @@ module DeregisterTransitGatewayMulticastGroupSourcesRequest = struct
          [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some
              (Query.Pair
-                ( "NetworkInterfaceIds.member"
+                ( "NetworkInterfaceIds"
                 , TransitGatewayNetworkInterfaceIdList.to_query v.network_interface_ids ))
          ; Util.option_map v.group_ip_address (fun f ->
                Query.Pair ("GroupIpAddress", String.to_query f))
@@ -57261,10 +57252,10 @@ module DescribeInstancesRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Util.option_map v.max_results (fun f ->
-               Query.Pair ("maxResults", Integer.to_query f))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+               Query.Pair ("MaxResults", Integer.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("InstanceId", InstanceIdStringList.to_query v.instance_ids))
          ; Some (Query.Pair ("Filter", FilterList.to_query v.filters))
          ])
@@ -57315,7 +57306,7 @@ module DescribeVpnGatewaysRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some
              (Query.Pair
                 ("VpnGatewayId", VpnGatewayIdStringList.to_query v.vpn_gateway_ids))
@@ -57355,7 +57346,7 @@ module AcceptVpcEndpointConnectionsResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("unsuccessful", UnsuccessfulItemSet.to_query v.unsuccessful))
+         [ Some (Query.Pair ("Unsuccessful", UnsuccessfulItemSet.to_query v.unsuccessful))
          ])
 
   let to_json v =
@@ -57398,13 +57389,13 @@ module DescribeSpotFleetRequestsRequest = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "spotFleetRequestId"
+                ( "SpotFleetRequestId"
                 , SpotFleetRequestIdList.to_query v.spot_fleet_request_ids ))
          ; Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Util.option_map v.max_results (fun f ->
-               Query.Pair ("maxResults", Integer.to_query f))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+               Query.Pair ("MaxResults", Integer.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -57451,10 +57442,10 @@ module DescribeVpcEndpointServicePermissionsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ("allowedPrincipals", AllowedPrincipalSet.to_query v.allowed_principals))
+                ("AllowedPrincipals", AllowedPrincipalSet.to_query v.allowed_principals))
          ])
 
   let to_json v =
@@ -57573,8 +57564,8 @@ module DescribeByoipCidrsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
-         ; Some (Query.Pair ("byoipCidrSet", ByoipCidrSet.to_query v.byoip_cidrs))
+               Query.Pair ("NextToken", String.to_query f))
+         ; Some (Query.Pair ("ByoipCidrSet", ByoipCidrSet.to_query v.byoip_cidrs))
          ])
 
   let to_json v =
@@ -57612,8 +57603,8 @@ module DescribeCoipPoolsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
-         ; Some (Query.Pair ("coipPoolSet", CoipPoolSet.to_query v.coip_pools))
+               Query.Pair ("NextToken", String.to_query f))
+         ; Some (Query.Pair ("CoipPoolSet", CoipPoolSet.to_query v.coip_pools))
          ])
 
   let to_json v =
@@ -57646,7 +57637,7 @@ module DescribeSpotDatafeedSubscriptionResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.spot_datafeed_subscription (fun f ->
-               Query.Pair ("spotDatafeedSubscription", SpotDatafeedSubscription.to_query f))
+               Query.Pair ("SpotDatafeedSubscription", SpotDatafeedSubscription.to_query f))
          ])
 
   let to_json v =
@@ -57724,18 +57715,18 @@ module RevokeSecurityGroupEgressRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.source_security_group_owner_id (fun f ->
-               Query.Pair ("sourceSecurityGroupOwnerId", String.to_query f))
+               Query.Pair ("SourceSecurityGroupOwnerId", String.to_query f))
          ; Util.option_map v.source_security_group_name (fun f ->
-               Query.Pair ("sourceSecurityGroupName", String.to_query f))
-         ; Util.option_map v.to_port (fun f -> Query.Pair ("toPort", Integer.to_query f))
+               Query.Pair ("SourceSecurityGroupName", String.to_query f))
+         ; Util.option_map v.to_port (fun f -> Query.Pair ("ToPort", Integer.to_query f))
          ; Util.option_map v.ip_protocol (fun f ->
-               Query.Pair ("ipProtocol", String.to_query f))
+               Query.Pair ("IpProtocol", String.to_query f))
          ; Util.option_map v.from_port (fun f ->
-               Query.Pair ("fromPort", Integer.to_query f))
-         ; Util.option_map v.cidr_ip (fun f -> Query.Pair ("cidrIp", String.to_query f))
-         ; Some (Query.Pair ("ipPermissions", IpPermissionList.to_query v.ip_permissions))
-         ; Some (Query.Pair ("groupId", String.to_query v.group_id))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+               Query.Pair ("FromPort", Integer.to_query f))
+         ; Util.option_map v.cidr_ip (fun f -> Query.Pair ("CidrIp", String.to_query f))
+         ; Some (Query.Pair ("IpPermissions", IpPermissionList.to_query v.ip_permissions))
+         ; Some (Query.Pair ("GroupId", String.to_query v.group_id))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -57800,11 +57791,11 @@ module DeleteFleetsResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "unsuccessfulFleetDeletionSet"
+                ( "UnsuccessfulFleetDeletionSet"
                 , DeleteFleetErrorSet.to_query v.unsuccessful_fleet_deletions ))
          ; Some
              (Query.Pair
-                ( "successfulFleetDeletionSet"
+                ( "SuccessfulFleetDeletionSet"
                 , DeleteFleetSuccessSet.to_query v.successful_fleet_deletions ))
          ])
 
@@ -57858,11 +57849,11 @@ module DisableFastSnapshotRestoresResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "unsuccessful"
+                ( "Unsuccessful"
                 , DisableFastSnapshotRestoreErrorSet.to_query v.unsuccessful ))
          ; Some
              (Query.Pair
-                ("successful", DisableFastSnapshotRestoreSuccessSet.to_query v.successful))
+                ("Successful", DisableFastSnapshotRestoreSuccessSet.to_query v.successful))
          ])
 
   let to_json v =
@@ -57894,7 +57885,7 @@ module GetEbsDefaultKmsKeyIdResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.kms_key_id (fun f ->
-               Query.Pair ("kmsKeyId", String.to_query f))
+               Query.Pair ("KmsKeyId", String.to_query f))
          ])
 
   let to_json v =
@@ -57921,7 +57912,7 @@ module DeleteTrafficMirrorFilterResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.traffic_mirror_filter_id (fun f ->
-               Query.Pair ("trafficMirrorFilterId", String.to_query f))
+               Query.Pair ("TrafficMirrorFilterId", String.to_query f))
          ])
 
   let to_json v =
@@ -57964,7 +57955,7 @@ module DescribeReservedInstancesModificationsRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
                 ( "ReservedInstancesModificationId"
@@ -58137,7 +58128,7 @@ module DescribeSpotInstanceRequestsRequest = struct
              (Query.Pair
                 ( "SpotInstanceRequestId"
                 , SpotInstanceRequestIdList.to_query v.spot_instance_request_ids ))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("Filter", FilterList.to_query v.filters))
          ])
 
@@ -58195,8 +58186,8 @@ module DescribePlacementGroupsRequest = struct
       (Util.list_filter_opt
          [ Some (Query.Pair ("GroupId", PlacementGroupIdStringList.to_query v.group_ids))
          ; Some
-             (Query.Pair ("groupName", PlacementGroupStringList.to_query v.group_names))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+             (Query.Pair ("GroupName", PlacementGroupStringList.to_query v.group_names))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("Filter", FilterList.to_query v.filters))
          ])
 
@@ -58249,10 +58240,10 @@ module AssignIpv6AddressesRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Some
-             (Query.Pair ("networkInterfaceId", String.to_query v.network_interface_id))
-         ; Some (Query.Pair ("ipv6Addresses", Ipv6AddressList.to_query v.ipv6_addresses))
+             (Query.Pair ("NetworkInterfaceId", String.to_query v.network_interface_id))
+         ; Some (Query.Pair ("Ipv6Addresses", Ipv6AddressList.to_query v.ipv6_addresses))
          ; Util.option_map v.ipv6_address_count (fun f ->
-               Query.Pair ("ipv6AddressCount", Integer.to_query f))
+               Query.Pair ("Ipv6AddressCount", Integer.to_query f))
          ])
 
   let to_json v =
@@ -58356,10 +58347,10 @@ module DescribeScheduledInstancesResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "scheduledInstanceSet"
+                ( "ScheduledInstanceSet"
                 , ScheduledInstanceSet.to_query v.scheduled_instance_set ))
          ; Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ])
 
   let to_json v =
@@ -58402,9 +58393,9 @@ module ModifyInstanceMetadataOptionsResult = struct
       (Util.list_filter_opt
          [ Util.option_map v.instance_metadata_options (fun f ->
                Query.Pair
-                 ("instanceMetadataOptions", InstanceMetadataOptionsResponse.to_query f))
+                 ("InstanceMetadataOptions", InstanceMetadataOptionsResponse.to_query f))
          ; Util.option_map v.instance_id (fun f ->
-               Query.Pair ("instanceId", String.to_query f))
+               Query.Pair ("InstanceId", String.to_query f))
          ])
 
   let to_json v =
@@ -58445,8 +58436,8 @@ module DescribeFlowLogsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
-         ; Some (Query.Pair ("flowLogSet", FlowLogSet.to_query v.flow_logs))
+               Query.Pair ("NextToken", String.to_query f))
+         ; Some (Query.Pair ("FlowLogSet", FlowLogSet.to_query v.flow_logs))
          ])
 
   let to_json v =
@@ -58596,7 +58587,7 @@ module DescribeBundleTasksResult = struct
     Query.List
       (Util.list_filter_opt
          [ Some
-             (Query.Pair ("bundleInstanceTasksSet", BundleTaskList.to_query v.bundle_tasks))
+             (Query.Pair ("BundleInstanceTasksSet", BundleTaskList.to_query v.bundle_tasks))
          ])
 
   let to_json v =
@@ -58634,10 +58625,10 @@ module DescribeInstanceCreditSpecificationsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "instanceCreditSpecificationSet"
+                ( "InstanceCreditSpecificationSet"
                 , InstanceCreditSpecificationList.to_query
                     v.instance_credit_specifications ))
          ])
@@ -58730,7 +58721,7 @@ module DescribeSubnetsRequest = struct
                Query.Pair ("MaxResults", Integer.to_query f))
          ; Util.option_map v.next_token (fun f ->
                Query.Pair ("NextToken", String.to_query f))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("SubnetId", SubnetIdStringList.to_query v.subnet_ids))
          ; Some (Query.Pair ("Filter", FilterList.to_query v.filters))
          ])
@@ -58782,12 +58773,12 @@ module GetCoipPoolUsageResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.local_gateway_route_table_id (fun f ->
-               Query.Pair ("localGatewayRouteTableId", String.to_query f))
+               Query.Pair ("LocalGatewayRouteTableId", String.to_query f))
          ; Some
              (Query.Pair
-                ("coipAddressUsageSet", CoipAddressUsageSet.to_query v.coip_address_usages))
+                ("CoipAddressUsageSet", CoipAddressUsageSet.to_query v.coip_address_usages))
          ; Util.option_map v.coip_pool_id (fun f ->
-               Query.Pair ("coipPoolId", String.to_query f))
+               Query.Pair ("CoipPoolId", String.to_query f))
          ])
 
   let to_json v =
@@ -58832,12 +58823,12 @@ module ImportKeyPairResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.key_pair_id (fun f ->
-               Query.Pair ("keyPairId", String.to_query f))
-         ; Util.option_map v.key_name (fun f -> Query.Pair ("keyName", String.to_query f))
+               Query.Pair ("KeyPairId", String.to_query f))
+         ; Util.option_map v.key_name (fun f -> Query.Pair ("KeyName", String.to_query f))
          ; Util.option_map v.key_fingerprint (fun f ->
-               Query.Pair ("keyFingerprint", String.to_query f))
+               Query.Pair ("KeyFingerprint", String.to_query f))
          ])
 
   let to_json v =
@@ -59027,10 +59018,10 @@ module DescribeStaleSecurityGroupsResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "staleSecurityGroupSet"
+                ( "StaleSecurityGroupSet"
                 , StaleSecurityGroupSet.to_query v.stale_security_group_set ))
          ; Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ])
 
   let to_json v =
@@ -59081,7 +59072,7 @@ module CreateKeyPairRequest = struct
          [ Some
              (Query.Pair
                 ("TagSpecification", TagSpecificationList.to_query v.tag_specifications))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("KeyName", String.to_query v.key_name))
          ])
 
@@ -59121,7 +59112,7 @@ module DisassociateAddressRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Util.option_map v.public_ip (fun f ->
                Query.Pair ("PublicIp", String.to_query f))
          ; Util.option_map v.association_id (fun f ->
@@ -59163,7 +59154,7 @@ module DescribeSecurityGroupReferencesResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "securityGroupReferenceSet"
+                ( "SecurityGroupReferenceSet"
                 , SecurityGroupReferences.to_query v.security_group_reference_set ))
          ])
 
@@ -59273,10 +59264,10 @@ module ReplaceRouteRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.vpc_peering_connection_id (fun f ->
-               Query.Pair ("vpcPeeringConnectionId", String.to_query f))
-         ; Some (Query.Pair ("routeTableId", String.to_query v.route_table_id))
+               Query.Pair ("VpcPeeringConnectionId", String.to_query f))
+         ; Some (Query.Pair ("RouteTableId", String.to_query v.route_table_id))
          ; Util.option_map v.network_interface_id (fun f ->
-               Query.Pair ("networkInterfaceId", String.to_query f))
+               Query.Pair ("NetworkInterfaceId", String.to_query f))
          ; Util.option_map v.carrier_gateway_id (fun f ->
                Query.Pair ("CarrierGatewayId", String.to_query f))
          ; Util.option_map v.local_gateway_id (fun f ->
@@ -59284,24 +59275,24 @@ module ReplaceRouteRequest = struct
          ; Util.option_map v.transit_gateway_id (fun f ->
                Query.Pair ("TransitGatewayId", String.to_query f))
          ; Util.option_map v.nat_gateway_id (fun f ->
-               Query.Pair ("natGatewayId", String.to_query f))
+               Query.Pair ("NatGatewayId", String.to_query f))
          ; Util.option_map v.local_target (fun f ->
                Query.Pair ("LocalTarget", Boolean.to_query f))
          ; Util.option_map v.instance_id (fun f ->
-               Query.Pair ("instanceId", String.to_query f))
+               Query.Pair ("InstanceId", String.to_query f))
          ; Util.option_map v.gateway_id (fun f ->
-               Query.Pair ("gatewayId", String.to_query f))
+               Query.Pair ("GatewayId", String.to_query f))
          ; Util.option_map v.egress_only_internet_gateway_id (fun f ->
-               Query.Pair ("egressOnlyInternetGatewayId", String.to_query f))
+               Query.Pair ("EgressOnlyInternetGatewayId", String.to_query f))
          ; Util.option_map v.vpc_endpoint_id (fun f ->
                Query.Pair ("VpcEndpointId", String.to_query f))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Util.option_map v.destination_prefix_list_id (fun f ->
                Query.Pair ("DestinationPrefixListId", String.to_query f))
          ; Util.option_map v.destination_ipv6_cidr_block (fun f ->
-               Query.Pair ("destinationIpv6CidrBlock", String.to_query f))
+               Query.Pair ("DestinationIpv6CidrBlock", String.to_query f))
          ; Util.option_map v.destination_cidr_block (fun f ->
-               Query.Pair ("destinationCidrBlock", String.to_query f))
+               Query.Pair ("DestinationCidrBlock", String.to_query f))
          ])
 
   let to_json v =
@@ -59387,7 +59378,7 @@ module GetConsoleOutputRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.latest (fun f -> Query.Pair ("Latest", Boolean.to_query f))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("InstanceId", String.to_query v.instance_id))
          ])
 
@@ -59437,8 +59428,7 @@ module CreateTransitGatewayRouteTableRequest = struct
          [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some
              (Query.Pair
-                ( "TagSpecifications.member"
-                , TagSpecificationList.to_query v.tag_specifications ))
+                ("TagSpecifications", TagSpecificationList.to_query v.tag_specifications))
          ; Some (Query.Pair ("TransitGatewayId", String.to_query v.transit_gateway_id))
          ])
 
@@ -59475,7 +59465,7 @@ module CreateVpnConnectionResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.vpn_connection (fun f ->
-               Query.Pair ("vpnConnection", VpnConnection.to_query f))
+               Query.Pair ("VpnConnection", VpnConnection.to_query f))
          ])
 
   let to_json v =
@@ -59525,12 +59515,12 @@ module KeyPair = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.key_pair_id (fun f ->
-               Query.Pair ("keyPairId", String.to_query f))
-         ; Some (Query.Pair ("keyName", String.to_query v.key_name))
-         ; Some (Query.Pair ("keyMaterial", String.to_query v.key_material))
-         ; Some (Query.Pair ("keyFingerprint", String.to_query v.key_fingerprint))
+               Query.Pair ("KeyPairId", String.to_query f))
+         ; Some (Query.Pair ("KeyName", String.to_query v.key_name))
+         ; Some (Query.Pair ("KeyMaterial", String.to_query v.key_material))
+         ; Some (Query.Pair ("KeyFingerprint", String.to_query v.key_fingerprint))
          ])
 
   let to_json v =
@@ -59595,12 +59585,11 @@ module ModifyVpcEndpointServicePermissionsRequest = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "RemoveAllowedPrincipals.member"
+                ( "RemoveAllowedPrincipals"
                 , ValueStringList.to_query v.remove_allowed_principals ))
          ; Some
              (Query.Pair
-                ( "AddAllowedPrincipals.member"
-                , ValueStringList.to_query v.add_allowed_principals ))
+                ("AddAllowedPrincipals", ValueStringList.to_query v.add_allowed_principals))
          ; Some (Query.Pair ("ServiceId", String.to_query v.service_id))
          ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
@@ -59649,8 +59638,8 @@ module RestoreAddressToClassicRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("publicIp", String.to_query v.public_ip))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Some (Query.Pair ("PublicIp", String.to_query v.public_ip))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -59692,10 +59681,10 @@ module AssignPrivateIpAddressesResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "assignedPrivateIpAddressesSet"
+                ( "AssignedPrivateIpAddressesSet"
                 , AssignedPrivateIpAddressList.to_query v.assigned_private_ip_addresses ))
          ; Util.option_map v.network_interface_id (fun f ->
-               Query.Pair ("networkInterfaceId", String.to_query f))
+               Query.Pair ("NetworkInterfaceId", String.to_query f))
          ])
 
   let to_json v =
@@ -59738,8 +59727,8 @@ module DescribeIdentityIdFormatRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.resource (fun f ->
-               Query.Pair ("resource", String.to_query f))
-         ; Some (Query.Pair ("principalArn", String.to_query v.principal_arn))
+               Query.Pair ("Resource", String.to_query f))
+         ; Some (Query.Pair ("PrincipalArn", String.to_query v.principal_arn))
          ])
 
   let to_json v =
@@ -59777,8 +59766,8 @@ module DeleteVpcPeeringConnectionRequest = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ("vpcPeeringConnectionId", String.to_query v.vpc_peering_connection_id))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+                ("VpcPeeringConnectionId", String.to_query v.vpc_peering_connection_id))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -59807,7 +59796,7 @@ module ModifyInstanceEventStartTimeResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.event (fun f ->
-               Query.Pair ("event", InstanceStatusEvent.to_query f))
+               Query.Pair ("Event", InstanceStatusEvent.to_query f))
          ])
 
   let to_json v =
@@ -59840,7 +59829,7 @@ module RegisterTransitGatewayMulticastGroupMembersResult = struct
       (Util.list_filter_opt
          [ Util.option_map v.registered_multicast_group_members (fun f ->
                Query.Pair
-                 ( "registeredMulticastGroupMembers"
+                 ( "RegisteredMulticastGroupMembers"
                  , TransitGatewayMulticastRegisteredGroupMembers.to_query f ))
          ])
 
@@ -59875,7 +59864,7 @@ module CreateCustomerGatewayResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.customer_gateway (fun f ->
-               Query.Pair ("customerGateway", CustomerGateway.to_query f))
+               Query.Pair ("CustomerGateway", CustomerGateway.to_query f))
          ])
 
   let to_json v =
@@ -59906,7 +59895,7 @@ module ModifyReservedInstancesResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.reserved_instances_modification_id (fun f ->
-               Query.Pair ("reservedInstancesModificationId", String.to_query f))
+               Query.Pair ("ReservedInstancesModificationId", String.to_query f))
          ])
 
   let to_json v =
@@ -59949,10 +59938,10 @@ module DescribeLocalGatewayRouteTableVpcAssociationsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "localGatewayRouteTableVpcAssociationSet"
+                ( "LocalGatewayRouteTableVpcAssociationSet"
                 , LocalGatewayRouteTableVpcAssociationSet.to_query
                     v.local_gateway_route_table_vpc_associations ))
          ])
@@ -60166,7 +60155,7 @@ module ModifySnapshotAttributeRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("UserId", UserIdStringList.to_query v.user_ids))
          ; Some (Query.Pair ("SnapshotId", String.to_query v.snapshot_id))
          ; Util.option_map v.operation_type (fun f ->
@@ -60226,7 +60215,7 @@ module ModifyVolumeResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.volume_modification (fun f ->
-               Query.Pair ("volumeModification", VolumeModification.to_query f))
+               Query.Pair ("VolumeModification", VolumeModification.to_query f))
          ])
 
   let to_json v =
@@ -60265,7 +60254,7 @@ module ReleaseAddressRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Util.option_map v.network_border_group (fun f ->
                Query.Pair ("NetworkBorderGroup", String.to_query f))
          ; Util.option_map v.public_ip (fun f ->
@@ -60317,13 +60306,13 @@ module ImportSnapshotResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.snapshot_task_detail (fun f ->
-               Query.Pair ("snapshotTaskDetail", SnapshotTaskDetail.to_query f))
+               Query.Pair ("SnapshotTaskDetail", SnapshotTaskDetail.to_query f))
          ; Util.option_map v.import_task_id (fun f ->
-               Query.Pair ("importTaskId", String.to_query f))
+               Query.Pair ("ImportTaskId", String.to_query f))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
          ])
 
   let to_json v =
@@ -60366,8 +60355,8 @@ module DescribeVolumesResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
-         ; Some (Query.Pair ("volumeSet", VolumeList.to_query v.volumes))
+               Query.Pair ("NextToken", String.to_query f))
+         ; Some (Query.Pair ("VolumeSet", VolumeList.to_query v.volumes))
          ])
 
   let to_json v =
@@ -60465,9 +60454,9 @@ module DescribeClientVpnConnectionsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
-             (Query.Pair ("connections", ClientVpnConnectionSet.to_query v.connections))
+             (Query.Pair ("Connections", ClientVpnConnectionSet.to_query v.connections))
          ])
 
   let to_json v =
@@ -60509,12 +60498,12 @@ module DescribeFleetInstancesResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.fleet_id (fun f -> Query.Pair ("fleetId", String.to_query f))
+         [ Util.option_map v.fleet_id (fun f -> Query.Pair ("FleetId", String.to_query f))
          ; Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ("activeInstanceSet", ActiveInstanceSet.to_query v.active_instances))
+                ("ActiveInstanceSet", ActiveInstanceSet.to_query v.active_instances))
          ])
 
   let to_json v =
@@ -60552,9 +60541,9 @@ module AttachNetworkInterfaceResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.network_card_index (fun f ->
-               Query.Pair ("networkCardIndex", Integer.to_query f))
+               Query.Pair ("NetworkCardIndex", Integer.to_query f))
          ; Util.option_map v.attachment_id (fun f ->
-               Query.Pair ("attachmentId", String.to_query f))
+               Query.Pair ("AttachmentId", String.to_query f))
          ])
 
   let to_json v =
@@ -60812,10 +60801,10 @@ module DescribeLocalGatewayRouteTablesResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "localGatewayRouteTableSet"
+                ( "LocalGatewayRouteTableSet"
                 , LocalGatewayRouteTableSet.to_query v.local_gateway_route_tables ))
          ])
 
@@ -60875,8 +60864,8 @@ module DescribeReservedInstancesRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.offering_type (fun f ->
-               Query.Pair ("offeringType", OfferingTypeValues.to_query f))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+               Query.Pair ("OfferingType", OfferingTypeValues.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some
              (Query.Pair
                 ( "ReservedInstancesId"
@@ -60937,7 +60926,7 @@ module DescribeVpcClassicLinkRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Some (Query.Pair ("VpcId", VpcClassicLinkIdList.to_query v.vpc_ids))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("Filter", FilterList.to_query v.filters))
          ])
 
@@ -60992,7 +60981,7 @@ module ModifyVpnTunnelOptionsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.vpn_connection (fun f ->
-               Query.Pair ("vpnConnection", VpnConnection.to_query f))
+               Query.Pair ("VpnConnection", VpnConnection.to_query f))
          ])
 
   let to_json v =
@@ -61027,7 +61016,7 @@ module DeleteTransitGatewayPeeringAttachmentResult = struct
       (Util.list_filter_opt
          [ Util.option_map v.transit_gateway_peering_attachment (fun f ->
                Query.Pair
-                 ( "transitGatewayPeeringAttachment"
+                 ( "TransitGatewayPeeringAttachment"
                  , TransitGatewayPeeringAttachment.to_query f ))
          ])
 
@@ -61063,7 +61052,7 @@ module DescribeRegionsResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("regionInfo", RegionList.to_query v.regions)) ])
+         [ Some (Query.Pair ("RegionInfo", RegionList.to_query v.regions)) ])
 
   let to_json v =
     `Assoc (Util.list_filter_opt [ Some ("regions", RegionList.to_json v.regions) ])
@@ -61132,8 +61121,8 @@ module CreateVpnConnectionRequest = struct
              (Query.Pair
                 ("TagSpecification", TagSpecificationList.to_query v.tag_specifications))
          ; Util.option_map v.options (fun f ->
-               Query.Pair ("options", VpnConnectionOptionsSpecification.to_query f))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+               Query.Pair ("Options", VpnConnectionOptionsSpecification.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Util.option_map v.transit_gateway_id (fun f ->
                Query.Pair ("TransitGatewayId", String.to_query f))
          ; Util.option_map v.vpn_gateway_id (fun f ->
@@ -61233,23 +61222,23 @@ module ExportImageResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Util.option_map v.status_message (fun f ->
-               Query.Pair ("statusMessage", String.to_query f))
-         ; Util.option_map v.status (fun f -> Query.Pair ("status", String.to_query f))
+               Query.Pair ("StatusMessage", String.to_query f))
+         ; Util.option_map v.status (fun f -> Query.Pair ("Status", String.to_query f))
          ; Util.option_map v.s3_export_location (fun f ->
-               Query.Pair ("s3ExportLocation", ExportTaskS3Location.to_query f))
+               Query.Pair ("S3ExportLocation", ExportTaskS3Location.to_query f))
          ; Util.option_map v.progress (fun f ->
-               Query.Pair ("progress", String.to_query f))
+               Query.Pair ("Progress", String.to_query f))
          ; Util.option_map v.role_name (fun f ->
-               Query.Pair ("roleName", String.to_query f))
-         ; Util.option_map v.image_id (fun f -> Query.Pair ("imageId", String.to_query f))
+               Query.Pair ("RoleName", String.to_query f))
+         ; Util.option_map v.image_id (fun f -> Query.Pair ("ImageId", String.to_query f))
          ; Util.option_map v.export_image_task_id (fun f ->
-               Query.Pair ("exportImageTaskId", String.to_query f))
+               Query.Pair ("ExportImageTaskId", String.to_query f))
          ; Util.option_map v.disk_image_format (fun f ->
-               Query.Pair ("diskImageFormat", DiskImageFormat.to_query f))
+               Query.Pair ("DiskImageFormat", DiskImageFormat.to_query f))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
          ])
 
   let to_json v =
@@ -61350,10 +61339,10 @@ module GetAssociatedIpv6PoolCidrsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "ipv6CidrAssociationSet"
+                ( "Ipv6CidrAssociationSet"
                 , Ipv6CidrAssociationSet.to_query v.ipv6_cidr_associations ))
          ])
 
@@ -61439,16 +61428,16 @@ module AllocateHostsRequest = struct
          ; Some
              (Query.Pair
                 ("TagSpecification", TagSpecificationList.to_query v.tag_specifications))
-         ; Some (Query.Pair ("quantity", Integer.to_query v.quantity))
+         ; Some (Query.Pair ("Quantity", Integer.to_query v.quantity))
          ; Util.option_map v.instance_family (fun f ->
                Query.Pair ("InstanceFamily", String.to_query f))
          ; Util.option_map v.instance_type (fun f ->
-               Query.Pair ("instanceType", String.to_query f))
+               Query.Pair ("InstanceType", String.to_query f))
          ; Util.option_map v.client_token (fun f ->
-               Query.Pair ("clientToken", String.to_query f))
-         ; Some (Query.Pair ("availabilityZone", String.to_query v.availability_zone))
+               Query.Pair ("ClientToken", String.to_query f))
+         ; Some (Query.Pair ("AvailabilityZone", String.to_query v.availability_zone))
          ; Util.option_map v.auto_placement (fun f ->
-               Query.Pair ("autoPlacement", AutoPlacement.to_query f))
+               Query.Pair ("AutoPlacement", AutoPlacement.to_query f))
          ])
 
   let to_json v =
@@ -61556,7 +61545,7 @@ module CreateDhcpOptionsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.dhcp_options (fun f ->
-               Query.Pair ("dhcpOptions", DhcpOptions.to_query f))
+               Query.Pair ("DhcpOptions", DhcpOptions.to_query f))
          ])
 
   let to_json v =
@@ -61679,8 +61668,8 @@ module ConfirmProductInstanceResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.return (fun f -> Query.Pair ("return", Boolean.to_query f))
-         ; Util.option_map v.owner_id (fun f -> Query.Pair ("ownerId", String.to_query f))
+         [ Util.option_map v.return (fun f -> Query.Pair ("Return", Boolean.to_query f))
+         ; Util.option_map v.owner_id (fun f -> Query.Pair ("OwnerId", String.to_query f))
          ])
 
   let to_json v =
@@ -61748,12 +61737,11 @@ module ModifyTransitGatewayVpcAttachmentRequest = struct
                  ("Options", ModifyTransitGatewayVpcAttachmentRequestOptions.to_query f))
          ; Some
              (Query.Pair
-                ( "RemoveSubnetIds.member"
+                ( "RemoveSubnetIds"
                 , TransitGatewaySubnetIdList.to_query v.remove_subnet_ids ))
          ; Some
              (Query.Pair
-                ( "AddSubnetIds.member"
-                , TransitGatewaySubnetIdList.to_query v.add_subnet_ids ))
+                ("AddSubnetIds", TransitGatewaySubnetIdList.to_query v.add_subnet_ids))
          ; Some
              (Query.Pair
                 ( "TransitGatewayAttachmentId"
@@ -61879,10 +61867,10 @@ module CreateRouteRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.vpc_peering_connection_id (fun f ->
-               Query.Pair ("vpcPeeringConnectionId", String.to_query f))
-         ; Some (Query.Pair ("routeTableId", String.to_query v.route_table_id))
+               Query.Pair ("VpcPeeringConnectionId", String.to_query f))
+         ; Some (Query.Pair ("RouteTableId", String.to_query v.route_table_id))
          ; Util.option_map v.network_interface_id (fun f ->
-               Query.Pair ("networkInterfaceId", String.to_query f))
+               Query.Pair ("NetworkInterfaceId", String.to_query f))
          ; Util.option_map v.carrier_gateway_id (fun f ->
                Query.Pair ("CarrierGatewayId", String.to_query f))
          ; Util.option_map v.local_gateway_id (fun f ->
@@ -61890,22 +61878,22 @@ module CreateRouteRequest = struct
          ; Util.option_map v.transit_gateway_id (fun f ->
                Query.Pair ("TransitGatewayId", String.to_query f))
          ; Util.option_map v.nat_gateway_id (fun f ->
-               Query.Pair ("natGatewayId", String.to_query f))
+               Query.Pair ("NatGatewayId", String.to_query f))
          ; Util.option_map v.instance_id (fun f ->
-               Query.Pair ("instanceId", String.to_query f))
+               Query.Pair ("InstanceId", String.to_query f))
          ; Util.option_map v.gateway_id (fun f ->
-               Query.Pair ("gatewayId", String.to_query f))
+               Query.Pair ("GatewayId", String.to_query f))
          ; Util.option_map v.egress_only_internet_gateway_id (fun f ->
-               Query.Pair ("egressOnlyInternetGatewayId", String.to_query f))
+               Query.Pair ("EgressOnlyInternetGatewayId", String.to_query f))
          ; Util.option_map v.vpc_endpoint_id (fun f ->
                Query.Pair ("VpcEndpointId", String.to_query f))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Util.option_map v.destination_prefix_list_id (fun f ->
                Query.Pair ("DestinationPrefixListId", String.to_query f))
          ; Util.option_map v.destination_ipv6_cidr_block (fun f ->
-               Query.Pair ("destinationIpv6CidrBlock", String.to_query f))
+               Query.Pair ("DestinationIpv6CidrBlock", String.to_query f))
          ; Util.option_map v.destination_cidr_block (fun f ->
-               Query.Pair ("destinationCidrBlock", String.to_query f))
+               Query.Pair ("DestinationCidrBlock", String.to_query f))
          ])
 
   let to_json v =
@@ -62017,7 +62005,7 @@ module DescribeAddressesRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("AllocationId", AllocationIdList.to_query v.allocation_ids))
          ; Some (Query.Pair ("PublicIp", PublicIpStringList.to_query v.public_ips))
          ; Some (Query.Pair ("Filter", FilterList.to_query v.filters))
@@ -62059,7 +62047,7 @@ module DeleteTransitGatewayRouteTableResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.transit_gateway_route_table (fun f ->
-               Query.Pair ("transitGatewayRouteTable", TransitGatewayRouteTable.to_query f))
+               Query.Pair ("TransitGatewayRouteTable", TransitGatewayRouteTable.to_query f))
          ])
 
   let to_json v =
@@ -62103,12 +62091,12 @@ module AssociateVpcCidrBlockResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.vpc_id (fun f -> Query.Pair ("vpcId", String.to_query f))
+         [ Util.option_map v.vpc_id (fun f -> Query.Pair ("VpcId", String.to_query f))
          ; Util.option_map v.cidr_block_association (fun f ->
-               Query.Pair ("cidrBlockAssociation", VpcCidrBlockAssociation.to_query f))
+               Query.Pair ("CidrBlockAssociation", VpcCidrBlockAssociation.to_query f))
          ; Util.option_map v.ipv6_cidr_block_association (fun f ->
                Query.Pair
-                 ("ipv6CidrBlockAssociation", VpcIpv6CidrBlockAssociation.to_query f))
+                 ("Ipv6CidrBlockAssociation", VpcIpv6CidrBlockAssociation.to_query f))
          ])
 
   let to_json v =
@@ -62256,7 +62244,7 @@ module DeregisterTransitGatewayMulticastGroupMembersRequest = struct
          [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some
              (Query.Pair
-                ( "NetworkInterfaceIds.member"
+                ( "NetworkInterfaceIds"
                 , TransitGatewayNetworkInterfaceIdList.to_query v.network_interface_ids ))
          ; Util.option_map v.group_ip_address (fun f ->
                Query.Pair ("GroupIpAddress", String.to_query f))
@@ -62317,7 +62305,7 @@ module DetachVolumeRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("VolumeId", String.to_query v.volume_id))
          ; Util.option_map v.instance_id (fun f ->
                Query.Pair ("InstanceId", String.to_query f))
@@ -62368,10 +62356,10 @@ module GetManagedPrefixListAssociationsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "prefixListAssociationSet"
+                ( "PrefixListAssociationSet"
                 , PrefixListAssociationSet.to_query v.prefix_list_associations ))
          ])
 
@@ -62408,7 +62396,7 @@ module DescribeAddressesResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("addressesSet", AddressList.to_query v.addresses)) ])
+         [ Some (Query.Pair ("AddressesSet", AddressList.to_query v.addresses)) ])
 
   let to_json v =
     `Assoc (Util.list_filter_opt [ Some ("addresses", AddressList.to_json v.addresses) ])
@@ -62440,10 +62428,10 @@ module DescribeInstanceTypesResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ("instanceTypeSet", InstanceTypeInfoList.to_query v.instance_types))
+                ("InstanceTypeSet", InstanceTypeInfoList.to_query v.instance_types))
          ])
 
   let to_json v =
@@ -62538,7 +62526,7 @@ module CreateSubnetResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.subnet (fun f -> Query.Pair ("subnet", Subnet.to_query f)) ])
+         [ Util.option_map v.subnet (fun f -> Query.Pair ("Subnet", Subnet.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -62569,8 +62557,8 @@ module DescribeClientVpnRoutesResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
-         ; Some (Query.Pair ("routes", ClientVpnRouteSet.to_query v.routes))
+               Query.Pair ("NextToken", String.to_query f))
+         ; Some (Query.Pair ("Routes", ClientVpnRouteSet.to_query v.routes))
          ])
 
   let to_json v =
@@ -62663,7 +62651,7 @@ module ApplySecurityGroupsToClientVpnTargetNetworkResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "securityGroupIds"
+                ( "SecurityGroupIds"
                 , ClientVpnSecurityGroupIdSet.to_query v.security_group_ids ))
          ])
 
@@ -62699,7 +62687,7 @@ module DescribeVpnConnectionsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Some
-             (Query.Pair ("vpnConnectionSet", VpnConnectionList.to_query v.vpn_connections))
+             (Query.Pair ("VpnConnectionSet", VpnConnectionList.to_query v.vpn_connections))
          ])
 
   let to_json v =
@@ -62736,8 +62724,8 @@ module AssociateSubnetCidrBlockRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("subnetId", String.to_query v.subnet_id))
-         ; Some (Query.Pair ("ipv6CidrBlock", String.to_query v.ipv6_cidr_block))
+         [ Some (Query.Pair ("SubnetId", String.to_query v.subnet_id))
+         ; Some (Query.Pair ("Ipv6CidrBlock", String.to_query v.ipv6_cidr_block))
          ])
 
   let to_json v =
@@ -62778,7 +62766,7 @@ module GetHostReservationPurchasePreviewRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Some (Query.Pair ("OfferingId", String.to_query v.offering_id))
-         ; Some (Query.Pair ("HostIdSet.member", RequestHostIdSet.to_query v.host_id_set))
+         ; Some (Query.Pair ("HostIdSet", RequestHostIdSet.to_query v.host_id_set))
          ])
 
   let to_json v =
@@ -62811,7 +62799,7 @@ module DeleteVpcEndpointConnectionNotificationsResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("unsuccessful", UnsuccessfulItemSet.to_query v.unsuccessful))
+         [ Some (Query.Pair ("Unsuccessful", UnsuccessfulItemSet.to_query v.unsuccessful))
          ])
 
   let to_json v =
@@ -62843,7 +62831,7 @@ module AcceptTransitGatewayVpcAttachmentResult = struct
       (Util.list_filter_opt
          [ Util.option_map v.transit_gateway_vpc_attachment (fun f ->
                Query.Pair
-                 ("transitGatewayVpcAttachment", TransitGatewayVpcAttachment.to_query f))
+                 ("TransitGatewayVpcAttachment", TransitGatewayVpcAttachment.to_query f))
          ])
 
   let to_json v =
@@ -62890,9 +62878,9 @@ module ModifyIdentityIdFormatRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("useLongIds", Boolean.to_query v.use_long_ids))
-         ; Some (Query.Pair ("resource", String.to_query v.resource))
-         ; Some (Query.Pair ("principalArn", String.to_query v.principal_arn))
+         [ Some (Query.Pair ("UseLongIds", Boolean.to_query v.use_long_ids))
+         ; Some (Query.Pair ("Resource", String.to_query v.resource))
+         ; Some (Query.Pair ("PrincipalArn", String.to_query v.principal_arn))
          ])
 
   let to_json v =
@@ -62932,7 +62920,7 @@ module CreateLocalGatewayRouteTableVpcAssociationResult = struct
       (Util.list_filter_opt
          [ Util.option_map v.local_gateway_route_table_vpc_association (fun f ->
                Query.Pair
-                 ( "localGatewayRouteTableVpcAssociation"
+                 ( "LocalGatewayRouteTableVpcAssociation"
                  , LocalGatewayRouteTableVpcAssociation.to_query f ))
          ])
 
@@ -63143,9 +63131,9 @@ module GetPasswordDataResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("timestamp", DateTime.to_query v.timestamp))
-         ; Some (Query.Pair ("passwordData", String.to_query v.password_data))
-         ; Some (Query.Pair ("instanceId", String.to_query v.instance_id))
+         [ Some (Query.Pair ("Timestamp", DateTime.to_query v.timestamp))
+         ; Some (Query.Pair ("PasswordData", String.to_query v.password_data))
+         ; Some (Query.Pair ("InstanceId", String.to_query v.instance_id))
          ])
 
   let to_json v =
@@ -63187,10 +63175,10 @@ module DescribeClientVpnTargetNetworksResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "clientVpnTargetNetworks"
+                ( "ClientVpnTargetNetworks"
                 , TargetNetworkSet.to_query v.client_vpn_target_networks ))
          ])
 
@@ -63319,7 +63307,7 @@ module DescribeRegionsRequest = struct
       (Util.list_filter_opt
          [ Util.option_map v.all_regions (fun f ->
                Query.Pair ("AllRegions", Boolean.to_query f))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("RegionName", RegionNameStringList.to_query v.region_names))
          ; Some (Query.Pair ("Filter", FilterList.to_query v.filters))
          ])
@@ -63410,7 +63398,7 @@ module ModifyVpcEndpointServicePermissionsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.return_value (fun f ->
-               Query.Pair ("return", Boolean.to_query f))
+               Query.Pair ("Return", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -63474,7 +63462,7 @@ module ModifySubnetAttributeRequest = struct
                Query.Pair ("CustomerOwnedIpv4Pool", String.to_query f))
          ; Util.option_map v.map_customer_owned_ip_on_launch (fun f ->
                Query.Pair ("MapCustomerOwnedIpOnLaunch", AttributeBooleanValue.to_query f))
-         ; Some (Query.Pair ("subnetId", String.to_query v.subnet_id))
+         ; Some (Query.Pair ("SubnetId", String.to_query v.subnet_id))
          ; Util.option_map v.map_public_ip_on_launch (fun f ->
                Query.Pair ("MapPublicIpOnLaunch", AttributeBooleanValue.to_query f))
          ; Util.option_map v.assign_ipv6_address_on_creation (fun f ->
@@ -63590,7 +63578,7 @@ module ImportInstanceResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.conversion_task (fun f ->
-               Query.Pair ("conversionTask", ConversionTask.to_query f))
+               Query.Pair ("ConversionTask", ConversionTask.to_query f))
          ])
 
   let to_json v =
@@ -63685,29 +63673,29 @@ module RegisterImageRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.virtualization_type (fun f ->
-               Query.Pair ("virtualizationType", String.to_query f))
+               Query.Pair ("VirtualizationType", String.to_query f))
          ; Util.option_map v.sriov_net_support (fun f ->
-               Query.Pair ("sriovNetSupport", String.to_query f))
+               Query.Pair ("SriovNetSupport", String.to_query f))
          ; Util.option_map v.root_device_name (fun f ->
-               Query.Pair ("rootDeviceName", String.to_query f))
+               Query.Pair ("RootDeviceName", String.to_query f))
          ; Util.option_map v.ramdisk_id (fun f ->
-               Query.Pair ("ramdiskId", String.to_query f))
+               Query.Pair ("RamdiskId", String.to_query f))
          ; Some
              (Query.Pair ("BillingProduct", BillingProductList.to_query v.billing_products))
-         ; Some (Query.Pair ("name", String.to_query v.name))
+         ; Some (Query.Pair ("Name", String.to_query v.name))
          ; Util.option_map v.kernel_id (fun f ->
-               Query.Pair ("kernelId", String.to_query f))
+               Query.Pair ("KernelId", String.to_query f))
          ; Util.option_map v.ena_support (fun f ->
-               Query.Pair ("enaSupport", Boolean.to_query f))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+               Query.Pair ("EnaSupport", Boolean.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
          ; Some
              (Query.Pair
                 ( "BlockDeviceMapping"
                 , BlockDeviceMappingRequestList.to_query v.block_device_mappings ))
          ; Util.option_map v.architecture (fun f ->
-               Query.Pair ("architecture", ArchitectureValues.to_query f))
+               Query.Pair ("Architecture", ArchitectureValues.to_query f))
          ; Util.option_map v.image_location (fun f ->
                Query.Pair ("ImageLocation", String.to_query f))
          ])
@@ -63794,7 +63782,7 @@ module CreateSecurityGroupRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some
              (Query.Pair
                 ("TagSpecification", TagSpecificationList.to_query v.tag_specifications))
@@ -63890,10 +63878,10 @@ module DescribeVpcPeeringConnectionsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "vpcPeeringConnectionSet"
+                ( "VpcPeeringConnectionSet"
                 , VpcPeeringConnectionList.to_query v.vpc_peering_connections ))
          ])
 
@@ -63935,8 +63923,8 @@ module DescribeNetworkAclsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
-         ; Some (Query.Pair ("networkAclSet", NetworkAclList.to_query v.network_acls))
+               Query.Pair ("NextToken", String.to_query f))
+         ; Some (Query.Pair ("NetworkAclSet", NetworkAclList.to_query v.network_acls))
          ])
 
   let to_json v =
@@ -63968,7 +63956,7 @@ module DeleteTrafficMirrorTargetResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.traffic_mirror_target_id (fun f ->
-               Query.Pair ("trafficMirrorTargetId", String.to_query f))
+               Query.Pair ("TrafficMirrorTargetId", String.to_query f))
          ])
 
   let to_json v =
@@ -64054,10 +64042,10 @@ module DescribeLocalGatewayRouteTableVirtualInterfaceGroupAssociationsResult = s
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "localGatewayRouteTableVirtualInterfaceGroupAssociationSet"
+                ( "LocalGatewayRouteTableVirtualInterfaceGroupAssociationSet"
                 , LocalGatewayRouteTableVirtualInterfaceGroupAssociationSet.to_query
                     v.local_gateway_route_table_virtual_interface_group_associations ))
          ])
@@ -64196,7 +64184,7 @@ module EnableEbsEncryptionByDefaultResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.ebs_encryption_by_default (fun f ->
-               Query.Pair ("ebsEncryptionByDefault", Boolean.to_query f))
+               Query.Pair ("EbsEncryptionByDefault", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -64269,7 +64257,7 @@ module PurchaseHostReservationRequest = struct
          ; Some (Query.Pair ("OfferingId", String.to_query v.offering_id))
          ; Util.option_map v.limit_price (fun f ->
                Query.Pair ("LimitPrice", String.to_query f))
-         ; Some (Query.Pair ("HostIdSet.member", RequestHostIdSet.to_query v.host_id_set))
+         ; Some (Query.Pair ("HostIdSet", RequestHostIdSet.to_query v.host_id_set))
          ; Util.option_map v.currency_code (fun f ->
                Query.Pair ("CurrencyCode", CurrencyCodeValues.to_query f))
          ; Util.option_map v.client_token (fun f ->
@@ -64326,9 +64314,9 @@ module CancelConversionRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.reason_message (fun f ->
-               Query.Pair ("reasonMessage", String.to_query f))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
-         ; Some (Query.Pair ("conversionTaskId", String.to_query v.conversion_task_id))
+               Query.Pair ("ReasonMessage", String.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
+         ; Some (Query.Pair ("ConversionTaskId", String.to_query v.conversion_task_id))
          ])
 
   let to_json v =
@@ -64425,9 +64413,9 @@ module AttachInternetGatewayRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("vpcId", String.to_query v.vpc_id))
-         ; Some (Query.Pair ("internetGatewayId", String.to_query v.internet_gateway_id))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Some (Query.Pair ("VpcId", String.to_query v.vpc_id))
+         ; Some (Query.Pair ("InternetGatewayId", String.to_query v.internet_gateway_id))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -64689,12 +64677,12 @@ module CancelSpotFleetRequestsResponse = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "unsuccessfulFleetRequestSet"
+                ( "UnsuccessfulFleetRequestSet"
                 , CancelSpotFleetRequestsErrorSet.to_query v.unsuccessful_fleet_requests
                 ))
          ; Some
              (Query.Pair
-                ( "successfulFleetRequestSet"
+                ( "SuccessfulFleetRequestSet"
                 , CancelSpotFleetRequestsSuccessSet.to_query v.successful_fleet_requests
                 ))
          ])
@@ -64750,7 +64738,7 @@ module CreateSnapshotRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some
              (Query.Pair
                 ("TagSpecification", TagSpecificationList.to_query v.tag_specifications))
@@ -64798,7 +64786,7 @@ module DescribeAccountAttributesResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ("accountAttributeSet", AccountAttributeList.to_query v.account_attributes))
+                ("AccountAttributeSet", AccountAttributeList.to_query v.account_attributes))
          ])
 
   let to_json v =
@@ -64833,7 +64821,7 @@ module CreateTransitGatewayPeeringAttachmentResult = struct
       (Util.list_filter_opt
          [ Util.option_map v.transit_gateway_peering_attachment (fun f ->
                Query.Pair
-                 ( "transitGatewayPeeringAttachment"
+                 ( "TransitGatewayPeeringAttachment"
                  , TransitGatewayPeeringAttachment.to_query f ))
          ])
 
@@ -64876,9 +64864,9 @@ module ReplaceRouteTableAssociationResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.association_state (fun f ->
-               Query.Pair ("associationState", RouteTableAssociationState.to_query f))
+               Query.Pair ("AssociationState", RouteTableAssociationState.to_query f))
          ; Util.option_map v.new_association_id (fun f ->
-               Query.Pair ("newAssociationId", String.to_query f))
+               Query.Pair ("NewAssociationId", String.to_query f))
          ])
 
   let to_json v =
@@ -64981,7 +64969,7 @@ module DescribeVolumeStatusRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("VolumeId", VolumeIdStringList.to_query v.volume_ids))
          ; Util.option_map v.next_token (fun f ->
                Query.Pair ("NextToken", String.to_query f))
@@ -65114,7 +65102,7 @@ module CreateLocalGatewayRouteResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.route (fun f ->
-               Query.Pair ("route", LocalGatewayRoute.to_query f))
+               Query.Pair ("Route", LocalGatewayRoute.to_query f))
          ])
 
   let to_json v =
@@ -65148,9 +65136,9 @@ module DeleteTagsRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tag", TagList.to_query v.tags))
-         ; Some (Query.Pair ("resourceId", ResourceIdList.to_query v.resources))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Some (Query.Pair ("Tag", TagList.to_query v.tags))
+         ; Some (Query.Pair ("ResourceId", ResourceIdList.to_query v.resources))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -65237,10 +65225,10 @@ module ModifyVpcPeeringConnectionOptionsResult = struct
       (Util.list_filter_opt
          [ Util.option_map v.requester_peering_connection_options (fun f ->
                Query.Pair
-                 ("requesterPeeringConnectionOptions", PeeringConnectionOptions.to_query f))
+                 ("RequesterPeeringConnectionOptions", PeeringConnectionOptions.to_query f))
          ; Util.option_map v.accepter_peering_connection_options (fun f ->
                Query.Pair
-                 ("accepterPeeringConnectionOptions", PeeringConnectionOptions.to_query f))
+                 ("AccepterPeeringConnectionOptions", PeeringConnectionOptions.to_query f))
          ])
 
   let to_json v =
@@ -65440,12 +65428,12 @@ module CreateVpcPeeringConnectionRequest = struct
                 ("TagSpecification", TagSpecificationList.to_query v.tag_specifications))
          ; Util.option_map v.peer_region (fun f ->
                Query.Pair ("PeerRegion", String.to_query f))
-         ; Util.option_map v.vpc_id (fun f -> Query.Pair ("vpcId", String.to_query f))
+         ; Util.option_map v.vpc_id (fun f -> Query.Pair ("VpcId", String.to_query f))
          ; Util.option_map v.peer_vpc_id (fun f ->
-               Query.Pair ("peerVpcId", String.to_query f))
+               Query.Pair ("PeerVpcId", String.to_query f))
          ; Util.option_map v.peer_owner_id (fun f ->
-               Query.Pair ("peerOwnerId", String.to_query f))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+               Query.Pair ("PeerOwnerId", String.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -65503,7 +65491,7 @@ module DescribeVpcsRequest = struct
                Query.Pair ("MaxResults", Integer.to_query f))
          ; Util.option_map v.next_token (fun f ->
                Query.Pair ("NextToken", String.to_query f))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("VpcId", VpcIdStringList.to_query v.vpc_ids))
          ; Some (Query.Pair ("Filter", FilterList.to_query v.filters))
          ])
@@ -65581,7 +65569,7 @@ module RevokeClientVpnIngressResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.status (fun f ->
-               Query.Pair ("status", ClientVpnAuthorizationRuleStatus.to_query f))
+               Query.Pair ("Status", ClientVpnAuthorizationRuleStatus.to_query f))
          ])
 
   let to_json v =
@@ -65612,7 +65600,7 @@ module DeleteTrafficMirrorFilterRuleResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.traffic_mirror_filter_rule_id (fun f ->
-               Query.Pair ("trafficMirrorFilterRuleId", String.to_query f))
+               Query.Pair ("TrafficMirrorFilterRuleId", String.to_query f))
          ])
 
   let to_json v =
@@ -65651,11 +65639,11 @@ module DescribeVpcClassicLinkDnsSupportRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("VpcIds.member", VpcClassicLinkIdList.to_query v.vpc_ids))
+         [ Some (Query.Pair ("VpcIds", VpcClassicLinkIdList.to_query v.vpc_ids))
          ; Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Util.option_map v.max_results (fun f ->
-               Query.Pair ("maxResults", Integer.to_query f))
+               Query.Pair ("MaxResults", Integer.to_query f))
          ])
 
   let to_json v =
@@ -65694,7 +65682,7 @@ module ModifyDefaultCreditSpecificationResult = struct
       (Util.list_filter_opt
          [ Util.option_map v.instance_family_credit_specification (fun f ->
                Query.Pair
-                 ( "instanceFamilyCreditSpecification"
+                 ( "InstanceFamilyCreditSpecification"
                  , InstanceFamilyCreditSpecification.to_query f ))
          ])
 
@@ -65739,7 +65727,7 @@ module BundleInstanceRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("Storage", Storage.to_query v.storage))
          ; Some (Query.Pair ("InstanceId", String.to_query v.instance_id))
          ])
@@ -65830,14 +65818,14 @@ module ImportInstanceRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("platform", PlatformValues.to_query v.platform))
+         [ Some (Query.Pair ("Platform", PlatformValues.to_query v.platform))
          ; Util.option_map v.launch_specification (fun f ->
                Query.Pair
-                 ("launchSpecification", ImportInstanceLaunchSpecification.to_query f))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
-         ; Some (Query.Pair ("diskImage", DiskImageList.to_query v.disk_images))
+                 ("LaunchSpecification", ImportInstanceLaunchSpecification.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
+         ; Some (Query.Pair ("DiskImage", DiskImageList.to_query v.disk_images))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
          ])
 
   let to_json v =
@@ -65897,12 +65885,12 @@ module ImportVolumeRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("volume", VolumeDetail.to_query v.volume))
-         ; Some (Query.Pair ("image", DiskImageDetail.to_query v.image))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Some (Query.Pair ("Volume", VolumeDetail.to_query v.volume))
+         ; Some (Query.Pair ("Image", DiskImageDetail.to_query v.image))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
-         ; Some (Query.Pair ("availabilityZone", String.to_query v.availability_zone))
+               Query.Pair ("Description", String.to_query f))
+         ; Some (Query.Pair ("AvailabilityZone", String.to_query v.availability_zone))
          ])
 
   let to_json v =
@@ -65964,8 +65952,8 @@ module DescribeInstanceStatusRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.include_all_instances (fun f ->
-               Query.Pair ("includeAllInstances", Boolean.to_query f))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+               Query.Pair ("IncludeAllInstances", Boolean.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Util.option_map v.next_token (fun f ->
                Query.Pair ("NextToken", String.to_query f))
          ; Util.option_map v.max_results (fun f ->
@@ -66009,7 +65997,7 @@ module ModifyClientVpnEndpointResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.return (fun f -> Query.Pair ("return", Boolean.to_query f)) ])
+         [ Util.option_map v.return (fun f -> Query.Pair ("Return", Boolean.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -66082,8 +66070,8 @@ module DescribeVpcEndpointsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
-         ; Some (Query.Pair ("vpcEndpointSet", VpcEndpointSet.to_query v.vpc_endpoints))
+               Query.Pair ("NextToken", String.to_query f))
+         ; Some (Query.Pair ("VpcEndpointSet", VpcEndpointSet.to_query v.vpc_endpoints))
          ])
 
   let to_json v =
@@ -66123,9 +66111,9 @@ module DescribeClassicLinkInstancesResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
-             (Query.Pair ("instancesSet", ClassicLinkInstanceList.to_query v.instances))
+             (Query.Pair ("InstancesSet", ClassicLinkInstanceList.to_query v.instances))
          ])
 
   let to_json v =
@@ -66171,12 +66159,12 @@ module GetHostReservationPurchasePreviewResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.total_upfront_price (fun f ->
-               Query.Pair ("totalUpfrontPrice", String.to_query f))
+               Query.Pair ("TotalUpfrontPrice", String.to_query f))
          ; Util.option_map v.total_hourly_price (fun f ->
-               Query.Pair ("totalHourlyPrice", String.to_query f))
-         ; Some (Query.Pair ("purchase", PurchaseSet.to_query v.purchase))
+               Query.Pair ("TotalHourlyPrice", String.to_query f))
+         ; Some (Query.Pair ("Purchase", PurchaseSet.to_query v.purchase))
          ; Util.option_map v.currency_code (fun f ->
-               Query.Pair ("currencyCode", CurrencyCodeValues.to_query f))
+               Query.Pair ("CurrencyCode", CurrencyCodeValues.to_query f))
          ])
 
   let to_json v =
@@ -66226,10 +66214,10 @@ module DescribeTransitGatewayAttachmentsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "transitGatewayAttachments"
+                ( "TransitGatewayAttachments"
                 , TransitGatewayAttachmentList.to_query v.transit_gateway_attachments ))
          ])
 
@@ -66326,7 +66314,7 @@ module CreateInternetGatewayRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some
              (Query.Pair
                 ("TagSpecification", TagSpecificationList.to_query v.tag_specifications))
@@ -66372,7 +66360,7 @@ module DescribeImageAttributeRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("ImageId", String.to_query v.image_id))
          ; Some (Query.Pair ("Attribute", ImageAttributeName.to_query v.attribute))
          ])
@@ -66482,7 +66470,7 @@ module ModifyVpnTunnelCertificateResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.vpn_connection (fun f ->
-               Query.Pair ("vpnConnection", VpnConnection.to_query f))
+               Query.Pair ("VpnConnection", VpnConnection.to_query f))
          ])
 
   let to_json v =
@@ -66519,8 +66507,8 @@ module DescribeSnapshotsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
-         ; Some (Query.Pair ("snapshotSet", SnapshotList.to_query v.snapshots))
+               Query.Pair ("NextToken", String.to_query f))
+         ; Some (Query.Pair ("SnapshotSet", SnapshotList.to_query v.snapshots))
          ])
 
   let to_json v =
@@ -66551,7 +66539,7 @@ module GetEbsEncryptionByDefaultResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.ebs_encryption_by_default (fun f ->
-               Query.Pair ("ebsEncryptionByDefault", Boolean.to_query f))
+               Query.Pair ("EbsEncryptionByDefault", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -66585,7 +66573,7 @@ module AssociateIamInstanceProfileResult = struct
       (Util.list_filter_opt
          [ Util.option_map v.iam_instance_profile_association (fun f ->
                Query.Pair
-                 ( "iamInstanceProfileAssociation"
+                 ( "IamInstanceProfileAssociation"
                  , IamInstanceProfileAssociation.to_query f ))
          ])
 
@@ -66624,8 +66612,8 @@ module EnableVolumeIORequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("volumeId", String.to_query v.volume_id))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Some (Query.Pair ("VolumeId", String.to_query v.volume_id))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -66741,7 +66729,7 @@ module DescribeTransitGatewayMulticastDomainsRequest = struct
          ; Some (Query.Pair ("Filter", FilterList.to_query v.filters))
          ; Some
              (Query.Pair
-                ( "TransitGatewayMulticastDomainIds.member"
+                ( "TransitGatewayMulticastDomainIds"
                 , TransitGatewayMulticastDomainIdStringList.to_query
                     v.transit_gateway_multicast_domain_ids ))
          ])
@@ -66788,7 +66776,7 @@ module CreateTransitGatewayMulticastDomainResult = struct
       (Util.list_filter_opt
          [ Util.option_map v.transit_gateway_multicast_domain (fun f ->
                Query.Pair
-                 ( "transitGatewayMulticastDomain"
+                 ( "TransitGatewayMulticastDomain"
                  , TransitGatewayMulticastDomain.to_query f ))
          ])
 
@@ -66827,7 +66815,7 @@ module PurchaseScheduledInstancesResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "scheduledInstanceSet"
+                ( "ScheduledInstanceSet"
                 , PurchasedScheduledInstanceSet.to_query v.scheduled_instance_set ))
          ])
 
@@ -66874,9 +66862,9 @@ module CreateFleetResult = struct
     Query.List
       (Util.list_filter_opt
          [ Some
-             (Query.Pair ("fleetInstanceSet", CreateFleetInstancesSet.to_query v.instances))
-         ; Some (Query.Pair ("errorSet", CreateFleetErrorsSet.to_query v.errors))
-         ; Util.option_map v.fleet_id (fun f -> Query.Pair ("fleetId", String.to_query f))
+             (Query.Pair ("FleetInstanceSet", CreateFleetInstancesSet.to_query v.instances))
+         ; Some (Query.Pair ("ErrorSet", CreateFleetErrorsSet.to_query v.errors))
+         ; Util.option_map v.fleet_id (fun f -> Query.Pair ("FleetId", String.to_query f))
          ])
 
   let to_json v =
@@ -66910,7 +66898,7 @@ module CreateCarrierGatewayResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.carrier_gateway (fun f ->
-               Query.Pair ("carrierGateway", CarrierGateway.to_query f))
+               Query.Pair ("CarrierGateway", CarrierGateway.to_query f))
          ])
 
   let to_json v =
@@ -66942,7 +66930,7 @@ module CreateSnapshotsResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("snapshotSet", SnapshotSet.to_query v.snapshots)) ])
+         [ Some (Query.Pair ("SnapshotSet", SnapshotSet.to_query v.snapshots)) ])
 
   let to_json v =
     `Assoc (Util.list_filter_opt [ Some ("snapshots", SnapshotSet.to_json v.snapshots) ])
@@ -66975,10 +66963,10 @@ module DescribeTrafficMirrorTargetsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "trafficMirrorTargetSet"
+                ( "TrafficMirrorTargetSet"
                 , TrafficMirrorTargetSet.to_query v.traffic_mirror_targets ))
          ])
 
@@ -67024,10 +67012,10 @@ module DescribeNetworkInterfaceAttributeRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Some
-             (Query.Pair ("networkInterfaceId", String.to_query v.network_interface_id))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+             (Query.Pair ("NetworkInterfaceId", String.to_query v.network_interface_id))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Util.option_map v.attribute (fun f ->
-               Query.Pair ("attribute", NetworkInterfaceAttribute.to_query f))
+               Query.Pair ("Attribute", NetworkInterfaceAttribute.to_query f))
          ])
 
   let to_json v =
@@ -67059,7 +67047,7 @@ module EnableVpcClassicLinkDnsSupportResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.return (fun f -> Query.Pair ("return", Boolean.to_query f)) ])
+         [ Util.option_map v.return (fun f -> Query.Pair ("Return", Boolean.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -67336,11 +67324,11 @@ module CreateClientVpnEndpointResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dns_name (fun f -> Query.Pair ("dnsName", String.to_query f))
+         [ Util.option_map v.dns_name (fun f -> Query.Pair ("DnsName", String.to_query f))
          ; Util.option_map v.status (fun f ->
-               Query.Pair ("status", ClientVpnEndpointStatus.to_query f))
+               Query.Pair ("Status", ClientVpnEndpointStatus.to_query f))
          ; Util.option_map v.client_vpn_endpoint_id (fun f ->
-               Query.Pair ("clientVpnEndpointId", String.to_query f))
+               Query.Pair ("ClientVpnEndpointId", String.to_query f))
          ])
 
   let to_json v =
@@ -67372,7 +67360,7 @@ module StartVpcEndpointServicePrivateDnsVerificationResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.return_value (fun f ->
-               Query.Pair ("return", Boolean.to_query f))
+               Query.Pair ("Return", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -67402,9 +67390,9 @@ module CreateVpcEndpointResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.client_token (fun f ->
-               Query.Pair ("clientToken", String.to_query f))
+               Query.Pair ("ClientToken", String.to_query f))
          ; Util.option_map v.vpc_endpoint (fun f ->
-               Query.Pair ("vpcEndpoint", VpcEndpoint.to_query f))
+               Query.Pair ("VpcEndpoint", VpcEndpoint.to_query f))
          ])
 
   let to_json v =
@@ -67448,13 +67436,13 @@ module DescribeMovingAddressesRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("publicIp", ValueStringList.to_query v.public_ips))
+         [ Some (Query.Pair ("PublicIp", ValueStringList.to_query v.public_ips))
          ; Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Util.option_map v.max_results (fun f ->
-               Query.Pair ("maxResults", Integer.to_query f))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
-         ; Some (Query.Pair ("filter", FilterList.to_query v.filters))
+               Query.Pair ("MaxResults", Integer.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
+         ; Some (Query.Pair ("Filter", FilterList.to_query v.filters))
          ])
 
   let to_json v =
@@ -67497,8 +67485,8 @@ module MoveAddressToVpcRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("publicIp", String.to_query v.public_ip))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Some (Query.Pair ("PublicIp", String.to_query v.public_ip))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -67538,10 +67526,10 @@ module DescribeVolumesModificationsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "volumeModificationSet"
+                ( "VolumeModificationSet"
                 , VolumeModificationList.to_query v.volumes_modifications ))
          ])
 
@@ -67602,7 +67590,7 @@ module RegisterTransitGatewayMulticastGroupSourcesRequest = struct
          [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some
              (Query.Pair
-                ( "NetworkInterfaceIds.member"
+                ( "NetworkInterfaceIds"
                 , TransitGatewayNetworkInterfaceIdList.to_query v.network_interface_ids ))
          ; Util.option_map v.group_ip_address (fun f ->
                Query.Pair ("GroupIpAddress", String.to_query f))
@@ -67648,7 +67636,7 @@ module ResetEbsDefaultKmsKeyIdResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.kms_key_id (fun f ->
-               Query.Pair ("kmsKeyId", String.to_query f))
+               Query.Pair ("KmsKeyId", String.to_query f))
          ])
 
   let to_json v =
@@ -67685,7 +67673,7 @@ module ResetImageAttributeRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("ImageId", String.to_query v.image_id))
          ; Some (Query.Pair ("Attribute", ResetImageAttributeName.to_query v.attribute))
          ])
@@ -67862,7 +67850,7 @@ module CancelCapacityReservationResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.return (fun f -> Query.Pair ("return", Boolean.to_query f)) ])
+         [ Util.option_map v.return (fun f -> Query.Pair ("Return", Boolean.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -67935,20 +67923,20 @@ module CopySnapshotRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some
              (Query.Pair
                 ("TagSpecification", TagSpecificationList.to_query v.tag_specifications))
          ; Some (Query.Pair ("SourceSnapshotId", String.to_query v.source_snapshot_id))
          ; Some (Query.Pair ("SourceRegion", String.to_query v.source_region))
          ; Util.option_map v.presigned_url (fun f ->
-               Query.Pair ("presignedUrl", String.to_query f))
+               Query.Pair ("PresignedUrl", String.to_query f))
          ; Util.option_map v.kms_key_id (fun f ->
-               Query.Pair ("kmsKeyId", String.to_query f))
+               Query.Pair ("KmsKeyId", String.to_query f))
          ; Util.option_map v.encrypted (fun f ->
-               Query.Pair ("encrypted", Boolean.to_query f))
+               Query.Pair ("Encrypted", Boolean.to_query f))
          ; Util.option_map v.destination_region (fun f ->
-               Query.Pair ("destinationRegion", String.to_query f))
+               Query.Pair ("DestinationRegion", String.to_query f))
          ; Util.option_map v.description (fun f ->
                Query.Pair ("Description", String.to_query f))
          ])
@@ -68015,13 +68003,13 @@ module CreateDhcpOptionsRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some
              (Query.Pair
                 ("TagSpecification", TagSpecificationList.to_query v.tag_specifications))
          ; Some
              (Query.Pair
-                ( "dhcpConfiguration"
+                ( "DhcpConfiguration"
                 , NewDhcpConfigurationList.to_query v.dhcp_configurations ))
          ])
 
@@ -68057,7 +68045,7 @@ module UpdateSecurityGroupRuleDescriptionsIngressResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.return (fun f -> Query.Pair ("return", Boolean.to_query f)) ])
+         [ Util.option_map v.return (fun f -> Query.Pair ("Return", Boolean.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -68090,7 +68078,7 @@ module DescribeVpcAttributeRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("VpcId", String.to_query v.vpc_id))
          ; Some (Query.Pair ("Attribute", VpcAttributeName.to_query v.attribute))
          ])
@@ -68129,9 +68117,9 @@ module GetConsoleScreenshotResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.instance_id (fun f ->
-               Query.Pair ("instanceId", String.to_query f))
+               Query.Pair ("InstanceId", String.to_query f))
          ; Util.option_map v.image_data (fun f ->
-               Query.Pair ("imageData", String.to_query f))
+               Query.Pair ("ImageData", String.to_query f))
          ])
 
   let to_json v =
@@ -68170,10 +68158,10 @@ module DescribeNetworkInterfacesResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ("networkInterfaceSet", NetworkInterfaceList.to_query v.network_interfaces))
+                ("NetworkInterfaceSet", NetworkInterfaceList.to_query v.network_interfaces))
          ])
 
   let to_json v =
@@ -68255,14 +68243,14 @@ module CreateVpcRequest = struct
          ; Util.option_map v.ipv6_cidr_block_network_border_group (fun f ->
                Query.Pair ("Ipv6CidrBlockNetworkBorderGroup", String.to_query f))
          ; Util.option_map v.instance_tenancy (fun f ->
-               Query.Pair ("instanceTenancy", Tenancy.to_query f))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+               Query.Pair ("InstanceTenancy", Tenancy.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Util.option_map v.ipv6_cidr_block (fun f ->
                Query.Pair ("Ipv6CidrBlock", String.to_query f))
          ; Util.option_map v.ipv6_pool (fun f ->
                Query.Pair ("Ipv6Pool", String.to_query f))
          ; Util.option_map v.amazon_provided_ipv6_cidr_block (fun f ->
-               Query.Pair ("amazonProvidedIpv6CidrBlock", Boolean.to_query f))
+               Query.Pair ("AmazonProvidedIpv6CidrBlock", Boolean.to_query f))
          ; Some (Query.Pair ("CidrBlock", String.to_query v.cidr_block))
          ])
 
@@ -68326,10 +68314,10 @@ module DescribeVpcEndpointConnectionNotificationsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "connectionNotificationSet"
+                ( "ConnectionNotificationSet"
                 , ConnectionNotificationSet.to_query v.connection_notification_set ))
          ])
 
@@ -68411,7 +68399,7 @@ module DeleteManagedPrefixListResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.prefix_list (fun f ->
-               Query.Pair ("prefixList", ManagedPrefixList.to_query f))
+               Query.Pair ("PrefixList", ManagedPrefixList.to_query f))
          ])
 
   let to_json v =
@@ -68496,7 +68484,7 @@ module CreateImageResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.image_id (fun f -> Query.Pair ("imageId", String.to_query f))
+         [ Util.option_map v.image_id (fun f -> Query.Pair ("ImageId", String.to_query f))
          ])
 
   let to_json v =
@@ -68536,8 +68524,8 @@ module CreateNetworkAclRequest = struct
          [ Some
              (Query.Pair
                 ("TagSpecification", TagSpecificationList.to_query v.tag_specifications))
-         ; Some (Query.Pair ("vpcId", String.to_query v.vpc_id))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         ; Some (Query.Pair ("VpcId", String.to_query v.vpc_id))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -68610,14 +68598,14 @@ module CopyImageRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("SourceRegion", String.to_query v.source_region))
          ; Some (Query.Pair ("SourceImageId", String.to_query v.source_image_id))
          ; Some (Query.Pair ("Name", String.to_query v.name))
          ; Util.option_map v.kms_key_id (fun f ->
-               Query.Pair ("kmsKeyId", String.to_query f))
+               Query.Pair ("KmsKeyId", String.to_query f))
          ; Util.option_map v.encrypted (fun f ->
-               Query.Pair ("encrypted", Boolean.to_query f))
+               Query.Pair ("Encrypted", Boolean.to_query f))
          ; Util.option_map v.description (fun f ->
                Query.Pair ("Description", String.to_query f))
          ; Util.option_map v.client_token (fun f ->
@@ -68668,7 +68656,7 @@ module RejectTransitGatewayVpcAttachmentResult = struct
       (Util.list_filter_opt
          [ Util.option_map v.transit_gateway_vpc_attachment (fun f ->
                Query.Pair
-                 ("transitGatewayVpcAttachment", TransitGatewayVpcAttachment.to_query f))
+                 ("TransitGatewayVpcAttachment", TransitGatewayVpcAttachment.to_query f))
          ])
 
   let to_json v =
@@ -68761,14 +68749,14 @@ module DescribeNetworkInterfaceAttributeResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.source_dest_check (fun f ->
-               Query.Pair ("sourceDestCheck", AttributeBooleanValue.to_query f))
+               Query.Pair ("SourceDestCheck", AttributeBooleanValue.to_query f))
          ; Util.option_map v.network_interface_id (fun f ->
-               Query.Pair ("networkInterfaceId", String.to_query f))
-         ; Some (Query.Pair ("groupSet", GroupIdentifierList.to_query v.groups))
+               Query.Pair ("NetworkInterfaceId", String.to_query f))
+         ; Some (Query.Pair ("GroupSet", GroupIdentifierList.to_query v.groups))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", AttributeValue.to_query f))
+               Query.Pair ("Description", AttributeValue.to_query f))
          ; Util.option_map v.attachment (fun f ->
-               Query.Pair ("attachment", NetworkInterfaceAttachment.to_query f))
+               Query.Pair ("Attachment", NetworkInterfaceAttachment.to_query f))
          ])
 
   let to_json v =
@@ -68817,7 +68805,7 @@ module DescribeReservedInstancesResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "reservedInstancesSet"
+                ( "ReservedInstancesSet"
                 , ReservedInstancesList.to_query v.reserved_instances ))
          ])
 
@@ -68854,7 +68842,7 @@ module DescribeSecurityGroupReferencesRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("GroupId.member", GroupIds.to_query v.group_id))
+         [ Some (Query.Pair ("GroupId", GroupIds.to_query v.group_id))
          ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
@@ -68889,9 +68877,9 @@ module CreateNatGatewayResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.nat_gateway (fun f ->
-               Query.Pair ("natGateway", NatGateway.to_query f))
+               Query.Pair ("NatGateway", NatGateway.to_query f))
          ; Util.option_map v.client_token (fun f ->
-               Query.Pair ("clientToken", String.to_query f))
+               Query.Pair ("ClientToken", String.to_query f))
          ])
 
   let to_json v =
@@ -68981,10 +68969,10 @@ module DescribeTransitGatewayPeeringAttachmentsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "transitGatewayPeeringAttachments"
+                ( "TransitGatewayPeeringAttachments"
                 , TransitGatewayPeeringAttachmentList.to_query
                     v.transit_gateway_peering_attachments ))
          ])
@@ -69073,7 +69061,7 @@ module CancelSpotInstanceRequestsResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "spotInstanceRequestSet"
+                ( "SpotInstanceRequestSet"
                 , CancelledSpotInstanceRequestList.to_query
                     v.cancelled_spot_instance_requests ))
          ])
@@ -69111,7 +69099,7 @@ module CreateSpotDatafeedSubscriptionResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.spot_datafeed_subscription (fun f ->
-               Query.Pair ("spotDatafeedSubscription", SpotDatafeedSubscription.to_query f))
+               Query.Pair ("SpotDatafeedSubscription", SpotDatafeedSubscription.to_query f))
          ])
 
   let to_json v =
@@ -69208,10 +69196,10 @@ module DescribeVpcEndpointServiceConfigurationsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "serviceConfigurationSet"
+                ( "ServiceConfigurationSet"
                 , ServiceConfigurationSet.to_query v.service_configurations ))
          ])
 
@@ -69356,7 +69344,7 @@ module DescribeBundleTasksRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("Filter", FilterList.to_query v.filters))
          ; Some (Query.Pair ("BundleId", BundleIdStringList.to_query v.bundle_ids))
          ])
@@ -69397,7 +69385,7 @@ module DescribeConversionTasksResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ("conversionTasks", DescribeConversionTaskList.to_query v.conversion_tasks))
+                ("ConversionTasks", DescribeConversionTaskList.to_query v.conversion_tasks))
          ])
 
   let to_json v =
@@ -69530,10 +69518,10 @@ module DescribeTransitGatewayVpcAttachmentsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "transitGatewayVpcAttachments"
+                ( "TransitGatewayVpcAttachments"
                 , TransitGatewayVpcAttachmentList.to_query
                     v.transit_gateway_vpc_attachments ))
          ])
@@ -69614,13 +69602,13 @@ module CreateInstanceExportTaskRequest = struct
                 ("TagSpecification", TagSpecificationList.to_query v.tag_specifications))
          ; Some
              (Query.Pair
-                ("targetEnvironment", ExportEnvironment.to_query v.target_environment))
-         ; Some (Query.Pair ("instanceId", String.to_query v.instance_id))
+                ("TargetEnvironment", ExportEnvironment.to_query v.target_environment))
+         ; Some (Query.Pair ("InstanceId", String.to_query v.instance_id))
          ; Some
              (Query.Pair
-                ("exportToS3", ExportToS3TaskSpecification.to_query v.export_to_s3_task))
+                ("ExportToS3", ExportToS3TaskSpecification.to_query v.export_to_s3_task))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
          ])
 
   let to_json v =
@@ -69722,28 +69710,28 @@ module GetReservedInstancesExchangeQuoteResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.validation_failure_reason (fun f ->
-               Query.Pair ("validationFailureReason", String.to_query f))
+               Query.Pair ("ValidationFailureReason", String.to_query f))
          ; Some
              (Query.Pair
-                ( "targetConfigurationValueSet"
+                ( "TargetConfigurationValueSet"
                 , TargetReservationValueSet.to_query v.target_configuration_value_set ))
          ; Util.option_map v.target_configuration_value_rollup (fun f ->
-               Query.Pair ("targetConfigurationValueRollup", ReservationValue.to_query f))
+               Query.Pair ("TargetConfigurationValueRollup", ReservationValue.to_query f))
          ; Some
              (Query.Pair
-                ( "reservedInstanceValueSet"
+                ( "ReservedInstanceValueSet"
                 , ReservedInstanceReservationValueSet.to_query
                     v.reserved_instance_value_set ))
          ; Util.option_map v.reserved_instance_value_rollup (fun f ->
-               Query.Pair ("reservedInstanceValueRollup", ReservationValue.to_query f))
+               Query.Pair ("ReservedInstanceValueRollup", ReservationValue.to_query f))
          ; Util.option_map v.payment_due (fun f ->
-               Query.Pair ("paymentDue", String.to_query f))
+               Query.Pair ("PaymentDue", String.to_query f))
          ; Util.option_map v.output_reserved_instances_will_expire_at (fun f ->
-               Query.Pair ("outputReservedInstancesWillExpireAt", DateTime.to_query f))
+               Query.Pair ("OutputReservedInstancesWillExpireAt", DateTime.to_query f))
          ; Util.option_map v.is_valid_exchange (fun f ->
-               Query.Pair ("isValidExchange", Boolean.to_query f))
+               Query.Pair ("IsValidExchange", Boolean.to_query f))
          ; Util.option_map v.currency_code (fun f ->
-               Query.Pair ("currencyCode", String.to_query f))
+               Query.Pair ("CurrencyCode", String.to_query f))
          ])
 
   let to_json v =
@@ -69821,8 +69809,8 @@ module SearchTransitGatewayRoutesResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.additional_routes_available (fun f ->
-               Query.Pair ("additionalRoutesAvailable", Boolean.to_query f))
-         ; Some (Query.Pair ("routeSet", TransitGatewayRouteList.to_query v.routes))
+               Query.Pair ("AdditionalRoutesAvailable", Boolean.to_query f))
+         ; Some (Query.Pair ("RouteSet", TransitGatewayRouteList.to_query v.routes))
          ])
 
   let to_json v =
@@ -69862,8 +69850,8 @@ module CreateSecurityGroupResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
-         ; Some (Query.Pair ("groupId", String.to_query v.group_id))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
+         ; Some (Query.Pair ("GroupId", String.to_query v.group_id))
          ])
 
   let to_json v =
@@ -69920,15 +69908,15 @@ module DescribeSpotFleetRequestHistoryResponse = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.start_time (fun f ->
-               Query.Pair ("startTime", DateTime.to_query f))
+               Query.Pair ("StartTime", DateTime.to_query f))
          ; Util.option_map v.spot_fleet_request_id (fun f ->
-               Query.Pair ("spotFleetRequestId", String.to_query f))
+               Query.Pair ("SpotFleetRequestId", String.to_query f))
          ; Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Util.option_map v.last_evaluated_time (fun f ->
-               Query.Pair ("lastEvaluatedTime", DateTime.to_query f))
+               Query.Pair ("LastEvaluatedTime", DateTime.to_query f))
          ; Some
-             (Query.Pair ("historyRecordSet", HistoryRecords.to_query v.history_records))
+             (Query.Pair ("HistoryRecordSet", HistoryRecords.to_query v.history_records))
          ])
 
   let to_json v =
@@ -69973,7 +69961,7 @@ module CancelReservedInstancesListingRequest = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "reservedInstancesListingId"
+                ( "ReservedInstancesListingId"
                 , String.to_query v.reserved_instances_listing_id ))
          ])
 
@@ -70013,8 +70001,8 @@ module DescribeFpgaImagesResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
-         ; Some (Query.Pair ("fpgaImageSet", FpgaImageList.to_query v.fpga_images))
+               Query.Pair ("NextToken", String.to_query f))
+         ; Some (Query.Pair ("FpgaImageSet", FpgaImageList.to_query v.fpga_images))
          ])
 
   let to_json v =
@@ -70086,7 +70074,7 @@ module DescribeSnapshotsRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("SnapshotId", SnapshotIdStringList.to_query v.snapshot_ids))
          ; Some
              (Query.Pair
@@ -70320,20 +70308,20 @@ module ReplaceNetworkAclEntryRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("ruleNumber", Integer.to_query v.rule_number))
-         ; Some (Query.Pair ("ruleAction", RuleAction.to_query v.rule_action))
-         ; Some (Query.Pair ("protocol", String.to_query v.protocol))
+         [ Some (Query.Pair ("RuleNumber", Integer.to_query v.rule_number))
+         ; Some (Query.Pair ("RuleAction", RuleAction.to_query v.rule_action))
+         ; Some (Query.Pair ("Protocol", String.to_query v.protocol))
          ; Util.option_map v.port_range (fun f ->
-               Query.Pair ("portRange", PortRange.to_query f))
-         ; Some (Query.Pair ("networkAclId", String.to_query v.network_acl_id))
+               Query.Pair ("PortRange", PortRange.to_query f))
+         ; Some (Query.Pair ("NetworkAclId", String.to_query v.network_acl_id))
          ; Util.option_map v.ipv6_cidr_block (fun f ->
-               Query.Pair ("ipv6CidrBlock", String.to_query f))
+               Query.Pair ("Ipv6CidrBlock", String.to_query f))
          ; Util.option_map v.icmp_type_code (fun f ->
                Query.Pair ("Icmp", IcmpTypeCode.to_query f))
-         ; Some (Query.Pair ("egress", Boolean.to_query v.egress))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         ; Some (Query.Pair ("Egress", Boolean.to_query v.egress))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Util.option_map v.cidr_block (fun f ->
-               Query.Pair ("cidrBlock", String.to_query f))
+               Query.Pair ("CidrBlock", String.to_query f))
          ])
 
   let to_json v =
@@ -70395,10 +70383,10 @@ module UnassignIpv6AddressesResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "unassignedIpv6Addresses"
+                ( "UnassignedIpv6Addresses"
                 , Ipv6AddressList.to_query v.unassigned_ipv6_addresses ))
          ; Util.option_map v.network_interface_id (fun f ->
-               Query.Pair ("networkInterfaceId", String.to_query f))
+               Query.Pair ("NetworkInterfaceId", String.to_query f))
          ])
 
   let to_json v =
@@ -70453,7 +70441,7 @@ module DescribeFlowLogsRequest = struct
          ; Util.option_map v.max_results (fun f ->
                Query.Pair ("MaxResults", Integer.to_query f))
          ; Some (Query.Pair ("FlowLogId", FlowLogIdList.to_query v.flow_log_ids))
-         ; Some (Query.Pair ("Filter.member", FilterList.to_query v.filter))
+         ; Some (Query.Pair ("Filter", FilterList.to_query v.filter))
          ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
@@ -70506,10 +70494,10 @@ module EnableFastSnapshotRestoresResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ("unsuccessful", EnableFastSnapshotRestoreErrorSet.to_query v.unsuccessful))
+                ("Unsuccessful", EnableFastSnapshotRestoreErrorSet.to_query v.unsuccessful))
          ; Some
              (Query.Pair
-                ("successful", EnableFastSnapshotRestoreSuccessSet.to_query v.successful))
+                ("Successful", EnableFastSnapshotRestoreSuccessSet.to_query v.successful))
          ])
 
   let to_json v =
@@ -70571,15 +70559,15 @@ module AssignPrivateIpAddressesRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.secondary_private_ip_address_count (fun f ->
-               Query.Pair ("secondaryPrivateIpAddressCount", Integer.to_query f))
+               Query.Pair ("SecondaryPrivateIpAddressCount", Integer.to_query f))
          ; Some
              (Query.Pair
-                ( "privateIpAddress"
+                ( "PrivateIpAddress"
                 , PrivateIpAddressStringList.to_query v.private_ip_addresses ))
          ; Some
-             (Query.Pair ("networkInterfaceId", String.to_query v.network_interface_id))
+             (Query.Pair ("NetworkInterfaceId", String.to_query v.network_interface_id))
          ; Util.option_map v.allow_reassignment (fun f ->
-               Query.Pair ("allowReassignment", Boolean.to_query f))
+               Query.Pair ("AllowReassignment", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -70686,7 +70674,7 @@ module RunScheduledInstancesResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("instanceIdSet", InstanceIdSet.to_query v.instance_id_set)) ])
+         [ Some (Query.Pair ("InstanceIdSet", InstanceIdSet.to_query v.instance_id_set)) ])
 
   let to_json v =
     `Assoc
@@ -70768,8 +70756,8 @@ module DescribeRouteTablesResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
-         ; Some (Query.Pair ("routeTableSet", RouteTableList.to_query v.route_tables))
+               Query.Pair ("NextToken", String.to_query f))
+         ; Some (Query.Pair ("RouteTableSet", RouteTableList.to_query v.route_tables))
          ])
 
   let to_json v =
@@ -70797,7 +70785,7 @@ module DescribeSpotDatafeedSubscriptionRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -70837,11 +70825,11 @@ module DescribeSnapshotAttributeResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.snapshot_id (fun f ->
-               Query.Pair ("snapshotId", String.to_query f))
-         ; Some (Query.Pair ("productCodes", ProductCodeList.to_query v.product_codes))
+               Query.Pair ("SnapshotId", String.to_query f))
+         ; Some (Query.Pair ("ProductCodes", ProductCodeList.to_query v.product_codes))
          ; Some
              (Query.Pair
-                ( "createVolumePermission"
+                ( "CreateVolumePermission"
                 , CreateVolumePermissionList.to_query v.create_volume_permissions ))
          ])
 
@@ -70877,7 +70865,7 @@ module WithdrawByoipCidrResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.byoip_cidr (fun f ->
-               Query.Pair ("byoipCidr", ByoipCidr.to_query f))
+               Query.Pair ("ByoipCidr", ByoipCidr.to_query f))
          ])
 
   let to_json v =
@@ -70904,7 +70892,7 @@ module DeleteTransitGatewayResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.transit_gateway (fun f ->
-               Query.Pair ("transitGateway", TransitGateway.to_query f))
+               Query.Pair ("TransitGateway", TransitGateway.to_query f))
          ])
 
   let to_json v =
@@ -70942,10 +70930,10 @@ module DisassociateSubnetCidrBlockResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.subnet_id (fun f ->
-               Query.Pair ("subnetId", String.to_query f))
+               Query.Pair ("SubnetId", String.to_query f))
          ; Util.option_map v.ipv6_cidr_block_association (fun f ->
                Query.Pair
-                 ("ipv6CidrBlockAssociation", SubnetIpv6CidrBlockAssociation.to_query f))
+                 ("Ipv6CidrBlockAssociation", SubnetIpv6CidrBlockAssociation.to_query f))
          ])
 
   let to_json v =
@@ -70977,7 +70965,7 @@ module ModifyVpcEndpointConnectionNotificationResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.return_value (fun f ->
-               Query.Pair ("return", Boolean.to_query f))
+               Query.Pair ("Return", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -71095,8 +71083,8 @@ module ReleaseHostsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Some
-             (Query.Pair ("unsuccessful", UnsuccessfulItemList.to_query v.unsuccessful))
-         ; Some (Query.Pair ("successful", ResponseHostIdList.to_query v.successful))
+             (Query.Pair ("Unsuccessful", UnsuccessfulItemList.to_query v.unsuccessful))
+         ; Some (Query.Pair ("Successful", ResponseHostIdList.to_query v.successful))
          ])
 
   let to_json v =
@@ -71125,7 +71113,7 @@ module EnableVpcClassicLinkResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.return (fun f -> Query.Pair ("return", Boolean.to_query f)) ])
+         [ Util.option_map v.return (fun f -> Query.Pair ("Return", Boolean.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -71249,7 +71237,7 @@ module PurchaseReservedInstancesOfferingResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.reserved_instances_id (fun f ->
-               Query.Pair ("reservedInstancesId", String.to_query f))
+               Query.Pair ("ReservedInstancesId", String.to_query f))
          ])
 
   let to_json v =
@@ -71290,7 +71278,7 @@ module ModifyVpcAttributeRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("vpcId", String.to_query v.vpc_id))
+         [ Some (Query.Pair ("VpcId", String.to_query v.vpc_id))
          ; Util.option_map v.enable_dns_support (fun f ->
                Query.Pair ("EnableDnsSupport", AttributeBooleanValue.to_query f))
          ; Util.option_map v.enable_dns_hostnames (fun f ->
@@ -71329,7 +71317,7 @@ module RejectVpcPeeringConnectionResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.return (fun f -> Query.Pair ("return", Boolean.to_query f)) ])
+         [ Util.option_map v.return (fun f -> Query.Pair ("Return", Boolean.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -71363,10 +71351,10 @@ module DescribeIamInstanceProfileAssociationsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "iamInstanceProfileAssociationSet"
+                ( "IamInstanceProfileAssociationSet"
                 , IamInstanceProfileAssociationSet.to_query
                     v.iam_instance_profile_associations ))
          ])
@@ -71400,7 +71388,7 @@ module ModifyVpcEndpointResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.return (fun f -> Query.Pair ("return", Boolean.to_query f)) ])
+         [ Util.option_map v.return (fun f -> Query.Pair ("Return", Boolean.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -71430,7 +71418,7 @@ module TerminateInstancesRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("InstanceId", InstanceIdStringList.to_query v.instance_ids))
          ])
 
@@ -71459,7 +71447,7 @@ module CreateRouteResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.return (fun f -> Query.Pair ("return", Boolean.to_query f)) ])
+         [ Util.option_map v.return (fun f -> Query.Pair ("Return", Boolean.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -71485,7 +71473,7 @@ module DeleteVpcEndpointsResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("unsuccessful", UnsuccessfulItemSet.to_query v.unsuccessful))
+         [ Some (Query.Pair ("Unsuccessful", UnsuccessfulItemSet.to_query v.unsuccessful))
          ])
 
   let to_json v =
@@ -71523,10 +71511,10 @@ module DescribeLaunchTemplateVersionsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "launchTemplateVersionSet"
+                ( "LaunchTemplateVersionSet"
                 , LaunchTemplateVersionSet.to_query v.launch_template_versions ))
          ])
 
@@ -71570,10 +71558,10 @@ module DescribeCarrierGatewaysResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ("carrierGatewaySet", CarrierGatewaySet.to_query v.carrier_gateways))
+                ("CarrierGatewaySet", CarrierGatewaySet.to_query v.carrier_gateways))
          ])
 
   let to_json v =
@@ -71615,10 +71603,10 @@ module GetGroupsForCapacityReservationResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "capacityReservationGroupSet"
+                ( "CapacityReservationGroupSet"
                 , CapacityReservationGroupSet.to_query v.capacity_reservation_groups ))
          ; Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ])
 
   let to_json v =
@@ -71653,7 +71641,7 @@ module CreatePlacementGroupResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.placement_group (fun f ->
-               Query.Pair ("placementGroup", PlacementGroup.to_query f))
+               Query.Pair ("PlacementGroup", PlacementGroup.to_query f))
          ])
 
   let to_json v =
@@ -71841,7 +71829,7 @@ module DeleteDhcpOptionsRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("DhcpOptionsId", String.to_query v.dhcp_options_id))
          ])
 
@@ -71878,7 +71866,7 @@ module AcceptTransitGatewayPeeringAttachmentResult = struct
       (Util.list_filter_opt
          [ Util.option_map v.transit_gateway_peering_attachment (fun f ->
                Query.Pair
-                 ( "transitGatewayPeeringAttachment"
+                 ( "TransitGatewayPeeringAttachment"
                  , TransitGatewayPeeringAttachment.to_query f ))
          ])
 
@@ -71990,7 +71978,7 @@ module DescribeTransitGatewayPeeringAttachmentsRequest = struct
          ; Some (Query.Pair ("Filter", FilterList.to_query v.filters))
          ; Some
              (Query.Pair
-                ( "TransitGatewayAttachmentIds.member"
+                ( "TransitGatewayAttachmentIds"
                 , TransitGatewayAttachmentIdStringList.to_query
                     v.transit_gateway_attachment_ids ))
          ])
@@ -72042,10 +72030,10 @@ module SearchTransitGatewayMulticastGroupsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "multicastGroups"
+                ( "MulticastGroups"
                 , TransitGatewayMulticastGroupList.to_query v.multicast_groups ))
          ])
 
@@ -72176,7 +72164,7 @@ module DeleteSecurityGroupRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Util.option_map v.group_name (fun f ->
                Query.Pair ("GroupName", String.to_query f))
          ; Util.option_map v.group_id (fun f -> Query.Pair ("GroupId", String.to_query f))
@@ -72221,10 +72209,10 @@ module DescribeLocalGatewayVirtualInterfacesResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "localGatewayVirtualInterfaceSet"
+                ( "LocalGatewayVirtualInterfaceSet"
                 , LocalGatewayVirtualInterfaceSet.to_query
                     v.local_gateway_virtual_interfaces ))
          ])
@@ -72572,30 +72560,30 @@ module RunInstancesRequest = struct
                 ))
          ; Some
              (Query.Pair
-                ( "ElasticGpuSpecification.member"
+                ( "ElasticGpuSpecification"
                 , ElasticGpuSpecifications.to_query v.elastic_gpu_specification ))
          ; Util.option_map v.private_ip_address (fun f ->
-               Query.Pair ("privateIpAddress", String.to_query f))
+               Query.Pair ("PrivateIpAddress", String.to_query f))
          ; Some
              (Query.Pair
-                ( "networkInterface"
+                ( "NetworkInterface"
                 , InstanceNetworkInterfaceSpecificationList.to_query v.network_interfaces
                 ))
          ; Util.option_map v.instance_initiated_shutdown_behavior (fun f ->
                Query.Pair
-                 ("instanceInitiatedShutdownBehavior", ShutdownBehavior.to_query f))
+                 ("InstanceInitiatedShutdownBehavior", ShutdownBehavior.to_query f))
          ; Util.option_map v.iam_instance_profile (fun f ->
                Query.Pair
-                 ("iamInstanceProfile", IamInstanceProfileSpecification.to_query f))
+                 ("IamInstanceProfile", IamInstanceProfileSpecification.to_query f))
          ; Util.option_map v.ebs_optimized (fun f ->
-               Query.Pair ("ebsOptimized", Boolean.to_query f))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+               Query.Pair ("EbsOptimized", Boolean.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Util.option_map v.disable_api_termination (fun f ->
-               Query.Pair ("disableApiTermination", Boolean.to_query f))
+               Query.Pair ("DisableApiTermination", Boolean.to_query f))
          ; Util.option_map v.client_token (fun f ->
-               Query.Pair ("clientToken", String.to_query f))
+               Query.Pair ("ClientToken", String.to_query f))
          ; Util.option_map v.additional_info (fun f ->
-               Query.Pair ("additionalInfo", String.to_query f))
+               Query.Pair ("AdditionalInfo", String.to_query f))
          ; Util.option_map v.user_data (fun f ->
                Query.Pair ("UserData", String.to_query f))
          ; Util.option_map v.subnet_id (fun f ->
@@ -72810,7 +72798,7 @@ module StartInstancesResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ("instancesSet", InstanceStateChangeList.to_query v.starting_instances))
+                ("InstancesSet", InstanceStateChangeList.to_query v.starting_instances))
          ])
 
   let to_json v =
@@ -72851,10 +72839,10 @@ module DescribeLocalGatewayVirtualInterfaceGroupsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "localGatewayVirtualInterfaceGroupSet"
+                ( "LocalGatewayVirtualInterfaceGroupSet"
                 , LocalGatewayVirtualInterfaceGroupSet.to_query
                     v.local_gateway_virtual_interface_groups ))
          ])
@@ -72895,7 +72883,7 @@ module CreateTransitGatewayVpcAttachmentResult = struct
       (Util.list_filter_opt
          [ Util.option_map v.transit_gateway_vpc_attachment (fun f ->
                Query.Pair
-                 ("transitGatewayVpcAttachment", TransitGatewayVpcAttachment.to_query f))
+                 ("TransitGatewayVpcAttachment", TransitGatewayVpcAttachment.to_query f))
          ])
 
   let to_json v =
@@ -72955,7 +72943,7 @@ module DescribeImagesRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("Owner", OwnerStringList.to_query v.owners))
          ; Some (Query.Pair ("ImageId", ImageIdStringList.to_query v.image_ids))
          ; Some (Query.Pair ("Filter", FilterList.to_query v.filters))
@@ -73012,9 +73000,9 @@ module ReplaceNetworkAclAssociationRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("networkAclId", String.to_query v.network_acl_id))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
-         ; Some (Query.Pair ("associationId", String.to_query v.association_id))
+         [ Some (Query.Pair ("NetworkAclId", String.to_query v.network_acl_id))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
+         ; Some (Query.Pair ("AssociationId", String.to_query v.association_id))
          ])
 
   let to_json v =
@@ -73062,11 +73050,11 @@ module AssociateEnclaveCertificateIamRoleResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.encryption_kms_key_id (fun f ->
-               Query.Pair ("encryptionKmsKeyId", String.to_query f))
+               Query.Pair ("EncryptionKmsKeyId", String.to_query f))
          ; Util.option_map v.certificate_s3_object_key (fun f ->
-               Query.Pair ("certificateS3ObjectKey", String.to_query f))
+               Query.Pair ("CertificateS3ObjectKey", String.to_query f))
          ; Util.option_map v.certificate_s3_bucket_name (fun f ->
-               Query.Pair ("certificateS3BucketName", String.to_query f))
+               Query.Pair ("CertificateS3BucketName", String.to_query f))
          ])
 
   let to_json v =
@@ -73192,7 +73180,7 @@ module DescribeVpcPeeringConnectionsRequest = struct
              (Query.Pair
                 ( "VpcPeeringConnectionId"
                 , VpcPeeringConnectionIdList.to_query v.vpc_peering_connection_ids ))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("Filter", FilterList.to_query v.filters))
          ])
 
@@ -73234,7 +73222,7 @@ module DisassociateTransitGatewayRouteTableResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.association (fun f ->
-               Query.Pair ("association", TransitGatewayAssociation.to_query f))
+               Query.Pair ("Association", TransitGatewayAssociation.to_query f))
          ])
 
   let to_json v =
@@ -73274,10 +73262,10 @@ module DescribeMovingAddressesResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "movingAddressStatusSet"
+                ( "MovingAddressStatusSet"
                 , MovingAddressStatusSet.to_query v.moving_address_statuses ))
          ])
 
@@ -73324,7 +73312,7 @@ module DescribeExportTasksRequest = struct
          [ Some (Query.Pair ("Filter", FilterList.to_query v.filters))
          ; Some
              (Query.Pair
-                ("exportTaskId", ExportTaskIdStringList.to_query v.export_task_ids))
+                ("ExportTaskId", ExportTaskIdStringList.to_query v.export_task_ids))
          ])
 
   let to_json v =
@@ -73434,14 +73422,14 @@ module DescribeReservedInstancesOfferingsRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.offering_type (fun f ->
-               Query.Pair ("offeringType", OfferingTypeValues.to_query f))
+               Query.Pair ("OfferingType", OfferingTypeValues.to_query f))
          ; Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Util.option_map v.max_results (fun f ->
-               Query.Pair ("maxResults", Integer.to_query f))
+               Query.Pair ("MaxResults", Integer.to_query f))
          ; Util.option_map v.instance_tenancy (fun f ->
-               Query.Pair ("instanceTenancy", Tenancy.to_query f))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+               Query.Pair ("InstanceTenancy", Tenancy.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some
              (Query.Pair
                 ( "ReservedInstancesOfferingId"
@@ -73542,7 +73530,7 @@ module CreateVpcPeeringConnectionResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.vpc_peering_connection (fun f ->
-               Query.Pair ("vpcPeeringConnection", VpcPeeringConnection.to_query f))
+               Query.Pair ("VpcPeeringConnection", VpcPeeringConnection.to_query f))
          ])
 
   let to_json v =
@@ -73698,7 +73686,7 @@ module DescribeNetworkAclsRequest = struct
          ; Some
              (Query.Pair
                 ("NetworkAclId", NetworkAclIdStringList.to_query v.network_acl_ids))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("Filter", FilterList.to_query v.filters))
          ])
 
@@ -73747,10 +73735,10 @@ module DescribeTrafficMirrorSessionsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "trafficMirrorSessionSet"
+                ( "TrafficMirrorSessionSet"
                 , TrafficMirrorSessionSet.to_query v.traffic_mirror_sessions ))
          ])
 
@@ -73806,9 +73794,9 @@ module ModifyHostsRequest = struct
                Query.Pair ("InstanceType", String.to_query f))
          ; Util.option_map v.host_recovery (fun f ->
                Query.Pair ("HostRecovery", HostRecovery.to_query f))
-         ; Some (Query.Pair ("hostId", RequestHostIdList.to_query v.host_ids))
+         ; Some (Query.Pair ("HostId", RequestHostIdList.to_query v.host_ids))
          ; Util.option_map v.auto_placement (fun f ->
-               Query.Pair ("autoPlacement", AutoPlacement.to_query f))
+               Query.Pair ("AutoPlacement", AutoPlacement.to_query f))
          ])
 
   let to_json v =
@@ -74065,7 +74053,7 @@ module DescribeTransitGatewayVpcAttachmentsRequest = struct
          ; Some (Query.Pair ("Filter", FilterList.to_query v.filters))
          ; Some
              (Query.Pair
-                ( "TransitGatewayAttachmentIds.member"
+                ( "TransitGatewayAttachmentIds"
                 , TransitGatewayAttachmentIdStringList.to_query
                     v.transit_gateway_attachment_ids ))
          ])
@@ -74105,7 +74093,7 @@ module ModifyCapacityReservationResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.return (fun f -> Query.Pair ("return", Boolean.to_query f)) ])
+         [ Util.option_map v.return (fun f -> Query.Pair ("Return", Boolean.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -74161,16 +74149,16 @@ module ModifyNetworkInterfaceAttributeRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.source_dest_check (fun f ->
-               Query.Pair ("sourceDestCheck", AttributeBooleanValue.to_query f))
+               Query.Pair ("SourceDestCheck", AttributeBooleanValue.to_query f))
          ; Some
-             (Query.Pair ("networkInterfaceId", String.to_query v.network_interface_id))
+             (Query.Pair ("NetworkInterfaceId", String.to_query v.network_interface_id))
          ; Some
              (Query.Pair ("SecurityGroupId", SecurityGroupIdStringList.to_query v.groups))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", AttributeValue.to_query f))
+               Query.Pair ("Description", AttributeValue.to_query f))
          ; Util.option_map v.attachment (fun f ->
-               Query.Pair ("attachment", NetworkInterfaceAttachmentChanges.to_query f))
+               Query.Pair ("Attachment", NetworkInterfaceAttachmentChanges.to_query f))
          ])
 
   let to_json v =
@@ -74276,7 +74264,7 @@ module CreateVolumeRequest = struct
          ; Some
              (Query.Pair
                 ("TagSpecification", TagSpecificationList.to_query v.tag_specifications))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Util.option_map v.volume_type (fun f ->
                Query.Pair ("VolumeType", VolumeType.to_query f))
          ; Util.option_map v.snapshot_id (fun f ->
@@ -74288,7 +74276,7 @@ module CreateVolumeRequest = struct
                Query.Pair ("KmsKeyId", String.to_query f))
          ; Util.option_map v.iops (fun f -> Query.Pair ("Iops", Integer.to_query f))
          ; Util.option_map v.encrypted (fun f ->
-               Query.Pair ("encrypted", Boolean.to_query f))
+               Query.Pair ("Encrypted", Boolean.to_query f))
          ; Some (Query.Pair ("AvailabilityZone", String.to_query v.availability_zone))
          ])
 
@@ -74398,8 +74386,8 @@ module EnableVpcClassicLinkRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("vpcId", String.to_query v.vpc_id))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Some (Query.Pair ("VpcId", String.to_query v.vpc_id))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -74429,7 +74417,7 @@ module DeleteClientVpnEndpointResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.status (fun f ->
-               Query.Pair ("status", ClientVpnEndpointStatus.to_query f))
+               Query.Pair ("Status", ClientVpnEndpointStatus.to_query f))
          ])
 
   let to_json v =
@@ -74453,7 +74441,7 @@ module DisassociateEnclaveCertificateIamRoleResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.return (fun f -> Query.Pair ("return", Boolean.to_query f)) ])
+         [ Util.option_map v.return (fun f -> Query.Pair ("Return", Boolean.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -74483,8 +74471,8 @@ module DisassociateRouteTableRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
-         ; Some (Query.Pair ("associationId", String.to_query v.association_id))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
+         ; Some (Query.Pair ("AssociationId", String.to_query v.association_id))
          ])
 
   let to_json v =
@@ -74513,7 +74501,7 @@ module AdvertiseByoipCidrResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.byoip_cidr (fun f ->
-               Query.Pair ("byoipCidr", ByoipCidr.to_query f))
+               Query.Pair ("ByoipCidr", ByoipCidr.to_query f))
          ])
 
   let to_json v =
@@ -74542,7 +74530,7 @@ module CreateTransitGatewayRouteTableResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.transit_gateway_route_table (fun f ->
-               Query.Pair ("transitGatewayRouteTable", TransitGatewayRouteTable.to_query f))
+               Query.Pair ("TransitGatewayRouteTable", TransitGatewayRouteTable.to_query f))
          ])
 
   let to_json v =
@@ -74581,8 +74569,8 @@ module DescribeIpv6PoolsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
-         ; Some (Query.Pair ("ipv6PoolSet", Ipv6PoolSet.to_query v.ipv6_pools))
+               Query.Pair ("NextToken", String.to_query f))
+         ; Some (Query.Pair ("Ipv6PoolSet", Ipv6PoolSet.to_query v.ipv6_pools))
          ])
 
   let to_json v =
@@ -74609,7 +74597,7 @@ module DeleteFpgaImageResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.return (fun f -> Query.Pair ("return", Boolean.to_query f)) ])
+         [ Util.option_map v.return (fun f -> Query.Pair ("Return", Boolean.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -74686,7 +74674,7 @@ module ResetFpgaImageAttributeResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.return (fun f -> Query.Pair ("return", Boolean.to_query f)) ])
+         [ Util.option_map v.return (fun f -> Query.Pair ("Return", Boolean.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -74769,8 +74757,8 @@ module UnassignIpv6AddressesRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Some
-             (Query.Pair ("networkInterfaceId", String.to_query v.network_interface_id))
-         ; Some (Query.Pair ("ipv6Addresses", Ipv6AddressList.to_query v.ipv6_addresses))
+             (Query.Pair ("NetworkInterfaceId", String.to_query v.network_interface_id))
+         ; Some (Query.Pair ("Ipv6Addresses", Ipv6AddressList.to_query v.ipv6_addresses))
          ])
 
   let to_json v =
@@ -74890,12 +74878,12 @@ module DeleteLaunchTemplateVersionsResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "unsuccessfullyDeletedLaunchTemplateVersionSet"
+                ( "UnsuccessfullyDeletedLaunchTemplateVersionSet"
                 , DeleteLaunchTemplateVersionsResponseErrorSet.to_query
                     v.unsuccessfully_deleted_launch_template_versions ))
          ; Some
              (Query.Pair
-                ( "successfullyDeletedLaunchTemplateVersionSet"
+                ( "SuccessfullyDeletedLaunchTemplateVersionSet"
                 , DeleteLaunchTemplateVersionsResponseSuccessSet.to_query
                     v.successfully_deleted_launch_template_versions ))
          ])
@@ -74954,7 +74942,7 @@ module DescribeKeyPairsRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("KeyPairId", KeyPairIdStringList.to_query v.key_pair_ids))
          ; Some (Query.Pair ("KeyName", KeyNameStringList.to_query v.key_names))
          ; Some (Query.Pair ("Filter", FilterList.to_query v.filters))
@@ -75000,7 +74988,7 @@ module RegisterTransitGatewayMulticastGroupSourcesResult = struct
       (Util.list_filter_opt
          [ Util.option_map v.registered_multicast_group_sources (fun f ->
                Query.Pair
-                 ( "registeredMulticastGroupSources"
+                 ( "RegisteredMulticastGroupSources"
                  , TransitGatewayMulticastRegisteredGroupSources.to_query f ))
          ])
 
@@ -75045,9 +75033,7 @@ module UpdateSecurityGroupRuleDescriptionsEgressRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some
-             (Query.Pair
-                ("IpPermissions.member", IpPermissionList.to_query v.ip_permissions))
+         [ Some (Query.Pair ("IpPermissions", IpPermissionList.to_query v.ip_permissions))
          ; Util.option_map v.group_name (fun f ->
                Query.Pair ("GroupName", String.to_query f))
          ; Util.option_map v.group_id (fun f -> Query.Pair ("GroupId", String.to_query f))
@@ -75092,7 +75078,7 @@ module RequestSpotInstancesResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "spotInstanceRequestSet"
+                ( "SpotInstanceRequestSet"
                 , SpotInstanceRequestList.to_query v.spot_instance_requests ))
          ])
 
@@ -75194,9 +75180,9 @@ module DescribeReservedInstancesListingsRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.reserved_instances_listing_id (fun f ->
-               Query.Pair ("reservedInstancesListingId", String.to_query f))
+               Query.Pair ("ReservedInstancesListingId", String.to_query f))
          ; Util.option_map v.reserved_instances_id (fun f ->
-               Query.Pair ("reservedInstancesId", String.to_query f))
+               Query.Pair ("ReservedInstancesId", String.to_query f))
          ; Some (Query.Pair ("Filter", FilterList.to_query v.filters))
          ])
 
@@ -75236,9 +75222,9 @@ module MoveAddressToVpcResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.status (fun f -> Query.Pair ("status", Status.to_query f))
+         [ Util.option_map v.status (fun f -> Query.Pair ("Status", Status.to_query f))
          ; Util.option_map v.allocation_id (fun f ->
-               Query.Pair ("allocationId", String.to_query f))
+               Query.Pair ("AllocationId", String.to_query f))
          ])
 
   let to_json v =
@@ -75295,14 +75281,14 @@ module DeleteRouteRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("routeTableId", String.to_query v.route_table_id))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Some (Query.Pair ("RouteTableId", String.to_query v.route_table_id))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Util.option_map v.destination_prefix_list_id (fun f ->
                Query.Pair ("DestinationPrefixListId", String.to_query f))
          ; Util.option_map v.destination_ipv6_cidr_block (fun f ->
-               Query.Pair ("destinationIpv6CidrBlock", String.to_query f))
+               Query.Pair ("DestinationIpv6CidrBlock", String.to_query f))
          ; Util.option_map v.destination_cidr_block (fun f ->
-               Query.Pair ("destinationCidrBlock", String.to_query f))
+               Query.Pair ("DestinationCidrBlock", String.to_query f))
          ])
 
   let to_json v =
@@ -75364,12 +75350,12 @@ module DeleteQueuedReservedInstancesResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "failedQueuedPurchaseDeletionSet"
+                ( "FailedQueuedPurchaseDeletionSet"
                 , FailedQueuedPurchaseDeletionSet.to_query
                     v.failed_queued_purchase_deletions ))
          ; Some
              (Query.Pair
-                ( "successfulQueuedPurchaseDeletionSet"
+                ( "SuccessfulQueuedPurchaseDeletionSet"
                 , SuccessfulQueuedPurchaseDeletionSet.to_query
                     v.successful_queued_purchase_deletions ))
          ])
@@ -75414,7 +75400,7 @@ module GetLaunchTemplateDataResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.launch_template_data (fun f ->
-               Query.Pair ("launchTemplateData", ResponseLaunchTemplateData.to_query f))
+               Query.Pair ("LaunchTemplateData", ResponseLaunchTemplateData.to_query f))
          ])
 
   let to_json v =
@@ -75450,7 +75436,7 @@ module DeleteVpcRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("VpcId", String.to_query v.vpc_id))
          ])
 
@@ -75485,7 +75471,7 @@ module AssociateTransitGatewayMulticastDomainResult = struct
       (Util.list_filter_opt
          [ Util.option_map v.associations (fun f ->
                Query.Pair
-                 ("associations", TransitGatewayMulticastDomainAssociations.to_query f))
+                 ("Associations", TransitGatewayMulticastDomainAssociations.to_query f))
          ])
 
   let to_json v =
@@ -75514,7 +75500,7 @@ module DeleteNetworkInterfacePermissionResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.return (fun f -> Query.Pair ("return", Boolean.to_query f)) ])
+         [ Util.option_map v.return (fun f -> Query.Pair ("Return", Boolean.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -75540,7 +75526,7 @@ module CancelExportTaskRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("exportTaskId", String.to_query v.export_task_id)) ])
+         [ Some (Query.Pair ("ExportTaskId", String.to_query v.export_task_id)) ])
 
   let to_json v =
     `Assoc
@@ -75615,7 +75601,7 @@ module DescribeExportTasksResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("exportTaskSet", ExportTaskList.to_query v.export_tasks)) ])
+         [ Some (Query.Pair ("ExportTaskSet", ExportTaskList.to_query v.export_tasks)) ])
 
   let to_json v =
     `Assoc
@@ -75648,7 +75634,7 @@ module UnmonitorInstancesResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ("instancesSet", InstanceMonitoringList.to_query v.instance_monitorings))
+                ("InstancesSet", InstanceMonitoringList.to_query v.instance_monitorings))
          ])
 
   let to_json v =
@@ -75678,7 +75664,7 @@ module CreateTransitGatewayRouteResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.route (fun f ->
-               Query.Pair ("route", TransitGatewayRoute.to_query f))
+               Query.Pair ("Route", TransitGatewayRoute.to_query f))
          ])
 
   let to_json v =
@@ -75771,10 +75757,10 @@ module DescribeSecurityGroupsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ("securityGroupInfo", SecurityGroupList.to_query v.security_groups))
+                ("SecurityGroupInfo", SecurityGroupList.to_query v.security_groups))
          ])
 
   let to_json v =
@@ -75813,7 +75799,7 @@ module DeleteLocalGatewayRouteTableVpcAssociationResult = struct
       (Util.list_filter_opt
          [ Util.option_map v.local_gateway_route_table_vpc_association (fun f ->
                Query.Pair
-                 ( "localGatewayRouteTableVpcAssociation"
+                 ( "LocalGatewayRouteTableVpcAssociation"
                  , LocalGatewayRouteTableVpcAssociation.to_query f ))
          ])
 
@@ -75941,7 +75927,7 @@ module DeleteSubnetRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("SubnetId", String.to_query v.subnet_id))
          ])
 
@@ -75980,9 +75966,9 @@ module CreateTrafficMirrorTargetResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.client_token (fun f ->
-               Query.Pair ("clientToken", String.to_query f))
+               Query.Pair ("ClientToken", String.to_query f))
          ; Util.option_map v.traffic_mirror_target (fun f ->
-               Query.Pair ("trafficMirrorTarget", TrafficMirrorTarget.to_query f))
+               Query.Pair ("TrafficMirrorTarget", TrafficMirrorTarget.to_query f))
          ])
 
   let to_json v =
@@ -76029,10 +76015,10 @@ module DescribeVpcEndpointServicesResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
-             (Query.Pair ("serviceDetailSet", ServiceDetailSet.to_query v.service_details))
-         ; Some (Query.Pair ("serviceNameSet", ValueStringList.to_query v.service_names))
+             (Query.Pair ("ServiceDetailSet", ServiceDetailSet.to_query v.service_details))
+         ; Some (Query.Pair ("ServiceNameSet", ValueStringList.to_query v.service_names))
          ])
 
   let to_json v =
@@ -76070,7 +76056,7 @@ module DeleteTransitGatewayVpcAttachmentResult = struct
       (Util.list_filter_opt
          [ Util.option_map v.transit_gateway_vpc_attachment (fun f ->
                Query.Pair
-                 ("transitGatewayVpcAttachment", TransitGatewayVpcAttachment.to_query f))
+                 ("TransitGatewayVpcAttachment", TransitGatewayVpcAttachment.to_query f))
          ])
 
   let to_json v =
@@ -76148,10 +76134,10 @@ module GetConsoleOutputResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.timestamp (fun f ->
-               Query.Pair ("timestamp", DateTime.to_query f))
-         ; Util.option_map v.output (fun f -> Query.Pair ("output", String.to_query f))
+               Query.Pair ("Timestamp", DateTime.to_query f))
+         ; Util.option_map v.output (fun f -> Query.Pair ("Output", String.to_query f))
          ; Util.option_map v.instance_id (fun f ->
-               Query.Pair ("instanceId", String.to_query f))
+               Query.Pair ("InstanceId", String.to_query f))
          ])
 
   let to_json v =
@@ -76191,9 +76177,9 @@ module DescribeClientVpnEndpointsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
-             (Query.Pair ("clientVpnEndpoint", EndpointSet.to_query v.client_vpn_endpoints))
+             (Query.Pair ("ClientVpnEndpoint", EndpointSet.to_query v.client_vpn_endpoints))
          ])
 
   let to_json v =
@@ -76221,7 +76207,7 @@ module ModifyInstanceCapacityReservationAttributesResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.return (fun f -> Query.Pair ("return", Boolean.to_query f)) ])
+         [ Util.option_map v.return (fun f -> Query.Pair ("Return", Boolean.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -76295,9 +76281,9 @@ module CreateSpotDatafeedSubscriptionRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.prefix (fun f -> Query.Pair ("prefix", String.to_query f))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
-         ; Some (Query.Pair ("bucket", String.to_query v.bucket))
+         [ Util.option_map v.prefix (fun f -> Query.Pair ("Prefix", String.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
+         ; Some (Query.Pair ("Bucket", String.to_query v.bucket))
          ])
 
   let to_json v =
@@ -76359,7 +76345,7 @@ module DescribeTransitGatewayAttachmentsRequest = struct
          ; Some (Query.Pair ("Filter", FilterList.to_query v.filters))
          ; Some
              (Query.Pair
-                ( "TransitGatewayAttachmentIds.member"
+                ( "TransitGatewayAttachmentIds"
                 , TransitGatewayAttachmentIdStringList.to_query
                     v.transit_gateway_attachment_ids ))
          ])
@@ -76498,7 +76484,7 @@ module CreateFleetRequest = struct
                     v.target_capacity_specification ))
          ; Some
              (Query.Pair
-                ( "LaunchTemplateConfigs.member"
+                ( "LaunchTemplateConfigs"
                 , FleetLaunchTemplateConfigListRequest.to_query v.launch_template_configs
                 ))
          ; Util.option_map v.excess_capacity_termination_policy (fun f ->
@@ -76591,7 +76577,7 @@ module RejectVpcEndpointConnectionsResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("unsuccessful", UnsuccessfulItemSet.to_query v.unsuccessful))
+         [ Some (Query.Pair ("Unsuccessful", UnsuccessfulItemSet.to_query v.unsuccessful))
          ])
 
   let to_json v =
@@ -76734,7 +76720,7 @@ module DeregisterTransitGatewayMulticastGroupSourcesResult = struct
       (Util.list_filter_opt
          [ Util.option_map v.deregistered_multicast_group_sources (fun f ->
                Query.Pair
-                 ( "deregisteredMulticastGroupSources"
+                 ( "DeregisteredMulticastGroupSources"
                  , TransitGatewayMulticastDeregisteredGroupSources.to_query f ))
          ])
 
@@ -76777,10 +76763,10 @@ module DescribeInternetGatewaysResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ("internetGatewaySet", InternetGatewayList.to_query v.internet_gateways))
+                ("InternetGatewaySet", InternetGatewayList.to_query v.internet_gateways))
          ])
 
   let to_json v =
@@ -76842,8 +76828,8 @@ module DescribeNetworkInterfacesRequest = struct
              (Query.Pair
                 ( "NetworkInterfaceId"
                 , NetworkInterfaceIdList.to_query v.network_interface_ids ))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
-         ; Some (Query.Pair ("filter", FilterList.to_query v.filters))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
+         ; Some (Query.Pair ("Filter", FilterList.to_query v.filters))
          ])
 
   let to_json v =
@@ -76990,10 +76976,10 @@ module DescribeAccountAttributesRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some
              (Query.Pair
-                ( "attributeName"
+                ( "AttributeName"
                 , AccountAttributeNameStringList.to_query v.attribute_names ))
          ])
 
@@ -77035,10 +77021,10 @@ module DescribeConversionTasksRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some
              (Query.Pair
-                ("conversionTaskId", ConversionIdStringList.to_query v.conversion_task_ids))
+                ("ConversionTaskId", ConversionIdStringList.to_query v.conversion_task_ids))
          ])
 
   let to_json v =
@@ -77094,7 +77080,7 @@ module DisassociateTransitGatewayMulticastDomainRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
-         ; Some (Query.Pair ("SubnetIds.member", ValueStringList.to_query v.subnet_ids))
+         ; Some (Query.Pair ("SubnetIds", ValueStringList.to_query v.subnet_ids))
          ; Util.option_map v.transit_gateway_attachment_id (fun f ->
                Query.Pair ("TransitGatewayAttachmentId", String.to_query f))
          ; Util.option_map v.transit_gateway_multicast_domain_id (fun f ->
@@ -77328,7 +77314,7 @@ module ModifyVolumeAttributeRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("VolumeId", String.to_query v.volume_id))
          ; Util.option_map v.auto_enable_i_o (fun f ->
                Query.Pair ("AutoEnableIO", AttributeBooleanValue.to_query f))
@@ -77430,8 +77416,8 @@ module AcceptVpcPeeringConnectionRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.vpc_peering_connection_id (fun f ->
-               Query.Pair ("vpcPeeringConnectionId", String.to_query f))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+               Query.Pair ("VpcPeeringConnectionId", String.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -77473,9 +77459,9 @@ module RevokeSecurityGroupIngressResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "unknownIpPermissionSet"
+                ( "UnknownIpPermissionSet"
                 , IpPermissionList.to_query v.unknown_ip_permissions ))
-         ; Util.option_map v.return (fun f -> Query.Pair ("return", Boolean.to_query f))
+         ; Util.option_map v.return (fun f -> Query.Pair ("Return", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -77516,9 +77502,9 @@ module CreateTrafficMirrorSessionResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.client_token (fun f ->
-               Query.Pair ("clientToken", String.to_query f))
+               Query.Pair ("ClientToken", String.to_query f))
          ; Util.option_map v.traffic_mirror_session (fun f ->
-               Query.Pair ("trafficMirrorSession", TrafficMirrorSession.to_query f))
+               Query.Pair ("TrafficMirrorSession", TrafficMirrorSession.to_query f))
          ])
 
   let to_json v =
@@ -77624,9 +77610,9 @@ module DescribeFleetsResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("fleetSet", FleetSet.to_query v.fleets))
+         [ Some (Query.Pair ("FleetSet", FleetSet.to_query v.fleets))
          ; Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ])
 
   let to_json v =
@@ -77675,7 +77661,7 @@ module DescribeImportImageTasksRequest = struct
          ; Util.option_map v.max_results (fun f ->
                Query.Pair ("MaxResults", Integer.to_query f))
          ; Some (Query.Pair ("ImportTaskId", ImportTaskIdList.to_query v.import_task_ids))
-         ; Some (Query.Pair ("Filters.member", FilterList.to_query v.filters))
+         ; Some (Query.Pair ("Filters", FilterList.to_query v.filters))
          ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
@@ -77719,7 +77705,7 @@ module UnmonitorInstancesRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("InstanceId", InstanceIdStringList.to_query v.instance_ids))
          ])
 
@@ -77773,9 +77759,9 @@ module ImportKeyPairRequest = struct
          [ Some
              (Query.Pair
                 ("TagSpecification", TagSpecificationList.to_query v.tag_specifications))
-         ; Some (Query.Pair ("publicKeyMaterial", Blob.to_query v.public_key_material))
-         ; Some (Query.Pair ("keyName", String.to_query v.key_name))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         ; Some (Query.Pair ("PublicKeyMaterial", Blob.to_query v.public_key_material))
+         ; Some (Query.Pair ("KeyName", String.to_query v.key_name))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -77813,7 +77799,7 @@ module DeleteTrafficMirrorSessionResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.traffic_mirror_session_id (fun f ->
-               Query.Pair ("trafficMirrorSessionId", String.to_query f))
+               Query.Pair ("TrafficMirrorSessionId", String.to_query f))
          ])
 
   let to_json v =
@@ -77893,9 +77879,9 @@ module DescribeInternetGatewaysRequest = struct
                Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "internetGatewayId"
+                ( "InternetGatewayId"
                 , InternetGatewayIdList.to_query v.internet_gateway_ids ))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("Filter", FilterList.to_query v.filters))
          ])
 
@@ -77932,7 +77918,7 @@ module DeleteVpcPeeringConnectionResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.return (fun f -> Query.Pair ("return", Boolean.to_query f)) ])
+         [ Util.option_map v.return (fun f -> Query.Pair ("Return", Boolean.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -78047,10 +78033,10 @@ module DescribeSpotFleetRequestsResponse = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "spotFleetRequestConfigSet"
+                ( "SpotFleetRequestConfigSet"
                 , SpotFleetRequestConfigSet.to_query v.spot_fleet_request_configs ))
          ; Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ])
 
   let to_json v =
@@ -78085,7 +78071,7 @@ module ImportVolumeResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.conversion_task (fun f ->
-               Query.Pair ("conversionTask", ConversionTask.to_query f))
+               Query.Pair ("ConversionTask", ConversionTask.to_query f))
          ])
 
   let to_json v =
@@ -78172,7 +78158,7 @@ module DescribeVolumeAttributeRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("VolumeId", String.to_query v.volume_id))
          ; Some (Query.Pair ("Attribute", VolumeAttributeName.to_query v.attribute))
          ])
@@ -78253,7 +78239,7 @@ module CreateNetworkAclResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.network_acl (fun f ->
-               Query.Pair ("networkAcl", NetworkAcl.to_query f))
+               Query.Pair ("NetworkAcl", NetworkAcl.to_query f))
          ])
 
   let to_json v =
@@ -78283,7 +78269,7 @@ module DisassociateIamInstanceProfileResult = struct
       (Util.list_filter_opt
          [ Util.option_map v.iam_instance_profile_association (fun f ->
                Query.Pair
-                 ( "iamInstanceProfileAssociation"
+                 ( "IamInstanceProfileAssociation"
                  , IamInstanceProfileAssociation.to_query f ))
          ])
 
@@ -78314,7 +78300,7 @@ module CreateRouteTableResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.route_table (fun f ->
-               Query.Pair ("routeTable", RouteTable.to_query f))
+               Query.Pair ("RouteTable", RouteTable.to_query f))
          ])
 
   let to_json v =
@@ -78347,8 +78333,8 @@ module DeleteNetworkInterfaceRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Some
-             (Query.Pair ("networkInterfaceId", String.to_query v.network_interface_id))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+             (Query.Pair ("NetworkInterfaceId", String.to_query v.network_interface_id))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -78407,7 +78393,7 @@ module DescribeAvailabilityZonesResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "availabilityZoneInfo"
+                ( "AvailabilityZoneInfo"
                 , AvailabilityZoneList.to_query v.availability_zones ))
          ])
 
@@ -78503,9 +78489,9 @@ module StartInstancesRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Util.option_map v.additional_info (fun f ->
-               Query.Pair ("additionalInfo", String.to_query f))
+               Query.Pair ("AdditionalInfo", String.to_query f))
          ; Some (Query.Pair ("InstanceId", InstanceIdStringList.to_query v.instance_ids))
          ])
 
@@ -78612,37 +78598,37 @@ module ImportImageResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("tagSet", TagList.to_query v.tags))
+         [ Some (Query.Pair ("TagSet", TagList.to_query v.tags))
          ; Some
              (Query.Pair
-                ( "licenseSpecifications"
+                ( "LicenseSpecifications"
                 , ImportImageLicenseSpecificationListResponse.to_query
                     v.license_specifications ))
          ; Util.option_map v.status_message (fun f ->
-               Query.Pair ("statusMessage", String.to_query f))
-         ; Util.option_map v.status (fun f -> Query.Pair ("status", String.to_query f))
+               Query.Pair ("StatusMessage", String.to_query f))
+         ; Util.option_map v.status (fun f -> Query.Pair ("Status", String.to_query f))
          ; Some
              (Query.Pair
-                ("snapshotDetailSet", SnapshotDetailList.to_query v.snapshot_details))
+                ("SnapshotDetailSet", SnapshotDetailList.to_query v.snapshot_details))
          ; Util.option_map v.progress (fun f ->
-               Query.Pair ("progress", String.to_query f))
+               Query.Pair ("Progress", String.to_query f))
          ; Util.option_map v.platform (fun f ->
-               Query.Pair ("platform", String.to_query f))
+               Query.Pair ("Platform", String.to_query f))
          ; Util.option_map v.license_type (fun f ->
-               Query.Pair ("licenseType", String.to_query f))
+               Query.Pair ("LicenseType", String.to_query f))
          ; Util.option_map v.kms_key_id (fun f ->
-               Query.Pair ("kmsKeyId", String.to_query f))
+               Query.Pair ("KmsKeyId", String.to_query f))
          ; Util.option_map v.import_task_id (fun f ->
-               Query.Pair ("importTaskId", String.to_query f))
-         ; Util.option_map v.image_id (fun f -> Query.Pair ("imageId", String.to_query f))
+               Query.Pair ("ImportTaskId", String.to_query f))
+         ; Util.option_map v.image_id (fun f -> Query.Pair ("ImageId", String.to_query f))
          ; Util.option_map v.hypervisor (fun f ->
-               Query.Pair ("hypervisor", String.to_query f))
+               Query.Pair ("Hypervisor", String.to_query f))
          ; Util.option_map v.encrypted (fun f ->
-               Query.Pair ("encrypted", Boolean.to_query f))
+               Query.Pair ("Encrypted", Boolean.to_query f))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
          ; Util.option_map v.architecture (fun f ->
-               Query.Pair ("architecture", String.to_query f))
+               Query.Pair ("Architecture", String.to_query f))
          ])
 
   let to_json v =
@@ -78710,7 +78696,7 @@ module DescribeCustomerGatewaysResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ("customerGatewaySet", CustomerGatewayList.to_query v.customer_gateways))
+                ("CustomerGatewaySet", CustomerGatewayList.to_query v.customer_gateways))
          ])
 
   let to_json v =
@@ -78764,16 +78750,16 @@ module DescribeSpotFleetRequestHistoryRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("startTime", DateTime.to_query v.start_time))
+         [ Some (Query.Pair ("StartTime", DateTime.to_query v.start_time))
          ; Some
-             (Query.Pair ("spotFleetRequestId", String.to_query v.spot_fleet_request_id))
+             (Query.Pair ("SpotFleetRequestId", String.to_query v.spot_fleet_request_id))
          ; Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Util.option_map v.max_results (fun f ->
-               Query.Pair ("maxResults", Integer.to_query f))
+               Query.Pair ("MaxResults", Integer.to_query f))
          ; Util.option_map v.event_type (fun f ->
-               Query.Pair ("eventType", EventType.to_query f))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+               Query.Pair ("EventType", EventType.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -78813,7 +78799,7 @@ module ModifyVpnConnectionResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.vpn_connection (fun f ->
-               Query.Pair ("vpnConnection", VpnConnection.to_query f))
+               Query.Pair ("VpnConnection", VpnConnection.to_query f))
          ])
 
   let to_json v =
@@ -78849,7 +78835,7 @@ module DeleteVolumeRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("VolumeId", String.to_query v.volume_id))
          ])
 
@@ -78884,7 +78870,7 @@ module ReplaceIamInstanceProfileAssociationResult = struct
       (Util.list_filter_opt
          [ Util.option_map v.iam_instance_profile_association (fun f ->
                Query.Pair
-                 ( "iamInstanceProfileAssociation"
+                 ( "IamInstanceProfileAssociation"
                  , IamInstanceProfileAssociation.to_query f ))
          ])
 
@@ -78967,9 +78953,9 @@ module DescribeVolumeStatusResult = struct
     Query.List
       (Util.list_filter_opt
          [ Some
-             (Query.Pair ("volumeStatusSet", VolumeStatusList.to_query v.volume_statuses))
+             (Query.Pair ("VolumeStatusSet", VolumeStatusList.to_query v.volume_statuses))
          ; Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ])
 
   let to_json v =
@@ -79004,9 +78990,9 @@ module AssociateClientVpnTargetNetworkResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.status (fun f ->
-               Query.Pair ("status", AssociationStatus.to_query f))
+               Query.Pair ("Status", AssociationStatus.to_query f))
          ; Util.option_map v.association_id (fun f ->
-               Query.Pair ("associationId", String.to_query f))
+               Query.Pair ("AssociationId", String.to_query f))
          ])
 
   let to_json v =
@@ -79034,7 +79020,7 @@ module ReplaceTransitGatewayRouteResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.route (fun f ->
-               Query.Pair ("route", TransitGatewayRoute.to_query f))
+               Query.Pair ("Route", TransitGatewayRoute.to_query f))
          ])
 
   let to_json v =
@@ -79062,7 +79048,7 @@ module DeleteVpcEndpointServiceConfigurationsResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("unsuccessful", UnsuccessfulItemSet.to_query v.unsuccessful))
+         [ Some (Query.Pair ("Unsuccessful", UnsuccessfulItemSet.to_query v.unsuccessful))
          ])
 
   let to_json v =
@@ -79088,7 +79074,7 @@ module ModifyEbsDefaultKmsKeyIdResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.kms_key_id (fun f ->
-               Query.Pair ("kmsKeyId", String.to_query f))
+               Query.Pair ("KmsKeyId", String.to_query f))
          ])
 
   let to_json v =
@@ -79111,7 +79097,7 @@ module DisableVpcClassicLinkResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.return (fun f -> Query.Pair ("return", Boolean.to_query f)) ])
+         [ Util.option_map v.return (fun f -> Query.Pair ("Return", Boolean.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -79137,7 +79123,7 @@ module DeleteFlowLogsResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("unsuccessful", UnsuccessfulItemSet.to_query v.unsuccessful))
+         [ Some (Query.Pair ("Unsuccessful", UnsuccessfulItemSet.to_query v.unsuccessful))
          ])
 
   let to_json v =
@@ -79166,7 +79152,7 @@ module AttachVpnGatewayResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.vpc_attachment (fun f ->
-               Query.Pair ("attachment", VpcAttachment.to_query f))
+               Query.Pair ("Attachment", VpcAttachment.to_query f))
          ])
 
   let to_json v =
@@ -79303,21 +79289,21 @@ module ImageAttribute = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.sriov_net_support (fun f ->
-               Query.Pair ("sriovNetSupport", AttributeValue.to_query f))
+               Query.Pair ("SriovNetSupport", AttributeValue.to_query f))
          ; Util.option_map v.ramdisk_id (fun f ->
-               Query.Pair ("ramdisk", AttributeValue.to_query f))
+               Query.Pair ("Ramdisk", AttributeValue.to_query f))
          ; Util.option_map v.kernel_id (fun f ->
-               Query.Pair ("kernel", AttributeValue.to_query f))
+               Query.Pair ("Kernel", AttributeValue.to_query f))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", AttributeValue.to_query f))
-         ; Some (Query.Pair ("productCodes", ProductCodeList.to_query v.product_codes))
+               Query.Pair ("Description", AttributeValue.to_query f))
+         ; Some (Query.Pair ("ProductCodes", ProductCodeList.to_query v.product_codes))
          ; Some
              (Query.Pair
-                ("launchPermission", LaunchPermissionList.to_query v.launch_permissions))
-         ; Util.option_map v.image_id (fun f -> Query.Pair ("imageId", String.to_query f))
+                ("LaunchPermission", LaunchPermissionList.to_query v.launch_permissions))
+         ; Util.option_map v.image_id (fun f -> Query.Pair ("ImageId", String.to_query f))
          ; Some
              (Query.Pair
-                ( "blockDeviceMapping"
+                ( "BlockDeviceMapping"
                 , BlockDeviceMappingList.to_query v.block_device_mappings ))
          ])
 
@@ -79367,7 +79353,7 @@ module DetachClassicLinkVpcResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.return (fun f -> Query.Pair ("return", Boolean.to_query f)) ])
+         [ Util.option_map v.return (fun f -> Query.Pair ("Return", Boolean.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -79400,10 +79386,10 @@ module GetTransitGatewayRouteTableAssociationsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "associations"
+                ( "Associations"
                 , TransitGatewayRouteTableAssociationList.to_query v.associations ))
          ])
 
@@ -79499,7 +79485,7 @@ module DeleteSnapshotRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("SnapshotId", String.to_query v.snapshot_id))
          ])
 
@@ -79664,9 +79650,9 @@ module DescribeHostReservationOfferingsResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("offeringSet", HostOfferingSet.to_query v.offering_set))
+         [ Some (Query.Pair ("OfferingSet", HostOfferingSet.to_query v.offering_set))
          ; Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ])
 
   let to_json v =
@@ -79727,7 +79713,7 @@ module DescribeTransitGatewaysRequest = struct
          ; Some (Query.Pair ("Filter", FilterList.to_query v.filters))
          ; Some
              (Query.Pair
-                ( "TransitGatewayIds.member"
+                ( "TransitGatewayIds"
                 , TransitGatewayIdStringList.to_query v.transit_gateway_ids ))
          ])
 
@@ -79807,13 +79793,13 @@ module ModifyInstancePlacementRequest = struct
          ; Util.option_map v.partition_number (fun f ->
                Query.Pair ("PartitionNumber", Integer.to_query f))
          ; Util.option_map v.tenancy (fun f ->
-               Query.Pair ("tenancy", HostTenancy.to_query f))
-         ; Some (Query.Pair ("instanceId", String.to_query v.instance_id))
-         ; Util.option_map v.host_id (fun f -> Query.Pair ("hostId", String.to_query f))
+               Query.Pair ("Tenancy", HostTenancy.to_query f))
+         ; Some (Query.Pair ("InstanceId", String.to_query v.instance_id))
+         ; Util.option_map v.host_id (fun f -> Query.Pair ("HostId", String.to_query f))
          ; Util.option_map v.group_name (fun f ->
                Query.Pair ("GroupName", String.to_query f))
          ; Util.option_map v.affinity (fun f ->
-               Query.Pair ("affinity", Affinity.to_query f))
+               Query.Pair ("Affinity", Affinity.to_query f))
          ])
 
   let to_json v =
@@ -79880,7 +79866,7 @@ module DescribeNatGatewaysRequest = struct
                 ("NatGatewayId", NatGatewayIdStringList.to_query v.nat_gateway_ids))
          ; Util.option_map v.max_results (fun f ->
                Query.Pair ("MaxResults", Integer.to_query f))
-         ; Some (Query.Pair ("Filter.member", FilterList.to_query v.filter))
+         ; Some (Query.Pair ("Filter", FilterList.to_query v.filter))
          ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
@@ -80002,10 +79988,10 @@ module DescribeSpotInstanceRequestsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "spotInstanceRequestSet"
+                ( "SpotInstanceRequestSet"
                 , SpotInstanceRequestList.to_query v.spot_instance_requests ))
          ])
 
@@ -80044,7 +80030,7 @@ module ModifyTransitGatewayVpcAttachmentResult = struct
       (Util.list_filter_opt
          [ Util.option_map v.transit_gateway_vpc_attachment (fun f ->
                Query.Pair
-                 ("transitGatewayVpcAttachment", TransitGatewayVpcAttachment.to_query f))
+                 ("TransitGatewayVpcAttachment", TransitGatewayVpcAttachment.to_query f))
          ])
 
   let to_json v =
@@ -80077,7 +80063,7 @@ module ModifyFpgaImageAttributeResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.fpga_image_attribute (fun f ->
-               Query.Pair ("fpgaImageAttribute", FpgaImageAttribute.to_query f))
+               Query.Pair ("FpgaImageAttribute", FpgaImageAttribute.to_query f))
          ])
 
   let to_json v =
@@ -80246,7 +80232,7 @@ module AcceptVpcPeeringConnectionResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.vpc_peering_connection (fun f ->
-               Query.Pair ("vpcPeeringConnection", VpcPeeringConnection.to_query f))
+               Query.Pair ("VpcPeeringConnection", VpcPeeringConnection.to_query f))
          ])
 
   let to_json v =
@@ -80350,7 +80336,7 @@ module CreateNetworkInterfacePermissionResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.interface_permission (fun f ->
-               Query.Pair ("interfacePermission", NetworkInterfacePermission.to_query f))
+               Query.Pair ("InterfacePermission", NetworkInterfacePermission.to_query f))
          ])
 
   let to_json v =
@@ -80716,7 +80702,7 @@ module CreateVpnGatewayRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Util.option_map v.amazon_side_asn (fun f ->
                Query.Pair ("AmazonSideAsn", Long.to_query f))
          ; Some
@@ -80824,7 +80810,7 @@ module ModifyTrafficMirrorSessionResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.traffic_mirror_session (fun f ->
-               Query.Pair ("trafficMirrorSession", TrafficMirrorSession.to_query f))
+               Query.Pair ("TrafficMirrorSession", TrafficMirrorSession.to_query f))
          ])
 
   let to_json v =
@@ -80853,7 +80839,7 @@ module DisableVpcClassicLinkDnsSupportResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.return (fun f -> Query.Pair ("return", Boolean.to_query f)) ])
+         [ Util.option_map v.return (fun f -> Query.Pair ("Return", Boolean.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -80874,7 +80860,7 @@ module RegisterImageResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.image_id (fun f -> Query.Pair ("imageId", String.to_query f))
+         [ Util.option_map v.image_id (fun f -> Query.Pair ("ImageId", String.to_query f))
          ])
 
   let to_json v =
@@ -80914,7 +80900,7 @@ module AttachVolumeRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("VolumeId", String.to_query v.volume_id))
          ; Some (Query.Pair ("InstanceId", String.to_query v.instance_id))
          ; Some (Query.Pair ("Device", String.to_query v.device))
@@ -80949,7 +80935,7 @@ module DeleteLocalGatewayRouteResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.route (fun f ->
-               Query.Pair ("route", LocalGatewayRoute.to_query f))
+               Query.Pair ("Route", LocalGatewayRoute.to_query f))
          ])
 
   let to_json v =
@@ -80981,7 +80967,7 @@ module CancelReservedInstancesListingResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "reservedInstancesListingsSet"
+                ( "ReservedInstancesListingsSet"
                 , ReservedInstancesListingList.to_query v.reserved_instances_listings ))
          ])
 
@@ -81024,7 +81010,7 @@ module CreateTagsRequest = struct
       (Util.list_filter_opt
          [ Some (Query.Pair ("Tag", TagList.to_query v.tags))
          ; Some (Query.Pair ("ResourceId", ResourceIdList.to_query v.resources))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -81082,7 +81068,7 @@ module RegisterTransitGatewayMulticastGroupMembersRequest = struct
          [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some
              (Query.Pair
-                ( "NetworkInterfaceIds.member"
+                ( "NetworkInterfaceIds"
                 , TransitGatewayNetworkInterfaceIdList.to_query v.network_interface_ids ))
          ; Util.option_map v.group_ip_address (fun f ->
                Query.Pair ("GroupIpAddress", String.to_query f))
@@ -81151,10 +81137,10 @@ module CreatePlacementGroupRequest = struct
          ; Util.option_map v.partition_count (fun f ->
                Query.Pair ("PartitionCount", Integer.to_query f))
          ; Util.option_map v.strategy (fun f ->
-               Query.Pair ("strategy", PlacementStrategy.to_query f))
+               Query.Pair ("Strategy", PlacementStrategy.to_query f))
          ; Util.option_map v.group_name (fun f ->
-               Query.Pair ("groupName", String.to_query f))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+               Query.Pair ("GroupName", String.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -81271,12 +81257,12 @@ module AssociateAddressRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.private_ip_address (fun f ->
-               Query.Pair ("privateIpAddress", String.to_query f))
+               Query.Pair ("PrivateIpAddress", String.to_query f))
          ; Util.option_map v.network_interface_id (fun f ->
-               Query.Pair ("networkInterfaceId", String.to_query f))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+               Query.Pair ("NetworkInterfaceId", String.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Util.option_map v.allow_reassociation (fun f ->
-               Query.Pair ("allowReassociation", Boolean.to_query f))
+               Query.Pair ("AllowReassociation", Boolean.to_query f))
          ; Util.option_map v.public_ip (fun f ->
                Query.Pair ("PublicIp", String.to_query f))
          ; Util.option_map v.instance_id (fun f ->
@@ -81374,7 +81360,7 @@ module ModifyVpnConnectionOptionsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.vpn_connection (fun f ->
-               Query.Pair ("vpnConnection", VpnConnection.to_query f))
+               Query.Pair ("VpnConnection", VpnConnection.to_query f))
          ])
 
   let to_json v =
@@ -81483,8 +81469,8 @@ module RejectVpcPeeringConnectionRequest = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ("vpcPeeringConnectionId", String.to_query v.vpc_peering_connection_id))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+                ("VpcPeeringConnectionId", String.to_query v.vpc_peering_connection_id))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -81542,7 +81528,7 @@ module AllocateAddressRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Util.option_map v.customer_owned_ipv4_pool (fun f ->
                Query.Pair ("CustomerOwnedIpv4Pool", String.to_query f))
          ; Util.option_map v.network_border_group (fun f ->
@@ -81728,7 +81714,7 @@ module BundleInstanceResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.bundle_task (fun f ->
-               Query.Pair ("bundleInstanceTask", BundleTask.to_query f))
+               Query.Pair ("BundleInstanceTask", BundleTask.to_query f))
          ])
 
   let to_json v =
@@ -81764,10 +81750,10 @@ module DescribeTransitGatewayRouteTablesResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "transitGatewayRouteTables"
+                ( "TransitGatewayRouteTables"
                 , TransitGatewayRouteTableList.to_query v.transit_gateway_route_tables ))
          ])
 
@@ -81810,10 +81796,10 @@ module AssociateSubnetCidrBlockResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.subnet_id (fun f ->
-               Query.Pair ("subnetId", String.to_query f))
+               Query.Pair ("SubnetId", String.to_query f))
          ; Util.option_map v.ipv6_cidr_block_association (fun f ->
                Query.Pair
-                 ("ipv6CidrBlockAssociation", SubnetIpv6CidrBlockAssociation.to_query f))
+                 ("Ipv6CidrBlockAssociation", SubnetIpv6CidrBlockAssociation.to_query f))
          ])
 
   let to_json v =
@@ -81862,8 +81848,8 @@ module CreateRouteTableRequest = struct
          [ Some
              (Query.Pair
                 ("TagSpecification", TagSpecificationList.to_query v.tag_specifications))
-         ; Some (Query.Pair ("vpcId", String.to_query v.vpc_id))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         ; Some (Query.Pair ("VpcId", String.to_query v.vpc_id))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -81987,37 +81973,37 @@ module InstanceAttribute = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.user_data (fun f ->
-               Query.Pair ("userData", AttributeValue.to_query f))
+               Query.Pair ("UserData", AttributeValue.to_query f))
          ; Util.option_map v.sriov_net_support (fun f ->
-               Query.Pair ("sriovNetSupport", AttributeValue.to_query f))
+               Query.Pair ("SriovNetSupport", AttributeValue.to_query f))
          ; Util.option_map v.source_dest_check (fun f ->
-               Query.Pair ("sourceDestCheck", AttributeBooleanValue.to_query f))
+               Query.Pair ("SourceDestCheck", AttributeBooleanValue.to_query f))
          ; Util.option_map v.root_device_name (fun f ->
-               Query.Pair ("rootDeviceName", AttributeValue.to_query f))
+               Query.Pair ("RootDeviceName", AttributeValue.to_query f))
          ; Util.option_map v.ramdisk_id (fun f ->
-               Query.Pair ("ramdisk", AttributeValue.to_query f))
-         ; Some (Query.Pair ("productCodes", ProductCodeList.to_query v.product_codes))
+               Query.Pair ("Ramdisk", AttributeValue.to_query f))
+         ; Some (Query.Pair ("ProductCodes", ProductCodeList.to_query v.product_codes))
          ; Util.option_map v.kernel_id (fun f ->
-               Query.Pair ("kernel", AttributeValue.to_query f))
+               Query.Pair ("Kernel", AttributeValue.to_query f))
          ; Util.option_map v.instance_type (fun f ->
-               Query.Pair ("instanceType", AttributeValue.to_query f))
+               Query.Pair ("InstanceType", AttributeValue.to_query f))
          ; Util.option_map v.instance_initiated_shutdown_behavior (fun f ->
-               Query.Pair ("instanceInitiatedShutdownBehavior", AttributeValue.to_query f))
+               Query.Pair ("InstanceInitiatedShutdownBehavior", AttributeValue.to_query f))
          ; Util.option_map v.instance_id (fun f ->
-               Query.Pair ("instanceId", String.to_query f))
+               Query.Pair ("InstanceId", String.to_query f))
          ; Util.option_map v.ebs_optimized (fun f ->
-               Query.Pair ("ebsOptimized", AttributeBooleanValue.to_query f))
+               Query.Pair ("EbsOptimized", AttributeBooleanValue.to_query f))
          ; Util.option_map v.enclave_options (fun f ->
-               Query.Pair ("enclaveOptions", EnclaveOptions.to_query f))
+               Query.Pair ("EnclaveOptions", EnclaveOptions.to_query f))
          ; Util.option_map v.ena_support (fun f ->
-               Query.Pair ("enaSupport", AttributeBooleanValue.to_query f))
+               Query.Pair ("EnaSupport", AttributeBooleanValue.to_query f))
          ; Util.option_map v.disable_api_termination (fun f ->
-               Query.Pair ("disableApiTermination", AttributeBooleanValue.to_query f))
+               Query.Pair ("DisableApiTermination", AttributeBooleanValue.to_query f))
          ; Some
              (Query.Pair
-                ( "blockDeviceMapping"
+                ( "BlockDeviceMapping"
                 , InstanceBlockDeviceMappingList.to_query v.block_device_mappings ))
-         ; Some (Query.Pair ("groupSet", GroupIdentifierList.to_query v.groups))
+         ; Some (Query.Pair ("GroupSet", GroupIdentifierList.to_query v.groups))
          ])
 
   let to_json v =
@@ -82159,7 +82145,7 @@ module ModifyTransitGatewayResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.transit_gateway (fun f ->
-               Query.Pair ("transitGateway", TransitGateway.to_query f))
+               Query.Pair ("TransitGateway", TransitGateway.to_query f))
          ])
 
   let to_json v =
@@ -82299,7 +82285,7 @@ module DescribeRouteTablesRequest = struct
          ; Some
              (Query.Pair
                 ("RouteTableId", RouteTableIdStringList.to_query v.route_table_ids))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("Filter", FilterList.to_query v.filters))
          ])
 
@@ -82456,8 +82442,8 @@ module ModifyHostsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Some
-             (Query.Pair ("unsuccessful", UnsuccessfulItemList.to_query v.unsuccessful))
-         ; Some (Query.Pair ("successful", ResponseHostIdList.to_query v.successful))
+             (Query.Pair ("Unsuccessful", UnsuccessfulItemList.to_query v.unsuccessful))
+         ; Some (Query.Pair ("Successful", ResponseHostIdList.to_query v.successful))
          ])
 
   let to_json v =
@@ -82497,7 +82483,7 @@ module DeregisterTransitGatewayMulticastGroupMembersResult = struct
       (Util.list_filter_opt
          [ Util.option_map v.deregistered_multicast_group_members (fun f ->
                Query.Pair
-                 ( "deregisteredMulticastGroupMembers"
+                 ( "DeregisteredMulticastGroupMembers"
                  , TransitGatewayMulticastDeregisteredGroupMembers.to_query f ))
          ])
 
@@ -82541,10 +82527,10 @@ module DescribeClientVpnAuthorizationRulesResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ("authorizationRule", AuthorizationRuleSet.to_query v.authorization_rules))
+                ("AuthorizationRule", AuthorizationRuleSet.to_query v.authorization_rules))
          ])
 
   let to_json v =
@@ -82638,7 +82624,7 @@ module StopInstancesResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ("instancesSet", InstanceStateChangeList.to_query v.stopping_instances))
+                ("InstancesSet", InstanceStateChangeList.to_query v.stopping_instances))
          ])
 
   let to_json v =
@@ -82670,7 +82656,7 @@ module RequestSpotFleetResponse = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.spot_fleet_request_id (fun f ->
-               Query.Pair ("spotFleetRequestId", String.to_query f))
+               Query.Pair ("SpotFleetRequestId", String.to_query f))
          ])
 
   let to_json v =
@@ -82710,10 +82696,10 @@ module GetTransitGatewayMulticastDomainAssociationsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "multicastDomainAssociations"
+                ( "MulticastDomainAssociations"
                 , TransitGatewayMulticastDomainAssociationList.to_query
                     v.multicast_domain_associations ))
          ])
@@ -82986,12 +82972,12 @@ module ModifyInstanceCreditSpecificationResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "unsuccessfulInstanceCreditSpecificationSet"
+                ( "UnsuccessfulInstanceCreditSpecificationSet"
                 , UnsuccessfulInstanceCreditSpecificationSet.to_query
                     v.unsuccessful_instance_credit_specifications ))
          ; Some
              (Query.Pair
-                ( "successfulInstanceCreditSpecificationSet"
+                ( "SuccessfulInstanceCreditSpecificationSet"
                 , SuccessfulInstanceCreditSpecificationSet.to_query
                     v.successful_instance_credit_specifications ))
          ])
@@ -83040,7 +83026,7 @@ module ModifyTransitGatewayPrefixListReferenceResult = struct
       (Util.list_filter_opt
          [ Util.option_map v.transit_gateway_prefix_list_reference (fun f ->
                Query.Pair
-                 ( "transitGatewayPrefixListReference"
+                 ( "TransitGatewayPrefixListReference"
                  , TransitGatewayPrefixListReference.to_query f ))
          ])
 
@@ -83084,10 +83070,10 @@ module DescribeReservedInstancesOfferingsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "reservedInstancesOfferingsSet"
+                ( "ReservedInstancesOfferingsSet"
                 , ReservedInstancesOfferingList.to_query v.reserved_instances_offerings ))
          ])
 
@@ -83131,7 +83117,7 @@ module AssociateDhcpOptionsRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("VpcId", String.to_query v.vpc_id))
          ; Some (Query.Pair ("DhcpOptionsId", String.to_query v.dhcp_options_id))
          ])
@@ -83169,7 +83155,7 @@ module AuthorizeClientVpnIngressResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.status (fun f ->
-               Query.Pair ("status", ClientVpnAuthorizationRuleStatus.to_query f))
+               Query.Pair ("Status", ClientVpnAuthorizationRuleStatus.to_query f))
          ])
 
   let to_json v =
@@ -83204,7 +83190,7 @@ module DeleteKeyPairRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Util.option_map v.key_pair_id (fun f ->
                Query.Pair ("KeyPairId", String.to_query f))
          ; Util.option_map v.key_name (fun f -> Query.Pair ("KeyName", String.to_query f))
@@ -83250,11 +83236,11 @@ module DescribeScheduledInstanceAvailabilityResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "scheduledInstanceAvailabilitySet"
+                ( "ScheduledInstanceAvailabilitySet"
                 , ScheduledInstanceAvailabilitySet.to_query
                     v.scheduled_instance_availability_set ))
          ; Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ])
 
   let to_json v =
@@ -83290,7 +83276,7 @@ module RestoreManagedPrefixListVersionResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.prefix_list (fun f ->
-               Query.Pair ("prefixList", ManagedPrefixList.to_query f))
+               Query.Pair ("PrefixList", ManagedPrefixList.to_query f))
          ])
 
   let to_json v =
@@ -83327,8 +83313,8 @@ module DescribeInstancesResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
-         ; Some (Query.Pair ("reservationSet", ReservationList.to_query v.reservations))
+               Query.Pair ("NextToken", String.to_query f))
+         ; Some (Query.Pair ("ReservationSet", ReservationList.to_query v.reservations))
          ])
 
   let to_json v =
@@ -83358,7 +83344,7 @@ module DeleteClientVpnRouteResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.status (fun f ->
-               Query.Pair ("status", ClientVpnRouteStatus.to_query f))
+               Query.Pair ("Status", ClientVpnRouteStatus.to_query f))
          ])
 
   let to_json v =
@@ -83438,7 +83424,7 @@ module DeleteTransitGatewayPrefixListReferenceResult = struct
       (Util.list_filter_opt
          [ Util.option_map v.transit_gateway_prefix_list_reference (fun f ->
                Query.Pair
-                 ( "transitGatewayPrefixListReference"
+                 ( "TransitGatewayPrefixListReference"
                  , TransitGatewayPrefixListReference.to_query f ))
          ])
 
@@ -83552,7 +83538,7 @@ module DescribeIdentityIdFormatResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("statusSet", IdFormatList.to_query v.statuses)) ])
+         [ Some (Query.Pair ("StatusSet", IdFormatList.to_query v.statuses)) ])
 
   let to_json v =
     `Assoc (Util.list_filter_opt [ Some ("statuses", IdFormatList.to_json v.statuses) ])
@@ -83571,7 +83557,7 @@ module CreateVpcResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.vpc (fun f -> Query.Pair ("vpc", Vpc.to_query f)) ])
+         [ Util.option_map v.vpc (fun f -> Query.Pair ("Vpc", Vpc.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -83609,10 +83595,10 @@ module DescribeVolumesRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Util.option_map v.max_results (fun f ->
-               Query.Pair ("maxResults", Integer.to_query f))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+               Query.Pair ("MaxResults", Integer.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("VolumeId", VolumeIdStringList.to_query v.volume_ids))
          ; Some (Query.Pair ("Filter", FilterList.to_query v.filters))
          ])
@@ -83657,7 +83643,7 @@ module MonitorInstancesRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("InstanceId", InstanceIdStringList.to_query v.instance_ids))
          ])
 
@@ -83712,14 +83698,14 @@ module PurchaseHostReservationResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.total_upfront_price (fun f ->
-               Query.Pair ("totalUpfrontPrice", String.to_query f))
+               Query.Pair ("TotalUpfrontPrice", String.to_query f))
          ; Util.option_map v.total_hourly_price (fun f ->
-               Query.Pair ("totalHourlyPrice", String.to_query f))
-         ; Some (Query.Pair ("purchase", PurchaseSet.to_query v.purchase))
+               Query.Pair ("TotalHourlyPrice", String.to_query f))
+         ; Some (Query.Pair ("Purchase", PurchaseSet.to_query v.purchase))
          ; Util.option_map v.currency_code (fun f ->
-               Query.Pair ("currencyCode", CurrencyCodeValues.to_query f))
+               Query.Pair ("CurrencyCode", CurrencyCodeValues.to_query f))
          ; Util.option_map v.client_token (fun f ->
-               Query.Pair ("clientToken", String.to_query f))
+               Query.Pair ("ClientToken", String.to_query f))
          ])
 
   let to_json v =
@@ -83760,7 +83746,7 @@ module CreateClientVpnRouteResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.status (fun f ->
-               Query.Pair ("status", ClientVpnRouteStatus.to_query f))
+               Query.Pair ("Status", ClientVpnRouteStatus.to_query f))
          ])
 
   let to_json v =
@@ -83855,10 +83841,10 @@ module DescribePublicIpv4PoolsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ("publicIpv4PoolSet", PublicIpv4PoolSet.to_query v.public_ipv4_pools))
+                ("PublicIpv4PoolSet", PublicIpv4PoolSet.to_query v.public_ipv4_pools))
          ])
 
   let to_json v =
@@ -84010,10 +83996,10 @@ module DescribeVolumeAttributeResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.volume_id (fun f ->
-               Query.Pair ("volumeId", String.to_query f))
-         ; Some (Query.Pair ("productCodes", ProductCodeList.to_query v.product_codes))
+               Query.Pair ("VolumeId", String.to_query f))
+         ; Some (Query.Pair ("ProductCodes", ProductCodeList.to_query v.product_codes))
          ; Util.option_map v.auto_enable_i_o (fun f ->
-               Query.Pair ("autoEnableIO", AttributeBooleanValue.to_query f))
+               Query.Pair ("AutoEnableIO", AttributeBooleanValue.to_query f))
          ])
 
   let to_json v =
@@ -84053,8 +84039,8 @@ module DescribeVpcsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
-         ; Some (Query.Pair ("vpcSet", VpcList.to_query v.vpcs))
+               Query.Pair ("NextToken", String.to_query f))
+         ; Some (Query.Pair ("VpcSet", VpcList.to_query v.vpcs))
          ])
 
   let to_json v =
@@ -84091,9 +84077,9 @@ module DescribeLocalGatewaysResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
-             (Query.Pair ("localGatewaySet", LocalGatewaySet.to_query v.local_gateways))
+             (Query.Pair ("LocalGatewaySet", LocalGatewaySet.to_query v.local_gateways))
          ])
 
   let to_json v =
@@ -84188,7 +84174,7 @@ module ModifyLaunchTemplateResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.launch_template (fun f ->
-               Query.Pair ("launchTemplate", LaunchTemplate.to_query f))
+               Query.Pair ("LaunchTemplate", LaunchTemplate.to_query f))
          ])
 
   let to_json v =
@@ -84225,8 +84211,8 @@ module DescribeSubnetsResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
-         ; Some (Query.Pair ("subnetSet", SubnetList.to_query v.subnets))
+               Query.Pair ("NextToken", String.to_query f))
+         ; Some (Query.Pair ("SubnetSet", SubnetList.to_query v.subnets))
          ])
 
   let to_json v =
@@ -84326,7 +84312,7 @@ module CancelBundleTaskResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.bundle_task (fun f ->
-               Query.Pair ("bundleInstanceTask", BundleTask.to_query f))
+               Query.Pair ("BundleInstanceTask", BundleTask.to_query f))
          ])
 
   let to_json v =
@@ -84388,16 +84374,16 @@ module ModifySpotFleetRequestRequest = struct
          [ Util.option_map v.on_demand_target_capacity (fun f ->
                Query.Pair ("OnDemandTargetCapacity", Integer.to_query f))
          ; Util.option_map v.target_capacity (fun f ->
-               Query.Pair ("targetCapacity", Integer.to_query f))
+               Query.Pair ("TargetCapacity", Integer.to_query f))
          ; Some
-             (Query.Pair ("spotFleetRequestId", String.to_query v.spot_fleet_request_id))
+             (Query.Pair ("SpotFleetRequestId", String.to_query v.spot_fleet_request_id))
          ; Some
              (Query.Pair
                 ( "LaunchTemplateConfig"
                 , LaunchTemplateConfigList.to_query v.launch_template_configs ))
          ; Util.option_map v.excess_capacity_termination_policy (fun f ->
                Query.Pair
-                 ( "excessCapacityTerminationPolicy"
+                 ( "ExcessCapacityTerminationPolicy"
                  , ExcessCapacityTerminationPolicy.to_query f ))
          ])
 
@@ -84458,10 +84444,10 @@ module AssignIpv6AddressesResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.network_interface_id (fun f ->
-               Query.Pair ("networkInterfaceId", String.to_query f))
+               Query.Pair ("NetworkInterfaceId", String.to_query f))
          ; Some
              (Query.Pair
-                ( "assignedIpv6Addresses"
+                ( "AssignedIpv6Addresses"
                 , Ipv6AddressList.to_query v.assigned_ipv6_addresses ))
          ])
 
@@ -84507,9 +84493,9 @@ module DetachInternetGatewayRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("vpcId", String.to_query v.vpc_id))
-         ; Some (Query.Pair ("internetGatewayId", String.to_query v.internet_gateway_id))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Some (Query.Pair ("VpcId", String.to_query v.vpc_id))
+         ; Some (Query.Pair ("InternetGatewayId", String.to_query v.internet_gateway_id))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -84552,10 +84538,10 @@ module DescribeElasticGpusResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Util.option_map v.max_results (fun f ->
-               Query.Pair ("maxResults", Integer.to_query f))
-         ; Some (Query.Pair ("elasticGpuSet", ElasticGpuSet.to_query v.elastic_gpu_set))
+               Query.Pair ("MaxResults", Integer.to_query f))
+         ; Some (Query.Pair ("ElasticGpuSet", ElasticGpuSet.to_query v.elastic_gpu_set))
          ])
 
   let to_json v =
@@ -84592,9 +84578,9 @@ module DisassociateClientVpnTargetNetworkResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.status (fun f ->
-               Query.Pair ("status", AssociationStatus.to_query f))
+               Query.Pair ("Status", AssociationStatus.to_query f))
          ; Util.option_map v.association_id (fun f ->
-               Query.Pair ("associationId", String.to_query f))
+               Query.Pair ("AssociationId", String.to_query f))
          ])
 
   let to_json v =
@@ -84626,7 +84612,7 @@ module DescribeVpcClassicLinkResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("vpcSet", VpcClassicLinkList.to_query v.vpcs)) ])
+         [ Some (Query.Pair ("VpcSet", VpcClassicLinkList.to_query v.vpcs)) ])
 
   let to_json v =
     `Assoc (Util.list_filter_opt [ Some ("vpcs", VpcClassicLinkList.to_json v.vpcs) ])
@@ -84658,10 +84644,10 @@ module DescribeImportImageTasksResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ("importImageTaskSet", ImportImageTaskList.to_query v.import_image_tasks))
+                ("ImportImageTaskSet", ImportImageTaskList.to_query v.import_image_tasks))
          ])
 
   let to_json v =
@@ -84694,7 +84680,7 @@ module DisableEbsEncryptionByDefaultResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.ebs_encryption_by_default (fun f ->
-               Query.Pair ("ebsEncryptionByDefault", Boolean.to_query f))
+               Query.Pair ("EbsEncryptionByDefault", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -84762,7 +84748,7 @@ module ProvisionByoipCidrResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.byoip_cidr (fun f ->
-               Query.Pair ("byoipCidr", ByoipCidr.to_query f))
+               Query.Pair ("ByoipCidr", ByoipCidr.to_query f))
          ])
 
   let to_json v =
@@ -84946,9 +84932,9 @@ module CreateEgressOnlyInternetGatewayResult = struct
       (Util.list_filter_opt
          [ Util.option_map v.egress_only_internet_gateway (fun f ->
                Query.Pair
-                 ("egressOnlyInternetGateway", EgressOnlyInternetGateway.to_query f))
+                 ("EgressOnlyInternetGateway", EgressOnlyInternetGateway.to_query f))
          ; Util.option_map v.client_token (fun f ->
-               Query.Pair ("clientToken", String.to_query f))
+               Query.Pair ("ClientToken", String.to_query f))
          ])
 
   let to_json v =
@@ -84979,7 +84965,7 @@ module ModifySpotFleetRequestResponse = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.return (fun f -> Query.Pair ("return", Boolean.to_query f)) ])
+         [ Util.option_map v.return (fun f -> Query.Pair ("Return", Boolean.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -85136,8 +85122,7 @@ module ModifyVpcEndpointConnectionNotificationRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Some
-             (Query.Pair
-                ("ConnectionEvents.member", ValueStringList.to_query v.connection_events))
+             (Query.Pair ("ConnectionEvents", ValueStringList.to_query v.connection_events))
          ; Util.option_map v.connection_notification_arn (fun f ->
                Query.Pair ("ConnectionNotificationArn", String.to_query f))
          ; Some
@@ -85294,7 +85279,7 @@ module ModifyAvailabilityZoneGroupResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.return (fun f -> Query.Pair ("return", Boolean.to_query f)) ])
+         [ Util.option_map v.return (fun f -> Query.Pair ("Return", Boolean.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -85379,7 +85364,7 @@ module CopyFpgaImageResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.fpga_image_id (fun f ->
-               Query.Pair ("fpgaImageId", String.to_query f))
+               Query.Pair ("FpgaImageId", String.to_query f))
          ])
 
   let to_json v =
@@ -85403,7 +85388,7 @@ module AcceptReservedInstancesExchangeQuoteResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.exchange_id (fun f ->
-               Query.Pair ("exchangeId", String.to_query f))
+               Query.Pair ("ExchangeId", String.to_query f))
          ])
 
   let to_json v =
@@ -85503,7 +85488,7 @@ module DescribeDhcpOptionsRequest = struct
                Query.Pair ("MaxResults", Integer.to_query f))
          ; Util.option_map v.next_token (fun f ->
                Query.Pair ("NextToken", String.to_query f))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("Filter", FilterList.to_query v.filters))
          ; Some
              (Query.Pair
@@ -85634,11 +85619,11 @@ module AssociateVpcCidrBlockRequest = struct
                Query.Pair ("Ipv6Pool", String.to_query f))
          ; Util.option_map v.ipv6_cidr_block_network_border_group (fun f ->
                Query.Pair ("Ipv6CidrBlockNetworkBorderGroup", String.to_query f))
-         ; Some (Query.Pair ("vpcId", String.to_query v.vpc_id))
+         ; Some (Query.Pair ("VpcId", String.to_query v.vpc_id))
          ; Util.option_map v.cidr_block (fun f ->
                Query.Pair ("CidrBlock", String.to_query f))
          ; Util.option_map v.amazon_provided_ipv6_cidr_block (fun f ->
-               Query.Pair ("amazonProvidedIpv6CidrBlock", Boolean.to_query f))
+               Query.Pair ("AmazonProvidedIpv6CidrBlock", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -85691,9 +85676,9 @@ module DescribeAggregateIdFormatResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("statusSet", IdFormatList.to_query v.statuses))
+         [ Some (Query.Pair ("StatusSet", IdFormatList.to_query v.statuses))
          ; Util.option_map v.use_long_ids_aggregated (fun f ->
-               Query.Pair ("useLongIdsAggregated", Boolean.to_query f))
+               Query.Pair ("UseLongIdsAggregated", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -85738,11 +85723,11 @@ module DescribeHostsRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Util.option_map v.max_results (fun f ->
-               Query.Pair ("maxResults", Integer.to_query f))
-         ; Some (Query.Pair ("hostId", RequestHostIdList.to_query v.host_ids))
-         ; Some (Query.Pair ("filter", FilterList.to_query v.filter))
+               Query.Pair ("MaxResults", Integer.to_query f))
+         ; Some (Query.Pair ("HostId", RequestHostIdList.to_query v.host_ids))
+         ; Some (Query.Pair ("Filter", FilterList.to_query v.filter))
          ])
 
   let to_json v =
@@ -85786,9 +85771,9 @@ module DescribeSpotPriceHistoryResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ("spotPriceHistorySet", SpotPriceHistoryList.to_query v.spot_price_history))
+                ("SpotPriceHistorySet", SpotPriceHistoryList.to_query v.spot_price_history))
          ; Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ])
 
   let to_json v =
@@ -85844,16 +85829,16 @@ module ReportInstanceStatusRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("status", ReportStatusType.to_query v.status))
+         [ Some (Query.Pair ("Status", ReportStatusType.to_query v.status))
          ; Util.option_map v.start_time (fun f ->
-               Query.Pair ("startTime", DateTime.to_query f))
-         ; Some (Query.Pair ("reasonCode", ReasonCodesList.to_query v.reason_codes))
-         ; Some (Query.Pair ("instanceId", InstanceIdStringList.to_query v.instances))
+               Query.Pair ("StartTime", DateTime.to_query f))
+         ; Some (Query.Pair ("ReasonCode", ReasonCodesList.to_query v.reason_codes))
+         ; Some (Query.Pair ("InstanceId", InstanceIdStringList.to_query v.instances))
          ; Util.option_map v.end_time (fun f ->
-               Query.Pair ("endTime", DateTime.to_query f))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+               Query.Pair ("EndTime", DateTime.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
          ])
 
   let to_json v =
@@ -85892,7 +85877,7 @@ module ImportClientVpnClientCertificateRevocationListResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.return (fun f -> Query.Pair ("return", Boolean.to_query f)) ])
+         [ Util.option_map v.return (fun f -> Query.Pair ("Return", Boolean.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -85978,9 +85963,9 @@ module AssociateRouteTableResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.association_state (fun f ->
-               Query.Pair ("associationState", RouteTableAssociationState.to_query f))
+               Query.Pair ("AssociationState", RouteTableAssociationState.to_query f))
          ; Util.option_map v.association_id (fun f ->
-               Query.Pair ("associationId", String.to_query f))
+               Query.Pair ("AssociationId", String.to_query f))
          ])
 
   let to_json v =
@@ -86022,9 +86007,9 @@ module CreateVpcEndpointConnectionNotificationResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.client_token (fun f ->
-               Query.Pair ("clientToken", String.to_query f))
+               Query.Pair ("ClientToken", String.to_query f))
          ; Util.option_map v.connection_notification (fun f ->
-               Query.Pair ("connectionNotification", ConnectionNotification.to_query f))
+               Query.Pair ("ConnectionNotification", ConnectionNotification.to_query f))
          ])
 
   let to_json v =
@@ -86229,9 +86214,9 @@ module DetachNetworkInterfaceRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.force (fun f -> Query.Pair ("force", Boolean.to_query f))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
-         ; Some (Query.Pair ("attachmentId", String.to_query v.attachment_id))
+         [ Util.option_map v.force (fun f -> Query.Pair ("Force", Boolean.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
+         ; Some (Query.Pair ("AttachmentId", String.to_query v.attachment_id))
          ])
 
   let to_json v =
@@ -86448,27 +86433,27 @@ module CreateNetworkInterfaceRequest = struct
          [ Some
              (Query.Pair
                 ("TagSpecification", TagSpecificationList.to_query v.tag_specifications))
-         ; Some (Query.Pair ("subnetId", String.to_query v.subnet_id))
+         ; Some (Query.Pair ("SubnetId", String.to_query v.subnet_id))
          ; Util.option_map v.interface_type (fun f ->
                Query.Pair ("InterfaceType", NetworkInterfaceCreationType.to_query f))
          ; Util.option_map v.secondary_private_ip_address_count (fun f ->
-               Query.Pair ("secondaryPrivateIpAddressCount", Integer.to_query f))
+               Query.Pair ("SecondaryPrivateIpAddressCount", Integer.to_query f))
          ; Some
              (Query.Pair
-                ( "privateIpAddresses"
+                ( "PrivateIpAddresses"
                 , PrivateIpAddressSpecificationList.to_query v.private_ip_addresses ))
          ; Util.option_map v.private_ip_address (fun f ->
-               Query.Pair ("privateIpAddress", String.to_query f))
+               Query.Pair ("PrivateIpAddress", String.to_query f))
          ; Some
              (Query.Pair
-                ("ipv6Addresses", InstanceIpv6AddressList.to_query v.ipv6_addresses))
+                ("Ipv6Addresses", InstanceIpv6AddressList.to_query v.ipv6_addresses))
          ; Util.option_map v.ipv6_address_count (fun f ->
-               Query.Pair ("ipv6AddressCount", Integer.to_query f))
+               Query.Pair ("Ipv6AddressCount", Integer.to_query f))
          ; Some
              (Query.Pair ("SecurityGroupId", SecurityGroupIdStringList.to_query v.groups))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Util.option_map v.description (fun f ->
-               Query.Pair ("description", String.to_query f))
+               Query.Pair ("Description", String.to_query f))
          ])
 
   let to_json v =
@@ -86607,7 +86592,7 @@ module GetPasswordDataRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("InstanceId", String.to_query v.instance_id))
          ])
 
@@ -86644,7 +86629,7 @@ module DeregisterImageRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("ImageId", String.to_query v.image_id))
          ])
 
@@ -86695,9 +86680,9 @@ module DescribeHostReservationsRequest = struct
                Query.Pair ("MaxResults", Integer.to_query f))
          ; Some
              (Query.Pair
-                ( "HostReservationIdSet.member"
+                ( "HostReservationIdSet"
                 , HostReservationIdSet.to_query v.host_reservation_id_set ))
-         ; Some (Query.Pair ("Filter.member", FilterList.to_query v.filter))
+         ; Some (Query.Pair ("Filter", FilterList.to_query v.filter))
          ])
 
   let to_json v =
@@ -86733,7 +86718,7 @@ module DeleteTransitGatewayRouteResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.route (fun f ->
-               Query.Pair ("route", TransitGatewayRoute.to_query f))
+               Query.Pair ("Route", TransitGatewayRoute.to_query f))
          ])
 
   let to_json v =
@@ -86765,7 +86750,7 @@ module RebootInstancesRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("InstanceId", InstanceIdStringList.to_query v.instance_ids))
          ])
 
@@ -86866,9 +86851,9 @@ module ReplaceRouteTableAssociationRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("routeTableId", String.to_query v.route_table_id))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
-         ; Some (Query.Pair ("associationId", String.to_query v.association_id))
+         [ Some (Query.Pair ("RouteTableId", String.to_query v.route_table_id))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
+         ; Some (Query.Pair ("AssociationId", String.to_query v.association_id))
          ])
 
   let to_json v =
@@ -86917,11 +86902,11 @@ module DescribeClassicLinkInstancesRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Util.option_map v.max_results (fun f ->
-               Query.Pair ("maxResults", Integer.to_query f))
+               Query.Pair ("MaxResults", Integer.to_query f))
          ; Some (Query.Pair ("InstanceId", InstanceIdStringList.to_query v.instance_ids))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("Filter", FilterList.to_query v.filters))
          ])
 
@@ -86969,9 +86954,9 @@ module RevokeSecurityGroupEgressResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ( "unknownIpPermissionSet"
+                ( "UnknownIpPermissionSet"
                 , IpPermissionList.to_query v.unknown_ip_permissions ))
-         ; Util.option_map v.return (fun f -> Query.Pair ("return", Boolean.to_query f))
+         ; Util.option_map v.return (fun f -> Query.Pair ("Return", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -87059,7 +87044,7 @@ module CreateInternetGatewayResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.internet_gateway (fun f ->
-               Query.Pair ("internetGateway", InternetGateway.to_query f))
+               Query.Pair ("InternetGateway", InternetGateway.to_query f))
          ])
 
   let to_json v =
@@ -87091,7 +87076,7 @@ module DescribeIdFormatResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some (Query.Pair ("statusSet", IdFormatList.to_query v.statuses)) ])
+         [ Some (Query.Pair ("StatusSet", IdFormatList.to_query v.statuses)) ])
 
   let to_json v =
     `Assoc (Util.list_filter_opt [ Some ("statuses", IdFormatList.to_json v.statuses) ])
@@ -87305,7 +87290,7 @@ module ImportImageRequest = struct
                 ("TagSpecification", TagSpecificationList.to_query v.tag_specifications))
          ; Some
              (Query.Pair
-                ( "LicenseSpecifications.member"
+                ( "LicenseSpecifications"
                 , ImportImageLicenseSpecificationListRequest.to_query
                     v.license_specifications ))
          ; Util.option_map v.role_name (fun f ->
@@ -87647,7 +87632,7 @@ module EnableTransitGatewayRouteTablePropagationResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.propagation (fun f ->
-               Query.Pair ("propagation", TransitGatewayPropagation.to_query f))
+               Query.Pair ("Propagation", TransitGatewayPropagation.to_query f))
          ])
 
   let to_json v =
@@ -87779,12 +87764,12 @@ module DescribeSpotFleetInstancesRequest = struct
     Query.List
       (Util.list_filter_opt
          [ Some
-             (Query.Pair ("spotFleetRequestId", String.to_query v.spot_fleet_request_id))
+             (Query.Pair ("SpotFleetRequestId", String.to_query v.spot_fleet_request_id))
          ; Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Util.option_map v.max_results (fun f ->
-               Query.Pair ("maxResults", Integer.to_query f))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+               Query.Pair ("MaxResults", Integer.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -87828,7 +87813,7 @@ module DetachVpnGatewayRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("VpnGatewayId", String.to_query v.vpn_gateway_id))
          ; Some (Query.Pair ("VpcId", String.to_query v.vpc_id))
          ])
@@ -87869,7 +87854,7 @@ module MonitorInstancesResult = struct
       (Util.list_filter_opt
          [ Some
              (Query.Pair
-                ("instancesSet", InstanceMonitoringList.to_query v.instance_monitorings))
+                ("InstancesSet", InstanceMonitoringList.to_query v.instance_monitorings))
          ])
 
   let to_json v =
@@ -87947,7 +87932,7 @@ module AuthorizeSecurityGroupIngressRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Util.option_map v.to_port (fun f -> Query.Pair ("ToPort", Integer.to_query f))
          ; Util.option_map v.source_security_group_owner_id (fun f ->
                Query.Pair ("SourceSecurityGroupOwnerId", String.to_query f))
@@ -87955,9 +87940,7 @@ module AuthorizeSecurityGroupIngressRequest = struct
                Query.Pair ("SourceSecurityGroupName", String.to_query f))
          ; Util.option_map v.ip_protocol (fun f ->
                Query.Pair ("IpProtocol", String.to_query f))
-         ; Some
-             (Query.Pair
-                ("IpPermissions.member", IpPermissionList.to_query v.ip_permissions))
+         ; Some (Query.Pair ("IpPermissions", IpPermissionList.to_query v.ip_permissions))
          ; Util.option_map v.group_name (fun f ->
                Query.Pair ("GroupName", String.to_query f))
          ; Util.option_map v.group_id (fun f -> Query.Pair ("GroupId", String.to_query f))
@@ -88018,7 +88001,7 @@ module DeleteTransitGatewayMulticastDomainResult = struct
       (Util.list_filter_opt
          [ Util.option_map v.transit_gateway_multicast_domain (fun f ->
                Query.Pair
-                 ( "transitGatewayMulticastDomain"
+                 ( "TransitGatewayMulticastDomain"
                  , TransitGatewayMulticastDomain.to_query f ))
          ])
 
@@ -88058,8 +88041,8 @@ module SearchLocalGatewayRoutesResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
-         ; Some (Query.Pair ("routeSet", LocalGatewayRouteList.to_query v.routes))
+               Query.Pair ("NextToken", String.to_query f))
+         ; Some (Query.Pair ("RouteSet", LocalGatewayRouteList.to_query v.routes))
          ])
 
   let to_json v =
@@ -88241,7 +88224,7 @@ module DeleteCustomerGatewayRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some (Query.Pair ("CustomerGatewayId", String.to_query v.customer_gateway_id))
          ])
 
@@ -88319,7 +88302,7 @@ module RevokeSecurityGroupIngressRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+         [ Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Util.option_map v.to_port (fun f -> Query.Pair ("ToPort", Integer.to_query f))
          ; Util.option_map v.source_security_group_owner_id (fun f ->
                Query.Pair ("SourceSecurityGroupOwnerId", String.to_query f))
@@ -88327,9 +88310,7 @@ module RevokeSecurityGroupIngressRequest = struct
                Query.Pair ("SourceSecurityGroupName", String.to_query f))
          ; Util.option_map v.ip_protocol (fun f ->
                Query.Pair ("IpProtocol", String.to_query f))
-         ; Some
-             (Query.Pair
-                ("IpPermissions.member", IpPermissionList.to_query v.ip_permissions))
+         ; Some (Query.Pair ("IpPermissions", IpPermissionList.to_query v.ip_permissions))
          ; Util.option_map v.group_name (fun f ->
                Query.Pair ("GroupName", String.to_query f))
          ; Util.option_map v.group_id (fun f -> Query.Pair ("GroupId", String.to_query f))
@@ -88383,7 +88364,7 @@ module UpdateSecurityGroupRuleDescriptionsEgressResult = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.return (fun f -> Query.Pair ("return", Boolean.to_query f)) ])
+         [ Util.option_map v.return (fun f -> Query.Pair ("Return", Boolean.to_query f)) ])
 
   let to_json v =
     `Assoc
@@ -88408,7 +88389,7 @@ module DeleteCarrierGatewayResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.carrier_gateway (fun f ->
-               Query.Pair ("carrierGateway", CarrierGateway.to_query f))
+               Query.Pair ("CarrierGateway", CarrierGateway.to_query f))
          ])
 
   let to_json v =
@@ -88539,10 +88520,10 @@ module DescribeVpcAttributeResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.enable_dns_support (fun f ->
-               Query.Pair ("enableDnsSupport", AttributeBooleanValue.to_query f))
+               Query.Pair ("EnableDnsSupport", AttributeBooleanValue.to_query f))
          ; Util.option_map v.enable_dns_hostnames (fun f ->
-               Query.Pair ("enableDnsHostnames", AttributeBooleanValue.to_query f))
-         ; Util.option_map v.vpc_id (fun f -> Query.Pair ("vpcId", String.to_query f))
+               Query.Pair ("EnableDnsHostnames", AttributeBooleanValue.to_query f))
+         ; Util.option_map v.vpc_id (fun f -> Query.Pair ("VpcId", String.to_query f))
          ])
 
   let to_json v =
@@ -88646,8 +88627,8 @@ module DescribeNatGatewaysResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
-         ; Some (Query.Pair ("natGatewaySet", NatGatewayList.to_query v.nat_gateways))
+               Query.Pair ("NextToken", String.to_query f))
+         ; Some (Query.Pair ("NatGatewaySet", NatGatewayList.to_query v.nat_gateways))
          ])
 
   let to_json v =
@@ -88766,19 +88747,19 @@ module GetCapacityReservationUsageResult = struct
     Query.List
       (Util.list_filter_opt
          [ Some
-             (Query.Pair ("instanceUsageSet", InstanceUsageSet.to_query v.instance_usages))
+             (Query.Pair ("InstanceUsageSet", InstanceUsageSet.to_query v.instance_usages))
          ; Util.option_map v.state (fun f ->
-               Query.Pair ("state", CapacityReservationState.to_query f))
+               Query.Pair ("State", CapacityReservationState.to_query f))
          ; Util.option_map v.available_instance_count (fun f ->
-               Query.Pair ("availableInstanceCount", Integer.to_query f))
+               Query.Pair ("AvailableInstanceCount", Integer.to_query f))
          ; Util.option_map v.total_instance_count (fun f ->
-               Query.Pair ("totalInstanceCount", Integer.to_query f))
+               Query.Pair ("TotalInstanceCount", Integer.to_query f))
          ; Util.option_map v.instance_type (fun f ->
-               Query.Pair ("instanceType", String.to_query f))
+               Query.Pair ("InstanceType", String.to_query f))
          ; Util.option_map v.capacity_reservation_id (fun f ->
-               Query.Pair ("capacityReservationId", String.to_query f))
+               Query.Pair ("CapacityReservationId", String.to_query f))
          ; Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ])
 
   let to_json v =
@@ -88835,10 +88816,10 @@ module DescribeFastSnapshotRestoresResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "fastSnapshotRestoreSet"
+                ( "FastSnapshotRestoreSet"
                 , DescribeFastSnapshotRestoreSuccessSet.to_query v.fast_snapshot_restores
                 ))
          ])
@@ -88904,7 +88885,7 @@ module DescribeHostReservationOfferingsRequest = struct
                Query.Pair ("MaxResults", Integer.to_query f))
          ; Util.option_map v.max_duration (fun f ->
                Query.Pair ("MaxDuration", Integer.to_query f))
-         ; Some (Query.Pair ("Filter.member", FilterList.to_query v.filter))
+         ; Some (Query.Pair ("Filter", FilterList.to_query v.filter))
          ])
 
   let to_json v =
@@ -88973,8 +88954,8 @@ module PurchaseReservedInstancesOfferingRequest = struct
          [ Util.option_map v.purchase_time (fun f ->
                Query.Pair ("PurchaseTime", DateTime.to_query f))
          ; Util.option_map v.limit_price (fun f ->
-               Query.Pair ("limitPrice", ReservedInstanceLimitPrice.to_query f))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
+               Query.Pair ("LimitPrice", ReservedInstanceLimitPrice.to_query f))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
          ; Some
              (Query.Pair
                 ( "ReservedInstancesOfferingId"
@@ -89021,7 +89002,7 @@ module DeleteNatGatewayResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.nat_gateway_id (fun f ->
-               Query.Pair ("natGatewayId", String.to_query f))
+               Query.Pair ("NatGatewayId", String.to_query f))
          ])
 
   let to_json v =
@@ -89049,7 +89030,7 @@ module ExportClientVpnClientConfigurationResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.client_configuration (fun f ->
-               Query.Pair ("clientConfiguration", String.to_query f))
+               Query.Pair ("ClientConfiguration", String.to_query f))
          ])
 
   let to_json v =
@@ -89136,10 +89117,10 @@ module DescribeEgressOnlyInternetGatewaysResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.next_token (fun f ->
-               Query.Pair ("nextToken", String.to_query f))
+               Query.Pair ("NextToken", String.to_query f))
          ; Some
              (Query.Pair
-                ( "egressOnlyInternetGatewaySet"
+                ( "EgressOnlyInternetGatewaySet"
                 , EgressOnlyInternetGatewayList.to_query v.egress_only_internet_gateways
                 ))
          ])
@@ -89301,7 +89282,7 @@ module ModifyVpcTenancyResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.return_value (fun f ->
-               Query.Pair ("return", Boolean.to_query f))
+               Query.Pair ("Return", Boolean.to_query f))
          ])
 
   let to_json v =
@@ -89325,7 +89306,7 @@ module ExportTransitGatewayRoutesResult = struct
     Query.List
       (Util.list_filter_opt
          [ Util.option_map v.s3_location (fun f ->
-               Query.Pair ("s3Location", String.to_query f))
+               Query.Pair ("S3Location", String.to_query f))
          ])
 
   let to_json v =
@@ -89380,10 +89361,10 @@ module AttachNetworkInterfaceRequest = struct
          [ Util.option_map v.network_card_index (fun f ->
                Query.Pair ("NetworkCardIndex", Integer.to_query f))
          ; Some
-             (Query.Pair ("networkInterfaceId", String.to_query v.network_interface_id))
-         ; Some (Query.Pair ("instanceId", String.to_query v.instance_id))
-         ; Util.option_map v.dry_run (fun f -> Query.Pair ("dryRun", Boolean.to_query f))
-         ; Some (Query.Pair ("deviceIndex", Integer.to_query v.device_index))
+             (Query.Pair ("NetworkInterfaceId", String.to_query v.network_interface_id))
+         ; Some (Query.Pair ("InstanceId", String.to_query v.instance_id))
+         ; Util.option_map v.dry_run (fun f -> Query.Pair ("DryRun", Boolean.to_query f))
+         ; Some (Query.Pair ("DeviceIndex", Integer.to_query v.device_index))
          ])
 
   let to_json v =
@@ -89485,9 +89466,7 @@ module UpdateSecurityGroupRuleDescriptionsIngressRequest = struct
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Some
-             (Query.Pair
-                ("IpPermissions.member", IpPermissionList.to_query v.ip_permissions))
+         [ Some (Query.Pair ("IpPermissions", IpPermissionList.to_query v.ip_permissions))
          ; Util.option_map v.group_name (fun f ->
                Query.Pair ("GroupName", String.to_query f))
          ; Util.option_map v.group_id (fun f -> Query.Pair ("GroupId", String.to_query f))

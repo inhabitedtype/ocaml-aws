@@ -16,8 +16,7 @@ clean:
 	rm -rf _build *.install
 
 fmt:
-	dune build @fmt --auto-promote 2> /dev/null || true
-	git diff --exit-code
+	dune build @fmt --auto-promote
 
 .PHONY: endpoints
 
@@ -39,7 +38,6 @@ LIBRARIES := \
 	aws-sdb \
 	aws-ssm \
 	aws-sts \
-	aws-s3  \
 	aws-route53 \
 	aws-sqs \
 
@@ -53,8 +51,9 @@ update-version: VERSION=$(shell cat CHANGES.md | grep -E '^[0-9]' | head -n 1 | 
 update-version:
 	@echo "Set version to $(VERSION)"
 	@gsed -i 's/^version: .*/version: "$(VERSION)"/' *.opam
-	@gsed -i 's/"\(aws-s3[-a-z]*\)"[ ]*{= .*}/"\1" {= "$(VERSION)" }/' *.opam
-
+	# @gsed -i 's/"\(aws-s3[-a-z]*\)"[ ]*{= .*}/"\1" {= "$(VERSION)" }/' *.opam
+	@gsed -i 's/"\(aws-[-a-z]*\)"[ ]*{= .*}/"\1" {= "$(VERSION)" }/' *.opam
+	@gsed -i 's/"\(aws[-a-z]*\)"[ ]*{= .*}/"\1" {= "$(VERSION)" }/' *.opam
 
 update-version: VERSION=$(shell cat CHANGES.md | grep -E '^[0-9]' | head -n 1 | cut -f1 -d':' )
 release: update-version

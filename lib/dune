@@ -1,4 +1,4 @@
 (library
  (name aws)
  (public_name aws)
- (libraries uri calendar ezxmlm digestif.c))
+ (libraries uri calendar ezxmlm digestif.c base64))

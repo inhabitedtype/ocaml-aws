@@ -1,27 +1,30 @@
 opam-version: "2.0"
-maintainer: "Tim McGilchrist <timmcgil@gmail.com>"
-authors: [ "Spiros Eliopoulos <spiros@inhabitedtype.com>"
-           "Daniel Patterson <dbp@dbpmail.net>"
-           "Tim McGilchrist <timmcgil@gmail.com>"
-         ]
 synopsis: "Amazon Web Services code generator"
-description: "Amazon Web Services code generator - Builds OCaml bindings for AWS using botocore API definition"
+description:
+  "Amazon Web Services code generator - Builds OCaml bindings for AWS using botocore API definition"
+maintainer: "Tim McGilchrist <timmcgil@gmail.com>"
+authors: [
+  "Spiros Eliopoulos <spiros@inhabitedtype.com>"
+  "Daniel Patterson <dbp@dbpmail.net>"
+  "Tim McGilchrist <timmcgil@gmail.com>"
+]
 license: "BSD-3-clause"
 homepage: "https://github.com/inhabitedtype/ocaml-aws"
-dev-repo: "git+https://github.com/inhabitedtype/ocaml-aws.git"
 bug-reports: "https://github.com/inhabitedtype/ocaml-aws/issues"
-build: [
-  # ["dune" "subst"] {pinned}
-  ["dune" "build" "-p" name "-j" jobs]
-]
+dev-repo: "git+https://github.com/inhabitedtype/ocaml-aws.git"
 depends: [
+  "ocaml" {>= "4.08"}
   "atdgen"
   "yojson"
   "base-unix"
   "cmdliner"
   "ppx_tools_versioned"
-  "yojson" {>="1.6.0"}
+  "yojson" {>= "1.6.0"}
   "ocaml-migrate-parsetree"
   "ocamlgraph"
-  "dune"
+  "dune" {>= "2.7"}
+]
+build: [
+  ["dune" "subst"] {pinned}
+  ["dune" "build" "-p" name "-j" jobs]
 ]

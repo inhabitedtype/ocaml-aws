@@ -197,6 +197,11 @@ module Request = struct
 
   type headers = (string * string) list
 
+  type signature_version =
+    | V4
+    | V2
+    | S3
+
   type t = meth * Uri.t * headers
 end
 
@@ -206,6 +211,8 @@ module type Call = sig
   type output
 
   type error
+
+  val signature_version : Request.signature_version
 
   val service : string
 
@@ -225,11 +232,23 @@ module Time = struct
 
   let date_yymmdd = P.sprint "%Y%m%d"
 
+  let date_time_iso8601 = P.sprint "%Y-%m-%dT%H:%M:%S"
+
   let date_time = P.sprint "%Y%m%dT%H%M%SZ"
 
   let now_utc () = C.(now () |> to_gmt)
 
-  let parse s = P.from_fstring "%Y-%m-%dT%T" (String.sub s 0 (String.length s - 5))
+  (* (tmcgilchrist) This function is expecting datetimes like
+      - "2021-03-17T21:43:32.000Z" from EC2 or
+      - "2021-03-18T09:38:33Z" from STS
+     We regex off the trailing ".000" and parse them. If there are other
+     datetime formats in xml / json there will be trouble and the parser
+     will fail with xml node not present or json attribute not present.
+  *)
+  let parse s =
+    P.from_fstring
+      "%Y-%m-%dT%TZ"
+      (Str.replace_first (Str.regexp "\\.\\([0-9][0-9][0-9]\\)") "" s)
 
   let format t = P.sprint "%Y-%m-%dT%T.000Z" t
 end
@@ -471,6 +490,8 @@ module Signing = struct
     let sha256 ?key str = _sha256 ?key str |> Digestif.SHA256.to_raw_string
 
     let sha256_hex ?key str = _sha256 ?key str |> Digestif.SHA256.to_hex
+
+    let sha256_base64 ?key str = Base64.encode_string @@ sha256 ?key str
   end
 
   let encode_query ps =
@@ -590,4 +611,32 @@ module Signing = struct
     | None -> headers
     in
     meth, uri, full_headers
+
+  let sign_v2_request ~access_key ~secret_key ?token ~service ~region (meth, uri, headers) =
+    let host = Util.of_option_exn (Endpoints.endpoint_of service region) in
+    let amzdate = Time.date_time_iso8601 (Time.now_utc ()) in
+
+    let query =
+      Uri.add_query_params'
+        uri
+        (
+          (match token with
+          | Some t -> [("SecurityToken", t)]
+          | None -> [])
+          @ [ "Timestamp", amzdate
+          ; "AWSAccessKeyId", access_key
+          ; "SignatureMethod", "HmacSHA256"
+          ; "SignatureVersion", "2"
+          ]
+        )
+    in
+
+    let params = encode_query (Uri.query query) in
+    let canonical_uri = "/" in
+    let string_to_sign =
+      Request.string_of_meth meth ^ "\n" ^ host ^ "\n" ^ canonical_uri ^ "\n" ^ params
+    in
+    let signature = Base64.encode_string @@ Hash.sha256 ~key:secret_key string_to_sign in
+    let new_uri = Uri.add_query_param' query ("Signature", signature) in
+    meth, new_uri, headers
 end

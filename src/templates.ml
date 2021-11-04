@@ -40,7 +40,7 @@ authors: [ "Spiros Eliopoulos <spiros@inhabitedtype.com>"
          ]
 synopsis: "Amazon Web Services SDK bindings to %s"
 description: "Amazon Web Services SDK bindings to %s"
-version: "1.1"
+version: "1.2"
 license: "BSD-3-clause"
 homepage: "https://github.com/inhabitedtype/ocaml-aws"
 dev-repo: "git+https://github.com/inhabitedtype/ocaml-aws.git"
@@ -51,8 +51,10 @@ build: [
   ["dune" "build" "-p" name "-j" jobs]
 ]
 depends: [
-  "aws" {>= "0.1.0"}
-  "dune"
+  "ocaml" {>= "4.08"}
+  "aws" {= version}
+  "dune" {>= "2.7"}
+  "ounit2" {>= "2.2.4" & with-test}
 ]
 |}
     service_name
@@ -81,8 +83,8 @@ let dune_test ~lib_name =
  (names test_async test_lwt)
  (flags (:standard -w -27 -w -33))
  (modules test_async test_lwt aws_%s_test)
- (libraries aws aws_%s aws-async aws-lwt
-            oUnit yojson
+ (libraries aws aws-%s aws-async aws-lwt
+            ounit2 yojson
             async cohttp-async
             lwt cohttp-lwt cohttp-lwt-unix))
 
@@ -107,12 +109,7 @@ let test_async ~lib_name =
 
 module T = TestSuite(struct
     type 'a m = 'a Async.Deferred.t
-
-    let access_key = Unix.getenv "AWS_ACCESS_KEY"
-    let secret_key = Unix.getenv "AWS_SECRET_KEY"
-    let region = Unix.getenv "AWS_DEFAULT_REGION"
-
-    let run_request x = Aws_async.Runtime.run_request ~region ~access_key ~secret_key x
+    let run_request = Aws_async.Runtime.run_request
     let un_m v = Async.Thread_safe.block_on_async_exn (fun () -> v)
   end)
 |}
@@ -124,12 +121,7 @@ let test_lwt ~lib_name =
 
 module T = TestSuite(struct
     type 'a m = 'a Lwt.t
-
-    let access_key = Unix.getenv "AWS_ACCESS_KEY"
-    let secret_key = Unix.getenv "AWS_SECRET_KEY"
-    let region = Unix.getenv "AWS_DEFAULT_REGION"
-
-    let run_request x = Aws_lwt.Runtime.run_request ~region ~access_key ~secret_key x
+    let run_request = Aws_lwt.Runtime.run_request
     let un_m = Lwt_main.run
   end)
 |}
@@ -138,13 +130,24 @@ module T = TestSuite(struct
 let service_test ~lib_name =
   let upper_lib_name = String.uppercase_ascii lib_name in
   Printf.sprintf
-    {|open OUnit
+    {|open OUnit2
 open Aws_%s
+
+type config =
+  { access_key : string
+  ; secret_key : string
+  ; region : string
+  }
+    
+let ( @? ) = assert_bool
 
 module TestSuite(Runtime : sig
     type 'a m
     val run_request :
-      (module Aws.Call with type input = 'input
+         region:string
+      -> access_key:string
+      -> secret_key:string
+      -> (module Aws.Call with type input = 'input
                            and type output = 'output
                            and type error = 'error)
       -> 'input
@@ -152,35 +155,33 @@ module TestSuite(Runtime : sig
     val un_m : 'a m -> 'a
   end) = struct
 
-  let noop_test () =
+  let noop_test config () =
     "Noop %s test succeeds"
     @?false
 
-  let test_cases =
-    [ "%s noop" >:: noop_test ]
+  let suite config =
+    "Test %s" >::: [ "%s noop" >:: noop_test config ]
 
-  let rec was_successful =
-    function
-    | [] -> true
-    | RSuccess _::t
-    | RSkip _::t ->
-      was_successful t
-    | RFailure _::_
-    | RError _::_
-    | RTodo _::_ ->
-      false
-  let _ =
-    let suite = "Tests" >::: test_cases in
-    let verbose = ref false in
-    let set_verbose _ = verbose := true in
-    Arg.parse
-      [("-verbose", Arg.Unit set_verbose, "Run the test in verbose mode.");]
-      (fun x -> raise (Arg.Bad ("Bad argument : " ^ x)))
-      ("Usage: " ^ Sys.argv.(0) ^ " [-verbose]");
-    if not (was_successful (run_test_tt ~verbose:!verbose suite)) then
-      exit 1
+  let () =
+      let access_key =
+        try Some (Unix.getenv "AWS_ACCESS_KEY_ID") with Not_found -> None
+      in
+      let secret_key =
+        try Some (Unix.getenv "AWS_SECRET_ACCESS_KEY") with Not_found -> None
+      in
+      let region = try Some (Unix.getenv "AWS_DEFAULT_REGION") with Not_found -> None in
+      
+      match access_key, secret_key, region with
+      | Some access_key, Some secret_key, Some region ->
+          run_test_tt_main (suite { access_key; secret_key; region })
+      | _, _, _ ->
+          Printf.eprintf
+            "Skipping running tests. Environment variables AWS_ACCESS_KEY_ID, \
+             AWS_SECRET_ACCESS_KEY and AWS_DEFAULT_REGION not available. ";
+          exit 0    
 end
 |}
     lib_name
+    upper_lib_name
     upper_lib_name
     upper_lib_name

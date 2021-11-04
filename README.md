@@ -6,8 +6,7 @@ individual libraries from [botocore][] service descriptions.
 
 [botocore]: https://github.com/boto/botocore
 
-[![Build Status](https://travis-ci.org/inhabitedtype/ocaml-aws.svg?branch=master)](https://travis-ci.org/inhabitedtype/ocaml-aws)
-
+[API Documentation](http://inhabitedtype.github.io/ocaml-aws/)
 
 ## Development
 
@@ -26,8 +25,8 @@ opam update aws
 
 Running individual test suites for a Service
 ``` bash
-AWS_ACCESS_KEY=???? \
-AWS_SECRET_KEY=???? \
+AWS_ACCESS_KEY_ID=???? \
+AWS_SECRET_ACCESS_KEY=???? \
 AWS_DEFAULT_REGION=ap-southeast-2 \
 dune runtest libraries/ec2/lib_test
 ```

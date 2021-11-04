@@ -9,6 +9,8 @@ type error = Errors_internal.t
 
 let service = "sts"
 
+let signature_version = Request.V4
+
 let to_http service region req =
   let uri =
     Uri.add_query_params
@@ -53,9 +55,7 @@ let of_http body =
       BadResponse { body; message = "Error parsing xml: " ^ msg })
 
 let parse_error code err =
-  let errors =
-    [ Errors_internal.InvalidAuthorizationMessageException ] @ Errors_internal.common
-  in
+  let errors = [] @ Errors_internal.common in
   match Errors_internal.of_string err with
   | Some var ->
       if List.mem var errors

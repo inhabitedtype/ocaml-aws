@@ -24,6 +24,7 @@ type t =
   | OptInRequired
   | PackedPolicyTooLarge
   | PendingVerification
+  | RegionDisabledException
   | RequestExpired
   | RequestLimitExceeded
   | ServiceUnavailable
@@ -90,6 +91,7 @@ let to_http_code e =
   | OptInRequired -> Some 403
   | PackedPolicyTooLarge -> Some 400
   | PendingVerification -> None
+  | RegionDisabledException -> Some 403
   | RequestExpired -> Some 400
   | RequestLimitExceeded -> None
   | ServiceUnavailable -> Some 503
@@ -127,6 +129,7 @@ let to_string e =
   | OptInRequired -> "OptInRequired"
   | PackedPolicyTooLarge -> "PackedPolicyTooLarge"
   | PendingVerification -> "PendingVerification"
+  | RegionDisabledException -> "RegionDisabledException"
   | RequestExpired -> "RequestExpired"
   | RequestLimitExceeded -> "RequestLimitExceeded"
   | ServiceUnavailable -> "ServiceUnavailable"
@@ -164,6 +167,7 @@ let of_string e =
   | "OptInRequired" -> Some OptInRequired
   | "PackedPolicyTooLarge" -> Some PackedPolicyTooLarge
   | "PendingVerification" -> Some PendingVerification
+  | "RegionDisabledException" -> Some RegionDisabledException
   | "RequestExpired" -> Some RequestExpired
   | "RequestLimitExceeded" -> Some RequestLimitExceeded
   | "ServiceUnavailable" -> Some ServiceUnavailable

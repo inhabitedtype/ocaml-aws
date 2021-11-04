@@ -1,10 +1,9 @@
-(executables
+(tests
  (names test_async test_lwt)
- (flags
-  (:standard -w -27 -w -33))
+ (package aws-sts)
  (modules test_async test_lwt aws_sts_test)
- (libraries aws aws_sts aws-async aws-lwt oUnit yojson async cohttp-async lwt
-   cohttp-lwt cohttp-lwt-unix))
+ (libraries aws aws-sts aws-async aws-lwt ounit2 yojson async cohttp-async
+   lwt cohttp-lwt cohttp-lwt-unix))
 
 (rule
  (alias runtest)

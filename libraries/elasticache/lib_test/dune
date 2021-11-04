@@ -1,9 +1,8 @@
-(executables
+(tests
  (names test_async test_lwt)
- (flags
-  (:standard -w -27 -w -33))
+ (package aws-elasticache)
  (modules test_async test_lwt aws_elasticache_test)
- (libraries aws aws_elasticache aws-async aws-lwt oUnit yojson async
+ (libraries aws aws-elasticache aws-async aws-lwt ounit2 yojson async
    cohttp-async lwt cohttp-lwt cohttp-lwt-unix))
 
 (rule

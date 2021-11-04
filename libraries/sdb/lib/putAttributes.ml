@@ -9,6 +9,8 @@ type error = Errors_internal.t
 
 let service = "sdb"
 
+let signature_version = Request.V2
+
 let to_http service region req =
   let uri =
     Uri.add_query_params

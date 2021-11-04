@@ -6,16 +6,16 @@ following, with automatically generated portions asterisked:
 
 ```
 libname/
-  _oasis  ***********
   lib/
-    _.ml  ***********
+    dune   **********
+    _.ml   **********
     _.mli  **********
   lib_test/
-    test.ml
+    dune          *****
+    aws_libname_test.ml
+    test_async.ml *****
+    test_lwt.ml   *****
     ...
-  setup.ml  *********
-  myocamlbuild.ml  **
-  Makefile
 ```
 
 If you edit any of the generated files, your changes will likely get

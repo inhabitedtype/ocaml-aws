@@ -4,6 +4,58 @@ open CalendarLib
 
 type calendar = Calendar.t
 
+module PolicyDescriptorType = struct
+  type t = { arn : String.t option }
+
+  let make ?arn () = { arn }
+
+  let parse xml = Some { arn = Util.option_bind (Xml.member "arn" xml) String.parse }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.arn (fun f -> Query.Pair ("arn", String.to_query f)) ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt [ Util.option_map v.arn (fun f -> "arn", String.to_json f) ])
+
+  let of_json j = { arn = Util.option_map (Json.lookup j "arn") String.of_json }
+end
+
+module Tag = struct
+  type t =
+    { key : String.t
+    ; value : String.t
+    }
+
+  let make ~key ~value () = { key; value }
+
+  let parse xml =
+    Some
+      { key = Xml.required "Key" (Util.option_bind (Xml.member "Key" xml) String.parse)
+      ; value =
+          Xml.required "Value" (Util.option_bind (Xml.member "Value" xml) String.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("Value", String.to_query v.value))
+         ; Some (Query.Pair ("Key", String.to_query v.key))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Some ("value", String.to_json v.value); Some ("key", String.to_json v.key) ])
+
+  let of_json j =
+    { key = String.of_json (Util.of_option_exn (Json.lookup j "key"))
+    ; value = String.of_json (Util.of_option_exn (Json.lookup j "value"))
+    }
+end
+
 module Credentials = struct
   type t =
     { access_key_id : String.t
@@ -100,6 +152,35 @@ module FederatedUser = struct
     }
 end
 
+module PolicyDescriptorListType = struct
+  type t = PolicyDescriptorType.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Util.option_all (List.map PolicyDescriptorType.parse (Xml.members "member" xml))
+
+  let to_query v = Query.to_query_list PolicyDescriptorType.to_query v
+
+  let to_json v = `List (List.map PolicyDescriptorType.to_json v)
+
+  let of_json j = Json.to_list PolicyDescriptorType.of_json j
+end
+
+module TagListType = struct
+  type t = Tag.t list
+
+  let make elems () = elems
+
+  let parse xml = Util.option_all (List.map Tag.parse (Xml.members "member" xml))
+
+  let to_query v = Query.to_query_list Tag.to_query v
+
+  let to_json v = `List (List.map Tag.to_json v)
+
+  let of_json j = Json.to_list Tag.of_json j
+end
+
 module AssumedRoleUser = struct
   type t =
     { assumed_role_id : String.t
@@ -136,6 +217,20 @@ module AssumedRoleUser = struct
         String.of_json (Util.of_option_exn (Json.lookup j "assumed_role_id"))
     ; arn = String.of_json (Util.of_option_exn (Json.lookup j "arn"))
     }
+end
+
+module TagKeyListType = struct
+  type t = String.t list
+
+  let make elems () = elems
+
+  let parse xml = Util.option_all (List.map String.parse (Xml.members "member" xml))
+
+  let to_query v = Query.to_query_list String.to_query v
+
+  let to_json v = `List (List.map String.to_json v)
+
+  let of_json j = Json.to_list String.of_json j
 end
 
 module PackedPolicyTooLargeException = struct
@@ -231,28 +326,70 @@ module InvalidIdentityTokenException = struct
   let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
 end
 
-module GetFederationTokenRequest = struct
-  type t =
-    { name : String.t
-    ; policy : String.t option
-    ; duration_seconds : Integer.t option
-    }
+module GetAccessKeyInfoRequest = struct
+  type t = { access_key_id : String.t }
 
-  let make ~name ?policy ?duration_seconds () = { name; policy; duration_seconds }
+  let make ~access_key_id () = { access_key_id }
 
   let parse xml =
     Some
-      { name = Xml.required "Name" (Util.option_bind (Xml.member "Name" xml) String.parse)
-      ; policy = Util.option_bind (Xml.member "Policy" xml) String.parse
-      ; duration_seconds =
-          Util.option_bind (Xml.member "DurationSeconds" xml) Integer.parse
+      { access_key_id =
+          Xml.required
+            "AccessKeyId"
+            (Util.option_bind (Xml.member "AccessKeyId" xml) String.parse)
       }
 
   let to_query v =
     Query.List
       (Util.list_filter_opt
-         [ Util.option_map v.duration_seconds (fun f ->
+         [ Some (Query.Pair ("AccessKeyId", String.to_query v.access_key_id)) ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt [ Some ("access_key_id", String.to_json v.access_key_id) ])
+
+  let of_json j =
+    { access_key_id = String.of_json (Util.of_option_exn (Json.lookup j "access_key_id"))
+    }
+end
+
+module GetFederationTokenRequest = struct
+  type t =
+    { name : String.t
+    ; policy : String.t option
+    ; policy_arns : PolicyDescriptorListType.t
+    ; duration_seconds : Integer.t option
+    ; tags : TagListType.t
+    }
+
+  let make ~name ?policy ?(policy_arns = []) ?duration_seconds ?(tags = []) () =
+    { name; policy; policy_arns; duration_seconds; tags }
+
+  let parse xml =
+    Some
+      { name = Xml.required "Name" (Util.option_bind (Xml.member "Name" xml) String.parse)
+      ; policy = Util.option_bind (Xml.member "Policy" xml) String.parse
+      ; policy_arns =
+          Util.of_option
+            []
+            (Util.option_bind
+               (Xml.member "PolicyArns" xml)
+               PolicyDescriptorListType.parse)
+      ; duration_seconds =
+          Util.option_bind (Xml.member "DurationSeconds" xml) Integer.parse
+      ; tags =
+          Util.of_option [] (Util.option_bind (Xml.member "Tags" xml) TagListType.parse)
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Some (Query.Pair ("Tags.member", TagListType.to_query v.tags))
+         ; Util.option_map v.duration_seconds (fun f ->
                Query.Pair ("DurationSeconds", Integer.to_query f))
+         ; Some
+             (Query.Pair
+                ("PolicyArns.member", PolicyDescriptorListType.to_query v.policy_arns))
          ; Util.option_map v.policy (fun f -> Query.Pair ("Policy", String.to_query f))
          ; Some (Query.Pair ("Name", String.to_query v.name))
          ])
@@ -260,8 +397,10 @@ module GetFederationTokenRequest = struct
   let to_json v =
     `Assoc
       (Util.list_filter_opt
-         [ Util.option_map v.duration_seconds (fun f ->
+         [ Some ("tags", TagListType.to_json v.tags)
+         ; Util.option_map v.duration_seconds (fun f ->
                "duration_seconds", Integer.to_json f)
+         ; Some ("policy_arns", PolicyDescriptorListType.to_json v.policy_arns)
          ; Util.option_map v.policy (fun f -> "policy", String.to_json f)
          ; Some ("name", String.to_json v.name)
          ])
@@ -269,8 +408,12 @@ module GetFederationTokenRequest = struct
   let of_json j =
     { name = String.of_json (Util.of_option_exn (Json.lookup j "name"))
     ; policy = Util.option_map (Json.lookup j "policy") String.of_json
+    ; policy_arns =
+        PolicyDescriptorListType.of_json
+          (Util.of_option_exn (Json.lookup j "policy_arns"))
     ; duration_seconds =
         Util.option_map (Json.lookup j "duration_seconds") Integer.of_json
+    ; tags = TagListType.of_json (Util.of_option_exn (Json.lookup j "tags"))
     }
 end
 
@@ -412,6 +555,28 @@ module MalformedPolicyDocumentException = struct
   let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
 end
 
+module RegionDisabledException = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Util.option_bind (Xml.member "message" xml) String.parse }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> Query.Pair ("message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.message (fun f -> "message", String.to_json f) ])
+
+  let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
+end
+
 module IDPCommunicationErrorException = struct
   type t = { message : String.t option }
 
@@ -432,6 +597,20 @@ module IDPCommunicationErrorException = struct
          [ Util.option_map v.message (fun f -> "message", String.to_json f) ])
 
   let of_json j = { message = Util.option_map (Json.lookup j "message") String.of_json }
+end
+
+module GetCallerIdentityRequest = struct
+  type t = unit
+
+  let make () = ()
+
+  let parse xml = Some ()
+
+  let to_query v = Query.List (Util.list_filter_opt [])
+
+  let to_json v = `Assoc (Util.list_filter_opt [])
+
+  let of_json j = ()
 end
 
 module ExpiredTokenException = struct
@@ -531,6 +710,28 @@ module AssumeRoleResponse = struct
     ; packed_policy_size =
         Util.option_map (Json.lookup j "packed_policy_size") Integer.of_json
     }
+end
+
+module GetAccessKeyInfoResponse = struct
+  type t = { account : String.t option }
+
+  let make ?account () = { account }
+
+  let parse xml =
+    Some { account = Util.option_bind (Xml.member "Account" xml) String.parse }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.account (fun f -> Query.Pair ("Account", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.account (fun f -> "account", String.to_json f) ])
+
+  let of_json j = { account = Util.option_map (Json.lookup j "account") String.of_json }
 end
 
 module DecodeAuthorizationMessageRequest = struct
@@ -660,12 +861,20 @@ module AssumeRoleWithSAMLRequest = struct
     { role_arn : String.t
     ; principal_arn : String.t
     ; s_a_m_l_assertion : String.t
+    ; policy_arns : PolicyDescriptorListType.t
     ; policy : String.t option
     ; duration_seconds : Integer.t option
     }
 
-  let make ~role_arn ~principal_arn ~s_a_m_l_assertion ?policy ?duration_seconds () =
-    { role_arn; principal_arn; s_a_m_l_assertion; policy; duration_seconds }
+  let make
+      ~role_arn
+      ~principal_arn
+      ~s_a_m_l_assertion
+      ?(policy_arns = [])
+      ?policy
+      ?duration_seconds
+      () =
+    { role_arn; principal_arn; s_a_m_l_assertion; policy_arns; policy; duration_seconds }
 
   let parse xml =
     Some
@@ -681,6 +890,12 @@ module AssumeRoleWithSAMLRequest = struct
           Xml.required
             "SAMLAssertion"
             (Util.option_bind (Xml.member "SAMLAssertion" xml) String.parse)
+      ; policy_arns =
+          Util.of_option
+            []
+            (Util.option_bind
+               (Xml.member "PolicyArns" xml)
+               PolicyDescriptorListType.parse)
       ; policy = Util.option_bind (Xml.member "Policy" xml) String.parse
       ; duration_seconds =
           Util.option_bind (Xml.member "DurationSeconds" xml) Integer.parse
@@ -692,6 +907,9 @@ module AssumeRoleWithSAMLRequest = struct
          [ Util.option_map v.duration_seconds (fun f ->
                Query.Pair ("DurationSeconds", Integer.to_query f))
          ; Util.option_map v.policy (fun f -> Query.Pair ("Policy", String.to_query f))
+         ; Some
+             (Query.Pair
+                ("PolicyArns.member", PolicyDescriptorListType.to_query v.policy_arns))
          ; Some (Query.Pair ("SAMLAssertion", String.to_query v.s_a_m_l_assertion))
          ; Some (Query.Pair ("PrincipalArn", String.to_query v.principal_arn))
          ; Some (Query.Pair ("RoleArn", String.to_query v.role_arn))
@@ -703,6 +921,7 @@ module AssumeRoleWithSAMLRequest = struct
          [ Util.option_map v.duration_seconds (fun f ->
                "duration_seconds", Integer.to_json f)
          ; Util.option_map v.policy (fun f -> "policy", String.to_json f)
+         ; Some ("policy_arns", PolicyDescriptorListType.to_json v.policy_arns)
          ; Some ("s_a_m_l_assertion", String.to_json v.s_a_m_l_assertion)
          ; Some ("principal_arn", String.to_json v.principal_arn)
          ; Some ("role_arn", String.to_json v.role_arn)
@@ -713,6 +932,9 @@ module AssumeRoleWithSAMLRequest = struct
     ; principal_arn = String.of_json (Util.of_option_exn (Json.lookup j "principal_arn"))
     ; s_a_m_l_assertion =
         String.of_json (Util.of_option_exn (Json.lookup j "s_a_m_l_assertion"))
+    ; policy_arns =
+        PolicyDescriptorListType.of_json
+          (Util.of_option_exn (Json.lookup j "policy_arns"))
     ; policy = Util.option_map (Json.lookup j "policy") String.of_json
     ; duration_seconds =
         Util.option_map (Json.lookup j "duration_seconds") Integer.of_json
@@ -802,12 +1024,52 @@ module AssumeRoleWithWebIdentityResponse = struct
     }
 end
 
+module GetCallerIdentityResponse = struct
+  type t =
+    { user_id : String.t option
+    ; account : String.t option
+    ; arn : String.t option
+    }
+
+  let make ?user_id ?account ?arn () = { user_id; account; arn }
+
+  let parse xml =
+    Some
+      { user_id = Util.option_bind (Xml.member "UserId" xml) String.parse
+      ; account = Util.option_bind (Xml.member "Account" xml) String.parse
+      ; arn = Util.option_bind (Xml.member "Arn" xml) String.parse
+      }
+
+  let to_query v =
+    Query.List
+      (Util.list_filter_opt
+         [ Util.option_map v.arn (fun f -> Query.Pair ("Arn", String.to_query f))
+         ; Util.option_map v.account (fun f -> Query.Pair ("Account", String.to_query f))
+         ; Util.option_map v.user_id (fun f -> Query.Pair ("UserId", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Util.list_filter_opt
+         [ Util.option_map v.arn (fun f -> "arn", String.to_json f)
+         ; Util.option_map v.account (fun f -> "account", String.to_json f)
+         ; Util.option_map v.user_id (fun f -> "user_id", String.to_json f)
+         ])
+
+  let of_json j =
+    { user_id = Util.option_map (Json.lookup j "user_id") String.of_json
+    ; account = Util.option_map (Json.lookup j "account") String.of_json
+    ; arn = Util.option_map (Json.lookup j "arn") String.of_json
+    }
+end
+
 module AssumeRoleWithWebIdentityRequest = struct
   type t =
     { role_arn : String.t
     ; role_session_name : String.t
     ; web_identity_token : String.t
     ; provider_id : String.t option
+    ; policy_arns : PolicyDescriptorListType.t
     ; policy : String.t option
     ; duration_seconds : Integer.t option
     }
@@ -817,6 +1079,7 @@ module AssumeRoleWithWebIdentityRequest = struct
       ~role_session_name
       ~web_identity_token
       ?provider_id
+      ?(policy_arns = [])
       ?policy
       ?duration_seconds
       () =
@@ -824,6 +1087,7 @@ module AssumeRoleWithWebIdentityRequest = struct
     ; role_session_name
     ; web_identity_token
     ; provider_id
+    ; policy_arns
     ; policy
     ; duration_seconds
     }
@@ -843,6 +1107,12 @@ module AssumeRoleWithWebIdentityRequest = struct
             "WebIdentityToken"
             (Util.option_bind (Xml.member "WebIdentityToken" xml) String.parse)
       ; provider_id = Util.option_bind (Xml.member "ProviderId" xml) String.parse
+      ; policy_arns =
+          Util.of_option
+            []
+            (Util.option_bind
+               (Xml.member "PolicyArns" xml)
+               PolicyDescriptorListType.parse)
       ; policy = Util.option_bind (Xml.member "Policy" xml) String.parse
       ; duration_seconds =
           Util.option_bind (Xml.member "DurationSeconds" xml) Integer.parse
@@ -854,6 +1124,9 @@ module AssumeRoleWithWebIdentityRequest = struct
          [ Util.option_map v.duration_seconds (fun f ->
                Query.Pair ("DurationSeconds", Integer.to_query f))
          ; Util.option_map v.policy (fun f -> Query.Pair ("Policy", String.to_query f))
+         ; Some
+             (Query.Pair
+                ("PolicyArns.member", PolicyDescriptorListType.to_query v.policy_arns))
          ; Util.option_map v.provider_id (fun f ->
                Query.Pair ("ProviderId", String.to_query f))
          ; Some (Query.Pair ("WebIdentityToken", String.to_query v.web_identity_token))
@@ -867,6 +1140,7 @@ module AssumeRoleWithWebIdentityRequest = struct
          [ Util.option_map v.duration_seconds (fun f ->
                "duration_seconds", Integer.to_json f)
          ; Util.option_map v.policy (fun f -> "policy", String.to_json f)
+         ; Some ("policy_arns", PolicyDescriptorListType.to_json v.policy_arns)
          ; Util.option_map v.provider_id (fun f -> "provider_id", String.to_json f)
          ; Some ("web_identity_token", String.to_json v.web_identity_token)
          ; Some ("role_session_name", String.to_json v.role_session_name)
@@ -880,6 +1154,9 @@ module AssumeRoleWithWebIdentityRequest = struct
     ; web_identity_token =
         String.of_json (Util.of_option_exn (Json.lookup j "web_identity_token"))
     ; provider_id = Util.option_map (Json.lookup j "provider_id") String.of_json
+    ; policy_arns =
+        PolicyDescriptorListType.of_json
+          (Util.of_option_exn (Json.lookup j "policy_arns"))
     ; policy = Util.option_map (Json.lookup j "policy") String.of_json
     ; duration_seconds =
         Util.option_map (Json.lookup j "duration_seconds") Integer.of_json
@@ -890,8 +1167,11 @@ module AssumeRoleRequest = struct
   type t =
     { role_arn : String.t
     ; role_session_name : String.t
+    ; policy_arns : PolicyDescriptorListType.t
     ; policy : String.t option
     ; duration_seconds : Integer.t option
+    ; tags : TagListType.t
+    ; transitive_tag_keys : TagKeyListType.t
     ; external_id : String.t option
     ; serial_number : String.t option
     ; token_code : String.t option
@@ -900,16 +1180,22 @@ module AssumeRoleRequest = struct
   let make
       ~role_arn
       ~role_session_name
+      ?(policy_arns = [])
       ?policy
       ?duration_seconds
+      ?(tags = [])
+      ?(transitive_tag_keys = [])
       ?external_id
       ?serial_number
       ?token_code
       () =
     { role_arn
     ; role_session_name
+    ; policy_arns
     ; policy
     ; duration_seconds
+    ; tags
+    ; transitive_tag_keys
     ; external_id
     ; serial_number
     ; token_code
@@ -925,9 +1211,21 @@ module AssumeRoleRequest = struct
           Xml.required
             "RoleSessionName"
             (Util.option_bind (Xml.member "RoleSessionName" xml) String.parse)
+      ; policy_arns =
+          Util.of_option
+            []
+            (Util.option_bind
+               (Xml.member "PolicyArns" xml)
+               PolicyDescriptorListType.parse)
       ; policy = Util.option_bind (Xml.member "Policy" xml) String.parse
       ; duration_seconds =
           Util.option_bind (Xml.member "DurationSeconds" xml) Integer.parse
+      ; tags =
+          Util.of_option [] (Util.option_bind (Xml.member "Tags" xml) TagListType.parse)
+      ; transitive_tag_keys =
+          Util.of_option
+            []
+            (Util.option_bind (Xml.member "TransitiveTagKeys" xml) TagKeyListType.parse)
       ; external_id = Util.option_bind (Xml.member "ExternalId" xml) String.parse
       ; serial_number = Util.option_bind (Xml.member "SerialNumber" xml) String.parse
       ; token_code = Util.option_bind (Xml.member "TokenCode" xml) String.parse
@@ -942,9 +1240,16 @@ module AssumeRoleRequest = struct
                Query.Pair ("SerialNumber", String.to_query f))
          ; Util.option_map v.external_id (fun f ->
                Query.Pair ("ExternalId", String.to_query f))
+         ; Some
+             (Query.Pair
+                ("TransitiveTagKeys.member", TagKeyListType.to_query v.transitive_tag_keys))
+         ; Some (Query.Pair ("Tags.member", TagListType.to_query v.tags))
          ; Util.option_map v.duration_seconds (fun f ->
                Query.Pair ("DurationSeconds", Integer.to_query f))
          ; Util.option_map v.policy (fun f -> Query.Pair ("Policy", String.to_query f))
+         ; Some
+             (Query.Pair
+                ("PolicyArns.member", PolicyDescriptorListType.to_query v.policy_arns))
          ; Some (Query.Pair ("RoleSessionName", String.to_query v.role_session_name))
          ; Some (Query.Pair ("RoleArn", String.to_query v.role_arn))
          ])
@@ -955,9 +1260,12 @@ module AssumeRoleRequest = struct
          [ Util.option_map v.token_code (fun f -> "token_code", String.to_json f)
          ; Util.option_map v.serial_number (fun f -> "serial_number", String.to_json f)
          ; Util.option_map v.external_id (fun f -> "external_id", String.to_json f)
+         ; Some ("transitive_tag_keys", TagKeyListType.to_json v.transitive_tag_keys)
+         ; Some ("tags", TagListType.to_json v.tags)
          ; Util.option_map v.duration_seconds (fun f ->
                "duration_seconds", Integer.to_json f)
          ; Util.option_map v.policy (fun f -> "policy", String.to_json f)
+         ; Some ("policy_arns", PolicyDescriptorListType.to_json v.policy_arns)
          ; Some ("role_session_name", String.to_json v.role_session_name)
          ; Some ("role_arn", String.to_json v.role_arn)
          ])
@@ -966,9 +1274,15 @@ module AssumeRoleRequest = struct
     { role_arn = String.of_json (Util.of_option_exn (Json.lookup j "role_arn"))
     ; role_session_name =
         String.of_json (Util.of_option_exn (Json.lookup j "role_session_name"))
+    ; policy_arns =
+        PolicyDescriptorListType.of_json
+          (Util.of_option_exn (Json.lookup j "policy_arns"))
     ; policy = Util.option_map (Json.lookup j "policy") String.of_json
     ; duration_seconds =
         Util.option_map (Json.lookup j "duration_seconds") Integer.of_json
+    ; tags = TagListType.of_json (Util.of_option_exn (Json.lookup j "tags"))
+    ; transitive_tag_keys =
+        TagKeyListType.of_json (Util.of_option_exn (Json.lookup j "transitive_tag_keys"))
     ; external_id = Util.option_map (Json.lookup j "external_id") String.of_json
     ; serial_number = Util.option_map (Json.lookup j "serial_number") String.of_json
     ; token_code = Util.option_map (Json.lookup j "token_code") String.of_json
