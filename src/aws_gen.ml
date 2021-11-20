@@ -127,6 +127,10 @@ let rec mkdir_p ?(root = "") dirs =
       (try Unix.mkdir dir 0o777 with Unix.Unix_error (Unix.EEXIST, _, _) -> ());
       mkdir_p ~root:dir ds
 
+let additional_libs = function
+| "autoscaling" -> [ "aws-ec2" ]
+| _ -> []
+
 let main input override errors_path outdir is_ec2 =
   log "## Generating...";
   let overrides =
@@ -230,7 +234,10 @@ let main input override errors_path outdir is_ec2 =
   log "## Wrote dune file.";
   Printing.write_all
     ~filename:(lib_dir_test </> "dune")
-    (Templates.dune_test ~lib_name:lib_name_dir);
+    (Templates.dune_test
+      ~lib_name:lib_name_dir
+      ~additional_libs:(additional_libs lib_name_dir)
+      ());
 
   log "## Wrote test runner files.";
   Printing.write_all

@@ -73,17 +73,18 @@ let dune ~lib_name ~service_name =
     lib_name
     service_name
 
-let dune_test ~lib_name =
+let dune_test ~lib_name ?(additional_libs=[]) () =
+  
   (* Necessary cause '%' is reserved string in 'sprintf' and I didn't know
      how to escape it.
   *)
   let d = "%{deps}" in
-  Printf.sprintf
+  Format.asprintf
     {|(executables
  (names test_async test_lwt)
  (flags (:standard -w -27 -w -33))
  (modules test_async test_lwt aws_%s_test)
- (libraries aws aws-%s aws-async aws-lwt
+ (libraries aws aws-%s aws-async aws-lwt %a
             ounit2 yojson
             async cohttp-async
             lwt cohttp-lwt cohttp-lwt-unix))
@@ -100,6 +101,8 @@ let dune_test ~lib_name =
 |}
     lib_name
     lib_name
+    Format.(pp_print_list ~pp_sep:pp_print_space pp_print_text)
+    additional_libs
     d
     d
 
