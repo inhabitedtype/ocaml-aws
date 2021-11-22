@@ -12,7 +12,7 @@ jobs:
     - uses: actions/checkout@master
     - uses: ocaml/setup-ocaml@v2
       with:
-        ocaml-version: ${{ matrix.ocaml-version }}
+        ocaml-compiler: ${{ matrix.ocaml-compiler }}
     - run: |
         opam pin add aws.dev -n .
         opam pin add aws-lwt.dev -n .
