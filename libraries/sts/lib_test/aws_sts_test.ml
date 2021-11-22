@@ -44,21 +44,23 @@ functor
              (Types.GetSessionTokenRequest.make ())))
 
     let assume_role config ?token () =
-      let role_arn = match config.role_arn with
-      | Some s -> s
-      | None -> ""
+      let role_arn =
+        match config.role_arn with
+        | Some s -> s
+        | None -> ""
       in
       Runtime.(
         un_m
           (run_request
-            ~region:config.region
-            ~access_key:config.access_key
-            ~secret_key:config.secret_key
-            ?token
-            (module AssumeRole)
-            (Types.AssumeRoleRequest.make ~role_arn ~role_session_name:"ocaml-aws-test" ())
-          )
-      )
+             ~region:config.region
+             ~access_key:config.access_key
+             ~secret_key:config.secret_key
+             ?token
+             (module AssumeRole)
+             (Types.AssumeRoleRequest.make
+                ~role_arn
+                ~role_session_name:"ocaml-aws-test"
+                ())))
 
     let get_session_token_test config _ =
       let result = get_session_token config () in
@@ -75,62 +77,68 @@ functor
           Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err);
           false
 
-      let print_assume_role_response resp = 
-        Printf.printf
-          "%s\n"
-          (Yojson.Basic.to_string
-            Types.AssumeRoleResponse.(to_json (of_json (to_json resp))))
+    let print_assume_role_response resp =
+      Printf.printf
+        "%s\n"
+        (Yojson.Basic.to_string
+           Types.AssumeRoleResponse.(to_json (of_json (to_json resp))))
 
-      let print_assume_role_error err =
-        Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err)
+    let print_assume_role_error err =
+      Printf.printf "Error: %s\n" (Aws.Error.format Errors_internal.to_string err)
 
-      let assume_role_test config _ =
-        skip_if (config.role_arn = None) "Environment variable AWS_STS_ROLE_ARN not available.";
-        let result = assume_role config () in
-        "Assume Role returns succcessfully"
-        @?
-        match result with
-        | `Ok resp ->
+    let assume_role_test config _ =
+      skip_if
+        (config.role_arn = None)
+        "Environment variable AWS_STS_ROLE_ARN not available.";
+      let result = assume_role config () in
+      "Assume Role returns succcessfully"
+      @?
+      match result with
+      | `Ok resp ->
           print_assume_role_response resp;
           true
-        | `Error err -> 
+      | `Error err ->
           print_assume_role_error err;
           false
 
-       let assume_role_assume_role_test config _ =
-        skip_if (config.role_arn = None) "Environment variable AWS_STS_ROLE_ARN not available.";
-        let result = assume_role config () in
-        "Assume Role able to Assume Role"
-        @?
-        match result with
-        | `Ok resp -> 
+    let assume_role_assume_role_test config _ =
+      skip_if
+        (config.role_arn = None)
+        "Environment variable AWS_STS_ROLE_ARN not available.";
+      let result = assume_role config () in
+      "Assume Role able to Assume Role"
+      @?
+      match result with
+      | `Ok resp -> (
           print_assume_role_response resp;
-          (match resp.credentials with
-          | Some creds ->
-            let config2 = {
-              config with
-              access_key=creds.access_key_id;
-              secret_key=creds.secret_access_key;
-            } in
-            (match assume_role config2 ~token:creds.session_token () with
-            | `Ok resp2 -> 
-              print_assume_role_response resp2;
-              true
-            | `Error err -> 
-              print_assume_role_error err;
+          match resp.credentials with
+          | Some creds -> (
+              let config2 =
+                { config with
+                  access_key = creds.access_key_id
+                ; secret_key = creds.secret_access_key
+                }
+              in
+              match assume_role config2 ~token:creds.session_token () with
+              | `Ok resp2 ->
+                  print_assume_role_response resp2;
+                  true
+              | `Error err ->
+                  print_assume_role_error err;
+                  false)
+          | None ->
+              Printf.eprintf "Did not receive credentials from first assume_role call.";
               false)
-          | None -> 
-            Printf.eprintf "Did not receive credentials from first assume_role call.";
-            false)
-        | `Error err -> 
+      | `Error err ->
           print_assume_role_error err;
           false
 
     let suite config =
-      "Test STS" >::: [ 
-        "STS get_session_token" >:: get_session_token_test config
-        ; "STS assume_role" >:: assume_role_test config
-        ; "STS assume_role -> assume_role" >:: assume_role_assume_role_test config]
+      "Test STS"
+      >::: [ "STS get_session_token" >:: get_session_token_test config
+           ; "STS assume_role" >:: assume_role_test config
+           ; "STS assume_role -> assume_role" >:: assume_role_assume_role_test config
+           ]
 
     let () =
       let access_key =

@@ -73,8 +73,7 @@ let dune ~lib_name ~service_name =
     lib_name
     service_name
 
-let dune_test ~lib_name ?(additional_libs=[]) () =
-  
+let dune_test ~lib_name ?(additional_libs = []) () =
   (* Necessary cause '%' is reserved string in 'sprintf' and I didn't know
      how to escape it.
   *)

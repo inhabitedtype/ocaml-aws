@@ -535,13 +535,13 @@ module Signing = struct
     let canonical_uri = "/" in
     let canonical_querystring = params in
     let payload_hash = Hash.sha256_hex "" in
-    let token_header, sig_header = match token with
-    | Some t ->
-      let th = "x-amz-security-token:" ^ t ^ "\n" in
-      let sh = ";x-amz-security-token" in
-      th, sh
-    | None ->
-      "", ""
+    let token_header, sig_header =
+      match token with
+      | Some t ->
+          let th = "x-amz-security-token:" ^ t ^ "\n" in
+          let sh = ";x-amz-security-token" in
+          th, sh
+      | None -> "", ""
     in
     let canonical_headers =
       "host:"
@@ -606,29 +606,29 @@ module Signing = struct
       :: ("Authorization", authorization_header)
       :: headers
     in
-    let full_headers = match token with
-    | Some t -> ("X-Amz-Security-Token", t) :: headers
-    | None -> headers
+    let full_headers =
+      match token with
+      | Some t -> ("X-Amz-Security-Token", t) :: headers
+      | None -> headers
     in
     meth, uri, full_headers
 
-  let sign_v2_request ~access_key ~secret_key ?token ~service ~region (meth, uri, headers) =
+  let sign_v2_request ~access_key ~secret_key ?token ~service ~region (meth, uri, headers)
+      =
     let host = Util.of_option_exn (Endpoints.endpoint_of service region) in
     let amzdate = Time.date_time_iso8601 (Time.now_utc ()) in
 
     let query =
       Uri.add_query_params'
         uri
-        (
-          (match token with
-          | Some t -> [("SecurityToken", t)]
-          | None -> [])
-          @ [ "Timestamp", amzdate
+        ((match token with
+         | Some t -> [ "SecurityToken", t ]
+         | None -> [])
+        @ [ "Timestamp", amzdate
           ; "AWSAccessKeyId", access_key
           ; "SignatureMethod", "HmacSHA256"
           ; "SignatureVersion", "2"
-          ]
-        )
+          ])
     in
 
     let params = encode_query (Uri.query query) in
