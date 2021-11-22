@@ -101,6 +101,10 @@ functor
           print_assume_role_error err;
           false
 
+    (* This test is designed to see if assume_role authentication works for
+       `run_request`. Using a role ARN passed in via an environment variable,
+       it gets an assume_role token for the user specified and then gets another token
+       from those credentials. The role ARN passed in should have admin permissions in IAM. *)
     let assume_role_assume_role_test config _ =
       skip_if
         (config.role_arn = None)
