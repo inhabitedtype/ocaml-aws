@@ -14,3 +14,4 @@ lib/**/.merlin
 .envrc
 **/.merlin
 .idea
+/_opam
