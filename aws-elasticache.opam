@@ -3,15 +3,15 @@ version: "1.2"
 synopsis: "Amazon Web Services SDK bindings to Amazon ElastiCache"
 description: "Amazon Web Services SDK bindings to Amazon ElastiCache"
 maintainer: "Tim McGilchrist <timmcgil@gmail.com>"
-authors: [
+authors: [ 
   "Spiros Eliopoulos <spiros@inhabitedtype.com>"
   "Daniel Patterson <dbp@dbpmail.net>"
   "Tim McGilchrist <timmcgil@gmail.com>"
 ]
 license: "BSD-3-clause"
 homepage: "https://github.com/inhabitedtype/ocaml-aws"
-doc: "https://github.com/inhabitedtype/ocaml-aws"
 bug-reports: "https://github.com/inhabitedtype/ocaml-aws/issues"
+doc: "https://github.com/inhabitedtype/ocaml-aws"
 dev-repo: "git+https://github.com/inhabitedtype/ocaml-aws.git"
 depends: [
   "ocaml" {>= "4.08"}

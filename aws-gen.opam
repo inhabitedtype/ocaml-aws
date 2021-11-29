@@ -18,6 +18,7 @@ depends: [
   "yojson"
   "base-unix"
   "cmdliner"
+  "fmt"
   "ppx_tools_versioned"
   "yojson" {>= "1.6.0"}
   "ocaml-migrate-parsetree"

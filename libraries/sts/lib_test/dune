@@ -1,6 +1,8 @@
 (tests
  (names test_async test_lwt)
  (package aws-sts)
+ (flags
+  (:standard -w -27 -w -33))
  (modules test_async test_lwt aws_sts_test)
  (libraries aws aws-sts aws-async aws-lwt ounit2 yojson async cohttp-async
    lwt cohttp-lwt cohttp-lwt-unix))

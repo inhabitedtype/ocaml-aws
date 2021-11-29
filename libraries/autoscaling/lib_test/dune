@@ -1,8 +1,10 @@
 (tests
  (names test_async test_lwt)
  (package aws-autoscaling)
+ (flags
+  (:standard -w -27 -w -33))
  (modules test_async test_lwt aws_autoscaling_test)
- (libraries aws aws-autoscaling aws-async aws-lwt aws-ec2 ounit2 yojson async
+ (libraries aws aws-autoscaling aws-ec2 aws-async aws-lwt ounit2 yojson async
    cohttp-async lwt cohttp-lwt cohttp-lwt-unix))
 
 (rule

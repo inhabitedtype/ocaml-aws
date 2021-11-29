@@ -35,7 +35,7 @@
 val dune : lib_name:string -> service_name:string -> string
 
 (* Generate a dune file suitable for building library tests *)
-val dune_test : lib_name:string -> string
+val dune_test : ?optional_libs:string list -> lib_name:string -> unit -> string
 
 (* Template for async runner for tests *)
 val test_async : lib_name:string -> string
