@@ -1,0 +1,31 @@
+opam-version: "2.0"
+version: "1.2"
+synopsis: "Amazon Web Services SDK bindings to AWS Key Management Service"
+description: "Amazon Web Services SDK bindings to AWS Key Management Service"
+maintainer: "Tim McGilchrist <timmcgil@gmail.com>"
+authors: [ 
+  "Spiros Eliopoulos <spiros@inhabitedtype.com>"
+  "Daniel Patterson <dbp@dbpmail.net>"
+  "Tim McGilchrist <timmcgil@gmail.com>"
+]
+license: "BSD-3-clause"
+homepage: "https://github.com/inhabitedtype/ocaml-aws"
+bug-reports: "https://github.com/inhabitedtype/ocaml-aws/issues"
+doc: "https://github.com/inhabitedtype/ocaml-aws"
+dev-repo: "git+https://github.com/inhabitedtype/ocaml-aws.git"
+depends: [
+  "ocaml" {>= "4.08"}
+  "aws" {= version}
+  "dune" {>= "2.7"}
+  "ounit2" {with-test & >= "2.2.4"}
+  "async" {with-test & >= "v0.14.0"}
+  "cohttp-async" {with-test & >= "2.4.0"}
+  "cohttp-lwt" {with-test & >= "2.4.0"}
+  "cohttp-lwt-unix" {with-test & >= "2.4.0"}
+  "lwt" {with-test & >= "4.0.0"}
+  "yojson" {with-test & >= "1.7.0"}
+]
+build: [
+  ["dune" "subst"] {pinned}
+  ["dune" "build" "-p" name "-j" jobs]
+]
