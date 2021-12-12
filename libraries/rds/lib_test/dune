@@ -1,5 +1,6 @@
-(executables
+(tests
  (names test_async test_lwt)
+ (package aws-rds)
  (flags
   (:standard -w -27 -w -33))
  (modules test_async test_lwt aws_rds_test)
