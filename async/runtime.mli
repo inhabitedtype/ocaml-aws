@@ -39,4 +39,5 @@ val run_request :
   -> ('input, 'output, 'error) Aws.call
   -> 'input
   -> [ `Ok of 'output | `Error of 'error Aws.Error.t ] Async.Deferred.t
-(** Run an AWS request, in the [region] with [access_key] and [secret_key]. *)
+(** Run an AWS request, in the [region] with [access_key] and [secret_key].
+ * An STS assume_role [token] can be optionally used to sign the request. *)
