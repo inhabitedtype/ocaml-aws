@@ -20,6 +20,7 @@ module TestSuite (Runtime : sig
        region:string
     -> access_key:string
     -> secret_key:string
+    -> ?token:string
     -> (module Aws.Call
           with type input = 'input
            and type output = 'output

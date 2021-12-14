@@ -16,7 +16,7 @@ clean:
 	rm -rf _build *.install
 
 fmt:
-	dune build @fmt --auto-promote
+	dune build @fmt --auto-promote || echo "format has errors, ignoring"
 
 .PHONY: endpoints
 
@@ -26,9 +26,11 @@ endpoints:
 aws-ec2:
 	dune exec aws-gen -- --is-ec2 -i input/ec2/latest/service-2.json -r input/ec2/overrides.json -e input/errors.json -o libraries
 
+aws-autoscaling:
+	dune exec aws-gen -- -i input/autoscaling/latest/service-2.json -r input/autoscaling/overrides.json -e input/errors.json -o libraries --optional-libs=aws-ec2
+
 # NOTE: This does not include aws-ec2, which is special-cased.
 LIBRARIES := \
-	aws-autoscaling \
 	aws-cloudformation \
 	aws-cloudtrail \
 	aws-cloudwatch \
@@ -45,7 +47,7 @@ LIBRARIES := \
 $(LIBRARIES): aws-%:
 	dune exec aws-gen -- -i input/$*/latest/service-2.json -r input/$*/overrides.json -e input/errors.json -o libraries
 
-gen: build aws-ec2 $(LIBRARIES)
+gen: build aws-ec2 aws-autoscaling $(LIBRARIES) fmt
 
 update-version: VERSION=$(shell cat CHANGES.md | grep -E '^[0-9]' | head -n 1 | cut -f1 -d':' )
 update-version:

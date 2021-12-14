@@ -127,7 +127,7 @@ let rec mkdir_p ?(root = "") dirs =
       (try Unix.mkdir dir 0o777 with Unix.Unix_error (Unix.EEXIST, _, _) -> ());
       mkdir_p ~root:dir ds
 
-let main input override errors_path outdir is_ec2 =
+let main input override errors_path outdir is_ec2 (optional_libs : string list) =
   log "## Generating...";
   let overrides =
     match override with
@@ -230,7 +230,7 @@ let main input override errors_path outdir is_ec2 =
   log "## Wrote dune file.";
   Printing.write_all
     ~filename:(lib_dir_test </> "dune")
-    (Templates.dune_test ~lib_name:lib_name_dir);
+    (Templates.dune_test ~optional_libs ~lib_name:lib_name_dir ());
 
   log "## Wrote test runner files.";
   Printing.write_all
@@ -281,7 +281,13 @@ module CommandLine = struct
     let doc = "This enables EC2-specific special casing in parts of code generation." in
     Arg.(value & flag & info [ "is-ec2" ] ~docv:"Filename" ~doc)
 
-  let gen_t = Term.(pure main $ input $ override $ errors $ outdir $ is_ec2)
+  let optional_libs =
+    let doc = "This allows us to include arbitrary libraries in our test files" in
+    let type_ = Arg.(opt (list string) []) in
+    Arg.(value & (type_ @@ info ~docv:"Filename" [ "optional-libs" ] ~doc))
+
+  let gen_t =
+    Term.(pure main $ input $ override $ errors $ outdir $ is_ec2 $ optional_libs)
 
   let info =
     let doc = "Generate a library for an AWS schema." in

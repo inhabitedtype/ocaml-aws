@@ -33,30 +33,36 @@
 let opam ~service_name =
   Printf.sprintf
     {|opam-version: "2.0"
-maintainer: "Tim McGilchrist <timmcgil@gmail.com>"
-authors: [ "Spiros Eliopoulos <spiros@inhabitedtype.com>"
-           "Daniel Patterson <dbp@dbpmail.net>"
-           "Tim McGilchrist <timmcgil@gmail.com>"
-         ]
+version: "1.2"
 synopsis: "Amazon Web Services SDK bindings to %s"
 description: "Amazon Web Services SDK bindings to %s"
-version: "1.2"
+maintainer: "Tim McGilchrist <timmcgil@gmail.com>"
+authors: [ 
+  "Spiros Eliopoulos <spiros@inhabitedtype.com>"
+  "Daniel Patterson <dbp@dbpmail.net>"
+  "Tim McGilchrist <timmcgil@gmail.com>"
+]
 license: "BSD-3-clause"
 homepage: "https://github.com/inhabitedtype/ocaml-aws"
-dev-repo: "git+https://github.com/inhabitedtype/ocaml-aws.git"
 bug-reports: "https://github.com/inhabitedtype/ocaml-aws/issues"
 doc: "https://github.com/inhabitedtype/ocaml-aws"
-build: [
-  ["dune" "subst"] {pinned}
-  ["dune" "build" "-p" name "-j" jobs]
-]
+dev-repo: "git+https://github.com/inhabitedtype/ocaml-aws.git"
 depends: [
   "ocaml" {>= "4.08"}
   "aws" {= version}
   "dune" {>= "2.7"}
-  "ounit2" {>= "2.2.4" & with-test}
+  "ounit2" {with-test & >= "2.2.4"}
+  "async" {with-test & >= "v0.14.0"}
+  "cohttp-async" {with-test & >= "2.4.0"}
+  "cohttp-lwt" {with-test & >= "2.4.0"}
+  "cohttp-lwt-unix" {with-test & >= "2.4.0"}
+  "lwt" {with-test & >= "4.0.0"}
+  "yojson" {with-test & >= "1.7.0"}
 ]
-|}
+build: [
+  ["dune" "subst"] {pinned}
+  ["dune" "build" "-p" name "-j" jobs]
+]|}
     service_name
     service_name
 
@@ -73,17 +79,24 @@ let dune ~lib_name ~service_name =
     lib_name
     service_name
 
-let dune_test ~lib_name =
+let dune_test ?optional_libs ~lib_name () =
   (* Necessary cause '%' is reserved string in 'sprintf' and I didn't know
      how to escape it.
   *)
+  let optional_libs =
+    (match optional_libs with
+    | Some libs -> libs
+    | None -> [])
+    |> Fmt.str "%a" (Fmt.list ~sep:Fmt.sp Fmt.string)
+  in
   let d = "%{deps}" in
   Printf.sprintf
-    {|(executables
+    {|(tests
  (names test_async test_lwt)
+ (package aws-%s)
  (flags (:standard -w -27 -w -33))
  (modules test_async test_lwt aws_%s_test)
- (libraries aws aws-%s aws-async aws-lwt
+ (libraries aws aws-%s %s aws-async aws-lwt
             ounit2 yojson
             async cohttp-async
             lwt cohttp-lwt cohttp-lwt-unix))
@@ -100,6 +113,8 @@ let dune_test ~lib_name =
 |}
     lib_name
     lib_name
+    lib_name
+    optional_libs
     d
     d
 
@@ -147,6 +162,7 @@ module TestSuite(Runtime : sig
          region:string
       -> access_key:string
       -> secret_key:string
+      -> ?token:string
       -> (module Aws.Call with type input = 'input
                            and type output = 'output
                            and type error = 'error)

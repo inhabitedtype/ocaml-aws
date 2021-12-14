@@ -265,7 +265,7 @@ module Query = struct
       | k, List xs -> List.concat (List.map (enc k) xs)
       | Some n, Pair (label, subq) -> enc (Some (n ^ "." ^ label)) subq
       | None, Pair (label, subq) -> enc (Some label) subq
-      | Some n, Value (Some s) -> [ n ^ "=" ^ Uri.pct_encode s ]
+      | Some n, Value (Some s) -> [ n ^ "=" ^ Uri.pct_encode ~component:`Query_value s ]
       | None, Value (Some s) -> [ Uri.pct_encode s ]
       | Some s, _ -> [ s ]
       | _ -> []
@@ -522,7 +522,7 @@ module Signing = struct
   (* NOTE(dbp 2015-01-13): This is a direct translation of reference implementation at:
    * http://docs.aws.amazon.com/general/latest/gr/sigv4-signed-request-examples.html
    *)
-  let sign_request ~access_key ~secret_key ~service ~region (meth, uri, headers) =
+  let sign_request ~access_key ~secret_key ?token ~service ~region (meth, uri, headers) =
     let host = Util.of_option_exn (Endpoints.endpoint_of service region) in
     let params = encode_query (Uri.query uri) in
     let sign key msg = Hash.sha256 ~key msg in
@@ -535,6 +535,14 @@ module Signing = struct
     let canonical_uri = "/" in
     let canonical_querystring = params in
     let payload_hash = Hash.sha256_hex "" in
+    let token_header, sig_header =
+      match token with
+      | Some t ->
+          let th = "x-amz-security-token:" ^ t ^ "\n" in
+          let sh = ";x-amz-security-token" in
+          th, sh
+      | None -> "", ""
+    in
     let canonical_headers =
       "host:"
       ^ host
@@ -544,8 +552,9 @@ module Signing = struct
       ^ "\nx-amz-date:"
       ^ amzdate
       ^ "\n"
+      ^ token_header
     in
-    let signed_headers = "host;x-amz-content-sha256;x-amz-date" in
+    let signed_headers = "host;x-amz-content-sha256;x-amz-date" ^ sig_header in
     let canonical_request =
       Request.string_of_meth meth
       ^ "\n"
@@ -597,20 +606,29 @@ module Signing = struct
       :: ("Authorization", authorization_header)
       :: headers
     in
-    meth, uri, headers
+    let full_headers =
+      match token with
+      | Some t -> ("X-Amz-Security-Token", t) :: headers
+      | None -> headers
+    in
+    meth, uri, full_headers
 
-  let sign_v2_request ~access_key ~secret_key ~service ~region (meth, uri, headers) =
+  let sign_v2_request ~access_key ~secret_key ?token ~service ~region (meth, uri, headers)
+      =
     let host = Util.of_option_exn (Endpoints.endpoint_of service region) in
     let amzdate = Time.date_time_iso8601 (Time.now_utc ()) in
 
     let query =
       Uri.add_query_params'
         uri
-        [ "Timestamp", amzdate
-        ; "AWSAccessKeyId", access_key
-        ; "SignatureMethod", "HmacSHA256"
-        ; "SignatureVersion", "2"
-        ]
+        ((match token with
+         | Some t -> [ "SecurityToken", t ]
+         | None -> [])
+        @ [ "Timestamp", amzdate
+          ; "AWSAccessKeyId", access_key
+          ; "SignatureMethod", "HmacSHA256"
+          ; "SignatureVersion", "2"
+          ])
     in
 
     let params = encode_query (Uri.query query) in

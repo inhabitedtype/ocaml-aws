@@ -4,5 +4,5 @@
  (package aws-gen)
  (preprocess
   (pps ppx_tools_versioned.metaquot_404))
- (libraries yojson cmdliner unix ppx_tools_versioned ocaml-migrate-parsetree
-   ocamlgraph atdgen str))
+ (libraries yojson cmdliner fmt unix ppx_tools_versioned
+   ocaml-migrate-parsetree ocamlgraph atdgen str))
