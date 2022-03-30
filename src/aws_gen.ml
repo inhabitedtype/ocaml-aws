@@ -287,14 +287,14 @@ module CommandLine = struct
     Arg.(value & (type_ @@ info ~docv:"Filename" [ "optional-libs" ] ~doc))
 
   let gen_t =
-    Term.(pure main $ input $ override $ errors $ outdir $ is_ec2 $ optional_libs)
+    Term.(const main $ input $ override $ errors $ outdir $ is_ec2 $ optional_libs)
 
   let info =
     let doc = "Generate a library for an AWS schema." in
-    Term.info "aws_gen" ~version:"0.0.1" ~doc
+    Cmd.info "aws_gen" ~version:"0.0.1" ~doc
 end
 
 let () =
-  match Term.eval CommandLine.(gen_t, info) with
-  | `Error _ -> exit 1
+  match Cmd.eval_value CommandLine.(Cmd.v info gen_t) with
+  | Error _ -> exit 1
   | _ -> exit 0
