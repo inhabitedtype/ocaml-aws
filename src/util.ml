@@ -262,3 +262,8 @@ let option_map l ~f =
   match l with
   | None -> None
   | Some x -> Some (f ^ x)
+
+let of_option_exn = function
+  | Some v -> v
+  | None -> failwith "Expected Some v, got None."
+

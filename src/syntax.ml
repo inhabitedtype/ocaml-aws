@@ -35,8 +35,9 @@ open Migrate_parsetree
 open Ast_404
 open Parsetree
 open Ast_helper
-open Ast_convenience_404
 open Asttypes
+
+let lid s = Location.mkloc (Util.of_option_exn ( Longident.unflatten [ s ] )) !default_loc
 
 let strloc txt = { txt; loc = !default_loc }
 
