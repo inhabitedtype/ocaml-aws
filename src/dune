@@ -2,7 +2,5 @@
  (names aws_gen endpoint_gen)
  (public_names aws-gen endpoint-gen)
  (package aws-gen)
- (preprocess
-  (pps ppx_tools_versioned.metaquot_404))
- (libraries yojson cmdliner fmt unix ppx_tools_versioned
+ (libraries yojson cmdliner fmt unix
    ocaml-migrate-parsetree ocamlgraph atdgen str))

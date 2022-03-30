@@ -33,8 +33,6 @@
 
 open Structures
 open Util
-open Migrate_parsetree
-open Ast_404
 
 let is_list ~shapes ~shp =
   try
@@ -138,10 +136,10 @@ let types is_ec2 shapes =
                       members)))
           in
           Syntax.let_ "make" (mkfun members body)
-      | Shape.List _ -> [%stri let make elems () = elems]
-      | Shape.Enum _ -> [%stri let make v () = v]
+      | Shape.List _ -> Syntax.(let_ "make" (let elems = "elems" in fun_ elems (fun_ "()" (ident elems))))
+      | Shape.Enum _ -> Syntax.(let_ "make" (let v = "v" in fun_ v (fun_ "()" (ident v))))
       (* TODO: maybe accept a list of tuples and create a Hashtbl *)
-      | Shape.Map _ -> [%stri let make elems () = elems]
+      | Shape.Map _ -> Syntax.(let_ "make" (let elems = "elems" in fun_ elems (fun_ "()" (ident elems))))
     in
     let extra =
       let open Syntax in
