@@ -17,7 +17,7 @@ depends: [
   "atdgen"
   "yojson"
   "base-unix"
-  "cmdliner"
+  "cmdliner" {>= "1.1.0"}
   "fmt"
   "ppx_tools_versioned"
   "yojson" {>= "1.6.0"}
