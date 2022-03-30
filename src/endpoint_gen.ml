@@ -90,15 +90,15 @@ module CommandLine = struct
       & opt (some dir) None
       & info [ "o"; "output-directory" ] ~docv:"Directory" ~doc)
 
-  let gen_t = Term.(pure main $ input $ outdir)
+  let gen_t = Term.(const main $ input $ outdir)
 
   let info =
     let doc = "Generate the endpoints mapping for AWS resources." in
-    Term.info "endpoint-gen" ~version:"0.0.1" ~doc
+    Cmd.info "endpoint-gen" ~version:"0.0.1" ~doc
 end
 
 (** entrypoint *)
 let () =
-  match Term.eval CommandLine.(gen_t, info) with
-  | `Error _ -> exit 1
+  match Cmd.eval_value CommandLine.(Cmd.v info gen_t) with
+  | Error _ -> exit 1
   | _ -> exit 0
