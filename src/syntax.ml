@@ -258,6 +258,12 @@ let withty _nm0 nm1 =
 (* if cond then thn else els *)
 let ifthen cond thn els = Exp.ifthenelse cond thn (Some els)
 
+let match_ = Exp.match_
+
+let casearm ?guard lid pat body = Exp.case (Pat.construct lid pat) ?guard body
+
+let pvar v = Pat.var (strloc v)
+
 (* match exp with | Constructor -> body | Constructor -> body ... *)
 let matchvar exp branches =
   Exp.match_
@@ -266,14 +272,14 @@ let matchvar exp branches =
 
 (* match exp with | "String" -> body ... | _ -> els ... *)
 let matchstrs exp branches els =
-  Exp.match_
+  match_
     exp
     (List.map (fun (nm, body) -> Exp.case (Pat.constant (Const.string nm)) body) branches
     @ [ Exp.case (Pat.any ()) els ])
 
 (* match exp with | Some var -> some_body | None -> none_body *)
 let matchoption exp some_body none_body =
-  Exp.match_
+  match_
     exp
     [ Exp.case (construct (lid "Some") (Some (Pat.var (strloc "var")))) some_body
     ; Exp.case (construct (lid "None") None) none_body

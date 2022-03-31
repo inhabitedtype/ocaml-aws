@@ -54,10 +54,26 @@ let write_url_of =
       (fun2
          "svc_name"
          "region"
-         (matchoption
+         (match_
             (app2 "endpoint_of" (ident "svc_name") (ident "region"))
-            (app1 "Some" (app2 "^" (str "https://") (ident "var")))
-            (ident "None"))))
+            [ (let some_v = "var" in
+               casearm
+                 (lid "Some")
+                 (Some (pvar some_v))
+                 ~guard:(app2 "Util.string_starts_with" (str "localhost") (ident some_v))
+                 (app1 "Some" (str "http://localhost:8000")))
+            ; (let some_v = "var" in
+               casearm
+                 (lid "Some")
+                 (Some (pvar some_v))
+                 (app1
+                    "Some"
+                    (app2
+                       "String.concat"
+                       (str "")
+                       (list [ ident some_v; str "https://" ]))))
+            ; casearm (lid "None") None (ident "None")
+            ])))
 
 let main input outdir =
   log "Start processing endpoints";
