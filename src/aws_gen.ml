@@ -102,17 +102,26 @@ module Json = struct
     let open Yojson.Basic.Util in
     let original = to_assoc original in
     let overrides = to_assoc overrides in
-    `Assoc
-      (List.map
-         (fun (key, val_) ->
-           if key = "shapes"
-           then
-             let types =
-               try to_assoc (List.assoc "typeOverrides" overrides) with _ -> []
-             in
-             key, `Assoc (override_shapes (to_assoc val_) types)
-           else key, val_)
-         original)
+    let overriden =
+      `Assoc
+        (List.map
+           (fun (key, val_) ->
+             if key = "shapes"
+             then
+               let types =
+                 try to_assoc (List.assoc "typeOverrides" overrides) with _ -> []
+               in
+               key, `Assoc (override_shapes (to_assoc val_) types)
+             else key, val_)
+           original)
+    in
+    let overriden =
+      let additional_values =
+        `Assoc (try to_assoc (List.assoc "additionalValues" overrides) with _ -> [])
+      in
+      merge overriden additional_values
+    in
+    overriden
 end
 
 let log s = Printf.eprintf (s ^^ "\n%!")
