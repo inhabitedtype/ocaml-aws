@@ -1,3 +1,7 @@
+Unreleased
+----------
+- Add KMS supprt https://github.com/inhabitedtype/ocaml-aws/pull/118
+
 1.2.1
 ----------
 - Increase lower bound on OCaml to 4.08. https://github.com/inhabitedtype/ocaml-aws/pull/104
