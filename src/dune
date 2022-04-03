@@ -2,5 +2,17 @@
  (names aws_gen endpoint_gen)
  (public_names aws-gen endpoint-gen)
  (package aws-gen)
- (libraries yojson cmdliner fmt unix
-   ocaml-migrate-parsetree ocamlgraph atdgen str))
+ (libraries
+  yojson
+  cmdliner
+  compiler-libs.common
+  fmt
+  unix
+  ocamlgraph
+  atdgen
+  str)
+ (preprocess
+  (per_module
+   ((action
+     (run %{bin:cppo} -V OCAML:%{ocaml_version} %{input-file}))
+    syntax))))
