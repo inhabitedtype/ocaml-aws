@@ -20,7 +20,7 @@ depends: [
   "cmdliner" {>= "1.1.0"}
   "fmt"
   "yojson" {>= "1.6.0"}
-  "ocaml-migrate-parsetree" {< "2.0.0"}
+  "ocaml-compiler-libs" {>= "0.11.0" }
   "ocamlgraph"
   "dune" {>= "2.7"}
 ]

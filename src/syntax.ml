@@ -31,27 +31,28 @@
     POSSIBILITY OF SUCH DAMAGE.
   ----------------------------------------------------------------------------*)
 
-open Migrate_parsetree
-open Ast_404
-open Parsetree
 open Ast_helper
 open Asttypes
 
-let lid s = Location.mkloc (Util.of_option_exn ( Longident.unflatten [ s ] )) !default_loc
+let lid s = Location.mkloc (Longident.Lident s) !default_loc
 
 let strloc txt = { txt; loc = !default_loc }
 
 (* open Module (in .ml) *)
-let open_ nm = Str.open_ (Opn.mk (lid nm))
+let open_ nm = Str.open_ (Opn.mk (Mod.ident (lid nm)))
 
 (* open Module (in .mli) *)
 let sopen_ nm = Sig.open_ (Opn.mk (lid nm))
 
 (* let open Module in E *)
-let letom nm = Exp.open_ Fresh (lid nm)
+let letom nm = Exp.open_ (Opn.mk ~override:Fresh (Mod.ident (lid nm)))
 
 (* module nm1 = nm2 *)
-let modlet nm1 nm2 = Str.module_ (Mb.mk (strloc nm1) (Mod.ident (lid nm2)))
+let modlet nm1 nm2 =
+#if OCAML_VERSION >= (4, 10, 0)
+  let nm1 = Some nm1 in
+#endif
+  Str.module_ (Mb.mk (strloc nm1) (Mod.ident (lid nm2)))
 
 (* nm (as a type) *)
 let ty0 nm = Typ.constr (lid nm) []
@@ -152,7 +153,12 @@ let app2 f a0 a1 = Exp.apply (ident f) [ Nolabel, a0; Nolabel, a1 ]
 let app3 f a0 a1 a2 = Exp.apply (ident f) [ Nolabel, a0; Nolabel, a1; Nolabel, a2 ]
 
 (* s (the string literal) *)
-let str s = Exp.constant (Pconst_string (s, None))
+let str s =
+#if OCAML_VERSION >= (4, 11, 0)
+  Exp.constant (Pconst_string (s, !default_loc, None))
+#else
+  Exp.constant (Pconst_string (s, None))
+#endif
 
 (* n (the int literal) *)
 let int n = Exp.constant (Pconst_integer (string_of_int n, None))
@@ -180,34 +186,38 @@ let variant v = Exp.variant v None
 let variant1 v a = Exp.variant v (Some a)
 
 (* module nm = vs *)
-let module_ nm vs = Str.module_ (Mb.mk (strloc nm) (Mod.structure vs))
+let module_ nm vs =
+#if OCAML_VERSION >= (4, 10, 0)
+  let nm = Some nm in
+#endif
+  Str.module_ (Mb.mk (strloc nm) (Mod.structure vs))
 
 (* try body with _ -> with_ *)
 let try_ body with_ = Exp.try_ body [ Exp.case (Pat.any ()) with_ ]
+
+let construct lid p =
+#if OCAML_VERSION >= (4, 13, 0)
+  let p = Option.map (fun p -> [], p) p in
+#endif
+  Pat.construct lid p
 
 (* try body with Failure msg -> with_ (so msg is bound) *)
 let tryfail body with_ =
   Exp.try_
     body
-    [ Exp.case (Pat.construct (lid "Failure") (Some (Pat.var (strloc "msg")))) with_ ]
+    [ Exp.case (construct (lid "Failure") (Some (Pat.var (strloc "msg")))) with_ ]
 
 (* try body with Exception msg -> with_ (so msg in bound) *)
 let try_msg exc body with_ =
-  Exp.try_
-    body
-    [ Exp.case (Pat.construct (lid exc) (Some (Pat.var (strloc "msg")))) with_ ]
+  Exp.try_ body [ Exp.case (construct (lid exc) (Some (Pat.var (strloc "msg")))) with_ ]
 
 (* include nm with_ (in .mli; where with_ is list of elements
    created with `withy` below) *)
-let sinclude_ nm with_ =
-  Sig.include_
-    { pincl_mod = Mty.with_ (Mty.ident (lid nm)) with_
-    ; pincl_loc = !default_loc
-    ; pincl_attributes = []
-    }
+let sinclude_ nm with_ = Sig.include_ (Incl.mk (Mty.with_ (Mty.ident (lid nm)) with_))
 
 (* with nm0 := nm1 (in .mli; for use in include) *)
-let withty _nm0 nm1 = Pwith_typesubst (Type.mk ~manifest:(ty0 nm1) (strloc nm1))
+let withty _nm0 nm1 =
+  Parsetree.Pwith_typesubst (lid nm1, Type.mk ~manifest:(ty0 nm1) (strloc nm1))
 
 (* if cond then thn else els *)
 let ifthen cond thn els = Exp.ifthenelse cond thn (Some els)
@@ -216,21 +226,19 @@ let ifthen cond thn els = Exp.ifthenelse cond thn (Some els)
 let matchvar exp branches =
   Exp.match_
     exp
-    (List.map (fun (nm, body) -> Exp.case (Pat.construct (lid nm) None) body) branches)
+    (List.map (fun (nm, body) -> Exp.case (construct (lid nm) None) body) branches)
 
 (* match exp with | "String" -> body ... | _ -> els ... *)
 let matchstrs exp branches els =
   Exp.match_
     exp
-    (List.map
-       (fun (nm, body) -> Exp.case (Pat.constant (Pconst_string (nm, None))) body)
-       branches
+    (List.map (fun (nm, body) -> Exp.case (Pat.constant (Const.string nm)) body) branches
     @ [ Exp.case (Pat.any ()) els ])
 
 (* match exp with | Some var -> some_body | None -> none_body *)
 let matchoption exp some_body none_body =
   Exp.match_
     exp
-    [ Exp.case (Pat.construct (lid "Some") (Some (Pat.var (strloc "var")))) some_body
-    ; Exp.case (Pat.construct (lid "None") None) none_body
+    [ Exp.case (construct (lid "Some") (Some (Pat.var (strloc "var")))) some_body
+    ; Exp.case (construct (lid "None") None) none_body
     ]
