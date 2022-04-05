@@ -57,6 +57,12 @@ let modlet nm1 nm2 =
 (* nm (as a type) *)
 let ty0 nm = Typ.constr (lid nm) []
 
+let label str = Labelled str
+
+let labelopt str = Optional str
+
+let tyfun ?(label = Nolabel) a b = Typ.arrow label a b
+
 (* nm2 nm1 (as a type) *)
 let ty1 nm1 nm2 = Typ.constr (lid nm1) [ ty0 nm2 ]
 
@@ -64,36 +70,46 @@ let ty1 nm1 nm2 = Typ.constr (lid nm1) [ ty0 nm2 ]
 let ty2 nm1 nm2 nm3 = Typ.constr (lid nm1) [ ty0 nm2; ty0 nm3 ]
 
 (* type nm = { fs.. } *)
-let tyreclet nm fs =
-  Str.type_
-    Recursive
-    [ Type.mk
-        ~kind:(Ptype_record (List.map (fun (nm, ty) -> Type.field (strloc nm) ty) fs))
-        (strloc nm)
-    ]
+let tyreclet' nm fs =
+  Type.mk
+    ~kind:(Ptype_record (List.map (fun (nm, ty) -> Type.field (strloc nm) ty) fs))
+    (strloc nm)
+
+let tyreclet nm fs = Str.type_ Recursive [ tyreclet' nm fs ]
 
 (* type nm = unit *)
-let tyunit nm = Str.type_ Recursive [ Type.mk ~manifest:(ty0 "unit") (strloc nm) ]
+let tyunit' nm = Type.mk ~manifest:(ty0 "unit") (strloc nm)
+
+let tyunit nm = Str.type_ Recursive [ tyunit' nm ]
+
 
 (* type nm = ty (in .ml) *)
-let tylet nm ty = Str.type_ Recursive [ Type.mk ~manifest:ty (strloc nm) ]
+let tylet' nm ty = Type.mk ~manifest:ty (strloc nm)
+
+let tylet nm ty = Str.type_ Recursive [ tylet' nm ty ]
 
 (* type nm = | nm0 of ty0 | ... *)
-let tyvariantlet nm variants =
-  Str.type_
-    Recursive
-    [ Type.mk
-        ~kind:
-          (Ptype_variant
-             (List.map
-                (fun (cnm, args) ->
-                  Type.constructor ~args:(Pcstr_tuple args) (strloc cnm))
-                variants))
-        (strloc nm)
-    ]
+let tyvariantlet' nm variants =
+  Type.mk
+    ~kind:
+      (Ptype_variant
+         (List.map
+            (fun (cnm, args) -> Type.constructor ~args:(Pcstr_tuple args) (strloc cnm))
+            variants))
+    (strloc nm)
+
+let tyvariantlet nm variants = Str.type_ Recursive [ tyvariantlet' nm variants ]
 
 (* type nm = ty (in .mli) *)
 let stylet nm ty = Sig.type_ Recursive [ Type.mk ~manifest:ty (strloc nm) ]
+
+let ty_ t = Str.type_ Recursive [ t ]
+
+let sty_ t = Sig.type_ Recursive [ t ]
+
+let nonrecty_ t = Str.type_ Nonrecursive [ t ]
+
+let snonrecty_ t = Sig.type_ Nonrecursive [ t ]
 
 (* let nm = body *)
 let let_ nm body = Str.value Nonrecursive [ Vb.mk (Pat.var (strloc nm)) body ]
@@ -146,6 +162,9 @@ let ident i = Exp.ident (lid i)
 (* f a *)
 let app1 f a = Exp.apply (ident f) [ Nolabel, a ]
 
+(* f ~l:a *)
+let appl1 f (l, a) = Exp.apply f [ Labelled l, a ]
+
 (* f a0 a1 *)
 let app2 f a0 a1 = Exp.apply (ident f) [ Nolabel, a0; Nolabel, a1 ]
 
@@ -191,6 +210,23 @@ let module_ nm vs =
   let nm = Some nm in
 #endif
   Str.module_ (Mb.mk (strloc nm) (Mod.structure vs))
+
+let sigval nm ty = Sig.value (Val.mk (strloc nm) ty)
+
+let sigty nm ty = Sig.type_ Recursive [ Type.mk ~manifest:ty (strloc nm) ]
+
+let sig_ ss = Mty.signature ss
+
+let module'_ nm vs sig_ =
+#if OCAML_VERSION >= (4, 9, 0)
+  let nm = Some nm in
+#endif
+
+  Mb.mk (strloc nm) Mod.(constraint_ (structure vs) sig_)
+
+let module__ = Str.module_
+
+let rec_module_ l = Str.rec_module l
 
 (* try body with _ -> with_ *)
 let try_ body with_ = Exp.try_ body [ Exp.case (Pat.any ()) with_ ]
