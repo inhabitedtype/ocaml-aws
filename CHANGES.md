@@ -1,6 +1,7 @@
 Unreleased
 ----------
-- Add KMS supprt https://github.com/inhabitedtype/ocaml-aws/pull/118
+- Add KMS support (#118 @zbaylin)
+- Drop dependency on ocaml-migrate-parsetree and use ocaml-compiler-libs (#126 @Nymphium)
 
 1.2.1
 ----------

@@ -1,77 +1,74 @@
 type t =
-  | AWS_SimpleQueueService_BatchEntryIdsNotDistinct
-  | AWS_SimpleQueueService_BatchRequestTooLong
-  | AWS_SimpleQueueService_EmptyBatchRequest
-  | AWS_SimpleQueueService_InvalidBatchEntryId
-  | AWS_SimpleQueueService_MessageNotInflight
-  | AWS_SimpleQueueService_NonExistentQueue
-  | AWS_SimpleQueueService_PurgeQueueInProgress
-  | AWS_SimpleQueueService_QueueDeletedRecently
-  | AWS_SimpleQueueService_TooManyEntriesInBatchRequest
-  | AWS_SimpleQueueService_UnsupportedOperation
-  | AuthFailure
-  | Blocked
-  | DryRunOperation
-  | IdempotentParameterMismatch
-  | IncompleteSignature
-  | InternalFailure
-  | InvalidAction
-  | InvalidAttributeName
-  | InvalidClientTokenId
-  | InvalidIdFormat
-  | InvalidMessageContents
-  | InvalidParameter
-  | InvalidParameterCombination
-  | InvalidParameterValue
-  | InvalidQueryParameter
-  | MalformedQueryString
-  | MissingAction
-  | MissingAuthenticationToken
-  | MissingParameter
-  | OptInRequired
-  | OverLimit
-  | PendingVerification
-  | QueueAlreadyExists
-  | ReceiptHandleIsInvalid
-  | RequestExpired
-  | RequestLimitExceeded
-  | ServiceUnavailable
-  | Throttling
-  | UnauthorizedOperation
-  | UnknownParameter
-  | UnsupportedProtocol
-  | ValidationError
-  | Uninhabited
-
+  | AWS_SimpleQueueService_BatchEntryIdsNotDistinct 
+  | AWS_SimpleQueueService_BatchRequestTooLong 
+  | AWS_SimpleQueueService_EmptyBatchRequest 
+  | AWS_SimpleQueueService_InvalidBatchEntryId 
+  | AWS_SimpleQueueService_MessageNotInflight 
+  | AWS_SimpleQueueService_NonExistentQueue 
+  | AWS_SimpleQueueService_PurgeQueueInProgress 
+  | AWS_SimpleQueueService_QueueDeletedRecently 
+  | AWS_SimpleQueueService_TooManyEntriesInBatchRequest 
+  | AWS_SimpleQueueService_UnsupportedOperation 
+  | AuthFailure 
+  | Blocked 
+  | DryRunOperation 
+  | IdempotentParameterMismatch 
+  | IncompleteSignature 
+  | InternalFailure 
+  | InvalidAction 
+  | InvalidAttributeName 
+  | InvalidClientTokenId 
+  | InvalidIdFormat 
+  | InvalidMessageContents 
+  | InvalidParameter 
+  | InvalidParameterCombination 
+  | InvalidParameterValue 
+  | InvalidQueryParameter 
+  | MalformedQueryString 
+  | MissingAction 
+  | MissingAuthenticationToken 
+  | MissingParameter 
+  | OptInRequired 
+  | OverLimit 
+  | PendingVerification 
+  | QueueAlreadyExists 
+  | ReceiptHandleIsInvalid 
+  | RequestExpired 
+  | RequestLimitExceeded 
+  | ServiceUnavailable 
+  | Throttling 
+  | UnauthorizedOperation 
+  | UnknownParameter 
+  | UnsupportedProtocol 
+  | ValidationError 
+  | Uninhabited 
 let common =
-  [ UnsupportedProtocol
-  ; UnknownParameter
-  ; UnauthorizedOperation
-  ; RequestLimitExceeded
-  ; PendingVerification
-  ; InvalidParameter
-  ; IdempotentParameterMismatch
-  ; DryRunOperation
-  ; Blocked
-  ; AuthFailure
-  ; ValidationError
-  ; Throttling
-  ; ServiceUnavailable
-  ; RequestExpired
-  ; OptInRequired
-  ; MissingParameter
-  ; MissingAuthenticationToken
-  ; MissingAction
-  ; MalformedQueryString
-  ; InvalidQueryParameter
-  ; InvalidParameterValue
-  ; InvalidParameterCombination
-  ; InvalidClientTokenId
-  ; InvalidAction
-  ; InternalFailure
-  ; IncompleteSignature
-  ]
-
+  [UnsupportedProtocol;
+  UnknownParameter;
+  UnauthorizedOperation;
+  RequestLimitExceeded;
+  PendingVerification;
+  InvalidParameter;
+  IdempotentParameterMismatch;
+  DryRunOperation;
+  Blocked;
+  AuthFailure;
+  ValidationError;
+  Throttling;
+  ServiceUnavailable;
+  RequestExpired;
+  OptInRequired;
+  MissingParameter;
+  MissingAuthenticationToken;
+  MissingAction;
+  MalformedQueryString;
+  InvalidQueryParameter;
+  InvalidParameterValue;
+  InvalidParameterCombination;
+  InvalidClientTokenId;
+  InvalidAction;
+  InternalFailure;
+  IncompleteSignature]
 let to_http_code e =
   match e with
   | AWS_SimpleQueueService_BatchEntryIdsNotDistinct -> Some 400
@@ -117,19 +114,20 @@ let to_http_code e =
   | UnsupportedProtocol -> None
   | ValidationError -> Some 400
   | Uninhabited -> None
-
 let to_string e =
   match e with
   | AWS_SimpleQueueService_BatchEntryIdsNotDistinct ->
       "AWS.SimpleQueueService.BatchEntryIdsNotDistinct"
   | AWS_SimpleQueueService_BatchRequestTooLong ->
       "AWS.SimpleQueueService.BatchRequestTooLong"
-  | AWS_SimpleQueueService_EmptyBatchRequest -> "AWS.SimpleQueueService.EmptyBatchRequest"
+  | AWS_SimpleQueueService_EmptyBatchRequest ->
+      "AWS.SimpleQueueService.EmptyBatchRequest"
   | AWS_SimpleQueueService_InvalidBatchEntryId ->
       "AWS.SimpleQueueService.InvalidBatchEntryId"
   | AWS_SimpleQueueService_MessageNotInflight ->
       "AWS.SimpleQueueService.MessageNotInflight"
-  | AWS_SimpleQueueService_NonExistentQueue -> "AWS.SimpleQueueService.NonExistentQueue"
+  | AWS_SimpleQueueService_NonExistentQueue ->
+      "AWS.SimpleQueueService.NonExistentQueue"
   | AWS_SimpleQueueService_PurgeQueueInProgress ->
       "AWS.SimpleQueueService.PurgeQueueInProgress"
   | AWS_SimpleQueueService_QueueDeletedRecently ->
@@ -171,7 +169,6 @@ let to_string e =
   | UnsupportedProtocol -> "UnsupportedProtocol"
   | ValidationError -> "ValidationError"
   | Uninhabited -> "Uninhabited"
-
 let of_string e =
   match e with
   | "AWS.SimpleQueueService.BatchEntryIdsNotDistinct" ->

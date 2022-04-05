@@ -1,81 +1,78 @@
 type t =
-  | AlreadyExistsException
-  | AuthFailure
-  | Blocked
-  | CFNRegistryException
-  | ChangeSetNotFound
-  | ConditionalCheckFailed
-  | CreatedButModifiedException
-  | DryRunOperation
-  | IdempotentParameterMismatch
-  | IncompleteSignature
-  | InsufficientCapabilitiesException
-  | InternalFailure
-  | InvalidAction
-  | InvalidChangeSetStatus
-  | InvalidClientTokenId
-  | InvalidOperationException
-  | InvalidParameter
-  | InvalidParameterCombination
-  | InvalidParameterValue
-  | InvalidQueryParameter
-  | InvalidStateTransition
-  | LimitExceededException
-  | MalformedQueryString
-  | MissingAction
-  | MissingAuthenticationToken
-  | MissingParameter
-  | NameAlreadyExistsException
-  | OperationIdAlreadyExistsException
-  | OperationInProgressException
-  | OperationNotFoundException
-  | OptInRequired
-  | PendingVerification
-  | RequestExpired
-  | RequestLimitExceeded
-  | ServiceUnavailable
-  | StackInstanceNotFoundException
-  | StackSetNotEmptyException
-  | StackSetNotFoundException
-  | StaleRequestException
-  | Throttling
-  | TokenAlreadyExistsException
-  | TypeNotFoundException
-  | UnauthorizedOperation
-  | UnknownParameter
-  | UnsupportedProtocol
-  | ValidationError
-  | Uninhabited
-
+  | AlreadyExistsException 
+  | AuthFailure 
+  | Blocked 
+  | CFNRegistryException 
+  | ChangeSetNotFound 
+  | ConditionalCheckFailed 
+  | CreatedButModifiedException 
+  | DryRunOperation 
+  | IdempotentParameterMismatch 
+  | IncompleteSignature 
+  | InsufficientCapabilitiesException 
+  | InternalFailure 
+  | InvalidAction 
+  | InvalidChangeSetStatus 
+  | InvalidClientTokenId 
+  | InvalidOperationException 
+  | InvalidParameter 
+  | InvalidParameterCombination 
+  | InvalidParameterValue 
+  | InvalidQueryParameter 
+  | InvalidStateTransition 
+  | LimitExceededException 
+  | MalformedQueryString 
+  | MissingAction 
+  | MissingAuthenticationToken 
+  | MissingParameter 
+  | NameAlreadyExistsException 
+  | OperationIdAlreadyExistsException 
+  | OperationInProgressException 
+  | OperationNotFoundException 
+  | OptInRequired 
+  | PendingVerification 
+  | RequestExpired 
+  | RequestLimitExceeded 
+  | ServiceUnavailable 
+  | StackInstanceNotFoundException 
+  | StackSetNotEmptyException 
+  | StackSetNotFoundException 
+  | StaleRequestException 
+  | Throttling 
+  | TokenAlreadyExistsException 
+  | TypeNotFoundException 
+  | UnauthorizedOperation 
+  | UnknownParameter 
+  | UnsupportedProtocol 
+  | ValidationError 
+  | Uninhabited 
 let common =
-  [ UnsupportedProtocol
-  ; UnknownParameter
-  ; UnauthorizedOperation
-  ; RequestLimitExceeded
-  ; PendingVerification
-  ; InvalidParameter
-  ; IdempotentParameterMismatch
-  ; DryRunOperation
-  ; Blocked
-  ; AuthFailure
-  ; ValidationError
-  ; Throttling
-  ; ServiceUnavailable
-  ; RequestExpired
-  ; OptInRequired
-  ; MissingParameter
-  ; MissingAuthenticationToken
-  ; MissingAction
-  ; MalformedQueryString
-  ; InvalidQueryParameter
-  ; InvalidParameterValue
-  ; InvalidParameterCombination
-  ; InvalidClientTokenId
-  ; InvalidAction
-  ; InternalFailure
-  ; IncompleteSignature
-  ]
-
+  [UnsupportedProtocol;
+  UnknownParameter;
+  UnauthorizedOperation;
+  RequestLimitExceeded;
+  PendingVerification;
+  InvalidParameter;
+  IdempotentParameterMismatch;
+  DryRunOperation;
+  Blocked;
+  AuthFailure;
+  ValidationError;
+  Throttling;
+  ServiceUnavailable;
+  RequestExpired;
+  OptInRequired;
+  MissingParameter;
+  MissingAuthenticationToken;
+  MissingAction;
+  MalformedQueryString;
+  InvalidQueryParameter;
+  InvalidParameterValue;
+  InvalidParameterCombination;
+  InvalidClientTokenId;
+  InvalidAction;
+  InternalFailure;
+  IncompleteSignature]
 let to_http_code e =
   match e with
   | AlreadyExistsException -> Some 400
@@ -125,7 +122,6 @@ let to_http_code e =
   | UnsupportedProtocol -> None
   | ValidationError -> Some 400
   | Uninhabited -> None
-
 let to_string e =
   match e with
   | AlreadyExistsException -> "AlreadyExistsException"
@@ -175,7 +171,6 @@ let to_string e =
   | UnsupportedProtocol -> "UnsupportedProtocol"
   | ValidationError -> "ValidationError"
   | Uninhabited -> "Uninhabited"
-
 let of_string e =
   match e with
   | "AlreadyExistsException" -> Some AlreadyExistsException
@@ -188,7 +183,8 @@ let of_string e =
   | "DryRunOperation" -> Some DryRunOperation
   | "IdempotentParameterMismatch" -> Some IdempotentParameterMismatch
   | "IncompleteSignature" -> Some IncompleteSignature
-  | "InsufficientCapabilitiesException" -> Some InsufficientCapabilitiesException
+  | "InsufficientCapabilitiesException" ->
+      Some InsufficientCapabilitiesException
   | "InternalFailure" -> Some InternalFailure
   | "InvalidAction" -> Some InvalidAction
   | "InvalidChangeSetStatus" -> Some InvalidChangeSetStatus
@@ -205,7 +201,8 @@ let of_string e =
   | "MissingAuthenticationToken" -> Some MissingAuthenticationToken
   | "MissingParameter" -> Some MissingParameter
   | "NameAlreadyExistsException" -> Some NameAlreadyExistsException
-  | "OperationIdAlreadyExistsException" -> Some OperationIdAlreadyExistsException
+  | "OperationIdAlreadyExistsException" ->
+      Some OperationIdAlreadyExistsException
   | "OperationInProgressException" -> Some OperationInProgressException
   | "OperationNotFoundException" -> Some OperationNotFoundException
   | "OptInRequired" -> Some OptInRequired
