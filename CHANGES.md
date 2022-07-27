@@ -1,13 +1,12 @@
-Unreleased
-----------
-- Add KMS support (#118 @zbaylin)
-- Drop dependency on ocaml-migrate-parsetree and use ocaml-compiler-libs (#126 @Nymphium)
-
 1.2.1
 ----------
-- Increase lower bound on OCaml to 4.08. https://github.com/inhabitedtype/ocaml-aws/pull/104
-- Migrate CI to github actions https://github.com/inhabitedtype/ocaml-aws/pull/104
-- Add STS `assume_role` token support https://github.com/inhabitedtype/ocaml-aws/pull/117
+
+- Add KMS support (#118 @zbaylin)
+- Drop dependency on ocaml-migrate-parsetree and use ocaml-compiler-libs (#126 @Nymphium)
+- Increase lower bound on OCaml to 4.08. (#104 @tmcgilchrist)
+- Migrate CI to github actions (#104 @tmcgilchrist)
+- Add STS `assume_role` token support (#117 @zbaylin @UnrealAkama @bleepbloopsify)
+- Initial AWS Lambda support (#108 @tmcgilchrist)
 
 1.2: (24-01-2020)
 ----------
