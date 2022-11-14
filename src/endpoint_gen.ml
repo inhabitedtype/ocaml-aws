@@ -13,7 +13,7 @@ let write_endpoint
     svc_name
     dns_suffix
     (default_hostname : string option)
-    ((region, endpoint) : string * Endpoints_t.endpoint) =
+    ((region, endpoint) : string * Endpoints.endpoint) =
   Syntax.(
     let host =
       match endpoint.hostname, default_hostname with
@@ -25,8 +25,8 @@ let write_endpoint
 
 let write_service
     dns_suffix
-    (partition_defaults : Endpoints_t.partition_defaults)
-    ((svc_name, svc) : string * Endpoints_t.service) =
+    (partition_defaults : Endpoints.partition_defaults)
+    ((svc_name, svc) : string * Endpoints.service) =
   Syntax.(
     ( svc_name
     , matchstrs
@@ -35,7 +35,7 @@ let write_service
         |> List.map (write_endpoint svc_name dns_suffix partition_defaults.hostname))
         (ident "None") ))
 
-let write_partition (p : Endpoints_t.partition) =
+let write_partition (p : Endpoints.partition) =
   Syntax.(
     let_
       "endpoint_of"
@@ -65,10 +65,10 @@ let main input outdir =
   let inc = open_in input in
   let n = in_channel_length inc in
   let endpoint_data = really_input_string inc n in
-  let endpoints = Endpoints_j.endpoints_of_string endpoint_data in
+  let endpoints = Endpoints.endpoints_of_string endpoint_data in
   let aws =
     endpoints.partitions
-    |> List.find (fun p -> String.equal Endpoints_t.(p.partition) "aws")
+    |> List.find (fun p -> String.equal Endpoints.(p.partition) "aws")
   in
   let outfile = outdir </> "endpoints.ml" in
   let syntax = write_partition aws in

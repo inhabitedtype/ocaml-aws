@@ -9,3 +9,8 @@
    ((action
      (run %{bin:cppo} -V OCAML:%{ocaml_version} %{input-file}))
     syntax))))
+
+(rule
+ (targets endpoints.ml endpoints.mli)
+ (deps endpoints.atd)
+ (action (run atdgen %{deps} -json)))
