@@ -3,7 +3,7 @@ version: "1.2"
 synopsis: "Amazon Web Services SDK bindings to Auto Scaling"
 description: "Amazon Web Services SDK bindings to Auto Scaling"
 maintainer: "Tim McGilchrist <timmcgil@gmail.com>"
-authors: [ 
+authors: [
   "Spiros Eliopoulos <spiros@inhabitedtype.com>"
   "Daniel Patterson <dbp@dbpmail.net>"
   "Tim McGilchrist <timmcgil@gmail.com>"
@@ -23,7 +23,7 @@ depends: [
   "cohttp-lwt" {with-test & >= "2.4.0"}
   "cohttp-lwt-unix" {with-test & >= "2.4.0"}
   "lwt" {with-test & >= "4.0.0"}
-  "yojson" {with-test & >= "1.7.0"}
+  "yojson" {with-test & >= "1.7.0" & < "2.0"}
 ]
 build: [
   ["dune" "subst"] {pinned}
