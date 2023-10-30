@@ -19,10 +19,6 @@ depends: [
   "base-unix"
   "cmdliner" {>= "1.1.0"}
   "fmt"
-<<<<<<< HEAD
-  "yojson" {>= "1.6.0"}
-=======
->>>>>>> 15b920809 (Add lower bound on yojson 2.0)
   "ocaml-compiler-libs" {>= "0.11.0" }
   "ocamlgraph"
   "dune" {>= "2.7"}
