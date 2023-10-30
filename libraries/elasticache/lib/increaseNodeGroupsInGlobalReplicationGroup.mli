@@ -1,9 +1,7 @@
 open Types
 
 type input = IncreaseNodeGroupsInGlobalReplicationGroupMessage.t
-
 type output = IncreaseNodeGroupsInGlobalReplicationGroupResult.t
-
 type error = Errors_internal.t
 
 include

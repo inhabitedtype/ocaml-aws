@@ -1,9 +1,7 @@
 open Types
 
 type input = ResetCacheParameterGroupMessage.t
-
 type output = CacheParameterGroupNameMessage.t
-
 type error = Errors_internal.t
 
 include

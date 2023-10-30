@@ -1,9 +1,7 @@
 open Types
 
 type input = SendMessageRequest.t
-
 type output = SendMessageResult.t
-
 type error = Errors_internal.t
 
 include

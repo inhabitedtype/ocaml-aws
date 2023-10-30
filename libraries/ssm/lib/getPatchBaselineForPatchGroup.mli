@@ -1,9 +1,7 @@
 open Types
 
 type input = GetPatchBaselineForPatchGroupRequest.t
-
 type output = GetPatchBaselineForPatchGroupResult.t
-
 type error = Errors_internal.t
 
 include

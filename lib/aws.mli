@@ -167,7 +167,6 @@ module Time : sig
       format. *)
 
   val date_time_iso8601 : CalendarLib.Calendar.t -> string
-
   val now_utc : unit -> CalendarLib.Calendar.t
 
   val format : CalendarLib.Calendar.t -> string
@@ -291,11 +290,8 @@ end
 module Signing : sig
   module Hash : sig
     val _sha256 : ?key:string -> string -> Digestif.SHA256.t
-
     val sha256 : ?key:string -> string -> string
-
     val sha256_hex : ?key:string -> string -> string
-
     val sha256_base64 : ?key:string -> string -> string
   end
 
@@ -352,34 +348,21 @@ module BaseTypes : sig
     type t
 
     val to_json : t -> Json.t
-
     val of_json : Json.t -> t
-
     val to_query : t -> Query.t
-
     val parse : Ezxmlm.nodes -> t option
-
     val to_string : t -> string
-
     val of_string : string -> t
   end
 
   module Unit : Base with type t = unit
-
   module String : Base with type t = string
-
   module Blob : Base with type t = string
-
   module Boolean : Base with type t = bool
-
   module Integer : Base with type t = int
-
   module Long : Base with type t = int
-
   module Double : Base with type t = float
-
   module Float : Base with type t = float
-
   module DateTime : Base with type t = CalendarLib.Calendar.t
 end
 

@@ -1,9 +1,7 @@
 open Types
 
 type input = ModifyTransitGatewayPrefixListReferenceRequest.t
-
 type output = ModifyTransitGatewayPrefixListReferenceResult.t
-
 type error = Errors_internal.t
 
 include

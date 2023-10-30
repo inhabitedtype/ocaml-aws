@@ -31,13 +31,9 @@ module QueueNameExists = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -51,9 +47,7 @@ module MessageAttributeNameList = struct
       (List.map String.parse (Aws.Xml.members "MessageAttributeName" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -171,9 +165,7 @@ module QueueAttributeName = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -183,7 +175,6 @@ module QueueAttributeName = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -191,7 +182,6 @@ module QueueAttributeMap = struct
   type t = (QueueAttributeName.t, String.t) Hashtbl.t
 
   let make elems () = elems
-
   let parse xml = None
 
   let to_query v =
@@ -254,13 +244,9 @@ module InvalidMessageContents = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -268,9 +254,7 @@ module TagMap = struct
   type t = (String.t, String.t) Hashtbl.t
 
   let make elems () = elems
-
   let parse xml = None
-
   let to_query v = Aws.Query.to_query_hashtbl String.to_string String.to_query v
 
   let to_json v =
@@ -335,9 +319,7 @@ module QueueUrlList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "QueueUrl" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -456,7 +438,6 @@ module ChangeMessageVisibilityBatchResultEntryList = struct
     Aws.Query.to_query_list ChangeMessageVisibilityBatchResultEntry.to_query v
 
   let to_json v = `List (List.map ChangeMessageVisibilityBatchResultEntry.to_json v)
-
   let of_json j = Aws.Json.to_list ChangeMessageVisibilityBatchResultEntry.of_json j
 end
 
@@ -464,13 +445,9 @@ module TooManyEntriesInBatchRequest = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -483,9 +460,7 @@ module TagKeyList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "TagKey" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -535,9 +510,7 @@ module StringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "StringListValue" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -550,9 +523,7 @@ module BinaryList = struct
     Aws.Util.option_all (List.map Blob.parse (Aws.Xml.members "BinaryListValue" xml))
 
   let to_query v = Aws.Query.to_query_list Blob.to_query v
-
   let to_json v = `List (List.map Blob.to_json v)
-
   let of_json j = Aws.Json.to_list Blob.of_json j
 end
 
@@ -684,9 +655,7 @@ module MessageSystemAttributeName = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -696,7 +665,6 @@ module MessageSystemAttributeName = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -704,7 +672,6 @@ module MessageSystemAttributeMap = struct
   type t = (MessageSystemAttributeName.t, String.t) Hashtbl.t
 
   let make elems () = elems
-
   let parse xml = None
 
   let to_query v =
@@ -798,7 +765,6 @@ module MessageBodyAttributeMap = struct
   type t = (String.t, MessageAttributeValue.t) Hashtbl.t
 
   let make elems () = elems
-
   let parse xml = None
 
   let to_query v =
@@ -951,9 +917,7 @@ module DeleteMessageBatchResultEntryList = struct
          (Aws.Xml.members "DeleteMessageBatchResultEntry" xml))
 
   let to_query v = Aws.Query.to_query_list DeleteMessageBatchResultEntry.to_query v
-
   let to_json v = `List (List.map DeleteMessageBatchResultEntry.to_json v)
-
   let of_json j = Aws.Json.to_list DeleteMessageBatchResultEntry.of_json j
 end
 
@@ -1022,9 +986,7 @@ module BatchResultErrorEntryList = struct
       (List.map BatchResultErrorEntry.parse (Aws.Xml.members "BatchResultErrorEntry" xml))
 
   let to_query v = Aws.Query.to_query_list BatchResultErrorEntry.to_query v
-
   let to_json v = `List (List.map BatchResultErrorEntry.to_json v)
-
   let of_json j = Aws.Json.to_list BatchResultErrorEntry.of_json j
 end
 
@@ -1075,13 +1037,9 @@ module InvalidBatchEntryId = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1095,9 +1053,7 @@ module AttributeNameList = struct
       (List.map QueueAttributeName.parse (Aws.Xml.members "AttributeName" xml))
 
   let to_query v = Aws.Query.to_query_list QueueAttributeName.to_query v
-
   let to_json v = `List (List.map QueueAttributeName.to_json v)
-
   let of_json j = Aws.Json.to_list QueueAttributeName.of_json j
 end
 
@@ -1151,9 +1107,7 @@ module MessageList = struct
     Aws.Util.option_all (List.map Message.parse (Aws.Xml.members "Message" xml))
 
   let to_query v = Aws.Query.to_query_list Message.to_query v
-
   let to_json v = `List (List.map Message.to_json v)
-
   let of_json j = Aws.Json.to_list Message.of_json j
 end
 
@@ -1161,7 +1115,6 @@ module ReceiveMessageResult = struct
   type t = { messages : MessageList.t }
 
   let make ?(messages = []) () = { messages }
-
   let parse xml = Some { messages = Aws.Util.of_option [] (MessageList.parse xml) }
 
   let to_query v =
@@ -1183,13 +1136,9 @@ module OverLimit = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1205,9 +1154,7 @@ module DeleteMessageBatchRequestEntryList = struct
          (Aws.Xml.members "DeleteMessageBatchRequestEntry" xml))
 
   let to_query v = Aws.Query.to_query_list DeleteMessageBatchRequestEntry.to_query v
-
   let to_json v = `List (List.map DeleteMessageBatchRequestEntry.to_json v)
-
   let of_json j = Aws.Json.to_list DeleteMessageBatchRequestEntry.of_json j
 end
 
@@ -1215,13 +1162,9 @@ module MessageSystemAttributeNameForSends = struct
   type t = AWSTraceHeader
 
   let str_to_t = [ "AWSTraceHeader", AWSTraceHeader ]
-
   let t_to_str = [ AWSTraceHeader, "AWSTraceHeader" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -1231,7 +1174,6 @@ module MessageSystemAttributeNameForSends = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -1239,7 +1181,6 @@ module MessageBodySystemAttributeMap = struct
   type t = (MessageSystemAttributeNameForSends.t, MessageSystemAttributeValue.t) Hashtbl.t
 
   let make elems () = elems
-
   let parse xml = None
 
   let to_query v =
@@ -1388,9 +1329,7 @@ module SendMessageBatchRequestEntryList = struct
          (Aws.Xml.members "SendMessageBatchRequestEntry" xml))
 
   let to_query v = Aws.Query.to_query_list SendMessageBatchRequestEntry.to_query v
-
   let to_json v = `List (List.map SendMessageBatchRequestEntry.to_json v)
-
   let of_json j = Aws.Json.to_list SendMessageBatchRequestEntry.of_json j
 end
 
@@ -1398,13 +1337,9 @@ module InvalidAttributeName = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1571,13 +1506,9 @@ module BatchEntryIdsNotDistinct = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1585,13 +1516,9 @@ module UnsupportedOperation = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1696,13 +1623,9 @@ module QueueDoesNotExist = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1746,13 +1669,9 @@ module BatchRequestTooLong = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1876,9 +1795,7 @@ module AWSAccountIdList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "AWSAccountId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -1886,13 +1803,9 @@ module QueueDeletedRecently = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -2173,13 +2086,9 @@ module ReceiptHandleIsInvalid = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -2244,9 +2153,7 @@ module ActionNameList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "ActionName" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -2318,9 +2225,7 @@ module SendMessageBatchResultEntryList = struct
          (Aws.Xml.members "SendMessageBatchResultEntry" xml))
 
   let to_query v = Aws.Query.to_query_list SendMessageBatchResultEntry.to_query v
-
   let to_json v = `List (List.map SendMessageBatchResultEntry.to_json v)
-
   let of_json j = Aws.Json.to_list SendMessageBatchResultEntry.of_json j
 end
 
@@ -2552,7 +2457,6 @@ module ChangeMessageVisibilityBatchRequestEntryList = struct
     Aws.Query.to_query_list ChangeMessageVisibilityBatchRequestEntry.to_query v
 
   let to_json v = `List (List.map ChangeMessageVisibilityBatchRequestEntry.to_json v)
-
   let of_json j = Aws.Json.to_list ChangeMessageVisibilityBatchRequestEntry.of_json j
 end
 
@@ -2605,13 +2509,9 @@ module EmptyBatchRequest = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -2619,13 +2519,9 @@ module PurgeQueueInProgress = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -2706,13 +2602,9 @@ module InvalidIdFormat = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -2745,12 +2637,8 @@ module MessageNotInflight = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end

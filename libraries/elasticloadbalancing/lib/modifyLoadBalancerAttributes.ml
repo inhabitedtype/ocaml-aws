@@ -2,13 +2,10 @@ open Types
 open Aws
 
 type input = ModifyLoadBalancerAttributesInput.t
-
 type output = ModifyLoadBalancerAttributesOutput.t
-
 type error = Errors_internal.t
 
 let service = "elasticloadbalancing"
-
 let signature_version = Request.V4
 
 let to_http service region req =

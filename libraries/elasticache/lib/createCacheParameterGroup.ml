@@ -2,13 +2,10 @@ open Types
 open Aws
 
 type input = CreateCacheParameterGroupMessage.t
-
 type output = CreateCacheParameterGroupResult.t
-
 type error = Errors_internal.t
 
 let service = "elasticache"
-
 let signature_version = Request.V4
 
 let to_http service region req =

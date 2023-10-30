@@ -1,9 +1,7 @@
 open Types
 
 type input = DeleteCustomAvailabilityZoneMessage.t
-
 type output = DeleteCustomAvailabilityZoneResult.t
-
 type error = Errors_internal.t
 
 include

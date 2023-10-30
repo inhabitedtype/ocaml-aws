@@ -1,9 +1,7 @@
 open Types
 
 type input = GetParametersForImportRequest.t
-
 type output = GetParametersForImportResponse.t
-
 type error = Errors_internal.t
 
 include

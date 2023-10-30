@@ -1,9 +1,7 @@
 open Types
 
 type input = AcceptReservedInstancesExchangeQuoteRequest.t
-
 type output = AcceptReservedInstancesExchangeQuoteResult.t
-
 type error = Errors_internal.t
 
 include

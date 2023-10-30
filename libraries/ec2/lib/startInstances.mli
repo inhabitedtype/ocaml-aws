@@ -1,9 +1,7 @@
 open Types
 
 type input = StartInstancesRequest.t
-
 type output = StartInstancesResult.t
-
 type error = Errors_internal.t
 
 include

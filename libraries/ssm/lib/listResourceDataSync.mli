@@ -1,9 +1,7 @@
 open Types
 
 type input = ListResourceDataSyncRequest.t
-
 type output = ListResourceDataSyncResult.t
-
 type error = Errors_internal.t
 
 include

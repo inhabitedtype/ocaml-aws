@@ -1,9 +1,7 @@
 open Types
 
 type input = CreateLaunchConfigurationType.t
-
 type output = unit
-
 type error = Errors_internal.t
 
 include

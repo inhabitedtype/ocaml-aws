@@ -1,9 +1,7 @@
 open Types
 
 type input = ScheduleKeyDeletionRequest.t
-
 type output = ScheduleKeyDeletionResponse.t
-
 type error = Errors_internal.t
 
 include

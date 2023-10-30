@@ -1,9 +1,7 @@
 open Types
 
 type input = RegisterImageRequest.t
-
 type output = RegisterImageResult.t
-
 type error = Errors_internal.t
 
 include

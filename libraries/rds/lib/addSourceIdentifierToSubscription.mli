@@ -1,9 +1,7 @@
 open Types
 
 type input = AddSourceIdentifierToSubscriptionMessage.t
-
 type output = AddSourceIdentifierToSubscriptionResult.t
-
 type error = Errors_internal.t
 
 include

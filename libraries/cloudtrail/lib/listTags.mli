@@ -1,9 +1,7 @@
 open Types
 
 type input = ListTagsRequest.t
-
 type output = ListTagsResponse.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,7 @@
 open Types
 
 type input = GetGeoLocationRequest.t
-
 type output = GetGeoLocationResponse.t
-
 type error = Errors_internal.t
 
 include

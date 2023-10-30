@@ -1,9 +1,7 @@
 open Types
 
 type input = CopyOptionGroupMessage.t
-
 type output = CopyOptionGroupResult.t
-
 type error = Errors_internal.t
 
 include

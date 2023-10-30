@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeTypeInput.t
-
 type output = DescribeTypeOutput.t
-
 type error = Errors_internal.t
 
 include

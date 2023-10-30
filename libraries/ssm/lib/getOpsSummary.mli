@@ -1,9 +1,7 @@
 open Types
 
 type input = GetOpsSummaryRequest.t
-
 type output = GetOpsSummaryResult.t
-
 type error = Errors_internal.t
 
 include

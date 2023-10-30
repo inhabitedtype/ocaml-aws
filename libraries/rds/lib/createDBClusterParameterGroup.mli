@@ -1,9 +1,7 @@
 open Types
 
 type input = CreateDBClusterParameterGroupMessage.t
-
 type output = CreateDBClusterParameterGroupResult.t
-
 type error = Errors_internal.t
 
 include

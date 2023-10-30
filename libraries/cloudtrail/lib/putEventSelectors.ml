@@ -2,13 +2,10 @@ open Types
 open Aws
 
 type input = PutEventSelectorsRequest.t
-
 type output = PutEventSelectorsResponse.t
-
 type error = Errors_internal.t
 
 let service = "cloudtrail"
-
 let signature_version = Request.V4
 
 let to_http service region req =

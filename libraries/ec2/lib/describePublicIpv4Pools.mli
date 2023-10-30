@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribePublicIpv4PoolsRequest.t
-
 type output = DescribePublicIpv4PoolsResult.t
-
 type error = Errors_internal.t
 
 include

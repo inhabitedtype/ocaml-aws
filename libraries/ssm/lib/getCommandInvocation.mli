@@ -1,9 +1,7 @@
 open Types
 
 type input = GetCommandInvocationRequest.t
-
 type output = GetCommandInvocationResult.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,7 @@
 open Types
 
 type input = RestoreDBInstanceFromS3Message.t
-
 type output = RestoreDBInstanceFromS3Result.t
-
 type error = Errors_internal.t
 
 include

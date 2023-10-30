@@ -1,9 +1,7 @@
 open Types
 
 type input = ListChangeSetsInput.t
-
 type output = ListChangeSetsOutput.t
-
 type error = Errors_internal.t
 
 include

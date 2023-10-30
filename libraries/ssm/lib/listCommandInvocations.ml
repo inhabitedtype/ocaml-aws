@@ -2,13 +2,10 @@ open Types
 open Aws
 
 type input = ListCommandInvocationsRequest.t
-
 type output = ListCommandInvocationsResult.t
-
 type error = Errors_internal.t
 
 let service = "ssm"
-
 let signature_version = Request.V4
 
 let to_http service region req =

@@ -1,9 +1,7 @@
 open Types
 
 type input = SearchLocalGatewayRoutesRequest.t
-
 type output = SearchLocalGatewayRoutesResult.t
-
 type error = Errors_internal.t
 
 include

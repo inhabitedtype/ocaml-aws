@@ -1,9 +1,7 @@
 open Types
 
 type input = AssociateIamInstanceProfileRequest.t
-
 type output = AssociateIamInstanceProfileResult.t
-
 type error = Errors_internal.t
 
 include

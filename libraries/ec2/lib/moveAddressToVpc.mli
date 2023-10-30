@@ -1,9 +1,7 @@
 open Types
 
 type input = MoveAddressToVpcRequest.t
-
 type output = MoveAddressToVpcResult.t
-
 type error = Errors_internal.t
 
 include

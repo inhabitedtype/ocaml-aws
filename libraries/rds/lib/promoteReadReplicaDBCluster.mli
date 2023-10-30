@@ -1,9 +1,7 @@
 open Types
 
 type input = PromoteReadReplicaDBClusterMessage.t
-
 type output = PromoteReadReplicaDBClusterResult.t
-
 type error = Errors_internal.t
 
 include

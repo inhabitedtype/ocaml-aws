@@ -1,9 +1,7 @@
 open Types
 
 type input = ModifyAvailabilityZoneGroupRequest.t
-
 type output = ModifyAvailabilityZoneGroupResult.t
-
 type error = Errors_internal.t
 
 include

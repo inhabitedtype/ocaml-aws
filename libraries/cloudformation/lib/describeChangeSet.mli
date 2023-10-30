@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeChangeSetInput.t
-
 type output = DescribeChangeSetOutput.t
-
 type error = Errors_internal.t
 
 include

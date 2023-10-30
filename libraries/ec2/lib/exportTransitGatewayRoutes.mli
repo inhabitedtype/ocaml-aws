@@ -1,9 +1,7 @@
 open Types
 
 type input = ExportTransitGatewayRoutesRequest.t
-
 type output = ExportTransitGatewayRoutesResult.t
-
 type error = Errors_internal.t
 
 include

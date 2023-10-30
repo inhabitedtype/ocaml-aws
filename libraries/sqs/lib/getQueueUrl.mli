@@ -1,9 +1,7 @@
 open Types
 
 type input = GetQueueUrlRequest.t
-
 type output = GetQueueUrlResult.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,7 @@
 open Types
 
 type input = DeleteLocalGatewayRouteRequest.t
-
 type output = DeleteLocalGatewayRouteResult.t
-
 type error = Errors_internal.t
 
 include

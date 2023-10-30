@@ -1,9 +1,7 @@
 open Types
 
 type input = CreateReusableDelegationSetRequest.t
-
 type output = CreateReusableDelegationSetResponse.t
-
 type error = Errors_internal.t
 
 include

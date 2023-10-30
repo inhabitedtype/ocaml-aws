@@ -1,9 +1,7 @@
 open Types
 
 type input = CreateSecurityGroupRequest.t
-
 type output = CreateSecurityGroupResult.t
-
 type error = Errors_internal.t
 
 include

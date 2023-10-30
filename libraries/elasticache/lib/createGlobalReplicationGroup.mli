@@ -1,9 +1,7 @@
 open Types
 
 type input = CreateGlobalReplicationGroupMessage.t
-
 type output = CreateGlobalReplicationGroupResult.t
-
 type error = Errors_internal.t
 
 include

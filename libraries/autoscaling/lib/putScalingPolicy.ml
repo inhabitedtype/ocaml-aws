@@ -2,13 +2,10 @@ open Types
 open Aws
 
 type input = PutScalingPolicyType.t
-
 type output = PolicyARNType.t
-
 type error = Errors_internal.t
 
 let service = "autoscaling"
-
 let signature_version = Request.V4
 
 let to_http service region req =

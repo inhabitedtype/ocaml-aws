@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeDBParameterGroupsMessage.t
-
 type output = DBParameterGroupsMessage.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,7 @@
 open Types
 
 type input = DisassociateClientVpnTargetNetworkRequest.t
-
 type output = DisassociateClientVpnTargetNetworkResult.t
-
 type error = Errors_internal.t
 
 include

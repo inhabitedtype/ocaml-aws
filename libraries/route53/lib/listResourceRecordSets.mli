@@ -1,9 +1,7 @@
 open Types
 
 type input = ListResourceRecordSetsRequest.t
-
 type output = ListResourceRecordSetsResponse.t
-
 type error = Errors_internal.t
 
 include

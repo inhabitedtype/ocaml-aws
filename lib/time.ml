@@ -2,11 +2,8 @@ module C = CalendarLib.Calendar
 module P = CalendarLib.Printer.Calendar
 
 let date_yymmdd = P.sprint "%Y%m%d"
-
 let date_time_iso8601 = P.sprint "%Y-%m-%dT%H:%M:%S"
-
 let date_time = P.sprint "%Y%m%dT%H%M%SZ"
-
 let now_utc () = C.(now () |> to_gmt)
 
 (* (tmcgilchrist) This function is expecting datetimes like

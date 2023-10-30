@@ -1,9 +1,7 @@
 open Types
 
 type input = CreateTransitGatewayRequest.t
-
 type output = CreateTransitGatewayResult.t
-
 type error = Errors_internal.t
 
 include

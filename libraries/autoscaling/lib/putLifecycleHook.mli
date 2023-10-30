@@ -1,9 +1,7 @@
 open Types
 
 type input = PutLifecycleHookType.t
-
 type output = unit
-
 type error = Errors_internal.t
 
 include

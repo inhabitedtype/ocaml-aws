@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeFastSnapshotRestoresRequest.t
-
 type output = DescribeFastSnapshotRestoresResult.t
-
 type error = Errors_internal.t
 
 include

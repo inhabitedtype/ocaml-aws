@@ -1,9 +1,7 @@
 open Types
 
 type input = ListKeysRequest.t
-
 type output = ListKeysResponse.t
-
 type error = Errors_internal.t
 
 include

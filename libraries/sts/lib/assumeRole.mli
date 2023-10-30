@@ -1,9 +1,7 @@
 open Types
 
 type input = AssumeRoleRequest.t
-
 type output = AssumeRoleResponse.t
-
 type error = Errors_internal.t
 
 include

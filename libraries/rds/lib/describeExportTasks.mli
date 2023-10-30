@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeExportTasksMessage.t
-
 type output = ExportTasksMessage.t
-
 type error = Errors_internal.t
 
 include

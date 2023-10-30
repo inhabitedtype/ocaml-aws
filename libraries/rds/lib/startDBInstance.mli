@@ -1,9 +1,7 @@
 open Types
 
 type input = StartDBInstanceMessage.t
-
 type output = StartDBInstanceResult.t
-
 type error = Errors_internal.t
 
 include

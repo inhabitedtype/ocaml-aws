@@ -1,9 +1,7 @@
 open Types
 
 type input = AttachLoadBalancerToSubnetsInput.t
-
 type output = AttachLoadBalancerToSubnetsOutput.t
-
 type error = Errors_internal.t
 
 include

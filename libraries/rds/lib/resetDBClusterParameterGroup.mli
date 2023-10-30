@@ -1,9 +1,7 @@
 open Types
 
 type input = ResetDBClusterParameterGroupMessage.t
-
 type output = DBClusterParameterGroupNameMessage.t
-
 type error = Errors_internal.t
 
 include

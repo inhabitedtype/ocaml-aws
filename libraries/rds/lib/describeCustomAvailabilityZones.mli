@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeCustomAvailabilityZonesMessage.t
-
 type output = CustomAvailabilityZoneMessage.t
-
 type error = Errors_internal.t
 
 include

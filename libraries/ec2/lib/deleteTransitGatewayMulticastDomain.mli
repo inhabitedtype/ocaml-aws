@@ -1,9 +1,7 @@
 open Types
 
 type input = DeleteTransitGatewayMulticastDomainRequest.t
-
 type output = DeleteTransitGatewayMulticastDomainResult.t
-
 type error = Errors_internal.t
 
 include

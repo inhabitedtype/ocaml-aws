@@ -1,9 +1,7 @@
 open Types
 
 type input = RegisterTransitGatewayMulticastGroupMembersRequest.t
-
 type output = RegisterTransitGatewayMulticastGroupMembersResult.t
-
 type error = Errors_internal.t
 
 include

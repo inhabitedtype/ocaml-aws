@@ -1,9 +1,7 @@
 open Types
 
 type input = CreateFpgaImageRequest.t
-
 type output = CreateFpgaImageResult.t
-
 type error = Errors_internal.t
 
 include

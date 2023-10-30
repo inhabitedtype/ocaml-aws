@@ -1,9 +1,7 @@
 open Types
 
 type input = ListDeadLetterSourceQueuesRequest.t
-
 type output = ListDeadLetterSourceQueuesResult.t
-
 type error = Errors_internal.t
 
 include

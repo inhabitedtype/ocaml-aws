@@ -1,9 +1,7 @@
 open Types
 
 type input = GetAttributesRequest.t
-
 type output = GetAttributesResult.t
-
 type error = Errors_internal.t
 
 include

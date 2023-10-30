@@ -1,9 +1,7 @@
 open Types
 
 type input = RevokeDBSecurityGroupIngressMessage.t
-
 type output = RevokeDBSecurityGroupIngressResult.t
-
 type error = Errors_internal.t
 
 include

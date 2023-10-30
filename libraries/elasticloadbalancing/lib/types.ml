@@ -6,13 +6,9 @@ module PolicyNotFoundException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -20,13 +16,9 @@ module InvalidConfigurationRequestException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -39,9 +31,7 @@ module Subnets = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -91,13 +81,9 @@ module AccessPointNotFoundException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -151,9 +137,7 @@ module LBCookieStickinessPolicies = struct
       (List.map LBCookieStickinessPolicy.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list LBCookieStickinessPolicy.to_query v
-
   let to_json v = `List (List.map LBCookieStickinessPolicy.to_json v)
-
   let of_json j = Aws.Json.to_list LBCookieStickinessPolicy.of_json j
 end
 
@@ -209,9 +193,7 @@ module PolicyAttributeDescriptions = struct
       (List.map PolicyAttributeDescription.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list PolicyAttributeDescription.to_query v
-
   let to_json v = `List (List.map PolicyAttributeDescription.to_json v)
-
   let of_json j = Aws.Json.to_list PolicyAttributeDescription.of_json j
 end
 
@@ -342,9 +324,7 @@ module SecurityGroups = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -357,9 +337,7 @@ module PolicyNames = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -409,9 +387,7 @@ module AppCookieStickinessPolicies = struct
       (List.map AppCookieStickinessPolicy.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list AppCookieStickinessPolicy.to_query v
-
   let to_json v = `List (List.map AppCookieStickinessPolicy.to_json v)
-
   let of_json j = Aws.Json.to_list AppCookieStickinessPolicy.of_json j
 end
 
@@ -620,9 +596,7 @@ module ListenerDescriptions = struct
       (List.map ListenerDescription.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list ListenerDescription.to_query v
-
   let to_json v = `List (List.map ListenerDescription.to_json v)
-
   let of_json j = Aws.Json.to_list ListenerDescription.of_json j
 end
 
@@ -661,9 +635,7 @@ module Instances = struct
     Aws.Util.option_all (List.map Instance.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list Instance.to_query v
-
   let to_json v = `List (List.map Instance.to_json v)
-
   let of_json j = Aws.Json.to_list Instance.of_json j
 end
 
@@ -789,9 +761,7 @@ module BackendServerDescriptions = struct
       (List.map BackendServerDescription.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list BackendServerDescription.to_query v
-
   let to_json v = `List (List.map BackendServerDescription.to_json v)
-
   let of_json j = Aws.Json.to_list BackendServerDescription.of_json j
 end
 
@@ -804,9 +774,7 @@ module AvailabilityZones = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -1040,9 +1008,7 @@ module LoadBalancerDescriptions = struct
       (List.map LoadBalancerDescription.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list LoadBalancerDescription.to_query v
-
   let to_json v = `List (List.map LoadBalancerDescription.to_json v)
-
   let of_json j = Aws.Json.to_list LoadBalancerDescription.of_json j
 end
 
@@ -1198,9 +1164,7 @@ module PolicyAttributeTypeDescriptions = struct
       (List.map PolicyAttributeTypeDescription.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list PolicyAttributeTypeDescription.to_query v
-
   let to_json v = `List (List.map PolicyAttributeTypeDescription.to_json v)
-
   let of_json j = Aws.Json.to_list PolicyAttributeTypeDescription.of_json j
 end
 
@@ -1273,9 +1237,7 @@ module PolicyTypeDescriptions = struct
       (List.map PolicyTypeDescription.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list PolicyTypeDescription.to_query v
-
   let to_json v = `List (List.map PolicyTypeDescription.to_json v)
-
   let of_json j = Aws.Json.to_list PolicyTypeDescription.of_json j
 end
 
@@ -1405,9 +1367,7 @@ module Ports = struct
     Aws.Util.option_all (List.map Integer.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list Integer.to_query v
-
   let to_json v = `List (List.map Integer.to_json v)
-
   let of_json j = Aws.Json.to_list Integer.of_json j
 end
 
@@ -1504,13 +1464,9 @@ module CreateLBCookieStickinessPolicyOutput = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1680,9 +1636,7 @@ module AdditionalAttributes = struct
       (List.map AdditionalAttribute.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list AdditionalAttribute.to_query v
-
   let to_json v = `List (List.map AdditionalAttribute.to_json v)
-
   let of_json j = Aws.Json.to_list AdditionalAttribute.of_json j
 end
 
@@ -1915,9 +1869,7 @@ module PolicyTypeNames = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -2003,13 +1955,9 @@ module DuplicateAccessPointNameException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -2200,13 +2148,9 @@ module TooManyPoliciesException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -2214,13 +2158,9 @@ module DeleteLoadBalancerListenerOutput = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -2228,13 +2168,9 @@ module DuplicatePolicyNameException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -2242,13 +2178,9 @@ module DeleteLoadBalancerPolicyOutput = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -2261,9 +2193,7 @@ module LoadBalancerNamesMax20 = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -2506,9 +2436,7 @@ module Listeners = struct
     Aws.Util.option_all (List.map Listener.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list Listener.to_query v
-
   let to_json v = `List (List.map Listener.to_json v)
-
   let of_json j = Aws.Json.to_list Listener.of_json j
 end
 
@@ -2554,13 +2482,9 @@ module TagList = struct
   type t = Tag.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map Tag.parse (Aws.Xml.members "member" xml))
-
   let to_query v = Aws.Query.to_query_list Tag.to_query v
-
   let to_json v = `List (List.map Tag.to_json v)
-
   let of_json j = Aws.Json.to_list Tag.of_json j
 end
 
@@ -2568,13 +2492,9 @@ module RemoveTagsOutput = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -2582,13 +2502,9 @@ module DeleteAccessPointOutput = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -2596,13 +2512,9 @@ module AddTagsOutput = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -2664,9 +2576,7 @@ module InstanceStates = struct
     Aws.Util.option_all (List.map InstanceState.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list InstanceState.to_query v
-
   let to_json v = `List (List.map InstanceState.to_json v)
-
   let of_json j = Aws.Json.to_list InstanceState.of_json j
 end
 
@@ -2709,13 +2619,9 @@ module CreateAppCookieStickinessPolicyOutput = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -2833,13 +2739,9 @@ module InvalidSubnetException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -2897,13 +2799,9 @@ module PolicyTypeNotFoundException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -2916,9 +2814,7 @@ module PolicyDescriptions = struct
     Aws.Util.option_all (List.map PolicyDescription.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list PolicyDescription.to_query v
-
   let to_json v = `List (List.map PolicyDescription.to_json v)
-
   let of_json j = Aws.Json.to_list PolicyDescription.of_json j
 end
 
@@ -2989,9 +2885,7 @@ module TagKeyList = struct
     Aws.Util.option_all (List.map TagKeyOnly.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list TagKeyOnly.to_query v
-
   let to_json v = `List (List.map TagKeyOnly.to_json v)
-
   let of_json j = Aws.Json.to_list TagKeyOnly.of_json j
 end
 
@@ -2999,13 +2893,9 @@ module CertificateNotFoundException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -3013,13 +2903,9 @@ module DuplicateListenerException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -3032,9 +2918,7 @@ module LoadBalancerNames = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -3098,13 +2982,9 @@ module CreateLoadBalancerListenerOutput = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -3112,13 +2992,9 @@ module InvalidSecurityGroupException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -3126,13 +3002,9 @@ module SetLoadBalancerPoliciesOfListenerOutput = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -3140,13 +3012,9 @@ module InvalidSchemeException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -3316,13 +3184,9 @@ module TooManyAccessPointsException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -3330,13 +3194,9 @@ module SetLoadBalancerListenerSSLCertificateOutput = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -3445,13 +3305,9 @@ module SubnetNotFoundException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -3459,13 +3315,9 @@ module InvalidEndPointException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -3473,13 +3325,9 @@ module CreateLoadBalancerPolicyOutput = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -3487,13 +3335,9 @@ module ListenerNotFoundException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -3622,13 +3466,9 @@ module TooManyTagsException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -3636,13 +3476,9 @@ module LoadBalancerAttributeNotFoundException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -3740,9 +3576,7 @@ module TagDescriptions = struct
     Aws.Util.option_all (List.map TagDescription.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list TagDescription.to_query v
-
   let to_json v = `List (List.map TagDescription.to_json v)
-
   let of_json j = Aws.Json.to_list TagDescription.of_json j
 end
 
@@ -3774,13 +3608,9 @@ module DuplicateTagKeysException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -3793,9 +3623,7 @@ module PolicyAttributes = struct
     Aws.Util.option_all (List.map PolicyAttribute.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list PolicyAttribute.to_query v
-
   let to_json v = `List (List.map PolicyAttribute.to_json v)
-
   let of_json j = Aws.Json.to_list PolicyAttribute.of_json j
 end
 
@@ -3961,13 +3789,9 @@ module SetLoadBalancerPoliciesForBackendServerOutput = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 

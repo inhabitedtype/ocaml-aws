@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeLaunchTemplateVersionsRequest.t
-
 type output = DescribeLaunchTemplateVersionsResult.t
-
 type error = Errors_internal.t
 
 include

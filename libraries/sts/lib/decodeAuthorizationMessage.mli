@@ -1,9 +1,7 @@
 open Types
 
 type input = DecodeAuthorizationMessageRequest.t
-
 type output = DecodeAuthorizationMessageResponse.t
-
 type error = Errors_internal.t
 
 include

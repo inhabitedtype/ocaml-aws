@@ -1,9 +1,7 @@
 open Types
 
 type input = DecreaseReplicaCountMessage.t
-
 type output = DecreaseReplicaCountResult.t
-
 type error = Errors_internal.t
 
 include

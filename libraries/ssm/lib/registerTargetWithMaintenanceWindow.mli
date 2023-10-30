@@ -1,9 +1,7 @@
 open Types
 
 type input = RegisterTargetWithMaintenanceWindowRequest.t
-
 type output = RegisterTargetWithMaintenanceWindowResult.t
-
 type error = Errors_internal.t
 
 include

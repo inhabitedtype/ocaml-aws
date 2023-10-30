@@ -1,9 +1,7 @@
 open Types
 
 type input = BacktrackDBClusterMessage.t
-
 type output = DBClusterBacktrack.t
-
 type error = Errors_internal.t
 
 include

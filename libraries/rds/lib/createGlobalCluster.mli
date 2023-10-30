@@ -1,9 +1,7 @@
 open Types
 
 type input = CreateGlobalClusterMessage.t
-
 type output = CreateGlobalClusterResult.t
-
 type error = Errors_internal.t
 
 include

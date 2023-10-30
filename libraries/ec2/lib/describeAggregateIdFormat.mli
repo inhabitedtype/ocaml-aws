@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeAggregateIdFormatRequest.t
-
 type output = DescribeAggregateIdFormatResult.t
-
 type error = Errors_internal.t
 
 include

@@ -2,13 +2,10 @@ open Types
 open Aws
 
 type input = DeleteDBInstanceAutomatedBackupMessage.t
-
 type output = DeleteDBInstanceAutomatedBackupResult.t
-
 type error = Errors_internal.t
 
 let service = "rds"
-
 let signature_version = Request.V4
 
 let to_http service region req =

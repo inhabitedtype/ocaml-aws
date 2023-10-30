@@ -1,9 +1,7 @@
 open Types
 
 type input = ExportImageRequest.t
-
 type output = ExportImageResult.t
-
 type error = Errors_internal.t
 
 include

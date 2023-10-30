@@ -1,9 +1,7 @@
 open Types
 
 type input = ModifyVpcEndpointRequest.t
-
 type output = ModifyVpcEndpointResult.t
-
 type error = Errors_internal.t
 
 include

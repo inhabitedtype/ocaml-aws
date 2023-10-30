@@ -1,9 +1,7 @@
 open Types
 
 type input = ListTypeRegistrationsInput.t
-
 type output = ListTypeRegistrationsOutput.t
-
 type error = Errors_internal.t
 
 include

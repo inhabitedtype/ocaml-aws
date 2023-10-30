@@ -1,9 +1,7 @@
 open Types
 
 type input = ModifyDBSubnetGroupMessage.t
-
 type output = ModifyDBSubnetGroupResult.t
-
 type error = Errors_internal.t
 
 include

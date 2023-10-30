@@ -1,9 +1,7 @@
 open Types
 
 type input = DisableTransitGatewayRouteTablePropagationRequest.t
-
 type output = DisableTransitGatewayRouteTablePropagationResult.t
-
 type error = Errors_internal.t
 
 include

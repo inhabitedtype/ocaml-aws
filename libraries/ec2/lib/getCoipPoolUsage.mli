@@ -1,9 +1,7 @@
 open Types
 
 type input = GetCoipPoolUsageRequest.t
-
 type output = GetCoipPoolUsageResult.t
-
 type error = Errors_internal.t
 
 include

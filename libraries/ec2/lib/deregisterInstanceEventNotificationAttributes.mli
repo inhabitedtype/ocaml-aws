@@ -1,9 +1,7 @@
 open Types
 
 type input = DeregisterInstanceEventNotificationAttributesRequest.t
-
 type output = DeregisterInstanceEventNotificationAttributesResult.t
-
 type error = Errors_internal.t
 
 include

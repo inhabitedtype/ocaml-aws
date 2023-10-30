@@ -1,9 +1,7 @@
 open Types
 
 type input = ModifyVolumeRequest.t
-
 type output = ModifyVolumeResult.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,7 @@
 open Types
 
 type input = GetInventorySchemaRequest.t
-
 type output = GetInventorySchemaResult.t
-
 type error = Errors_internal.t
 
 include

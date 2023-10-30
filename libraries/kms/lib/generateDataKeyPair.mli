@@ -1,9 +1,7 @@
 open Types
 
 type input = GenerateDataKeyPairRequest.t
-
 type output = GenerateDataKeyPairResponse.t
-
 type error = Errors_internal.t
 
 include

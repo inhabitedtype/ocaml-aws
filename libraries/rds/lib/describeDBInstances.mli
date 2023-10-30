@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeDBInstancesMessage.t
-
 type output = DBInstanceMessage.t
-
 type error = Errors_internal.t
 
 include

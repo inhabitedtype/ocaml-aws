@@ -1,9 +1,7 @@
 open Types
 
 type input = CreateVpcEndpointConnectionNotificationRequest.t
-
 type output = CreateVpcEndpointConnectionNotificationResult.t
-
 type error = Errors_internal.t
 
 include

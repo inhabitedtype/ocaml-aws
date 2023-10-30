@@ -2,13 +2,10 @@ open Types
 open Aws
 
 type input = ListDashboardsInput.t
-
 type output = ListDashboardsOutput.t
-
 type error = Errors_internal.t
 
 let service = "monitoring"
-
 let signature_version = Request.V4
 
 let to_http service region req =

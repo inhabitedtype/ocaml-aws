@@ -1,9 +1,7 @@
 open Types
 
 type input = DeleteParametersRequest.t
-
 type output = DeleteParametersResult.t
-
 type error = Errors_internal.t
 
 include

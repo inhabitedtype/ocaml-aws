@@ -1,9 +1,7 @@
 open Types
 
 type input = ModifyDefaultCreditSpecificationRequest.t
-
 type output = ModifyDefaultCreditSpecificationResult.t
-
 type error = Errors_internal.t
 
 include

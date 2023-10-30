@@ -1,9 +1,7 @@
 open Types
 
 type input = RestoreDBInstanceFromDBSnapshotMessage.t
-
 type output = RestoreDBInstanceFromDBSnapshotResult.t
-
 type error = Errors_internal.t
 
 include

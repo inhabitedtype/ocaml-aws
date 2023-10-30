@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeReservedInstancesListingsRequest.t
-
 type output = DescribeReservedInstancesListingsResult.t
-
 type error = Errors_internal.t
 
 include

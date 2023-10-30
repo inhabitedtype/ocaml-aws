@@ -1,9 +1,7 @@
 open Types
 
 type input = DeleteMaintenanceWindowRequest.t
-
 type output = DeleteMaintenanceWindowResult.t
-
 type error = Errors_internal.t
 
 include

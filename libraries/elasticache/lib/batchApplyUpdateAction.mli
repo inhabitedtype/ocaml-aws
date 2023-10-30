@@ -1,9 +1,7 @@
 open Types
 
 type input = BatchApplyUpdateActionMessage.t
-
 type output = UpdateActionResultsMessage.t
-
 type error = Errors_internal.t
 
 include

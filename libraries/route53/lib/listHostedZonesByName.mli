@@ -1,9 +1,7 @@
 open Types
 
 type input = ListHostedZonesByNameRequest.t
-
 type output = ListHostedZonesByNameResponse.t
-
 type error = Errors_internal.t
 
 include

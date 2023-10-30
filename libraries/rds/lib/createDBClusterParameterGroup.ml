@@ -2,13 +2,10 @@ open Types
 open Aws
 
 type input = CreateDBClusterParameterGroupMessage.t
-
 type output = CreateDBClusterParameterGroupResult.t
-
 type error = Errors_internal.t
 
 let service = "rds"
-
 let signature_version = Request.V4
 
 let to_http service region req =

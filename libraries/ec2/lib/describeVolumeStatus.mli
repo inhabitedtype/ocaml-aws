@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeVolumeStatusRequest.t
-
 type output = DescribeVolumeStatusResult.t
-
 type error = Errors_internal.t
 
 include

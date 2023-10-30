@@ -47,9 +47,7 @@ module IPRangeList = struct
     Aws.Util.option_all (List.map IPRange.parse (Aws.Xml.members "IPRange" xml))
 
   let to_query v = Aws.Query.to_query_list IPRange.to_query v
-
   let to_json v = `List (List.map IPRange.to_json v)
-
   let of_json j = Aws.Json.to_list IPRange.of_json j
 end
 
@@ -130,9 +128,7 @@ module EC2SecurityGroupList = struct
       (List.map EC2SecurityGroup.parse (Aws.Xml.members "EC2SecurityGroup" xml))
 
   let to_query v = Aws.Query.to_query_list EC2SecurityGroup.to_query v
-
   let to_json v = `List (List.map EC2SecurityGroup.to_json v)
-
   let of_json j = Aws.Json.to_list EC2SecurityGroup.of_json j
 end
 
@@ -253,9 +249,7 @@ module DBSecurityGroups = struct
       (List.map DBSecurityGroup.parse (Aws.Xml.members "DBSecurityGroup" xml))
 
   let to_query v = Aws.Query.to_query_list DBSecurityGroup.to_query v
-
   let to_json v = `List (List.map DBSecurityGroup.to_json v)
-
   let of_json j = Aws.Json.to_list DBSecurityGroup.of_json j
 end
 
@@ -313,9 +307,7 @@ module VpcSecurityGroupIdList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "VpcSecurityGroupId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -325,13 +317,9 @@ module IAMAuthMode = struct
     | REQUIRED
 
   let str_to_t = [ "REQUIRED", REQUIRED; "DISABLED", DISABLED ]
-
   let t_to_str = [ REQUIRED, "REQUIRED"; DISABLED, "DISABLED" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -341,7 +329,6 @@ module IAMAuthMode = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -349,13 +336,9 @@ module AuthScheme = struct
   type t = SECRETS
 
   let str_to_t = [ "SECRETS", SECRETS ]
-
   let t_to_str = [ SECRETS, "SECRETS" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -365,7 +348,6 @@ module AuthScheme = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -666,9 +648,7 @@ module StringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -837,9 +817,7 @@ module WriteForwardingStatus = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -849,7 +827,6 @@ module WriteForwardingStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -904,9 +881,7 @@ module VpcSecurityGroupMembershipList = struct
          (Aws.Xml.members "VpcSecurityGroupMembership" xml))
 
   let to_query v = Aws.Query.to_query_list VpcSecurityGroupMembership.to_query v
-
   let to_json v = `List (List.map VpcSecurityGroupMembership.to_json v)
-
   let of_json j = Aws.Json.to_list VpcSecurityGroupMembership.of_json j
 end
 
@@ -949,13 +924,9 @@ module TagList = struct
   type t = Tag.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map Tag.parse (Aws.Xml.members "Tag" xml))
-
   let to_query v = Aws.Query.to_query_list Tag.to_query v
-
   let to_json v = `List (List.map Tag.to_json v)
-
   let of_json j = Aws.Json.to_list Tag.of_json j
 end
 
@@ -1038,9 +1009,7 @@ module ReadReplicaIdentifierList = struct
       (List.map String.parse (Aws.Xml.members "ReadReplicaIdentifier" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -1053,9 +1022,7 @@ module LogTypeList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -1121,9 +1088,7 @@ module DomainMembershipList = struct
       (List.map DomainMembership.parse (Aws.Xml.members "DomainMembership" xml))
 
   let to_query v = Aws.Query.to_query_list DomainMembership.to_query v
-
   let to_json v = `List (List.map DomainMembership.to_json v)
-
   let of_json j = Aws.Json.to_list DomainMembership.of_json j
 end
 
@@ -1180,9 +1145,7 @@ module DBClusterRoles = struct
       (List.map DBClusterRole.parse (Aws.Xml.members "DBClusterRole" xml))
 
   let to_query v = Aws.Query.to_query_list DBClusterRole.to_query v
-
   let to_json v = `List (List.map DBClusterRole.to_json v)
-
   let of_json j = Aws.Json.to_list DBClusterRole.of_json j
 end
 
@@ -1240,9 +1203,7 @@ module DBClusterOptionGroupMemberships = struct
          (Aws.Xml.members "DBClusterOptionGroup" xml))
 
   let to_query v = Aws.Query.to_query_list DBClusterOptionGroupStatus.to_query v
-
   let to_json v = `List (List.map DBClusterOptionGroupStatus.to_json v)
-
   let of_json j = Aws.Json.to_list DBClusterOptionGroupStatus.of_json j
 end
 
@@ -1330,9 +1291,7 @@ module DBClusterMemberList = struct
       (List.map DBClusterMember.parse (Aws.Xml.members "DBClusterMember" xml))
 
   let to_query v = Aws.Query.to_query_list DBClusterMember.to_query v
-
   let to_json v = `List (List.map DBClusterMember.to_json v)
-
   let of_json j = Aws.Json.to_list DBClusterMember.of_json j
 end
 
@@ -1345,9 +1304,7 @@ module AvailabilityZones = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "AvailabilityZone" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -1365,9 +1322,7 @@ module ActivityStreamStatus = struct
     [ Stopping, "stopping"; Started, "started"; Starting, "starting"; Stopped, "stopped" ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -1377,7 +1332,6 @@ module ActivityStreamStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -1387,13 +1341,9 @@ module ActivityStreamMode = struct
     | Async
 
   let str_to_t = [ "async", Async; "sync", Sync ]
-
   let t_to_str = [ Async, "async"; Sync, "sync" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -1403,7 +1353,6 @@ module ActivityStreamMode = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -2124,9 +2073,7 @@ module DBClusterList = struct
     Aws.Util.option_all (List.map DBCluster.parse (Aws.Xml.members "DBCluster" xml))
 
   let to_query v = Aws.Query.to_query_list DBCluster.to_query v
-
   let to_json v = `List (List.map DBCluster.to_json v)
-
   let of_json j = Aws.Json.to_list DBCluster.of_json j
 end
 
@@ -2272,9 +2219,7 @@ module DBClusterBacktrackList = struct
       (List.map DBClusterBacktrack.parse (Aws.Xml.members "DBClusterBacktrack" xml))
 
   let to_query v = Aws.Query.to_query_list DBClusterBacktrack.to_query v
-
   let to_json v = `List (List.map DBClusterBacktrack.to_json v)
-
   let of_json j = Aws.Json.to_list DBClusterBacktrack.of_json j
 end
 
@@ -2337,9 +2282,7 @@ module CustomAvailabilityZoneList = struct
          (Aws.Xml.members "CustomAvailabilityZone" xml))
 
   let to_query v = Aws.Query.to_query_list CustomAvailabilityZone.to_query v
-
   let to_json v = `List (List.map CustomAvailabilityZone.to_json v)
-
   let of_json j = Aws.Json.to_list CustomAvailabilityZone.of_json j
 end
 
@@ -2398,9 +2341,7 @@ module RecurringChargeList = struct
       (List.map RecurringCharge.parse (Aws.Xml.members "RecurringCharge" xml))
 
   let to_query v = Aws.Query.to_query_list RecurringCharge.to_query v
-
   let to_json v = `List (List.map RecurringCharge.to_json v)
-
   let of_json j = Aws.Json.to_list RecurringCharge.of_json j
 end
 
@@ -2548,9 +2489,7 @@ module ReservedDBInstancesOfferingList = struct
          (Aws.Xml.members "ReservedDBInstancesOffering" xml))
 
   let to_query v = Aws.Query.to_query_list ReservedDBInstancesOffering.to_query v
-
   let to_json v = `List (List.map ReservedDBInstancesOffering.to_json v)
-
   let of_json j = Aws.Json.to_list ReservedDBInstancesOffering.of_json j
 end
 
@@ -2610,13 +2549,9 @@ module EngineFamily = struct
     | POSTGRESQL
 
   let str_to_t = [ "POSTGRESQL", POSTGRESQL; "MYSQL", MYSQL ]
-
   let t_to_str = [ POSTGRESQL, "POSTGRESQL"; MYSQL, "MYSQL" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -2626,7 +2561,6 @@ module EngineFamily = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -2662,13 +2596,9 @@ module BackupPolicyNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -2676,13 +2606,9 @@ module EventSubscriptionQuotaExceededFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -2799,9 +2725,7 @@ module FilterValueList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "Value" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -2855,9 +2779,7 @@ module FilterList = struct
     Aws.Util.option_all (List.map Filter.parse (Aws.Xml.members "Filter" xml))
 
   let to_query v = Aws.Query.to_query_list Filter.to_query v
-
   let to_json v = `List (List.map Filter.to_json v)
-
   let of_json j = Aws.Json.to_list Filter.of_json j
 end
 
@@ -2977,13 +2899,9 @@ module DBSubnetGroupNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -2997,9 +2915,7 @@ module ReadReplicaDBClusterIdentifierList = struct
       (List.map String.parse (Aws.Xml.members "ReadReplicaDBClusterIdentifier" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -3007,13 +2923,9 @@ module AuthorizationQuotaExceededFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -3087,13 +2999,9 @@ module KMSKeyNotAccessibleFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -3101,13 +3009,9 @@ module DBProxyNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -3230,9 +3134,7 @@ module SubnetList = struct
     Aws.Util.option_all (List.map Subnet.parse (Aws.Xml.members "Subnet" xml))
 
   let to_query v = Aws.Query.to_query_list Subnet.to_query v
-
   let to_json v = `List (List.map Subnet.to_json v)
-
   let of_json j = Aws.Json.to_list Subnet.of_json j
 end
 
@@ -3336,9 +3238,7 @@ module DBSubnetGroups = struct
       (List.map DBSubnetGroup.parse (Aws.Xml.members "DBSubnetGroup" xml))
 
   let to_query v = Aws.Query.to_query_list DBSubnetGroup.to_query v
-
   let to_json v = `List (List.map DBSubnetGroup.to_json v)
-
   let of_json j = Aws.Json.to_list DBSubnetGroup.of_json j
 end
 
@@ -3361,9 +3261,7 @@ module TargetType = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -3373,7 +3271,6 @@ module TargetType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -3390,9 +3287,7 @@ module TargetState = struct
     [ UNAVAILABLE, "UNAVAILABLE"; AVAILABLE, "AVAILABLE"; REGISTERING, "REGISTERING" ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -3402,7 +3297,6 @@ module TargetState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -3428,9 +3322,7 @@ module TargetHealthReason = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -3440,7 +3332,6 @@ module TargetHealthReason = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -3587,9 +3478,7 @@ module TargetList = struct
     Aws.Util.option_all (List.map DBProxyTarget.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list DBProxyTarget.to_query v
-
   let to_json v = `List (List.map DBProxyTarget.to_json v)
-
   let of_json j = Aws.Json.to_list DBProxyTarget.of_json j
 end
 
@@ -3640,9 +3529,7 @@ module AttributeValueList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "AttributeValue" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -3704,9 +3591,7 @@ module DBSnapshotAttributeList = struct
       (List.map DBSnapshotAttribute.parse (Aws.Xml.members "DBSnapshotAttribute" xml))
 
   let to_query v = Aws.Query.to_query_list DBSnapshotAttribute.to_query v
-
   let to_json v = `List (List.map DBSnapshotAttribute.to_json v)
-
   let of_json j = Aws.Json.to_list DBSnapshotAttribute.of_json j
 end
 
@@ -3881,9 +3766,7 @@ module KeyList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -4058,9 +3941,7 @@ module EngineModeList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -4124,9 +4005,7 @@ module AvailableProcessorFeatureList = struct
          (Aws.Xml.members "AvailableProcessorFeature" xml))
 
   let to_query v = Aws.Query.to_query_list AvailableProcessorFeature.to_query v
-
   let to_json v = `List (List.map AvailableProcessorFeature.to_json v)
-
   let of_json j = Aws.Json.to_list AvailableProcessorFeature.of_json j
 end
 
@@ -4140,9 +4019,7 @@ module AvailabilityZoneList = struct
       (List.map AvailabilityZone.parse (Aws.Xml.members "AvailabilityZone" xml))
 
   let to_query v = Aws.Query.to_query_list AvailabilityZone.to_query v
-
   let to_json v = `List (List.map AvailabilityZone.to_json v)
-
   let of_json j = Aws.Json.to_list AvailabilityZone.of_json j
 end
 
@@ -4517,9 +4394,7 @@ module OrderableDBInstanceOptionsList = struct
          (Aws.Xml.members "OrderableDBInstanceOption" xml))
 
   let to_query v = Aws.Query.to_query_list OrderableDBInstanceOption.to_query v
-
   let to_json v = `List (List.map OrderableDBInstanceOption.to_json v)
-
   let of_json j = Aws.Json.to_list OrderableDBInstanceOption.of_json j
 end
 
@@ -4581,9 +4456,7 @@ module SourceIdsList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "SourceId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -4596,9 +4469,7 @@ module EventCategoriesList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "EventCategory" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -4750,9 +4621,7 @@ module EventSubscriptionsList = struct
       (List.map EventSubscription.parse (Aws.Xml.members "EventSubscription" xml))
 
   let to_query v = Aws.Query.to_query_list EventSubscription.to_query v
-
   let to_json v = `List (List.map EventSubscription.to_json v)
-
   let of_json j = Aws.Json.to_list EventSubscription.of_json j
 end
 
@@ -4799,13 +4668,9 @@ module SNSInvalidTopicFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -5018,9 +4883,7 @@ module TargetGroupList = struct
     Aws.Util.option_all (List.map DBProxyTargetGroup.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list DBProxyTargetGroup.to_query v
-
   let to_json v = `List (List.map DBProxyTargetGroup.to_json v)
-
   let of_json j = Aws.Json.to_list DBProxyTargetGroup.of_json j
 end
 
@@ -5070,9 +4933,7 @@ module ProcessorFeatureList = struct
       (List.map ProcessorFeature.parse (Aws.Xml.members "ProcessorFeature" xml))
 
   let to_query v = Aws.Query.to_query_list ProcessorFeature.to_query v
-
   let to_json v = `List (List.map ProcessorFeature.to_json v)
-
   let of_json j = Aws.Json.to_list ProcessorFeature.of_json j
 end
 
@@ -5440,13 +5301,9 @@ module DBSecurityGroupNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -5459,9 +5316,7 @@ module SubnetIdentifierList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "SubnetIdentifier" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -5583,9 +5438,7 @@ module SourceType = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -5595,7 +5448,6 @@ module SourceType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -5684,13 +5536,9 @@ module EventList = struct
   type t = Event.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map Event.parse (Aws.Xml.members "Event" xml))
-
   let to_query v = Aws.Query.to_query_list Event.to_query v
-
   let to_json v = `List (List.map Event.to_json v)
-
   let of_json j = Aws.Json.to_list Event.of_json j
 end
 
@@ -5949,9 +5797,7 @@ module ReadersArnList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -6029,9 +5875,7 @@ module GlobalClusterMemberList = struct
       (List.map GlobalClusterMember.parse (Aws.Xml.members "GlobalClusterMember" xml))
 
   let to_query v = Aws.Query.to_query_list GlobalClusterMember.to_query v
-
   let to_json v = `List (List.map GlobalClusterMember.to_json v)
-
   let of_json j = Aws.Json.to_list GlobalClusterMember.of_json j
 end
 
@@ -6209,13 +6053,9 @@ module ReplicaMode = struct
     | Mounted
 
   let str_to_t = [ "mounted", Mounted; "open-read-only", Open_read_only ]
-
   let t_to_str = [ Mounted, "mounted"; Open_read_only, "open-read-only" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -6225,7 +6065,6 @@ module ReplicaMode = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -6233,13 +6072,9 @@ module InstallationMediaAlreadyExistsFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -6253,9 +6088,7 @@ module DBParameterGroupList = struct
       (List.map DBParameterGroup.parse (Aws.Xml.members "DBParameterGroup" xml))
 
   let to_query v = Aws.Query.to_query_list DBParameterGroup.to_query v
-
   let to_json v = `List (List.map DBParameterGroup.to_json v)
-
   let of_json j = Aws.Json.to_list DBParameterGroup.of_json j
 end
 
@@ -6353,9 +6186,7 @@ module DBSecurityGroupMembershipList = struct
       (List.map DBSecurityGroupMembership.parse (Aws.Xml.members "DBSecurityGroup" xml))
 
   let to_query v = Aws.Query.to_query_list DBSecurityGroupMembership.to_query v
-
   let to_json v = `List (List.map DBSecurityGroupMembership.to_json v)
-
   let of_json j = Aws.Json.to_list DBSecurityGroupMembership.of_json j
 end
 
@@ -6574,13 +6405,9 @@ module InvalidRestoreFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -6588,13 +6415,9 @@ module DBClusterAlreadyExistsFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -6633,13 +6456,9 @@ module DBSnapshotNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -6762,9 +6581,7 @@ module OptionSettingsList = struct
       (List.map OptionSetting.parse (Aws.Xml.members "OptionSetting" xml))
 
   let to_query v = Aws.Query.to_query_list OptionSetting.to_query v
-
   let to_json v = `List (List.map OptionSetting.to_json v)
-
   let of_json j = Aws.Json.to_list OptionSetting.of_json j
 end
 
@@ -7173,9 +6990,7 @@ module DBSecurityGroupNameList = struct
       (List.map String.parse (Aws.Xml.members "DBSecurityGroupName" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -7793,9 +7608,7 @@ module OptionsDependedOn = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "OptionName" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -7809,9 +7622,7 @@ module ReadReplicaDBInstanceIdentifierList = struct
       (List.map String.parse (Aws.Xml.members "ReadReplicaDBInstanceIdentifier" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -8107,9 +7918,7 @@ module OptionGroupMembershipList = struct
       (List.map OptionGroupMembership.parse (Aws.Xml.members "OptionGroupMembership" xml))
 
   let to_query v = Aws.Query.to_query_list OptionGroupMembership.to_query v
-
   let to_json v = `List (List.map OptionGroupMembership.to_json v)
-
   let of_json j = Aws.Json.to_list OptionGroupMembership.of_json j
 end
 
@@ -8211,9 +8020,7 @@ module DBParameterGroupStatusList = struct
       (List.map DBParameterGroupStatus.parse (Aws.Xml.members "DBParameterGroup" xml))
 
   let to_query v = Aws.Query.to_query_list DBParameterGroupStatus.to_query v
-
   let to_json v = `List (List.map DBParameterGroupStatus.to_json v)
-
   let of_json j = Aws.Json.to_list DBParameterGroupStatus.of_json j
 end
 
@@ -8276,9 +8083,7 @@ module DBInstanceStatusInfoList = struct
       (List.map DBInstanceStatusInfo.parse (Aws.Xml.members "DBInstanceStatusInfo" xml))
 
   let to_query v = Aws.Query.to_query_list DBInstanceStatusInfo.to_query v
-
   let to_json v = `List (List.map DBInstanceStatusInfo.to_json v)
-
   let of_json j = Aws.Json.to_list DBInstanceStatusInfo.of_json j
 end
 
@@ -8292,9 +8097,7 @@ module DBInstanceRoles = struct
       (List.map DBInstanceRole.parse (Aws.Xml.members "DBInstanceRole" xml))
 
   let to_query v = Aws.Query.to_query_list DBInstanceRole.to_query v
-
   let to_json v = `List (List.map DBInstanceRole.to_json v)
-
   let of_json j = Aws.Json.to_list DBInstanceRole.of_json j
 end
 
@@ -9430,9 +9233,7 @@ module ReservedDBInstanceList = struct
       (List.map ReservedDBInstance.parse (Aws.Xml.members "ReservedDBInstance" xml))
 
   let to_query v = Aws.Query.to_query_list ReservedDBInstance.to_query v
-
   let to_json v = `List (List.map ReservedDBInstance.to_json v)
-
   let of_json j = Aws.Json.to_list ReservedDBInstance.of_json j
 end
 
@@ -9440,13 +9241,9 @@ module DBClusterNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -9489,13 +9286,9 @@ module DBInstanceRoleNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -9503,13 +9296,9 @@ module SnapshotQuotaExceededFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -9545,13 +9334,9 @@ module InvalidDBClusterCapacityFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -9651,9 +9436,7 @@ module UserAuthConfigList = struct
     Aws.Util.option_all (List.map UserAuthConfig.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list UserAuthConfig.to_query v
-
   let to_json v = `List (List.map UserAuthConfig.to_json v)
-
   let of_json j = Aws.Json.to_list UserAuthConfig.of_json j
 end
 
@@ -10040,13 +9823,9 @@ module ReservedDBInstanceNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -10059,9 +9838,7 @@ module DBSnapshotList = struct
     Aws.Util.option_all (List.map DBSnapshot.parse (Aws.Xml.members "DBSnapshot" xml))
 
   let to_query v = Aws.Query.to_query_list DBSnapshot.to_query v
-
   let to_json v = `List (List.map DBSnapshot.to_json v)
-
   let of_json j = Aws.Json.to_list DBSnapshot.of_json j
 end
 
@@ -10069,13 +9846,9 @@ module CertificateNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -10083,13 +9856,9 @@ module InvalidDBClusterStateFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -10210,13 +9979,9 @@ module DBClusterEndpointNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -10384,13 +10149,9 @@ module ReservedDBInstanceAlreadyExistsFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -10398,13 +10159,9 @@ module InvalidGlobalClusterStateFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -10831,9 +10588,7 @@ module DBClusterSnapshotAttributeList = struct
          (Aws.Xml.members "DBClusterSnapshotAttribute" xml))
 
   let to_query v = Aws.Query.to_query_list DBClusterSnapshotAttribute.to_query v
-
   let to_json v = `List (List.map DBClusterSnapshotAttribute.to_json v)
-
   let of_json j = Aws.Json.to_list DBClusterSnapshotAttribute.of_json j
 end
 
@@ -10938,13 +10693,9 @@ module DBProxyTargetGroupNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -11059,9 +10810,7 @@ module DBInstanceAutomatedBackupList = struct
          (Aws.Xml.members "DBInstanceAutomatedBackup" xml))
 
   let to_query v = Aws.Query.to_query_list DBInstanceAutomatedBackup.to_query v
-
   let to_json v = `List (List.map DBInstanceAutomatedBackup.to_json v)
-
   let of_json j = Aws.Json.to_list DBInstanceAutomatedBackup.of_json j
 end
 
@@ -11148,13 +10897,9 @@ module DBProxyAlreadyExistsFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -11278,9 +11023,7 @@ module OptionConfigurationList = struct
       (List.map OptionConfiguration.parse (Aws.Xml.members "OptionConfiguration" xml))
 
   let to_query v = Aws.Query.to_query_list OptionConfiguration.to_query v
-
   let to_json v = `List (List.map OptionConfiguration.to_json v)
-
   let of_json j = Aws.Json.to_list OptionConfiguration.of_json j
 end
 
@@ -11288,13 +11031,9 @@ module InvalidDBParameterGroupStateFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -11380,13 +11119,9 @@ module ApplyMethod = struct
     | Pending_reboot
 
   let str_to_t = [ "pending-reboot", Pending_reboot; "immediate", Immediate ]
-
   let t_to_str = [ Pending_reboot, "pending-reboot"; Immediate, "immediate" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -11396,7 +11131,6 @@ module ApplyMethod = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -11550,9 +11284,7 @@ module ParametersList = struct
     Aws.Util.option_all (List.map Parameter.parse (Aws.Xml.members "Parameter" xml))
 
   let to_query v = Aws.Query.to_query_list Parameter.to_query v
-
   let to_json v = `List (List.map Parameter.to_json v)
-
   let of_json j = Aws.Json.to_list Parameter.of_json j
 end
 
@@ -11656,13 +11388,9 @@ module StorageQuotaExceededFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -11733,13 +11461,9 @@ module DBSecurityGroupQuotaExceededFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -11752,9 +11476,7 @@ module AccountQuotaList = struct
     Aws.Util.option_all (List.map AccountQuota.parse (Aws.Xml.members "AccountQuota" xml))
 
   let to_query v = Aws.Query.to_query_list AccountQuota.to_query v
-
   let to_json v = `List (List.map AccountQuota.to_json v)
-
   let of_json j = Aws.Json.to_list AccountQuota.of_json j
 end
 
@@ -11906,9 +11628,7 @@ module ExportTasksList = struct
     Aws.Util.option_all (List.map ExportTask.parse (Aws.Xml.members "ExportTask" xml))
 
   let to_query v = Aws.Query.to_query_list ExportTask.to_query v
-
   let to_json v = `List (List.map ExportTask.to_json v)
-
   let of_json j = Aws.Json.to_list ExportTask.of_json j
 end
 
@@ -11959,13 +11679,9 @@ module DBSubnetGroupNotAllowedFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -11973,13 +11689,9 @@ module DBProxyTargetAlreadyRegisteredFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -12111,9 +11823,7 @@ module InstallationMediaList = struct
       (List.map InstallationMedia.parse (Aws.Xml.members "InstallationMedia" xml))
 
   let to_query v = Aws.Query.to_query_list InstallationMedia.to_query v
-
   let to_json v = `List (List.map InstallationMedia.to_json v)
-
   let of_json j = Aws.Json.to_list InstallationMedia.of_json j
 end
 
@@ -12172,9 +11882,7 @@ module OptionSettingConfigurationList = struct
       (List.map OptionSetting.parse (Aws.Xml.members "OptionSetting" xml))
 
   let to_query v = Aws.Query.to_query_list OptionSetting.to_query v
-
   let to_json v = `List (List.map OptionSetting.to_json v)
-
   let of_json j = Aws.Json.to_list OptionSetting.of_json j
 end
 
@@ -12325,9 +12033,7 @@ module OptionsList = struct
     Aws.Util.option_all (List.map Option.parse (Aws.Xml.members "Option" xml))
 
   let to_query v = Aws.Query.to_query_list Option.to_query v
-
   let to_json v = `List (List.map Option.to_json v)
-
   let of_json j = Aws.Json.to_list Option.of_json j
 end
 
@@ -12562,9 +12268,7 @@ module DBInstanceList = struct
     Aws.Util.option_all (List.map DBInstance.parse (Aws.Xml.members "DBInstance" xml))
 
   let to_query v = Aws.Query.to_query_list DBInstance.to_query v
-
   let to_json v = `List (List.map DBInstance.to_json v)
-
   let of_json j = Aws.Json.to_list DBInstance.of_json j
 end
 
@@ -12613,13 +12317,9 @@ module InvalidEventSubscriptionStateFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -12627,13 +12327,9 @@ module OptionGroupAlreadyExistsFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -12641,13 +12337,9 @@ module GlobalClusterNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -12695,9 +12387,7 @@ module OptionsConflictsWith = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "OptionConflictName" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -12747,9 +12437,7 @@ module OptionGroupOptionVersionsList = struct
       (List.map OptionVersion.parse (Aws.Xml.members "OptionVersion" xml))
 
   let to_query v = Aws.Query.to_query_list OptionVersion.to_query v
-
   let to_json v = `List (List.map OptionVersion.to_json v)
-
   let of_json j = Aws.Json.to_list OptionVersion.of_json j
 end
 
@@ -12765,9 +12453,7 @@ module MinimumEngineVersionPerAllowedValueList = struct
          (Aws.Xml.members "MinimumEngineVersionPerAllowedValue" xml))
 
   let to_query v = Aws.Query.to_query_list MinimumEngineVersionPerAllowedValue.to_query v
-
   let to_json v = `List (List.map MinimumEngineVersionPerAllowedValue.to_json v)
-
   let of_json j = Aws.Json.to_list MinimumEngineVersionPerAllowedValue.of_json j
 end
 
@@ -12899,9 +12585,7 @@ module OptionGroupOptionSettingsList = struct
          (Aws.Xml.members "OptionGroupOptionSetting" xml))
 
   let to_query v = Aws.Query.to_query_list OptionGroupOptionSetting.to_query v
-
   let to_json v = `List (List.map OptionGroupOptionSetting.to_json v)
-
   let of_json j = Aws.Json.to_list OptionGroupOptionSetting.of_json j
 end
 
@@ -13139,9 +12823,7 @@ module OptionGroupOptionsList = struct
       (List.map OptionGroupOption.parse (Aws.Xml.members "OptionGroupOption" xml))
 
   let to_query v = Aws.Query.to_query_list OptionGroupOption.to_query v
-
   let to_json v = `List (List.map OptionGroupOption.to_json v)
-
   let of_json j = Aws.Json.to_list OptionGroupOption.of_json j
 end
 
@@ -13760,9 +13442,7 @@ module SupportedCharacterSetsList = struct
     Aws.Util.option_all (List.map CharacterSet.parse (Aws.Xml.members "CharacterSet" xml))
 
   let to_query v = Aws.Query.to_query_list CharacterSet.to_query v
-
   let to_json v = `List (List.map CharacterSet.to_json v)
-
   let of_json j = Aws.Json.to_list CharacterSet.of_json j
 end
 
@@ -13866,13 +13546,9 @@ module CustomAvailabilityZoneAlreadyExistsFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -13914,13 +13590,9 @@ module DBSecurityGroupAlreadyExistsFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -14091,9 +13763,7 @@ module UserAuthConfigInfoList = struct
     Aws.Util.option_all (List.map UserAuthConfigInfo.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list UserAuthConfigInfo.to_query v
-
   let to_json v = `List (List.map UserAuthConfigInfo.to_json v)
-
   let of_json j = Aws.Json.to_list UserAuthConfigInfo.of_json j
 end
 
@@ -14134,9 +13804,7 @@ module DBProxyStatus = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -14146,7 +13814,6 @@ module DBProxyStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -14331,9 +13998,7 @@ module DBProxyList = struct
     Aws.Util.option_all (List.map DBProxy.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list DBProxy.to_query v
-
   let to_json v = `List (List.map DBProxy.to_json v)
-
   let of_json j = Aws.Json.to_list DBProxy.of_json j
 end
 
@@ -14514,13 +14179,9 @@ module DBSecurityGroupNotSupportedFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -14569,13 +14230,9 @@ module DBClusterParameterGroupNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -14669,13 +14326,9 @@ module DBProxyTargetNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -14885,13 +14538,9 @@ module InvalidDBInstanceStateFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -14991,9 +14640,7 @@ module PendingMaintenanceActionDetails = struct
          (Aws.Xml.members "PendingMaintenanceAction" xml))
 
   let to_query v = Aws.Query.to_query_list PendingMaintenanceAction.to_query v
-
   let to_json v = `List (List.map PendingMaintenanceAction.to_json v)
-
   let of_json j = Aws.Json.to_list PendingMaintenanceAction.of_json j
 end
 
@@ -15077,13 +14724,9 @@ module InvalidDBSnapshotStateFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -15246,13 +14889,9 @@ module ReservedDBInstanceQuotaExceededFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -15301,13 +14940,9 @@ module RangeList = struct
   type t = Range.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map Range.parse (Aws.Xml.members "Range" xml))
-
   let to_query v = Aws.Query.to_query_list Range.to_query v
-
   let to_json v = `List (List.map Range.to_json v)
-
   let of_json j = Aws.Json.to_list Range.of_json j
 end
 
@@ -15320,9 +14955,7 @@ module DoubleRangeList = struct
     Aws.Util.option_all (List.map DoubleRange.parse (Aws.Xml.members "DoubleRange" xml))
 
   let to_query v = Aws.Query.to_query_list DoubleRange.to_query v
-
   let to_json v = `List (List.map DoubleRange.to_json v)
-
   let of_json j = Aws.Json.to_list DoubleRange.of_json j
 end
 
@@ -15427,9 +15060,7 @@ module ValidStorageOptionsList = struct
       (List.map ValidStorageOptions.parse (Aws.Xml.members "ValidStorageOptions" xml))
 
   let to_query v = Aws.Query.to_query_list ValidStorageOptions.to_query v
-
   let to_json v = `List (List.map ValidStorageOptions.to_json v)
-
   let of_json j = Aws.Json.to_list ValidStorageOptions.of_json j
 end
 
@@ -15553,13 +15184,9 @@ module ResourceNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -15611,13 +15238,9 @@ module SubscriptionCategoryNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -15630,9 +15253,7 @@ module OptionGroupsList = struct
     Aws.Util.option_all (List.map OptionGroup.parse (Aws.Xml.members "OptionGroup" xml))
 
   let to_query v = Aws.Query.to_query_list OptionGroup.to_query v
-
   let to_json v = `List (List.map OptionGroup.to_json v)
-
   let of_json j = Aws.Json.to_list OptionGroup.of_json j
 end
 
@@ -16089,13 +15710,9 @@ module ProvisionedIopsNotAvailableInAZFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -16103,13 +15720,9 @@ module GlobalClusterQuotaExceededFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -16117,13 +15730,9 @@ module SubnetAlreadyInUse = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -16155,13 +15764,9 @@ module InvalidDBProxyStateFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -16305,13 +15910,9 @@ module InvalidOptionGroupStateFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -16360,13 +15961,9 @@ module DBClusterEndpointAlreadyExistsFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -16379,9 +15976,7 @@ module OptionNamesList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -16466,13 +16061,9 @@ module InvalidSubnet = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -16480,13 +16071,9 @@ module GlobalClusterAlreadyExistsFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -16502,9 +16089,7 @@ module DBClusterParameterGroupList = struct
          (Aws.Xml.members "DBClusterParameterGroup" xml))
 
   let to_query v = Aws.Query.to_query_list DBClusterParameterGroup.to_query v
-
   let to_json v = `List (List.map DBClusterParameterGroup.to_json v)
-
   let of_json j = Aws.Json.to_list DBClusterParameterGroup.of_json j
 end
 
@@ -16609,9 +16194,7 @@ module DBClusterEndpointList = struct
       (List.map DBClusterEndpoint.parse (Aws.Xml.members "DBClusterEndpointList" xml))
 
   let to_query v = Aws.Query.to_query_list DBClusterEndpoint.to_query v
-
   let to_json v = `List (List.map DBClusterEndpoint.to_json v)
-
   let of_json j = Aws.Json.to_list DBClusterEndpoint.of_json j
 end
 
@@ -17504,9 +17087,7 @@ module CertificateList = struct
     Aws.Util.option_all (List.map Certificate.parse (Aws.Xml.members "Certificate" xml))
 
   let to_query v = Aws.Query.to_query_list Certificate.to_query v
-
   let to_json v = `List (List.map Certificate.to_json v)
-
   let of_json j = Aws.Json.to_list Certificate.of_json j
 end
 
@@ -17514,13 +17095,9 @@ module DBClusterSnapshotAlreadyExistsFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -17890,13 +17467,9 @@ module AuthorizationAlreadyExistsFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -18142,13 +17715,9 @@ module InvalidExportOnlyFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -18156,13 +17725,9 @@ module ReservedDBInstancesOfferingNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -18224,13 +17789,9 @@ module DBProxyQuotaExceededFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -18422,13 +17983,9 @@ module SharedSnapshotQuotaExceededFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -18490,13 +18047,9 @@ module DBClusterRoleNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -18504,13 +18057,9 @@ module InvalidDBClusterSnapshotStateFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -18639,13 +18188,9 @@ module DBParameterGroupAlreadyExistsFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -18688,13 +18233,9 @@ module IamRoleMissingPermissionsFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -18844,9 +18385,7 @@ module FeatureNameList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -18854,13 +18393,9 @@ module InstanceQuotaExceededFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -18974,9 +18509,7 @@ module DBClusterSnapshotList = struct
       (List.map DBClusterSnapshot.parse (Aws.Xml.members "DBClusterSnapshot" xml))
 
   let to_query v = Aws.Query.to_query_list DBClusterSnapshot.to_query v
-
   let to_json v = `List (List.map DBClusterSnapshot.to_json v)
-
   let of_json j = Aws.Json.to_list DBClusterSnapshot.of_json j
 end
 
@@ -19231,13 +18764,9 @@ module ExportTaskNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -19369,9 +18898,7 @@ module SourceRegionList = struct
     Aws.Util.option_all (List.map SourceRegion.parse (Aws.Xml.members "SourceRegion" xml))
 
   let to_query v = Aws.Query.to_query_list SourceRegion.to_query v
-
   let to_json v = `List (List.map SourceRegion.to_json v)
-
   let of_json j = Aws.Json.to_list SourceRegion.of_json j
 end
 
@@ -19748,13 +19275,9 @@ module DBSubnetGroupAlreadyExistsFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -19794,13 +19317,9 @@ module InsufficientDBClusterCapacityFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -19906,13 +19425,9 @@ module ExportTaskAlreadyExistsFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -19997,13 +19512,9 @@ module SourceNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -20504,13 +20015,9 @@ module SubscriptionAlreadyExistFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -20968,9 +20475,7 @@ module GlobalClusterList = struct
       (List.map GlobalCluster.parse (Aws.Xml.members "GlobalClusterMember" xml))
 
   let to_query v = Aws.Query.to_query_list GlobalCluster.to_query v
-
   let to_json v = `List (List.map GlobalCluster.to_json v)
-
   let of_json j = Aws.Json.to_list GlobalCluster.of_json j
 end
 
@@ -20978,13 +20483,9 @@ module DBClusterRoleQuotaExceededFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -21584,13 +21085,9 @@ module OptionGroupQuotaExceededFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -21598,13 +21095,9 @@ module SNSTopicArnNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -21662,9 +21155,7 @@ module DescribeDBLogFilesList = struct
          (Aws.Xml.members "DescribeDBLogFilesDetails" xml))
 
   let to_query v = Aws.Query.to_query_list DescribeDBLogFilesDetails.to_query v
-
   let to_json v = `List (List.map DescribeDBLogFilesDetails.to_json v)
-
   let of_json j = Aws.Json.to_list DescribeDBLogFilesDetails.of_json j
 end
 
@@ -21719,13 +21210,9 @@ module DBInstanceRoleAlreadyExistsFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -21781,13 +21268,9 @@ module DBClusterBacktrackNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -21829,13 +21312,9 @@ module InstallationMediaNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -21843,13 +21322,9 @@ module SubscriptionNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -21918,9 +21393,7 @@ module PendingMaintenanceActions = struct
          (Aws.Xml.members "ResourcePendingMaintenanceActions" xml))
 
   let to_query v = Aws.Query.to_query_list ResourcePendingMaintenanceActions.to_query v
-
   let to_json v = `List (List.map ResourcePendingMaintenanceActions.to_json v)
-
   let of_json j = Aws.Json.to_list ResourcePendingMaintenanceActions.of_json j
 end
 
@@ -22094,13 +21567,9 @@ module DBInstanceAlreadyExistsFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -22140,13 +21609,9 @@ module DBParameterGroupNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -22228,13 +21693,9 @@ module InvalidDBSubnetStateFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -22248,9 +21709,7 @@ module EventCategoriesMapList = struct
       (List.map EventCategoriesMap.parse (Aws.Xml.members "EventCategoriesMap" xml))
 
   let to_query v = Aws.Query.to_query_list EventCategoriesMap.to_query v
-
   let to_json v = `List (List.map EventCategoriesMap.to_json v)
-
   let of_json j = Aws.Json.to_list EventCategoriesMap.of_json j
 end
 
@@ -22258,13 +21717,9 @@ module DeregisterDBProxyTargetsResponse = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -22496,13 +21951,9 @@ module InsufficientDBInstanceCapacityFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -22516,9 +21967,7 @@ module ValidUpgradeTargetList = struct
       (List.map UpgradeTarget.parse (Aws.Xml.members "UpgradeTarget" xml))
 
   let to_query v = Aws.Query.to_query_list UpgradeTarget.to_query v
-
   let to_json v = `List (List.map UpgradeTarget.to_json v)
-
   let of_json j = Aws.Json.to_list UpgradeTarget.of_json j
 end
 
@@ -22531,9 +21980,7 @@ module SupportedTimezonesList = struct
     Aws.Util.option_all (List.map Timezone.parse (Aws.Xml.members "Timezone" xml))
 
   let to_query v = Aws.Query.to_query_list Timezone.to_query v
-
   let to_json v = `List (List.map Timezone.to_json v)
-
   let of_json j = Aws.Json.to_list Timezone.of_json j
 end
 
@@ -23115,13 +22562,9 @@ module DBParameterGroupQuotaExceededFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -23211,13 +22654,9 @@ module InvalidDBClusterEndpointStateFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -23286,13 +22725,9 @@ module OptionGroupNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -23965,13 +23400,9 @@ module InvalidDBSubnetGroupFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -24062,13 +23493,9 @@ module DBInstanceAutomatedBackupNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -24498,13 +23925,9 @@ module DBSubnetGroupQuotaExceededFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -24512,13 +23935,9 @@ module DBInstanceRoleQuotaExceededFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -24807,13 +24226,9 @@ module InvalidExportSourceStateFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -24977,13 +24392,9 @@ module DBLogFileNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -25249,13 +24660,9 @@ module DBUpgradeDependencyFailureFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -25310,13 +24717,9 @@ module InvalidDBInstanceAutomatedBackupStateFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -25330,9 +24733,7 @@ module DBEngineVersionList = struct
       (List.map DBEngineVersion.parse (Aws.Xml.members "DBEngineVersion" xml))
 
   let to_query v = Aws.Query.to_query_list DBEngineVersion.to_query v
-
   let to_json v = `List (List.map DBEngineVersion.to_json v)
-
   let of_json j = Aws.Json.to_list DBEngineVersion.of_json j
 end
 
@@ -25421,13 +24822,9 @@ module DBClusterEndpointQuotaExceededFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -25619,13 +25016,9 @@ module CustomAvailabilityZoneNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -25802,13 +25195,9 @@ module InvalidVPCNetworkStateFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -25937,13 +25326,9 @@ module SNSNoAuthorizationFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -25951,13 +25336,9 @@ module InsufficientAvailableIPsInSubnetFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -26111,13 +25492,9 @@ module CustomAvailabilityZoneQuotaExceededFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -26267,13 +25644,9 @@ module StorageTypeNotSupportedFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -26281,13 +25654,9 @@ module DBSubnetQuotaExceededFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -26295,13 +25664,9 @@ module DBClusterSnapshotNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -26466,13 +25831,9 @@ module PointInTimeRestoreNotEnabledFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -26480,13 +25841,9 @@ module InvalidDBSecurityGroupStateFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -26528,13 +25885,9 @@ module InvalidExportTaskStateFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -26542,13 +25895,9 @@ module DomainNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -26613,13 +25962,9 @@ module DBSubnetGroupDoesNotCoverEnoughAZs = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -27121,13 +26466,9 @@ module DBSnapshotAlreadyExistsFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -27170,13 +26511,9 @@ module InvalidDBSubnetGroupStateFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -27232,13 +26569,9 @@ module IamRoleNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -27300,13 +26633,9 @@ module InvalidS3BucketFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -27314,13 +26643,9 @@ module DBInstanceNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -27379,13 +26704,9 @@ module DescribeAccountAttributesMessage = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -27393,13 +26714,9 @@ module DBClusterRoleAlreadyExistsFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -27747,13 +27064,9 @@ module DBClusterQuotaExceededFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -27761,13 +27074,9 @@ module AuthorizationNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -27824,13 +27133,9 @@ module InsufficientStorageClusterCapacityFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -28246,13 +27551,9 @@ module DBInstanceAutomatedBackupQuotaExceededFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 

@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeAccountLimitsInput.t
-
 type output = DescribeAccountLimitsOutput.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeScalingActivitiesType.t
-
 type output = ActivitiesType.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,7 @@
 open Types
 
 type input = PutDashboardInput.t
-
 type output = PutDashboardOutput.t
-
 type error = Errors_internal.t
 
 include

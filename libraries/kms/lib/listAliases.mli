@@ -1,9 +1,7 @@
 open Types
 
 type input = ListAliasesRequest.t
-
 type output = ListAliasesResponse.t
-
 type error = Errors_internal.t
 
 include

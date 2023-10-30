@@ -1,9 +1,7 @@
 open Types
 
 type input = CreateTrafficMirrorTargetRequest.t
-
 type output = CreateTrafficMirrorTargetResult.t
-
 type error = Errors_internal.t
 
 include

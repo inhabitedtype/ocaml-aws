@@ -1,9 +1,7 @@
 open Types
 
 type input = RegisterTransitGatewayMulticastGroupSourcesRequest.t
-
 type output = RegisterTransitGatewayMulticastGroupSourcesResult.t
-
 type error = Errors_internal.t
 
 include

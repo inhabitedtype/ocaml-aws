@@ -1,9 +1,7 @@
 open Types
 
 type input = ReplaceNetworkAclAssociationRequest.t
-
 type output = ReplaceNetworkAclAssociationResult.t
-
 type error = Errors_internal.t
 
 include

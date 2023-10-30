@@ -1,9 +1,7 @@
 open Types
 
 type input = GetPasswordDataRequest.t
-
 type output = GetPasswordDataResult.t
-
 type error = Errors_internal.t
 
 include

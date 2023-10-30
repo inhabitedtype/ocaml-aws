@@ -1,9 +1,7 @@
 open Types
 
 type input = DomainMetadataRequest.t
-
 type output = DomainMetadataResult.t
-
 type error = Errors_internal.t
 
 include

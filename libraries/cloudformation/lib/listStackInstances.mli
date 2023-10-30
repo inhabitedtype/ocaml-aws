@@ -1,9 +1,7 @@
 open Types
 
 type input = ListStackInstancesInput.t
-
 type output = ListStackInstancesOutput.t
-
 type error = Errors_internal.t
 
 include

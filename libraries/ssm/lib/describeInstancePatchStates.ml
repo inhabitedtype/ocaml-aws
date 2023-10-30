@@ -2,13 +2,10 @@ open Types
 open Aws
 
 type input = DescribeInstancePatchStatesRequest.t
-
 type output = DescribeInstancePatchStatesResult.t
-
 type error = Errors_internal.t
 
 let service = "ssm"
-
 let signature_version = Request.V4
 
 let to_http service region req =

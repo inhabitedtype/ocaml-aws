@@ -1,9 +1,7 @@
 open Types
 
 type input = GetHostReservationPurchasePreviewRequest.t
-
 type output = GetHostReservationPurchasePreviewResult.t
-
 type error = Errors_internal.t
 
 include

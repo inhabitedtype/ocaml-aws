@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeSecurityGroupReferencesRequest.t
-
 type output = DescribeSecurityGroupReferencesResult.t
-
 type error = Errors_internal.t
 
 include

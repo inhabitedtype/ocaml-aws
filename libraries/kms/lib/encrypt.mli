@@ -1,9 +1,7 @@
 open Types
 
 type input = EncryptRequest.t
-
 type output = EncryptResponse.t
-
 type error = Errors_internal.t
 
 include

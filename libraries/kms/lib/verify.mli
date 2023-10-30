@@ -1,9 +1,7 @@
 open Types
 
 type input = VerifyRequest.t
-
 type output = VerifyResponse.t
-
 type error = Errors_internal.t
 
 include

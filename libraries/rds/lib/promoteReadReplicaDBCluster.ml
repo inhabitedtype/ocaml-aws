@@ -2,13 +2,10 @@ open Types
 open Aws
 
 type input = PromoteReadReplicaDBClusterMessage.t
-
 type output = PromoteReadReplicaDBClusterResult.t
-
 type error = Errors_internal.t
 
 let service = "rds"
-
 let signature_version = Request.V4
 
 let to_http service region req =

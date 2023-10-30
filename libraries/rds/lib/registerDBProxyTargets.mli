@@ -1,9 +1,7 @@
 open Types
 
 type input = RegisterDBProxyTargetsRequest.t
-
 type output = RegisterDBProxyTargetsResponse.t
-
 type error = Errors_internal.t
 
 include

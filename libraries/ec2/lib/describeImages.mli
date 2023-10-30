@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeImagesRequest.t
-
 type output = DescribeImagesResult.t
-
 type error = Errors_internal.t
 
 include

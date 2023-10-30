@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeManagedPrefixListsRequest.t
-
 type output = DescribeManagedPrefixListsResult.t
-
 type error = Errors_internal.t
 
 include

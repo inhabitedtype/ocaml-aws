@@ -1,9 +1,7 @@
 open Types
 
 type input = TestFailoverMessage.t
-
 type output = TestFailoverResult.t
-
 type error = Errors_internal.t
 
 include

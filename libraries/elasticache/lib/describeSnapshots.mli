@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeSnapshotsMessage.t
-
 type output = DescribeSnapshotsListMessage.t
-
 type error = Errors_internal.t
 
 include

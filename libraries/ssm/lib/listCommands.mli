@@ -1,9 +1,7 @@
 open Types
 
 type input = ListCommandsRequest.t
-
 type output = ListCommandsResult.t
-
 type error = Errors_internal.t
 
 include

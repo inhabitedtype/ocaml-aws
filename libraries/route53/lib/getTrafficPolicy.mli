@@ -1,9 +1,7 @@
 open Types
 
 type input = GetTrafficPolicyRequest.t
-
 type output = GetTrafficPolicyResponse.t
-
 type error = Errors_internal.t
 
 include
