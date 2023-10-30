@@ -285,6 +285,10 @@ module Util : sig
   val option_all : 'a option list -> 'a list option
   (** If all values in list are Some v, produce Some (list_filter_opt
       list), else produce None. *)
+
+  val string_starts_with : string -> string -> bool
+  (** Judges whether s starts with prefix.
+      It is ported from stdlib in OCaml 4.13. *)
 end
 
 (** This module contains the V2 and V4 Authorization header AWS signature algorithm. *)
