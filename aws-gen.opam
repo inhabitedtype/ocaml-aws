@@ -15,11 +15,10 @@ dev-repo: "git+https://github.com/inhabitedtype/ocaml-aws.git"
 depends: [
   "ocaml" {>= "4.08"}
   "atdgen" {>= "2.10"}
-  "yojson"
+  "yojson" {>= "2.0"}
   "base-unix"
   "cmdliner" {>= "1.1.0"}
-  "fmt"
-  "yojson" {>= "1.6.0"}
+  "fmt" {>= "0.9.0"}
   "ocaml-compiler-libs" {>= "0.11.0" }
   "ocamlgraph"
   "dune" {>= "2.7"}

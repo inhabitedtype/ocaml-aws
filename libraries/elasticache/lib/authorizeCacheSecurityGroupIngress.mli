@@ -1,9 +1,7 @@
 open Types
 
 type input = AuthorizeCacheSecurityGroupIngressMessage.t
-
 type output = AuthorizeCacheSecurityGroupIngressResult.t
-
 type error = Errors_internal.t
 
 include

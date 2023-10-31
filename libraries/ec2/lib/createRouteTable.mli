@@ -1,9 +1,7 @@
 open Types
 
 type input = CreateRouteTableRequest.t
-
 type output = CreateRouteTableResult.t
-
 type error = Errors_internal.t
 
 include

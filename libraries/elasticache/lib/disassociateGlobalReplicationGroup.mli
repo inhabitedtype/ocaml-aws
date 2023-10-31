@@ -1,9 +1,7 @@
 open Types
 
 type input = DisassociateGlobalReplicationGroupMessage.t
-
 type output = DisassociateGlobalReplicationGroupResult.t
-
 type error = Errors_internal.t
 
 include

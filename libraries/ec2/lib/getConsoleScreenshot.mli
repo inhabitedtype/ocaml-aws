@@ -1,9 +1,7 @@
 open Types
 
 type input = GetConsoleScreenshotRequest.t
-
 type output = GetConsoleScreenshotResult.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeDBProxiesRequest.t
-
 type output = DescribeDBProxiesResponse.t
-
 type error = Errors_internal.t
 
 include

@@ -2,13 +2,10 @@ open Types
 open Aws
 
 type input = GetTrafficPolicyInstanceRequest.t
-
 type output = GetTrafficPolicyInstanceResponse.t
-
 type error = Errors_internal.t
 
 let service = "route53"
-
 let signature_version = Request.V4
 
 let to_http service region req =

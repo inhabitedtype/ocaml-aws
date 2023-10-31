@@ -1,9 +1,7 @@
 open Types
 
 type input = FailoverGlobalReplicationGroupMessage.t
-
 type output = FailoverGlobalReplicationGroupResult.t
-
 type error = Errors_internal.t
 
 include

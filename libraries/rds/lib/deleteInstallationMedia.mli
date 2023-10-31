@@ -1,9 +1,7 @@
 open Types
 
 type input = DeleteInstallationMediaMessage.t
-
 type output = InstallationMedia.t
-
 type error = Errors_internal.t
 
 include

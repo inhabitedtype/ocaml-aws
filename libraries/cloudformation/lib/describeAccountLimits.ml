@@ -2,13 +2,10 @@ open Types
 open Aws
 
 type input = DescribeAccountLimitsInput.t
-
 type output = DescribeAccountLimitsOutput.t
-
 type error = Errors_internal.t
 
 let service = "cloudformation"
-
 let signature_version = Request.V4
 
 let to_http service region req =

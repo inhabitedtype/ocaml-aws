@@ -1,9 +1,7 @@
 open Types
 
 type input = GetAssociatedIpv6PoolCidrsRequest.t
-
 type output = GetAssociatedIpv6PoolCidrsResult.t
-
 type error = Errors_internal.t
 
 include

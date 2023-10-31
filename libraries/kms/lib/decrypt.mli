@@ -1,9 +1,7 @@
 open Types
 
 type input = DecryptRequest.t
-
 type output = DecryptResponse.t
-
 type error = Errors_internal.t
 
 include

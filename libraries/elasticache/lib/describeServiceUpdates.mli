@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeServiceUpdatesMessage.t
-
 type output = ServiceUpdatesMessage.t
-
 type error = Errors_internal.t
 
 include

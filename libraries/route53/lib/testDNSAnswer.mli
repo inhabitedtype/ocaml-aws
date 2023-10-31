@@ -1,9 +1,7 @@
 open Types
 
 type input = TestDNSAnswerRequest.t
-
 type output = TestDNSAnswerResponse.t
-
 type error = Errors_internal.t
 
 include

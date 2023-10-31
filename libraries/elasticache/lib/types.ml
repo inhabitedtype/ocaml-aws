@@ -70,13 +70,9 @@ module NoOperationFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -89,9 +85,7 @@ module FilterValueList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -191,9 +185,7 @@ module RecurringChargeList = struct
       (List.map RecurringCharge.parse (Aws.Xml.members "RecurringCharge" xml))
 
   let to_query v = Aws.Query.to_query_list RecurringCharge.to_query v
-
   let to_json v = `List (List.map RecurringCharge.to_json v)
-
   let of_json j = Aws.Json.to_list RecurringCharge.of_json j
 end
 
@@ -370,9 +362,7 @@ module ReservedCacheNodeList = struct
       (List.map ReservedCacheNode.parse (Aws.Xml.members "ReservedCacheNode" xml))
 
   let to_query v = Aws.Query.to_query_list ReservedCacheNode.to_query v
-
   let to_json v = `List (List.map ReservedCacheNode.to_json v)
-
   let of_json j = Aws.Json.to_list ReservedCacheNode.of_json j
 end
 
@@ -444,9 +434,7 @@ module AutomaticFailoverStatus = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -456,7 +444,6 @@ module AutomaticFailoverStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -546,9 +533,7 @@ module GlobalReplicationGroupMemberList = struct
          (Aws.Xml.members "GlobalReplicationGroupMember" xml))
 
   let to_query v = Aws.Query.to_query_list GlobalReplicationGroupMember.to_query v
-
   let to_json v = `List (List.map GlobalReplicationGroupMember.to_json v)
-
   let of_json j = Aws.Json.to_list GlobalReplicationGroupMember.of_json j
 end
 
@@ -601,9 +586,7 @@ module GlobalNodeGroupList = struct
       (List.map GlobalNodeGroup.parse (Aws.Xml.members "GlobalNodeGroup" xml))
 
   let to_query v = Aws.Query.to_query_list GlobalNodeGroup.to_query v
-
   let to_json v = `List (List.map GlobalNodeGroup.to_json v)
-
   let of_json j = Aws.Json.to_list GlobalNodeGroup.of_json j
 end
 
@@ -792,13 +775,9 @@ module GlobalReplicationGroupAlreadyExistsFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -854,9 +833,7 @@ module ParameterNameValueList = struct
       (List.map ParameterNameValue.parse (Aws.Xml.members "ParameterNameValue" xml))
 
   let to_query v = Aws.Query.to_query_list ParameterNameValue.to_query v
-
   let to_json v = `List (List.map ParameterNameValue.to_json v)
-
   let of_json j = Aws.Json.to_list ParameterNameValue.of_json j
 end
 
@@ -922,13 +899,9 @@ module NodeUpdateInitiatedBy = struct
     | Customer
 
   let str_to_t = [ "customer", Customer; "system", System ]
-
   let t_to_str = [ Customer, "customer"; System, "system" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -938,7 +911,6 @@ module NodeUpdateInitiatedBy = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -952,9 +924,7 @@ module PreferredOutpostArnList = struct
       (List.map String.parse (Aws.Xml.members "PreferredOutpostArn" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -968,9 +938,7 @@ module PreferredAvailabilityZoneList = struct
       (List.map String.parse (Aws.Xml.members "PreferredAvailabilityZone" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -1070,9 +1038,7 @@ module ReplicaConfigurationList = struct
       (List.map ConfigureShard.parse (Aws.Xml.members "ConfigureShard" xml))
 
   let to_query v = Aws.Query.to_query_list ConfigureShard.to_query v
-
   let to_json v = `List (List.map ConfigureShard.to_json v)
-
   let of_json j = Aws.Json.to_list ConfigureShard.of_json j
 end
 
@@ -1196,9 +1162,7 @@ module UserGroupIdList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -1326,13 +1290,9 @@ module PendingAutomaticFailoverStatus = struct
     | Disabled
 
   let str_to_t = [ "disabled", Disabled; "enabled", Enabled ]
-
   let t_to_str = [ Disabled, "disabled"; Enabled, "enabled" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -1342,7 +1302,6 @@ module PendingAutomaticFailoverStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -1352,13 +1311,9 @@ module AuthTokenUpdateStatus = struct
     | ROTATING
 
   let str_to_t = [ "ROTATING", ROTATING; "SETTING", SETTING ]
-
   let t_to_str = [ ROTATING, "ROTATING"; SETTING, "SETTING" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -1368,7 +1323,6 @@ module AuthTokenUpdateStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -1476,9 +1430,7 @@ module ReplicationGroupOutpostArnList = struct
       (List.map String.parse (Aws.Xml.members "ReplicationGroupOutpostArn" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -1618,9 +1570,7 @@ module NodeGroupMemberList = struct
       (List.map NodeGroupMember.parse (Aws.Xml.members "NodeGroupMember" xml))
 
   let to_query v = Aws.Query.to_query_list NodeGroupMember.to_query v
-
   let to_json v = `List (List.map NodeGroupMember.to_json v)
-
   let of_json j = Aws.Json.to_list NodeGroupMember.of_json j
 end
 
@@ -1723,9 +1673,7 @@ module NodeGroupList = struct
     Aws.Util.option_all (List.map NodeGroup.parse (Aws.Xml.members "NodeGroup" xml))
 
   let to_query v = Aws.Query.to_query_list NodeGroup.to_query v
-
   let to_json v = `List (List.map NodeGroup.to_json v)
-
   let of_json j = Aws.Json.to_list NodeGroup.of_json j
 end
 
@@ -1735,13 +1683,9 @@ module MultiAZStatus = struct
     | Disabled
 
   let str_to_t = [ "disabled", Disabled; "enabled", Enabled ]
-
   let t_to_str = [ Disabled, "disabled"; Enabled, "enabled" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -1751,7 +1695,6 @@ module MultiAZStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -1813,9 +1756,7 @@ module ClusterIdList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "ClusterId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -2264,9 +2205,7 @@ module SecurityGroupMembershipList = struct
       (List.map SecurityGroupMembership.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list SecurityGroupMembership.to_query v
-
   let to_json v = `List (List.map SecurityGroupMembership.to_json v)
-
   let of_json j = Aws.Json.to_list SecurityGroupMembership.of_json j
 end
 
@@ -2279,9 +2218,7 @@ module CacheNodeIdsList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "CacheNodeId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -2465,9 +2402,7 @@ module CacheSecurityGroupMembershipList = struct
          (Aws.Xml.members "CacheSecurityGroup" xml))
 
   let to_query v = Aws.Query.to_query_list CacheSecurityGroupMembership.to_query v
-
   let to_json v = `List (List.map CacheSecurityGroupMembership.to_json v)
-
   let of_json j = Aws.Json.to_list CacheSecurityGroupMembership.of_json j
 end
 
@@ -2654,9 +2589,7 @@ module CacheNodeList = struct
     Aws.Util.option_all (List.map CacheNode.parse (Aws.Xml.members "CacheNode" xml))
 
   let to_query v = Aws.Query.to_query_list CacheNode.to_query v
-
   let to_json v = `List (List.map CacheNode.to_json v)
-
   let of_json j = Aws.Json.to_list CacheNode.of_json j
 end
 
@@ -3045,9 +2978,7 @@ module CacheClusterList = struct
     Aws.Util.option_all (List.map CacheCluster.parse (Aws.Xml.members "CacheCluster" xml))
 
   let to_query v = Aws.Query.to_query_list CacheCluster.to_query v
-
   let to_json v = `List (List.map CacheCluster.to_json v)
-
   let of_json j = Aws.Json.to_list CacheCluster.of_json j
 end
 
@@ -3079,9 +3010,7 @@ module NodeUpdateStatus = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -3091,7 +3020,6 @@ module NodeUpdateStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -3244,9 +3172,7 @@ module NodeGroupMemberUpdateStatusList = struct
          (Aws.Xml.members "NodeGroupMemberUpdateStatus" xml))
 
   let to_query v = Aws.Query.to_query_list NodeGroupMemberUpdateStatus.to_query v
-
   let to_json v = `List (List.map NodeGroupMemberUpdateStatus.to_json v)
-
   let of_json j = Aws.Json.to_list NodeGroupMemberUpdateStatus.of_json j
 end
 
@@ -3259,9 +3185,7 @@ module UserIdListInput = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -3359,13 +3283,9 @@ module InvalidSnapshotStateFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -3498,9 +3418,7 @@ module CacheEngineVersionList = struct
       (List.map CacheEngineVersion.parse (Aws.Xml.members "CacheEngineVersion" xml))
 
   let to_query v = Aws.Query.to_query_list CacheEngineVersion.to_query v
-
   let to_json v = `List (List.map CacheEngineVersion.to_json v)
-
   let of_json j = Aws.Json.to_list CacheEngineVersion.of_json j
 end
 
@@ -3560,9 +3478,7 @@ module CacheClusterIdList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -3627,9 +3543,7 @@ module NodeGroupUpdateStatusList = struct
       (List.map NodeGroupUpdateStatus.parse (Aws.Xml.members "NodeGroupUpdateStatus" xml))
 
   let to_query v = Aws.Query.to_query_list NodeGroupUpdateStatus.to_query v
-
   let to_json v = `List (List.map NodeGroupUpdateStatus.to_json v)
-
   let of_json j = Aws.Json.to_list NodeGroupUpdateStatus.of_json j
 end
 
@@ -3704,13 +3618,9 @@ module SlaMet = struct
     | N_a
 
   let str_to_t = [ "n/a", N_a; "no", No; "yes", Yes ]
-
   let t_to_str = [ N_a, "n/a"; No, "no"; Yes, "yes" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -3720,7 +3630,6 @@ module SlaMet = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -3728,13 +3637,9 @@ module CacheClusterAlreadyExistsFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -3742,13 +3647,9 @@ module CacheSubnetGroupQuotaExceededFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -3758,13 +3659,9 @@ module ChangeType = struct
     | Requires_reboot
 
   let str_to_t = [ "requires-reboot", Requires_reboot; "immediate", Immediate ]
-
   let t_to_str = [ Requires_reboot, "requires-reboot"; Immediate, "immediate" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -3774,7 +3671,6 @@ module ChangeType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -3829,9 +3725,7 @@ module CacheNodeTypeSpecificValueList = struct
          (Aws.Xml.members "CacheNodeTypeSpecificValue" xml))
 
   let to_query v = Aws.Query.to_query_list CacheNodeTypeSpecificValue.to_query v
-
   let to_json v = `List (List.map CacheNodeTypeSpecificValue.to_json v)
-
   let of_json j = Aws.Json.to_list CacheNodeTypeSpecificValue.of_json j
 end
 
@@ -3971,9 +3865,7 @@ module CacheNodeTypeSpecificParametersList = struct
          (Aws.Xml.members "CacheNodeTypeSpecificParameter" xml))
 
   let to_query v = Aws.Query.to_query_list CacheNodeTypeSpecificParameter.to_query v
-
   let to_json v = `List (List.map CacheNodeTypeSpecificParameter.to_json v)
-
   let of_json j = Aws.Json.to_list CacheNodeTypeSpecificParameter.of_json j
 end
 
@@ -3986,9 +3878,7 @@ module NodeTypeList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -4059,9 +3949,7 @@ module ReplicationGroupList = struct
       (List.map ReplicationGroup.parse (Aws.Xml.members "ReplicationGroup" xml))
 
   let to_query v = Aws.Query.to_query_list ReplicationGroup.to_query v
-
   let to_json v = `List (List.map ReplicationGroup.to_json v)
-
   let of_json j = Aws.Json.to_list ReplicationGroup.of_json j
 end
 
@@ -4119,9 +4007,7 @@ module KeyList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -4255,9 +4141,7 @@ module UnprocessedUpdateActionList = struct
          (Aws.Xml.members "UnprocessedUpdateAction" xml))
 
   let to_query v = Aws.Query.to_query_list UnprocessedUpdateAction.to_query v
-
   let to_json v = `List (List.map UnprocessedUpdateAction.to_json v)
-
   let of_json j = Aws.Json.to_list UnprocessedUpdateAction.of_json j
 end
 
@@ -4298,9 +4182,7 @@ module UpdateActionStatus = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -4310,7 +4192,6 @@ module UpdateActionStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -4394,9 +4275,7 @@ module ProcessedUpdateActionList = struct
       (List.map ProcessedUpdateAction.parse (Aws.Xml.members "ProcessedUpdateAction" xml))
 
   let to_query v = Aws.Query.to_query_list ProcessedUpdateAction.to_query v
-
   let to_json v = `List (List.map ProcessedUpdateAction.to_json v)
-
   let of_json j = Aws.Json.to_list ProcessedUpdateAction.of_json j
 end
 
@@ -4468,9 +4347,7 @@ module OutpostArnsList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "OutpostArn" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -4483,9 +4360,7 @@ module AvailabilityZonesList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "AvailabilityZone" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -4710,9 +4585,7 @@ module NodeSnapshotList = struct
     Aws.Util.option_all (List.map NodeSnapshot.parse (Aws.Xml.members "NodeSnapshot" xml))
 
   let to_query v = Aws.Query.to_query_list NodeSnapshot.to_query v
-
   let to_json v = `List (List.map NodeSnapshot.to_json v)
-
   let of_json j = Aws.Json.to_list NodeSnapshot.of_json j
 end
 
@@ -4808,9 +4681,7 @@ module SubnetIdentifierList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "SubnetIdentifier" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -4853,13 +4724,9 @@ module TagList = struct
   type t = Tag.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map Tag.parse (Aws.Xml.members "Tag" xml))
-
   let to_query v = Aws.Query.to_query_list Tag.to_query v
-
   let to_json v = `List (List.map Tag.to_json v)
-
   let of_json j = Aws.Json.to_list Tag.of_json j
 end
 
@@ -4872,9 +4739,7 @@ module SnapshotArnsList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "SnapshotArn" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -4887,9 +4752,7 @@ module SecurityGroupIdsList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "SecurityGroupId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -4899,13 +4762,9 @@ module OutpostMode = struct
     | Cross_outpost
 
   let str_to_t = [ "cross-outpost", Cross_outpost; "single-outpost", Single_outpost ]
-
   let t_to_str = [ Cross_outpost, "cross-outpost"; Single_outpost, "single-outpost" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -4915,7 +4774,6 @@ module OutpostMode = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -4929,9 +4787,7 @@ module CacheSecurityGroupNameList = struct
       (List.map String.parse (Aws.Xml.members "CacheSecurityGroupName" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -4941,13 +4797,9 @@ module AZMode = struct
     | Cross_az
 
   let str_to_t = [ "cross-az", Cross_az; "single-az", Single_az ]
-
   let t_to_str = [ Cross_az, "cross-az"; Single_az, "single-az" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -4957,7 +4809,6 @@ module AZMode = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -5958,9 +5809,7 @@ module SubnetList = struct
     Aws.Util.option_all (List.map Subnet.parse (Aws.Xml.members "Subnet" xml))
 
   let to_query v = Aws.Query.to_query_list Subnet.to_query v
-
   let to_json v = `List (List.map Subnet.to_json v)
-
   let of_json j = Aws.Json.to_list Subnet.of_json j
 end
 
@@ -6047,9 +5896,7 @@ module CacheSubnetGroups = struct
       (List.map CacheSubnetGroup.parse (Aws.Xml.members "CacheSubnetGroup" xml))
 
   let to_query v = Aws.Query.to_query_list CacheSubnetGroup.to_query v
-
   let to_json v = `List (List.map CacheSubnetGroup.to_json v)
-
   let of_json j = Aws.Json.to_list CacheSubnetGroup.of_json j
 end
 
@@ -6084,9 +5931,7 @@ module SourceType = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -6096,7 +5941,6 @@ module SourceType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -6158,13 +6002,9 @@ module EventList = struct
   type t = Event.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map Event.parse (Aws.Xml.members "Event" xml))
-
   let to_query v = Aws.Query.to_query_list Event.to_query v
-
   let to_json v = `List (List.map Event.to_json v)
-
   let of_json j = Aws.Json.to_list Event.of_json j
 end
 
@@ -6245,13 +6085,9 @@ module ServiceUpdateType = struct
   type t = Security_update
 
   let str_to_t = [ "security-update", Security_update ]
-
   let t_to_str = [ Security_update, "security-update" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -6261,7 +6097,6 @@ module ServiceUpdateType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -6272,13 +6107,9 @@ module ServiceUpdateStatus = struct
     | Expired
 
   let str_to_t = [ "expired", Expired; "cancelled", Cancelled; "available", Available ]
-
   let t_to_str = [ Expired, "expired"; Cancelled, "cancelled"; Available, "available" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -6288,7 +6119,6 @@ module ServiceUpdateStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -6306,9 +6136,7 @@ module ServiceUpdateSeverity = struct
     [ Low, "low"; Medium, "medium"; Important, "important"; Critical, "critical" ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -6318,7 +6146,6 @@ module ServiceUpdateSeverity = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -6332,9 +6159,7 @@ module CacheNodeUpdateStatusList = struct
       (List.map CacheNodeUpdateStatus.parse (Aws.Xml.members "CacheNodeUpdateStatus" xml))
 
   let to_query v = Aws.Query.to_query_list CacheNodeUpdateStatus.to_query v
-
   let to_json v = `List (List.map CacheNodeUpdateStatus.to_json v)
-
   let of_json j = Aws.Json.to_list CacheNodeUpdateStatus.of_json j
 end
 
@@ -6601,9 +6426,7 @@ module UpdateActionList = struct
     Aws.Util.option_all (List.map UpdateAction.parse (Aws.Xml.members "UpdateAction" xml))
 
   let to_query v = Aws.Query.to_query_list UpdateAction.to_query v
-
   let to_json v = `List (List.map UpdateAction.to_json v)
-
   let of_json j = Aws.Json.to_list UpdateAction.of_json j
 end
 
@@ -6777,9 +6600,7 @@ module ReservedCacheNodesOfferingList = struct
          (Aws.Xml.members "ReservedCacheNodesOffering" xml))
 
   let to_query v = Aws.Query.to_query_list ReservedCacheNodesOffering.to_query v
-
   let to_json v = `List (List.map ReservedCacheNodesOffering.to_json v)
-
   let of_json j = Aws.Json.to_list ReservedCacheNodesOffering.of_json j
 end
 
@@ -6870,13 +6691,9 @@ module AuthenticationType = struct
     | No_password
 
   let str_to_t = [ "no-password", No_password; "password", Password ]
-
   let t_to_str = [ No_password, "no-password"; Password, "password" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -6886,7 +6703,6 @@ module AuthenticationType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -7036,13 +6852,9 @@ module UserList = struct
   type t = User.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map User.parse (Aws.Xml.members "member" xml))
-
   let to_query v = Aws.Query.to_query_list User.to_query v
-
   let to_json v = `List (List.map User.to_json v)
-
   let of_json j = Aws.Json.to_list User.of_json j
 end
 
@@ -7055,9 +6867,7 @@ module UpdateActionStatusList = struct
     Aws.Util.option_all (List.map UpdateActionStatus.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list UpdateActionStatus.to_query v
-
   let to_json v = `List (List.map UpdateActionStatus.to_json v)
-
   let of_json j = Aws.Json.to_list UpdateActionStatus.of_json j
 end
 
@@ -7107,9 +6917,7 @@ module ServiceUpdateStatusList = struct
       (List.map ServiceUpdateStatus.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list ServiceUpdateStatus.to_query v
-
   let to_json v = `List (List.map ServiceUpdateStatus.to_json v)
-
   let of_json j = Aws.Json.to_list ServiceUpdateStatus.of_json j
 end
 
@@ -7122,9 +6930,7 @@ module ReplicationGroupIdList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -7388,13 +7194,9 @@ module SnapshotFeatureNotSupportedFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -7433,13 +7235,9 @@ module DefaultUserRequired = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -7447,13 +7245,9 @@ module UserGroupNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -7461,13 +7255,9 @@ module InvalidUserStateFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -7480,9 +7270,7 @@ module UserIdList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -7541,9 +7329,7 @@ module UGReplicationGroupIdList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -7658,9 +7444,7 @@ module UserGroupList = struct
     Aws.Util.option_all (List.map UserGroup.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list UserGroup.to_query v
-
   let to_json v = `List (List.map UserGroup.to_json v)
-
   let of_json j = Aws.Json.to_list UserGroup.of_json j
 end
 
@@ -7963,9 +7747,7 @@ module ServiceUpdateList = struct
       (List.map ServiceUpdate.parse (Aws.Xml.members "ServiceUpdate" xml))
 
   let to_query v = Aws.Query.to_query_list ServiceUpdate.to_query v
-
   let to_json v = `List (List.map ServiceUpdate.to_json v)
-
   let of_json j = Aws.Json.to_list ServiceUpdate.of_json j
 end
 
@@ -8008,13 +7790,9 @@ module APICallRateForCustomerExceededFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -8022,13 +7800,9 @@ module ReplicationGroupNotUnderMigrationFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -8252,9 +8026,7 @@ module UserGroupIdListInput = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -8267,9 +8039,7 @@ module NodeGroupsToRetainList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "NodeGroupToRetain" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -8334,9 +8104,7 @@ module ReshardingConfigurationList = struct
          (Aws.Xml.members "ReshardingConfiguration" xml))
 
   let to_query v = Aws.Query.to_query_list ReshardingConfiguration.to_query v
-
   let to_json v = `List (List.map ReshardingConfiguration.to_json v)
-
   let of_json j = Aws.Json.to_list ReshardingConfiguration.of_json j
 end
 
@@ -8349,9 +8117,7 @@ module NodeGroupsToRemoveList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "NodeGroupToRemove" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -8475,13 +8241,9 @@ module SnapshotQuotaExceededFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -8494,9 +8256,7 @@ module GlobalNodeGroupIdList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "GlobalNodeGroupId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -8504,13 +8264,9 @@ module UserNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -8613,9 +8369,7 @@ module EC2SecurityGroupList = struct
       (List.map EC2SecurityGroup.parse (Aws.Xml.members "EC2SecurityGroup" xml))
 
   let to_query v = Aws.Query.to_query_list EC2SecurityGroup.to_query v
-
   let to_json v = `List (List.map EC2SecurityGroup.to_json v)
-
   let of_json j = Aws.Json.to_list EC2SecurityGroup.of_json j
 end
 
@@ -8623,13 +8377,9 @@ module ReservedCacheNodeQuotaExceededFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -8642,9 +8392,7 @@ module RemoveReplicasList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -8702,13 +8450,9 @@ module CacheSubnetGroupAlreadyExistsFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -8760,13 +8504,9 @@ module InvalidCacheClusterStateFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -8774,13 +8514,9 @@ module SnapshotAlreadyExistsFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -8788,13 +8524,9 @@ module ServiceLinkedRoleNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -9070,13 +8802,9 @@ module AuthTokenUpdateStrategyType = struct
     | DELETE
 
   let str_to_t = [ "DELETE", DELETE; "ROTATE", ROTATE; "SET", SET ]
-
   let t_to_str = [ DELETE, "DELETE"; ROTATE, "ROTATE"; SET, "SET" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -9086,7 +8814,6 @@ module AuthTokenUpdateStrategyType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -9326,13 +9053,9 @@ module TestFailoverNotAvailableFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -9445,9 +9168,7 @@ module CustomerNodeEndpointList = struct
       (List.map CustomerNodeEndpoint.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list CustomerNodeEndpoint.to_query v
-
   let to_json v = `List (List.map CustomerNodeEndpoint.to_json v)
-
   let of_json j = Aws.Json.to_list CustomerNodeEndpoint.of_json j
 end
 
@@ -9480,13 +9201,9 @@ module TagNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -9494,13 +9211,9 @@ module ClusterQuotaForCustomerExceededFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -9599,13 +9312,9 @@ module CacheSecurityGroupQuotaExceededFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -9619,9 +9328,7 @@ module CacheParameterGroupList = struct
       (List.map CacheParameterGroup.parse (Aws.Xml.members "CacheParameterGroup" xml))
 
   let to_query v = Aws.Query.to_query_list CacheParameterGroup.to_query v
-
   let to_json v = `List (List.map CacheParameterGroup.to_json v)
-
   let of_json j = Aws.Json.to_list CacheParameterGroup.of_json j
 end
 
@@ -9880,13 +9587,9 @@ module NodeGroupNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -9894,13 +9597,9 @@ module ReservedCacheNodeAlreadyExistsFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -9995,9 +9694,7 @@ module GlobalReplicationGroupList = struct
          (Aws.Xml.members "GlobalReplicationGroup" xml))
 
   let to_query v = Aws.Query.to_query_list GlobalReplicationGroup.to_query v
-
   let to_json v = `List (List.map GlobalReplicationGroup.to_json v)
-
   let of_json j = Aws.Json.to_list GlobalReplicationGroup.of_json j
 end
 
@@ -10053,13 +9750,9 @@ module ReservedCacheNodesOfferingNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -10113,13 +9806,9 @@ module SnapshotNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -10260,9 +9949,7 @@ module RegionalConfigurationList = struct
       (List.map RegionalConfiguration.parse (Aws.Xml.members "RegionalConfiguration" xml))
 
   let to_query v = Aws.Query.to_query_list RegionalConfiguration.to_query v
-
   let to_json v = `List (List.map RegionalConfiguration.to_json v)
-
   let of_json j = Aws.Json.to_list RegionalConfiguration.of_json j
 end
 
@@ -10275,9 +9962,7 @@ module SnapshotList = struct
     Aws.Util.option_all (List.map Snapshot.parse (Aws.Xml.members "Snapshot" xml))
 
   let to_query v = Aws.Query.to_query_list Snapshot.to_query v
-
   let to_json v = `List (List.map Snapshot.to_json v)
-
   let of_json j = Aws.Json.to_list Snapshot.of_json j
 end
 
@@ -10324,13 +10009,9 @@ module ServiceUpdateNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -10421,9 +10102,7 @@ module FilterList = struct
     Aws.Util.option_all (List.map Filter.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list Filter.to_query v
-
   let to_json v = `List (List.map Filter.to_json v)
-
   let of_json j = Aws.Json.to_list Filter.of_json j
 end
 
@@ -11297,9 +10976,7 @@ module CacheSecurityGroups = struct
       (List.map CacheSecurityGroup.parse (Aws.Xml.members "CacheSecurityGroup" xml))
 
   let to_query v = Aws.Query.to_query_list CacheSecurityGroup.to_query v
-
   let to_json v = `List (List.map CacheSecurityGroup.to_json v)
-
   let of_json j = Aws.Json.to_list CacheSecurityGroup.of_json j
 end
 
@@ -11393,9 +11070,7 @@ module ParametersList = struct
     Aws.Util.option_all (List.map Parameter.parse (Aws.Xml.members "Parameter" xml))
 
   let to_query v = Aws.Query.to_query_list Parameter.to_query v
-
   let to_json v = `List (List.map Parameter.to_json v)
-
   let of_json j = Aws.Json.to_list Parameter.of_json j
 end
 
@@ -11403,13 +11078,9 @@ module GlobalReplicationGroupNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -11417,13 +11088,9 @@ module InvalidCacheSecurityGroupStateFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -11522,13 +11189,9 @@ module UserGroupQuotaExceededFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -12041,13 +11704,9 @@ module CacheSubnetGroupInUse = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -12086,13 +11745,9 @@ module NodeQuotaForClusterExceededFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -12100,13 +11755,9 @@ module SubnetNotAllowedFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -12114,13 +11765,9 @@ module ReplicationGroupAlreadyExistsFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -12267,13 +11914,9 @@ module InvalidGlobalReplicationGroupStateFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -12481,13 +12124,9 @@ module InvalidCacheParameterGroupStateFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -12495,13 +12134,9 @@ module InvalidARNFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -12509,13 +12144,9 @@ module CacheParameterGroupNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -12566,13 +12197,9 @@ module CacheClusterNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -12585,9 +12212,7 @@ module PasswordListInput = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -12731,13 +12356,9 @@ module InvalidVPCNetworkStateFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -12745,13 +12366,9 @@ module SubnetInUse = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -12767,9 +12384,7 @@ module NodeGroupConfigurationList = struct
          (Aws.Xml.members "NodeGroupConfiguration" xml))
 
   let to_query v = Aws.Query.to_query_list NodeGroupConfiguration.to_query v
-
   let to_json v = `List (List.map NodeGroupConfiguration.to_json v)
-
   let of_json j = Aws.Json.to_list NodeGroupConfiguration.of_json j
 end
 
@@ -12844,13 +12459,9 @@ module CacheSubnetQuotaExceededFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -12947,13 +12558,9 @@ module UserAlreadyExistsFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -12961,13 +12568,9 @@ module InvalidSubnet = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -12975,13 +12578,9 @@ module InsufficientCacheClusterCapacityFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -12989,13 +12588,9 @@ module InvalidKMSKeyFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -13028,13 +12623,9 @@ module TagQuotaPerResourceExceeded = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -13169,13 +12760,9 @@ module CacheParameterGroupQuotaExceededFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -13183,13 +12770,9 @@ module ReplicationGroupNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -13624,13 +13207,9 @@ module InvalidReplicationGroupStateFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -13741,13 +13320,9 @@ module ReservedCacheNodeNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -13907,13 +13482,9 @@ module CacheSecurityGroupAlreadyExistsFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -13921,13 +13492,9 @@ module CacheSubnetGroupNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -14025,13 +13592,9 @@ module UserQuotaExceededFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -14039,13 +13602,9 @@ module AuthorizationAlreadyExistsFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -14174,13 +13733,9 @@ module NodeGroupsPerReplicationGroupQuotaExceededFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -14188,13 +13743,9 @@ module UserGroupAlreadyExistsFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -14202,13 +13753,9 @@ module NodeQuotaForCustomerExceededFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -14326,13 +13873,9 @@ module DuplicateUserNameFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -14340,13 +13883,9 @@ module CacheSecurityGroupNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -14399,13 +13938,9 @@ module ReplicationGroupAlreadyUnderMigrationFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -14413,13 +13948,9 @@ module DefaultUserAssociatedToUserGroupFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -14427,13 +13958,9 @@ module AuthorizationNotFoundFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -14554,13 +14081,9 @@ module CacheParameterGroupAlreadyExistsFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -14894,12 +14417,8 @@ module InvalidUserGroupStateFault = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end

@@ -11,9 +11,7 @@ module RecordData = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "RecordDataEntry" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -63,9 +61,7 @@ module RRType = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -75,7 +71,6 @@ module RRType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -385,9 +380,7 @@ module VPCRegion = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -397,7 +390,6 @@ module VPCRegion = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -608,9 +600,7 @@ module QueryLoggingConfigs = struct
       (List.map QueryLoggingConfig.parse (Aws.Xml.members "QueryLoggingConfig" xml))
 
   let to_query v = Aws.Query.to_query_list QueryLoggingConfig.to_query v
-
   let to_json v = `List (List.map QueryLoggingConfig.to_json v)
-
   let of_json j = Aws.Json.to_list QueryLoggingConfig.of_json j
 end
 
@@ -796,9 +786,7 @@ module TrafficPolicyInstances = struct
       (List.map TrafficPolicyInstance.parse (Aws.Xml.members "TrafficPolicyInstance" xml))
 
   let to_query v = Aws.Query.to_query_list TrafficPolicyInstance.to_query v
-
   let to_json v = `List (List.map TrafficPolicyInstance.to_json v)
-
   let of_json j = Aws.Json.to_list TrafficPolicyInstance.of_json j
 end
 
@@ -944,9 +932,7 @@ module ResourceRecords = struct
       (List.map ResourceRecord.parse (Aws.Xml.members "ResourceRecord" xml))
 
   let to_query v = Aws.Query.to_query_list ResourceRecord.to_query v
-
   let to_json v = `List (List.map ResourceRecord.to_json v)
-
   let of_json j = Aws.Json.to_list ResourceRecord.of_json j
 end
 
@@ -1029,9 +1015,7 @@ module ResourceRecordSetRegion = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -1041,7 +1025,6 @@ module ResourceRecordSetRegion = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -1051,13 +1034,9 @@ module ResourceRecordSetFailover = struct
     | SECONDARY
 
   let str_to_t = [ "SECONDARY", SECONDARY; "PRIMARY", PRIMARY ]
-
   let t_to_str = [ SECONDARY, "SECONDARY"; PRIMARY, "PRIMARY" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -1067,7 +1046,6 @@ module ResourceRecordSetFailover = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -1356,9 +1334,7 @@ module ResourceRecordSets = struct
       (List.map ResourceRecordSet.parse (Aws.Xml.members "ResourceRecordSet" xml))
 
   let to_query v = Aws.Query.to_query_list ResourceRecordSet.to_query v
-
   let to_json v = `List (List.map ResourceRecordSet.to_json v)
-
   let of_json j = Aws.Json.to_list ResourceRecordSet.of_json j
 end
 
@@ -1395,9 +1371,7 @@ module DelegationSetNameServers = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "NameServer" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -1463,9 +1437,7 @@ module DelegationSets = struct
       (List.map DelegationSet.parse (Aws.Xml.members "DelegationSet" xml))
 
   let to_query v = Aws.Query.to_query_list DelegationSet.to_query v
-
   let to_json v = `List (List.map DelegationSet.to_json v)
-
   let of_json j = Aws.Json.to_list DelegationSet.of_json j
 end
 
@@ -1588,13 +1560,9 @@ module VPCs = struct
   type t = VPC.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map VPC.parse (Aws.Xml.members "VPC" xml))
-
   let to_query v = Aws.Query.to_query_list VPC.to_query v
-
   let to_json v = `List (List.map VPC.to_json v)
-
   let of_json j = Aws.Json.to_list VPC.of_json j
 end
 
@@ -1813,13 +1781,9 @@ module ChangeAction = struct
     | UPSERT
 
   let str_to_t = [ "UPSERT", UPSERT; "DELETE", DELETE; "CREATE", CREATE ]
-
   let t_to_str = [ UPSERT, "UPSERT"; DELETE, "DELETE"; CREATE, "CREATE" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -1829,7 +1793,6 @@ module ChangeAction = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -1888,9 +1851,7 @@ module Changes = struct
     Aws.Util.option_all (List.map Change.parse (Aws.Xml.members "Change" xml))
 
   let to_query v = Aws.Query.to_query_list Change.to_query v
-
   let to_json v = `List (List.map Change.to_json v)
-
   let of_json j = Aws.Json.to_list Change.of_json j
 end
 
@@ -2100,9 +2061,7 @@ module TrafficPolicySummaries = struct
       (List.map TrafficPolicySummary.parse (Aws.Xml.members "TrafficPolicySummary" xml))
 
   let to_query v = Aws.Query.to_query_list TrafficPolicySummary.to_query v
-
   let to_json v = `List (List.map TrafficPolicySummary.to_json v)
-
   let of_json j = Aws.Json.to_list TrafficPolicySummary.of_json j
 end
 
@@ -2345,9 +2304,7 @@ module ResettableElementName = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -2357,7 +2314,6 @@ module ResettableElementName = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -2371,9 +2327,7 @@ module ReusableDelegationSetLimitType = struct
     [ MAX_ZONES_BY_REUSABLE_DELEGATION_SET, "MAX_ZONES_BY_REUSABLE_DELEGATION_SET" ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -2383,7 +2337,6 @@ module ReusableDelegationSetLimitType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -2574,9 +2527,7 @@ module InsufficientDataHealthStatus = struct
     [ LastKnownStatus, "LastKnownStatus"; Unhealthy, "Unhealthy"; Healthy, "Healthy" ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -2586,7 +2537,6 @@ module InsufficientDataHealthStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -2621,9 +2571,7 @@ module HealthCheckType = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -2633,7 +2581,6 @@ module HealthCheckType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -2671,9 +2618,7 @@ module HealthCheckRegion = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -2683,7 +2628,6 @@ module HealthCheckRegion = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -2696,9 +2640,7 @@ module HealthCheckRegionList = struct
     Aws.Util.option_all (List.map HealthCheckRegion.parse (Aws.Xml.members "Region" xml))
 
   let to_query v = Aws.Query.to_query_list HealthCheckRegion.to_query v
-
   let to_json v = `List (List.map HealthCheckRegion.to_json v)
-
   let of_json j = Aws.Json.to_list HealthCheckRegion.of_json j
 end
 
@@ -2711,9 +2653,7 @@ module ChildHealthCheckList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "ChildHealthCheck" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -2808,9 +2748,7 @@ module CloudWatchRegion = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -2820,7 +2758,6 @@ module CloudWatchRegion = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -3233,9 +3170,7 @@ module Statistic = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -3245,7 +3180,6 @@ module Statistic = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -3296,9 +3230,7 @@ module DimensionList = struct
     Aws.Util.option_all (List.map Dimension.parse (Aws.Xml.members "Dimension" xml))
 
   let to_query v = Aws.Query.to_query_list Dimension.to_query v
-
   let to_json v = `List (List.map Dimension.to_json v)
-
   let of_json j = Aws.Json.to_list Dimension.of_json j
 end
 
@@ -3324,9 +3256,7 @@ module ComparisonOperator = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -3336,7 +3266,6 @@ module ComparisonOperator = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -3604,9 +3533,7 @@ module HostedZoneLimitType = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -3616,7 +3543,6 @@ module HostedZoneLimitType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -3624,13 +3550,9 @@ module DeleteHealthCheckResponse = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -3968,13 +3890,9 @@ module DeleteTrafficPolicyResponse = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -3984,13 +3902,9 @@ module ChangeStatus = struct
     | INSYNC
 
   let str_to_t = [ "INSYNC", INSYNC; "PENDING", PENDING ]
-
   let t_to_str = [ INSYNC, "INSYNC"; PENDING, "PENDING" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -4000,7 +3914,6 @@ module ChangeStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -4303,13 +4216,9 @@ module GetHealthCheckCountRequest = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -4317,13 +4226,9 @@ module DeleteVPCAssociationAuthorizationResponse = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -4628,9 +4533,7 @@ module AccountLimitType = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -4640,7 +4543,6 @@ module AccountLimitType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -4901,13 +4803,9 @@ module GetTrafficPolicyInstanceCountRequest = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -5020,9 +4918,7 @@ module HostedZoneSummaries = struct
       (List.map HostedZoneSummary.parse (Aws.Xml.members "HostedZoneSummary" xml))
 
   let to_query v = Aws.Query.to_query_list HostedZoneSummary.to_query v
-
   let to_json v = `List (List.map HostedZoneSummary.to_json v)
-
   let of_json j = Aws.Json.to_list HostedZoneSummary.of_json j
 end
 
@@ -5065,13 +4961,9 @@ module TagList = struct
   type t = Tag.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map Tag.parse (Aws.Xml.members "Tag" xml))
-
   let to_query v = Aws.Query.to_query_list Tag.to_query v
-
   let to_json v = `List (List.map Tag.to_json v)
-
   let of_json j = Aws.Json.to_list Tag.of_json j
 end
 
@@ -5084,9 +4976,7 @@ module HostedZones = struct
     Aws.Util.option_all (List.map HostedZone.parse (Aws.Xml.members "HostedZone" xml))
 
   let to_query v = Aws.Query.to_query_list HostedZone.to_query v
-
   let to_json v = `List (List.map HostedZone.to_json v)
-
   let of_json j = Aws.Json.to_list HostedZone.of_json j
 end
 
@@ -5142,13 +5032,9 @@ module TagResourceType = struct
     | Hostedzone
 
   let str_to_t = [ "hostedzone", Hostedzone; "healthcheck", Healthcheck ]
-
   let t_to_str = [ Hostedzone, "hostedzone"; Healthcheck, "healthcheck" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -5158,7 +5044,6 @@ module TagResourceType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -5220,9 +5105,7 @@ module ResourceTagSetList = struct
       (List.map ResourceTagSet.parse (Aws.Xml.members "ResourceTagSet" xml))
 
   let to_query v = Aws.Query.to_query_list ResourceTagSet.to_query v
-
   let to_json v = `List (List.map ResourceTagSet.to_json v)
-
   let of_json j = Aws.Json.to_list ResourceTagSet.of_json j
 end
 
@@ -5526,13 +5409,9 @@ module TagKeyList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "Key" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -5869,9 +5748,7 @@ module HealthChecks = struct
     Aws.Util.option_all (List.map HealthCheck.parse (Aws.Xml.members "HealthCheck" xml))
 
   let to_query v = Aws.Query.to_query_list HealthCheck.to_query v
-
   let to_json v = `List (List.map HealthCheck.to_json v)
-
   let of_json j = Aws.Json.to_list HealthCheck.of_json j
 end
 
@@ -6184,9 +6061,7 @@ module GeoLocationDetailsList = struct
       (List.map GeoLocationDetails.parse (Aws.Xml.members "GeoLocationDetails" xml))
 
   let to_query v = Aws.Query.to_query_list GeoLocationDetails.to_query v
-
   let to_json v = `List (List.map GeoLocationDetails.to_json v)
-
   let of_json j = Aws.Json.to_list GeoLocationDetails.of_json j
 end
 
@@ -6425,9 +6300,7 @@ module ErrorMessages = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "Message" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -6592,9 +6465,7 @@ module TagResourceIdList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "ResourceId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -7051,9 +6922,7 @@ module ResettableElementNameList = struct
       (List.map ResettableElementName.parse (Aws.Xml.members "ResettableElementName" xml))
 
   let to_query v = Aws.Query.to_query_list ResettableElementName.to_query v
-
   let to_json v = `List (List.map ResettableElementName.to_json v)
-
   let of_json j = Aws.Json.to_list ResettableElementName.of_json j
 end
 
@@ -7306,13 +7175,9 @@ module GetHostedZoneCountRequest = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -7597,13 +7462,9 @@ module ChangeTagsForResourceResponse = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -7843,9 +7704,7 @@ module HealthCheckObservations = struct
          (Aws.Xml.members "HealthCheckObservation" xml))
 
   let to_query v = Aws.Query.to_query_list HealthCheckObservation.to_query v
-
   let to_json v = `List (List.map HealthCheckObservation.to_json v)
-
   let of_json j = Aws.Json.to_list HealthCheckObservation.of_json j
 end
 
@@ -7858,9 +7717,7 @@ module CheckerIpRanges = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -8150,13 +8007,9 @@ module GetCheckerIpRangesRequest = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -8925,13 +8778,9 @@ module DeleteTrafficPolicyInstanceResponse = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -9287,9 +9136,7 @@ module TrafficPolicies = struct
       (List.map TrafficPolicy.parse (Aws.Xml.members "TrafficPolicy" xml))
 
   let to_query v = Aws.Query.to_query_list TrafficPolicy.to_query v
-
   let to_json v = `List (List.map TrafficPolicy.to_json v)
-
   let of_json j = Aws.Json.to_list TrafficPolicy.of_json j
 end
 
@@ -9472,13 +9319,9 @@ module DeleteQueryLoggingConfigResponse = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -9510,13 +9353,9 @@ module DeleteReusableDelegationSetResponse = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 

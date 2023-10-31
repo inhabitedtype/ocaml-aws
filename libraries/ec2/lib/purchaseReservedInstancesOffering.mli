@@ -1,9 +1,7 @@
 open Types
 
 type input = PurchaseReservedInstancesOfferingRequest.t
-
 type output = PurchaseReservedInstancesOfferingResult.t
-
 type error = Errors_internal.t
 
 include

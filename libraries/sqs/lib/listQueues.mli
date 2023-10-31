@@ -1,9 +1,7 @@
 open Types
 
 type input = ListQueuesRequest.t
-
 type output = ListQueuesResult.t
-
 type error = Errors_internal.t
 
 include

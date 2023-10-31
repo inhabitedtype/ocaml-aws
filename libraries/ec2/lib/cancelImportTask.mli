@@ -1,9 +1,7 @@
 open Types
 
 type input = CancelImportTaskRequest.t
-
 type output = CancelImportTaskResult.t
-
 type error = Errors_internal.t
 
 include

@@ -93,9 +93,7 @@ module StandardUnit = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -105,7 +103,6 @@ module StandardUnit = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -113,9 +110,7 @@ module DatapointValueMap = struct
   type t = (String.t, Double.t) Hashtbl.t
 
   let make elems () = elems
-
   let parse xml = None
-
   let to_query v = Aws.Query.to_query_hashtbl String.to_string Double.to_query v
 
   let to_json v =
@@ -223,9 +218,7 @@ module Datapoints = struct
     Aws.Util.option_all (List.map Datapoint.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list Datapoint.to_query v
-
   let to_json v = `List (List.map Datapoint.to_json v)
-
   let of_json j = Aws.Json.to_list Datapoint.of_json j
 end
 
@@ -277,9 +270,7 @@ module AlarmNames = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -321,9 +312,7 @@ module DashboardNames = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -371,9 +360,7 @@ module Values = struct
     Aws.Util.option_all (List.map Double.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list Double.to_query v
-
   let to_json v = `List (List.map Double.to_json v)
-
   let of_json j = Aws.Json.to_list Double.of_json j
 end
 
@@ -424,9 +411,7 @@ module Dimensions = struct
     Aws.Util.option_all (List.map Dimension.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list Dimension.to_query v
-
   let to_json v = `List (List.map Dimension.to_json v)
-
   let of_json j = Aws.Json.to_list Dimension.of_json j
 end
 
@@ -480,9 +465,7 @@ module AnomalyDetectorExcludedTimeRanges = struct
     Aws.Util.option_all (List.map Range.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list Range.to_query v
-
   let to_json v = `List (List.map Range.to_json v)
-
   let of_json j = Aws.Json.to_list Range.of_json j
 end
 
@@ -618,9 +601,7 @@ module DatapointValues = struct
     Aws.Util.option_all (List.map Double.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list Double.to_query v
-
   let to_json v = `List (List.map Double.to_json v)
-
   let of_json j = Aws.Json.to_list Double.of_json j
 end
 
@@ -666,13 +647,9 @@ module TagList = struct
   type t = Tag.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map Tag.parse (Aws.Xml.members "member" xml))
-
   let to_query v = Aws.Query.to_query_list Tag.to_query v
-
   let to_json v = `List (List.map Tag.to_json v)
-
   let of_json j = Aws.Json.to_list Tag.of_json j
 end
 
@@ -710,9 +687,7 @@ module InsightRuleContributorKeys = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -725,9 +700,7 @@ module Timestamps = struct
     Aws.Util.option_all (List.map DateTime.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list DateTime.to_query v
-
   let to_json v = `List (List.map DateTime.to_json v)
-
   let of_json j = Aws.Json.to_list DateTime.of_json j
 end
 
@@ -744,9 +717,7 @@ module StatusCode = struct
     [ PartialData, "PartialData"; InternalError, "InternalError"; Complete, "Complete" ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -756,7 +727,6 @@ module StatusCode = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -805,9 +775,7 @@ module MetricDataResultMessages = struct
     Aws.Util.option_all (List.map MessageData.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list MessageData.to_query v
-
   let to_json v = `List (List.map MessageData.to_json v)
-
   let of_json j = Aws.Json.to_list MessageData.of_json j
 end
 
@@ -999,9 +967,7 @@ module Statistic = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -1011,7 +977,6 @@ module Statistic = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -1022,13 +987,9 @@ module StateValue = struct
     | INSUFFICIENT_DATA
 
   let str_to_t = [ "INSUFFICIENT_DATA", INSUFFICIENT_DATA; "ALARM", ALARM; "OK", OK ]
-
   let t_to_str = [ INSUFFICIENT_DATA, "INSUFFICIENT_DATA"; ALARM, "ALARM"; OK, "OK" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -1038,7 +999,6 @@ module StateValue = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -1051,9 +1011,7 @@ module ResourceList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -1231,9 +1189,7 @@ module MetricDataQueries = struct
     Aws.Util.option_all (List.map MetricDataQuery.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list MetricDataQuery.to_query v
-
   let to_json v = `List (List.map MetricDataQuery.to_json v)
-
   let of_json j = Aws.Json.to_list MetricDataQuery.of_json j
 end
 
@@ -1268,9 +1224,7 @@ module ComparisonOperator = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -1280,7 +1234,6 @@ module ComparisonOperator = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -1609,9 +1562,7 @@ module MetricAlarms = struct
     Aws.Util.option_all (List.map MetricAlarm.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list MetricAlarm.to_query v
-
   let to_json v = `List (List.map MetricAlarm.to_json v)
-
   let of_json j = Aws.Json.to_list MetricAlarm.of_json j
 end
 
@@ -1665,9 +1616,7 @@ module AnomalyDetectorStateValue = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -1677,7 +1626,6 @@ module AnomalyDetectorStateValue = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -1827,9 +1775,7 @@ module Counts = struct
     Aws.Util.option_all (List.map Double.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list Double.to_query v
-
   let to_json v = `List (List.map Double.to_json v)
-
   let of_json j = Aws.Json.to_list Double.of_json j
 end
 
@@ -1956,9 +1902,7 @@ module MetricData = struct
     Aws.Util.option_all (List.map MetricDatum.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list MetricDatum.to_query v
-
   let to_json v = `List (List.map MetricDatum.to_json v)
-
   let of_json j = Aws.Json.to_list MetricDatum.of_json j
 end
 
@@ -2012,9 +1956,7 @@ module Statistics = struct
     Aws.Util.option_all (List.map Statistic.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list Statistic.to_query v
-
   let to_json v = `List (List.map Statistic.to_json v)
-
   let of_json j = Aws.Json.to_list Statistic.of_json j
 end
 
@@ -2027,9 +1969,7 @@ module ExtendedStatistics = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -2343,9 +2283,7 @@ module InsightRules = struct
     Aws.Util.option_all (List.map InsightRule.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list InsightRule.to_query v
-
   let to_json v = `List (List.map InsightRule.to_json v)
-
   let of_json j = Aws.Json.to_list InsightRule.of_json j
 end
 
@@ -2494,9 +2432,7 @@ module HistoryItemType = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -2506,7 +2442,6 @@ module HistoryItemType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -2514,13 +2449,9 @@ module DeleteAnomalyDetectorOutput = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -2592,9 +2523,7 @@ module BatchFailures = struct
     Aws.Util.option_all (List.map PartialFailure.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list PartialFailure.to_query v
-
   let to_json v = `List (List.map PartialFailure.to_json v)
-
   let of_json j = Aws.Json.to_list PartialFailure.of_json j
 end
 
@@ -2640,13 +2569,9 @@ module PutInsightRuleOutput = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -2654,13 +2579,9 @@ module LimitExceededException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -2698,13 +2619,9 @@ module AlarmType = struct
     | MetricAlarm
 
   let str_to_t = [ "MetricAlarm", MetricAlarm; "CompositeAlarm", CompositeAlarm ]
-
   let t_to_str = [ MetricAlarm, "MetricAlarm"; CompositeAlarm, "CompositeAlarm" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -2714,7 +2631,6 @@ module AlarmType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -2727,9 +2643,7 @@ module AlarmTypes = struct
     Aws.Util.option_all (List.map AlarmType.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list AlarmType.to_query v
-
   let to_json v = `List (List.map AlarmType.to_json v)
-
   let of_json j = Aws.Json.to_list AlarmType.of_json j
 end
 
@@ -2796,13 +2710,9 @@ module TagResourceOutput = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -2815,9 +2725,7 @@ module Metrics = struct
     Aws.Util.option_all (List.map Metric.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list Metric.to_query v
-
   let to_json v = `List (List.map Metric.to_json v)
-
   let of_json j = Aws.Json.to_list Metric.of_json j
 end
 
@@ -2905,9 +2813,7 @@ module DashboardValidationMessages = struct
       (List.map DashboardValidationMessage.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list DashboardValidationMessage.to_query v
-
   let to_json v = `List (List.map DashboardValidationMessage.to_json v)
-
   let of_json j = Aws.Json.to_list DashboardValidationMessage.of_json j
 end
 
@@ -3003,9 +2909,7 @@ module AlarmHistoryItems = struct
     Aws.Util.option_all (List.map AlarmHistoryItem.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list AlarmHistoryItem.to_query v
-
   let to_json v = `List (List.map AlarmHistoryItem.to_json v)
-
   let of_json j = Aws.Json.to_list AlarmHistoryItem.of_json j
 end
 
@@ -3124,9 +3028,7 @@ module InsightRuleContributorDatapoints = struct
       (List.map InsightRuleContributorDatapoint.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list InsightRuleContributorDatapoint.to_query v
-
   let to_json v = `List (List.map InsightRuleContributorDatapoint.to_json v)
-
   let of_json j = Aws.Json.to_list InsightRuleContributorDatapoint.of_json j
 end
 
@@ -3207,9 +3109,7 @@ module AnomalyDetectors = struct
     Aws.Util.option_all (List.map AnomalyDetector.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list AnomalyDetector.to_query v
-
   let to_json v = `List (List.map AnomalyDetector.to_json v)
-
   let of_json j = Aws.Json.to_list AnomalyDetector.of_json j
 end
 
@@ -3302,9 +3202,7 @@ module DashboardEntries = struct
     Aws.Util.option_all (List.map DashboardEntry.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list DashboardEntry.to_query v
-
   let to_json v = `List (List.map DashboardEntry.to_json v)
-
   let of_json j = Aws.Json.to_list DashboardEntry.of_json j
 end
 
@@ -3385,9 +3283,7 @@ module MetricDataResults = struct
     Aws.Util.option_all (List.map MetricDataResult.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list MetricDataResult.to_query v
-
   let to_json v = `List (List.map MetricDataResult.to_json v)
-
   let of_json j = Aws.Json.to_list MetricDataResult.of_json j
 end
 
@@ -3460,9 +3356,7 @@ module InsightRuleNames = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -3736,9 +3630,7 @@ module CompositeAlarms = struct
     Aws.Util.option_all (List.map CompositeAlarm.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list CompositeAlarm.to_query v
-
   let to_json v = `List (List.map CompositeAlarm.to_json v)
-
   let of_json j = Aws.Json.to_list CompositeAlarm.of_json j
 end
 
@@ -3801,13 +3693,9 @@ module DeleteDashboardsOutput = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -3881,13 +3769,9 @@ module PutAnomalyDetectorOutput = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -3944,9 +3828,7 @@ module InsightRuleMetricList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -4062,9 +3944,7 @@ module TagKeyList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -4177,9 +4057,7 @@ module InsightRuleMetricDatapoints = struct
       (List.map InsightRuleMetricDatapoint.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list InsightRuleMetricDatapoint.to_query v
-
   let to_json v = `List (List.map InsightRuleMetricDatapoint.to_json v)
-
   let of_json j = Aws.Json.to_list InsightRuleMetricDatapoint.of_json j
 end
 
@@ -4193,9 +4071,7 @@ module InsightRuleContributors = struct
       (List.map InsightRuleContributor.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list InsightRuleContributor.to_query v
-
   let to_json v = `List (List.map InsightRuleContributor.to_json v)
-
   let of_json j = Aws.Json.to_list InsightRuleContributor.of_json j
 end
 
@@ -4208,9 +4084,7 @@ module InsightRuleContributorKeyLabels = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -4943,9 +4817,7 @@ module ScanBy = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -4955,7 +4827,6 @@ module ScanBy = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -4963,13 +4834,9 @@ module UntagResourceOutput = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -5502,13 +5369,9 @@ module ConcurrentModificationException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -5581,13 +5444,9 @@ module RecentlyActive = struct
   type t = PT3H
 
   let str_to_t = [ "PT3H", PT3H ]
-
   let t_to_str = [ PT3H, "PT3H" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -5597,7 +5456,6 @@ module RecentlyActive = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -5610,9 +5468,7 @@ module DimensionFilters = struct
     Aws.Util.option_all (List.map DimensionFilter.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list DimensionFilter.to_query v
-
   let to_json v = `List (List.map DimensionFilter.to_json v)
-
   let of_json j = Aws.Json.to_list DimensionFilter.of_json j
 end
 

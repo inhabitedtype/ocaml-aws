@@ -1,9 +1,7 @@
 open Types
 
 type input = GetChangeRequest.t
-
 type output = GetChangeResponse.t
-
 type error = Errors_internal.t
 
 include

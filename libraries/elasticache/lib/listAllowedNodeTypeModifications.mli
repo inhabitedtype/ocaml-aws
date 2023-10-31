@@ -1,9 +1,7 @@
 open Types
 
 type input = ListAllowedNodeTypeModificationsMessage.t
-
 type output = AllowedNodeTypeModificationsMessage.t
-
 type error = Errors_internal.t
 
 include

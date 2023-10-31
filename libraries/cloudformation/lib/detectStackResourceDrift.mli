@@ -1,9 +1,7 @@
 open Types
 
 type input = DetectStackResourceDriftInput.t
-
 type output = DetectStackResourceDriftOutput.t
-
 type error = Errors_internal.t
 
 include

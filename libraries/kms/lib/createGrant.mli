@@ -1,9 +1,7 @@
 open Types
 
 type input = CreateGrantRequest.t
-
 type output = CreateGrantResponse.t
-
 type error = Errors_internal.t
 
 include

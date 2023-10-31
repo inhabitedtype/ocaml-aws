@@ -1,9 +1,7 @@
 open Types
 
 type input = CreateFleetRequest.t
-
 type output = CreateFleetResult.t
-
 type error = Errors_internal.t
 
 include

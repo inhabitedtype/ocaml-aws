@@ -1,9 +1,7 @@
 open Types
 
 type input = DeleteGlobalReplicationGroupMessage.t
-
 type output = DeleteGlobalReplicationGroupResult.t
-
 type error = Errors_internal.t
 
 include

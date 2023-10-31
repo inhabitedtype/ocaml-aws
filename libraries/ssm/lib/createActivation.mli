@@ -1,9 +1,7 @@
 open Types
 
 type input = CreateActivationRequest.t
-
 type output = CreateActivationResult.t
-
 type error = Errors_internal.t
 
 include

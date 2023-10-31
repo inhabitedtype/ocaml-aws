@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeReservedCacheNodesMessage.t
-
 type output = ReservedCacheNodeMessage.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,7 @@
 open Types
 
 type input = RegisterTypeInput.t
-
 type output = RegisterTypeOutput.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,7 @@
 open Types
 
 type input = DownloadDBLogFilePortionMessage.t
-
 type output = DownloadDBLogFilePortionDetails.t
-
 type error = Errors_internal.t
 
 include

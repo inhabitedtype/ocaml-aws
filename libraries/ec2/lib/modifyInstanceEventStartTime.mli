@@ -1,9 +1,7 @@
 open Types
 
 type input = ModifyInstanceEventStartTimeRequest.t
-
 type output = ModifyInstanceEventStartTimeResult.t
-
 type error = Errors_internal.t
 
 include

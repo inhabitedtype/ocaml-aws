@@ -1,9 +1,7 @@
 open Types
 
 type input = CreateDBInstanceReadReplicaMessage.t
-
 type output = CreateDBInstanceReadReplicaResult.t
-
 type error = Errors_internal.t
 
 include

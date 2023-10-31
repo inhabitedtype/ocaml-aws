@@ -1,9 +1,7 @@
 open Types
 
 type input = DeleteDBProxyRequest.t
-
 type output = DeleteDBProxyResponse.t
-
 type error = Errors_internal.t
 
 include

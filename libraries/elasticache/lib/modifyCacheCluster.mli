@@ -1,9 +1,7 @@
 open Types
 
 type input = ModifyCacheClusterMessage.t
-
 type output = ModifyCacheClusterResult.t
-
 type error = Errors_internal.t
 
 include

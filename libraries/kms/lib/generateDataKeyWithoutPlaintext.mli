@@ -1,9 +1,7 @@
 open Types
 
 type input = GenerateDataKeyWithoutPlaintextRequest.t
-
 type output = GenerateDataKeyWithoutPlaintextResponse.t
-
 type error = Errors_internal.t
 
 include

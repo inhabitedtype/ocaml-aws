@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeKeyRequest.t
-
 type output = DescribeKeyResponse.t
-
 type error = Errors_internal.t
 
 include

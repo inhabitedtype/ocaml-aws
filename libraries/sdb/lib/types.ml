@@ -205,9 +205,7 @@ module DomainNameList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "DomainName" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -279,9 +277,7 @@ module AttributeList = struct
     Aws.Util.option_all (List.map Attribute.parse (Aws.Xml.members "Attribute" xml))
 
   let to_query v = Aws.Query.to_query_list Attribute.to_query v
-
   let to_json v = `List (List.map Attribute.to_json v)
-
   let of_json j = Aws.Json.to_list Attribute.of_json j
 end
 
@@ -491,9 +487,7 @@ module DeletableItemList = struct
     Aws.Util.option_all (List.map DeletableItem.parse (Aws.Xml.members "Item" xml))
 
   let to_query v = Aws.Query.to_query_list DeletableItem.to_query v
-
   let to_json v = `List (List.map DeletableItem.to_json v)
-
   let of_json j = Aws.Json.to_list DeletableItem.of_json j
 end
 
@@ -507,9 +501,7 @@ module ReplaceableAttributeList = struct
       (List.map ReplaceableAttribute.parse (Aws.Xml.members "Attribute" xml))
 
   let to_query v = Aws.Query.to_query_list ReplaceableAttribute.to_query v
-
   let to_json v = `List (List.map ReplaceableAttribute.to_json v)
-
   let of_json j = Aws.Json.to_list ReplaceableAttribute.of_json j
 end
 
@@ -819,13 +811,9 @@ module ItemList = struct
   type t = Item.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map Item.parse (Aws.Xml.members "Item" xml))
-
   let to_query v = Aws.Query.to_query_list Item.to_query v
-
   let to_json v = `List (List.map Item.to_json v)
-
   let of_json j = Aws.Json.to_list Item.of_json j
 end
 
@@ -988,9 +976,7 @@ module AttributeNameList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "AttributeName" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -1195,7 +1181,6 @@ module GetAttributesResult = struct
   type t = { attributes : AttributeList.t }
 
   let make ?(attributes = []) () = { attributes }
-
   let parse xml = Some { attributes = Aws.Util.of_option [] (AttributeList.parse xml) }
 
   let to_query v =
@@ -1285,9 +1270,7 @@ module ReplaceableItemList = struct
     Aws.Util.option_all (List.map ReplaceableItem.parse (Aws.Xml.members "Item" xml))
 
   let to_query v = Aws.Query.to_query_list ReplaceableItem.to_query v
-
   let to_json v = `List (List.map ReplaceableItem.to_json v)
-
   let of_json j = Aws.Json.to_list ReplaceableItem.of_json j
 end
 

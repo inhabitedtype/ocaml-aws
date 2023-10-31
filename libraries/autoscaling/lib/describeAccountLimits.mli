@@ -1,9 +1,7 @@
 open Types
 
 type input = Aws.BaseTypes.Unit.t
-
 type output = DescribeAccountLimitsAnswer.t
-
 type error = Errors_internal.t
 
 include

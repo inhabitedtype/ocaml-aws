@@ -1,9 +1,7 @@
 open Types
 
 type input = CreateEgressOnlyInternetGatewayRequest.t
-
 type output = CreateEgressOnlyInternetGatewayResult.t
-
 type error = Errors_internal.t
 
 include

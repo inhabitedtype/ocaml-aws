@@ -1,9 +1,7 @@
 open Types
 
 type input = ListPublicKeysRequest.t
-
 type output = ListPublicKeysResponse.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,7 @@
 open Types
 
 type input = CreateHostedZoneRequest.t
-
 type output = CreateHostedZoneResponse.t
-
 type error = Errors_internal.t
 
 include

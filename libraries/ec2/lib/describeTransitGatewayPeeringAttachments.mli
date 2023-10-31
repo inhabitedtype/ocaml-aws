@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeTransitGatewayPeeringAttachmentsRequest.t
-
 type output = DescribeTransitGatewayPeeringAttachmentsResult.t
-
 type error = Errors_internal.t
 
 include

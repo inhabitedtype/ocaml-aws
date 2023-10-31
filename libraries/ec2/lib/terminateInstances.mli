@@ -1,9 +1,7 @@
 open Types
 
 type input = TerminateInstancesRequest.t
-
 type output = TerminateInstancesResult.t
-
 type error = Errors_internal.t
 
 include

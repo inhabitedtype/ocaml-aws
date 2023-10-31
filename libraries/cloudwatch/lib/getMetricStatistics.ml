@@ -2,13 +2,10 @@ open Types
 open Aws
 
 type input = GetMetricStatisticsInput.t
-
 type output = GetMetricStatisticsOutput.t
-
 type error = Errors_internal.t
 
 let service = "monitoring"
-
 let signature_version = Request.V4
 
 let to_http service region req =

@@ -1,9 +1,7 @@
 open Types
 
 type input = UnmonitorInstancesRequest.t
-
 type output = UnmonitorInstancesResult.t
-
 type error = Errors_internal.t
 
 include

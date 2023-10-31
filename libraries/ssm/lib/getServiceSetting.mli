@@ -1,9 +1,7 @@
 open Types
 
 type input = GetServiceSettingRequest.t
-
 type output = GetServiceSettingResult.t
-
 type error = Errors_internal.t
 
 include

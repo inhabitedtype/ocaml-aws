@@ -1,9 +1,7 @@
 open Types
 
 type input = CreateVpcPeeringConnectionRequest.t
-
 type output = CreateVpcPeeringConnectionResult.t
-
 type error = Errors_internal.t
 
 include

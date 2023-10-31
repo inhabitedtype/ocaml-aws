@@ -1,9 +1,7 @@
 open Types
 
 type input = DeleteUserMessage.t
-
 type output = User.t
-
 type error = Errors_internal.t
 
 include

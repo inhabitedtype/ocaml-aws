@@ -1,9 +1,7 @@
 open Types
 
 type input = DeleteDBClusterEndpointMessage.t
-
 type output = DBClusterEndpoint.t
-
 type error = Errors_internal.t
 
 include

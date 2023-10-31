@@ -1,9 +1,7 @@
 open Types
 
 type input = GetKeyRotationStatusRequest.t
-
 type output = GetKeyRotationStatusResponse.t
-
 type error = Errors_internal.t
 
 include

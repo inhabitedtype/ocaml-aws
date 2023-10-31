@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeSessionsRequest.t
-
 type output = DescribeSessionsResponse.t
-
 type error = Errors_internal.t
 
 include

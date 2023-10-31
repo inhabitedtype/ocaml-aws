@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeUpdateActionsMessage.t
-
 type output = UpdateActionsMessage.t
-
 type error = Errors_internal.t
 
 include

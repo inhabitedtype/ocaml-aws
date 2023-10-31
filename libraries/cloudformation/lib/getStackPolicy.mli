@@ -1,9 +1,7 @@
 open Types
 
 type input = GetStackPolicyInput.t
-
 type output = GetStackPolicyOutput.t
-
 type error = Errors_internal.t
 
 include

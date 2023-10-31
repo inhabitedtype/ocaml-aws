@@ -1,9 +1,7 @@
 open Types
 
 type input = EnterStandbyQuery.t
-
 type output = EnterStandbyAnswer.t
-
 type error = Errors_internal.t
 
 include

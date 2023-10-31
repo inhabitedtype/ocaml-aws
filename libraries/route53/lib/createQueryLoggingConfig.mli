@@ -1,9 +1,7 @@
 open Types
 
 type input = CreateQueryLoggingConfigRequest.t
-
 type output = CreateQueryLoggingConfigResponse.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,7 @@
 open Types
 
 type input = AttachNetworkInterfaceRequest.t
-
 type output = AttachNetworkInterfaceResult.t
-
 type error = Errors_internal.t
 
 include

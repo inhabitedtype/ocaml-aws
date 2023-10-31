@@ -1,9 +1,7 @@
 open Types
 
 type input = AssociateClientVpnTargetNetworkRequest.t
-
 type output = AssociateClientVpnTargetNetworkResult.t
-
 type error = Errors_internal.t
 
 include

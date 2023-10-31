@@ -2,13 +2,10 @@ open Types
 open Aws
 
 type input = SendMessageRequest.t
-
 type output = SendMessageResult.t
-
 type error = Errors_internal.t
 
 let service = "sqs"
-
 let signature_version = Request.V4
 
 let to_http service region req =

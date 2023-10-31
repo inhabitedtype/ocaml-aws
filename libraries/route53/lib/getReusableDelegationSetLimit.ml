@@ -2,13 +2,10 @@ open Types
 open Aws
 
 type input = GetReusableDelegationSetLimitRequest.t
-
 type output = GetReusableDelegationSetLimitResponse.t
-
 type error = Errors_internal.t
 
 let service = "route53"
-
 let signature_version = Request.V4
 
 let to_http service region req =

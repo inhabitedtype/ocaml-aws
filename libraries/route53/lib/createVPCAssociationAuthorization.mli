@@ -1,9 +1,7 @@
 open Types
 
 type input = CreateVPCAssociationAuthorizationRequest.t
-
 type output = CreateVPCAssociationAuthorizationResponse.t
-
 type error = Errors_internal.t
 
 include

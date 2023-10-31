@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeInstanceEventNotificationAttributesRequest.t
-
 type output = DescribeInstanceEventNotificationAttributesResult.t
-
 type error = Errors_internal.t
 
 include

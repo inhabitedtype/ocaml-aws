@@ -1,9 +1,7 @@
 open Types
 
 type input = GetTrailRequest.t
-
 type output = GetTrailResponse.t
-
 type error = Errors_internal.t
 
 include

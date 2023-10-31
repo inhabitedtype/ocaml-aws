@@ -1,9 +1,7 @@
 open Types
 
 type input = GetParametersByPathRequest.t
-
 type output = GetParametersByPathResult.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,7 @@
 open Types
 
 type input = SendCommandRequest.t
-
 type output = SendCommandResult.t
-
 type error = Errors_internal.t
 
 include

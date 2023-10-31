@@ -1,9 +1,7 @@
 open Types
 
 type input = ChangeMessageVisibilityBatchRequest.t
-
 type output = ChangeMessageVisibilityBatchResult.t
-
 type error = Errors_internal.t
 
 include

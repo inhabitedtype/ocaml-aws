@@ -1,9 +1,7 @@
 open Types
 
 type input = ListQueryLoggingConfigsRequest.t
-
 type output = ListQueryLoggingConfigsResponse.t
-
 type error = Errors_internal.t
 
 include

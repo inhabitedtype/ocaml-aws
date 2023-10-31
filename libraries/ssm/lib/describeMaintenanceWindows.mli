@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeMaintenanceWindowsRequest.t
-
 type output = DescribeMaintenanceWindowsResult.t
-
 type error = Errors_internal.t
 
 include

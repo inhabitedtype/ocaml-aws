@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeMaintenanceWindowScheduleRequest.t
-
 type output = DescribeMaintenanceWindowScheduleResult.t
-
 type error = Errors_internal.t
 
 include

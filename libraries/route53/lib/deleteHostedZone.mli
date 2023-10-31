@@ -1,9 +1,7 @@
 open Types
 
 type input = DeleteHostedZoneRequest.t
-
 type output = DeleteHostedZoneResponse.t
-
 type error = Errors_internal.t
 
 include

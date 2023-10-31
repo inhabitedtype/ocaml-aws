@@ -2,13 +2,10 @@ open Types
 open Aws
 
 type input = UpdateAssociationStatusRequest.t
-
 type output = UpdateAssociationStatusResult.t
-
 type error = Errors_internal.t
 
 let service = "ssm"
-
 let signature_version = Request.V4
 
 let to_http service region req =

@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeAutomationStepExecutionsRequest.t
-
 type output = DescribeAutomationStepExecutionsResult.t
-
 type error = Errors_internal.t
 
 include

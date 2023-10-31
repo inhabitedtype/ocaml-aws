@@ -66,13 +66,9 @@ module TagListType = struct
   type t = Tag.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map Tag.parse (Aws.Xml.members "member" xml))
-
   let to_query v = Aws.Query.to_query_list Tag.to_query v
-
   let to_json v = `List (List.map Tag.to_json v)
-
   let of_json j = Aws.Json.to_list Tag.of_json j
 end
 
@@ -85,9 +81,7 @@ module TagKeyListType = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -101,9 +95,7 @@ module PolicyDescriptorListType = struct
       (List.map PolicyDescriptorType.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list PolicyDescriptorType.to_query v
-
   let to_json v = `List (List.map PolicyDescriptorType.to_json v)
-
   let of_json j = Aws.Json.to_list PolicyDescriptorType.of_json j
 end
 
@@ -934,13 +926,9 @@ module GetCallerIdentityRequest = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 

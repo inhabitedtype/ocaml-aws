@@ -1,9 +1,7 @@
 open Types
 
 type input = DeleteDBClusterSnapshotMessage.t
-
 type output = DeleteDBClusterSnapshotResult.t
-
 type error = Errors_internal.t
 
 include

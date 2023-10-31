@@ -1,9 +1,7 @@
 open Types
 
 type input = RevokeClientVpnIngressRequest.t
-
 type output = RevokeClientVpnIngressResult.t
-
 type error = Errors_internal.t
 
 include

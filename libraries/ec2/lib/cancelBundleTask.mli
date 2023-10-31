@@ -1,9 +1,7 @@
 open Types
 
 type input = CancelBundleTaskRequest.t
-
 type output = CancelBundleTaskResult.t
-
 type error = Errors_internal.t
 
 include

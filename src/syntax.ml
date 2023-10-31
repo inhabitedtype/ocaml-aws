@@ -218,7 +218,7 @@ let sigty nm ty = Sig.type_ Recursive [ Type.mk ~manifest:ty (strloc nm) ]
 let sig_ ss = Mty.signature ss
 
 let module'_ nm vs sig_ =
-#if OCAML_VERSION >= (4, 9, 0)
+#if OCAML_VERSION >= (4, 10, 0)
   let nm = Some nm in
 #endif
 

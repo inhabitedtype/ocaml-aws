@@ -1,9 +1,7 @@
 open Types
 
 type input = CreateAppCookieStickinessPolicyInput.t
-
 type output = unit
-
 type error = Errors_internal.t
 
 include

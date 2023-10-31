@@ -1,9 +1,7 @@
 open Types
 
 type input = ListExportsInput.t
-
 type output = ListExportsOutput.t
-
 type error = Errors_internal.t
 
 include

@@ -33,9 +33,7 @@
 
 module Printing : sig
   val write_all : filename:string -> string -> unit
-
   val write_structure : string -> Parsetree.structure -> unit
-
   val write_signature : string -> Parsetree.signature -> unit
 end
 
@@ -68,7 +66,5 @@ val inline_shapes :
 *)
 
 val filter_map : 'a list -> f:('a -> 'b option) -> 'b list
-
 val option_map : string option -> f:string -> string option
-
 val of_option_exn : 'a option -> 'a

@@ -1,9 +1,7 @@
 open Types
 
 type input = DeleteVpcEndpointConnectionNotificationsRequest.t
-
 type output = DeleteVpcEndpointConnectionNotificationsResult.t
-
 type error = Errors_internal.t
 
 include

@@ -2,13 +2,10 @@ open Types
 open Aws
 
 type input = GenerateDataKeyPairRequest.t
-
 type output = GenerateDataKeyPairResponse.t
-
 type error = Errors_internal.t
 
 let service = "kms"
-
 let signature_version = Request.V4
 
 let to_http service region req =

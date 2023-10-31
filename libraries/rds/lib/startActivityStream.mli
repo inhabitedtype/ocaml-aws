@@ -1,9 +1,7 @@
 open Types
 
 type input = StartActivityStreamRequest.t
-
 type output = StartActivityStreamResponse.t
-
 type error = Errors_internal.t
 
 include

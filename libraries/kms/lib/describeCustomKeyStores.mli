@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeCustomKeyStoresRequest.t
-
 type output = DescribeCustomKeyStoresResponse.t
-
 type error = Errors_internal.t
 
 include

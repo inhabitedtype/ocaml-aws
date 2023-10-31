@@ -1,9 +1,7 @@
 open Types
 
 type input = ModifyCurrentDBClusterCapacityMessage.t
-
 type output = DBClusterCapacityInfo.t
-
 type error = Errors_internal.t
 
 include

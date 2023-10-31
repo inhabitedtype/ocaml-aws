@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeNatGatewaysRequest.t
-
 type output = DescribeNatGatewaysResult.t
-
 type error = Errors_internal.t
 
 include

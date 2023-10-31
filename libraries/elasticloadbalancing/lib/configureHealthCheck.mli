@@ -1,9 +1,7 @@
 open Types
 
 type input = ConfigureHealthCheckInput.t
-
 type output = ConfigureHealthCheckOutput.t
-
 type error = Errors_internal.t
 
 include

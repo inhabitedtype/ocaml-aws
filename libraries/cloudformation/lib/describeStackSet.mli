@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeStackSetInput.t
-
 type output = DescribeStackSetOutput.t
-
 type error = Errors_internal.t
 
 include

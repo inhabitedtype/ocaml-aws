@@ -1,9 +1,7 @@
 open Types
 
 type input = CreateLBCookieStickinessPolicyInput.t
-
 type output = unit
-
 type error = Errors_internal.t
 
 include

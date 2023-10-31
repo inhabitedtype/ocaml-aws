@@ -23,7 +23,7 @@ depends: [
   "cohttp-lwt" {with-test & >= "2.4.0"}
   "cohttp-lwt-unix" {with-test & >= "2.4.0"}
   "lwt" {with-test & >= "4.0.0"}
-  "yojson" {with-test & >= "1.7.0"}
+  "yojson" {with-test & "2.0"}
 ]
 build: [
   ["dune" "subst"] {pinned}

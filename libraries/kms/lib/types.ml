@@ -21,9 +21,7 @@ module AlgorithmSpec = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -33,7 +31,6 @@ module AlgorithmSpec = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -106,13 +103,9 @@ module TagList = struct
   type t = Tag.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map Tag.parse (Aws.Xml.members "member" xml))
-
   let to_query v = Aws.Query.to_query_list Tag.to_query v
-
   let to_json v = `List (List.map Tag.to_json v)
-
   let of_json j = Aws.Json.to_list Tag.of_json j
 end
 
@@ -153,9 +146,7 @@ module SigningAlgorithmSpec = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -165,7 +156,6 @@ module SigningAlgorithmSpec = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -179,9 +169,7 @@ module SigningAlgorithmSpecList = struct
       (List.map SigningAlgorithmSpec.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list SigningAlgorithmSpec.to_query v
-
   let to_json v = `List (List.map SigningAlgorithmSpec.to_json v)
-
   let of_json j = Aws.Json.to_list SigningAlgorithmSpec.of_json j
 end
 
@@ -198,9 +186,7 @@ module OriginType = struct
     [ AWS_CLOUDHSM, "AWS_CLOUDHSM"; EXTERNAL, "EXTERNAL"; AWS_KMS, "AWS_KMS" ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -210,7 +196,6 @@ module OriginType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -220,13 +205,9 @@ module MultiRegionKeyType = struct
     | REPLICA
 
   let str_to_t = [ "REPLICA", REPLICA; "PRIMARY", PRIMARY ]
-
   let t_to_str = [ REPLICA, "REPLICA"; PRIMARY, "PRIMARY" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -236,7 +217,6 @@ module MultiRegionKeyType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -284,9 +264,7 @@ module MultiRegionKeyList = struct
     Aws.Util.option_all (List.map MultiRegionKey.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list MultiRegionKey.to_query v
-
   let to_json v = `List (List.map MultiRegionKey.to_json v)
-
   let of_json j = Aws.Json.to_list MultiRegionKey.of_json j
 end
 
@@ -357,13 +335,9 @@ module KeyUsageType = struct
     | ENCRYPT_DECRYPT
 
   let str_to_t = [ "ENCRYPT_DECRYPT", ENCRYPT_DECRYPT; "SIGN_VERIFY", SIGN_VERIFY ]
-
   let t_to_str = [ ENCRYPT_DECRYPT, "ENCRYPT_DECRYPT"; SIGN_VERIFY, "SIGN_VERIFY" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -373,7 +347,6 @@ module KeyUsageType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -411,9 +384,7 @@ module KeyState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -423,7 +394,6 @@ module KeyState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -461,9 +431,7 @@ module KeySpec = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -473,7 +441,6 @@ module KeySpec = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -483,13 +450,9 @@ module KeyManagerType = struct
     | CUSTOMER
 
   let str_to_t = [ "CUSTOMER", CUSTOMER; "AWS", AWS ]
-
   let t_to_str = [ CUSTOMER, "CUSTOMER"; AWS, "AWS" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -499,7 +462,6 @@ module KeyManagerType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -519,9 +481,7 @@ module ExpirationModelType = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -531,7 +491,6 @@ module ExpirationModelType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -554,9 +513,7 @@ module EncryptionAlgorithmSpec = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -566,7 +523,6 @@ module EncryptionAlgorithmSpec = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -580,9 +536,7 @@ module EncryptionAlgorithmSpecList = struct
       (List.map EncryptionAlgorithmSpec.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list EncryptionAlgorithmSpec.to_query v
-
   let to_json v = `List (List.map EncryptionAlgorithmSpec.to_json v)
-
   let of_json j = Aws.Json.to_list EncryptionAlgorithmSpec.of_json j
 end
 
@@ -620,9 +574,7 @@ module CustomerMasterKeySpec = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -632,7 +584,6 @@ module CustomerMasterKeySpec = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -1109,13 +1060,9 @@ module MessageType = struct
     | DIGEST
 
   let str_to_t = [ "DIGEST", DIGEST; "RAW", RAW ]
-
   let t_to_str = [ DIGEST, "DIGEST"; RAW, "RAW" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -1125,7 +1072,6 @@ module MessageType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -1187,9 +1133,7 @@ module GrantTokenList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -1284,9 +1228,7 @@ module ConnectionStateType = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -1296,7 +1238,6 @@ module ConnectionStateType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -1464,9 +1405,7 @@ module TagKeyList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -1562,9 +1501,7 @@ module GrantOperation = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -1574,7 +1511,6 @@ module GrantOperation = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -1587,9 +1523,7 @@ module GrantOperationList = struct
     Aws.Util.option_all (List.map GrantOperation.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list GrantOperation.to_query v
-
   let to_json v = `List (List.map GrantOperation.to_json v)
-
   let of_json j = Aws.Json.to_list GrantOperation.of_json j
 end
 
@@ -1597,9 +1531,7 @@ module EncryptionContextType = struct
   type t = (String.t, String.t) Hashtbl.t
 
   let make elems () = elems
-
   let parse xml = None
-
   let to_query v = Aws.Query.to_query_hashtbl String.to_string String.to_query v
 
   let to_json v =
@@ -1790,9 +1722,7 @@ module GrantList = struct
     Aws.Util.option_all (List.map GrantListEntry.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list GrantListEntry.to_query v
-
   let to_json v = `List (List.map GrantListEntry.to_json v)
-
   let of_json j = Aws.Json.to_list GrantListEntry.of_json j
 end
 
@@ -1912,9 +1842,7 @@ module ConnectionErrorCodeType = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -1924,7 +1852,6 @@ module ConnectionErrorCodeType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -2110,9 +2037,7 @@ module AliasList = struct
     Aws.Util.option_all (List.map AliasListEntry.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list AliasListEntry.to_query v
-
   let to_json v = `List (List.map AliasListEntry.to_json v)
-
   let of_json j = Aws.Json.to_list AliasListEntry.of_json j
 end
 
@@ -2171,9 +2096,7 @@ module DataKeyPairSpec = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -2183,7 +2106,6 @@ module DataKeyPairSpec = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -2490,13 +2412,9 @@ module ConnectCustomKeyStoreResponse = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -2504,13 +2422,9 @@ module WrappingKeySpec = struct
   type t = RSA_2048
 
   let str_to_t = [ "RSA_2048", RSA_2048 ]
-
   let t_to_str = [ RSA_2048, "RSA_2048" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -2520,7 +2434,6 @@ module WrappingKeySpec = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -2851,9 +2764,7 @@ module KeyList = struct
     Aws.Util.option_all (List.map KeyListEntry.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list KeyListEntry.to_query v
-
   let to_json v = `List (List.map KeyListEntry.to_json v)
-
   let of_json j = Aws.Json.to_list KeyListEntry.of_json j
 end
 
@@ -3003,13 +2914,9 @@ module DataKeySpec = struct
     | AES_128
 
   let str_to_t = [ "AES_128", AES_128; "AES_256", AES_256 ]
-
   let t_to_str = [ AES_128, "AES_128"; AES_256, "AES_256" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -3019,7 +2926,6 @@ module DataKeySpec = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -3794,9 +3700,7 @@ module PolicyNameList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -4321,13 +4225,9 @@ module DeleteCustomKeyStoreResponse = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -4898,9 +4798,7 @@ module CustomKeyStoresList = struct
       (List.map CustomKeyStoresListEntry.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list CustomKeyStoresListEntry.to_query v
-
   let to_json v = `List (List.map CustomKeyStoresListEntry.to_json v)
-
   let of_json j = Aws.Json.to_list CustomKeyStoresListEntry.of_json j
 end
 
@@ -6005,13 +5903,9 @@ module ImportKeyMaterialResponse = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -6172,13 +6066,9 @@ module DisconnectCustomKeyStoreResponse = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -6364,13 +6254,9 @@ module UpdateCustomKeyStoreResponse = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 

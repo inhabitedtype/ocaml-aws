@@ -13,4 +13,5 @@
 (rule
  (targets endpoints.ml endpoints.mli)
  (deps endpoints.atd)
- (action (run atdgen %{deps} -json)))
+ (action
+  (run atdgen %{deps} -json)))

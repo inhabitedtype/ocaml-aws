@@ -1,9 +1,7 @@
 open Types
 
 type input = StartVpcEndpointServicePrivateDnsVerificationRequest.t
-
 type output = StartVpcEndpointServicePrivateDnsVerificationResult.t
-
 type error = Errors_internal.t
 
 include

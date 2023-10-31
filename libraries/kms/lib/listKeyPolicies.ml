@@ -2,13 +2,10 @@ open Types
 open Aws
 
 type input = ListKeyPoliciesRequest.t
-
 type output = ListKeyPoliciesResponse.t
-
 type error = Errors_internal.t
 
 let service = "kms"
-
 let signature_version = Request.V4
 
 let to_http service region req =

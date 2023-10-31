@@ -38,9 +38,7 @@ module G = Graph.Imperative.Digraph.ConcreteBidirectional (struct
   type t = Shape.t
 
   let compare a b = compare a.Shape.name b.Shape.name
-
   let hash a = Hashtbl.hash a.Shape.name
-
   let equal a b = a.Shape.name = b.Shape.name
 end)
 

@@ -5,15 +5,10 @@ module type Base = sig
   type t
 
   val to_json : t -> Json.t
-
   val of_json : Json.t -> t
-
   val to_query : t -> Query.t
-
   val parse : Ezxmlm.nodes -> t option
-
   val to_string : t -> string
-
   val of_string : string -> t
 end
 
@@ -27,11 +22,8 @@ module Unit = struct
     | t -> raise (Json.Casting_error ("unit", t))
 
   let to_query () = List []
-
   let parse _ = Some () (* XXX(seliopou): Should never be used, maybe assert that? *)
-
   let to_string _ = raise (Failure "unit")
-
   let of_string _ = raise (Failure "unit")
 end
 
@@ -45,11 +37,8 @@ module String = struct
     | t -> raise (Json.Casting_error ("string", t))
 
   let to_query s = Value (Some s)
-
   let parse s = Some (data_to_string s)
-
   let to_string s = s
-
   let of_string s = s
 end
 
@@ -106,7 +95,6 @@ module Integer = struct
     | Some s -> ( try Some (int_of_string s) with Failure _ -> None)
 
   let to_string i = string_of_int i
-
   let of_string s = int_of_string s
 end
 
@@ -129,7 +117,6 @@ module Float = struct
     | Some s -> ( try Some (float_of_string s) with Failure _ -> None)
 
   let to_string f = string_of_float f
-
   let of_string s = float_of_string s
 end
 
@@ -139,9 +126,7 @@ module DateTime = struct
   type t = CalendarLib.Calendar.t
 
   let to_json c = `String (Time.format c)
-
   let of_json t = Time.parse (String.of_json t)
-
   let to_query c = Value (Some (Time.format c))
 
   let parse c =
@@ -150,6 +135,5 @@ module DateTime = struct
     | Some s -> ( try Some (Time.parse s) with Invalid_argument _ -> None)
 
   let to_string c = Time.format c
-
   let of_string s = Time.parse s
 end

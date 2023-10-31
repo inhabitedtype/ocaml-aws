@@ -1,9 +1,7 @@
 open Types
 
 type input = CreateDBSecurityGroupMessage.t
-
 type output = CreateDBSecurityGroupResult.t
-
 type error = Errors_internal.t
 
 include

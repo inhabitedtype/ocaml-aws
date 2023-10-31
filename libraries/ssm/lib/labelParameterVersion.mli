@@ -1,9 +1,7 @@
 open Types
 
 type input = LabelParameterVersionRequest.t
-
 type output = LabelParameterVersionResult.t
-
 type error = Errors_internal.t
 
 include

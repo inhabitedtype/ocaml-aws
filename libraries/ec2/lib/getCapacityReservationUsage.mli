@@ -1,9 +1,7 @@
 open Types
 
 type input = GetCapacityReservationUsageRequest.t
-
 type output = GetCapacityReservationUsageResult.t
-
 type error = Errors_internal.t
 
 include

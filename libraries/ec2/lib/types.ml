@@ -99,9 +99,7 @@ module UserIdGroupPairList = struct
     Aws.Util.option_all (List.map UserIdGroupPair.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list UserIdGroupPair.to_query v
-
   let to_json v = `List (List.map UserIdGroupPair.to_json v)
-
   let of_json j = Aws.Json.to_list UserIdGroupPair.of_json j
 end
 
@@ -153,9 +151,7 @@ module PrefixListIdList = struct
     Aws.Util.option_all (List.map PrefixListId.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list PrefixListId.to_query v
-
   let to_json v = `List (List.map PrefixListId.to_json v)
-
   let of_json j = Aws.Json.to_list PrefixListId.of_json j
 end
 
@@ -204,9 +200,7 @@ module Ipv6RangeList = struct
     Aws.Util.option_all (List.map Ipv6Range.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list Ipv6Range.to_query v
-
   let to_json v = `List (List.map Ipv6Range.to_json v)
-
   let of_json j = Aws.Json.to_list Ipv6Range.of_json j
 end
 
@@ -257,9 +251,7 @@ module IpRangeList = struct
     Aws.Util.option_all (List.map IpRange.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list IpRange.to_query v
-
   let to_json v = `List (List.map IpRange.to_json v)
-
   let of_json j = Aws.Json.to_list IpRange.of_json j
 end
 
@@ -374,9 +366,7 @@ module IpPermissionList = struct
     Aws.Util.option_all (List.map IpPermission.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list IpPermission.to_query v
-
   let to_json v = `List (List.map IpPermission.to_json v)
-
   let of_json j = Aws.Json.to_list IpPermission.of_json j
 end
 
@@ -485,9 +475,7 @@ module TransitGatewayAttachmentState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -497,7 +485,6 @@ module TransitGatewayAttachmentState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -635,13 +622,9 @@ module RouteState = struct
     | Blackhole
 
   let str_to_t = [ "blackhole", Blackhole; "active", Active ]
-
   let t_to_str = [ Blackhole, "blackhole"; Active, "active" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -651,7 +634,6 @@ module RouteState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -674,9 +656,7 @@ module RouteOrigin = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -686,7 +666,6 @@ module RouteOrigin = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -879,13 +858,9 @@ module RouteList = struct
   type t = Route.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map Route.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list Route.to_query v
-
   let to_json v = `List (List.map Route.to_json v)
-
   let of_json j = Aws.Json.to_list Route.of_json j
 end
 
@@ -931,13 +906,9 @@ module TagList = struct
   type t = Tag.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map Tag.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list Tag.to_query v
-
   let to_json v = `List (List.map Tag.to_json v)
-
   let of_json j = Aws.Json.to_list Tag.of_json j
 end
 
@@ -1100,9 +1071,7 @@ module SnapshotDetailList = struct
     Aws.Util.option_all (List.map SnapshotDetail.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list SnapshotDetail.to_query v
-
   let to_json v = `List (List.map SnapshotDetail.to_json v)
-
   let of_json j = Aws.Json.to_list SnapshotDetail.of_json j
 end
 
@@ -1152,7 +1121,6 @@ module ImportImageLicenseSpecificationListResponse = struct
     Aws.Query.to_query_list ImportImageLicenseConfigurationResponse.to_query v
 
   let to_json v = `List (List.map ImportImageLicenseConfigurationResponse.to_json v)
-
   let of_json j = Aws.Json.to_list ImportImageLicenseConfigurationResponse.of_json j
 end
 
@@ -1456,7 +1424,6 @@ module DisableFastSnapshotRestoreStateErrorSet = struct
     Aws.Query.to_query_list DisableFastSnapshotRestoreStateErrorItem.to_query v
 
   let to_json v = `List (List.map DisableFastSnapshotRestoreStateErrorItem.to_json v)
-
   let of_json j = Aws.Json.to_list DisableFastSnapshotRestoreStateErrorItem.of_json j
 end
 
@@ -1649,9 +1616,7 @@ module UserIdStringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "UserId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -1664,9 +1629,7 @@ module UserGroupStringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "UserGroup" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -1679,9 +1642,7 @@ module ProductCodeStringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "ProductCode" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -1691,13 +1652,9 @@ module OperationType = struct
     | Remove
 
   let str_to_t = [ "remove", Remove; "add", Add ]
-
   let t_to_str = [ Remove, "remove"; Add, "add" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -1707,7 +1664,6 @@ module OperationType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -1715,13 +1671,9 @@ module PermissionGroup = struct
   type t = All
 
   let str_to_t = [ "all", All ]
-
   let t_to_str = [ All, "all" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -1731,7 +1683,6 @@ module PermissionGroup = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -1781,9 +1732,7 @@ module LoadPermissionListRequest = struct
       (List.map LoadPermissionRequest.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list LoadPermissionRequest.to_query v
-
   let to_json v = `List (List.map LoadPermissionRequest.to_json v)
-
   let of_json j = Aws.Json.to_list LoadPermissionRequest.of_json j
 end
 
@@ -1857,9 +1806,7 @@ module FpgaImageAttributeName = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -1869,7 +1816,6 @@ module FpgaImageAttributeName = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -2018,13 +1964,9 @@ module ValueStringList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -2034,13 +1976,9 @@ module ShutdownBehavior = struct
     | Terminate
 
   let str_to_t = [ "terminate", Terminate; "stop", Stop ]
-
   let t_to_str = [ Terminate, "terminate"; Stop, "stop" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -2050,7 +1988,6 @@ module ShutdownBehavior = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -2222,9 +2159,7 @@ module ResourceType = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -2234,7 +2169,6 @@ module ResourceType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -2289,9 +2223,7 @@ module LaunchTemplateTagSpecificationList = struct
       (List.map LaunchTemplateTagSpecification.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list LaunchTemplateTagSpecification.to_query v
-
   let to_json v = `List (List.map LaunchTemplateTagSpecification.to_json v)
-
   let of_json j = Aws.Json.to_list LaunchTemplateTagSpecification.of_json j
 end
 
@@ -2302,13 +2234,9 @@ module Tenancy = struct
     | Host
 
   let str_to_t = [ "host", Host; "dedicated", Dedicated; "default", Default ]
-
   let t_to_str = [ Host, "host"; Dedicated, "dedicated"; Default, "default" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -2318,7 +2246,6 @@ module Tenancy = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -2464,9 +2391,7 @@ module LaunchTemplateLicenseList = struct
       (List.map LaunchTemplateLicenseConfiguration.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list LaunchTemplateLicenseConfiguration.to_query v
-
   let to_json v = `List (List.map LaunchTemplateLicenseConfiguration.to_json v)
-
   let of_json j = Aws.Json.to_list LaunchTemplateLicenseConfiguration.of_json j
 end
 
@@ -2519,9 +2444,7 @@ module PrivateIpAddressSpecificationList = struct
       (List.map PrivateIpAddressSpecification.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list PrivateIpAddressSpecification.to_query v
-
   let to_json v = `List (List.map PrivateIpAddressSpecification.to_json v)
-
   let of_json j = Aws.Json.to_list PrivateIpAddressSpecification.of_json j
 end
 
@@ -2562,9 +2485,7 @@ module InstanceIpv6AddressList = struct
     Aws.Util.option_all (List.map InstanceIpv6Address.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list InstanceIpv6Address.to_query v
-
   let to_json v = `List (List.map InstanceIpv6Address.to_json v)
-
   let of_json j = Aws.Json.to_list InstanceIpv6Address.of_json j
 end
 
@@ -2577,9 +2498,7 @@ module GroupIdStringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "groupId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -2816,13 +2735,9 @@ module LaunchTemplateInstanceMetadataOptionsState = struct
     | Applied
 
   let str_to_t = [ "applied", Applied; "pending", Pending ]
-
   let t_to_str = [ Applied, "applied"; Pending, "pending" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -2832,7 +2747,6 @@ module LaunchTemplateInstanceMetadataOptionsState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -2842,13 +2756,9 @@ module LaunchTemplateInstanceMetadataEndpointState = struct
     | Enabled
 
   let str_to_t = [ "enabled", Enabled; "disabled", Disabled ]
-
   let t_to_str = [ Enabled, "enabled"; Disabled, "disabled" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -2858,7 +2768,6 @@ module LaunchTemplateInstanceMetadataEndpointState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -2868,13 +2777,9 @@ module LaunchTemplateHttpTokensState = struct
     | Required
 
   let str_to_t = [ "required", Required; "optional", Optional ]
-
   let t_to_str = [ Required, "required"; Optional, "optional" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -2884,7 +2789,6 @@ module LaunchTemplateHttpTokensState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -2969,13 +2873,9 @@ module MarketType = struct
   type t = Spot
 
   let str_to_t = [ "spot", Spot ]
-
   let t_to_str = [ Spot, "spot" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -2985,7 +2885,6 @@ module MarketType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -2995,13 +2894,9 @@ module SpotInstanceType = struct
     | Persistent
 
   let str_to_t = [ "persistent", Persistent; "one-time", One_time ]
-
   let t_to_str = [ Persistent, "persistent"; One_time, "one-time" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -3011,7 +2906,6 @@ module SpotInstanceType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -3022,13 +2916,9 @@ module InstanceInterruptionBehavior = struct
     | Terminate
 
   let str_to_t = [ "terminate", Terminate; "stop", Stop; "hibernate", Hibernate ]
-
   let t_to_str = [ Terminate, "terminate"; Stop, "stop"; Hibernate, "hibernate" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -3038,7 +2928,6 @@ module InstanceInterruptionBehavior = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -3406,13 +3295,9 @@ module CapacityReservationPreference = struct
     | None
 
   let str_to_t = [ "none", None; "open", Open ]
-
   let t_to_str = [ None, "none"; Open, "open" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -3422,7 +3307,6 @@ module CapacityReservationPreference = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -3497,9 +3381,7 @@ module VolumeType = struct
     [ St1, "st1"; Sc1, "sc1"; Gp2, "gp2"; Io2, "io2"; Io1, "io1"; Standard, "standard" ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -3509,7 +3391,6 @@ module VolumeType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -3665,9 +3546,7 @@ module LaunchTemplateBlockDeviceMappingList = struct
       (List.map LaunchTemplateBlockDeviceMapping.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list LaunchTemplateBlockDeviceMapping.to_query v
-
   let to_json v = `List (List.map LaunchTemplateBlockDeviceMapping.to_json v)
-
   let of_json j = Aws.Json.to_list LaunchTemplateBlockDeviceMapping.of_json j
 end
 
@@ -4731,9 +4610,7 @@ module InstanceType = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -4743,7 +4620,6 @@ module InstanceType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -4781,9 +4657,7 @@ module ElasticGpuSpecificationResponseList = struct
       (List.map ElasticGpuSpecificationResponse.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ElasticGpuSpecificationResponse.to_query v
-
   let to_json v = `List (List.map ElasticGpuSpecificationResponse.to_json v)
-
   let of_json j = Aws.Json.to_list ElasticGpuSpecificationResponse.of_json j
 end
 
@@ -5243,13 +5117,9 @@ module TelemetryStatus = struct
     | DOWN
 
   let str_to_t = [ "DOWN", DOWN; "UP", UP ]
-
   let t_to_str = [ DOWN, "DOWN"; UP, "UP" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -5259,7 +5129,6 @@ module TelemetryStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -5361,9 +5230,7 @@ module VgwTelemetryList = struct
     Aws.Util.option_all (List.map VgwTelemetry.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list VgwTelemetry.to_query v
-
   let to_json v = `List (List.map VgwTelemetry.to_json v)
-
   let of_json j = Aws.Json.to_list VgwTelemetry.of_json j
 end
 
@@ -5415,13 +5282,9 @@ module RegionList = struct
   type t = Region.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map Region.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list Region.to_query v
-
   let to_json v = `List (List.map Region.to_json v)
-
   let of_json j = Aws.Json.to_list Region.of_json j
 end
 
@@ -5466,9 +5329,7 @@ module LicenseSpecificationListRequest = struct
       (List.map LicenseConfigurationRequest.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list LicenseConfigurationRequest.to_query v
-
   let to_json v = `List (List.map LicenseConfigurationRequest.to_json v)
-
   let of_json j = Aws.Json.to_list LicenseConfigurationRequest.of_json j
 end
 
@@ -5494,9 +5355,7 @@ module CancelBatchErrorCode = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -5506,7 +5365,6 @@ module CancelBatchErrorCode = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -5544,9 +5402,7 @@ module Phase1EncryptionAlgorithmsList = struct
       (List.map Phase1EncryptionAlgorithmsListValue.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list Phase1EncryptionAlgorithmsListValue.to_query v
-
   let to_json v = `List (List.map Phase1EncryptionAlgorithmsListValue.to_json v)
-
   let of_json j = Aws.Json.to_list Phase1EncryptionAlgorithmsListValue.of_json j
 end
 
@@ -5689,9 +5545,7 @@ module AttachmentStatus = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -5701,7 +5555,6 @@ module AttachmentStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -5756,9 +5609,7 @@ module InternetGatewayAttachmentList = struct
       (List.map InternetGatewayAttachment.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list InternetGatewayAttachment.to_query v
-
   let to_json v = `List (List.map InternetGatewayAttachment.to_json v)
-
   let of_json j = Aws.Json.to_list InternetGatewayAttachment.of_json j
 end
 
@@ -5832,9 +5683,7 @@ module EgressOnlyInternetGatewayList = struct
       (List.map EgressOnlyInternetGateway.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list EgressOnlyInternetGateway.to_query v
-
   let to_json v = `List (List.map EgressOnlyInternetGateway.to_json v)
-
   let of_json j = Aws.Json.to_list EgressOnlyInternetGateway.of_json j
 end
 
@@ -5891,13 +5740,9 @@ module ConnectionNotificationIdsList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -5956,13 +5801,9 @@ module NetworkInterfaceType = struct
     | Efa
 
   let str_to_t = [ "efa", Efa; "natGateway", NatGateway; "interface", Interface ]
-
   let t_to_str = [ Efa, "efa"; NatGateway, "natGateway"; Interface, "interface" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -5972,7 +5813,6 @@ module NetworkInterfaceType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -6001,9 +5841,7 @@ module NetworkInterfaceStatus = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -6013,7 +5851,6 @@ module NetworkInterfaceStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -6182,9 +6019,7 @@ module NetworkInterfacePrivateIpAddressList = struct
       (List.map NetworkInterfacePrivateIpAddress.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list NetworkInterfacePrivateIpAddress.to_query v
-
   let to_json v = `List (List.map NetworkInterfacePrivateIpAddress.to_json v)
-
   let of_json j = Aws.Json.to_list NetworkInterfacePrivateIpAddress.of_json j
 end
 
@@ -6226,9 +6061,7 @@ module NetworkInterfaceIpv6AddressesList = struct
       (List.map NetworkInterfaceIpv6Address.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list NetworkInterfaceIpv6Address.to_query v
-
   let to_json v = `List (List.map NetworkInterfaceIpv6Address.to_json v)
-
   let of_json j = Aws.Json.to_list NetworkInterfaceIpv6Address.of_json j
 end
 
@@ -6380,9 +6213,7 @@ module GroupIdentifierList = struct
     Aws.Util.option_all (List.map GroupIdentifier.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list GroupIdentifier.to_query v
-
   let to_json v = `List (List.map GroupIdentifier.to_json v)
-
   let of_json j = Aws.Json.to_list GroupIdentifier.of_json j
 end
 
@@ -6662,9 +6493,7 @@ module NetworkInterfaceList = struct
     Aws.Util.option_all (List.map NetworkInterface.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list NetworkInterface.to_query v
-
   let to_json v = `List (List.map NetworkInterface.to_json v)
-
   let of_json j = Aws.Json.to_list NetworkInterface.of_json j
 end
 
@@ -6798,13 +6627,9 @@ module CurrencyCodeValues = struct
   type t = USD
 
   let str_to_t = [ "USD", USD ]
-
   let t_to_str = [ USD, "USD" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -6814,7 +6639,6 @@ module CurrencyCodeValues = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -7053,9 +6877,7 @@ module FilterList = struct
     Aws.Util.option_all (List.map Filter.parse (Aws.Xml.members "Filter" xml))
 
   let to_query v = Aws.Query.to_query_list Filter.to_query v
-
   let to_json v = `List (List.map Filter.to_json v)
-
   let of_json j = Aws.Json.to_list Filter.of_json j
 end
 
@@ -7145,9 +6967,7 @@ module ListingStatus = struct
     [ Closed, "closed"; Cancelled, "cancelled"; Pending, "pending"; Active, "active" ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -7157,7 +6977,6 @@ module ListingStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -7290,9 +7109,7 @@ module FleetLaunchTemplateOverridesList = struct
       (List.map FleetLaunchTemplateOverrides.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list FleetLaunchTemplateOverrides.to_query v
-
   let to_json v = `List (List.map FleetLaunchTemplateOverrides.to_json v)
-
   let of_json j = Aws.Json.to_list FleetLaunchTemplateOverrides.of_json j
 end
 
@@ -7321,9 +7138,7 @@ module FastSnapshotRestoreStateCode = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -7333,7 +7148,6 @@ module FastSnapshotRestoreStateCode = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -7491,7 +7305,6 @@ module DescribeFastSnapshotRestoreSuccessSet = struct
     Aws.Query.to_query_list DescribeFastSnapshotRestoreSuccessItem.to_query v
 
   let to_json v = `List (List.map DescribeFastSnapshotRestoreSuccessItem.to_json v)
-
   let of_json j = Aws.Json.to_list DescribeFastSnapshotRestoreSuccessItem.of_json j
 end
 
@@ -7639,13 +7452,9 @@ module ClientVpnEndpointAttributeStatusCode = struct
     | Applied
 
   let str_to_t = [ "applied", Applied; "applying", Applying ]
-
   let t_to_str = [ Applied, "applied"; Applying, "applying" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -7655,7 +7464,6 @@ module ClientVpnEndpointAttributeStatusCode = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -7888,9 +7696,7 @@ module InstanceUsageSet = struct
     Aws.Util.option_all (List.map InstanceUsage.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list InstanceUsage.to_query v
-
   let to_json v = `List (List.map InstanceUsage.to_json v)
-
   let of_json j = Aws.Json.to_list InstanceUsage.of_json j
 end
 
@@ -7919,9 +7725,7 @@ module CapacityReservationState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -7931,7 +7735,6 @@ module CapacityReservationState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -8043,13 +7846,9 @@ module PrefixListResourceIdStringList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -8060,13 +7859,9 @@ module ArchitectureType = struct
     | Arm64
 
   let str_to_t = [ "arm64", Arm64; "x86_64", X86_64; "i386", I386 ]
-
   let t_to_str = [ Arm64, "arm64"; X86_64, "x86_64"; I386, "i386" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -8076,7 +7871,6 @@ module ArchitectureType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -8089,9 +7883,7 @@ module ArchitectureTypeList = struct
     Aws.Util.option_all (List.map ArchitectureType.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ArchitectureType.to_query v
-
   let to_json v = `List (List.map ArchitectureType.to_json v)
-
   let of_json j = Aws.Json.to_list ArchitectureType.of_json j
 end
 
@@ -8183,9 +7975,7 @@ module GpuDeviceInfoList = struct
     Aws.Util.option_all (List.map GpuDeviceInfo.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list GpuDeviceInfo.to_query v
-
   let to_json v = `List (List.map GpuDeviceInfo.to_json v)
-
   let of_json j = Aws.Json.to_list GpuDeviceInfo.of_json j
 end
 
@@ -8248,9 +8038,7 @@ module SecurityGroupReferences = struct
       (List.map SecurityGroupReference.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list SecurityGroupReference.to_query v
-
   let to_json v = `List (List.map SecurityGroupReference.to_json v)
-
   let of_json j = Aws.Json.to_list SecurityGroupReference.of_json j
 end
 
@@ -8445,9 +8233,7 @@ module InstanceBlockDeviceMappingList = struct
       (List.map InstanceBlockDeviceMapping.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list InstanceBlockDeviceMapping.to_query v
-
   let to_json v = `List (List.map InstanceBlockDeviceMapping.to_json v)
-
   let of_json j = Aws.Json.to_list InstanceBlockDeviceMapping.of_json j
 end
 
@@ -8579,13 +8365,9 @@ module DatafeedSubscriptionState = struct
     | Inactive
 
   let str_to_t = [ "Inactive", Inactive; "Active", Active ]
-
   let t_to_str = [ Inactive, "Inactive"; Active, "Active" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -8595,7 +8377,6 @@ module DatafeedSubscriptionState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -8747,9 +8528,7 @@ module NatGatewayState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -8759,7 +8538,6 @@ module NatGatewayState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -8826,9 +8604,7 @@ module NatGatewayAddressList = struct
     Aws.Util.option_all (List.map NatGatewayAddress.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list NatGatewayAddress.to_query v
-
   let to_json v = `List (List.map NatGatewayAddress.to_json v)
-
   let of_json j = Aws.Json.to_list NatGatewayAddress.of_json j
 end
 
@@ -8984,9 +8760,7 @@ module NatGatewayList = struct
     Aws.Util.option_all (List.map NatGateway.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list NatGateway.to_query v
-
   let to_json v = `List (List.map NatGateway.to_json v)
-
   let of_json j = Aws.Json.to_list NatGateway.of_json j
 end
 
@@ -9036,13 +8810,9 @@ module VersionStringList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -9194,13 +8964,9 @@ module CoipPoolIdSet = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -9211,13 +8977,9 @@ module ArchitectureValues = struct
     | Arm64
 
   let str_to_t = [ "arm64", Arm64; "x86_64", X86_64; "i386", I386 ]
-
   let t_to_str = [ Arm64, "arm64"; X86_64, "x86_64"; I386, "i386" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -9227,7 +8989,6 @@ module ArchitectureValues = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -9237,13 +8998,9 @@ module VpnEcmpSupportValue = struct
     | Disable
 
   let str_to_t = [ "disable", Disable; "enable", Enable ]
-
   let t_to_str = [ Disable, "disable"; Enable, "enable" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -9253,7 +9010,6 @@ module VpnEcmpSupportValue = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -9263,13 +9019,9 @@ module DnsSupportValue = struct
     | Disable
 
   let str_to_t = [ "disable", Disable; "enable", Enable ]
-
   let t_to_str = [ Disable, "disable"; Enable, "enable" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -9279,7 +9031,6 @@ module DnsSupportValue = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -9289,13 +9040,9 @@ module DefaultRouteTablePropagationValue = struct
     | Disable
 
   let str_to_t = [ "disable", Disable; "enable", Enable ]
-
   let t_to_str = [ Disable, "disable"; Enable, "enable" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -9305,7 +9052,6 @@ module DefaultRouteTablePropagationValue = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -9315,13 +9061,9 @@ module DefaultRouteTableAssociationValue = struct
     | Disable
 
   let str_to_t = [ "disable", Disable; "enable", Enable ]
-
   let t_to_str = [ Disable, "disable"; Enable, "enable" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -9331,7 +9073,6 @@ module DefaultRouteTableAssociationValue = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -9341,13 +9082,9 @@ module AutoAcceptSharedAttachmentsValue = struct
     | Disable
 
   let str_to_t = [ "disable", Disable; "enable", Enable ]
-
   let t_to_str = [ Disable, "disable"; Enable, "enable" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -9357,7 +9094,6 @@ module AutoAcceptSharedAttachmentsValue = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -9498,13 +9234,9 @@ module InstanceTagKeySet = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -9699,7 +9431,6 @@ module EnableFastSnapshotRestoreStateErrorSet = struct
     Aws.Query.to_query_list EnableFastSnapshotRestoreStateErrorItem.to_query v
 
   let to_json v = `List (List.map EnableFastSnapshotRestoreStateErrorItem.to_json v)
-
   let of_json j = Aws.Json.to_list EnableFastSnapshotRestoreStateErrorItem.of_json j
 end
 
@@ -9875,9 +9606,7 @@ module CarrierGatewayState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -9887,7 +9616,6 @@ module CarrierGatewayState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -9989,13 +9717,9 @@ module InterfacePermissionType = struct
     | EIP_ASSOCIATE
 
   let str_to_t = [ "EIP-ASSOCIATE", EIP_ASSOCIATE; "INSTANCE-ATTACH", INSTANCE_ATTACH ]
-
   let t_to_str = [ EIP_ASSOCIATE, "EIP-ASSOCIATE"; INSTANCE_ATTACH, "INSTANCE-ATTACH" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -10005,7 +9729,6 @@ module InterfacePermissionType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -10337,13 +10060,9 @@ module DiskImageFormat = struct
     | VHD
 
   let str_to_t = [ "VHD", VHD; "RAW", RAW; "VMDK", VMDK ]
-
   let t_to_str = [ VHD, "VHD"; RAW, "RAW"; VMDK, "VMDK" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -10353,7 +10072,6 @@ module DiskImageFormat = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -10481,13 +10199,9 @@ module PlatformValues = struct
   type t = Windows
 
   let str_to_t = [ "Windows", Windows ]
-
   let t_to_str = [ Windows, "Windows" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -10497,7 +10211,6 @@ module PlatformValues = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -10610,9 +10323,7 @@ module ImportInstanceVolumeDetailSet = struct
       (List.map ImportInstanceVolumeDetailItem.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ImportInstanceVolumeDetailItem.to_query v
-
   let to_json v = `List (List.map ImportInstanceVolumeDetailItem.to_json v)
-
   let of_json j = Aws.Json.to_list ImportInstanceVolumeDetailItem.of_json j
 end
 
@@ -10695,9 +10406,7 @@ module ConversionTaskState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -10707,7 +10416,6 @@ module ConversionTaskState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -10828,9 +10536,7 @@ module DescribeConversionTaskList = struct
     Aws.Util.option_all (List.map ConversionTask.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ConversionTask.to_query v
-
   let to_json v = `List (List.map ConversionTask.to_json v)
-
   let of_json j = Aws.Json.to_list ConversionTask.of_json j
 end
 
@@ -10971,9 +10677,7 @@ module SpotFleetTagSpecificationList = struct
       (List.map SpotFleetTagSpecification.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list SpotFleetTagSpecification.to_query v
-
   let to_json v = `List (List.map SpotFleetTagSpecification.to_json v)
-
   let of_json j = Aws.Json.to_list SpotFleetTagSpecification.of_json j
 end
 
@@ -11010,9 +10714,7 @@ module SecurityGroupIdStringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "SecurityGroupId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -11240,7 +10942,6 @@ module InstanceNetworkInterfaceSpecificationList = struct
     Aws.Query.to_query_list InstanceNetworkInterfaceSpecification.to_query v
 
   let to_json v = `List (List.map InstanceNetworkInterfaceSpecification.to_json v)
-
   let of_json j = Aws.Json.to_list InstanceNetworkInterfaceSpecification.of_json j
 end
 
@@ -11288,9 +10989,7 @@ module BlockDeviceMappingList = struct
     Aws.Util.option_all (List.map BlockDeviceMapping.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list BlockDeviceMapping.to_query v
-
   let to_json v = `List (List.map BlockDeviceMapping.to_json v)
-
   let of_json j = Aws.Json.to_list BlockDeviceMapping.of_json j
 end
 
@@ -11579,9 +11278,7 @@ module ExportImageTaskIdList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "ExportImageTaskId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -11667,9 +11364,7 @@ module ScheduledInstancesSecurityGroupIdSet = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "SecurityGroupId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -11750,9 +11445,7 @@ module ScheduledInstancesIpv6AddressList = struct
       (List.map ScheduledInstancesIpv6Address.parse (Aws.Xml.members "Ipv6Address" xml))
 
   let to_query v = Aws.Query.to_query_list ScheduledInstancesIpv6Address.to_query v
-
   let to_json v = `List (List.map ScheduledInstancesIpv6Address.to_json v)
-
   let of_json j = Aws.Json.to_list ScheduledInstancesIpv6Address.of_json j
 end
 
@@ -11810,7 +11503,6 @@ module PrivateIpAddressConfigSet = struct
     Aws.Query.to_query_list ScheduledInstancesPrivateIpAddressConfig.to_query v
 
   let to_json v = `List (List.map ScheduledInstancesPrivateIpAddressConfig.to_json v)
-
   let of_json j = Aws.Json.to_list ScheduledInstancesPrivateIpAddressConfig.of_json j
 end
 
@@ -12001,9 +11693,7 @@ module ScheduledInstancesNetworkInterfaceSet = struct
          (Aws.Xml.members "NetworkInterface" xml))
 
   let to_query v = Aws.Query.to_query_list ScheduledInstancesNetworkInterface.to_query v
-
   let to_json v = `List (List.map ScheduledInstancesNetworkInterface.to_json v)
-
   let of_json j = Aws.Json.to_list ScheduledInstancesNetworkInterface.of_json j
 end
 
@@ -12199,9 +11889,7 @@ module ScheduledInstancesBlockDeviceMappingSet = struct
          (Aws.Xml.members "BlockDeviceMapping" xml))
 
   let to_query v = Aws.Query.to_query_list ScheduledInstancesBlockDeviceMapping.to_query v
-
   let to_json v = `List (List.map ScheduledInstancesBlockDeviceMapping.to_json v)
-
   let of_json j = Aws.Json.to_list ScheduledInstancesBlockDeviceMapping.of_json j
 end
 
@@ -12500,9 +12188,7 @@ module PaymentOption = struct
     [ NoUpfront, "NoUpfront"; PartialUpfront, "PartialUpfront"; AllUpfront, "AllUpfront" ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -12512,7 +12198,6 @@ module PaymentOption = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -12621,9 +12306,7 @@ module HostOfferingSet = struct
     Aws.Util.option_all (List.map HostOffering.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list HostOffering.to_query v
-
   let to_json v = `List (List.map HostOffering.to_json v)
-
   let of_json j = Aws.Json.to_list HostOffering.of_json j
 end
 
@@ -12652,9 +12335,7 @@ module TransitGatewayState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -12664,7 +12345,6 @@ module TransitGatewayState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -12674,13 +12354,9 @@ module LocalGatewayRouteType = struct
     | Propagated
 
   let str_to_t = [ "propagated", Propagated; "static", Static ]
-
   let t_to_str = [ Propagated, "propagated"; Static, "static" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -12690,7 +12366,6 @@ module LocalGatewayRouteType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -12719,9 +12394,7 @@ module LocalGatewayRouteState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -12731,7 +12404,6 @@ module LocalGatewayRouteState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -12850,9 +12522,7 @@ module LocalGatewayRouteList = struct
     Aws.Util.option_all (List.map LocalGatewayRoute.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list LocalGatewayRoute.to_query v
-
   let to_json v = `List (List.map LocalGatewayRoute.to_json v)
-
   let of_json j = Aws.Json.to_list LocalGatewayRoute.of_json j
 end
 
@@ -12923,9 +12593,7 @@ module TransitGatewayAttachmentResourceType = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -12935,7 +12603,6 @@ module TransitGatewayAttachmentResourceType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -12961,9 +12628,7 @@ module TransitGatewayAssociationState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -12973,7 +12638,6 @@ module TransitGatewayAssociationState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -13058,9 +12722,7 @@ module TransitGatewayRouteTableAssociationList = struct
       (List.map TransitGatewayRouteTableAssociation.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list TransitGatewayRouteTableAssociation.to_query v
-
   let to_json v = `List (List.map TransitGatewayRouteTableAssociation.to_json v)
-
   let of_json j = Aws.Json.to_list TransitGatewayRouteTableAssociation.of_json j
 end
 
@@ -13070,13 +12732,9 @@ module SubnetState = struct
     | Available
 
   let str_to_t = [ "available", Available; "pending", Pending ]
-
   let t_to_str = [ Available, "available"; Pending, "pending" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -13086,7 +12744,6 @@ module SubnetState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -13118,9 +12775,7 @@ module SubnetCidrBlockStateCode = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -13130,7 +12785,6 @@ module SubnetCidrBlockStateCode = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -13242,9 +12896,7 @@ module SubnetIpv6CidrBlockAssociationSet = struct
       (List.map SubnetIpv6CidrBlockAssociation.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list SubnetIpv6CidrBlockAssociation.to_query v
-
   let to_json v = `List (List.map SubnetIpv6CidrBlockAssociation.to_json v)
-
   let of_json j = Aws.Json.to_list SubnetIpv6CidrBlockAssociation.of_json j
 end
 
@@ -13478,13 +13130,9 @@ module SubnetList = struct
   type t = Subnet.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map Subnet.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list Subnet.to_query v
-
   let to_json v = `List (List.map Subnet.to_json v)
-
   let of_json j = Aws.Json.to_list Subnet.of_json j
 end
 
@@ -13497,9 +13145,7 @@ module SubnetIdStringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "SubnetId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -13525,9 +13171,7 @@ module TransitGatewayMulticastDomainState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -13537,7 +13181,6 @@ module TransitGatewayMulticastDomainState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -13811,9 +13454,7 @@ module MonitoringState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -13823,7 +13464,6 @@ module MonitoringState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -13898,9 +13538,7 @@ module InstanceMonitoringList = struct
     Aws.Util.option_all (List.map InstanceMonitoring.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list InstanceMonitoring.to_query v
-
   let to_json v = `List (List.map InstanceMonitoring.to_json v)
-
   let of_json j = Aws.Json.to_list InstanceMonitoring.of_json j
 end
 
@@ -14059,9 +13697,7 @@ module AvailabilityZoneOptInStatus = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -14071,7 +13707,6 @@ module AvailabilityZoneOptInStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -14097,9 +13732,7 @@ module ClientVpnConnectionStatusCode = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -14109,7 +13742,6 @@ module ClientVpnConnectionStatusCode = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -14219,13 +13851,9 @@ module VpcEndpointIdList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -14349,9 +13977,7 @@ module TransitGatewayPropagationState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -14361,7 +13987,6 @@ module TransitGatewayPropagationState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -14504,9 +14129,7 @@ module InstanceIdStringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "InstanceId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -14646,9 +14269,7 @@ module AssociationStatusCode = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -14658,7 +14279,6 @@ module AssociationStatusCode = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -14812,9 +14432,7 @@ module ExportTaskState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -14824,7 +14442,6 @@ module ExportTaskState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -15080,9 +14697,7 @@ module TagSpecificationList = struct
     Aws.Util.option_all (List.map TagSpecification.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list TagSpecification.to_query v
-
   let to_json v = `List (List.map TagSpecification.to_json v)
-
   let of_json j = Aws.Json.to_list TagSpecification.of_json j
 end
 
@@ -15130,7 +14745,6 @@ module ImportImageLicenseSpecificationListRequest = struct
     Aws.Query.to_query_list ImportImageLicenseConfigurationRequest.to_query v
 
   let to_json v = `List (List.map ImportImageLicenseConfigurationRequest.to_json v)
-
   let of_json j = Aws.Json.to_list ImportImageLicenseConfigurationRequest.of_json j
 end
 
@@ -15241,9 +14855,7 @@ module ImageDiskContainerList = struct
     Aws.Util.option_all (List.map ImageDiskContainer.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ImageDiskContainer.to_query v
-
   let to_json v = `List (List.map ImageDiskContainer.to_json v)
-
   let of_json j = Aws.Json.to_list ImageDiskContainer.of_json j
 end
 
@@ -15681,9 +15293,7 @@ module TransitGatewayAttachmentList = struct
       (List.map TransitGatewayAttachment.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list TransitGatewayAttachment.to_query v
-
   let to_json v = `List (List.map TransitGatewayAttachment.to_json v)
-
   let of_json j = Aws.Json.to_list TransitGatewayAttachment.of_json j
 end
 
@@ -15738,9 +15348,7 @@ module OccurrenceDayRequestSet = struct
     Aws.Util.option_all (List.map Integer.parse (Aws.Xml.members "OccurenceDay" xml))
 
   let to_query v = Aws.Query.to_query_list Integer.to_query v
-
   let to_json v = `List (List.map Integer.to_json v)
-
   let of_json j = Aws.Json.to_list Integer.of_json j
 end
 
@@ -16082,13 +15690,9 @@ module ConnectionNotificationType = struct
   type t = Topic
 
   let str_to_t = [ "Topic", Topic ]
-
   let t_to_str = [ Topic, "Topic" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -16098,7 +15702,6 @@ module ConnectionNotificationType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -16108,13 +15711,9 @@ module ConnectionNotificationState = struct
     | Disabled
 
   let str_to_t = [ "Disabled", Disabled; "Enabled", Enabled ]
-
   let t_to_str = [ Disabled, "Disabled"; Enabled, "Enabled" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -16124,7 +15723,6 @@ module ConnectionNotificationState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -16257,9 +15855,7 @@ module ConnectionNotificationSet = struct
       (List.map ConnectionNotification.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ConnectionNotification.to_query v
-
   let to_json v = `List (List.map ConnectionNotification.to_json v)
-
   let of_json j = Aws.Json.to_list ConnectionNotification.of_json j
 end
 
@@ -16315,9 +15911,7 @@ module IdFormatList = struct
     Aws.Util.option_all (List.map IdFormat.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list IdFormat.to_query v
-
   let to_json v = `List (List.map IdFormat.to_json v)
-
   let of_json j = Aws.Json.to_list IdFormat.of_json j
 end
 
@@ -16607,9 +16201,7 @@ module VpcClassicLinkList = struct
     Aws.Util.option_all (List.map VpcClassicLink.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list VpcClassicLink.to_query v
-
   let to_json v = `List (List.map VpcClassicLink.to_json v)
-
   let of_json j = Aws.Json.to_list VpcClassicLink.of_json j
 end
 
@@ -16745,9 +16337,7 @@ module TrafficMirrorSessionField = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -16757,7 +16347,6 @@ module TrafficMirrorSessionField = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -16771,9 +16360,7 @@ module TrafficMirrorSessionFieldList = struct
       (List.map TrafficMirrorSessionField.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list TrafficMirrorSessionField.to_query v
-
   let to_json v = `List (List.map TrafficMirrorSessionField.to_json v)
-
   let of_json j = Aws.Json.to_list TrafficMirrorSessionField.of_json j
 end
 
@@ -16781,13 +16368,9 @@ module TransitGatewayNetworkInterfaceIdList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -16797,13 +16380,9 @@ module FleetExcessCapacityTerminationPolicy = struct
     | Termination
 
   let str_to_t = [ "termination", Termination; "no-termination", No_termination ]
-
   let t_to_str = [ Termination, "termination"; No_termination, "no-termination" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -16813,7 +16392,6 @@ module FleetExcessCapacityTerminationPolicy = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -16839,9 +16417,7 @@ module ClientVpnEndpointStatusCode = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -16851,7 +16427,6 @@ module ClientVpnEndpointStatusCode = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -17025,9 +16600,7 @@ module LocalGatewaySet = struct
     Aws.Util.option_all (List.map LocalGateway.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list LocalGateway.to_query v
-
   let to_json v = `List (List.map LocalGateway.to_json v)
-
   let of_json j = Aws.Json.to_list LocalGateway.of_json j
 end
 
@@ -17181,9 +16754,7 @@ module ExportImageTaskList = struct
     Aws.Util.option_all (List.map ExportImageTask.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ExportImageTask.to_query v
-
   let to_json v = `List (List.map ExportImageTask.to_json v)
-
   let of_json j = Aws.Json.to_list ExportImageTask.of_json j
 end
 
@@ -17193,13 +16764,9 @@ module TransitGatewayRouteType = struct
     | Propagated
 
   let str_to_t = [ "propagated", Propagated; "static", Static ]
-
   let t_to_str = [ Propagated, "propagated"; Static, "static" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -17209,7 +16776,6 @@ module TransitGatewayRouteType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -17238,9 +16804,7 @@ module TransitGatewayRouteState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -17250,7 +16814,6 @@ module TransitGatewayRouteState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -17322,9 +16885,7 @@ module TransitGatewayRouteAttachmentList = struct
       (List.map TransitGatewayRouteAttachment.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list TransitGatewayRouteAttachment.to_query v
-
   let to_json v = `List (List.map TransitGatewayRouteAttachment.to_json v)
-
   let of_json j = Aws.Json.to_list TransitGatewayRouteAttachment.of_json j
 end
 
@@ -17505,13 +17066,9 @@ module HostReservationIdSet = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -17640,9 +17197,7 @@ module CancelSpotInstanceRequestState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -17652,7 +17207,6 @@ module CancelSpotInstanceRequestState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -17766,9 +17320,7 @@ module ServiceState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -17778,7 +17330,6 @@ module ServiceState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -17907,9 +17458,7 @@ module TargetConfigurationRequestSet = struct
          (Aws.Xml.members "TargetConfigurationRequest" xml))
 
   let to_query v = Aws.Query.to_query_list TargetConfigurationRequest.to_query v
-
   let to_json v = `List (List.map TargetConfigurationRequest.to_json v)
-
   let of_json j = Aws.Json.to_list TargetConfigurationRequest.of_json j
 end
 
@@ -17922,9 +17471,7 @@ module ReservedInstanceIdSet = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "ReservedInstanceId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -18001,9 +17548,7 @@ module AssociationIdList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "AssociationId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -18075,9 +17620,7 @@ module SpotInstanceState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -18087,7 +17630,6 @@ module SpotInstanceState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -18113,9 +17655,7 @@ module RIProductDescription = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -18125,7 +17665,6 @@ module RIProductDescription = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -18590,9 +18129,7 @@ module SpotInstanceRequestList = struct
     Aws.Util.option_all (List.map SpotInstanceRequest.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list SpotInstanceRequest.to_query v
-
   let to_json v = `List (List.map SpotInstanceRequest.to_json v)
-
   let of_json j = Aws.Json.to_list SpotInstanceRequest.of_json j
 end
 
@@ -18600,13 +18137,9 @@ module NetworkInterfaceCreationType = struct
   type t = Efa
 
   let str_to_t = [ "efa", Efa ]
-
   let t_to_str = [ Efa, "efa" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -18616,7 +18149,6 @@ module NetworkInterfaceCreationType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -19157,9 +18689,7 @@ module TrafficMirrorSessionSet = struct
     Aws.Util.option_all (List.map TrafficMirrorSession.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list TrafficMirrorSession.to_query v
-
   let to_json v = `List (List.map TrafficMirrorSession.to_json v)
-
   let of_json j = Aws.Json.to_list TrafficMirrorSession.of_json j
 end
 
@@ -19172,9 +18702,7 @@ module OccurrenceDaySet = struct
     Aws.Util.option_all (List.map Integer.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list Integer.to_query v
-
   let to_json v = `List (List.map Integer.to_json v)
-
   let of_json j = Aws.Json.to_list Integer.of_json j
 end
 
@@ -19441,9 +18969,7 @@ module ScheduledInstanceAvailabilitySet = struct
       (List.map ScheduledInstanceAvailability.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ScheduledInstanceAvailability.to_query v
-
   let to_json v = `List (List.map ScheduledInstanceAvailability.to_json v)
-
   let of_json j = Aws.Json.to_list ScheduledInstanceAvailability.of_json j
 end
 
@@ -19453,13 +18979,9 @@ module DefaultTargetCapacityType = struct
     | On_demand
 
   let str_to_t = [ "on-demand", On_demand; "spot", Spot ]
-
   let t_to_str = [ On_demand, "on-demand"; Spot, "spot" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -19469,7 +18991,6 @@ module DefaultTargetCapacityType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -19803,9 +19324,7 @@ module FleetLaunchTemplateOverridesListRequest = struct
       (List.map FleetLaunchTemplateOverridesRequest.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list FleetLaunchTemplateOverridesRequest.to_query v
-
   let to_json v = `List (List.map FleetLaunchTemplateOverridesRequest.to_json v)
-
   let of_json j = Aws.Json.to_list FleetLaunchTemplateOverridesRequest.of_json j
 end
 
@@ -19874,9 +19393,7 @@ module FleetLaunchTemplateConfigListRequest = struct
       (List.map FleetLaunchTemplateConfigRequest.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list FleetLaunchTemplateConfigRequest.to_query v
-
   let to_json v = `List (List.map FleetLaunchTemplateConfigRequest.to_json v)
-
   let of_json j = Aws.Json.to_list FleetLaunchTemplateConfigRequest.of_json j
 end
 
@@ -20144,9 +19661,7 @@ module RouteTableAssociationStateCode = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -20156,7 +19671,6 @@ module RouteTableAssociationStateCode = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -20262,9 +19776,7 @@ module InstanceCreditSpecificationListRequest = struct
       (List.map InstanceCreditSpecificationRequest.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list InstanceCreditSpecificationRequest.to_query v
-
   let to_json v = `List (List.map InstanceCreditSpecificationRequest.to_json v)
-
   let of_json j = Aws.Json.to_list InstanceCreditSpecificationRequest.of_json j
 end
 
@@ -20353,9 +19865,7 @@ module VpcCidrBlockStateCode = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -20365,7 +19875,6 @@ module VpcCidrBlockStateCode = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -20471,9 +19980,7 @@ module Phase1DHGroupNumbersRequestList = struct
       (List.map Phase1DHGroupNumbersRequestListValue.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list Phase1DHGroupNumbersRequestListValue.to_query v
-
   let to_json v = `List (List.map Phase1DHGroupNumbersRequestListValue.to_json v)
-
   let of_json j = Aws.Json.to_list Phase1DHGroupNumbersRequestListValue.of_json j
 end
 
@@ -20481,13 +19988,9 @@ module NetworkAclIdStringList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -20534,9 +20037,7 @@ module DeleteQueuedReservedInstancesErrorCode = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -20546,7 +20047,6 @@ module DeleteQueuedReservedInstancesErrorCode = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -20600,13 +20100,9 @@ module FlowLogsResourceType = struct
     | NetworkInterface
 
   let str_to_t = [ "NetworkInterface", NetworkInterface; "Subnet", Subnet; "VPC", VPC ]
-
   let t_to_str = [ NetworkInterface, "NetworkInterface"; Subnet, "Subnet"; VPC, "VPC" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -20616,7 +20112,6 @@ module FlowLogsResourceType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -20779,7 +20274,6 @@ module LaunchTemplateBlockDeviceMappingRequestList = struct
     Aws.Query.to_query_list LaunchTemplateBlockDeviceMappingRequest.to_query v
 
   let to_json v = `List (List.map LaunchTemplateBlockDeviceMappingRequest.to_json v)
-
   let of_json j = Aws.Json.to_list LaunchTemplateBlockDeviceMappingRequest.of_json j
 end
 
@@ -20792,9 +20286,7 @@ module ReservedInstancesOfferingIdStringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -20804,13 +20296,9 @@ module ReportStatusType = struct
     | Impaired
 
   let str_to_t = [ "impaired", Impaired; "ok", Ok ]
-
   let t_to_str = [ Impaired, "impaired"; Ok, "ok" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -20820,7 +20308,6 @@ module ReportStatusType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -20861,9 +20348,7 @@ module ReportInstanceReasonCodes = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -20873,7 +20358,6 @@ module ReportInstanceReasonCodes = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -20887,9 +20371,7 @@ module ReasonCodesList = struct
       (List.map ReportInstanceReasonCodes.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ReportInstanceReasonCodes.to_query v
-
   let to_json v = `List (List.map ReportInstanceReasonCodes.to_json v)
-
   let of_json j = Aws.Json.to_list ReportInstanceReasonCodes.of_json j
 end
 
@@ -20979,13 +20461,9 @@ module Ipv6SupportValue = struct
     | Disable
 
   let str_to_t = [ "disable", Disable; "enable", Enable ]
-
   let t_to_str = [ Disable, "disable"; Enable, "enable" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -20995,7 +20473,6 @@ module Ipv6SupportValue = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -21005,13 +20482,9 @@ module ApplianceModeSupportValue = struct
     | Disable
 
   let str_to_t = [ "disable", Disable; "enable", Enable ]
-
   let t_to_str = [ Disable, "disable"; Enable, "enable" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -21021,7 +20494,6 @@ module ApplianceModeSupportValue = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -21222,9 +20694,7 @@ module TransitGatewayVpcAttachmentList = struct
       (List.map TransitGatewayVpcAttachment.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list TransitGatewayVpcAttachment.to_query v
-
   let to_json v = `List (List.map TransitGatewayVpcAttachment.to_json v)
-
   let of_json j = Aws.Json.to_list TransitGatewayVpcAttachment.of_json j
 end
 
@@ -21347,9 +20817,7 @@ module Ipv6CidrBlockSet = struct
     Aws.Util.option_all (List.map Ipv6CidrBlock.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list Ipv6CidrBlock.to_query v
-
   let to_json v = `List (List.map Ipv6CidrBlock.to_json v)
-
   let of_json j = Aws.Json.to_list Ipv6CidrBlock.of_json j
 end
 
@@ -21387,9 +20855,7 @@ module CidrBlockSet = struct
     Aws.Util.option_all (List.map CidrBlock.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list CidrBlock.to_query v
-
   let to_json v = `List (List.map CidrBlock.to_json v)
-
   let of_json j = Aws.Json.to_list CidrBlock.of_json j
 end
 
@@ -21498,13 +20964,9 @@ module FleetReplacementStrategy = struct
   type t = Launch
 
   let str_to_t = [ "launch", Launch ]
-
   let t_to_str = [ Launch, "launch" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -21514,7 +20976,6 @@ module FleetReplacementStrategy = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -21601,9 +21062,7 @@ module SpotPriceHistoryList = struct
     Aws.Util.option_all (List.map SpotPrice.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list SpotPrice.to_query v
-
   let to_json v = `List (List.map SpotPrice.to_json v)
-
   let of_json j = Aws.Json.to_list SpotPrice.of_json j
 end
 
@@ -21655,13 +21114,9 @@ module ReplacementStrategy = struct
   type t = Launch
 
   let str_to_t = [ "launch", Launch ]
-
   let t_to_str = [ Launch, "launch" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -21671,7 +21126,6 @@ module ReplacementStrategy = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -21714,13 +21168,9 @@ module RequestHostIdList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -21922,13 +21372,9 @@ module UnlimitedSupportedInstanceFamily = struct
     | T4g
 
   let str_to_t = [ "t4g", T4g; "t3a", T3a; "t3", T3; "t2", T2 ]
-
   let t_to_str = [ T4g, "t4g"; T3a, "t3a"; T3, "t3"; T2, "t2" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -21938,7 +21384,6 @@ module UnlimitedSupportedInstanceFamily = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -22007,9 +21452,7 @@ module DhcpOptionsIdStringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "DhcpOptionsId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -22084,13 +21527,9 @@ module Scope = struct
     | Region
 
   let str_to_t = [ "Region", Region; "Availability Zone", Availability_Zone ]
-
   let t_to_str = [ Region, "Region"; Availability_Zone, "Availability Zone" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -22100,7 +21539,6 @@ module Scope = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -22132,9 +21570,7 @@ module ReservedInstanceState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -22144,7 +21580,6 @@ module ReservedInstanceState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -22152,13 +21587,9 @@ module RecurringChargeFrequency = struct
   type t = Hourly
 
   let str_to_t = [ "Hourly", Hourly ]
-
   let t_to_str = [ Hourly, "Hourly" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -22168,7 +21599,6 @@ module RecurringChargeFrequency = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -22224,9 +21654,7 @@ module RecurringChargesList = struct
     Aws.Util.option_all (List.map RecurringCharge.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list RecurringCharge.to_query v
-
   let to_json v = `List (List.map RecurringCharge.to_json v)
-
   let of_json j = Aws.Json.to_list RecurringCharge.of_json j
 end
 
@@ -22258,9 +21686,7 @@ module OfferingTypeValues = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -22270,7 +21696,6 @@ module OfferingTypeValues = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -22280,13 +21705,9 @@ module OfferingClassType = struct
     | Convertible
 
   let str_to_t = [ "convertible", Convertible; "standard", Standard ]
-
   let t_to_str = [ Convertible, "convertible"; Standard, "standard" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -22296,7 +21717,6 @@ module OfferingClassType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -22541,9 +21961,7 @@ module ClientVpnAuthorizationRuleStatusCode = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -22553,7 +21971,6 @@ module ClientVpnAuthorizationRuleStatusCode = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -22696,9 +22113,7 @@ module AuthorizationRuleSet = struct
     Aws.Util.option_all (List.map AuthorizationRule.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list AuthorizationRule.to_query v
-
   let to_json v = `List (List.map AuthorizationRule.to_json v)
-
   let of_json j = Aws.Json.to_list AuthorizationRule.of_json j
 end
 
@@ -22743,9 +22158,7 @@ module AssignedPrivateIpAddressList = struct
       (List.map AssignedPrivateIpAddress.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list AssignedPrivateIpAddress.to_query v
-
   let to_json v = `List (List.map AssignedPrivateIpAddress.to_json v)
-
   let of_json j = Aws.Json.to_list AssignedPrivateIpAddress.of_json j
 end
 
@@ -22771,9 +22184,7 @@ module VolumeModificationState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -22783,7 +22194,6 @@ module VolumeModificationState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -22818,9 +22228,7 @@ module ImageAttributeName = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -22830,7 +22238,6 @@ module ImageAttributeName = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -22950,13 +22357,9 @@ module ClientVpnSecurityGroupIdSet = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -23059,9 +22462,7 @@ module OwnerStringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "Owner" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -23069,13 +22470,9 @@ module FpgaImageIdList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -23189,9 +22586,7 @@ module FleetStateCode = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -23201,7 +22596,6 @@ module FleetStateCode = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -23336,13 +22730,9 @@ module MulticastSupportValue = struct
     | Disable
 
   let str_to_t = [ "disable", Disable; "enable", Enable ]
-
   let t_to_str = [ Disable, "disable"; Enable, "enable" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -23352,7 +22742,6 @@ module MulticastSupportValue = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -23362,13 +22751,9 @@ module MembershipType = struct
     | Igmp
 
   let str_to_t = [ "igmp", Igmp; "static", Static ]
-
   let t_to_str = [ Igmp, "igmp"; Static, "static" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -23378,7 +22763,6 @@ module MembershipType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -23391,9 +22775,7 @@ module InstanceTypeList = struct
     Aws.Util.option_all (List.map InstanceType.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list InstanceType.to_query v
-
   let to_json v = `List (List.map InstanceType.to_json v)
-
   let of_json j = Aws.Json.to_list InstanceType.of_json j
 end
 
@@ -23403,13 +22785,9 @@ module InstanceLifecycle = struct
     | On_demand
 
   let str_to_t = [ "on-demand", On_demand; "spot", Spot ]
-
   let t_to_str = [ On_demand, "on-demand"; Spot, "spot" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -23419,7 +22797,6 @@ module InstanceLifecycle = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -23537,9 +22914,7 @@ module ClassicLinkDnsSupportList = struct
       (List.map ClassicLinkDnsSupport.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ClassicLinkDnsSupport.to_query v
-
   let to_json v = `List (List.map ClassicLinkDnsSupport.to_json v)
-
   let of_json j = Aws.Json.to_list ClassicLinkDnsSupport.of_json j
 end
 
@@ -23547,13 +22922,9 @@ module VpcTenancy = struct
   type t = Default
 
   let str_to_t = [ "default", Default ]
-
   let t_to_str = [ Default, "default" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -23563,7 +22934,6 @@ module VpcTenancy = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -23698,13 +23068,9 @@ module VpcEndpointServiceIdList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -23856,9 +23222,7 @@ module Phase2DHGroupNumbersList = struct
       (List.map Phase2DHGroupNumbersListValue.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list Phase2DHGroupNumbersListValue.to_query v
-
   let to_json v = `List (List.map Phase2DHGroupNumbersListValue.to_json v)
-
   let of_json j = Aws.Json.to_list Phase2DHGroupNumbersListValue.of_json j
 end
 
@@ -24003,9 +23367,7 @@ module ImageState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -24015,7 +23377,6 @@ module ImageState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -24079,9 +23440,7 @@ module AvailableInstanceCapacityList = struct
     Aws.Util.option_all (List.map InstanceCapacity.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list InstanceCapacity.to_query v
-
   let to_json v = `List (List.map InstanceCapacity.to_json v)
-
   let of_json j = Aws.Json.to_list InstanceCapacity.of_json j
 end
 
@@ -24089,13 +23448,9 @@ module AssociatedNetworkType = struct
   type t = Vpc
 
   let str_to_t = [ "vpc", Vpc ]
-
   let t_to_str = [ Vpc, "vpc" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -24105,7 +23460,6 @@ module AssociatedNetworkType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -24166,9 +23520,7 @@ module ListingState = struct
     [ Pending, "pending"; Cancelled, "cancelled"; Sold, "sold"; Available, "available" ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -24178,7 +23530,6 @@ module ListingState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -24230,9 +23581,7 @@ module InstanceCountList = struct
     Aws.Util.option_all (List.map InstanceCount.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list InstanceCount.to_query v
-
   let to_json v = `List (List.map InstanceCount.to_json v)
-
   let of_json j = Aws.Json.to_list InstanceCount.of_json j
 end
 
@@ -24243,13 +23592,9 @@ module TrafficType = struct
     | ALL
 
   let str_to_t = [ "ALL", ALL; "REJECT", REJECT; "ACCEPT", ACCEPT ]
-
   let t_to_str = [ ALL, "ALL"; REJECT, "REJECT"; ACCEPT, "ACCEPT" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -24259,7 +23604,6 @@ module TrafficType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -24269,13 +23613,9 @@ module LogDestinationType = struct
     | S3
 
   let str_to_t = [ "s3", S3; "cloud-watch-logs", Cloud_watch_logs ]
-
   let t_to_str = [ S3, "s3"; Cloud_watch_logs, "cloud-watch-logs" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -24285,7 +23625,6 @@ module LogDestinationType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -24469,13 +23808,9 @@ module FlowLogResourceIds = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -24795,9 +24130,7 @@ module ByoipCidrState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -24807,7 +24140,6 @@ module ByoipCidrState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -24970,9 +24302,7 @@ module ImportImageTaskList = struct
     Aws.Util.option_all (List.map ImportImageTask.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ImportImageTask.to_query v
-
   let to_json v = `List (List.map ImportImageTask.to_json v)
-
   let of_json j = Aws.Json.to_list ImportImageTask.of_json j
 end
 
@@ -25057,9 +24387,7 @@ module VpcPeeringConnectionStateReasonCode = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -25069,7 +24397,6 @@ module VpcPeeringConnectionStateReasonCode = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -25077,13 +24404,9 @@ module FlowLogIdList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -25205,9 +24528,7 @@ module ClientVpnAuthenticationType = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -25217,7 +24538,6 @@ module ClientVpnAuthenticationType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -25404,13 +24724,9 @@ module UsageClassType = struct
     | On_demand
 
   let str_to_t = [ "on-demand", On_demand; "spot", Spot ]
-
   let t_to_str = [ On_demand, "on-demand"; Spot, "spot" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -25420,7 +24736,6 @@ module UsageClassType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -25443,9 +24758,7 @@ module LocationType = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -25455,7 +24768,6 @@ module LocationType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -25517,9 +24829,7 @@ module InstanceTypeOfferingsList = struct
     Aws.Util.option_all (List.map InstanceTypeOffering.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list InstanceTypeOffering.to_query v
-
   let to_json v = `List (List.map InstanceTypeOffering.to_json v)
-
   let of_json j = Aws.Json.to_list InstanceTypeOffering.of_json j
 end
 
@@ -25562,7 +24872,6 @@ module Phase2IntegrityAlgorithmsRequestList = struct
     Aws.Query.to_query_list Phase2IntegrityAlgorithmsRequestListValue.to_query v
 
   let to_json v = `List (List.map Phase2IntegrityAlgorithmsRequestListValue.to_json v)
-
   let of_json j = Aws.Json.to_list Phase2IntegrityAlgorithmsRequestListValue.of_json j
 end
 
@@ -25605,7 +24914,6 @@ module Phase2EncryptionAlgorithmsRequestList = struct
     Aws.Query.to_query_list Phase2EncryptionAlgorithmsRequestListValue.to_query v
 
   let to_json v = `List (List.map Phase2EncryptionAlgorithmsRequestListValue.to_json v)
-
   let of_json j = Aws.Json.to_list Phase2EncryptionAlgorithmsRequestListValue.of_json j
 end
 
@@ -25643,9 +24951,7 @@ module Phase2DHGroupNumbersRequestList = struct
       (List.map Phase2DHGroupNumbersRequestListValue.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list Phase2DHGroupNumbersRequestListValue.to_query v
-
   let to_json v = `List (List.map Phase2DHGroupNumbersRequestListValue.to_json v)
-
   let of_json j = Aws.Json.to_list Phase2DHGroupNumbersRequestListValue.of_json j
 end
 
@@ -25688,7 +24994,6 @@ module Phase1IntegrityAlgorithmsRequestList = struct
     Aws.Query.to_query_list Phase1IntegrityAlgorithmsRequestListValue.to_query v
 
   let to_json v = `List (List.map Phase1IntegrityAlgorithmsRequestListValue.to_json v)
-
   let of_json j = Aws.Json.to_list Phase1IntegrityAlgorithmsRequestListValue.of_json j
 end
 
@@ -25731,7 +25036,6 @@ module Phase1EncryptionAlgorithmsRequestList = struct
     Aws.Query.to_query_list Phase1EncryptionAlgorithmsRequestListValue.to_query v
 
   let to_json v = `List (List.map Phase1EncryptionAlgorithmsRequestListValue.to_json v)
-
   let of_json j = Aws.Json.to_list Phase1EncryptionAlgorithmsRequestListValue.of_json j
 end
 
@@ -25769,9 +25073,7 @@ module IKEVersionsRequestList = struct
       (List.map IKEVersionsRequestListValue.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list IKEVersionsRequestListValue.to_query v
-
   let to_json v = `List (List.map IKEVersionsRequestListValue.to_json v)
-
   let of_json j = Aws.Json.to_list IKEVersionsRequestListValue.of_json j
 end
 
@@ -26070,9 +25372,7 @@ module VpnTunnelOptionsSpecificationsList = struct
       (List.map VpnTunnelOptionsSpecification.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list VpnTunnelOptionsSpecification.to_query v
-
   let to_json v = `List (List.map VpnTunnelOptionsSpecification.to_json v)
-
   let of_json j = Aws.Json.to_list VpnTunnelOptionsSpecification.of_json j
 end
 
@@ -26082,13 +25382,9 @@ module TunnelInsideIpVersion = struct
     | Ipv6
 
   let str_to_t = [ "ipv6", Ipv6; "ipv4", Ipv4 ]
-
   let t_to_str = [ Ipv6, "ipv6"; Ipv4, "ipv4" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -26098,7 +25394,6 @@ module TunnelInsideIpVersion = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -26271,13 +25566,9 @@ module ElasticGpuState = struct
   type t = ATTACHED
 
   let str_to_t = [ "ATTACHED", ATTACHED ]
-
   let t_to_str = [ ATTACHED, "ATTACHED" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -26287,7 +25578,6 @@ module ElasticGpuState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -26297,13 +25587,9 @@ module ElasticGpuStatus = struct
     | IMPAIRED
 
   let str_to_t = [ "IMPAIRED", IMPAIRED; "OK", OK ]
-
   let t_to_str = [ IMPAIRED, "IMPAIRED"; OK, "OK" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -26313,7 +25599,6 @@ module ElasticGpuStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -26457,9 +25742,7 @@ module ElasticGpuSet = struct
     Aws.Util.option_all (List.map ElasticGpus.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ElasticGpus.to_query v
-
   let to_json v = `List (List.map ElasticGpus.to_json v)
-
   let of_json j = Aws.Json.to_list ElasticGpus.of_json j
 end
 
@@ -26543,9 +25826,7 @@ module BatchState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -26555,7 +25836,6 @@ module BatchState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -26657,9 +25937,7 @@ module BundleTaskState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -26669,7 +25947,6 @@ module BundleTaskState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -26726,13 +26003,9 @@ module Ipv6AddressList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -26879,9 +26152,7 @@ module LaunchTemplateOverridesList = struct
       (List.map LaunchTemplateOverrides.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list LaunchTemplateOverrides.to_query v
-
   let to_json v = `List (List.map LaunchTemplateOverrides.to_json v)
-
   let of_json j = Aws.Json.to_list LaunchTemplateOverrides.of_json j
 end
 
@@ -26948,9 +26219,7 @@ module LaunchTemplateConfigList = struct
     Aws.Util.option_all (List.map LaunchTemplateConfig.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list LaunchTemplateConfig.to_query v
-
   let to_json v = `List (List.map LaunchTemplateConfig.to_json v)
-
   let of_json j = Aws.Json.to_list LaunchTemplateConfig.of_json j
 end
 
@@ -26960,13 +26229,9 @@ module ExcessCapacityTerminationPolicy = struct
     | Default
 
   let str_to_t = [ "default", Default; "noTermination", NoTermination ]
-
   let t_to_str = [ Default, "default"; NoTermination, "noTermination" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -26976,7 +26241,6 @@ module ExcessCapacityTerminationPolicy = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -27382,9 +26646,7 @@ module NetworkInterfacePermissionStateCode = struct
     [ Revoked, "revoked"; Revoking, "revoking"; Granted, "granted"; Pending, "pending" ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -27394,7 +26656,6 @@ module NetworkInterfacePermissionStateCode = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -27477,9 +26738,7 @@ module DnsEntrySet = struct
     Aws.Util.option_all (List.map DnsEntry.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list DnsEntry.to_query v
-
   let to_json v = `List (List.map DnsEntry.to_json v)
-
   let of_json j = Aws.Json.to_list DnsEntry.of_json j
 end
 
@@ -27628,13 +26887,9 @@ module VpcState = struct
     | Available
 
   let str_to_t = [ "available", Available; "pending", Pending ]
-
   let t_to_str = [ Available, "available"; Pending, "pending" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -27644,7 +26899,6 @@ module VpcState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -27740,9 +26994,7 @@ module VpcIpv6CidrBlockAssociationSet = struct
       (List.map VpcIpv6CidrBlockAssociation.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list VpcIpv6CidrBlockAssociation.to_query v
-
   let to_json v = `List (List.map VpcIpv6CidrBlockAssociation.to_json v)
-
   let of_json j = Aws.Json.to_list VpcIpv6CidrBlockAssociation.of_json j
 end
 
@@ -27756,9 +27008,7 @@ module VpcCidrBlockAssociationSet = struct
       (List.map VpcCidrBlockAssociation.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list VpcCidrBlockAssociation.to_query v
-
   let to_json v = `List (List.map VpcCidrBlockAssociation.to_json v)
-
   let of_json j = Aws.Json.to_list VpcCidrBlockAssociation.of_json j
 end
 
@@ -27912,13 +27162,9 @@ module VpcList = struct
   type t = Vpc.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map Vpc.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list Vpc.to_query v
-
   let to_json v = `List (List.map Vpc.to_json v)
-
   let of_json j = Aws.Json.to_list Vpc.of_json j
 end
 
@@ -27966,13 +27212,9 @@ module ProductCodeValues = struct
     | Marketplace
 
   let str_to_t = [ "marketplace", Marketplace; "devpay", Devpay ]
-
   let t_to_str = [ Marketplace, "marketplace"; Devpay, "devpay" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -27982,7 +27224,6 @@ module ProductCodeValues = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -28037,9 +27278,7 @@ module ProductCodeList = struct
     Aws.Util.option_all (List.map ProductCode.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ProductCode.to_query v
-
   let to_json v = `List (List.map ProductCode.to_json v)
-
   let of_json j = Aws.Json.to_list ProductCode.of_json j
 end
 
@@ -28104,13 +27343,9 @@ module LocalGatewayVirtualInterfaceIdSet = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -28238,9 +27473,7 @@ module InternetGatewayList = struct
     Aws.Util.option_all (List.map InternetGateway.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list InternetGateway.to_query v
-
   let to_json v = `List (List.map InternetGateway.to_json v)
-
   let of_json j = Aws.Json.to_list InternetGateway.of_json j
 end
 
@@ -28248,13 +27481,9 @@ module ResponseHostIdSet = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -28280,9 +27509,7 @@ module ReservationState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -28292,7 +27519,6 @@ module ReservationState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -28467,9 +27693,7 @@ module HostReservationSet = struct
     Aws.Util.option_all (List.map HostReservation.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list HostReservation.to_query v
-
   let to_json v = `List (List.map HostReservation.to_json v)
-
   let of_json j = Aws.Json.to_list HostReservation.of_json j
 end
 
@@ -28507,9 +27731,7 @@ module State = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -28519,7 +27741,6 @@ module State = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -28659,9 +27880,7 @@ module VpnGatewayIdStringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "VpnGatewayId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -28679,9 +27898,7 @@ module ClientVpnRouteStatusCode = struct
     [ Deleting, "deleting"; Failed, "failed"; Active, "active"; Creating, "creating" ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -28691,7 +27908,6 @@ module ClientVpnRouteStatusCode = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -28924,9 +28140,7 @@ module RouteTableAssociationList = struct
       (List.map RouteTableAssociation.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list RouteTableAssociation.to_query v
-
   let to_json v = `List (List.map RouteTableAssociation.to_json v)
-
   let of_json j = Aws.Json.to_list RouteTableAssociation.of_json j
 end
 
@@ -28964,9 +28178,7 @@ module PropagatingVgwList = struct
     Aws.Util.option_all (List.map PropagatingVgw.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list PropagatingVgw.to_query v
-
   let to_json v = `List (List.map PropagatingVgw.to_json v)
-
   let of_json j = Aws.Json.to_list PropagatingVgw.of_json j
 end
 
@@ -29077,9 +28289,7 @@ module RouteTableList = struct
     Aws.Util.option_all (List.map RouteTable.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list RouteTable.to_query v
-
   let to_json v = `List (List.map RouteTable.to_json v)
-
   let of_json j = Aws.Json.to_list RouteTable.of_json j
 end
 
@@ -29087,13 +28297,9 @@ module RouteTableIdStringList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -29106,9 +28312,7 @@ module PublicIpv4PoolRangeSet = struct
     Aws.Util.option_all (List.map PublicIpv4PoolRange.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list PublicIpv4PoolRange.to_query v
-
   let to_json v = `List (List.map PublicIpv4PoolRange.to_json v)
-
   let of_json j = Aws.Json.to_list PublicIpv4PoolRange.of_json j
 end
 
@@ -29228,9 +28432,7 @@ module PublicIpv4PoolSet = struct
     Aws.Util.option_all (List.map PublicIpv4Pool.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list PublicIpv4Pool.to_query v
-
   let to_json v = `List (List.map PublicIpv4Pool.to_json v)
-
   let of_json j = Aws.Json.to_list PublicIpv4Pool.of_json j
 end
 
@@ -29675,13 +28877,9 @@ module LaunchTemplateNameStringList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -29837,9 +29035,7 @@ module PurchaseSet = struct
     Aws.Util.option_all (List.map Purchase.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list Purchase.to_query v
-
   let to_json v = `List (List.map Purchase.to_json v)
-
   let of_json j = Aws.Json.to_list Purchase.of_json j
 end
 
@@ -30087,9 +29283,7 @@ module InstancePrivateIpAddressList = struct
       (List.map InstancePrivateIpAddress.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list InstancePrivateIpAddress.to_query v
-
   let to_json v = `List (List.map InstancePrivateIpAddress.to_json v)
-
   let of_json j = Aws.Json.to_list InstancePrivateIpAddress.of_json j
 end
 
@@ -30398,9 +29592,7 @@ module VolumeIdStringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "VolumeId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -30472,13 +29664,9 @@ module InstanceHealthStatus = struct
     | Unhealthy
 
   let str_to_t = [ "unhealthy", Unhealthy; "healthy", Healthy ]
-
   let t_to_str = [ Unhealthy, "unhealthy"; Healthy, "healthy" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -30488,7 +29676,6 @@ module InstanceHealthStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -30562,9 +29749,7 @@ module ActiveInstanceSet = struct
     Aws.Util.option_all (List.map ActiveInstance.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ActiveInstance.to_query v
-
   let to_json v = `List (List.map ActiveInstance.to_json v)
-
   let of_json j = Aws.Json.to_list ActiveInstance.of_json j
 end
 
@@ -30572,7 +29757,6 @@ module CreateVpcResult = struct
   type t = { vpc : Vpc.t option }
 
   let make ?vpc () = { vpc }
-
   let parse xml = Some { vpc = Aws.Util.option_bind (Aws.Xml.member "vpc" xml) Vpc.parse }
 
   let to_query v =
@@ -30620,13 +29804,9 @@ module LocalGatewayVirtualInterfaceGroupIdSet = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -30734,9 +29914,7 @@ module TransitGatewayRouteTableState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -30746,7 +29924,6 @@ module TransitGatewayRouteTableState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -30878,9 +30055,7 @@ module ReservedInstancesConfigurationList = struct
       (List.map ReservedInstancesConfiguration.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ReservedInstancesConfiguration.to_query v
-
   let to_json v = `List (List.map ReservedInstancesConfiguration.to_json v)
-
   let of_json j = Aws.Json.to_list ReservedInstancesConfiguration.of_json j
 end
 
@@ -30900,9 +30075,7 @@ module TrafficMirrorTargetType = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -30912,7 +30085,6 @@ module TrafficMirrorTargetType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -31021,9 +30193,7 @@ module TrafficMirrorTargetSet = struct
     Aws.Util.option_all (List.map TrafficMirrorTarget.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list TrafficMirrorTarget.to_query v
-
   let to_json v = `List (List.map TrafficMirrorTarget.to_json v)
-
   let of_json j = Aws.Json.to_list TrafficMirrorTarget.of_json j
 end
 
@@ -31049,9 +30219,7 @@ module TransitGatewayPrefixListReferenceState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -31061,7 +30229,6 @@ module TransitGatewayPrefixListReferenceState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -31275,9 +30442,7 @@ module FleetIdSet = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -31412,9 +30577,7 @@ module TransitGatewayRouteTableList = struct
       (List.map TransitGatewayRouteTable.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list TransitGatewayRouteTable.to_query v
-
   let to_json v = `List (List.map TransitGatewayRouteTable.to_json v)
-
   let of_json j = Aws.Json.to_list TransitGatewayRouteTable.of_json j
 end
 
@@ -31422,13 +30585,9 @@ module LaunchTemplateIdStringList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -31469,13 +30628,9 @@ module VirtualizationType = struct
     | Paravirtual
 
   let str_to_t = [ "paravirtual", Paravirtual; "hvm", Hvm ]
-
   let t_to_str = [ Paravirtual, "paravirtual"; Hvm, "hvm" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -31485,7 +30640,6 @@ module VirtualizationType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -31565,9 +30719,7 @@ module LicenseList = struct
     Aws.Util.option_all (List.map LicenseConfiguration.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list LicenseConfiguration.to_query v
-
   let to_json v = `List (List.map LicenseConfiguration.to_json v)
-
   let of_json j = Aws.Json.to_list LicenseConfiguration.of_json j
 end
 
@@ -31599,9 +30751,7 @@ module InstanceStateName = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -31611,7 +30761,6 @@ module InstanceStateName = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -31665,9 +30814,7 @@ module InstanceNetworkInterfaceList = struct
       (List.map InstanceNetworkInterface.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list InstanceNetworkInterface.to_query v
-
   let to_json v = `List (List.map InstanceNetworkInterface.to_json v)
-
   let of_json j = Aws.Json.to_list InstanceNetworkInterface.of_json j
 end
 
@@ -31677,13 +30824,9 @@ module InstanceMetadataOptionsState = struct
     | Applied
 
   let str_to_t = [ "applied", Applied; "pending", Pending ]
-
   let t_to_str = [ Applied, "applied"; Pending, "pending" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -31693,7 +30836,6 @@ module InstanceMetadataOptionsState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -31703,13 +30845,9 @@ module InstanceMetadataEndpointState = struct
     | Enabled
 
   let str_to_t = [ "enabled", Enabled; "disabled", Disabled ]
-
   let t_to_str = [ Enabled, "enabled"; Disabled, "disabled" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -31719,7 +30857,6 @@ module InstanceMetadataEndpointState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -31729,13 +30866,9 @@ module HttpTokensState = struct
     | Required
 
   let str_to_t = [ "required", Required; "optional", Optional ]
-
   let t_to_str = [ Required, "required"; Optional, "optional" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -31745,7 +30878,6 @@ module HttpTokensState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -31826,13 +30958,9 @@ module InstanceLifecycleType = struct
     | Scheduled
 
   let str_to_t = [ "scheduled", Scheduled; "spot", Spot ]
-
   let t_to_str = [ Scheduled, "scheduled"; Spot, "spot" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -31842,7 +30970,6 @@ module InstanceLifecycleType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -31886,13 +31013,9 @@ module HypervisorType = struct
     | Xen
 
   let str_to_t = [ "xen", Xen; "ovm", Ovm ]
-
   let t_to_str = [ Xen, "xen"; Ovm, "ovm" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -31902,7 +31025,6 @@ module HypervisorType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -31943,7 +31065,6 @@ module ElasticInferenceAcceleratorAssociationList = struct
     Aws.Query.to_query_list ElasticInferenceAcceleratorAssociation.to_query v
 
   let to_json v = `List (List.map ElasticInferenceAcceleratorAssociation.to_json v)
-
   let of_json j = Aws.Json.to_list ElasticInferenceAcceleratorAssociation.of_json j
 end
 
@@ -32033,9 +31154,7 @@ module ElasticGpuAssociationList = struct
       (List.map ElasticGpuAssociation.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ElasticGpuAssociation.to_query v
-
   let to_json v = `List (List.map ElasticGpuAssociation.to_json v)
-
   let of_json j = Aws.Json.to_list ElasticGpuAssociation.of_json j
 end
 
@@ -32045,13 +31164,9 @@ module DeviceType = struct
     | Instance_store
 
   let str_to_t = [ "instance-store", Instance_store; "ebs", Ebs ]
-
   let t_to_str = [ Instance_store, "instance-store"; Ebs, "ebs" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -32061,7 +31176,6 @@ module DeviceType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -32772,9 +31886,7 @@ module InstanceList = struct
     Aws.Util.option_all (List.map Instance.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list Instance.to_query v
-
   let to_json v = `List (List.map Instance.to_json v)
-
   let of_json j = Aws.Json.to_list Instance.of_json j
 end
 
@@ -32857,9 +31969,7 @@ module ReservationList = struct
     Aws.Util.option_all (List.map Reservation.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list Reservation.to_query v
-
   let to_json v = `List (List.map Reservation.to_json v)
-
   let of_json j = Aws.Json.to_list Reservation.of_json j
 end
 
@@ -32915,9 +32025,7 @@ module VirtualizationTypeList = struct
     Aws.Util.option_all (List.map VirtualizationType.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list VirtualizationType.to_query v
-
   let to_json v = `List (List.map VirtualizationType.to_json v)
-
   let of_json j = Aws.Json.to_list VirtualizationType.of_json j
 end
 
@@ -32930,9 +32038,7 @@ module ThreadsPerCoreList = struct
     Aws.Util.option_all (List.map Integer.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list Integer.to_query v
-
   let to_json v = `List (List.map Integer.to_json v)
-
   let of_json j = Aws.Json.to_list Integer.of_json j
 end
 
@@ -32945,9 +32051,7 @@ module CoreCountList = struct
     Aws.Util.option_all (List.map Integer.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list Integer.to_query v
-
   let to_json v = `List (List.map Integer.to_json v)
-
   let of_json j = Aws.Json.to_list Integer.of_json j
 end
 
@@ -33048,9 +32152,7 @@ module UsageClassTypeList = struct
     Aws.Util.option_all (List.map UsageClassType.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list UsageClassType.to_query v
-
   let to_json v = `List (List.map UsageClassType.to_json v)
-
   let of_json j = Aws.Json.to_list UsageClassType.of_json j
 end
 
@@ -33060,13 +32162,9 @@ module RootDeviceType = struct
     | Instance_store
 
   let str_to_t = [ "instance-store", Instance_store; "ebs", Ebs ]
-
   let t_to_str = [ Instance_store, "instance-store"; Ebs, "ebs" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -33076,7 +32174,6 @@ module RootDeviceType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -33089,9 +32186,7 @@ module RootDeviceTypeList = struct
     Aws.Util.option_all (List.map RootDeviceType.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list RootDeviceType.to_query v
-
   let to_json v = `List (List.map RootDeviceType.to_json v)
-
   let of_json j = Aws.Json.to_list RootDeviceType.of_json j
 end
 
@@ -33155,13 +32250,9 @@ module PlacementGroupStrategy = struct
     | Spread
 
   let str_to_t = [ "spread", Spread; "partition", Partition; "cluster", Cluster ]
-
   let t_to_str = [ Spread, "spread"; Partition, "partition"; Cluster, "cluster" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -33171,7 +32262,6 @@ module PlacementGroupStrategy = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -33185,9 +32275,7 @@ module PlacementGroupStrategyList = struct
       (List.map PlacementGroupStrategy.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list PlacementGroupStrategy.to_query v
-
   let to_json v = `List (List.map PlacementGroupStrategy.to_json v)
-
   let of_json j = Aws.Json.to_list PlacementGroupStrategy.of_json j
 end
 
@@ -33239,9 +32327,7 @@ module NetworkCardInfoList = struct
     Aws.Util.option_all (List.map NetworkCardInfo.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list NetworkCardInfo.to_query v
-
   let to_json v = `List (List.map NetworkCardInfo.to_json v)
-
   let of_json j = Aws.Json.to_list NetworkCardInfo.of_json j
 end
 
@@ -33258,9 +32344,7 @@ module EnaSupport = struct
     [ Required, "required"; Supported, "supported"; Unsupported, "unsupported" ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -33270,7 +32354,6 @@ module EnaSupport = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -33456,13 +32539,9 @@ module InstanceTypeHypervisor = struct
     | Xen
 
   let str_to_t = [ "xen", Xen; "nitro", Nitro ]
-
   let t_to_str = [ Xen, "xen"; Nitro, "nitro" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -33472,7 +32551,6 @@ module InstanceTypeHypervisor = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -33489,9 +32567,7 @@ module EphemeralNvmeSupport = struct
     [ Required, "required"; Supported, "supported"; Unsupported, "unsupported" ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -33501,7 +32577,6 @@ module EphemeralNvmeSupport = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -33511,13 +32586,9 @@ module DiskType = struct
     | Ssd
 
   let str_to_t = [ "ssd", Ssd; "hdd", Hdd ]
-
   let t_to_str = [ Ssd, "ssd"; Hdd, "hdd" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -33527,7 +32598,6 @@ module DiskType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -33582,9 +32652,7 @@ module DiskInfoList = struct
     Aws.Util.option_all (List.map DiskInfo.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list DiskInfo.to_query v
-
   let to_json v = `List (List.map DiskInfo.to_json v)
-
   let of_json j = Aws.Json.to_list DiskInfo.of_json j
 end
 
@@ -33694,9 +32762,7 @@ module InferenceDeviceInfoList = struct
       (List.map InferenceDeviceInfo.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list InferenceDeviceInfo.to_query v
-
   let to_json v = `List (List.map InferenceDeviceInfo.to_json v)
-
   let of_json j = Aws.Json.to_list InferenceDeviceInfo.of_json j
 end
 
@@ -33825,9 +32891,7 @@ module FpgaDeviceInfoList = struct
     Aws.Util.option_all (List.map FpgaDeviceInfo.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list FpgaDeviceInfo.to_query v
-
   let to_json v = `List (List.map FpgaDeviceInfo.to_json v)
-
   let of_json j = Aws.Json.to_list FpgaDeviceInfo.of_json j
 end
 
@@ -33887,9 +32951,7 @@ module EbsOptimizedSupport = struct
     [ Default, "default"; Supported, "supported"; Unsupported, "unsupported" ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -33899,7 +32961,6 @@ module EbsOptimizedSupport = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -34010,9 +33071,7 @@ module EbsNvmeSupport = struct
     [ Required, "required"; Supported, "supported"; Unsupported, "unsupported" ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -34022,7 +33081,6 @@ module EbsNvmeSupport = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -34032,13 +33090,9 @@ module EbsEncryptionSupport = struct
     | Supported
 
   let str_to_t = [ "supported", Supported; "unsupported", Unsupported ]
-
   let t_to_str = [ Supported, "supported"; Unsupported, "unsupported" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -34048,7 +33102,6 @@ module EbsEncryptionSupport = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -34447,9 +33500,7 @@ module InstanceTypeInfoList = struct
     Aws.Util.option_all (List.map InstanceTypeInfo.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list InstanceTypeInfo.to_query v
-
   let to_json v = `List (List.map InstanceTypeInfo.to_json v)
-
   let of_json j = Aws.Json.to_list InstanceTypeInfo.of_json j
 end
 
@@ -34499,9 +33550,7 @@ module PrefixListState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -34511,7 +33560,6 @@ module PrefixListState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -34887,9 +33935,7 @@ module PricingDetailsList = struct
     Aws.Util.option_all (List.map PricingDetail.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list PricingDetail.to_query v
-
   let to_json v = `List (List.map PricingDetail.to_json v)
-
   let of_json j = Aws.Json.to_list PricingDetail.of_json j
 end
 
@@ -35104,9 +34150,7 @@ module ReservedInstancesOfferingList = struct
       (List.map ReservedInstancesOffering.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ReservedInstancesOffering.to_query v
-
   let to_json v = `List (List.map ReservedInstancesOffering.to_json v)
-
   let of_json j = Aws.Json.to_list ReservedInstancesOffering.of_json j
 end
 
@@ -35220,9 +34264,7 @@ module UnsuccessfulInstanceCreditSpecificationErrorCode = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -35232,7 +34274,6 @@ module UnsuccessfulInstanceCreditSpecificationErrorCode = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -35339,7 +34380,6 @@ module UnsuccessfulInstanceCreditSpecificationSet = struct
     Aws.Query.to_query_list UnsuccessfulInstanceCreditSpecificationItem.to_query v
 
   let to_json v = `List (List.map UnsuccessfulInstanceCreditSpecificationItem.to_json v)
-
   let of_json j = Aws.Json.to_list UnsuccessfulInstanceCreditSpecificationItem.of_json j
 end
 
@@ -35384,7 +34424,6 @@ module SuccessfulInstanceCreditSpecificationSet = struct
     Aws.Query.to_query_list SuccessfulInstanceCreditSpecificationItem.to_query v
 
   let to_json v = `List (List.map SuccessfulInstanceCreditSpecificationItem.to_json v)
-
   let of_json j = Aws.Json.to_list SuccessfulInstanceCreditSpecificationItem.of_json j
 end
 
@@ -35475,7 +34514,6 @@ module LaunchTemplateElasticInferenceAcceleratorList = struct
     Aws.Query.to_query_list LaunchTemplateElasticInferenceAccelerator.to_query v
 
   let to_json v = `List (List.map LaunchTemplateElasticInferenceAccelerator.to_json v)
-
   let of_json j = Aws.Json.to_list LaunchTemplateElasticInferenceAccelerator.of_json j
 end
 
@@ -35588,9 +34626,7 @@ module CancelSpotFleetRequestsSuccessSet = struct
       (List.map CancelSpotFleetRequestsSuccessItem.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list CancelSpotFleetRequestsSuccessItem.to_query v
-
   let to_json v = `List (List.map CancelSpotFleetRequestsSuccessItem.to_json v)
-
   let of_json j = Aws.Json.to_list CancelSpotFleetRequestsSuccessItem.of_json j
 end
 
@@ -35784,9 +34820,7 @@ module PriceScheduleList = struct
     Aws.Util.option_all (List.map PriceSchedule.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list PriceSchedule.to_query v
-
   let to_json v = `List (List.map PriceSchedule.to_json v)
-
   let of_json j = Aws.Json.to_list PriceSchedule.of_json j
 end
 
@@ -35936,13 +34970,9 @@ module RuleAction = struct
     | Deny
 
   let str_to_t = [ "deny", Deny; "allow", Allow ]
-
   let t_to_str = [ Deny, "deny"; Allow, "allow" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -35952,7 +34982,6 @@ module RuleAction = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -36134,9 +35163,7 @@ module NetworkAclEntryList = struct
     Aws.Util.option_all (List.map NetworkAclEntry.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list NetworkAclEntry.to_query v
-
   let to_json v = `List (List.map NetworkAclEntry.to_json v)
-
   let of_json j = Aws.Json.to_list NetworkAclEntry.of_json j
 end
 
@@ -36162,9 +35189,7 @@ module TransitGatewayMulitcastDomainAssociationState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -36174,7 +35199,6 @@ module TransitGatewayMulitcastDomainAssociationState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -36302,7 +35326,6 @@ module TransitGatewayMulticastDomainAssociationList = struct
     Aws.Query.to_query_list TransitGatewayMulticastDomainAssociation.to_query v
 
   let to_json v = `List (List.map TransitGatewayMulticastDomainAssociation.to_json v)
-
   let of_json j = Aws.Json.to_list TransitGatewayMulticastDomainAssociation.of_json j
 end
 
@@ -36362,13 +35385,9 @@ module HostTenancy = struct
     | Host
 
   let str_to_t = [ "host", Host; "dedicated", Dedicated ]
-
   let t_to_str = [ Host, "host"; Dedicated, "dedicated" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -36378,7 +35397,6 @@ module HostTenancy = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -36420,13 +35438,9 @@ module ExportEnvironment = struct
     | Microsoft
 
   let str_to_t = [ "microsoft", Microsoft; "vmware", Vmware; "citrix", Citrix ]
-
   let t_to_str = [ Microsoft, "microsoft"; Vmware, "vmware"; Citrix, "citrix" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -36436,7 +35450,6 @@ module ExportEnvironment = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -36541,9 +35554,7 @@ module InstanceStateChangeList = struct
     Aws.Util.option_all (List.map InstanceStateChange.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list InstanceStateChange.to_query v
-
   let to_json v = `List (List.map InstanceStateChange.to_json v)
-
   let of_json j = Aws.Json.to_list InstanceStateChange.of_json j
 end
 
@@ -36586,13 +35597,9 @@ module ContainerFormat = struct
   type t = Ova
 
   let str_to_t = [ "ova", Ova ]
-
   let t_to_str = [ Ova, "ova" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -36602,7 +35609,6 @@ module ContainerFormat = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -36782,9 +35788,7 @@ module ExportTaskList = struct
     Aws.Util.option_all (List.map ExportTask.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ExportTask.to_query v
-
   let to_json v = `List (List.map ExportTask.to_json v)
-
   let of_json j = Aws.Json.to_list ExportTask.of_json j
 end
 
@@ -36792,13 +35796,9 @@ module EgressOnlyInternetGatewayIdList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -36806,13 +35806,9 @@ module IpRanges = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -36881,13 +35877,9 @@ module TrafficDirection = struct
     | Egress
 
   let str_to_t = [ "egress", Egress; "ingress", Ingress ]
-
   let t_to_str = [ Egress, "egress"; Ingress, "ingress" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -36897,7 +35889,6 @@ module TrafficDirection = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -36965,9 +35956,7 @@ module FleetLaunchTemplateConfigList = struct
       (List.map FleetLaunchTemplateConfig.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list FleetLaunchTemplateConfig.to_query v
-
   let to_json v = `List (List.map FleetLaunchTemplateConfig.to_json v)
-
   let of_json j = Aws.Json.to_list FleetLaunchTemplateConfig.of_json j
 end
 
@@ -37026,9 +36015,7 @@ module SpotInstanceRequestIdList = struct
       (List.map String.parse (Aws.Xml.members "SpotInstanceRequestId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -37192,9 +36179,7 @@ module UnsuccessfulItemList = struct
     Aws.Util.option_all (List.map UnsuccessfulItem.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list UnsuccessfulItem.to_query v
-
   let to_json v = `List (List.map UnsuccessfulItem.to_json v)
-
   let of_json j = Aws.Json.to_list UnsuccessfulItem.of_json j
 end
 
@@ -37202,13 +36187,9 @@ module ResponseHostIdList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -37377,9 +36358,7 @@ module CustomerGatewayList = struct
     Aws.Util.option_all (List.map CustomerGateway.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list CustomerGateway.to_query v
-
   let to_json v = `List (List.map CustomerGateway.to_json v)
-
   let of_json j = Aws.Json.to_list CustomerGateway.of_json j
 end
 
@@ -37649,9 +36628,7 @@ module RemovePrefixListEntries = struct
       (List.map RemovePrefixListEntry.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list RemovePrefixListEntry.to_query v
-
   let to_json v = `List (List.map RemovePrefixListEntry.to_json v)
-
   let of_json j = Aws.Json.to_list RemovePrefixListEntry.of_json j
 end
 
@@ -37702,9 +36679,7 @@ module AddPrefixListEntries = struct
     Aws.Util.option_all (List.map AddPrefixListEntry.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list AddPrefixListEntry.to_query v
-
   let to_json v = `List (List.map AddPrefixListEntry.to_json v)
-
   let of_json j = Aws.Json.to_list AddPrefixListEntry.of_json j
 end
 
@@ -37851,9 +36826,7 @@ module CreateVolumePermissionList = struct
       (List.map CreateVolumePermission.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list CreateVolumePermission.to_query v
-
   let to_json v = `List (List.map CreateVolumePermission.to_json v)
-
   let of_json j = Aws.Json.to_list CreateVolumePermission.of_json j
 end
 
@@ -37909,13 +36882,9 @@ module ElasticGpuIdSet = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -38280,13 +37249,9 @@ module InstanceMatchCriteria = struct
     | Targeted
 
   let str_to_t = [ "targeted", Targeted; "open", Open ]
-
   let t_to_str = [ Targeted, "targeted"; Open, "open" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -38296,7 +37261,6 @@ module InstanceMatchCriteria = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -38304,13 +37268,9 @@ module ResetFpgaImageAttributeName = struct
   type t = LoadPermission
 
   let str_to_t = [ "loadPermission", LoadPermission ]
-
   let t_to_str = [ LoadPermission, "loadPermission" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -38320,7 +37280,6 @@ module ResetFpgaImageAttributeName = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -38328,13 +37287,9 @@ module RequestSpotLaunchSpecificationSecurityGroupIdList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -38342,13 +37297,9 @@ module ConversionIdStringList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -38614,9 +37565,7 @@ module VpcIdStringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "VpcId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -39028,13 +37977,9 @@ module DomainType = struct
     | Standard
 
   let str_to_t = [ "standard", Standard; "vpc", Vpc ]
-
   let t_to_str = [ Standard, "standard"; Vpc, "vpc" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -39044,7 +37989,6 @@ module DomainType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -39252,13 +38196,9 @@ module VpnStaticRouteSource = struct
   type t = Static
 
   let str_to_t = [ "Static", Static ]
-
   let t_to_str = [ Static, "Static" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -39268,7 +38208,6 @@ module VpnStaticRouteSource = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -39294,9 +38233,7 @@ module VpnState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -39306,7 +38243,6 @@ module VpnState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -39368,9 +38304,7 @@ module VpnStaticRouteList = struct
     Aws.Util.option_all (List.map VpnStaticRoute.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list VpnStaticRoute.to_query v
-
   let to_json v = `List (List.map VpnStaticRoute.to_json v)
-
   let of_json j = Aws.Json.to_list VpnStaticRoute.of_json j
 end
 
@@ -39408,9 +38342,7 @@ module Phase2IntegrityAlgorithmsList = struct
       (List.map Phase2IntegrityAlgorithmsListValue.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list Phase2IntegrityAlgorithmsListValue.to_query v
-
   let to_json v = `List (List.map Phase2IntegrityAlgorithmsListValue.to_json v)
-
   let of_json j = Aws.Json.to_list Phase2IntegrityAlgorithmsListValue.of_json j
 end
 
@@ -39448,9 +38380,7 @@ module Phase2EncryptionAlgorithmsList = struct
       (List.map Phase2EncryptionAlgorithmsListValue.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list Phase2EncryptionAlgorithmsListValue.to_query v
-
   let to_json v = `List (List.map Phase2EncryptionAlgorithmsListValue.to_json v)
-
   let of_json j = Aws.Json.to_list Phase2EncryptionAlgorithmsListValue.of_json j
 end
 
@@ -39488,9 +38418,7 @@ module Phase1IntegrityAlgorithmsList = struct
       (List.map Phase1IntegrityAlgorithmsListValue.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list Phase1IntegrityAlgorithmsListValue.to_query v
-
   let to_json v = `List (List.map Phase1IntegrityAlgorithmsListValue.to_json v)
-
   let of_json j = Aws.Json.to_list Phase1IntegrityAlgorithmsListValue.of_json j
 end
 
@@ -39528,9 +38456,7 @@ module Phase1DHGroupNumbersList = struct
       (List.map Phase1DHGroupNumbersListValue.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list Phase1DHGroupNumbersListValue.to_query v
-
   let to_json v = `List (List.map Phase1DHGroupNumbersListValue.to_json v)
-
   let of_json j = Aws.Json.to_list Phase1DHGroupNumbersListValue.of_json j
 end
 
@@ -39567,9 +38493,7 @@ module IKEVersionsList = struct
     Aws.Util.option_all (List.map IKEVersionsListValue.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list IKEVersionsListValue.to_query v
-
   let to_json v = `List (List.map IKEVersionsListValue.to_json v)
-
   let of_json j = Aws.Json.to_list IKEVersionsListValue.of_json j
 end
 
@@ -39871,9 +38795,7 @@ module TunnelOptionsList = struct
     Aws.Util.option_all (List.map TunnelOption.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list TunnelOption.to_query v
-
   let to_json v = `List (List.map TunnelOption.to_json v)
-
   let of_json j = Aws.Json.to_list TunnelOption.of_json j
 end
 
@@ -40004,13 +38926,9 @@ module GatewayType = struct
   type t = Ipsec_1
 
   let str_to_t = [ "ipsec.1", Ipsec_1 ]
-
   let t_to_str = [ Ipsec_1, "ipsec.1" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -40020,7 +38938,6 @@ module GatewayType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -40308,9 +39225,7 @@ module VpcAttachmentList = struct
     Aws.Util.option_all (List.map VpcAttachment.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list VpcAttachment.to_query v
-
   let to_json v = `List (List.map VpcAttachment.to_json v)
-
   let of_json j = Aws.Json.to_list VpcAttachment.of_json j
 end
 
@@ -40423,9 +39338,7 @@ module VpnGatewayList = struct
     Aws.Util.option_all (List.map VpnGateway.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list VpnGateway.to_query v
-
   let to_json v = `List (List.map VpnGateway.to_json v)
-
   let of_json j = Aws.Json.to_list VpnGateway.of_json j
 end
 
@@ -40451,9 +39364,7 @@ module DeleteFleetErrorCode = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -40463,7 +39374,6 @@ module DeleteFleetErrorCode = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -40548,9 +39458,7 @@ module DeleteFleetErrorSet = struct
     Aws.Util.option_all (List.map DeleteFleetErrorItem.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list DeleteFleetErrorItem.to_query v
-
   let to_json v = `List (List.map DeleteFleetErrorItem.to_json v)
-
   let of_json j = Aws.Json.to_list DeleteFleetErrorItem.of_json j
 end
 
@@ -40703,9 +39611,7 @@ module PrincipalIdFormatList = struct
     Aws.Util.option_all (List.map PrincipalIdFormat.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list PrincipalIdFormat.to_query v
-
   let to_json v = `List (List.map PrincipalIdFormat.to_json v)
-
   let of_json j = Aws.Json.to_list PrincipalIdFormat.of_json j
 end
 
@@ -40784,9 +39690,7 @@ module FpgaImageStateCode = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -40796,7 +39700,6 @@ module FpgaImageStateCode = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -41011,9 +39914,7 @@ module FpgaImageList = struct
     Aws.Util.option_all (List.map FpgaImage.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list FpgaImage.to_query v
-
   let to_json v = `List (List.map FpgaImage.to_json v)
-
   let of_json j = Aws.Json.to_list FpgaImage.of_json j
 end
 
@@ -41074,13 +39975,9 @@ module PlacementStrategy = struct
     | Partition
 
   let str_to_t = [ "partition", Partition; "spread", Spread; "cluster", Cluster ]
-
   let t_to_str = [ Partition, "partition"; Spread, "spread"; Cluster, "cluster" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -41090,7 +39987,6 @@ module PlacementStrategy = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -41359,9 +40255,7 @@ module InstanceCreditSpecificationList = struct
       (List.map InstanceCreditSpecification.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list InstanceCreditSpecification.to_query v
-
   let to_json v = `List (List.map InstanceCreditSpecification.to_json v)
-
   let of_json j = Aws.Json.to_list InstanceCreditSpecification.of_json j
 end
 
@@ -41374,9 +40268,7 @@ module ResourceIdList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -41437,9 +40329,7 @@ module ReservedInstancesListingList = struct
       (List.map ReservedInstancesListing.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ReservedInstancesListing.to_query v
-
   let to_json v = `List (List.map ReservedInstancesListing.to_json v)
-
   let of_json j = Aws.Json.to_list ReservedInstancesListing.of_json j
 end
 
@@ -41930,13 +40820,9 @@ module TrafficMirrorFilterIdList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -42018,13 +40904,9 @@ module TrafficMirrorTargetIdList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -42034,13 +40916,9 @@ module TrafficMirrorRuleAction = struct
     | Reject
 
   let str_to_t = [ "reject", Reject; "accept", Accept ]
-
   let t_to_str = [ Reject, "reject"; Accept, "accept" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -42050,7 +40928,6 @@ module TrafficMirrorRuleAction = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -42256,9 +41133,7 @@ module TrafficMirrorFilterRuleList = struct
       (List.map TrafficMirrorFilterRule.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list TrafficMirrorFilterRule.to_query v
-
   let to_json v = `List (List.map TrafficMirrorFilterRule.to_json v)
-
   let of_json j = Aws.Json.to_list TrafficMirrorFilterRule.of_json j
 end
 
@@ -42268,13 +41143,9 @@ module OnDemandAllocationStrategy = struct
     | Prioritized
 
   let str_to_t = [ "prioritized", Prioritized; "lowestPrice", LowestPrice ]
-
   let t_to_str = [ Prioritized, "prioritized"; LowestPrice, "lowestPrice" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -42284,7 +41155,6 @@ module OnDemandAllocationStrategy = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -42297,9 +41167,7 @@ module NetworkInterfacePermissionIdList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -42379,13 +41247,9 @@ module SnapshotState = struct
     | Error
 
   let str_to_t = [ "error", Error; "completed", Completed; "pending", Pending ]
-
   let t_to_str = [ Error, "error"; Completed, "completed"; Pending, "pending" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -42395,7 +41259,6 @@ module SnapshotState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -42617,9 +41480,7 @@ module SnapshotAttributeName = struct
     [ CreateVolumePermission, "createVolumePermission"; ProductCodes, "productCodes" ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -42629,7 +41490,6 @@ module SnapshotAttributeName = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -42895,13 +41755,9 @@ module NatGatewayIdStringList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -43238,9 +42094,7 @@ module StatusType = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -43250,7 +42104,6 @@ module StatusType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -43258,13 +42111,9 @@ module StatusName = struct
   type t = Reachability
 
   let str_to_t = [ "reachability", Reachability ]
-
   let t_to_str = [ Reachability, "reachability" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -43274,7 +42123,6 @@ module StatusName = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -43333,9 +42181,7 @@ module InstanceStatusDetailsList = struct
       (List.map InstanceStatusDetails.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list InstanceStatusDetails.to_query v
-
   let to_json v = `List (List.map InstanceStatusDetails.to_json v)
-
   let of_json j = Aws.Json.to_list InstanceStatusDetails.of_json j
 end
 
@@ -43343,13 +42189,9 @@ module VpcEndpointSubnetIdList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -43489,9 +42331,7 @@ module LoadPermissionList = struct
     Aws.Util.option_all (List.map LoadPermission.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list LoadPermission.to_query v
-
   let to_json v = `List (List.map LoadPermission.to_json v)
-
   let of_json j = Aws.Json.to_list LoadPermission.of_json j
 end
 
@@ -43782,9 +42622,7 @@ module AddressList = struct
     Aws.Util.option_all (List.map Address.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list Address.to_query v
-
   let to_json v = `List (List.map Address.to_json v)
-
   let of_json j = Aws.Json.to_list Address.of_json j
 end
 
@@ -43792,13 +42630,9 @@ module ResourceList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -44033,13 +42867,9 @@ module Affinity = struct
     | Host
 
   let str_to_t = [ "host", Host; "default", Default ]
-
   let t_to_str = [ Host, "host"; Default, "default" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -44049,7 +42879,6 @@ module Affinity = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -44172,13 +43001,9 @@ module TransitGatewayIdStringList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -44345,9 +43170,7 @@ module ImageIdStringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "ImageId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -44355,13 +43178,9 @@ module VpcPeeringConnectionIdList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -44486,9 +43305,7 @@ module EventCode = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -44498,7 +43315,6 @@ module EventCode = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -44547,13 +43363,9 @@ module AllowsMultipleInstanceTypes = struct
     | Off
 
   let str_to_t = [ "off", Off; "on", On ]
-
   let t_to_str = [ Off, "off"; On, "on" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -44563,7 +43375,6 @@ module AllowsMultipleInstanceTypes = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -44681,9 +43492,7 @@ module UserIdGroupPairSet = struct
     Aws.Util.option_all (List.map UserIdGroupPair.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list UserIdGroupPair.to_query v
-
   let to_json v = `List (List.map UserIdGroupPair.to_json v)
-
   let of_json j = Aws.Json.to_list UserIdGroupPair.of_json j
 end
 
@@ -44691,13 +43500,9 @@ module PrefixListIdSet = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -44791,9 +43596,7 @@ module StaleIpPermissionSet = struct
     Aws.Util.option_all (List.map StaleIpPermission.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list StaleIpPermission.to_query v
-
   let to_json v = `List (List.map StaleIpPermission.to_json v)
-
   let of_json j = Aws.Json.to_list StaleIpPermission.of_json j
 end
 
@@ -44960,9 +43763,7 @@ module LaunchPermissionList = struct
     Aws.Util.option_all (List.map LaunchPermission.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list LaunchPermission.to_query v
-
   let to_json v = `List (List.map LaunchPermission.to_json v)
-
   let of_json j = Aws.Json.to_list LaunchPermission.of_json j
 end
 
@@ -45094,13 +43895,9 @@ module VpcEndpointRouteTableIdList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -45332,13 +44129,9 @@ module TrafficMirrorNetworkService = struct
   type t = Amazon_dns
 
   let str_to_t = [ "amazon-dns", Amazon_dns ]
-
   let t_to_str = [ Amazon_dns, "amazon-dns" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -45348,7 +44141,6 @@ module TrafficMirrorNetworkService = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -45362,9 +44154,7 @@ module TrafficMirrorNetworkServiceList = struct
       (List.map TrafficMirrorNetworkService.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list TrafficMirrorNetworkService.to_query v
-
   let to_json v = `List (List.map TrafficMirrorNetworkService.to_json v)
-
   let of_json j = Aws.Json.to_list TrafficMirrorNetworkService.of_json j
 end
 
@@ -45649,9 +44439,7 @@ module UnsuccessfulItemSet = struct
     Aws.Util.option_all (List.map UnsuccessfulItem.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list UnsuccessfulItem.to_query v
-
   let to_json v = `List (List.map UnsuccessfulItem.to_json v)
-
   let of_json j = Aws.Json.to_list UnsuccessfulItem.of_json j
 end
 
@@ -45816,9 +44604,7 @@ module LaunchTemplateErrorCode = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -45828,7 +44614,6 @@ module LaunchTemplateErrorCode = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -45913,9 +44698,7 @@ module CapacityReservationInstancePlatform = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -45925,7 +44708,6 @@ module CapacityReservationInstancePlatform = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -45938,9 +44720,7 @@ module PoolCidrBlocksSet = struct
     Aws.Util.option_all (List.map PoolCidrBlock.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list PoolCidrBlock.to_query v
-
   let to_json v = `List (List.map PoolCidrBlock.to_json v)
-
   let of_json j = Aws.Json.to_list PoolCidrBlock.of_json j
 end
 
@@ -46210,9 +44990,7 @@ module ImportSnapshotTaskList = struct
     Aws.Util.option_all (List.map ImportSnapshotTask.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ImportSnapshotTask.to_query v
-
   let to_json v = `List (List.map ImportSnapshotTask.to_json v)
-
   let of_json j = Aws.Json.to_list ImportSnapshotTask.of_json j
 end
 
@@ -46316,9 +45094,7 @@ module DhcpConfigurationValueList = struct
     Aws.Util.option_all (List.map AttributeValue.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list AttributeValue.to_query v
-
   let to_json v = `List (List.map AttributeValue.to_json v)
-
   let of_json j = Aws.Json.to_list AttributeValue.of_json j
 end
 
@@ -46425,9 +45201,7 @@ module VolumeStatusInfoStatus = struct
     [ Insufficient_data, "insufficient-data"; Impaired, "impaired"; Ok, "ok" ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -46437,7 +45211,6 @@ module VolumeStatusInfoStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -46447,13 +45220,9 @@ module VolumeStatusName = struct
     | Io_performance
 
   let str_to_t = [ "io-performance", Io_performance; "io-enabled", Io_enabled ]
-
   let t_to_str = [ Io_performance, "io-performance"; Io_enabled, "io-enabled" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -46463,7 +45232,6 @@ module VolumeStatusName = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -46512,9 +45280,7 @@ module VolumeStatusDetailsList = struct
     Aws.Util.option_all (List.map VolumeStatusDetails.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list VolumeStatusDetails.to_query v
-
   let to_json v = `List (List.map VolumeStatusDetails.to_json v)
-
   let of_json j = Aws.Json.to_list VolumeStatusDetails.of_json j
 end
 
@@ -46633,9 +45399,7 @@ module VolumeStatusEventsList = struct
     Aws.Util.option_all (List.map VolumeStatusEvent.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list VolumeStatusEvent.to_query v
-
   let to_json v = `List (List.map VolumeStatusEvent.to_json v)
-
   let of_json j = Aws.Json.to_list VolumeStatusEvent.of_json j
 end
 
@@ -46688,9 +45452,7 @@ module VolumeStatusAttachmentStatusList = struct
       (List.map VolumeStatusAttachmentStatus.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list VolumeStatusAttachmentStatus.to_query v
-
   let to_json v = `List (List.map VolumeStatusAttachmentStatus.to_json v)
-
   let of_json j = Aws.Json.to_list VolumeStatusAttachmentStatus.of_json j
 end
 
@@ -46752,9 +45514,7 @@ module VolumeStatusActionsList = struct
     Aws.Util.option_all (List.map VolumeStatusAction.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list VolumeStatusAction.to_query v
-
   let to_json v = `List (List.map VolumeStatusAction.to_json v)
-
   let of_json j = Aws.Json.to_list VolumeStatusAction.of_json j
 end
 
@@ -46879,9 +45639,7 @@ module VolumeStatusList = struct
     Aws.Util.option_all (List.map VolumeStatusItem.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list VolumeStatusItem.to_query v
-
   let to_json v = `List (List.map VolumeStatusItem.to_json v)
-
   let of_json j = Aws.Json.to_list VolumeStatusItem.of_json j
 end
 
@@ -46996,9 +45754,7 @@ module IamInstanceProfileAssociationState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -47008,7 +45764,6 @@ module IamInstanceProfileAssociationState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -47259,9 +46014,7 @@ module EventType = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -47271,7 +46024,6 @@ module EventType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -47811,9 +46563,7 @@ module ServiceType = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -47823,7 +46573,6 @@ module ServiceType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -47940,9 +46689,7 @@ module AvailabilityZoneState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -47952,7 +46699,6 @@ module AvailabilityZoneState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -47990,9 +46736,7 @@ module AvailabilityZoneMessageList = struct
       (List.map AvailabilityZoneMessage.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list AvailabilityZoneMessage.to_query v
-
   let to_json v = `List (List.map AvailabilityZoneMessage.to_json v)
-
   let of_json j = Aws.Json.to_list AvailabilityZoneMessage.of_json j
 end
 
@@ -48148,9 +46892,7 @@ module AvailabilityZoneList = struct
     Aws.Util.option_all (List.map AvailabilityZone.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list AvailabilityZone.to_query v
-
   let to_json v = `List (List.map AvailabilityZone.to_json v)
-
   let of_json j = Aws.Json.to_list AvailabilityZone.of_json j
 end
 
@@ -48270,9 +47012,7 @@ module InstanceAttributeName = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -48282,7 +47022,6 @@ module InstanceAttributeName = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -48386,13 +47125,9 @@ module CapacityReservationTenancy = struct
     | Dedicated
 
   let str_to_t = [ "dedicated", Dedicated; "default", Default ]
-
   let t_to_str = [ Dedicated, "dedicated"; Default, "default" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -48402,7 +47137,6 @@ module CapacityReservationTenancy = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -48532,9 +47266,7 @@ module NetworkAclAssociationList = struct
       (List.map NetworkAclAssociation.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list NetworkAclAssociation.to_query v
-
   let to_json v = `List (List.map NetworkAclAssociation.to_json v)
-
   let of_json j = Aws.Json.to_list NetworkAclAssociation.of_json j
 end
 
@@ -48890,9 +47622,7 @@ module PurchaseRequestSet = struct
       (List.map PurchaseRequest.parse (Aws.Xml.members "PurchaseRequest" xml))
 
   let to_query v = Aws.Query.to_query_list PurchaseRequest.to_query v
-
   let to_json v = `List (List.map PurchaseRequest.to_json v)
-
   let of_json j = Aws.Json.to_list PurchaseRequest.of_json j
 end
 
@@ -48954,13 +47684,9 @@ module VolumeAttributeName = struct
     | ProductCodes
 
   let str_to_t = [ "productCodes", ProductCodes; "autoEnableIO", AutoEnableIO ]
-
   let t_to_str = [ ProductCodes, "productCodes"; AutoEnableIO, "autoEnableIO" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -48970,7 +47696,6 @@ module VolumeAttributeName = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -49317,9 +48042,7 @@ module TargetGroups = struct
     Aws.Util.option_all (List.map TargetGroup.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list TargetGroup.to_query v
-
   let to_json v = `List (List.map TargetGroup.to_json v)
-
   let of_json j = Aws.Json.to_list TargetGroup.of_json j
 end
 
@@ -49384,9 +48107,7 @@ module ClassicLoadBalancers = struct
     Aws.Util.option_all (List.map ClassicLoadBalancer.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ClassicLoadBalancer.to_query v
-
   let to_json v = `List (List.map ClassicLoadBalancer.to_json v)
-
   let of_json j = Aws.Json.to_list ClassicLoadBalancer.of_json j
 end
 
@@ -49491,9 +48212,7 @@ module LaunchSpecsList = struct
       (List.map SpotFleetLaunchSpecification.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list SpotFleetLaunchSpecification.to_query v
-
   let to_json v = `List (List.map SpotFleetLaunchSpecification.to_json v)
-
   let of_json j = Aws.Json.to_list SpotFleetLaunchSpecification.of_json j
 end
 
@@ -49504,13 +48223,9 @@ module FleetType = struct
     | Instant
 
   let str_to_t = [ "instant", Instant; "maintain", Maintain; "request", Request ]
-
   let t_to_str = [ Instant, "instant"; Maintain, "maintain"; Request, "request" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -49520,7 +48235,6 @@ module FleetType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -49543,9 +48257,7 @@ module AllocationStrategy = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -49555,7 +48267,6 @@ module AllocationStrategy = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -49918,9 +48629,7 @@ module ActivityStatus = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -49930,7 +48639,6 @@ module ActivityStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -50040,9 +48748,7 @@ module SpotFleetRequestConfigSet = struct
       (List.map SpotFleetRequestConfig.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list SpotFleetRequestConfig.to_query v
-
   let to_json v = `List (List.map SpotFleetRequestConfig.to_json v)
-
   let of_json j = Aws.Json.to_list SpotFleetRequestConfig.of_json j
 end
 
@@ -50157,9 +48863,7 @@ module VolumeAttachmentState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -50169,7 +48873,6 @@ module VolumeAttachmentState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -50250,9 +48953,7 @@ module VolumeAttachmentList = struct
     Aws.Util.option_all (List.map VolumeAttachment.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list VolumeAttachment.to_query v
-
   let to_json v = `List (List.map VolumeAttachment.to_json v)
-
   let of_json j = Aws.Json.to_list VolumeAttachment.of_json j
 end
 
@@ -50260,13 +48961,9 @@ module DeleteQueuedReservedInstancesIdList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -50350,9 +49047,7 @@ module VpcPeeringConnectionList = struct
     Aws.Util.option_all (List.map VpcPeeringConnection.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list VpcPeeringConnection.to_query v
-
   let to_json v = `List (List.map VpcPeeringConnection.to_json v)
-
   let of_json j = Aws.Json.to_list VpcPeeringConnection.of_json j
 end
 
@@ -50432,9 +49127,7 @@ module InstanceIpv6AddressListRequest = struct
          (Aws.Xml.members "InstanceIpv6Address" xml))
 
   let to_query v = Aws.Query.to_query_list InstanceIpv6AddressRequest.to_query v
-
   let to_json v = `List (List.map InstanceIpv6AddressRequest.to_json v)
-
   let of_json j = Aws.Json.to_list InstanceIpv6AddressRequest.of_json j
 end
 
@@ -50442,13 +49135,9 @@ module InternetGatewayIdList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -50785,9 +49474,7 @@ module ImportTaskIdList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "ImportTaskId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -50862,13 +49549,9 @@ module SpotInstanceInterruptionBehavior = struct
     | Terminate
 
   let str_to_t = [ "terminate", Terminate; "stop", Stop; "hibernate", Hibernate ]
-
   let t_to_str = [ Terminate, "terminate"; Stop, "stop"; Hibernate, "hibernate" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -50878,7 +49561,6 @@ module SpotInstanceInterruptionBehavior = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -50901,9 +49583,7 @@ module SpotAllocationStrategy = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -50913,7 +49593,6 @@ module SpotAllocationStrategy = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -51124,13 +49803,9 @@ module FleetOnDemandAllocationStrategy = struct
     | Prioritized
 
   let str_to_t = [ "prioritized", Prioritized; "lowest-price", Lowest_price ]
-
   let t_to_str = [ Prioritized, "prioritized"; Lowest_price, "lowest-price" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -51140,7 +49815,6 @@ module FleetOnDemandAllocationStrategy = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -51148,13 +49822,9 @@ module FleetCapacityReservationUsageStrategy = struct
   type t = Use_capacity_reservations_first
 
   let str_to_t = [ "use-capacity-reservations-first", Use_capacity_reservations_first ]
-
   let t_to_str = [ Use_capacity_reservations_first, "use-capacity-reservations-first" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -51164,7 +49834,6 @@ module FleetCapacityReservationUsageStrategy = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -51328,9 +49997,7 @@ module FleetActivityStatus = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -51340,7 +50007,6 @@ module FleetActivityStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -51348,13 +50014,9 @@ module InstanceIdsSet = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -51448,9 +50110,7 @@ module DescribeFleetsInstancesSet = struct
       (List.map DescribeFleetsInstances.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list DescribeFleetsInstances.to_query v
-
   let to_json v = `List (List.map DescribeFleetsInstances.to_json v)
-
   let of_json j = Aws.Json.to_list DescribeFleetsInstances.of_json j
 end
 
@@ -51526,9 +50186,7 @@ module DescribeFleetsErrorSet = struct
     Aws.Util.option_all (List.map DescribeFleetError.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list DescribeFleetError.to_query v
-
   let to_json v = `List (List.map DescribeFleetError.to_json v)
-
   let of_json j = Aws.Json.to_list DescribeFleetError.of_json j
 end
 
@@ -51815,9 +50473,7 @@ module FleetSet = struct
     Aws.Util.option_all (List.map FleetData.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list FleetData.to_query v
-
   let to_json v = `List (List.map FleetData.to_json v)
-
   let of_json j = Aws.Json.to_list FleetData.of_json j
 end
 
@@ -51868,9 +50524,7 @@ module CarrierGatewayIdSet = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -52018,9 +50672,7 @@ module VolumeState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -52030,7 +50682,6 @@ module VolumeState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -52234,9 +50885,7 @@ module FleetEventType = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -52246,7 +50895,6 @@ module FleetEventType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -52342,7 +50990,6 @@ module LaunchTemplateLicenseSpecificationListRequest = struct
     Aws.Query.to_query_list LaunchTemplateLicenseConfigurationRequest.to_query v
 
   let to_json v = `List (List.map LaunchTemplateLicenseConfigurationRequest.to_json v)
-
   let of_json j = Aws.Json.to_list LaunchTemplateLicenseConfigurationRequest.of_json j
 end
 
@@ -52481,9 +51128,7 @@ module ServiceTypeDetailSet = struct
     Aws.Util.option_all (List.map ServiceTypeDetail.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ServiceTypeDetail.to_query v
-
   let to_json v = `List (List.map ServiceTypeDetail.to_json v)
-
   let of_json j = Aws.Json.to_list ServiceTypeDetail.of_json j
 end
 
@@ -52500,9 +51145,7 @@ module DnsNameState = struct
     [ Failed, "failed"; Verified, "verified"; PendingVerification, "pendingVerification" ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -52512,7 +51155,6 @@ module DnsNameState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -52698,9 +51340,7 @@ module ServiceDetailSet = struct
     Aws.Util.option_all (List.map ServiceDetail.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ServiceDetail.to_query v
-
   let to_json v = `List (List.map ServiceDetail.to_json v)
-
   let of_json j = Aws.Json.to_list ServiceDetail.of_json j
 end
 
@@ -52881,9 +51521,7 @@ module TrafficMirrorFilterRuleField = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -52893,7 +51531,6 @@ module TrafficMirrorFilterRuleField = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -52901,13 +51538,9 @@ module VpcEndpointSecurityGroupIdList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -53225,9 +51858,7 @@ module AccountAttributeName = struct
     [ Default_vpc, "default-vpc"; Supported_platforms, "supported-platforms" ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -53237,7 +51868,6 @@ module AccountAttributeName = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -53251,9 +51881,7 @@ module AccountAttributeNameStringList = struct
       (List.map AccountAttributeName.parse (Aws.Xml.members "attributeName" xml))
 
   let to_query v = Aws.Query.to_query_list AccountAttributeName.to_query v
-
   let to_json v = `List (List.map AccountAttributeName.to_json v)
-
   let of_json j = Aws.Json.to_list AccountAttributeName.of_json j
 end
 
@@ -53312,9 +51940,7 @@ module ClientVpnAuthenticationList = struct
       (List.map ClientVpnAuthentication.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ClientVpnAuthentication.to_query v
-
   let to_json v = `List (List.map ClientVpnAuthentication.to_json v)
-
   let of_json j = Aws.Json.to_list ClientVpnAuthentication.of_json j
 end
 
@@ -53327,9 +51953,7 @@ module SecurityGroupStringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "SecurityGroup" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -53413,7 +52037,6 @@ module LaunchTemplateTagSpecificationRequestList = struct
     Aws.Query.to_query_list LaunchTemplateTagSpecificationRequest.to_query v
 
   let to_json v = `List (List.map LaunchTemplateTagSpecificationRequest.to_json v)
-
   let of_json j = Aws.Json.to_list LaunchTemplateTagSpecificationRequest.of_json j
 end
 
@@ -54161,9 +52784,7 @@ module ElasticGpuSpecificationList = struct
          (Aws.Xml.members "ElasticGpuSpecification" xml))
 
   let to_query v = Aws.Query.to_query_list ElasticGpuSpecification.to_query v
-
   let to_json v = `List (List.map ElasticGpuSpecification.to_json v)
-
   let of_json j = Aws.Json.to_list ElasticGpuSpecification.of_json j
 end
 
@@ -54791,13 +53412,9 @@ module NetworkInterfaceIdList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -55101,9 +53718,7 @@ module PlacementGroupState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -55113,7 +53728,6 @@ module PlacementGroupState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -55693,9 +54307,7 @@ module TransitGatewayAttachmentIdStringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -55785,9 +54397,7 @@ module DeleteFleetSuccessSet = struct
       (List.map DeleteFleetSuccessItem.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list DeleteFleetSuccessItem.to_query v
-
   let to_json v = `List (List.map DeleteFleetSuccessItem.to_json v)
-
   let of_json j = Aws.Json.to_list DeleteFleetSuccessItem.of_json j
 end
 
@@ -55844,9 +54454,7 @@ module ByoipCidrSet = struct
     Aws.Util.option_all (List.map ByoipCidr.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ByoipCidr.to_query v
-
   let to_json v = `List (List.map ByoipCidr.to_json v)
-
   let of_json j = Aws.Json.to_list ByoipCidr.of_json j
 end
 
@@ -55860,9 +54468,7 @@ module TransitGatewayMulticastDomainList = struct
       (List.map TransitGatewayMulticastDomain.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list TransitGatewayMulticastDomain.to_query v
-
   let to_json v = `List (List.map TransitGatewayMulticastDomain.to_json v)
-
   let of_json j = Aws.Json.to_list TransitGatewayMulticastDomain.of_json j
 end
 
@@ -55875,9 +54481,7 @@ module FlowLogSet = struct
     Aws.Util.option_all (List.map FlowLog.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list FlowLog.to_query v
-
   let to_json v = `List (List.map FlowLog.to_json v)
-
   let of_json j = Aws.Json.to_list FlowLog.of_json j
 end
 
@@ -56002,9 +54606,7 @@ module BundleIdStringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "BundleId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -56012,13 +54614,9 @@ module VpnProtocol = struct
   type t = Openvpn
 
   let str_to_t = [ "openvpn", Openvpn ]
-
   let t_to_str = [ Openvpn, "openvpn" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -56028,7 +54626,6 @@ module VpnProtocol = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -56038,13 +54635,9 @@ module TransportProtocol = struct
     | Udp
 
   let str_to_t = [ "udp", Udp; "tcp", Tcp ]
-
   let t_to_str = [ Udp, "udp"; Tcp, "tcp" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -56054,7 +54647,6 @@ module TransportProtocol = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -56068,9 +54660,7 @@ module AssociatedTargetNetworkSet = struct
       (List.map AssociatedTargetNetwork.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list AssociatedTargetNetwork.to_query v
-
   let to_json v = `List (List.map AssociatedTargetNetwork.to_json v)
-
   let of_json j = Aws.Json.to_list AssociatedTargetNetwork.of_json j
 end
 
@@ -56361,9 +54951,7 @@ module EndpointSet = struct
     Aws.Util.option_all (List.map ClientVpnEndpoint.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ClientVpnEndpoint.to_query v
-
   let to_json v = `List (List.map ClientVpnEndpoint.to_json v)
-
   let of_json j = Aws.Json.to_list ClientVpnEndpoint.of_json j
 end
 
@@ -56421,9 +55009,7 @@ module BundleTaskList = struct
     Aws.Util.option_all (List.map BundleTask.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list BundleTask.to_query v
-
   let to_json v = `List (List.map BundleTask.to_json v)
-
   let of_json j = Aws.Json.to_list BundleTask.of_json j
 end
 
@@ -56656,9 +55242,7 @@ module LocalGatewayRouteTableSet = struct
       (List.map LocalGatewayRouteTable.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list LocalGatewayRouteTable.to_query v
-
   let to_json v = `List (List.map LocalGatewayRouteTable.to_json v)
-
   let of_json j = Aws.Json.to_list LocalGatewayRouteTable.of_json j
 end
 
@@ -56769,13 +55353,9 @@ module TrafficMirrorSessionIdList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -57185,9 +55765,7 @@ module SecurityGroupList = struct
     Aws.Util.option_all (List.map SecurityGroup.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list SecurityGroup.to_query v
-
   let to_json v = `List (List.map SecurityGroup.to_json v)
-
   let of_json j = Aws.Json.to_list SecurityGroup.of_json j
 end
 
@@ -57599,9 +56177,7 @@ module SubnetAssociationList = struct
     Aws.Util.option_all (List.map SubnetAssociation.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list SubnetAssociation.to_query v
-
   let to_json v = `List (List.map SubnetAssociation.to_json v)
-
   let of_json j = Aws.Json.to_list SubnetAssociation.of_json j
 end
 
@@ -57782,9 +56358,7 @@ module RegionNameStringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "RegionName" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -57898,9 +56472,7 @@ module SuccessfulQueuedPurchaseDeletionSet = struct
       (List.map SuccessfulQueuedPurchaseDeletion.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list SuccessfulQueuedPurchaseDeletion.to_query v
-
   let to_json v = `List (List.map SuccessfulQueuedPurchaseDeletion.to_json v)
-
   let of_json j = Aws.Json.to_list SuccessfulQueuedPurchaseDeletion.of_json j
 end
 
@@ -57914,9 +56486,7 @@ module FailedQueuedPurchaseDeletionSet = struct
       (List.map FailedQueuedPurchaseDeletion.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list FailedQueuedPurchaseDeletion.to_query v
-
   let to_json v = `List (List.map FailedQueuedPurchaseDeletion.to_json v)
-
   let of_json j = Aws.Json.to_list FailedQueuedPurchaseDeletion.of_json j
 end
 
@@ -58015,9 +56585,7 @@ module AllocationState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -58027,7 +56595,6 @@ module AllocationState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -58124,9 +56691,7 @@ module Status = struct
     [ InClassic, "InClassic"; InVpc, "InVpc"; MoveInProgress, "MoveInProgress" ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -58136,7 +56701,6 @@ module Status = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -58243,9 +56807,7 @@ module TransitGatewayPrefixListReferenceSet = struct
       (List.map TransitGatewayPrefixListReference.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list TransitGatewayPrefixListReference.to_query v
-
   let to_json v = `List (List.map TransitGatewayPrefixListReference.to_json v)
-
   let of_json j = Aws.Json.to_list TransitGatewayPrefixListReference.of_json j
 end
 
@@ -58458,9 +57020,7 @@ module KeyPairIdStringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "KeyPairId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -58473,9 +57033,7 @@ module KeyNameStringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "KeyName" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -58687,7 +57245,6 @@ module DeleteLaunchTemplateVersionsResponseErrorSet = struct
     Aws.Query.to_query_list DeleteLaunchTemplateVersionsResponseErrorItem.to_query v
 
   let to_json v = `List (List.map DeleteLaunchTemplateVersionsResponseErrorItem.to_json v)
-
   let of_json j = Aws.Json.to_list DeleteLaunchTemplateVersionsResponseErrorItem.of_json j
 end
 
@@ -58990,13 +57547,9 @@ module EndDateType = struct
     | Limited
 
   let str_to_t = [ "limited", Limited; "unlimited", Unlimited ]
-
   let t_to_str = [ Limited, "limited"; Unlimited, "unlimited" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -59006,7 +57559,6 @@ module EndDateType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -59246,9 +57798,7 @@ module CapacityReservationSet = struct
     Aws.Util.option_all (List.map CapacityReservation.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list CapacityReservation.to_query v
-
   let to_json v = `List (List.map CapacityReservation.to_json v)
-
   let of_json j = Aws.Json.to_list CapacityReservation.of_json j
 end
 
@@ -59345,9 +57895,7 @@ module PlacementGroupStringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -59384,9 +57932,7 @@ module Ipv6PoolSet = struct
     Aws.Util.option_all (List.map Ipv6Pool.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list Ipv6Pool.to_query v
-
   let to_json v = `List (List.map Ipv6Pool.to_json v)
-
   let of_json j = Aws.Json.to_list Ipv6Pool.of_json j
 end
 
@@ -59582,9 +58128,7 @@ module PrincipalType = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -59594,7 +58138,6 @@ module PrincipalType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -59646,9 +58189,7 @@ module AllowedPrincipalSet = struct
     Aws.Util.option_all (List.map AllowedPrincipal.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list AllowedPrincipal.to_query v
-
   let to_json v = `List (List.map AllowedPrincipal.to_json v)
-
   let of_json j = Aws.Json.to_list AllowedPrincipal.of_json j
 end
 
@@ -59692,9 +58233,7 @@ module NetworkAclList = struct
     Aws.Util.option_all (List.map NetworkAcl.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list NetworkAcl.to_query v
-
   let to_json v = `List (List.map NetworkAcl.to_json v)
-
   let of_json j = Aws.Json.to_list NetworkAcl.of_json j
 end
 
@@ -59702,13 +58241,9 @@ module LocalGatewayIdSet = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -59927,9 +58462,7 @@ module CustomerGatewayIdStringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "CustomerGatewayId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -59937,13 +58470,9 @@ module PublicIpv4PoolIdStringList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -60145,9 +58674,7 @@ module BlockDeviceMappingRequestList = struct
       (List.map BlockDeviceMapping.parse (Aws.Xml.members "BlockDeviceMapping" xml))
 
   let to_query v = Aws.Query.to_query_list BlockDeviceMapping.to_query v
-
   let to_json v = `List (List.map BlockDeviceMapping.to_json v)
-
   let of_json j = Aws.Json.to_list BlockDeviceMapping.of_json j
 end
 
@@ -60443,9 +58970,7 @@ module ImportSnapshotTaskIdList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "ImportTaskId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -60476,13 +59001,9 @@ module ClientVpnEndpointIdList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -60647,13 +59168,9 @@ module HostRecovery = struct
     | Off
 
   let str_to_t = [ "off", Off; "on", On ]
-
   let t_to_str = [ Off, "off"; On, "on" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -60663,7 +59180,6 @@ module HostRecovery = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -60673,13 +59189,9 @@ module AutoPlacement = struct
     | Off
 
   let str_to_t = [ "off", Off; "on", On ]
-
   let t_to_str = [ Off, "off"; On, "on" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -60689,7 +59201,6 @@ module AutoPlacement = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -60820,9 +59331,7 @@ module ReservedInstancesModificationIdStringList = struct
       (List.map String.parse (Aws.Xml.members "ReservedInstancesModificationId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -60900,9 +59409,7 @@ module PrefixListSet = struct
     Aws.Util.option_all (List.map PrefixList.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list PrefixList.to_query v
-
   let to_json v = `List (List.map PrefixList.to_json v)
-
   let of_json j = Aws.Json.to_list PrefixList.of_json j
 end
 
@@ -61032,9 +59539,7 @@ module LocalGatewayVirtualInterfaceSet = struct
       (List.map LocalGatewayVirtualInterface.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list LocalGatewayVirtualInterface.to_query v
-
   let to_json v = `List (List.map LocalGatewayVirtualInterface.to_json v)
-
   let of_json j = Aws.Json.to_list LocalGatewayVirtualInterface.of_json j
 end
 
@@ -61432,9 +59937,7 @@ module ExportTaskIdStringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "ExportTaskId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -61490,13 +59993,9 @@ module MoveStatus = struct
     | RestoringToClassic
 
   let str_to_t = [ "restoringToClassic", RestoringToClassic; "movingToVpc", MovingToVpc ]
-
   let t_to_str = [ RestoringToClassic, "restoringToClassic"; MovingToVpc, "movingToVpc" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -61506,7 +60005,6 @@ module MoveStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -61557,9 +60055,7 @@ module MovingAddressStatusSet = struct
     Aws.Util.option_all (List.map MovingAddressStatus.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list MovingAddressStatus.to_query v
-
   let to_json v = `List (List.map MovingAddressStatus.to_json v)
-
   let of_json j = Aws.Json.to_list MovingAddressStatus.of_json j
 end
 
@@ -62044,9 +60540,7 @@ module ExecutableByStringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "ExecutableBy" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -62173,9 +60667,7 @@ module LocalGatewayVirtualInterfaceGroupSet = struct
       (List.map LocalGatewayVirtualInterfaceGroup.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list LocalGatewayVirtualInterfaceGroup.to_query v
-
   let to_json v = `List (List.map LocalGatewayVirtualInterfaceGroup.to_json v)
-
   let of_json j = Aws.Json.to_list LocalGatewayVirtualInterfaceGroup.of_json j
 end
 
@@ -62234,13 +60726,9 @@ module RequestSpotLaunchSpecificationSecurityGroupList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -62460,9 +60948,7 @@ module ElasticInferenceAccelerators = struct
       (List.map ElasticInferenceAccelerator.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ElasticInferenceAccelerator.to_query v
-
   let to_json v = `List (List.map ElasticInferenceAccelerator.to_json v)
-
   let of_json j = Aws.Json.to_list ElasticInferenceAccelerator.of_json j
 end
 
@@ -62476,9 +60962,7 @@ module ElasticGpuSpecifications = struct
       (List.map ElasticGpuSpecification.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ElasticGpuSpecification.to_query v
-
   let to_json v = `List (List.map ElasticGpuSpecification.to_json v)
-
   let of_json j = Aws.Json.to_list ElasticGpuSpecification.of_json j
 end
 
@@ -63094,9 +61578,7 @@ module PrefixListEntrySet = struct
     Aws.Util.option_all (List.map PrefixListEntry.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list PrefixListEntry.to_query v
-
   let to_json v = `List (List.map PrefixListEntry.to_json v)
-
   let of_json j = Aws.Json.to_list PrefixListEntry.of_json j
 end
 
@@ -63383,9 +61865,7 @@ module ScheduledInstanceIdRequestSet = struct
       (List.map String.parse (Aws.Xml.members "ScheduledInstanceId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -63628,9 +62108,7 @@ module TransitGatewayMulticastGroupList = struct
       (List.map TransitGatewayMulticastGroup.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list TransitGatewayMulticastGroup.to_query v
-
   let to_json v = `List (List.map TransitGatewayMulticastGroup.to_json v)
-
   let of_json j = Aws.Json.to_list TransitGatewayMulticastGroup.of_json j
 end
 
@@ -63817,9 +62295,7 @@ module SnapshotList = struct
     Aws.Util.option_all (List.map Snapshot.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list Snapshot.to_query v
-
   let to_json v = `List (List.map Snapshot.to_json v)
-
   let of_json j = Aws.Json.to_list Snapshot.of_json j
 end
 
@@ -63832,9 +62308,7 @@ module CarrierGatewaySet = struct
     Aws.Util.option_all (List.map CarrierGateway.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list CarrierGateway.to_query v
-
   let to_json v = `List (List.map CarrierGateway.to_json v)
-
   let of_json j = Aws.Json.to_list CarrierGateway.of_json j
 end
 
@@ -64129,9 +62603,7 @@ module VpcEndpointType = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -64141,7 +62613,6 @@ module VpcEndpointType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -64421,9 +62892,7 @@ module ReservedInstancesModificationResultList = struct
       (List.map ReservedInstancesModificationResult.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ReservedInstancesModificationResult.to_query v
-
   let to_json v = `List (List.map ReservedInstancesModificationResult.to_json v)
-
   let of_json j = Aws.Json.to_list ReservedInstancesModificationResult.of_json j
 end
 
@@ -64473,9 +62942,7 @@ module CapacityReservationGroupSet = struct
       (List.map CapacityReservationGroup.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list CapacityReservationGroup.to_query v
-
   let to_json v = `List (List.map CapacityReservationGroup.to_json v)
-
   let of_json j = Aws.Json.to_list CapacityReservationGroup.of_json j
 end
 
@@ -64536,9 +63003,7 @@ module ReservedIntancesIds = struct
     Aws.Util.option_all (List.map ReservedInstancesId.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ReservedInstancesId.to_query v
-
   let to_json v = `List (List.map ReservedInstancesId.to_json v)
-
   let of_json j = Aws.Json.to_list ReservedInstancesId.of_json j
 end
 
@@ -64688,9 +63153,7 @@ module ReservedInstancesModificationList = struct
       (List.map ReservedInstancesModification.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ReservedInstancesModification.to_query v
-
   let to_json v = `List (List.map ReservedInstancesModification.to_json v)
-
   let of_json j = Aws.Json.to_list ReservedInstancesModification.of_json j
 end
 
@@ -64860,9 +63323,7 @@ module LaunchTemplateVersionSet = struct
       (List.map LaunchTemplateVersion.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list LaunchTemplateVersion.to_query v
-
   let to_json v = `List (List.map LaunchTemplateVersion.to_json v)
-
   let of_json j = Aws.Json.to_list LaunchTemplateVersion.of_json j
 end
 
@@ -65049,9 +63510,7 @@ module IamInstanceProfileAssociationSet = struct
       (List.map IamInstanceProfileAssociation.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list IamInstanceProfileAssociation.to_query v
-
   let to_json v = `List (List.map IamInstanceProfileAssociation.to_json v)
-
   let of_json j = Aws.Json.to_list IamInstanceProfileAssociation.of_json j
 end
 
@@ -65484,13 +63943,9 @@ module LocalGatewayRouteTableVirtualInterfaceGroupAssociationIdSet = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -65834,13 +64289,9 @@ module TransitGatewayMulticastDomainIdStringList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -65967,13 +64418,9 @@ module ClientCertificateRevocationListStatusCode = struct
     | Active
 
   let str_to_t = [ "active", Active; "pending", Pending ]
-
   let t_to_str = [ Active, "active"; Pending, "pending" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -65983,7 +64430,6 @@ module ClientCertificateRevocationListStatusCode = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -65991,13 +64437,9 @@ module InstanceIdSet = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -66107,9 +64549,7 @@ module PrivateIpAddressStringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "PrivateIpAddress" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -66206,9 +64646,7 @@ module EnableFastSnapshotRestoreSuccessSet = struct
       (List.map EnableFastSnapshotRestoreSuccessItem.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list EnableFastSnapshotRestoreSuccessItem.to_query v
-
   let to_json v = `List (List.map EnableFastSnapshotRestoreSuccessItem.to_json v)
-
   let of_json j = Aws.Json.to_list EnableFastSnapshotRestoreSuccessItem.of_json j
 end
 
@@ -66222,9 +64660,7 @@ module EnableFastSnapshotRestoreErrorSet = struct
       (List.map EnableFastSnapshotRestoreErrorItem.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list EnableFastSnapshotRestoreErrorItem.to_query v
-
   let to_json v = `List (List.map EnableFastSnapshotRestoreErrorItem.to_json v)
-
   let of_json j = Aws.Json.to_list EnableFastSnapshotRestoreErrorItem.of_json j
 end
 
@@ -66651,9 +65087,7 @@ module ManagedPrefixListSet = struct
     Aws.Util.option_all (List.map ManagedPrefixList.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ManagedPrefixList.to_query v
-
   let to_json v = `List (List.map ManagedPrefixList.to_json v)
-
   let of_json j = Aws.Json.to_list ManagedPrefixList.of_json j
 end
 
@@ -66663,13 +65097,9 @@ module ModifyAvailabilityZoneOptInStatus = struct
     | Not_opted_in
 
   let str_to_t = [ "not-opted-in", Not_opted_in; "opted-in", Opted_in ]
-
   let t_to_str = [ Not_opted_in, "not-opted-in"; Opted_in, "opted-in" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -66679,7 +65109,6 @@ module ModifyAvailabilityZoneOptInStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -66992,9 +65421,7 @@ module ServiceConfigurationSet = struct
     Aws.Util.option_all (List.map ServiceConfiguration.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ServiceConfiguration.to_query v
-
   let to_json v = `List (List.map ServiceConfiguration.to_json v)
-
   let of_json j = Aws.Json.to_list ServiceConfiguration.of_json j
 end
 
@@ -67007,9 +65434,7 @@ module SnapshotIdStringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "SnapshotId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -67022,9 +65447,7 @@ module RestorableByStringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -67315,9 +65738,7 @@ module HistoryRecords = struct
     Aws.Util.option_all (List.map HistoryRecord.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list HistoryRecord.to_query v
-
   let to_json v = `List (List.map HistoryRecord.to_json v)
-
   let of_json j = Aws.Json.to_list HistoryRecord.of_json j
 end
 
@@ -67450,9 +65871,7 @@ module TransitGatewayRouteList = struct
     Aws.Util.option_all (List.map TransitGatewayRoute.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list TransitGatewayRoute.to_query v
-
   let to_json v = `List (List.map TransitGatewayRoute.to_json v)
-
   let of_json j = Aws.Json.to_list TransitGatewayRoute.of_json j
 end
 
@@ -67516,9 +65935,7 @@ module TargetReservationValueSet = struct
       (List.map TargetReservationValue.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list TargetReservationValue.to_query v
-
   let to_json v = `List (List.map TargetReservationValue.to_json v)
-
   let of_json j = Aws.Json.to_list TargetReservationValue.of_json j
 end
 
@@ -67579,9 +65996,7 @@ module ReservedInstanceReservationValueSet = struct
       (List.map ReservedInstanceReservationValue.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ReservedInstanceReservationValue.to_query v
-
   let to_json v = `List (List.map ReservedInstanceReservationValue.to_json v)
-
   let of_json j = Aws.Json.to_list ReservedInstanceReservationValue.of_json j
 end
 
@@ -67896,13 +66311,9 @@ module ImageTypeValues = struct
     | Ramdisk
 
   let str_to_t = [ "ramdisk", Ramdisk; "kernel", Kernel; "machine", Machine ]
-
   let t_to_str = [ Ramdisk, "ramdisk"; Kernel, "kernel"; Machine, "machine" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -67912,7 +66323,6 @@ module ImageTypeValues = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -68305,13 +66715,9 @@ module RequestHostIdSet = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -68319,13 +66725,9 @@ module LocalGatewayRouteTableIdSet = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -68978,9 +67380,7 @@ module CancelledSpotInstanceRequestList = struct
       (List.map CancelledSpotInstanceRequest.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list CancelledSpotInstanceRequest.to_query v
-
   let to_json v = `List (List.map CancelledSpotInstanceRequest.to_json v)
-
   let of_json j = Aws.Json.to_list CancelledSpotInstanceRequest.of_json j
 end
 
@@ -69083,9 +67483,7 @@ module TransitGatewayPeeringAttachmentList = struct
       (List.map TransitGatewayPeeringAttachment.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list TransitGatewayPeeringAttachment.to_query v
-
   let to_json v = `List (List.map TransitGatewayPeeringAttachment.to_json v)
-
   let of_json j = Aws.Json.to_list TransitGatewayPeeringAttachment.of_json j
 end
 
@@ -69352,9 +67750,7 @@ module DhcpConfigurationList = struct
     Aws.Util.option_all (List.map DhcpConfiguration.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list DhcpConfiguration.to_query v
-
   let to_json v = `List (List.map DhcpConfiguration.to_json v)
-
   let of_json j = Aws.Json.to_list DhcpConfiguration.of_json j
 end
 
@@ -69362,13 +67758,9 @@ module GroupIds = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -69419,9 +67811,7 @@ module ReservedInstancesList = struct
     Aws.Util.option_all (List.map ReservedInstances.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ReservedInstances.to_query v
-
   let to_json v = `List (List.map ReservedInstances.to_json v)
-
   let of_json j = Aws.Json.to_list ReservedInstances.of_json j
 end
 
@@ -70281,9 +68671,7 @@ module VpcAttributeName = struct
     [ EnableDnsHostnames, "enableDnsHostnames"; EnableDnsSupport, "enableDnsSupport" ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -70293,7 +68681,6 @@ module VpcAttributeName = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -70454,9 +68841,7 @@ module NewDhcpConfigurationList = struct
     Aws.Util.option_all (List.map NewDhcpConfiguration.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list NewDhcpConfiguration.to_query v
-
   let to_json v = `List (List.map NewDhcpConfiguration.to_json v)
-
   let of_json j = Aws.Json.to_list NewDhcpConfiguration.of_json j
 end
 
@@ -70734,9 +69119,7 @@ module InstanceStatusEventList = struct
     Aws.Util.option_all (List.map InstanceStatusEvent.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list InstanceStatusEvent.to_query v
-
   let to_json v = `List (List.map InstanceStatusEvent.to_json v)
-
   let of_json j = Aws.Json.to_list InstanceStatusEvent.of_json j
 end
 
@@ -70749,9 +69132,7 @@ module KeyPairList = struct
     Aws.Util.option_all (List.map KeyPairInfo.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list KeyPairInfo.to_query v
-
   let to_json v = `List (List.map KeyPairInfo.to_json v)
-
   let of_json j = Aws.Json.to_list KeyPairInfo.of_json j
 end
 
@@ -70851,13 +69232,9 @@ module ResetImageAttributeName = struct
   type t = LaunchPermission
 
   let str_to_t = [ "launchPermission", LaunchPermission ]
-
   let t_to_str = [ LaunchPermission, "launchPermission" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -70867,7 +69244,6 @@ module ResetImageAttributeName = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -71035,9 +69411,7 @@ module VolumeModificationList = struct
     Aws.Util.option_all (List.map VolumeModification.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list VolumeModification.to_query v
-
   let to_json v = `List (List.map VolumeModification.to_json v)
-
   let of_json j = Aws.Json.to_list VolumeModification.of_json j
 end
 
@@ -71269,9 +69643,7 @@ module GroupIdentifierSet = struct
       (List.map SecurityGroupIdentifier.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list SecurityGroupIdentifier.to_query v
-
   let to_json v = `List (List.map SecurityGroupIdentifier.to_json v)
-
   let of_json j = Aws.Json.to_list SecurityGroupIdentifier.of_json j
 end
 
@@ -71539,9 +69911,7 @@ module NetworkInterfacePermissionList = struct
       (List.map NetworkInterfacePermission.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list NetworkInterfacePermission.to_query v
-
   let to_json v = `List (List.map NetworkInterfacePermission.to_json v)
-
   let of_json j = Aws.Json.to_list NetworkInterfacePermission.of_json j
 end
 
@@ -71555,9 +69925,7 @@ module LocalGatewayRouteTableVpcAssociationSet = struct
       (List.map LocalGatewayRouteTableVpcAssociation.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list LocalGatewayRouteTableVpcAssociation.to_query v
-
   let to_json v = `List (List.map LocalGatewayRouteTableVpcAssociation.to_json v)
-
   let of_json j = Aws.Json.to_list LocalGatewayRouteTableVpcAssociation.of_json j
 end
 
@@ -71736,9 +70104,7 @@ module TrafficMirrorFilterRuleFieldList = struct
       (List.map TrafficMirrorFilterRuleField.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list TrafficMirrorFilterRuleField.to_query v
-
   let to_json v = `List (List.map TrafficMirrorFilterRuleField.to_json v)
-
   let of_json j = Aws.Json.to_list TrafficMirrorFilterRuleField.of_json j
 end
 
@@ -71963,9 +70329,7 @@ module NetworkInterfaceAttribute = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -71975,7 +70339,6 @@ module NetworkInterfaceAttribute = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -72085,13 +70448,9 @@ module TransitGatewayRouteTableIdStringList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -72104,9 +70463,7 @@ module SnapshotSet = struct
     Aws.Util.option_all (List.map SnapshotInfo.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list SnapshotInfo.to_query v
-
   let to_json v = `List (List.map SnapshotInfo.to_json v)
-
   let of_json j = Aws.Json.to_list SnapshotInfo.of_json j
 end
 
@@ -72178,9 +70535,7 @@ module RequestInstanceTypeList = struct
     Aws.Util.option_all (List.map InstanceType.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list InstanceType.to_query v
-
   let to_json v = `List (List.map InstanceType.to_json v)
-
   let of_json j = Aws.Json.to_list InstanceType.of_json j
 end
 
@@ -72193,9 +70548,7 @@ module CreateFleetInstancesSet = struct
     Aws.Util.option_all (List.map CreateFleetInstance.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list CreateFleetInstance.to_query v
-
   let to_json v = `List (List.map CreateFleetInstance.to_json v)
-
   let of_json j = Aws.Json.to_list CreateFleetInstance.of_json j
 end
 
@@ -72208,9 +70561,7 @@ module CreateFleetErrorsSet = struct
     Aws.Util.option_all (List.map CreateFleetError.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list CreateFleetError.to_query v
-
   let to_json v = `List (List.map CreateFleetError.to_json v)
-
   let of_json j = Aws.Json.to_list CreateFleetError.of_json j
 end
 
@@ -72470,9 +70821,7 @@ module PurchasedScheduledInstanceSet = struct
     Aws.Util.option_all (List.map ScheduledInstance.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ScheduledInstance.to_query v
-
   let to_json v = `List (List.map ScheduledInstance.to_json v)
-
   let of_json j = Aws.Json.to_list ScheduledInstance.of_json j
 end
 
@@ -72695,9 +71044,7 @@ module ClientVpnRouteSet = struct
     Aws.Util.option_all (List.map ClientVpnRoute.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ClientVpnRoute.to_query v
-
   let to_json v = `List (List.map ClientVpnRoute.to_json v)
-
   let of_json j = Aws.Json.to_list ClientVpnRoute.of_json j
 end
 
@@ -72891,9 +71238,7 @@ module ErrorSet = struct
     Aws.Util.option_all (List.map ValidationError.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ValidationError.to_query v
-
   let to_json v = `List (List.map ValidationError.to_json v)
-
   let of_json j = Aws.Json.to_list ValidationError.of_json j
 end
 
@@ -73337,9 +71682,7 @@ module ClassicLinkInstanceList = struct
     Aws.Util.option_all (List.map ClassicLinkInstance.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ClassicLinkInstance.to_query v
-
   let to_json v = `List (List.map ClassicLinkInstance.to_json v)
-
   let of_json j = Aws.Json.to_list ClassicLinkInstance.of_json j
 end
 
@@ -73395,9 +71738,7 @@ module AssociatedRolesList = struct
     Aws.Util.option_all (List.map AssociatedRole.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list AssociatedRole.to_query v
-
   let to_json v = `List (List.map AssociatedRole.to_json v)
-
   let of_json j = Aws.Json.to_list AssociatedRole.of_json j
 end
 
@@ -73410,9 +71751,7 @@ module VpcEndpointSet = struct
     Aws.Util.option_all (List.map VpcEndpoint.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list VpcEndpoint.to_query v
-
   let to_json v = `List (List.map VpcEndpoint.to_json v)
-
   let of_json j = Aws.Json.to_list VpcEndpoint.of_json j
 end
 
@@ -73855,9 +72194,7 @@ module DiskImageList = struct
     Aws.Util.option_all (List.map DiskImage.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list DiskImage.to_query v
-
   let to_json v = `List (List.map DiskImage.to_json v)
-
   let of_json j = Aws.Json.to_list DiskImage.of_json j
 end
 
@@ -73939,9 +72276,7 @@ module StaleSecurityGroupSet = struct
     Aws.Util.option_all (List.map StaleSecurityGroup.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list StaleSecurityGroup.to_query v
-
   let to_json v = `List (List.map StaleSecurityGroup.to_json v)
-
   let of_json j = Aws.Json.to_list StaleSecurityGroup.of_json j
 end
 
@@ -74125,9 +72460,7 @@ module VpcClassicLinkIdList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "VpcId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -74612,9 +72945,7 @@ module ScheduledInstanceSet = struct
     Aws.Util.option_all (List.map ScheduledInstance.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ScheduledInstance.to_query v
-
   let to_json v = `List (List.map ScheduledInstance.to_json v)
-
   let of_json j = Aws.Json.to_list ScheduledInstance.of_json j
 end
 
@@ -74766,13 +73097,9 @@ module ImageList = struct
   type t = Image.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map Image.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list Image.to_query v
-
   let to_json v = `List (List.map Image.to_json v)
-
   let of_json j = Aws.Json.to_list Image.of_json j
 end
 
@@ -74782,13 +73109,9 @@ module SelfServicePortal = struct
     | Disabled
 
   let str_to_t = [ "disabled", Disabled; "enabled", Enabled ]
-
   let t_to_str = [ Disabled, "disabled"; Enabled, "enabled" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -74798,7 +73121,6 @@ module SelfServicePortal = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -74838,9 +73160,7 @@ module ClientVpnAuthenticationRequestList = struct
       (List.map ClientVpnAuthenticationRequest.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list ClientVpnAuthenticationRequest.to_query v
-
   let to_json v = `List (List.map ClientVpnAuthenticationRequest.to_json v)
-
   let of_json j = Aws.Json.to_list ClientVpnAuthenticationRequest.of_json j
 end
 
@@ -75066,13 +73386,9 @@ module Ipv6PoolIdList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -75203,9 +73519,7 @@ module AccountAttributeValueList = struct
       (List.map AccountAttributeValue.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list AccountAttributeValue.to_query v
-
   let to_json v = `List (List.map AccountAttributeValue.to_json v)
-
   let of_json j = Aws.Json.to_list AccountAttributeValue.of_json j
 end
 
@@ -75267,9 +73581,7 @@ module AccountAttributeList = struct
     Aws.Util.option_all (List.map AccountAttribute.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list AccountAttribute.to_query v
-
   let to_json v = `List (List.map AccountAttribute.to_json v)
-
   let of_json j = Aws.Json.to_list AccountAttribute.of_json j
 end
 
@@ -75424,9 +73736,7 @@ module CancelSpotFleetRequestsErrorSet = struct
       (List.map CancelSpotFleetRequestsErrorItem.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list CancelSpotFleetRequestsErrorItem.to_query v
-
   let to_json v = `List (List.map CancelSpotFleetRequestsErrorItem.to_json v)
-
   let of_json j = Aws.Json.to_list CancelSpotFleetRequestsErrorItem.of_json j
 end
 
@@ -75726,9 +74036,7 @@ module HostInstanceList = struct
     Aws.Util.option_all (List.map HostInstance.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list HostInstance.to_query v
-
   let to_json v = `List (List.map HostInstance.to_json v)
-
   let of_json j = Aws.Json.to_list HostInstance.of_json j
 end
 
@@ -76000,13 +74308,9 @@ module HostList = struct
   type t = Host.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map Host.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list Host.to_query v
-
   let to_json v = `List (List.map Host.to_json v)
-
   let of_json j = Aws.Json.to_list Host.of_json j
 end
 
@@ -76014,13 +74318,9 @@ module BillingProductList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -76614,9 +74914,7 @@ module PrefixListAssociationSet = struct
       (List.map PrefixListAssociation.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list PrefixListAssociation.to_query v
-
   let to_json v = `List (List.map PrefixListAssociation.to_json v)
-
   let of_json j = Aws.Json.to_list PrefixListAssociation.of_json j
 end
 
@@ -76864,13 +75162,9 @@ module SpotFleetRequestIdList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -76979,9 +75273,7 @@ module ZoneIdStringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "ZoneId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -77062,9 +75354,7 @@ module TransitGatewayList = struct
     Aws.Util.option_all (List.map TransitGateway.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list TransitGateway.to_query v
-
   let to_json v = `List (List.map TransitGateway.to_json v)
-
   let of_json j = Aws.Json.to_list TransitGateway.of_json j
 end
 
@@ -77276,9 +75566,7 @@ module AvailabilityZoneStringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "AvailabilityZone" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -77675,9 +75963,7 @@ module TargetNetworkSet = struct
     Aws.Util.option_all (List.map TargetNetwork.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list TargetNetwork.to_query v
-
   let to_json v = `List (List.map TargetNetwork.to_json v)
-
   let of_json j = Aws.Json.to_list TargetNetwork.of_json j
 end
 
@@ -77733,13 +76019,9 @@ module CapacityReservationIdSet = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -78263,9 +76545,7 @@ module VpnConnectionList = struct
     Aws.Util.option_all (List.map VpnConnection.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list VpnConnection.to_query v
-
   let to_json v = `List (List.map VpnConnection.to_json v)
-
   let of_json j = Aws.Json.to_list VpnConnection.of_json j
 end
 
@@ -78449,9 +76729,7 @@ module ClientVpnConnectionSet = struct
     Aws.Util.option_all (List.map ClientVpnConnection.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list ClientVpnConnection.to_query v
-
   let to_json v = `List (List.map ClientVpnConnection.to_json v)
-
   let of_json j = Aws.Json.to_list ClientVpnConnection.of_json j
 end
 
@@ -78517,9 +76795,7 @@ module HistoryRecordSet = struct
     Aws.Util.option_all (List.map HistoryRecordEntry.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list HistoryRecordEntry.to_query v
-
   let to_json v = `List (List.map HistoryRecordEntry.to_json v)
-
   let of_json j = Aws.Json.to_list HistoryRecordEntry.of_json j
 end
 
@@ -79088,9 +77364,7 @@ module PublicIpStringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "PublicIp" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -79103,9 +77377,7 @@ module AllocationIdList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "AllocationId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -79393,9 +77665,7 @@ module ProductDescriptionList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -79403,13 +77673,9 @@ module TransitGatewaySubnetIdList = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -79725,9 +77991,7 @@ module SummaryStatus = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -79737,7 +78001,6 @@ module SummaryStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -80009,9 +78272,7 @@ module Ipv6CidrAssociationSet = struct
     Aws.Util.option_all (List.map Ipv6CidrAssociation.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list Ipv6CidrAssociation.to_query v
-
   let to_json v = `List (List.map Ipv6CidrAssociation.to_json v)
-
   let of_json j = Aws.Json.to_list Ipv6CidrAssociation.of_json j
 end
 
@@ -80516,9 +78777,7 @@ module PlacementGroupIdStringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "GroupId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -80579,9 +78838,7 @@ module ReservedInstancesIdStringList = struct
       (List.map String.parse (Aws.Xml.members "ReservedInstancesId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -81153,13 +79410,9 @@ module VolumeList = struct
   type t = Volume.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map Volume.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list Volume.to_query v
-
   let to_json v = `List (List.map Volume.to_json v)
-
   let of_json j = Aws.Json.to_list Volume.of_json j
 end
 
@@ -81361,9 +79614,7 @@ module GroupNameStringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "GroupName" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -82218,9 +80469,7 @@ module TrafficMirrorFilterSet = struct
     Aws.Util.option_all (List.map TrafficMirrorFilter.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list TrafficMirrorFilter.to_query v
-
   let to_json v = `List (List.map TrafficMirrorFilter.to_json v)
-
   let of_json j = Aws.Json.to_list TrafficMirrorFilter.of_json j
 end
 
@@ -82655,13 +80904,9 @@ module LocalGatewayRouteTableVpcAssociationIdSet = struct
   type t = String.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map String.parse (Aws.Xml.members "item" xml))
-
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -82875,9 +81120,7 @@ module CoipAddressUsageSet = struct
     Aws.Util.option_all (List.map CoipAddressUsage.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list CoipAddressUsage.to_query v
-
   let to_json v = `List (List.map CoipAddressUsage.to_json v)
-
   let of_json j = Aws.Json.to_list CoipAddressUsage.of_json j
 end
 
@@ -83542,9 +81785,7 @@ module VpcEndpointConnectionSet = struct
       (List.map VpcEndpointConnection.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list VpcEndpointConnection.to_query v
-
   let to_json v = `List (List.map VpcEndpointConnection.to_json v)
-
   let of_json j = Aws.Json.to_list VpcEndpointConnection.of_json j
 end
 
@@ -84026,7 +82267,6 @@ module DisableFastSnapshotRestoreSuccessSet = struct
     Aws.Query.to_query_list DisableFastSnapshotRestoreSuccessItem.to_query v
 
   let to_json v = `List (List.map DisableFastSnapshotRestoreSuccessItem.to_json v)
-
   let of_json j = Aws.Json.to_list DisableFastSnapshotRestoreSuccessItem.of_json j
 end
 
@@ -84040,9 +82280,7 @@ module DisableFastSnapshotRestoreErrorSet = struct
       (List.map DisableFastSnapshotRestoreErrorItem.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list DisableFastSnapshotRestoreErrorItem.to_query v
-
   let to_json v = `List (List.map DisableFastSnapshotRestoreErrorItem.to_json v)
-
   let of_json j = Aws.Json.to_list DisableFastSnapshotRestoreErrorItem.of_json j
 end
 
@@ -84393,9 +82631,7 @@ module CoipPoolSet = struct
     Aws.Util.option_all (List.map CoipPool.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list CoipPool.to_query v
-
   let to_json v = `List (List.map CoipPool.to_json v)
-
   let of_json j = Aws.Json.to_list CoipPool.of_json j
 end
 
@@ -85160,9 +83396,7 @@ module ZoneNameStringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "ZoneName" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -85497,9 +83731,7 @@ module DhcpOptionsList = struct
     Aws.Util.option_all (List.map DhcpOptions.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list DhcpOptions.to_query v
-
   let to_json v = `List (List.map DhcpOptions.to_json v)
-
   let of_json j = Aws.Json.to_list DhcpOptions.of_json j
 end
 
@@ -85531,13 +83763,9 @@ module CopyTagsFromSource = struct
   type t = Volume
 
   let str_to_t = [ "volume", Volume ]
-
   let t_to_str = [ Volume, "volume" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -85547,7 +83775,6 @@ module CopyTagsFromSource = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -85688,9 +83915,7 @@ module TransitGatewayAttachmentPropagationList = struct
       (List.map TransitGatewayAttachmentPropagation.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list TransitGatewayAttachmentPropagation.to_query v
-
   let to_json v = `List (List.map TransitGatewayAttachmentPropagation.to_json v)
-
   let of_json j = Aws.Json.to_list TransitGatewayAttachmentPropagation.of_json j
 end
 
@@ -85709,7 +83934,6 @@ module InstanceBlockDeviceMappingSpecificationList = struct
     Aws.Query.to_query_list InstanceBlockDeviceMappingSpecification.to_query v
 
   let to_json v = `List (List.map InstanceBlockDeviceMappingSpecification.to_json v)
-
   let of_json j = Aws.Json.to_list InstanceBlockDeviceMappingSpecification.of_json j
 end
 
@@ -85943,9 +84167,7 @@ module VpnConnectionIdStringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "VpnConnectionId" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -86706,9 +84928,7 @@ module LaunchTemplateSet = struct
     Aws.Util.option_all (List.map LaunchTemplate.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list LaunchTemplate.to_query v
-
   let to_json v = `List (List.map LaunchTemplate.to_json v)
-
   let of_json j = Aws.Json.to_list LaunchTemplate.of_json j
 end
 
@@ -87570,9 +85790,7 @@ module TagDescriptionList = struct
     Aws.Util.option_all (List.map TagDescription.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list TagDescription.to_query v
-
   let to_json v = `List (List.map TagDescription.to_json v)
-
   let of_json j = Aws.Json.to_list TagDescription.of_json j
 end
 
@@ -87970,9 +86188,7 @@ module PriceScheduleSpecificationList = struct
       (List.map PriceScheduleSpecification.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list PriceScheduleSpecification.to_query v
-
   let to_json v = `List (List.map PriceScheduleSpecification.to_json v)
-
   let of_json j = Aws.Json.to_list PriceScheduleSpecification.of_json j
 end
 
@@ -88660,9 +86876,7 @@ module InstanceStatusList = struct
     Aws.Util.option_all (List.map InstanceStatus.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list InstanceStatus.to_query v
-
   let to_json v = `List (List.map InstanceStatus.to_json v)
-
   let of_json j = Aws.Json.to_list InstanceStatus.of_json j
 end
 
@@ -88808,9 +87022,7 @@ module TerminateConnectionStatusSet = struct
       (List.map TerminateConnectionStatus.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list TerminateConnectionStatus.to_query v
-
   let to_json v = `List (List.map TerminateConnectionStatus.to_json v)
-
   let of_json j = Aws.Json.to_list TerminateConnectionStatus.of_json j
 end
 
@@ -89334,7 +87546,6 @@ module CreateDefaultVpcResult = struct
   type t = { vpc : Vpc.t option }
 
   let make ?vpc () = { vpc }
-
   let parse xml = Some { vpc = Aws.Util.option_bind (Aws.Xml.member "vpc" xml) Vpc.parse }
 
   let to_query v =
@@ -93165,9 +91376,7 @@ module TransitGatewayRouteTablePropagationList = struct
       (List.map TransitGatewayRouteTablePropagation.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list TransitGatewayRouteTablePropagation.to_query v
-
   let to_json v = `List (List.map TransitGatewayRouteTablePropagation.to_json v)
-
   let of_json j = Aws.Json.to_list TransitGatewayRouteTablePropagation.of_json j
 end
 
@@ -93408,9 +91617,7 @@ module PlacementGroupList = struct
     Aws.Util.option_all (List.map PlacementGroup.parse (Aws.Xml.members "item" xml))
 
   let to_query v = Aws.Query.to_query_list PlacementGroup.to_query v
-
   let to_json v = `List (List.map PlacementGroup.to_json v)
-
   let of_json j = Aws.Json.to_list PlacementGroup.of_json j
 end
 

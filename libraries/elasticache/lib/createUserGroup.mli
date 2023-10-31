@@ -1,9 +1,7 @@
 open Types
 
 type input = CreateUserGroupMessage.t
-
 type output = UserGroup.t
-
 type error = Errors_internal.t
 
 include

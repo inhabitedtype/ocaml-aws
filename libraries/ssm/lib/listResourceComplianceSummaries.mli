@@ -1,9 +1,7 @@
 open Types
 
 type input = ListResourceComplianceSummariesRequest.t
-
 type output = ListResourceComplianceSummariesResult.t
-
 type error = Errors_internal.t
 
 include

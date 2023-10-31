@@ -1,9 +1,7 @@
 open Types
 
 type input = AssociateSubnetCidrBlockRequest.t
-
 type output = AssociateSubnetCidrBlockResult.t
-
 type error = Errors_internal.t
 
 include

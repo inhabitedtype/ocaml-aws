@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeBundleTasksRequest.t
-
 type output = DescribeBundleTasksResult.t
-
 type error = Errors_internal.t
 
 include

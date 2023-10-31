@@ -1,9 +1,7 @@
 open Types
 
 type input = CreateSnapshotsRequest.t
-
 type output = CreateSnapshotsResult.t
-
 type error = Errors_internal.t
 
 include

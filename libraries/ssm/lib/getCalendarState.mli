@@ -1,9 +1,7 @@
 open Types
 
 type input = GetCalendarStateRequest.t
-
 type output = GetCalendarStateResponse.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,7 @@
 open Types
 
 type input = DetachVolumeRequest.t
-
 type output = VolumeAttachment.t
-
 type error = Errors_internal.t
 
 include

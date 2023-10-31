@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeEffectiveInstanceAssociationsRequest.t
-
 type output = DescribeEffectiveInstanceAssociationsResult.t
-
 type error = Errors_internal.t
 
 include

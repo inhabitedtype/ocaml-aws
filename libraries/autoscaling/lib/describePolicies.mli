@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribePoliciesType.t
-
 type output = PoliciesType.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,7 @@
 open Types
 
 type input = ModifyDBProxyRequest.t
-
 type output = ModifyDBProxyResponse.t
-
 type error = Errors_internal.t
 
 include

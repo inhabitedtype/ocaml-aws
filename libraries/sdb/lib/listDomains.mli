@@ -1,9 +1,7 @@
 open Types
 
 type input = ListDomainsRequest.t
-
 type output = ListDomainsResult.t
-
 type error = Errors_internal.t
 
 include

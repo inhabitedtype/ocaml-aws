@@ -1,9 +1,7 @@
 open Types
 
 type input = ListHostedZonesByVPCRequest.t
-
 type output = ListHostedZonesByVPCResponse.t
-
 type error = Errors_internal.t
 
 include

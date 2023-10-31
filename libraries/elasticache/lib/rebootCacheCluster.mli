@@ -1,9 +1,7 @@
 open Types
 
 type input = RebootCacheClusterMessage.t
-
 type output = RebootCacheClusterResult.t
-
 type error = Errors_internal.t
 
 include

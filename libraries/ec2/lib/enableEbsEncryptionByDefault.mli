@@ -1,9 +1,7 @@
 open Types
 
 type input = EnableEbsEncryptionByDefaultRequest.t
-
 type output = EnableEbsEncryptionByDefaultResult.t
-
 type error = Errors_internal.t
 
 include

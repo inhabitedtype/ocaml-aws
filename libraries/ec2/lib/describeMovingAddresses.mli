@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeMovingAddressesRequest.t
-
 type output = DescribeMovingAddressesResult.t
-
 type error = Errors_internal.t
 
 include

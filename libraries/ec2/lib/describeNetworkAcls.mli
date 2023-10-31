@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeNetworkAclsRequest.t
-
 type output = DescribeNetworkAclsResult.t
-
 type error = Errors_internal.t
 
 include

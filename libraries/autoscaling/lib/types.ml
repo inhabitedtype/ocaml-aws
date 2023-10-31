@@ -11,9 +11,7 @@ module Values = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -66,9 +64,7 @@ module ProcessNames = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -105,9 +101,7 @@ module SecurityGroups = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -144,9 +138,7 @@ module ClassicLinkVPCSecurityGroups = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -269,9 +261,7 @@ module BlockDeviceMappings = struct
     Aws.Util.option_all (List.map BlockDeviceMapping.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list BlockDeviceMapping.to_query v
-
   let to_json v = `List (List.map BlockDeviceMapping.to_json v)
-
   let of_json j = Aws.Json.to_list BlockDeviceMapping.of_json j
 end
 
@@ -537,9 +527,7 @@ module LaunchConfigurations = struct
       (List.map LaunchConfiguration.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list LaunchConfiguration.to_query v
-
   let to_json v = `List (List.map LaunchConfiguration.to_json v)
-
   let of_json j = Aws.Json.to_list LaunchConfiguration.of_json j
 end
 
@@ -602,9 +590,7 @@ module NotificationConfigurations = struct
       (List.map NotificationConfiguration.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list NotificationConfiguration.to_query v
-
   let to_json v = `List (List.map NotificationConfiguration.to_json v)
-
   let of_json j = Aws.Json.to_list NotificationConfiguration.of_json j
 end
 
@@ -657,9 +643,7 @@ module ScheduledActionNames = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -760,9 +744,7 @@ module InstanceIds = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -956,9 +938,7 @@ module Processes = struct
     Aws.Util.option_all (List.map ProcessType.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list ProcessType.to_query v
-
   let to_json v = `List (List.map ProcessType.to_json v)
-
   let of_json j = Aws.Json.to_list ProcessType.of_json j
 end
 
@@ -1046,9 +1026,7 @@ module Metrics = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -1107,9 +1085,7 @@ module LifecycleHookNames = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -1209,9 +1185,7 @@ module ScalingActivityStatusCode = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -1221,7 +1195,6 @@ module ScalingActivityStatusCode = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -1366,9 +1339,7 @@ module Activities = struct
     Aws.Util.option_all (List.map Activity.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list Activity.to_query v
-
   let to_json v = `List (List.map Activity.to_json v)
-
   let of_json j = Aws.Json.to_list Activity.of_json j
 end
 
@@ -1436,9 +1407,7 @@ module MetricGranularityTypes = struct
       (List.map MetricGranularityType.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list MetricGranularityType.to_query v
-
   let to_json v = `List (List.map MetricGranularityType.to_json v)
-
   let of_json j = Aws.Json.to_list MetricGranularityType.of_json j
 end
 
@@ -1476,9 +1445,7 @@ module MetricCollectionTypes = struct
       (List.map MetricCollectionType.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list MetricCollectionType.to_query v
-
   let to_json v = `List (List.map MetricCollectionType.to_json v)
-
   let of_json j = Aws.Json.to_list MetricCollectionType.of_json j
 end
 
@@ -1611,9 +1578,7 @@ module AutoScalingGroupNames = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -1745,9 +1710,7 @@ module ScheduledUpdateGroupActions = struct
       (List.map ScheduledUpdateGroupAction.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list ScheduledUpdateGroupAction.to_query v
-
   let to_json v = `List (List.map ScheduledUpdateGroupAction.to_json v)
-
   let of_json j = Aws.Json.to_list ScheduledUpdateGroupAction.of_json j
 end
 
@@ -1779,13 +1742,9 @@ module CompleteLifecycleActionAnswer = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1876,9 +1835,7 @@ module LoadBalancerStates = struct
     Aws.Util.option_all (List.map LoadBalancerState.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list LoadBalancerState.to_query v
-
   let to_json v = `List (List.map LoadBalancerState.to_json v)
-
   let of_json j = Aws.Json.to_list LoadBalancerState.of_json j
 end
 
@@ -1935,9 +1892,7 @@ module AutoScalingNotificationTypes = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -2067,9 +2022,7 @@ module TerminationPolicies = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -2151,9 +2104,7 @@ module TagDescriptionList = struct
     Aws.Util.option_all (List.map TagDescription.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list TagDescription.to_query v
-
   let to_json v = `List (List.map TagDescription.to_json v)
-
   let of_json j = Aws.Json.to_list TagDescription.of_json j
 end
 
@@ -2166,9 +2117,7 @@ module SuspendedProcesses = struct
     Aws.Util.option_all (List.map SuspendedProcess.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list SuspendedProcess.to_query v
-
   let to_json v = `List (List.map SuspendedProcess.to_json v)
-
   let of_json j = Aws.Json.to_list SuspendedProcess.of_json j
 end
 
@@ -2181,9 +2130,7 @@ module LoadBalancerNames = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -2236,9 +2183,7 @@ module LifecycleState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -2248,7 +2193,6 @@ module LifecycleState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -2346,9 +2290,7 @@ module Instances = struct
     Aws.Util.option_all (List.map Instance.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list Instance.to_query v
-
   let to_json v = `List (List.map Instance.to_json v)
-
   let of_json j = Aws.Json.to_list Instance.of_json j
 end
 
@@ -2397,9 +2339,7 @@ module EnabledMetrics = struct
     Aws.Util.option_all (List.map EnabledMetric.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list EnabledMetric.to_query v
-
   let to_json v = `List (List.map EnabledMetric.to_json v)
-
   let of_json j = Aws.Json.to_list EnabledMetric.of_json j
 end
 
@@ -2412,9 +2352,7 @@ module AvailabilityZones = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -2701,9 +2639,7 @@ module AutoScalingGroups = struct
     Aws.Util.option_all (List.map AutoScalingGroup.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list AutoScalingGroup.to_query v
-
   let to_json v = `List (List.map AutoScalingGroup.to_json v)
-
   let of_json j = Aws.Json.to_list AutoScalingGroup.of_json j
 end
 
@@ -3001,13 +2937,9 @@ module DeleteLifecycleHookAnswer = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -3108,13 +3040,9 @@ module Tags = struct
   type t = Tag.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map Tag.parse (Aws.Xml.members "member" xml))
-
   let to_query v = Aws.Query.to_query_list Tag.to_query v
-
   let to_json v = `List (List.map Tag.to_json v)
-
   let of_json j = Aws.Json.to_list Tag.of_json j
 end
 
@@ -3233,9 +3161,7 @@ module AdjustmentTypes = struct
     Aws.Util.option_all (List.map AdjustmentType.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list AdjustmentType.to_query v
-
   let to_json v = `List (List.map AdjustmentType.to_json v)
-
   let of_json j = Aws.Json.to_list AdjustmentType.of_json j
 end
 
@@ -3344,9 +3270,7 @@ module PolicyTypes = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -3359,9 +3283,7 @@ module PolicyNames = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -3562,9 +3484,7 @@ module StepAdjustments = struct
     Aws.Util.option_all (List.map StepAdjustment.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list StepAdjustment.to_query v
-
   let to_json v = `List (List.map StepAdjustment.to_json v)
-
   let of_json j = Aws.Json.to_list StepAdjustment.of_json j
 end
 
@@ -3819,9 +3739,7 @@ module Alarms = struct
     Aws.Util.option_all (List.map Alarm.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list Alarm.to_query v
-
   let to_json v = `List (List.map Alarm.to_json v)
-
   let of_json j = Aws.Json.to_list Alarm.of_json j
 end
 
@@ -3997,9 +3915,7 @@ module ScalingPolicies = struct
     Aws.Util.option_all (List.map ScalingPolicy.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list ScalingPolicy.to_query v
-
   let to_json v = `List (List.map ScalingPolicy.to_json v)
-
   let of_json j = Aws.Json.to_list ScalingPolicy.of_json j
 end
 
@@ -4234,9 +4150,7 @@ module LaunchConfigurationNames = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -4370,9 +4284,7 @@ module Filters = struct
     Aws.Util.option_all (List.map Filter.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list Filter.to_query v
-
   let to_json v = `List (List.map Filter.to_json v)
-
   let of_json j = Aws.Json.to_list Filter.of_json j
 end
 
@@ -4791,13 +4703,9 @@ module DetachLoadBalancersResultType = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -4892,9 +4800,7 @@ module ActivityIds = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -5085,9 +4991,7 @@ module LifecycleHooks = struct
     Aws.Util.option_all (List.map LifecycleHook.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list LifecycleHook.to_query v
-
   let to_json v = `List (List.map LifecycleHook.to_json v)
-
   let of_json j = Aws.Json.to_list LifecycleHook.of_json j
 end
 
@@ -5231,13 +5135,9 @@ module AttachLoadBalancersResultType = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -5290,9 +5190,7 @@ module AutoScalingInstances = struct
       (List.map AutoScalingInstanceDetails.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list AutoScalingInstanceDetails.to_query v
-
   let to_json v = `List (List.map AutoScalingInstanceDetails.to_json v)
-
   let of_json j = Aws.Json.to_list AutoScalingInstanceDetails.of_json j
 end
 
@@ -6232,13 +6130,9 @@ module PutLifecycleHookAnswer = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -6477,13 +6371,9 @@ module RecordLifecycleActionHeartbeatAnswer = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 

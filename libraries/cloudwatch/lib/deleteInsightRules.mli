@@ -1,9 +1,7 @@
 open Types
 
 type input = DeleteInsightRulesInput.t
-
 type output = DeleteInsightRulesOutput.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeClientVpnRoutesRequest.t
-
 type output = DescribeClientVpnRoutesResult.t
-
 type error = Errors_internal.t
 
 include

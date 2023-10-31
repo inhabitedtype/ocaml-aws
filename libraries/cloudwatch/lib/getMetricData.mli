@@ -1,9 +1,7 @@
 open Types
 
 type input = GetMetricDataInput.t
-
 type output = GetMetricDataOutput.t
-
 type error = Errors_internal.t
 
 include

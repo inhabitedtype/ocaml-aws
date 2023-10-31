@@ -1,9 +1,7 @@
 open Types
 
 type input = DeleteTrafficMirrorFilterRuleRequest.t
-
 type output = DeleteTrafficMirrorFilterRuleResult.t
-
 type error = Errors_internal.t
 
 include

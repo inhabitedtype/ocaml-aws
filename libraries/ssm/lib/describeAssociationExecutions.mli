@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeAssociationExecutionsRequest.t
-
 type output = DescribeAssociationExecutionsResult.t
-
 type error = Errors_internal.t
 
 include

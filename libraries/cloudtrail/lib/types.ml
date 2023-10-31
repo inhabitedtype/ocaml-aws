@@ -209,9 +209,7 @@ module TrailList = struct
     Aws.Util.option_all (List.map Trail.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list Trail.to_query v
-
   let to_json v = `List (List.map Trail.to_json v)
-
   let of_json j = Aws.Json.to_list Trail.of_json j
 end
 
@@ -451,13 +449,9 @@ module TagsList = struct
   type t = Tag.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map Tag.parse (Aws.Xml.members "member" xml))
-
   let to_query v = Aws.Query.to_query_list Tag.to_query v
-
   let to_json v = `List (List.map Tag.to_json v)
-
   let of_json j = Aws.Json.to_list Tag.of_json j
 end
 
@@ -533,9 +527,7 @@ module LookupAttributeKey = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -545,7 +537,6 @@ module LookupAttributeKey = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -624,13 +615,9 @@ module InvalidSnsTopicNameException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -698,9 +685,7 @@ module PublicKeyList = struct
     Aws.Util.option_all (List.map PublicKey.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list PublicKey.to_query v
-
   let to_json v = `List (List.map PublicKey.to_json v)
-
   let of_json j = Aws.Json.to_list PublicKey.of_json j
 end
 
@@ -754,13 +739,9 @@ module ReadWriteType = struct
     | All
 
   let str_to_t = [ "All", All; "WriteOnly", WriteOnly; "ReadOnly", ReadOnly ]
-
   let t_to_str = [ All, "All"; WriteOnly, "WriteOnly"; ReadOnly, "ReadOnly" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -770,7 +751,6 @@ module ReadWriteType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -783,9 +763,7 @@ module ExcludeManagementEventSources = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -798,9 +776,7 @@ module DataResourceValues = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -852,9 +828,7 @@ module DataResources = struct
     Aws.Util.option_all (List.map DataResource.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list DataResource.to_query v
-
   let to_json v = `List (List.map DataResource.to_json v)
-
   let of_json j = Aws.Json.to_list DataResource.of_json j
 end
 
@@ -952,9 +926,7 @@ module EventSelectors = struct
     Aws.Util.option_all (List.map EventSelector.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list EventSelector.to_query v
-
   let to_json v = `List (List.map EventSelector.to_json v)
-
   let of_json j = Aws.Json.to_list EventSelector.of_json j
 end
 
@@ -962,13 +934,9 @@ module InsightType = struct
   type t = ApiCallRateInsight
 
   let str_to_t = [ "ApiCallRateInsight", ApiCallRateInsight ]
-
   let t_to_str = [ ApiCallRateInsight, "ApiCallRateInsight" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -978,7 +946,6 @@ module InsightType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -1022,9 +989,7 @@ module InsightSelectors = struct
     Aws.Util.option_all (List.map InsightSelector.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list InsightSelector.to_query v
-
   let to_json v = `List (List.map InsightSelector.to_json v)
-
   let of_json j = Aws.Json.to_list InsightSelector.of_json j
 end
 
@@ -1162,13 +1127,9 @@ module MaximumNumberOfTrailsExceededException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1176,13 +1137,9 @@ module InvalidNextTokenException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1190,13 +1147,9 @@ module InvalidS3PrefixException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1204,13 +1157,9 @@ module InvalidCloudWatchLogsLogGroupArnException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1218,13 +1167,9 @@ module OrganizationsNotInUseException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1232,13 +1177,9 @@ module CloudTrailARNInvalidException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1246,13 +1187,9 @@ module InvalidEventCategoryException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1260,13 +1197,9 @@ module InsightNotEnabledException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1274,13 +1207,9 @@ module RemoveTagsResponse = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1288,13 +1217,9 @@ module EventCategory = struct
   type t = Insight
 
   let str_to_t = [ "insight", Insight ]
-
   let t_to_str = [ Insight, "insight" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -1304,7 +1229,6 @@ module EventCategory = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -1312,13 +1236,9 @@ module NotOrganizationMasterAccountException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1397,9 +1317,7 @@ module ResourceList = struct
     Aws.Util.option_all (List.map Resource.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list Resource.to_query v
-
   let to_json v = `List (List.map Resource.to_json v)
-
   let of_json j = Aws.Json.to_list Resource.of_json j
 end
 
@@ -1518,9 +1436,7 @@ module EventsList = struct
     Aws.Util.option_all (List.map Event.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list Event.to_query v
-
   let to_json v = `List (List.map Event.to_json v)
-
   let of_json j = Aws.Json.to_list Event.of_json j
 end
 
@@ -1566,13 +1482,9 @@ module ResourceNotFoundException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1580,13 +1492,9 @@ module TagsLimitExceededException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1594,13 +1502,9 @@ module KmsKeyNotFoundException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1608,13 +1512,9 @@ module InsufficientS3BucketPolicyException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1627,9 +1527,7 @@ module ResourceIdList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -1637,13 +1535,9 @@ module InvalidHomeRegionException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1651,13 +1545,9 @@ module InvalidEventSelectorsException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1665,13 +1555,9 @@ module InsufficientSnsTopicPolicyException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1679,13 +1565,9 @@ module UnsupportedOperationException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1693,13 +1575,9 @@ module CloudTrailAccessNotEnabledException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1707,13 +1585,9 @@ module InvalidTimeRangeException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1721,13 +1595,9 @@ module InvalidParameterCombinationException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1735,13 +1605,9 @@ module InvalidMaxResultsException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1749,13 +1615,9 @@ module CloudWatchLogsDeliveryUnavailableException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1763,13 +1625,9 @@ module OperationNotPermittedException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1777,13 +1635,9 @@ module InsufficientEncryptionPolicyException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1838,9 +1692,7 @@ module TrailNameList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -1895,13 +1747,9 @@ module S3BucketDoesNotExistException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1914,9 +1762,7 @@ module Trails = struct
     Aws.Util.option_all (List.map TrailInfo.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list TrailInfo.to_query v
-
   let to_json v = `List (List.map TrailInfo.to_json v)
-
   let of_json j = Aws.Json.to_list TrailInfo.of_json j
 end
 
@@ -1924,13 +1770,9 @@ module InvalidTrailNameException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1938,13 +1780,9 @@ module InvalidLookupAttributesException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -2285,13 +2123,9 @@ module OrganizationNotInAllFeaturesModeException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -2324,13 +2158,9 @@ module StartLoggingResponse = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -2338,13 +2168,9 @@ module AddTagsResponse = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -2357,9 +2183,7 @@ module ResourceTagList = struct
     Aws.Util.option_all (List.map ResourceTag.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list ResourceTag.to_query v
-
   let to_json v = `List (List.map ResourceTag.to_json v)
-
   let of_json j = Aws.Json.to_list ResourceTag.of_json j
 end
 
@@ -2692,13 +2516,9 @@ module InvalidTagParameterException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -2706,13 +2526,9 @@ module TrailNotFoundException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -2720,13 +2536,9 @@ module KmsKeyDisabledException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -2821,13 +2633,9 @@ module TrailNotProvidedException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -2840,9 +2648,7 @@ module LookupAttributesList = struct
     Aws.Util.option_all (List.map LookupAttribute.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list LookupAttribute.to_query v
-
   let to_json v = `List (List.map LookupAttribute.to_json v)
-
   let of_json j = Aws.Json.to_list LookupAttribute.of_json j
 end
 
@@ -2850,13 +2656,9 @@ module InvalidInsightSelectorsException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -2864,13 +2666,9 @@ module KmsException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -2878,13 +2676,9 @@ module InvalidKmsKeyIdException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -3132,13 +2926,9 @@ module StopLoggingResponse = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -3146,13 +2936,9 @@ module InvalidTokenException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -3240,13 +3026,9 @@ module InsufficientDependencyServiceAccessPermissionException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -3298,13 +3080,9 @@ module InvalidCloudWatchLogsRoleArnException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -3353,13 +3131,9 @@ module InvalidS3BucketNameException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -3367,13 +3141,9 @@ module ResourceTypeNotSupportedException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -3406,13 +3176,9 @@ module TrailAlreadyExistsException = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -3577,12 +3343,8 @@ module DeleteTrailResponse = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end

@@ -1,9 +1,7 @@
 open Types
 
 type input = GetAccountLimitRequest.t
-
 type output = GetAccountLimitResponse.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,7 @@
 open Types
 
 type input = DeleteTransitGatewayPeeringAttachmentRequest.t
-
 type output = DeleteTransitGatewayPeeringAttachmentResult.t
-
 type error = Errors_internal.t
 
 include

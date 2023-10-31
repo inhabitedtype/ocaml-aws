@@ -1,9 +1,7 @@
 open Types
 
 type input = GetTransitGatewayRouteTablePropagationsRequest.t
-
 type output = GetTransitGatewayRouteTablePropagationsResult.t
-
 type error = Errors_internal.t
 
 include

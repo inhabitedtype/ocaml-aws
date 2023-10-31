@@ -1,9 +1,7 @@
 open Types
 
 type input = unit
-
 type output = GetCheckerIpRangesResponse.t
-
 type error = Errors_internal.t
 
 include

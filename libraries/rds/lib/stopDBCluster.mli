@@ -1,9 +1,7 @@
 open Types
 
 type input = StopDBClusterMessage.t
-
 type output = StopDBClusterResult.t
-
 type error = Errors_internal.t
 
 include

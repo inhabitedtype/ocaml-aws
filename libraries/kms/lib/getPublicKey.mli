@@ -1,9 +1,7 @@
 open Types
 
 type input = GetPublicKeyRequest.t
-
 type output = GetPublicKeyResponse.t
-
 type error = Errors_internal.t
 
 include

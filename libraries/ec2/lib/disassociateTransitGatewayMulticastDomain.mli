@@ -1,9 +1,7 @@
 open Types
 
 type input = DisassociateTransitGatewayMulticastDomainRequest.t
-
 type output = DisassociateTransitGatewayMulticastDomainResult.t
-
 type error = Errors_internal.t
 
 include

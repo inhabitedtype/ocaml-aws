@@ -1,9 +1,7 @@
 open Types
 
 type input = PurchaseReservedDBInstancesOfferingMessage.t
-
 type output = PurchaseReservedDBInstancesOfferingResult.t
-
 type error = Errors_internal.t
 
 include

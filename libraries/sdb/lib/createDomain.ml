@@ -2,13 +2,10 @@ open Types
 open Aws
 
 type input = CreateDomainRequest.t
-
 type output = unit
-
 type error = Errors_internal.t
 
 let service = "sdb"
-
 let signature_version = Request.V2
 
 let to_http service region req =

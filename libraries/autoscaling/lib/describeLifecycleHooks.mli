@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeLifecycleHooksType.t
-
 type output = DescribeLifecycleHooksAnswer.t
-
 type error = Errors_internal.t
 
 include

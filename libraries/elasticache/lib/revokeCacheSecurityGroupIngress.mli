@@ -1,9 +1,7 @@
 open Types
 
 type input = RevokeCacheSecurityGroupIngressMessage.t
-
 type output = RevokeCacheSecurityGroupIngressResult.t
-
 type error = Errors_internal.t
 
 include

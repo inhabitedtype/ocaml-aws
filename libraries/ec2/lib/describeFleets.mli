@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeFleetsRequest.t
-
 type output = DescribeFleetsResult.t
-
 type error = Errors_internal.t
 
 include

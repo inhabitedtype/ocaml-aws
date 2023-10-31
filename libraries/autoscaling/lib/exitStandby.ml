@@ -2,13 +2,10 @@ open Types
 open Aws
 
 type input = ExitStandbyQuery.t
-
 type output = ExitStandbyAnswer.t
-
 type error = Errors_internal.t
 
 let service = "autoscaling"
-
 let signature_version = Request.V4
 
 let to_http service region req =

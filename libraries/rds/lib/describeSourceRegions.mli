@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeSourceRegionsMessage.t
-
 type output = SourceRegionMessage.t
-
 type error = Errors_internal.t
 
 include

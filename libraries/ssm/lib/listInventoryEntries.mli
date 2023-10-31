@@ -1,9 +1,7 @@
 open Types
 
 type input = ListInventoryEntriesRequest.t
-
 type output = ListInventoryEntriesResult.t
-
 type error = Errors_internal.t
 
 include
