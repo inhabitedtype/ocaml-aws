@@ -38,6 +38,7 @@ LIBRARIES := \
 	aws-elasticloadbalancing \
 	aws-kms \
 	aws-rds \
+	aws-rekognition \
 	aws-sdb \
 	aws-ssm \
 	aws-sts \
