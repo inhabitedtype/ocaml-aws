@@ -1,9 +1,5 @@
-open Types
-
 type input = ModifyDBClusterEndpointMessage.t
-
 type output = DBClusterEndpoint.t
-
 type error = Errors_internal.t
 
 include

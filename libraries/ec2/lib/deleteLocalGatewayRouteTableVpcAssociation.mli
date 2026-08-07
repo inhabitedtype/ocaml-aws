@@ -1,9 +1,5 @@
-open Types
-
 type input = DeleteLocalGatewayRouteTableVpcAssociationRequest.t
-
 type output = DeleteLocalGatewayRouteTableVpcAssociationResult.t
-
 type error = Errors_internal.t
 
 include

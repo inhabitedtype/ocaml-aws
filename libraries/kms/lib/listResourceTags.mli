@@ -1,9 +1,5 @@
-open Types
-
 type input = ListResourceTagsRequest.t
-
 type output = ListResourceTagsResponse.t
-
 type error = Errors_internal.t
 
 include

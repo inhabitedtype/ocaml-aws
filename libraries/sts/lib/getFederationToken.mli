@@ -1,9 +1,5 @@
-open Types
-
 type input = GetFederationTokenRequest.t
-
 type output = GetFederationTokenResponse.t
-
 type error = Errors_internal.t
 
 include

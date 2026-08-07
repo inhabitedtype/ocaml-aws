@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeDBSnapshotsMessage.t
-
 type output = DBSnapshotMessage.t
-
 type error = Errors_internal.t
 
 include

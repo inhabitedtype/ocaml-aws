@@ -1,0 +1,10 @@
+type t = OptionSetting.t list
+
+let make elems () = elems
+
+let parse xml =
+  Aws.Util.option_all (List.map OptionSetting.parse (Aws.Xml.members "OptionSetting" xml))
+
+let to_query v = Aws.Query.to_query_list OptionSetting.to_query v
+let to_json v = `List (List.map OptionSetting.to_json v)
+let of_json j = Aws.Json.to_list OptionSetting.of_json j

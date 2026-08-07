@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribePlacementGroupsRequest.t
-
 type output = DescribePlacementGroupsResult.t
-
 type error = Errors_internal.t
 
 include

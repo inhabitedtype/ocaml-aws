@@ -1,9 +1,5 @@
-open Types
-
 type input = CancelReservedInstancesListingRequest.t
-
 type output = CancelReservedInstancesListingResult.t
-
 type error = Errors_internal.t
 
 include

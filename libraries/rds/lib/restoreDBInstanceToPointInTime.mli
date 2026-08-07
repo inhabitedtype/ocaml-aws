@@ -1,9 +1,5 @@
-open Types
-
 type input = RestoreDBInstanceToPointInTimeMessage.t
-
 type output = RestoreDBInstanceToPointInTimeResult.t
-
 type error = Errors_internal.t
 
 include

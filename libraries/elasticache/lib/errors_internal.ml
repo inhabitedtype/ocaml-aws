@@ -33,6 +33,7 @@ type t =
   | InvalidCacheParameterGroupState
   | InvalidCacheSecurityGroupState
   | InvalidClientTokenId
+  | InvalidCredentialsException
   | InvalidGlobalReplicationGroupState
   | InvalidKMSKeyFault
   | InvalidParameter
@@ -40,6 +41,8 @@ type t =
   | InvalidParameterValue
   | InvalidQueryParameter
   | InvalidReplicationGroupState
+  | InvalidServerlessCacheSnapshotStateFault
+  | InvalidServerlessCacheStateFault
   | InvalidSnapshotState
   | InvalidSubnet
   | InvalidUserGroupState
@@ -67,6 +70,12 @@ type t =
   | ReservedCacheNodeNotFound
   | ReservedCacheNodeQuotaExceeded
   | ReservedCacheNodesOfferingNotFound
+  | ServerlessCacheAlreadyExistsFault
+  | ServerlessCacheNotFoundFault
+  | ServerlessCacheQuotaForCustomerExceededFault
+  | ServerlessCacheSnapshotAlreadyExistsFault
+  | ServerlessCacheSnapshotNotFoundFault
+  | ServerlessCacheSnapshotQuotaExceededFault
   | ServiceLinkedRoleNotFoundFault
   | ServiceUnavailable
   | ServiceUpdateNotFoundFault
@@ -157,6 +166,7 @@ let to_http_code e =
   | InvalidCacheParameterGroupState -> Some 400
   | InvalidCacheSecurityGroupState -> Some 400
   | InvalidClientTokenId -> Some 403
+  | InvalidCredentialsException -> Some 408
   | InvalidGlobalReplicationGroupState -> Some 400
   | InvalidKMSKeyFault -> Some 400
   | InvalidParameter -> None
@@ -164,6 +174,8 @@ let to_http_code e =
   | InvalidParameterValue -> Some 400
   | InvalidQueryParameter -> Some 400
   | InvalidReplicationGroupState -> Some 400
+  | InvalidServerlessCacheSnapshotStateFault -> Some 400
+  | InvalidServerlessCacheStateFault -> Some 400
   | InvalidSnapshotState -> Some 400
   | InvalidSubnet -> Some 400
   | InvalidUserGroupState -> Some 400
@@ -191,6 +203,12 @@ let to_http_code e =
   | ReservedCacheNodeNotFound -> Some 404
   | ReservedCacheNodeQuotaExceeded -> Some 400
   | ReservedCacheNodesOfferingNotFound -> Some 404
+  | ServerlessCacheAlreadyExistsFault -> Some 400
+  | ServerlessCacheNotFoundFault -> Some 404
+  | ServerlessCacheQuotaForCustomerExceededFault -> Some 400
+  | ServerlessCacheSnapshotAlreadyExistsFault -> Some 400
+  | ServerlessCacheSnapshotNotFoundFault -> Some 404
+  | ServerlessCacheSnapshotQuotaExceededFault -> Some 400
   | ServiceLinkedRoleNotFoundFault -> Some 400
   | ServiceUnavailable -> Some 503
   | ServiceUpdateNotFoundFault -> Some 404
@@ -252,6 +270,7 @@ let to_string e =
   | InvalidCacheParameterGroupState -> "InvalidCacheParameterGroupState"
   | InvalidCacheSecurityGroupState -> "InvalidCacheSecurityGroupState"
   | InvalidClientTokenId -> "InvalidClientTokenId"
+  | InvalidCredentialsException -> "InvalidCredentialsException"
   | InvalidGlobalReplicationGroupState -> "InvalidGlobalReplicationGroupState"
   | InvalidKMSKeyFault -> "InvalidKMSKeyFault"
   | InvalidParameter -> "InvalidParameter"
@@ -259,6 +278,8 @@ let to_string e =
   | InvalidParameterValue -> "InvalidParameterValue"
   | InvalidQueryParameter -> "InvalidQueryParameter"
   | InvalidReplicationGroupState -> "InvalidReplicationGroupState"
+  | InvalidServerlessCacheSnapshotStateFault -> "InvalidServerlessCacheSnapshotStateFault"
+  | InvalidServerlessCacheStateFault -> "InvalidServerlessCacheStateFault"
   | InvalidSnapshotState -> "InvalidSnapshotState"
   | InvalidSubnet -> "InvalidSubnet"
   | InvalidUserGroupState -> "InvalidUserGroupState"
@@ -288,6 +309,15 @@ let to_string e =
   | ReservedCacheNodeNotFound -> "ReservedCacheNodeNotFound"
   | ReservedCacheNodeQuotaExceeded -> "ReservedCacheNodeQuotaExceeded"
   | ReservedCacheNodesOfferingNotFound -> "ReservedCacheNodesOfferingNotFound"
+  | ServerlessCacheAlreadyExistsFault -> "ServerlessCacheAlreadyExistsFault"
+  | ServerlessCacheNotFoundFault -> "ServerlessCacheNotFoundFault"
+  | ServerlessCacheQuotaForCustomerExceededFault ->
+      "ServerlessCacheQuotaForCustomerExceededFault"
+  | ServerlessCacheSnapshotAlreadyExistsFault ->
+      "ServerlessCacheSnapshotAlreadyExistsFault"
+  | ServerlessCacheSnapshotNotFoundFault -> "ServerlessCacheSnapshotNotFoundFault"
+  | ServerlessCacheSnapshotQuotaExceededFault ->
+      "ServerlessCacheSnapshotQuotaExceededFault"
   | ServiceLinkedRoleNotFoundFault -> "ServiceLinkedRoleNotFoundFault"
   | ServiceUnavailable -> "ServiceUnavailable"
   | ServiceUpdateNotFoundFault -> "ServiceUpdateNotFoundFault"
@@ -350,6 +380,7 @@ let of_string e =
   | "InvalidCacheParameterGroupState" -> Some InvalidCacheParameterGroupState
   | "InvalidCacheSecurityGroupState" -> Some InvalidCacheSecurityGroupState
   | "InvalidClientTokenId" -> Some InvalidClientTokenId
+  | "InvalidCredentialsException" -> Some InvalidCredentialsException
   | "InvalidGlobalReplicationGroupState" -> Some InvalidGlobalReplicationGroupState
   | "InvalidKMSKeyFault" -> Some InvalidKMSKeyFault
   | "InvalidParameter" -> Some InvalidParameter
@@ -357,6 +388,9 @@ let of_string e =
   | "InvalidParameterValue" -> Some InvalidParameterValue
   | "InvalidQueryParameter" -> Some InvalidQueryParameter
   | "InvalidReplicationGroupState" -> Some InvalidReplicationGroupState
+  | "InvalidServerlessCacheSnapshotStateFault" ->
+      Some InvalidServerlessCacheSnapshotStateFault
+  | "InvalidServerlessCacheStateFault" -> Some InvalidServerlessCacheStateFault
   | "InvalidSnapshotState" -> Some InvalidSnapshotState
   | "InvalidSubnet" -> Some InvalidSubnet
   | "InvalidUserGroupState" -> Some InvalidUserGroupState
@@ -387,6 +421,15 @@ let of_string e =
   | "ReservedCacheNodeNotFound" -> Some ReservedCacheNodeNotFound
   | "ReservedCacheNodeQuotaExceeded" -> Some ReservedCacheNodeQuotaExceeded
   | "ReservedCacheNodesOfferingNotFound" -> Some ReservedCacheNodesOfferingNotFound
+  | "ServerlessCacheAlreadyExistsFault" -> Some ServerlessCacheAlreadyExistsFault
+  | "ServerlessCacheNotFoundFault" -> Some ServerlessCacheNotFoundFault
+  | "ServerlessCacheQuotaForCustomerExceededFault" ->
+      Some ServerlessCacheQuotaForCustomerExceededFault
+  | "ServerlessCacheSnapshotAlreadyExistsFault" ->
+      Some ServerlessCacheSnapshotAlreadyExistsFault
+  | "ServerlessCacheSnapshotNotFoundFault" -> Some ServerlessCacheSnapshotNotFoundFault
+  | "ServerlessCacheSnapshotQuotaExceededFault" ->
+      Some ServerlessCacheSnapshotQuotaExceededFault
   | "ServiceLinkedRoleNotFoundFault" -> Some ServiceLinkedRoleNotFoundFault
   | "ServiceUnavailable" -> Some ServiceUnavailable
   | "ServiceUpdateNotFoundFault" -> Some ServiceUpdateNotFoundFault

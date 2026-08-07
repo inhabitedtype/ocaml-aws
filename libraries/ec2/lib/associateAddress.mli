@@ -1,9 +1,5 @@
-open Types
-
 type input = AssociateAddressRequest.t
-
 type output = AssociateAddressResult.t
-
 type error = Errors_internal.t
 
 include

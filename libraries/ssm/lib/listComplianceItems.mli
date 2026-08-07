@@ -1,9 +1,7 @@
 open Types
 
 type input = ListComplianceItemsRequest.t
-
 type output = ListComplianceItemsResult.t
-
 type error = Errors_internal.t
 
 include

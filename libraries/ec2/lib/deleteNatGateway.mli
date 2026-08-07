@@ -1,9 +1,5 @@
-open Types
-
 type input = DeleteNatGatewayRequest.t
-
 type output = DeleteNatGatewayResult.t
-
 type error = Errors_internal.t
 
 include

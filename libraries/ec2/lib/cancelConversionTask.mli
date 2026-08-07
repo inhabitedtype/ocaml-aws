@@ -1,9 +1,5 @@
-open Types
-
 type input = CancelConversionRequest.t
-
 type output = unit
-
 type error = Errors_internal.t
 
 include

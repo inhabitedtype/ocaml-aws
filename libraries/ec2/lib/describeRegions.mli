@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeRegionsRequest.t
-
 type output = DescribeRegionsResult.t
-
 type error = Errors_internal.t
 
 include

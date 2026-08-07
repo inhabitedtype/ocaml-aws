@@ -1,9 +1,7 @@
 open Types
 
 type input = DeregisterManagedInstanceRequest.t
-
 type output = unit
-
 type error = Errors_internal.t
 
 include

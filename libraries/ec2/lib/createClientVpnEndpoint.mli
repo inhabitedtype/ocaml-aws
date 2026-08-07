@@ -1,9 +1,5 @@
-open Types
-
 type input = CreateClientVpnEndpointRequest.t
-
 type output = CreateClientVpnEndpointResult.t
-
 type error = Errors_internal.t
 
 include

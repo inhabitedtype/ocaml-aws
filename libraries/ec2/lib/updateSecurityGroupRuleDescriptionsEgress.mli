@@ -1,9 +1,5 @@
-open Types
-
 type input = UpdateSecurityGroupRuleDescriptionsEgressRequest.t
-
 type output = UpdateSecurityGroupRuleDescriptionsEgressResult.t
-
 type error = Errors_internal.t
 
 include

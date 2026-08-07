@@ -1,9 +1,5 @@
-open Types
-
 type input = DeleteQueuedReservedInstancesRequest.t
-
 type output = DeleteQueuedReservedInstancesResult.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,5 @@
-open Types
-
 type input = CreateKeyPairRequest.t
-
 type output = KeyPair.t
-
 type error = Errors_internal.t
 
 include

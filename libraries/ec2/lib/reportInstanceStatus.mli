@@ -1,9 +1,5 @@
-open Types
-
 type input = ReportInstanceStatusRequest.t
-
 type output = unit
-
 type error = Errors_internal.t
 
 include

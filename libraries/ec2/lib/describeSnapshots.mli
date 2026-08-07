@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeSnapshotsRequest.t
-
 type output = DescribeSnapshotsResult.t
-
 type error = Errors_internal.t
 
 include

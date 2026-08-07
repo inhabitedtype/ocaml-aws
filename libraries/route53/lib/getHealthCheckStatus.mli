@@ -1,9 +1,5 @@
-open Types
-
 type input = GetHealthCheckStatusRequest.t
-
 type output = GetHealthCheckStatusResponse.t
-
 type error = Errors_internal.t
 
 include

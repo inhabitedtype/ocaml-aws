@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeConversionTasksRequest.t
-
 type output = DescribeConversionTasksResult.t
-
 type error = Errors_internal.t
 
 include

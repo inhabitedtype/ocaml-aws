@@ -1,14 +1,10 @@
-open Types
 open Aws
 
 type input = DescribeLocalGatewayRouteTableVirtualInterfaceGroupAssociationsRequest.t
-
 type output = DescribeLocalGatewayRouteTableVirtualInterfaceGroupAssociationsResult.t
-
 type error = Errors_internal.t
 
 let service = "ec2"
-
 let signature_version = Request.V4
 
 let to_http service region req =
@@ -26,7 +22,7 @@ let to_http service region req =
                    .to_query
                      req)))))
   in
-  `POST, uri, []
+  `POST, uri, [], ""
 
 let of_http body =
   try
@@ -42,12 +38,12 @@ let of_http body =
            resp
            DescribeLocalGatewayRouteTableVirtualInterfaceGroupAssociationsResult.parse)
         (let open Error in
-        BadResponse
-          { body
-          ; message =
-              "Could not find well formed \
-               DescribeLocalGatewayRouteTableVirtualInterfaceGroupAssociationsResult."
-          })
+         BadResponse
+           { body
+           ; message =
+               "Could not find well formed \
+                DescribeLocalGatewayRouteTableVirtualInterfaceGroupAssociationsResult."
+           })
     with Xml.RequiredFieldMissing msg ->
       let open Error in
       `Error
@@ -62,17 +58,18 @@ let of_http body =
   with Failure msg ->
     `Error
       (let open Error in
-      BadResponse { body; message = "Error parsing xml: " ^ msg })
+       BadResponse { body; message = "Error parsing xml: " ^ msg })
 
 let parse_error code err =
   let errors = [] @ Errors_internal.common in
   match Errors_internal.of_string err with
   | Some var ->
-      if List.mem var errors
-         &&
-         match Errors_internal.to_http_code var with
-         | Some var -> var = code
-         | None -> true
+      if
+        List.mem var errors
+        &&
+        match Errors_internal.to_http_code var with
+        | Some var -> var = code
+        | None -> true
       then Some var
       else None
   | None -> None

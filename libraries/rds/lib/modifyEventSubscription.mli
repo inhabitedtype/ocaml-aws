@@ -1,9 +1,5 @@
-open Types
-
 type input = ModifyEventSubscriptionMessage.t
-
 type output = ModifyEventSubscriptionResult.t
-
 type error = Errors_internal.t
 
 include

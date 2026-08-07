@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeTypeRegistrationInput.t
-
 type output = DescribeTypeRegistrationOutput.t
-
 type error = Errors_internal.t
 
 include

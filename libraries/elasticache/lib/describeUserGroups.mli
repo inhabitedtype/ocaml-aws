@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeUserGroupsMessage.t
-
 type output = DescribeUserGroupsResult.t
-
 type error = Errors_internal.t
 
 include

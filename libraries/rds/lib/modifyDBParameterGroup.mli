@@ -1,9 +1,5 @@
-open Types
-
 type input = ModifyDBParameterGroupMessage.t
-
 type output = DBParameterGroupNameMessage.t
-
 type error = Errors_internal.t
 
 include

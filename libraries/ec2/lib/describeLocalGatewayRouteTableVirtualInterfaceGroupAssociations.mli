@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeLocalGatewayRouteTableVirtualInterfaceGroupAssociationsRequest.t
-
 type output = DescribeLocalGatewayRouteTableVirtualInterfaceGroupAssociationsResult.t
-
 type error = Errors_internal.t
 
 include

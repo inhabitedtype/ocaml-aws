@@ -1,9 +1,5 @@
-open Types
-
 type input = CreateSubnetRequest.t
-
 type output = CreateSubnetResult.t
-
 type error = Errors_internal.t
 
 include

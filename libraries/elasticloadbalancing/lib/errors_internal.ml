@@ -2,6 +2,7 @@ type t =
   | AuthFailure
   | Blocked
   | CertificateNotFound
+  | DependencyThrottle
   | DryRunOperation
   | DuplicateListener
   | DuplicateLoadBalancerName
@@ -28,6 +29,7 @@ type t =
   | MissingAction
   | MissingAuthenticationToken
   | MissingParameter
+  | OperationNotPermitted
   | OptInRequired
   | PendingVerification
   | PolicyNotFound
@@ -80,6 +82,7 @@ let to_http_code e =
   | AuthFailure -> None
   | Blocked -> None
   | CertificateNotFound -> Some 400
+  | DependencyThrottle -> Some 400
   | DryRunOperation -> None
   | DuplicateListener -> Some 400
   | DuplicateLoadBalancerName -> Some 400
@@ -106,6 +109,7 @@ let to_http_code e =
   | MissingAction -> Some 400
   | MissingAuthenticationToken -> Some 403
   | MissingParameter -> Some 400
+  | OperationNotPermitted -> Some 400
   | OptInRequired -> Some 403
   | PendingVerification -> None
   | PolicyNotFound -> Some 400
@@ -120,7 +124,7 @@ let to_http_code e =
   | TooManyTags -> Some 400
   | UnauthorizedOperation -> None
   | UnknownParameter -> None
-  | UnsupportedProtocol -> None
+  | UnsupportedProtocol -> Some 400
   | ValidationError -> Some 400
   | Uninhabited -> None
 
@@ -129,6 +133,7 @@ let to_string e =
   | AuthFailure -> "AuthFailure"
   | Blocked -> "Blocked"
   | CertificateNotFound -> "CertificateNotFound"
+  | DependencyThrottle -> "DependencyThrottle"
   | DryRunOperation -> "DryRunOperation"
   | DuplicateListener -> "DuplicateListener"
   | DuplicateLoadBalancerName -> "DuplicateLoadBalancerName"
@@ -155,6 +160,7 @@ let to_string e =
   | MissingAction -> "MissingAction"
   | MissingAuthenticationToken -> "MissingAuthenticationToken"
   | MissingParameter -> "MissingParameter"
+  | OperationNotPermitted -> "OperationNotPermitted"
   | OptInRequired -> "OptInRequired"
   | PendingVerification -> "PendingVerification"
   | PolicyNotFound -> "PolicyNotFound"
@@ -178,6 +184,7 @@ let of_string e =
   | "AuthFailure" -> Some AuthFailure
   | "Blocked" -> Some Blocked
   | "CertificateNotFound" -> Some CertificateNotFound
+  | "DependencyThrottle" -> Some DependencyThrottle
   | "DryRunOperation" -> Some DryRunOperation
   | "DuplicateListener" -> Some DuplicateListener
   | "DuplicateLoadBalancerName" -> Some DuplicateLoadBalancerName
@@ -204,6 +211,7 @@ let of_string e =
   | "MissingAction" -> Some MissingAction
   | "MissingAuthenticationToken" -> Some MissingAuthenticationToken
   | "MissingParameter" -> Some MissingParameter
+  | "OperationNotPermitted" -> Some OperationNotPermitted
   | "OptInRequired" -> Some OptInRequired
   | "PendingVerification" -> Some PendingVerification
   | "PolicyNotFound" -> Some PolicyNotFound

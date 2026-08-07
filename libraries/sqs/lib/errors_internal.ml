@@ -1,22 +1,18 @@
 type t =
-  | AWS_SimpleQueueService_BatchEntryIdsNotDistinct
-  | AWS_SimpleQueueService_BatchRequestTooLong
-  | AWS_SimpleQueueService_EmptyBatchRequest
-  | AWS_SimpleQueueService_InvalidBatchEntryId
-  | AWS_SimpleQueueService_MessageNotInflight
-  | AWS_SimpleQueueService_NonExistentQueue
-  | AWS_SimpleQueueService_PurgeQueueInProgress
-  | AWS_SimpleQueueService_QueueDeletedRecently
-  | AWS_SimpleQueueService_TooManyEntriesInBatchRequest
-  | AWS_SimpleQueueService_UnsupportedOperation
   | AuthFailure
+  | BatchEntryIdsNotDistinct
+  | BatchRequestTooLong
   | Blocked
   | DryRunOperation
+  | EmptyBatchRequest
   | IdempotentParameterMismatch
   | IncompleteSignature
   | InternalFailure
   | InvalidAction
+  | InvalidAddress
   | InvalidAttributeName
+  | InvalidAttributeValue
+  | InvalidBatchEntryId
   | InvalidClientTokenId
   | InvalidIdFormat
   | InvalidMessageContents
@@ -24,21 +20,37 @@ type t =
   | InvalidParameterCombination
   | InvalidParameterValue
   | InvalidQueryParameter
+  | InvalidSecurity
+  | KmsAccessDenied
+  | KmsDisabled
+  | KmsInvalidKeyUsage
+  | KmsInvalidState
+  | KmsNotFound
+  | KmsOptInRequired
+  | KmsThrottled
   | MalformedQueryString
+  | MessageNotInflight
   | MissingAction
   | MissingAuthenticationToken
   | MissingParameter
   | OptInRequired
   | OverLimit
   | PendingVerification
-  | QueueAlreadyExists
+  | PurgeQueueInProgress
+  | QueueDeletedRecently
+  | QueueDoesNotExist
+  | QueueNameExists
   | ReceiptHandleIsInvalid
   | RequestExpired
   | RequestLimitExceeded
+  | RequestThrottled
+  | ResourceNotFoundException
   | ServiceUnavailable
   | Throttling
+  | TooManyEntriesInBatchRequest
   | UnauthorizedOperation
   | UnknownParameter
+  | UnsupportedOperation
   | UnsupportedProtocol
   | ValidationError
   | Uninhabited
@@ -74,24 +86,20 @@ let common =
 
 let to_http_code e =
   match e with
-  | AWS_SimpleQueueService_BatchEntryIdsNotDistinct -> Some 400
-  | AWS_SimpleQueueService_BatchRequestTooLong -> Some 400
-  | AWS_SimpleQueueService_EmptyBatchRequest -> Some 400
-  | AWS_SimpleQueueService_InvalidBatchEntryId -> Some 400
-  | AWS_SimpleQueueService_MessageNotInflight -> Some 400
-  | AWS_SimpleQueueService_NonExistentQueue -> Some 400
-  | AWS_SimpleQueueService_PurgeQueueInProgress -> Some 403
-  | AWS_SimpleQueueService_QueueDeletedRecently -> Some 400
-  | AWS_SimpleQueueService_TooManyEntriesInBatchRequest -> Some 400
-  | AWS_SimpleQueueService_UnsupportedOperation -> Some 400
   | AuthFailure -> None
+  | BatchEntryIdsNotDistinct -> None
+  | BatchRequestTooLong -> None
   | Blocked -> None
   | DryRunOperation -> None
+  | EmptyBatchRequest -> None
   | IdempotentParameterMismatch -> None
   | IncompleteSignature -> Some 400
   | InternalFailure -> Some 500
   | InvalidAction -> Some 400
+  | InvalidAddress -> None
   | InvalidAttributeName -> None
+  | InvalidAttributeValue -> None
+  | InvalidBatchEntryId -> None
   | InvalidClientTokenId -> Some 403
   | InvalidIdFormat -> None
   | InvalidMessageContents -> None
@@ -99,53 +107,57 @@ let to_http_code e =
   | InvalidParameterCombination -> Some 400
   | InvalidParameterValue -> Some 400
   | InvalidQueryParameter -> Some 400
+  | InvalidSecurity -> None
+  | KmsAccessDenied -> None
+  | KmsDisabled -> None
+  | KmsInvalidKeyUsage -> None
+  | KmsInvalidState -> None
+  | KmsNotFound -> None
+  | KmsOptInRequired -> None
+  | KmsThrottled -> None
   | MalformedQueryString -> Some 404
+  | MessageNotInflight -> None
   | MissingAction -> Some 400
   | MissingAuthenticationToken -> Some 403
   | MissingParameter -> Some 400
   | OptInRequired -> Some 403
-  | OverLimit -> Some 403
+  | OverLimit -> None
   | PendingVerification -> None
-  | QueueAlreadyExists -> Some 400
+  | PurgeQueueInProgress -> None
+  | QueueDeletedRecently -> None
+  | QueueDoesNotExist -> None
+  | QueueNameExists -> None
   | ReceiptHandleIsInvalid -> None
   | RequestExpired -> Some 400
   | RequestLimitExceeded -> None
+  | RequestThrottled -> None
+  | ResourceNotFoundException -> None
   | ServiceUnavailable -> Some 503
   | Throttling -> Some 400
+  | TooManyEntriesInBatchRequest -> None
   | UnauthorizedOperation -> None
   | UnknownParameter -> None
+  | UnsupportedOperation -> None
   | UnsupportedProtocol -> None
   | ValidationError -> Some 400
   | Uninhabited -> None
 
 let to_string e =
   match e with
-  | AWS_SimpleQueueService_BatchEntryIdsNotDistinct ->
-      "AWS.SimpleQueueService.BatchEntryIdsNotDistinct"
-  | AWS_SimpleQueueService_BatchRequestTooLong ->
-      "AWS.SimpleQueueService.BatchRequestTooLong"
-  | AWS_SimpleQueueService_EmptyBatchRequest -> "AWS.SimpleQueueService.EmptyBatchRequest"
-  | AWS_SimpleQueueService_InvalidBatchEntryId ->
-      "AWS.SimpleQueueService.InvalidBatchEntryId"
-  | AWS_SimpleQueueService_MessageNotInflight ->
-      "AWS.SimpleQueueService.MessageNotInflight"
-  | AWS_SimpleQueueService_NonExistentQueue -> "AWS.SimpleQueueService.NonExistentQueue"
-  | AWS_SimpleQueueService_PurgeQueueInProgress ->
-      "AWS.SimpleQueueService.PurgeQueueInProgress"
-  | AWS_SimpleQueueService_QueueDeletedRecently ->
-      "AWS.SimpleQueueService.QueueDeletedRecently"
-  | AWS_SimpleQueueService_TooManyEntriesInBatchRequest ->
-      "AWS.SimpleQueueService.TooManyEntriesInBatchRequest"
-  | AWS_SimpleQueueService_UnsupportedOperation ->
-      "AWS.SimpleQueueService.UnsupportedOperation"
   | AuthFailure -> "AuthFailure"
+  | BatchEntryIdsNotDistinct -> "BatchEntryIdsNotDistinct"
+  | BatchRequestTooLong -> "BatchRequestTooLong"
   | Blocked -> "Blocked"
   | DryRunOperation -> "DryRunOperation"
+  | EmptyBatchRequest -> "EmptyBatchRequest"
   | IdempotentParameterMismatch -> "IdempotentParameterMismatch"
   | IncompleteSignature -> "IncompleteSignature"
   | InternalFailure -> "InternalFailure"
   | InvalidAction -> "InvalidAction"
+  | InvalidAddress -> "InvalidAddress"
   | InvalidAttributeName -> "InvalidAttributeName"
+  | InvalidAttributeValue -> "InvalidAttributeValue"
+  | InvalidBatchEntryId -> "InvalidBatchEntryId"
   | InvalidClientTokenId -> "InvalidClientTokenId"
   | InvalidIdFormat -> "InvalidIdFormat"
   | InvalidMessageContents -> "InvalidMessageContents"
@@ -153,55 +165,57 @@ let to_string e =
   | InvalidParameterCombination -> "InvalidParameterCombination"
   | InvalidParameterValue -> "InvalidParameterValue"
   | InvalidQueryParameter -> "InvalidQueryParameter"
+  | InvalidSecurity -> "InvalidSecurity"
+  | KmsAccessDenied -> "KmsAccessDenied"
+  | KmsDisabled -> "KmsDisabled"
+  | KmsInvalidKeyUsage -> "KmsInvalidKeyUsage"
+  | KmsInvalidState -> "KmsInvalidState"
+  | KmsNotFound -> "KmsNotFound"
+  | KmsOptInRequired -> "KmsOptInRequired"
+  | KmsThrottled -> "KmsThrottled"
   | MalformedQueryString -> "MalformedQueryString"
+  | MessageNotInflight -> "MessageNotInflight"
   | MissingAction -> "MissingAction"
   | MissingAuthenticationToken -> "MissingAuthenticationToken"
   | MissingParameter -> "MissingParameter"
   | OptInRequired -> "OptInRequired"
   | OverLimit -> "OverLimit"
   | PendingVerification -> "PendingVerification"
-  | QueueAlreadyExists -> "QueueAlreadyExists"
+  | PurgeQueueInProgress -> "PurgeQueueInProgress"
+  | QueueDeletedRecently -> "QueueDeletedRecently"
+  | QueueDoesNotExist -> "QueueDoesNotExist"
+  | QueueNameExists -> "QueueNameExists"
   | ReceiptHandleIsInvalid -> "ReceiptHandleIsInvalid"
   | RequestExpired -> "RequestExpired"
   | RequestLimitExceeded -> "RequestLimitExceeded"
+  | RequestThrottled -> "RequestThrottled"
+  | ResourceNotFoundException -> "ResourceNotFoundException"
   | ServiceUnavailable -> "ServiceUnavailable"
   | Throttling -> "Throttling"
+  | TooManyEntriesInBatchRequest -> "TooManyEntriesInBatchRequest"
   | UnauthorizedOperation -> "UnauthorizedOperation"
   | UnknownParameter -> "UnknownParameter"
+  | UnsupportedOperation -> "UnsupportedOperation"
   | UnsupportedProtocol -> "UnsupportedProtocol"
   | ValidationError -> "ValidationError"
   | Uninhabited -> "Uninhabited"
 
 let of_string e =
   match e with
-  | "AWS.SimpleQueueService.BatchEntryIdsNotDistinct" ->
-      Some AWS_SimpleQueueService_BatchEntryIdsNotDistinct
-  | "AWS.SimpleQueueService.BatchRequestTooLong" ->
-      Some AWS_SimpleQueueService_BatchRequestTooLong
-  | "AWS.SimpleQueueService.EmptyBatchRequest" ->
-      Some AWS_SimpleQueueService_EmptyBatchRequest
-  | "AWS.SimpleQueueService.InvalidBatchEntryId" ->
-      Some AWS_SimpleQueueService_InvalidBatchEntryId
-  | "AWS.SimpleQueueService.MessageNotInflight" ->
-      Some AWS_SimpleQueueService_MessageNotInflight
-  | "AWS.SimpleQueueService.NonExistentQueue" ->
-      Some AWS_SimpleQueueService_NonExistentQueue
-  | "AWS.SimpleQueueService.PurgeQueueInProgress" ->
-      Some AWS_SimpleQueueService_PurgeQueueInProgress
-  | "AWS.SimpleQueueService.QueueDeletedRecently" ->
-      Some AWS_SimpleQueueService_QueueDeletedRecently
-  | "AWS.SimpleQueueService.TooManyEntriesInBatchRequest" ->
-      Some AWS_SimpleQueueService_TooManyEntriesInBatchRequest
-  | "AWS.SimpleQueueService.UnsupportedOperation" ->
-      Some AWS_SimpleQueueService_UnsupportedOperation
   | "AuthFailure" -> Some AuthFailure
+  | "BatchEntryIdsNotDistinct" -> Some BatchEntryIdsNotDistinct
+  | "BatchRequestTooLong" -> Some BatchRequestTooLong
   | "Blocked" -> Some Blocked
   | "DryRunOperation" -> Some DryRunOperation
+  | "EmptyBatchRequest" -> Some EmptyBatchRequest
   | "IdempotentParameterMismatch" -> Some IdempotentParameterMismatch
   | "IncompleteSignature" -> Some IncompleteSignature
   | "InternalFailure" -> Some InternalFailure
   | "InvalidAction" -> Some InvalidAction
+  | "InvalidAddress" -> Some InvalidAddress
   | "InvalidAttributeName" -> Some InvalidAttributeName
+  | "InvalidAttributeValue" -> Some InvalidAttributeValue
+  | "InvalidBatchEntryId" -> Some InvalidBatchEntryId
   | "InvalidClientTokenId" -> Some InvalidClientTokenId
   | "InvalidIdFormat" -> Some InvalidIdFormat
   | "InvalidMessageContents" -> Some InvalidMessageContents
@@ -209,21 +223,37 @@ let of_string e =
   | "InvalidParameterCombination" -> Some InvalidParameterCombination
   | "InvalidParameterValue" -> Some InvalidParameterValue
   | "InvalidQueryParameter" -> Some InvalidQueryParameter
+  | "InvalidSecurity" -> Some InvalidSecurity
+  | "KmsAccessDenied" -> Some KmsAccessDenied
+  | "KmsDisabled" -> Some KmsDisabled
+  | "KmsInvalidKeyUsage" -> Some KmsInvalidKeyUsage
+  | "KmsInvalidState" -> Some KmsInvalidState
+  | "KmsNotFound" -> Some KmsNotFound
+  | "KmsOptInRequired" -> Some KmsOptInRequired
+  | "KmsThrottled" -> Some KmsThrottled
   | "MalformedQueryString" -> Some MalformedQueryString
+  | "MessageNotInflight" -> Some MessageNotInflight
   | "MissingAction" -> Some MissingAction
   | "MissingAuthenticationToken" -> Some MissingAuthenticationToken
   | "MissingParameter" -> Some MissingParameter
   | "OptInRequired" -> Some OptInRequired
   | "OverLimit" -> Some OverLimit
   | "PendingVerification" -> Some PendingVerification
-  | "QueueAlreadyExists" -> Some QueueAlreadyExists
+  | "PurgeQueueInProgress" -> Some PurgeQueueInProgress
+  | "QueueDeletedRecently" -> Some QueueDeletedRecently
+  | "QueueDoesNotExist" -> Some QueueDoesNotExist
+  | "QueueNameExists" -> Some QueueNameExists
   | "ReceiptHandleIsInvalid" -> Some ReceiptHandleIsInvalid
   | "RequestExpired" -> Some RequestExpired
   | "RequestLimitExceeded" -> Some RequestLimitExceeded
+  | "RequestThrottled" -> Some RequestThrottled
+  | "ResourceNotFoundException" -> Some ResourceNotFoundException
   | "ServiceUnavailable" -> Some ServiceUnavailable
   | "Throttling" -> Some Throttling
+  | "TooManyEntriesInBatchRequest" -> Some TooManyEntriesInBatchRequest
   | "UnauthorizedOperation" -> Some UnauthorizedOperation
   | "UnknownParameter" -> Some UnknownParameter
+  | "UnsupportedOperation" -> Some UnsupportedOperation
   | "UnsupportedProtocol" -> Some UnsupportedProtocol
   | "ValidationError" -> Some ValidationError
   | "Uninhabited" -> Some Uninhabited

@@ -1,9 +1,7 @@
 open Types
 
 type input = GetDeployablePatchSnapshotForInstanceRequest.t
-
 type output = GetDeployablePatchSnapshotForInstanceResult.t
-
 type error = Errors_internal.t
 
 include

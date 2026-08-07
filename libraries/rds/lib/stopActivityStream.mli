@@ -1,9 +1,5 @@
-open Types
-
 type input = StopActivityStreamRequest.t
-
 type output = StopActivityStreamResponse.t
-
 type error = Errors_internal.t
 
 include

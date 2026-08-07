@@ -1,9 +1,7 @@
 open Types
 
 type input = TerminateSessionRequest.t
-
 type output = TerminateSessionResponse.t
-
 type error = Errors_internal.t
 
 include

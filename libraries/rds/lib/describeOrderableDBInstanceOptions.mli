@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeOrderableDBInstanceOptionsMessage.t
-
 type output = OrderableDBInstanceOptionsMessage.t
-
 type error = Errors_internal.t
 
 include

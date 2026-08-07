@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeIpv6PoolsRequest.t
-
 type output = DescribeIpv6PoolsResult.t
-
 type error = Errors_internal.t
 
 include

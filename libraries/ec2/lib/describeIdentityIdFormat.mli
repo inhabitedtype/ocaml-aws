@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeIdentityIdFormatRequest.t
-
 type output = DescribeIdentityIdFormatResult.t
-
 type error = Errors_internal.t
 
 include

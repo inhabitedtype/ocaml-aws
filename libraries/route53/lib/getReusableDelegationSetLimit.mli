@@ -1,9 +1,5 @@
-open Types
-
 type input = GetReusableDelegationSetLimitRequest.t
-
 type output = GetReusableDelegationSetLimitResponse.t
-
 type error = Errors_internal.t
 
 include

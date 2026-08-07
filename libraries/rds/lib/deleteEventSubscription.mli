@@ -1,9 +1,5 @@
-open Types
-
 type input = DeleteEventSubscriptionMessage.t
-
 type output = DeleteEventSubscriptionResult.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,5 @@
-open Types
-
 type input = ApplySecurityGroupsToLoadBalancerInput.t
-
 type output = ApplySecurityGroupsToLoadBalancerOutput.t
-
 type error = Errors_internal.t
 
 include

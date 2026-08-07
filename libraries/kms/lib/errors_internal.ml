@@ -7,6 +7,7 @@ type t =
   | CloudHsmClusterNotActiveException
   | CloudHsmClusterNotFoundException
   | CloudHsmClusterNotRelatedException
+  | ConflictException
   | CustomKeyStoreHasCMKsException
   | CustomKeyStoreInvalidStateException
   | CustomKeyStoreNameInUseException
@@ -14,6 +15,7 @@ type t =
   | DependencyTimeoutException
   | DisabledException
   | DryRunOperation
+  | DryRunOperationException
   | ExpiredImportTokenException
   | IdempotentParameterMismatch
   | IncompleteSignature
@@ -36,6 +38,7 @@ type t =
   | InvalidParameterValue
   | InvalidQueryParameter
   | KMSInternalException
+  | KMSInvalidMacException
   | KMSInvalidSignatureException
   | KMSInvalidStateException
   | KeyUnavailableException
@@ -58,6 +61,18 @@ type t =
   | UnsupportedOperationException
   | UnsupportedProtocol
   | ValidationError
+  | XksKeyAlreadyInUseException
+  | XksKeyInvalidConfigurationException
+  | XksKeyNotFoundException
+  | XksProxyIncorrectAuthenticationCredentialException
+  | XksProxyInvalidConfigurationException
+  | XksProxyInvalidResponseException
+  | XksProxyUriEndpointInUseException
+  | XksProxyUriInUseException
+  | XksProxyUriUnreachableException
+  | XksProxyVpcEndpointServiceInUseException
+  | XksProxyVpcEndpointServiceInvalidConfigurationException
+  | XksProxyVpcEndpointServiceNotFoundException
   | Uninhabited
 
 let common =
@@ -99,6 +114,7 @@ let to_http_code e =
   | CloudHsmClusterNotActiveException -> None
   | CloudHsmClusterNotFoundException -> None
   | CloudHsmClusterNotRelatedException -> None
+  | ConflictException -> None
   | CustomKeyStoreHasCMKsException -> None
   | CustomKeyStoreInvalidStateException -> None
   | CustomKeyStoreNameInUseException -> None
@@ -106,6 +122,7 @@ let to_http_code e =
   | DependencyTimeoutException -> None
   | DisabledException -> None
   | DryRunOperation -> None
+  | DryRunOperationException -> None
   | ExpiredImportTokenException -> None
   | IdempotentParameterMismatch -> None
   | IncompleteSignature -> Some 400
@@ -128,6 +145,7 @@ let to_http_code e =
   | InvalidParameterValue -> Some 400
   | InvalidQueryParameter -> Some 400
   | KMSInternalException -> None
+  | KMSInvalidMacException -> None
   | KMSInvalidSignatureException -> None
   | KMSInvalidStateException -> None
   | KeyUnavailableException -> None
@@ -150,6 +168,18 @@ let to_http_code e =
   | UnsupportedOperationException -> None
   | UnsupportedProtocol -> None
   | ValidationError -> Some 400
+  | XksKeyAlreadyInUseException -> None
+  | XksKeyInvalidConfigurationException -> None
+  | XksKeyNotFoundException -> None
+  | XksProxyIncorrectAuthenticationCredentialException -> None
+  | XksProxyInvalidConfigurationException -> None
+  | XksProxyInvalidResponseException -> None
+  | XksProxyUriEndpointInUseException -> None
+  | XksProxyUriInUseException -> None
+  | XksProxyUriUnreachableException -> None
+  | XksProxyVpcEndpointServiceInUseException -> None
+  | XksProxyVpcEndpointServiceInvalidConfigurationException -> None
+  | XksProxyVpcEndpointServiceNotFoundException -> None
   | Uninhabited -> None
 
 let to_string e =
@@ -163,6 +193,7 @@ let to_string e =
   | CloudHsmClusterNotActiveException -> "CloudHsmClusterNotActiveException"
   | CloudHsmClusterNotFoundException -> "CloudHsmClusterNotFoundException"
   | CloudHsmClusterNotRelatedException -> "CloudHsmClusterNotRelatedException"
+  | ConflictException -> "ConflictException"
   | CustomKeyStoreHasCMKsException -> "CustomKeyStoreHasCMKsException"
   | CustomKeyStoreInvalidStateException -> "CustomKeyStoreInvalidStateException"
   | CustomKeyStoreNameInUseException -> "CustomKeyStoreNameInUseException"
@@ -170,6 +201,7 @@ let to_string e =
   | DependencyTimeoutException -> "DependencyTimeoutException"
   | DisabledException -> "DisabledException"
   | DryRunOperation -> "DryRunOperation"
+  | DryRunOperationException -> "DryRunOperationException"
   | ExpiredImportTokenException -> "ExpiredImportTokenException"
   | IdempotentParameterMismatch -> "IdempotentParameterMismatch"
   | IncompleteSignature -> "IncompleteSignature"
@@ -192,6 +224,7 @@ let to_string e =
   | InvalidParameterValue -> "InvalidParameterValue"
   | InvalidQueryParameter -> "InvalidQueryParameter"
   | KMSInternalException -> "KMSInternalException"
+  | KMSInvalidMacException -> "KMSInvalidMacException"
   | KMSInvalidSignatureException -> "KMSInvalidSignatureException"
   | KMSInvalidStateException -> "KMSInvalidStateException"
   | KeyUnavailableException -> "KeyUnavailableException"
@@ -214,6 +247,21 @@ let to_string e =
   | UnsupportedOperationException -> "UnsupportedOperationException"
   | UnsupportedProtocol -> "UnsupportedProtocol"
   | ValidationError -> "ValidationError"
+  | XksKeyAlreadyInUseException -> "XksKeyAlreadyInUseException"
+  | XksKeyInvalidConfigurationException -> "XksKeyInvalidConfigurationException"
+  | XksKeyNotFoundException -> "XksKeyNotFoundException"
+  | XksProxyIncorrectAuthenticationCredentialException ->
+      "XksProxyIncorrectAuthenticationCredentialException"
+  | XksProxyInvalidConfigurationException -> "XksProxyInvalidConfigurationException"
+  | XksProxyInvalidResponseException -> "XksProxyInvalidResponseException"
+  | XksProxyUriEndpointInUseException -> "XksProxyUriEndpointInUseException"
+  | XksProxyUriInUseException -> "XksProxyUriInUseException"
+  | XksProxyUriUnreachableException -> "XksProxyUriUnreachableException"
+  | XksProxyVpcEndpointServiceInUseException -> "XksProxyVpcEndpointServiceInUseException"
+  | XksProxyVpcEndpointServiceInvalidConfigurationException ->
+      "XksProxyVpcEndpointServiceInvalidConfigurationException"
+  | XksProxyVpcEndpointServiceNotFoundException ->
+      "XksProxyVpcEndpointServiceNotFoundException"
   | Uninhabited -> "Uninhabited"
 
 let of_string e =
@@ -227,6 +275,7 @@ let of_string e =
   | "CloudHsmClusterNotActiveException" -> Some CloudHsmClusterNotActiveException
   | "CloudHsmClusterNotFoundException" -> Some CloudHsmClusterNotFoundException
   | "CloudHsmClusterNotRelatedException" -> Some CloudHsmClusterNotRelatedException
+  | "ConflictException" -> Some ConflictException
   | "CustomKeyStoreHasCMKsException" -> Some CustomKeyStoreHasCMKsException
   | "CustomKeyStoreInvalidStateException" -> Some CustomKeyStoreInvalidStateException
   | "CustomKeyStoreNameInUseException" -> Some CustomKeyStoreNameInUseException
@@ -234,6 +283,7 @@ let of_string e =
   | "DependencyTimeoutException" -> Some DependencyTimeoutException
   | "DisabledException" -> Some DisabledException
   | "DryRunOperation" -> Some DryRunOperation
+  | "DryRunOperationException" -> Some DryRunOperationException
   | "ExpiredImportTokenException" -> Some ExpiredImportTokenException
   | "IdempotentParameterMismatch" -> Some IdempotentParameterMismatch
   | "IncompleteSignature" -> Some IncompleteSignature
@@ -256,6 +306,7 @@ let of_string e =
   | "InvalidParameterValue" -> Some InvalidParameterValue
   | "InvalidQueryParameter" -> Some InvalidQueryParameter
   | "KMSInternalException" -> Some KMSInternalException
+  | "KMSInvalidMacException" -> Some KMSInvalidMacException
   | "KMSInvalidSignatureException" -> Some KMSInvalidSignatureException
   | "KMSInvalidStateException" -> Some KMSInvalidStateException
   | "KeyUnavailableException" -> Some KeyUnavailableException
@@ -278,5 +329,21 @@ let of_string e =
   | "UnsupportedOperationException" -> Some UnsupportedOperationException
   | "UnsupportedProtocol" -> Some UnsupportedProtocol
   | "ValidationError" -> Some ValidationError
+  | "XksKeyAlreadyInUseException" -> Some XksKeyAlreadyInUseException
+  | "XksKeyInvalidConfigurationException" -> Some XksKeyInvalidConfigurationException
+  | "XksKeyNotFoundException" -> Some XksKeyNotFoundException
+  | "XksProxyIncorrectAuthenticationCredentialException" ->
+      Some XksProxyIncorrectAuthenticationCredentialException
+  | "XksProxyInvalidConfigurationException" -> Some XksProxyInvalidConfigurationException
+  | "XksProxyInvalidResponseException" -> Some XksProxyInvalidResponseException
+  | "XksProxyUriEndpointInUseException" -> Some XksProxyUriEndpointInUseException
+  | "XksProxyUriInUseException" -> Some XksProxyUriInUseException
+  | "XksProxyUriUnreachableException" -> Some XksProxyUriUnreachableException
+  | "XksProxyVpcEndpointServiceInUseException" ->
+      Some XksProxyVpcEndpointServiceInUseException
+  | "XksProxyVpcEndpointServiceInvalidConfigurationException" ->
+      Some XksProxyVpcEndpointServiceInvalidConfigurationException
+  | "XksProxyVpcEndpointServiceNotFoundException" ->
+      Some XksProxyVpcEndpointServiceNotFoundException
   | "Uninhabited" -> Some Uninhabited
   | _ -> None

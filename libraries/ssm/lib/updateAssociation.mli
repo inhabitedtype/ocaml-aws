@@ -1,9 +1,7 @@
 open Types
 
 type input = UpdateAssociationRequest.t
-
 type output = UpdateAssociationResult.t
-
 type error = Errors_internal.t
 
 include

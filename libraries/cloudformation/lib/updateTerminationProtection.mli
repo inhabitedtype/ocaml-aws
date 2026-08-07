@@ -1,9 +1,5 @@
-open Types
-
 type input = UpdateTerminationProtectionInput.t
-
 type output = UpdateTerminationProtectionOutput.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeHostsRequest.t
-
 type output = DescribeHostsResult.t
-
 type error = Errors_internal.t
 
 include

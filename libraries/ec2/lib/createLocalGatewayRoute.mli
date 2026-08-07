@@ -1,9 +1,5 @@
-open Types
-
 type input = CreateLocalGatewayRouteRequest.t
-
 type output = CreateLocalGatewayRouteResult.t
-
 type error = Errors_internal.t
 
 include

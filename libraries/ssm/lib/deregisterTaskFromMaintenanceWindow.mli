@@ -1,9 +1,7 @@
 open Types
 
 type input = DeregisterTaskFromMaintenanceWindowRequest.t
-
 type output = DeregisterTaskFromMaintenanceWindowResult.t
-
 type error = Errors_internal.t
 
 include

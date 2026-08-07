@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeDBSecurityGroupsMessage.t
-
 type output = DBSecurityGroupMessage.t
-
 type error = Errors_internal.t
 
 include

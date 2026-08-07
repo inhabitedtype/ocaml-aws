@@ -61,11 +61,8 @@ module Char = struct
   include Char
 
   let _is_uppercase i = i >= 65 && i <= 90
-
   let _is_alpha i = _is_uppercase i || (i >= 97 && i <= 122)
-
   let is_uppercase c = _is_uppercase (code c)
-
   let is_alpha c = _is_alpha (code c)
 
   let is_alphanum c =

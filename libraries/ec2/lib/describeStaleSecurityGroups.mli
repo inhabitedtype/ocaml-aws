@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeStaleSecurityGroupsRequest.t
-
 type output = DescribeStaleSecurityGroupsResult.t
-
 type error = Errors_internal.t
 
 include

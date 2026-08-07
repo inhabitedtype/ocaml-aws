@@ -1,9 +1,5 @@
-open Types
-
 type input = RunInstancesRequest.t
-
 type output = Reservation.t
-
 type error = Errors_internal.t
 
 include

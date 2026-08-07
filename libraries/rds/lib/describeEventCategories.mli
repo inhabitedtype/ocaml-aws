@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeEventCategoriesMessage.t
-
 type output = EventCategoriesMessage.t
-
 type error = Errors_internal.t
 
 include

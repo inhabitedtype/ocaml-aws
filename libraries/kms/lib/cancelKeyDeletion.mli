@@ -1,9 +1,5 @@
-open Types
-
 type input = CancelKeyDeletionRequest.t
-
 type output = CancelKeyDeletionResponse.t
-
 type error = Errors_internal.t
 
 include

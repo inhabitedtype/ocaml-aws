@@ -1,9 +1,7 @@
 open Types
 
 type input = ListDocumentsRequest.t
-
 type output = ListDocumentsResult.t
-
 type error = Errors_internal.t
 
 include

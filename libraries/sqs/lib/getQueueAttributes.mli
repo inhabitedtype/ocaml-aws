@@ -1,9 +1,5 @@
-open Types
-
 type input = GetQueueAttributesRequest.t
-
 type output = GetQueueAttributesResult.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeNetworkInterfaceAttributeRequest.t
-
 type output = DescribeNetworkInterfaceAttributeResult.t
-
 type error = Errors_internal.t
 
 include

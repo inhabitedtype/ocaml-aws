@@ -1,9 +1,5 @@
-open Types
-
 type input = GetHostedZoneLimitRequest.t
-
 type output = GetHostedZoneLimitResponse.t
-
 type error = Errors_internal.t
 
 include

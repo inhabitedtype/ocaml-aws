@@ -1,9 +1,5 @@
-open Types
-
 type input = AssociateVPCWithHostedZoneRequest.t
-
 type output = AssociateVPCWithHostedZoneResponse.t
-
 type error = Errors_internal.t
 
 include

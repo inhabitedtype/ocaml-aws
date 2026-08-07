@@ -1,9 +1,5 @@
-open Types
-
 type input = PutInsightSelectorsRequest.t
-
 type output = PutInsightSelectorsResponse.t
-
 type error = Errors_internal.t
 
 include

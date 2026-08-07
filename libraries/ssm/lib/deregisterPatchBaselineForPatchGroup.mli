@@ -1,9 +1,7 @@
 open Types
 
 type input = DeregisterPatchBaselineForPatchGroupRequest.t
-
 type output = DeregisterPatchBaselineForPatchGroupResult.t
-
 type error = Errors_internal.t
 
 include

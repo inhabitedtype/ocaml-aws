@@ -1,9 +1,5 @@
-open Types
-
 type input = DeleteKeyPairRequest.t
-
-type output = unit
-
+type output = DeleteKeyPairResult.t
 type error = Errors_internal.t
 
 include

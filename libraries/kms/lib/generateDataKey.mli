@@ -1,9 +1,5 @@
-open Types
-
 type input = GenerateDataKeyRequest.t
-
 type output = GenerateDataKeyResponse.t
-
 type error = Errors_internal.t
 
 include

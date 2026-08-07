@@ -1,9 +1,7 @@
 open Types
 
 type input = GetDefaultPatchBaselineRequest.t
-
 type output = GetDefaultPatchBaselineResult.t
-
 type error = Errors_internal.t
 
 include

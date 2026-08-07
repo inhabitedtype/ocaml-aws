@@ -9,8 +9,8 @@ let render q =
     | k, List xs -> List.concat (List.map (enc k) xs)
     | Some n, Pair (label, subq) -> enc (Some (n ^ "." ^ label)) subq
     | None, Pair (label, subq) -> enc (Some label) subq
-    | Some n, Value (Some s) -> [ n ^ "=" ^ Uri.pct_encode ~component:`Query_value s ]
-    | None, Value (Some s) -> [ Uri.pct_encode s ]
+    | Some n, Value (Some s) -> [ n ^ "=" ^ Uri.pct_encode ~component:`Authority s ]
+    | None, Value (Some s) -> [ Uri.pct_encode ~component:`Authority s ]
     | Some s, _ -> [ s ]
     | _ -> []
   in

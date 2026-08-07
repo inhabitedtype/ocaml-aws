@@ -1,9 +1,5 @@
-open Types
-
 type input = GetMetricWidgetImageInput.t
-
 type output = GetMetricWidgetImageOutput.t
-
 type error = Errors_internal.t
 
 include

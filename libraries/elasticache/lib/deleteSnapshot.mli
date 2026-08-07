@@ -1,9 +1,5 @@
-open Types
-
 type input = DeleteSnapshotMessage.t
-
 type output = DeleteSnapshotResult.t
-
 type error = Errors_internal.t
 
 include

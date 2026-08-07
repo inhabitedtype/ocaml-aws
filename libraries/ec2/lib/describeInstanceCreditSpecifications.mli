@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeInstanceCreditSpecificationsRequest.t
-
 type output = DescribeInstanceCreditSpecificationsResult.t
-
 type error = Errors_internal.t
 
 include

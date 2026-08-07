@@ -32,7 +32,5 @@
   ----------------------------------------------------------------------------*)
 
 val shape : string * Yojson.Basic.t -> Structures.Shape.parsed
-
 val op : string * Yojson.Basic.t -> Structures.Operation.t
-
 val error : string -> Yojson.Basic.t -> Structures.Error.t

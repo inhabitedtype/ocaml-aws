@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeFlowLogsRequest.t
-
 type output = DescribeFlowLogsResult.t
-
 type error = Errors_internal.t
 
 include

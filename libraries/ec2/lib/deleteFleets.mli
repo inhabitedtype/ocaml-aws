@@ -1,9 +1,5 @@
-open Types
-
 type input = DeleteFleetsRequest.t
-
 type output = DeleteFleetsResult.t
-
 type error = Errors_internal.t
 
 include

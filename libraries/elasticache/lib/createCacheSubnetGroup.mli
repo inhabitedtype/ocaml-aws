@@ -1,9 +1,5 @@
-open Types
-
 type input = CreateCacheSubnetGroupMessage.t
-
 type output = CreateCacheSubnetGroupResult.t
-
 type error = Errors_internal.t
 
 include

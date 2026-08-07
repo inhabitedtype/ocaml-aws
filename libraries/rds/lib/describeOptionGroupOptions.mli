@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeOptionGroupOptionsMessage.t
-
 type output = OptionGroupOptionsMessage.t
-
 type error = Errors_internal.t
 
 include

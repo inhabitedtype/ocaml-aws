@@ -1,9 +1,5 @@
-open Types
-
 type input = CopyDBParameterGroupMessage.t
-
 type output = CopyDBParameterGroupResult.t
-
 type error = Errors_internal.t
 
 include

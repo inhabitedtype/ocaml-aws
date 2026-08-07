@@ -1,9 +1,5 @@
-open Types
-
 type input = DeleteSecurityGroupRequest.t
-
-type output = unit
-
+type output = DeleteSecurityGroupResult.t
 type error = Errors_internal.t
 
 include

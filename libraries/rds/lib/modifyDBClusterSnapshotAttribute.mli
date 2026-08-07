@@ -1,9 +1,5 @@
-open Types
-
 type input = ModifyDBClusterSnapshotAttributeMessage.t
-
 type output = ModifyDBClusterSnapshotAttributeResult.t
-
 type error = Errors_internal.t
 
 include

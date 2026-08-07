@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeMaintenanceWindowTargetsRequest.t
-
 type output = DescribeMaintenanceWindowTargetsResult.t
-
 type error = Errors_internal.t
 
 include

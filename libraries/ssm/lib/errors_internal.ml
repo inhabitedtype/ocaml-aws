@@ -1,4 +1,5 @@
 type t =
+  | AccessDeniedException
   | AlreadyExistsException
   | AssociatedInstances
   | AssociationAlreadyExists
@@ -7,6 +8,7 @@ type t =
   | AssociationLimitExceeded
   | AssociationVersionLimitExceeded
   | AuthFailure
+  | AutomationDefinitionNotApprovedException
   | AutomationDefinitionNotFoundException
   | AutomationDefinitionVersionNotFoundException
   | AutomationExecutionLimitExceededException
@@ -58,6 +60,7 @@ type t =
   | InvalidFilterValue
   | InvalidInstanceId
   | InvalidInstanceInformationFilterValue
+  | InvalidInstancePropertyFilterValue
   | InvalidInventoryGroupException
   | InvalidInventoryItemContextException
   | InvalidInventoryRequestException
@@ -82,21 +85,35 @@ type t =
   | InvalidResultAttributeException
   | InvalidRole
   | InvalidSchedule
+  | InvalidTag
   | InvalidTarget
+  | InvalidTargetMaps
   | InvalidTypeNameException
   | InvalidUpdate
   | InvocationDoesNotExist
   | ItemContentMismatchException
   | ItemSizeLimitExceededException
   | MalformedQueryString
+  | MalformedResourcePolicyDocumentException
   | MaxDocumentSizeExceeded
   | MissingAction
   | MissingAuthenticationToken
   | MissingParameter
+  | NoLongerSupportedException
+  | OpsItemAccessDeniedException
   | OpsItemAlreadyExistsException
+  | OpsItemConflictException
   | OpsItemInvalidParameterException
   | OpsItemLimitExceededException
   | OpsItemNotFoundException
+  | OpsItemRelatedItemAlreadyExistsException
+  | OpsItemRelatedItemAssociationNotFoundException
+  | OpsMetadataAlreadyExistsException
+  | OpsMetadataInvalidArgumentException
+  | OpsMetadataKeyLimitExceededException
+  | OpsMetadataLimitExceededException
+  | OpsMetadataNotFoundException
+  | OpsMetadataTooManyUpdatesException
   | OptInRequired
   | ParameterAlreadyExists
   | ParameterLimitExceeded
@@ -116,6 +133,12 @@ type t =
   | ResourceDataSyncNotFoundException
   | ResourceInUseException
   | ResourceLimitExceededException
+  | ResourceNotFoundException
+  | ResourcePolicyConflictException
+  | ResourcePolicyInvalidParameterException
+  | ResourcePolicyLimitExceededException
+  | ResourcePolicyNotFoundException
+  | ServiceQuotaExceededException
   | ServiceSettingNotFound
   | ServiceUnavailable
   | StatusUnchanged
@@ -123,6 +146,7 @@ type t =
   | TargetInUseException
   | TargetNotConnected
   | Throttling
+  | ThrottlingException
   | TooManyTagsError
   | TooManyUpdates
   | TotalSizeLimitExceededException
@@ -133,10 +157,12 @@ type t =
   | UnsupportedInventoryItemContextException
   | UnsupportedInventorySchemaVersionException
   | UnsupportedOperatingSystem
+  | UnsupportedOperationException
   | UnsupportedParameterType
   | UnsupportedPlatformType
   | UnsupportedProtocol
   | ValidationError
+  | ValidationException
   | Uninhabited
 
 let common =
@@ -170,6 +196,7 @@ let common =
 
 let to_http_code e =
   match e with
+  | AccessDeniedException -> None
   | AlreadyExistsException -> None
   | AssociatedInstances -> None
   | AssociationAlreadyExists -> None
@@ -178,6 +205,7 @@ let to_http_code e =
   | AssociationLimitExceeded -> None
   | AssociationVersionLimitExceeded -> None
   | AuthFailure -> None
+  | AutomationDefinitionNotApprovedException -> None
   | AutomationDefinitionNotFoundException -> None
   | AutomationDefinitionVersionNotFoundException -> None
   | AutomationExecutionLimitExceededException -> None
@@ -229,6 +257,7 @@ let to_http_code e =
   | InvalidFilterValue -> None
   | InvalidInstanceId -> None
   | InvalidInstanceInformationFilterValue -> None
+  | InvalidInstancePropertyFilterValue -> None
   | InvalidInventoryGroupException -> None
   | InvalidInventoryItemContextException -> None
   | InvalidInventoryRequestException -> None
@@ -253,21 +282,35 @@ let to_http_code e =
   | InvalidResultAttributeException -> None
   | InvalidRole -> None
   | InvalidSchedule -> None
+  | InvalidTag -> None
   | InvalidTarget -> None
+  | InvalidTargetMaps -> None
   | InvalidTypeNameException -> None
   | InvalidUpdate -> None
   | InvocationDoesNotExist -> None
   | ItemContentMismatchException -> None
   | ItemSizeLimitExceededException -> None
   | MalformedQueryString -> Some 404
+  | MalformedResourcePolicyDocumentException -> None
   | MaxDocumentSizeExceeded -> None
   | MissingAction -> Some 400
   | MissingAuthenticationToken -> Some 403
   | MissingParameter -> Some 400
+  | NoLongerSupportedException -> None
+  | OpsItemAccessDeniedException -> None
   | OpsItemAlreadyExistsException -> None
+  | OpsItemConflictException -> None
   | OpsItemInvalidParameterException -> None
   | OpsItemLimitExceededException -> None
   | OpsItemNotFoundException -> None
+  | OpsItemRelatedItemAlreadyExistsException -> None
+  | OpsItemRelatedItemAssociationNotFoundException -> None
+  | OpsMetadataAlreadyExistsException -> None
+  | OpsMetadataInvalidArgumentException -> None
+  | OpsMetadataKeyLimitExceededException -> None
+  | OpsMetadataLimitExceededException -> None
+  | OpsMetadataNotFoundException -> None
+  | OpsMetadataTooManyUpdatesException -> None
   | OptInRequired -> Some 403
   | ParameterAlreadyExists -> None
   | ParameterLimitExceeded -> None
@@ -287,6 +330,12 @@ let to_http_code e =
   | ResourceDataSyncNotFoundException -> None
   | ResourceInUseException -> None
   | ResourceLimitExceededException -> None
+  | ResourceNotFoundException -> None
+  | ResourcePolicyConflictException -> None
+  | ResourcePolicyInvalidParameterException -> None
+  | ResourcePolicyLimitExceededException -> None
+  | ResourcePolicyNotFoundException -> None
+  | ServiceQuotaExceededException -> None
   | ServiceSettingNotFound -> None
   | ServiceUnavailable -> Some 503
   | StatusUnchanged -> None
@@ -294,6 +343,7 @@ let to_http_code e =
   | TargetInUseException -> None
   | TargetNotConnected -> None
   | Throttling -> Some 400
+  | ThrottlingException -> None
   | TooManyTagsError -> None
   | TooManyUpdates -> None
   | TotalSizeLimitExceededException -> None
@@ -304,14 +354,17 @@ let to_http_code e =
   | UnsupportedInventoryItemContextException -> None
   | UnsupportedInventorySchemaVersionException -> None
   | UnsupportedOperatingSystem -> None
+  | UnsupportedOperationException -> None
   | UnsupportedParameterType -> None
   | UnsupportedPlatformType -> None
   | UnsupportedProtocol -> None
   | ValidationError -> Some 400
+  | ValidationException -> None
   | Uninhabited -> None
 
 let to_string e =
   match e with
+  | AccessDeniedException -> "AccessDeniedException"
   | AlreadyExistsException -> "AlreadyExistsException"
   | AssociatedInstances -> "AssociatedInstances"
   | AssociationAlreadyExists -> "AssociationAlreadyExists"
@@ -320,6 +373,7 @@ let to_string e =
   | AssociationLimitExceeded -> "AssociationLimitExceeded"
   | AssociationVersionLimitExceeded -> "AssociationVersionLimitExceeded"
   | AuthFailure -> "AuthFailure"
+  | AutomationDefinitionNotApprovedException -> "AutomationDefinitionNotApprovedException"
   | AutomationDefinitionNotFoundException -> "AutomationDefinitionNotFoundException"
   | AutomationDefinitionVersionNotFoundException ->
       "AutomationDefinitionVersionNotFoundException"
@@ -376,6 +430,7 @@ let to_string e =
   | InvalidFilterValue -> "InvalidFilterValue"
   | InvalidInstanceId -> "InvalidInstanceId"
   | InvalidInstanceInformationFilterValue -> "InvalidInstanceInformationFilterValue"
+  | InvalidInstancePropertyFilterValue -> "InvalidInstancePropertyFilterValue"
   | InvalidInventoryGroupException -> "InvalidInventoryGroupException"
   | InvalidInventoryItemContextException -> "InvalidInventoryItemContextException"
   | InvalidInventoryRequestException -> "InvalidInventoryRequestException"
@@ -400,21 +455,36 @@ let to_string e =
   | InvalidResultAttributeException -> "InvalidResultAttributeException"
   | InvalidRole -> "InvalidRole"
   | InvalidSchedule -> "InvalidSchedule"
+  | InvalidTag -> "InvalidTag"
   | InvalidTarget -> "InvalidTarget"
+  | InvalidTargetMaps -> "InvalidTargetMaps"
   | InvalidTypeNameException -> "InvalidTypeNameException"
   | InvalidUpdate -> "InvalidUpdate"
   | InvocationDoesNotExist -> "InvocationDoesNotExist"
   | ItemContentMismatchException -> "ItemContentMismatchException"
   | ItemSizeLimitExceededException -> "ItemSizeLimitExceededException"
   | MalformedQueryString -> "MalformedQueryString"
+  | MalformedResourcePolicyDocumentException -> "MalformedResourcePolicyDocumentException"
   | MaxDocumentSizeExceeded -> "MaxDocumentSizeExceeded"
   | MissingAction -> "MissingAction"
   | MissingAuthenticationToken -> "MissingAuthenticationToken"
   | MissingParameter -> "MissingParameter"
+  | NoLongerSupportedException -> "NoLongerSupportedException"
+  | OpsItemAccessDeniedException -> "OpsItemAccessDeniedException"
   | OpsItemAlreadyExistsException -> "OpsItemAlreadyExistsException"
+  | OpsItemConflictException -> "OpsItemConflictException"
   | OpsItemInvalidParameterException -> "OpsItemInvalidParameterException"
   | OpsItemLimitExceededException -> "OpsItemLimitExceededException"
   | OpsItemNotFoundException -> "OpsItemNotFoundException"
+  | OpsItemRelatedItemAlreadyExistsException -> "OpsItemRelatedItemAlreadyExistsException"
+  | OpsItemRelatedItemAssociationNotFoundException ->
+      "OpsItemRelatedItemAssociationNotFoundException"
+  | OpsMetadataAlreadyExistsException -> "OpsMetadataAlreadyExistsException"
+  | OpsMetadataInvalidArgumentException -> "OpsMetadataInvalidArgumentException"
+  | OpsMetadataKeyLimitExceededException -> "OpsMetadataKeyLimitExceededException"
+  | OpsMetadataLimitExceededException -> "OpsMetadataLimitExceededException"
+  | OpsMetadataNotFoundException -> "OpsMetadataNotFoundException"
+  | OpsMetadataTooManyUpdatesException -> "OpsMetadataTooManyUpdatesException"
   | OptInRequired -> "OptInRequired"
   | ParameterAlreadyExists -> "ParameterAlreadyExists"
   | ParameterLimitExceeded -> "ParameterLimitExceeded"
@@ -435,6 +505,12 @@ let to_string e =
   | ResourceDataSyncNotFoundException -> "ResourceDataSyncNotFoundException"
   | ResourceInUseException -> "ResourceInUseException"
   | ResourceLimitExceededException -> "ResourceLimitExceededException"
+  | ResourceNotFoundException -> "ResourceNotFoundException"
+  | ResourcePolicyConflictException -> "ResourcePolicyConflictException"
+  | ResourcePolicyInvalidParameterException -> "ResourcePolicyInvalidParameterException"
+  | ResourcePolicyLimitExceededException -> "ResourcePolicyLimitExceededException"
+  | ResourcePolicyNotFoundException -> "ResourcePolicyNotFoundException"
+  | ServiceQuotaExceededException -> "ServiceQuotaExceededException"
   | ServiceSettingNotFound -> "ServiceSettingNotFound"
   | ServiceUnavailable -> "ServiceUnavailable"
   | StatusUnchanged -> "StatusUnchanged"
@@ -442,6 +518,7 @@ let to_string e =
   | TargetInUseException -> "TargetInUseException"
   | TargetNotConnected -> "TargetNotConnected"
   | Throttling -> "Throttling"
+  | ThrottlingException -> "ThrottlingException"
   | TooManyTagsError -> "TooManyTagsError"
   | TooManyUpdates -> "TooManyUpdates"
   | TotalSizeLimitExceededException -> "TotalSizeLimitExceededException"
@@ -453,14 +530,17 @@ let to_string e =
   | UnsupportedInventorySchemaVersionException ->
       "UnsupportedInventorySchemaVersionException"
   | UnsupportedOperatingSystem -> "UnsupportedOperatingSystem"
+  | UnsupportedOperationException -> "UnsupportedOperationException"
   | UnsupportedParameterType -> "UnsupportedParameterType"
   | UnsupportedPlatformType -> "UnsupportedPlatformType"
   | UnsupportedProtocol -> "UnsupportedProtocol"
   | ValidationError -> "ValidationError"
+  | ValidationException -> "ValidationException"
   | Uninhabited -> "Uninhabited"
 
 let of_string e =
   match e with
+  | "AccessDeniedException" -> Some AccessDeniedException
   | "AlreadyExistsException" -> Some AlreadyExistsException
   | "AssociatedInstances" -> Some AssociatedInstances
   | "AssociationAlreadyExists" -> Some AssociationAlreadyExists
@@ -469,6 +549,8 @@ let of_string e =
   | "AssociationLimitExceeded" -> Some AssociationLimitExceeded
   | "AssociationVersionLimitExceeded" -> Some AssociationVersionLimitExceeded
   | "AuthFailure" -> Some AuthFailure
+  | "AutomationDefinitionNotApprovedException" ->
+      Some AutomationDefinitionNotApprovedException
   | "AutomationDefinitionNotFoundException" -> Some AutomationDefinitionNotFoundException
   | "AutomationDefinitionVersionNotFoundException" ->
       Some AutomationDefinitionVersionNotFoundException
@@ -527,6 +609,7 @@ let of_string e =
   | "InvalidFilterValue" -> Some InvalidFilterValue
   | "InvalidInstanceId" -> Some InvalidInstanceId
   | "InvalidInstanceInformationFilterValue" -> Some InvalidInstanceInformationFilterValue
+  | "InvalidInstancePropertyFilterValue" -> Some InvalidInstancePropertyFilterValue
   | "InvalidInventoryGroupException" -> Some InvalidInventoryGroupException
   | "InvalidInventoryItemContextException" -> Some InvalidInventoryItemContextException
   | "InvalidInventoryRequestException" -> Some InvalidInventoryRequestException
@@ -551,21 +634,38 @@ let of_string e =
   | "InvalidResultAttributeException" -> Some InvalidResultAttributeException
   | "InvalidRole" -> Some InvalidRole
   | "InvalidSchedule" -> Some InvalidSchedule
+  | "InvalidTag" -> Some InvalidTag
   | "InvalidTarget" -> Some InvalidTarget
+  | "InvalidTargetMaps" -> Some InvalidTargetMaps
   | "InvalidTypeNameException" -> Some InvalidTypeNameException
   | "InvalidUpdate" -> Some InvalidUpdate
   | "InvocationDoesNotExist" -> Some InvocationDoesNotExist
   | "ItemContentMismatchException" -> Some ItemContentMismatchException
   | "ItemSizeLimitExceededException" -> Some ItemSizeLimitExceededException
   | "MalformedQueryString" -> Some MalformedQueryString
+  | "MalformedResourcePolicyDocumentException" ->
+      Some MalformedResourcePolicyDocumentException
   | "MaxDocumentSizeExceeded" -> Some MaxDocumentSizeExceeded
   | "MissingAction" -> Some MissingAction
   | "MissingAuthenticationToken" -> Some MissingAuthenticationToken
   | "MissingParameter" -> Some MissingParameter
+  | "NoLongerSupportedException" -> Some NoLongerSupportedException
+  | "OpsItemAccessDeniedException" -> Some OpsItemAccessDeniedException
   | "OpsItemAlreadyExistsException" -> Some OpsItemAlreadyExistsException
+  | "OpsItemConflictException" -> Some OpsItemConflictException
   | "OpsItemInvalidParameterException" -> Some OpsItemInvalidParameterException
   | "OpsItemLimitExceededException" -> Some OpsItemLimitExceededException
   | "OpsItemNotFoundException" -> Some OpsItemNotFoundException
+  | "OpsItemRelatedItemAlreadyExistsException" ->
+      Some OpsItemRelatedItemAlreadyExistsException
+  | "OpsItemRelatedItemAssociationNotFoundException" ->
+      Some OpsItemRelatedItemAssociationNotFoundException
+  | "OpsMetadataAlreadyExistsException" -> Some OpsMetadataAlreadyExistsException
+  | "OpsMetadataInvalidArgumentException" -> Some OpsMetadataInvalidArgumentException
+  | "OpsMetadataKeyLimitExceededException" -> Some OpsMetadataKeyLimitExceededException
+  | "OpsMetadataLimitExceededException" -> Some OpsMetadataLimitExceededException
+  | "OpsMetadataNotFoundException" -> Some OpsMetadataNotFoundException
+  | "OpsMetadataTooManyUpdatesException" -> Some OpsMetadataTooManyUpdatesException
   | "OptInRequired" -> Some OptInRequired
   | "ParameterAlreadyExists" -> Some ParameterAlreadyExists
   | "ParameterLimitExceeded" -> Some ParameterLimitExceeded
@@ -588,6 +688,13 @@ let of_string e =
   | "ResourceDataSyncNotFoundException" -> Some ResourceDataSyncNotFoundException
   | "ResourceInUseException" -> Some ResourceInUseException
   | "ResourceLimitExceededException" -> Some ResourceLimitExceededException
+  | "ResourceNotFoundException" -> Some ResourceNotFoundException
+  | "ResourcePolicyConflictException" -> Some ResourcePolicyConflictException
+  | "ResourcePolicyInvalidParameterException" ->
+      Some ResourcePolicyInvalidParameterException
+  | "ResourcePolicyLimitExceededException" -> Some ResourcePolicyLimitExceededException
+  | "ResourcePolicyNotFoundException" -> Some ResourcePolicyNotFoundException
+  | "ServiceQuotaExceededException" -> Some ServiceQuotaExceededException
   | "ServiceSettingNotFound" -> Some ServiceSettingNotFound
   | "ServiceUnavailable" -> Some ServiceUnavailable
   | "StatusUnchanged" -> Some StatusUnchanged
@@ -595,6 +702,7 @@ let of_string e =
   | "TargetInUseException" -> Some TargetInUseException
   | "TargetNotConnected" -> Some TargetNotConnected
   | "Throttling" -> Some Throttling
+  | "ThrottlingException" -> Some ThrottlingException
   | "TooManyTagsError" -> Some TooManyTagsError
   | "TooManyUpdates" -> Some TooManyUpdates
   | "TotalSizeLimitExceededException" -> Some TotalSizeLimitExceededException
@@ -607,9 +715,11 @@ let of_string e =
   | "UnsupportedInventorySchemaVersionException" ->
       Some UnsupportedInventorySchemaVersionException
   | "UnsupportedOperatingSystem" -> Some UnsupportedOperatingSystem
+  | "UnsupportedOperationException" -> Some UnsupportedOperationException
   | "UnsupportedParameterType" -> Some UnsupportedParameterType
   | "UnsupportedPlatformType" -> Some UnsupportedPlatformType
   | "UnsupportedProtocol" -> Some UnsupportedProtocol
   | "ValidationError" -> Some ValidationError
+  | "ValidationException" -> Some ValidationException
   | "Uninhabited" -> Some Uninhabited
   | _ -> None

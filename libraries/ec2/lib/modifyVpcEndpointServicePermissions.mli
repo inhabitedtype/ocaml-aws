@@ -1,9 +1,5 @@
-open Types
-
 type input = ModifyVpcEndpointServicePermissionsRequest.t
-
 type output = ModifyVpcEndpointServicePermissionsResult.t
-
 type error = Errors_internal.t
 
 include

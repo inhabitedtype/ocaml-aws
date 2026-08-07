@@ -80,7 +80,7 @@ functor
       match res with
       | `Error
           (HttpError
-            (400, AwsError [ (Understood Errors_internal.LoadBalancerNotFound, _) ])) ->
+             (400, AwsError [ (Understood Errors_internal.LoadBalancerNotFound, _) ])) ->
           true
       | `Error (HttpError (_, AwsError [ (Unknown code, message) ])) ->
           Printf.printf "Couldn't understand error: %s -- %s\n%!" code message;

@@ -1,9 +1,5 @@
-open Types
-
 type input = CreateKeyRequest.t
-
 type output = CreateKeyResponse.t
-
 type error = Errors_internal.t
 
 include

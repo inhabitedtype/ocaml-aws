@@ -1,9 +1,5 @@
-open Types
-
 type input = unit
-
 type output = GetHostedZoneCountResponse.t
-
 type error = Errors_internal.t
 
 include

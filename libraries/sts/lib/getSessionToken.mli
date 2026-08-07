@@ -1,9 +1,5 @@
-open Types
-
 type input = GetSessionTokenRequest.t
-
 type output = GetSessionTokenResponse.t
-
 type error = Errors_internal.t
 
 include

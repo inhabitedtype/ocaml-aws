@@ -1,9 +1,5 @@
-open Types
-
 type input = ReEncryptRequest.t
-
 type output = ReEncryptResponse.t
-
 type error = Errors_internal.t
 
 include

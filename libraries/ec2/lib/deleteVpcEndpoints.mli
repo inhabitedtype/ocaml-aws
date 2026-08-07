@@ -1,9 +1,5 @@
-open Types
-
 type input = DeleteVpcEndpointsRequest.t
-
 type output = DeleteVpcEndpointsResult.t
-
 type error = Errors_internal.t
 
 include

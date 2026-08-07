@@ -1,9 +1,5 @@
-open Types
-
 type input = StopInstancesRequest.t
-
 type output = StopInstancesResult.t
-
 type error = Errors_internal.t
 
 include

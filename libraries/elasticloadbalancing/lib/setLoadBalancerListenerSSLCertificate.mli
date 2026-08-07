@@ -1,9 +1,5 @@
-open Types
-
 type input = SetLoadBalancerListenerSSLCertificateInput.t
-
 type output = unit
-
 type error = Errors_internal.t
 
 include

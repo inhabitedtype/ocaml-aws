@@ -1,9 +1,5 @@
-open Types
-
 type input = CreateLocalGatewayRouteTableVpcAssociationRequest.t
-
 type output = CreateLocalGatewayRouteTableVpcAssociationResult.t
-
 type error = Errors_internal.t
 
 include

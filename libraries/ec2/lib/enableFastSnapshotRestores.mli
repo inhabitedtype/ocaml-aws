@@ -1,9 +1,5 @@
-open Types
-
 type input = EnableFastSnapshotRestoresRequest.t
-
 type output = EnableFastSnapshotRestoresResult.t
-
 type error = Errors_internal.t
 
 include

@@ -1,10 +1,12 @@
 type t =
+  | ActiveInstanceRefreshNotFound
   | AlreadyExists
   | AuthFailure
   | Blocked
   | DryRunOperation
   | IdempotentParameterMismatch
   | IncompleteSignature
+  | InstanceRefreshInProgress
   | InternalFailure
   | InvalidAction
   | InvalidClientTokenId
@@ -13,6 +15,7 @@ type t =
   | InvalidParameterCombination
   | InvalidParameterValue
   | InvalidQueryParameter
+  | IrreversibleInstanceRefresh
   | LimitExceeded
   | MalformedQueryString
   | MissingAction
@@ -25,6 +28,7 @@ type t =
   | ResourceContention
   | ResourceInUse
   | ScalingActivityInProgress
+  | ServiceLinkedRoleFailure
   | ServiceUnavailable
   | Throttling
   | UnauthorizedOperation
@@ -64,12 +68,14 @@ let common =
 
 let to_http_code e =
   match e with
+  | ActiveInstanceRefreshNotFound -> Some 400
   | AlreadyExists -> Some 400
   | AuthFailure -> None
   | Blocked -> None
   | DryRunOperation -> None
-  | IdempotentParameterMismatch -> None
+  | IdempotentParameterMismatch -> Some 400
   | IncompleteSignature -> Some 400
+  | InstanceRefreshInProgress -> Some 400
   | InternalFailure -> Some 500
   | InvalidAction -> Some 400
   | InvalidClientTokenId -> Some 403
@@ -78,6 +84,7 @@ let to_http_code e =
   | InvalidParameterCombination -> Some 400
   | InvalidParameterValue -> Some 400
   | InvalidQueryParameter -> Some 400
+  | IrreversibleInstanceRefresh -> Some 400
   | LimitExceeded -> Some 400
   | MalformedQueryString -> Some 404
   | MissingAction -> Some 400
@@ -90,6 +97,7 @@ let to_http_code e =
   | ResourceContention -> Some 500
   | ResourceInUse -> Some 400
   | ScalingActivityInProgress -> Some 400
+  | ServiceLinkedRoleFailure -> Some 500
   | ServiceUnavailable -> Some 503
   | Throttling -> Some 400
   | UnauthorizedOperation -> None
@@ -100,12 +108,14 @@ let to_http_code e =
 
 let to_string e =
   match e with
+  | ActiveInstanceRefreshNotFound -> "ActiveInstanceRefreshNotFound"
   | AlreadyExists -> "AlreadyExists"
   | AuthFailure -> "AuthFailure"
   | Blocked -> "Blocked"
   | DryRunOperation -> "DryRunOperation"
   | IdempotentParameterMismatch -> "IdempotentParameterMismatch"
   | IncompleteSignature -> "IncompleteSignature"
+  | InstanceRefreshInProgress -> "InstanceRefreshInProgress"
   | InternalFailure -> "InternalFailure"
   | InvalidAction -> "InvalidAction"
   | InvalidClientTokenId -> "InvalidClientTokenId"
@@ -114,6 +124,7 @@ let to_string e =
   | InvalidParameterCombination -> "InvalidParameterCombination"
   | InvalidParameterValue -> "InvalidParameterValue"
   | InvalidQueryParameter -> "InvalidQueryParameter"
+  | IrreversibleInstanceRefresh -> "IrreversibleInstanceRefresh"
   | LimitExceeded -> "LimitExceeded"
   | MalformedQueryString -> "MalformedQueryString"
   | MissingAction -> "MissingAction"
@@ -126,6 +137,7 @@ let to_string e =
   | ResourceContention -> "ResourceContention"
   | ResourceInUse -> "ResourceInUse"
   | ScalingActivityInProgress -> "ScalingActivityInProgress"
+  | ServiceLinkedRoleFailure -> "ServiceLinkedRoleFailure"
   | ServiceUnavailable -> "ServiceUnavailable"
   | Throttling -> "Throttling"
   | UnauthorizedOperation -> "UnauthorizedOperation"
@@ -136,12 +148,14 @@ let to_string e =
 
 let of_string e =
   match e with
+  | "ActiveInstanceRefreshNotFound" -> Some ActiveInstanceRefreshNotFound
   | "AlreadyExists" -> Some AlreadyExists
   | "AuthFailure" -> Some AuthFailure
   | "Blocked" -> Some Blocked
   | "DryRunOperation" -> Some DryRunOperation
   | "IdempotentParameterMismatch" -> Some IdempotentParameterMismatch
   | "IncompleteSignature" -> Some IncompleteSignature
+  | "InstanceRefreshInProgress" -> Some InstanceRefreshInProgress
   | "InternalFailure" -> Some InternalFailure
   | "InvalidAction" -> Some InvalidAction
   | "InvalidClientTokenId" -> Some InvalidClientTokenId
@@ -150,6 +164,7 @@ let of_string e =
   | "InvalidParameterCombination" -> Some InvalidParameterCombination
   | "InvalidParameterValue" -> Some InvalidParameterValue
   | "InvalidQueryParameter" -> Some InvalidQueryParameter
+  | "IrreversibleInstanceRefresh" -> Some IrreversibleInstanceRefresh
   | "LimitExceeded" -> Some LimitExceeded
   | "MalformedQueryString" -> Some MalformedQueryString
   | "MissingAction" -> Some MissingAction
@@ -162,6 +177,7 @@ let of_string e =
   | "ResourceContention" -> Some ResourceContention
   | "ResourceInUse" -> Some ResourceInUse
   | "ScalingActivityInProgress" -> Some ScalingActivityInProgress
+  | "ServiceLinkedRoleFailure" -> Some ServiceLinkedRoleFailure
   | "ServiceUnavailable" -> Some ServiceUnavailable
   | "Throttling" -> Some Throttling
   | "UnauthorizedOperation" -> Some UnauthorizedOperation

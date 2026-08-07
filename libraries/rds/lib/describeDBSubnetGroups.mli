@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeDBSubnetGroupsMessage.t
-
 type output = DBSubnetGroupMessage.t
-
 type error = Errors_internal.t
 
 include

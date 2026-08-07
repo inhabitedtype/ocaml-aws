@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeEngineDefaultParametersMessage.t
-
 type output = DescribeEngineDefaultParametersResult.t
-
 type error = Errors_internal.t
 
 include

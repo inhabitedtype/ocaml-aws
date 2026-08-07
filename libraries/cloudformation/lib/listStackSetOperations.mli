@@ -1,9 +1,5 @@
-open Types
-
 type input = ListStackSetOperationsInput.t
-
 type output = ListStackSetOperationsOutput.t
-
 type error = Errors_internal.t
 
 include

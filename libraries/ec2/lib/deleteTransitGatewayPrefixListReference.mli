@@ -1,9 +1,5 @@
-open Types
-
 type input = DeleteTransitGatewayPrefixListReferenceRequest.t
-
 type output = DeleteTransitGatewayPrefixListReferenceResult.t
-
 type error = Errors_internal.t
 
 include

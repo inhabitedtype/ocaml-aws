@@ -1,9 +1,5 @@
-open Types
-
 type input = CopySnapshotRequest.t
-
 type output = CopySnapshotResult.t
-
 type error = Errors_internal.t
 
 include

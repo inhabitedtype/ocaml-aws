@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeGlobalClustersMessage.t
-
 type output = GlobalClustersMessage.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,7 @@
 open Types
 
 type input = ListAssociationVersionsRequest.t
-
 type output = ListAssociationVersionsResult.t
-
 type error = Errors_internal.t
 
 include

@@ -73,5 +73,5 @@ let parse_aws_error body =
             (fun res -> `Ok res)
           |> of_option
                (`Error
-                 "Could not find properly formatted <Error> nodes in <Errors> response."))
+                  "Could not find properly formatted <Error> nodes in <Errors> response."))
   with Failure msg -> `Error ("Error parsing xml: " ^ msg)

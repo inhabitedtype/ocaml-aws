@@ -1,9 +1,7 @@
 open Types
 
 type input = UpdateMaintenanceWindowRequest.t
-
 type output = UpdateMaintenanceWindowResult.t
-
 type error = Errors_internal.t
 
 include

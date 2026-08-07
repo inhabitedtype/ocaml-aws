@@ -1,9 +1,5 @@
-open Types
-
 type input = ModifySpotFleetRequestRequest.t
-
 type output = ModifySpotFleetRequestResponse.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeSpotPriceHistoryRequest.t
-
 type output = DescribeSpotPriceHistoryResult.t
-
 type error = Errors_internal.t
 
 include

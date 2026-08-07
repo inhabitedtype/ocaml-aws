@@ -1,9 +1,5 @@
-open Types
-
 type input = ReceiveMessageRequest.t
-
 type output = ReceiveMessageResult.t
-
 type error = Errors_internal.t
 
 include

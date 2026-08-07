@@ -1,9 +1,5 @@
-open Types
-
 type input = AssumeRoleWithSAMLRequest.t
-
 type output = AssumeRoleWithSAMLResponse.t
-
 type error = Errors_internal.t
 
 include

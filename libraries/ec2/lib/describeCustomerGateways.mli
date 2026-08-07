@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeCustomerGatewaysRequest.t
-
 type output = DescribeCustomerGatewaysResult.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,5 @@
-open Types
-
 type input = DeleteTransitGatewayRequest.t
-
 type output = DeleteTransitGatewayResult.t
-
 type error = Errors_internal.t
 
 include

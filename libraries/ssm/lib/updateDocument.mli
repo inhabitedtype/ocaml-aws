@@ -1,9 +1,7 @@
 open Types
 
 type input = UpdateDocumentRequest.t
-
 type output = UpdateDocumentResult.t
-
 type error = Errors_internal.t
 
 include

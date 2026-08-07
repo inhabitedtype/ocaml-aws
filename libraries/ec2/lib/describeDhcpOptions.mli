@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeDhcpOptionsRequest.t
-
 type output = DescribeDhcpOptionsResult.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,5 @@
-open Types
-
 type input = RequestSpotFleetRequest.t
-
 type output = RequestSpotFleetResponse.t
-
 type error = Errors_internal.t
 
 include

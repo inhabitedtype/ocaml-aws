@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeVolumeAttributeRequest.t
-
 type output = DescribeVolumeAttributeResult.t
-
 type error = Errors_internal.t
 
 include

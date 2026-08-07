@@ -1,9 +1,5 @@
-open Types
-
 type input = UpdateTrafficPolicyCommentRequest.t
-
 type output = UpdateTrafficPolicyCommentResponse.t
-
 type error = Errors_internal.t
 
 include

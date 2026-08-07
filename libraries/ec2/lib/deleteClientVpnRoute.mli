@@ -1,9 +1,5 @@
-open Types
-
 type input = DeleteClientVpnRouteRequest.t
-
 type output = DeleteClientVpnRouteResult.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,5 @@
-open Types
-
 type input = GetKeyPolicyRequest.t
-
 type output = GetKeyPolicyResponse.t
-
 type error = Errors_internal.t
 
 include

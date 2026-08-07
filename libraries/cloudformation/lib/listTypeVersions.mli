@@ -1,9 +1,5 @@
-open Types
-
 type input = ListTypeVersionsInput.t
-
 type output = ListTypeVersionsOutput.t
-
 type error = Errors_internal.t
 
 include

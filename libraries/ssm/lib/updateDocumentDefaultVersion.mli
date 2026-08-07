@@ -1,9 +1,7 @@
 open Types
 
 type input = UpdateDocumentDefaultVersionRequest.t
-
 type output = UpdateDocumentDefaultVersionResult.t
-
 type error = Errors_internal.t
 
 include

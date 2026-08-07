@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeInsightRulesInput.t
-
 type output = DescribeInsightRulesOutput.t
-
 type error = Errors_internal.t
 
 include

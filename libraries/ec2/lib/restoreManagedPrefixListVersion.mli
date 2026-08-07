@@ -1,9 +1,5 @@
-open Types
-
 type input = RestoreManagedPrefixListVersionRequest.t
-
 type output = RestoreManagedPrefixListVersionResult.t
-
 type error = Errors_internal.t
 
 include

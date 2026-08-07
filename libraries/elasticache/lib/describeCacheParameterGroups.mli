@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeCacheParameterGroupsMessage.t
-
 type output = CacheParameterGroupsMessage.t
-
 type error = Errors_internal.t
 
 include

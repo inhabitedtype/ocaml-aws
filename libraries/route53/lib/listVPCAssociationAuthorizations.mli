@@ -1,9 +1,5 @@
-open Types
-
 type input = ListVPCAssociationAuthorizationsRequest.t
-
 type output = ListVPCAssociationAuthorizationsResponse.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,5 @@
-open Types
-
 type input = AssociateTransitGatewayRouteTableRequest.t
-
 type output = AssociateTransitGatewayRouteTableResult.t
-
 type error = Errors_internal.t
 
 include

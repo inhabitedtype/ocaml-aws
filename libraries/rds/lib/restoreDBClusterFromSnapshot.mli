@@ -1,9 +1,5 @@
-open Types
-
 type input = RestoreDBClusterFromSnapshotMessage.t
-
 type output = RestoreDBClusterFromSnapshotResult.t
-
 type error = Errors_internal.t
 
 include

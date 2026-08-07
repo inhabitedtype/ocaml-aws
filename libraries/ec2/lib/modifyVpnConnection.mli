@@ -1,9 +1,5 @@
-open Types
-
 type input = ModifyVpnConnectionRequest.t
-
 type output = ModifyVpnConnectionResult.t
-
 type error = Errors_internal.t
 
 include

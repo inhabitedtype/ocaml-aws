@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeStackDriftDetectionStatusInput.t
-
 type output = DescribeStackDriftDetectionStatusOutput.t
-
 type error = Errors_internal.t
 
 include

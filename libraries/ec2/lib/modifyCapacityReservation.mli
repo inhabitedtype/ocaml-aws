@@ -1,9 +1,5 @@
-open Types
-
 type input = ModifyCapacityReservationRequest.t
-
 type output = ModifyCapacityReservationResult.t
-
 type error = Errors_internal.t
 
 include

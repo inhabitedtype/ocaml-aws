@@ -31,9 +31,8 @@
     POSSIBILITY OF SUCH DAMAGE.
   ----------------------------------------------------------------------------*)
 
-(** This module contains code that is common across generated AWS
-    libraries as well as pure code that is useful in writing runtime
-    implementations for the AWS libraries. *)
+(** This module contains code that is common across generated AWS libraries as well as
+    pure code that is useful in writing runtime implementations for the AWS libraries. *)
 
 (** This contains errors that are returned from AWS api calls. *)
 module Error : sig
@@ -46,39 +45,37 @@ module Error : sig
     { body : string
     ; message : string
     }
-  (** Contents of a bad response error, containing the body of what
-      could not be interpreted and a (potential) reason why. *)
+  (** Contents of a bad response error, containing the body of what could not be
+      interpreted and a (potential) reason why. *)
 
-  (** An error_response is returned when an HTTP response returns with
-      a non-2xx code. *)
+  (** An error_response is returned when an HTTP response returns with a non-2xx code. *)
   type 'a error_response =
     | BadResponse of bad_response
-        (** A BadResponse is an error response that could not be parsed
-        into AWS error data structures. *)
+        (** A BadResponse is an error response that could not be parsed into AWS error
+            data structures. *)
     | AwsError of ('a code * string) list
-        (** An AwsError is a list of errors parsed out of XML returned in
-        a non-2xx response. *)
+        (** An AwsError is a list of errors parsed out of XML returned in a non-2xx
+            response. *)
 
   type 'a t =
     | TransportError of string
-        (** TransportError indicate that an error occurred at the level of
-        the HTTP request (and generally, nothing was returned). *)
+        (** TransportError indicate that an error occurred at the level of the HTTP
+            request (and generally, nothing was returned). *)
     | HttpError of int * 'a error_response
-        (** HttpError indicates that a response was recieved with an HTTP
-        error code (non-2xx) *)
+        (** HttpError indicates that a response was recieved with an HTTP error code
+            (non-2xx) *)
 
   val format : ('a -> string) -> 'a t -> string
   (** Produces a string representation of an error, suitable for printing. *)
 
   val parse_aws_error : string -> [ `Ok of (string * string) list | `Error of string ]
-  (** Given a string error response, produces (code,message) pairs. If the
-      body can't be decoded, produces an `Error reason. This is used
-      by runtime implementations in the case they get a non-success
-      response code. *)
+  (** Given a string error response, produces (code,message) pairs. If the body can't be
+      decoded, produces an `Error reason. This is used by runtime implementations in the
+      case they get a non-success response code. *)
 end
 
-(** This contains the http-library agnostic representation of requests
-    to be used by runtime implementations. *)
+(** This contains the http-library agnostic representation of requests to be used by
+    runtime implementations. *)
 module Request : sig
   type meth =
     [ `DELETE
@@ -92,9 +89,8 @@ module Request : sig
     | `POST
     | `PUT
     ]
-  (** HTTP methods. This is (intentionally) compatible with
-      Cohttp.Code.meth to make the cohttp-based runtime implementation
-      easier. *)
+  (** HTTP methods. This is (intentionally) compatible with Cohttp.Code.meth to make the
+      cohttp-based runtime implementation easier. *)
 
   val string_of_meth : meth -> string
   (** Produces a string from the method. This is needed for AWS request signing. *)
@@ -107,79 +103,71 @@ module Request : sig
     | V2
     | S3  (** Signature version *)
 
-  type t = meth * Uri.t * headers
-  (** A request is a method, a uri, and a list of headers. *)
+  type t = meth * Uri.t * headers * string
+  (** A request is a method, a uri, a list of headers, and a body. *)
 end
 
-(** All AWS api operations should have type Call. Runtime
-    implementation should take as input modules of type Call. *)
+(** All AWS api operations should have type Call. Runtime implementation should take as
+    input modules of type Call. *)
 module type Call = sig
   type input
   (** The native OCaml datatype input to the Call. *)
 
   type output
-  (** The native OCaml datatype that is produced as output to a
-      successful Call. *)
+  (** The native OCaml datatype that is produced as output to a successful Call. *)
 
   type error
-  (** The native OCaml error type. This is shared between all calls
-      for a single API. *)
+  (** The native OCaml error type. This is shared between all calls for a single API. *)
 
   val signature_version : Request.signature_version
   (** The signing method to use for the Call. *)
 
   val service : string
-  (** The AWS service, for example, 'ec2'. This is used for request
-      signing, and to determine the endpoint to send the request. *)
+  (** The AWS service, for example, 'ec2'. This is used for request signing, and to
+      determine the endpoint to send the request. *)
 
   val to_http : string -> string -> input -> Request.t
-  (** This function converts the native input into the HTTP request
-      type. In particular, it is responsible for properly encoding the
-      request type into query format. It also sets the Action and
-      Version query parameters. *)
+  (** This function converts the native input into the HTTP request type. In particular,
+      it is responsible for properly encoding the request type into query format. It also
+      sets the Action and Version query parameters. *)
 
   val of_http : string -> [ `Ok of output | `Error of error Error.error_response ]
-  (** This function converts from a HTTP response body to an output
-      or an error if the response could not be decoded. *)
+  (** This function converts from a HTTP response body to an output or an error if the
+      response could not be decoded. *)
 
   val parse_error : int -> string -> error option
-  (** This function parses an AWS error (which has been successfully
-      deserialized from XML) into an API specific native error that
-      could have been triggered by this call. It should fail to parse
-      if the error it is given is not one of those listen in the
-      specification, or if the passed HTTP status code does not match
-      the specified one. *)
+  (** This function parses an AWS error (which has been successfully deserialized from
+      XML) into an API specific native error that could have been triggered by this call.
+      It should fail to parse if the error it is given is not one of those listen in the
+      specification, or if the passed HTTP status code does not match the specified one.
+  *)
 end
 
 type ('i, 'o, 'e) call =
   (module Call with type input = 'i and type output = 'o and type error = 'e)
 
-(** This module provides parsing / formatting for AWS style timestamps.
-    For example: 2013-05-24T21:15:31.000Z
-    It does not parse the milliseconds (it just truncates them). *)
+(** This module provides parsing / formatting for AWS style timestamps. For example:
+    2013-05-24T21:15:31.000Z It does not parse the milliseconds (it just truncates them).
+*)
 module Time : sig
   val parse : string -> CalendarLib.Calendar.t
-  (** Produce a Calendar.t from a string formatted like
-      2013-05-24T21:15:31.000Z. Note that .000Z (or any milliseconds)
-      are truncated.
+  (** Produce a Calendar.t from a string formatted like 2013-05-24T21:15:31.000Z. Note
+      that .000Z (or any milliseconds) are truncated.
 
-      Raises 'Invalid_argument' if the string does not match the
-      format. *)
+      Raises 'Invalid_argument' if the string does not match the format. *)
 
   val date_time_iso8601 : CalendarLib.Calendar.t -> string
-
   val now_utc : unit -> CalendarLib.Calendar.t
 
   val format : CalendarLib.Calendar.t -> string
-  (** Formats a Calendar.t as 2013-05-24T21:15:31.000Z. Note that
-      .000Z is always appended. *)
+  (** Formats a Calendar.t as 2013-05-24T21:15:31.000Z. Note that .000Z is always
+      appended. *)
 end
 
-(** This module is used to produce the nested url query structure used
-    in AWS api requests. *)
+(** This module is used to produce the nested url query structure used in AWS api
+    requests. *)
 module Query : sig
-  (** The query type. In the following examples, constructors are
-      ellided for brevity.
+  (** The query type. In the following examples, constructors are ellided for brevity.
 
       Structs are encoded as [(name1, val); (name2, val)...].
 
@@ -190,41 +178,37 @@ module Query : sig
     | Value of string option
 
   val render : t -> string
-  (** This is how to turn a Query.t into a string suitable for
-      including in a url. It is a query string, ie
-      field=val&field=val... *)
+  (** This is how to turn a Query.t into a string suitable for including in a url. It is a
+      query string, ie field=val&field=val... *)
 
   val to_query_list : ('a -> t) -> 'a list -> t
-  (** This is a helper to convert a list into a Query.t. It encodes it
-      as [(0, val); (1, val)...]. *)
+  (** This is a helper to convert a list into a Query.t. It encodes it as
+      [(0, val); (1, val)...]. *)
 
   val to_query_hashtbl : ('a -> string) -> ('b -> t) -> ('a, 'b) Hashtbl.t -> t
 end
 
-(** This module contains helpers used for XML parsing. It wraps Ezxmlm
-    and adds helpers. *)
+(** This module contains helpers used for XML parsing. It wraps Ezxmlm and adds helpers.
+*)
 module Xml : sig
   exception RequiredFieldMissing of string
-  (** This is thrown when parsing XML responses. It will be caught in
-      response handlers (M.of_http for api call M) and turned into an
-      Error.t *)
+  (** This is thrown when parsing XML responses. It will be caught in response handlers
+      (M.of_http for api call M) and turned into an Error.t *)
 
   val member : string -> Ezxmlm.nodes -> Ezxmlm.nodes option
-  (** This function is identical to Ezxmlm.member except that in the
-      case of an Ezxmlm.Tag_not_found exception it returns None. *)
+  (** This function is identical to Ezxmlm.member except that in the case of an
+      Ezxmlm.Tag_not_found exception it returns None. *)
 
   val members : string -> Ezxmlm.nodes -> Ezxmlm.nodes list
-  (** This function is identical to Ezxmlm.members except in the case
-      of an Ezxmlm.Tag_not_found exception it returns []. *)
+  (** This function is identical to Ezxmlm.members except in the case of an
+      Ezxmlm.Tag_not_found exception it returns []. *)
 
   val required : string -> 'a option -> 'a
-  (** This takes an error message and option time, and throws a
-      RequiredFieldMissing exception (not exported) if the value is
-      None. *)
+  (** This takes an error message and option time, and throws a RequiredFieldMissing
+      exception (not exported) if the value is None. *)
 end
 
-(** This module contains a Json type (compatible with
-    Yojson.Basic.t) and helpers. *)
+(** This module contains a Json type (compatible with Yojson.Basic.t) and helpers. *)
 module Json : sig
   type t =
     [ `Assoc of (string * t) list
@@ -238,27 +222,26 @@ module Json : sig
   (** Json type. This is compatible with Yojson.Basic.t *)
 
   exception Casting_error of string * t
-  (** This is thrown in the case that an unsafe cast (like to_list
-      below) fails. *)
+  (** This is thrown in the case that an unsafe cast (like to_list below) fails. *)
 
   val to_list : (t -> 't) -> t -> 't list
-  (** This converts a `List (t list) to 't list, or throws a
-      Casting_error in the case that the input is not a `List. *)
+  (** This converts a `List (t list) to 't list, or throws a Casting_error in the case
+      that the input is not a `List. *)
 
   val to_hashtbl : (string -> 'a) -> (t -> 'b) -> t -> ('a, 'b) Hashtbl.t
   (** This converts an `Assoc (string * t list) to ('a, 'b) Hashtbl.t, or throws a
       Casting_error in the case that the input is not an `Assoc. *)
 
   val lookup : t -> string -> t option
-  (** If t is an `Assoc, this looks up the field specified. If it
-      isn't found, or if the input is not an `Assoc, returns None. *)
+  (** If t is an `Assoc, this looks up the field specified. If it isn't found, or if the
+      input is not an `Assoc, returns None. *)
 end
 
 (** This module contains various helpers used in generated code. *)
 module Util : sig
   val drop_empty : (string * 'a) list -> (string * 'a) list
-  (** Filters an association list, dropping any pairs where the key is
-      the empty string. *)
+  (** Filters an association list, dropping any pairs where the key is the empty string.
+  *)
 
   val or_error : 'a option -> 'b -> [ `Ok of 'a | `Error of 'b ]
   (** If input is Some a, produces `Ok a, else produces `Error b. *)
@@ -270,8 +253,7 @@ module Util : sig
   (** Produces a if Some a, else throws Failure. *)
 
   val list_find : ('a * 'b) list -> 'a -> 'b option
-  (** Looks for key 'a in association list, producing None if it isn't
-      there. *)
+  (** Looks for key 'a in association list, producing None if it isn't there. *)
 
   val list_filter_opt : 'a option list -> 'a list
   (** Returns list of values that were Some v. *)
@@ -283,19 +265,16 @@ module Util : sig
   (** Applies function to value is Some, else just produce None. *)
 
   val option_all : 'a option list -> 'a list option
-  (** If all values in list are Some v, produce Some (list_filter_opt
-      list), else produce None. *)
+  (** If all values in list are Some v, produce Some (list_filter_opt list), else produce
+      None. *)
 end
 
 (** This module contains the V2 and V4 Authorization header AWS signature algorithm. *)
 module Signing : sig
   module Hash : sig
     val _sha256 : ?key:string -> string -> Digestif.SHA256.t
-
     val sha256 : ?key:string -> string -> string
-
     val sha256_hex : ?key:string -> string -> string
-
     val sha256_base64 : ?key:string -> string -> string
   end
 
@@ -309,19 +288,17 @@ module Signing : sig
     -> region:string
     -> Request.t
     -> Request.t
-  (** Given a service, region, and request, produce a new request with
-      an Authorization header constructed according to the V4 Signing
-      algorithm. This code is a direct translation of the reference implementation
-      from python provided at:
+  (** Given a service, region, and request, produce a new request with an Authorization
+      header constructed according to the V4 Signing algorithm. This code is a direct
+      translation of the reference implementation from python provided at:
 
       http://docs.aws.amazon.com/general/latest/gr/sigv4-signed-request-examples.html
 
-      Note: This requires AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY
-      environment variables to be set.
+      Note: This requires AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment
+      variables to be set.
 
-      Also: Your system time must be accurate. If you are getting invalid
-      authorization errors, check your system time!
-   *)
+      Also: Your system time must be accurate. If you are getting invalid authorization
+      errors, check your system time! *)
 
   val sign_v2_request :
        access_key:string
@@ -331,55 +308,41 @@ module Signing : sig
     -> region:string
     -> Request.t
     -> Request.t
-  (** Given a service, region, and request, produce a new request with
-      an Authorization header constructed according to the V2 Signing
-      algorithm. This code is a direct translation of the reference description:
+  (** Given a service, region, and request, produce a new request with an Authorization
+      header constructed according to the V2 Signing algorithm. This code is a direct
+      translation of the reference description:
 
       https://docs.aws.amazon.com/general/latest/gr/signature-version-2.html
 
-      Note: This requires AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY
-      environment variables to be set.
+      Note: This requires AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment
+      variables to be set.
 
-      Also: Your system time must be accurate. If you are getting invalid
-      authorization errors, check your system time!
-   *)
+      Also: Your system time must be accurate. If you are getting invalid authorization
+      errors, check your system time! *)
 end
 
-(** This module contains base case types for the various datatypes
-    used as input or output by AWS api calls. *)
+(** This module contains base case types for the various datatypes used as input or output
+    by AWS api calls. *)
 module BaseTypes : sig
   module type Base = sig
     type t
 
     val to_json : t -> Json.t
-
     val of_json : Json.t -> t
-
     val to_query : t -> Query.t
-
     val parse : Ezxmlm.nodes -> t option
-
     val to_string : t -> string
-
     val of_string : string -> t
   end
 
   module Unit : Base with type t = unit
-
   module String : Base with type t = string
-
   module Blob : Base with type t = string
-
   module Boolean : Base with type t = bool
-
   module Integer : Base with type t = int
-
   module Long : Base with type t = int
-
   module Double : Base with type t = float
-
   module Float : Base with type t = float
-
   module DateTime : Base with type t = CalendarLib.Calendar.t
 end
 

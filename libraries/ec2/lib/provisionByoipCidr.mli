@@ -1,9 +1,5 @@
-open Types
-
 type input = ProvisionByoipCidrRequest.t
-
 type output = ProvisionByoipCidrResult.t
-
 type error = Errors_internal.t
 
 include

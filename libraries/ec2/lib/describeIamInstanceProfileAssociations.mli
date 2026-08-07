@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeIamInstanceProfileAssociationsRequest.t
-
 type output = DescribeIamInstanceProfileAssociationsResult.t
-
 type error = Errors_internal.t
 
 include

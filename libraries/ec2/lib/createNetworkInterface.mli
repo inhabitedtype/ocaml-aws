@@ -1,9 +1,5 @@
-open Types
-
 type input = CreateNetworkInterfaceRequest.t
-
 type output = CreateNetworkInterfaceResult.t
-
 type error = Errors_internal.t
 
 include

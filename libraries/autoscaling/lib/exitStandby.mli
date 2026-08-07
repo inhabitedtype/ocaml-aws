@@ -1,9 +1,5 @@
-open Types
-
 type input = ExitStandbyQuery.t
-
 type output = ExitStandbyAnswer.t
-
 type error = Errors_internal.t
 
 include

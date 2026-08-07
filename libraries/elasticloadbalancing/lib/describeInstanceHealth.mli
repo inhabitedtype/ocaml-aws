@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeEndPointStateInput.t
-
 type output = DescribeEndPointStateOutput.t
-
 type error = Errors_internal.t
 
 include

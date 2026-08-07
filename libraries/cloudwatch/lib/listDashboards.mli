@@ -1,9 +1,5 @@
-open Types
-
 type input = ListDashboardsInput.t
-
 type output = ListDashboardsOutput.t
-
 type error = Errors_internal.t
 
 include

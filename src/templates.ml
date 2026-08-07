@@ -85,8 +85,8 @@ let dune_test ?optional_libs ~lib_name () =
   *)
   let optional_libs =
     (match optional_libs with
-    | Some libs -> libs
-    | None -> [])
+      | Some libs -> libs
+      | None -> [])
     |> Fmt.str "%a" (Fmt.list ~sep:Fmt.sp Fmt.string)
   in
   let d = "%{deps}" in

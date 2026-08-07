@@ -1,9 +1,5 @@
-open Types
-
 type input = DeleteLaunchTemplateVersionsRequest.t
-
 type output = DeleteLaunchTemplateVersionsResult.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeDBClusterSnapshotsMessage.t
-
 type output = DBClusterSnapshotMessage.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,7 @@
 open Types
 
 type input = GetConnectionStatusRequest.t
-
 type output = GetConnectionStatusResponse.t
-
 type error = Errors_internal.t
 
 include

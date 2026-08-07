@@ -1,9 +1,5 @@
-open Types
-
 type input = RevokeSecurityGroupIngressRequest.t
-
 type output = RevokeSecurityGroupIngressResult.t
-
 type error = Errors_internal.t
 
 include

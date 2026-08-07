@@ -1,0 +1,52 @@
+open Aws.BaseTypes
+
+type t =
+  | Create_in_progress
+  | Create_complete
+  | Create_failed
+  | Update_in_progress
+  | Update_complete
+  | Update_failed
+  | Delete_in_progress
+  | Delete_complete
+  | Disable_in_progress
+  | Disable_complete
+
+let str_to_t =
+  [ "disable-complete", Disable_complete
+  ; "disable-in-progress", Disable_in_progress
+  ; "delete-complete", Delete_complete
+  ; "delete-in-progress", Delete_in_progress
+  ; "update-failed", Update_failed
+  ; "update-complete", Update_complete
+  ; "update-in-progress", Update_in_progress
+  ; "create-failed", Create_failed
+  ; "create-complete", Create_complete
+  ; "create-in-progress", Create_in_progress
+  ]
+
+let t_to_str =
+  [ Disable_complete, "disable-complete"
+  ; Disable_in_progress, "disable-in-progress"
+  ; Delete_complete, "delete-complete"
+  ; Delete_in_progress, "delete-in-progress"
+  ; Update_failed, "update-failed"
+  ; Update_complete, "update-complete"
+  ; Update_in_progress, "update-in-progress"
+  ; Create_failed, "create-failed"
+  ; Create_complete, "create-complete"
+  ; Create_in_progress, "create-in-progress"
+  ]
+
+let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
+let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
+let make v () = v
+
+let parse xml =
+  Aws.Util.option_bind (String.parse xml) (fun s -> Aws.Util.list_find str_to_t s)
+
+let to_query v =
+  Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
+
+let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
+let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))

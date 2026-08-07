@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeLocalGatewayVirtualInterfacesRequest.t
-
 type output = DescribeLocalGatewayVirtualInterfacesResult.t
-
 type error = Errors_internal.t
 
 include

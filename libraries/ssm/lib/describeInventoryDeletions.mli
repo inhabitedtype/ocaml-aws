@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeInventoryDeletionsRequest.t
-
 type output = DescribeInventoryDeletionsResult.t
-
 type error = Errors_internal.t
 
 include

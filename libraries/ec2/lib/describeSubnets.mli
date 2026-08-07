@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeSubnetsRequest.t
-
 type output = DescribeSubnetsResult.t
-
 type error = Errors_internal.t
 
 include

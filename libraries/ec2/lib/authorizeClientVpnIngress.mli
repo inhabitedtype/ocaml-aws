@@ -1,9 +1,5 @@
-open Types
-
 type input = AuthorizeClientVpnIngressRequest.t
-
 type output = AuthorizeClientVpnIngressResult.t
-
 type error = Errors_internal.t
 
 include

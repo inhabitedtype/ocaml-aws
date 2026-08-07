@@ -1,9 +1,5 @@
-open Types
-
 type input = AutoScalingGroupNamesType.t
-
 type output = AutoScalingGroupsType.t
-
 type error = Errors_internal.t
 
 include

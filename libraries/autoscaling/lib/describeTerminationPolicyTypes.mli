@@ -1,9 +1,5 @@
-open Types
-
 type input = Aws.BaseTypes.Unit.t
-
 type output = DescribeTerminationPolicyTypesAnswer.t
-
 type error = Errors_internal.t
 
 include

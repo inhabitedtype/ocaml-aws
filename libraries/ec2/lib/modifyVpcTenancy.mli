@@ -1,9 +1,5 @@
-open Types
-
 type input = ModifyVpcTenancyRequest.t
-
 type output = ModifyVpcTenancyResult.t
-
 type error = Errors_internal.t
 
 include

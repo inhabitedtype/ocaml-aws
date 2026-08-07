@@ -1,9 +1,5 @@
-open Types
-
 type input = ModifyCertificatesMessage.t
-
 type output = ModifyCertificatesResult.t
-
 type error = Errors_internal.t
 
 include

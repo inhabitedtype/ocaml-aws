@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeAlarmsInput.t
-
 type output = DescribeAlarmsOutput.t
-
 type error = Errors_internal.t
 
 include

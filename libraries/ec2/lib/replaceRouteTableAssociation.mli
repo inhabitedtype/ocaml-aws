@@ -1,9 +1,5 @@
-open Types
-
 type input = ReplaceRouteTableAssociationRequest.t
-
 type output = ReplaceRouteTableAssociationResult.t
-
 type error = Errors_internal.t
 
 include

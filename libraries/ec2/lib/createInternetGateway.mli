@@ -1,9 +1,5 @@
-open Types
-
 type input = CreateInternetGatewayRequest.t
-
 type output = CreateInternetGatewayResult.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,5 @@
-open Types
-
 type input = LookupEventsRequest.t
-
 type output = LookupEventsResponse.t
-
 type error = Errors_internal.t
 
 include

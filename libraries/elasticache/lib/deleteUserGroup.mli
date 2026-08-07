@@ -1,9 +1,5 @@
-open Types
-
 type input = DeleteUserGroupMessage.t
-
 type output = UserGroup.t
-
 type error = Errors_internal.t
 
 include

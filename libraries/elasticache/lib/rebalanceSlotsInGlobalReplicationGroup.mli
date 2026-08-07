@@ -1,9 +1,5 @@
-open Types
-
 type input = RebalanceSlotsInGlobalReplicationGroupMessage.t
-
 type output = RebalanceSlotsInGlobalReplicationGroupResult.t
-
 type error = Errors_internal.t
 
 include

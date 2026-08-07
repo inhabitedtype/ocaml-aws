@@ -1,7 +1,6 @@
 open Cmdliner
 
 let ( </> ) a b = Filename.concat a b
-
 let log s = Printf.eprintf (s ^^ "\n%!")
 
 let var_replace hostname svc_name region dns_suffix =

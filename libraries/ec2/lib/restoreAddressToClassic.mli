@@ -1,9 +1,5 @@
-open Types
-
 type input = RestoreAddressToClassicRequest.t
-
 type output = RestoreAddressToClassicResult.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,5 @@
-open Types
-
 type input = GetAccessKeyInfoRequest.t
-
 type output = GetAccessKeyInfoResponse.t
-
 type error = Errors_internal.t
 
 include

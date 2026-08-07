@@ -1,9 +1,5 @@
-open Types
-
 type input = ModifyInstanceMetadataOptionsRequest.t
-
 type output = ModifyInstanceMetadataOptionsResult.t
-
 type error = Errors_internal.t
 
 include

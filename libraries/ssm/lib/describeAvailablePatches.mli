@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeAvailablePatchesRequest.t
-
 type output = DescribeAvailablePatchesResult.t
-
 type error = Errors_internal.t
 
 include

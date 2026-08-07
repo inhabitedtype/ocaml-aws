@@ -1,9 +1,5 @@
-open Types
-
 type input = ModifyDBClusterParameterGroupMessage.t
-
 type output = DBClusterParameterGroupNameMessage.t
-
 type error = Errors_internal.t
 
 include

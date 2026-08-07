@@ -1,9 +1,5 @@
-open Types
-
 type input = ModifyTrafficMirrorSessionRequest.t
-
 type output = ModifyTrafficMirrorSessionResult.t
-
 type error = Errors_internal.t
 
 include

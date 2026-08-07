@@ -1,9 +1,5 @@
-open Types
-
 type input = SendMessageBatchRequest.t
-
 type output = SendMessageBatchResult.t
-
 type error = Errors_internal.t
 
 include

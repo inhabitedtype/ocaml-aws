@@ -1,9 +1,5 @@
-open Types
-
 type input = GetTransitGatewayAttachmentPropagationsRequest.t
-
 type output = GetTransitGatewayAttachmentPropagationsResult.t
-
 type error = Errors_internal.t
 
 include

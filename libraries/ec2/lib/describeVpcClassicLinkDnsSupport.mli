@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeVpcClassicLinkDnsSupportRequest.t
-
 type output = DescribeVpcClassicLinkDnsSupportResult.t
-
 type error = Errors_internal.t
 
 include

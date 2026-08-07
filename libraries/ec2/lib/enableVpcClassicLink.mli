@@ -1,9 +1,5 @@
-open Types
-
 type input = EnableVpcClassicLinkRequest.t
-
 type output = EnableVpcClassicLinkResult.t
-
 type error = Errors_internal.t
 
 include

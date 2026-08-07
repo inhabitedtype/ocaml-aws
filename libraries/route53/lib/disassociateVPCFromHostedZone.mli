@@ -1,9 +1,5 @@
-open Types
-
 type input = DisassociateVPCFromHostedZoneRequest.t
-
 type output = DisassociateVPCFromHostedZoneResponse.t
-
 type error = Errors_internal.t
 
 include

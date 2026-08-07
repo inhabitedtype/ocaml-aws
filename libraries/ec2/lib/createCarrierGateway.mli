@@ -1,9 +1,5 @@
-open Types
-
 type input = CreateCarrierGatewayRequest.t
-
 type output = CreateCarrierGatewayResult.t
-
 type error = Errors_internal.t
 
 include

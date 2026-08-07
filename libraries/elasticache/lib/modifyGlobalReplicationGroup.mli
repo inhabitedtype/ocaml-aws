@@ -1,9 +1,5 @@
-open Types
-
 type input = ModifyGlobalReplicationGroupMessage.t
-
 type output = ModifyGlobalReplicationGroupResult.t
-
 type error = Errors_internal.t
 
 include

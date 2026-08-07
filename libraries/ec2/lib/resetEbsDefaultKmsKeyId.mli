@@ -1,9 +1,5 @@
-open Types
-
 type input = ResetEbsDefaultKmsKeyIdRequest.t
-
 type output = ResetEbsDefaultKmsKeyIdResult.t
-
 type error = Errors_internal.t
 
 include

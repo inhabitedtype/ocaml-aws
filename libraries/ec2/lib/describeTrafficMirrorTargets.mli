@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeTrafficMirrorTargetsRequest.t
-
 type output = DescribeTrafficMirrorTargetsResult.t
-
 type error = Errors_internal.t
 
 include

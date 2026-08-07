@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeTagsInput.t
-
 type output = DescribeTagsOutput.t
-
 type error = Errors_internal.t
 
 include

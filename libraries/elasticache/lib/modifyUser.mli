@@ -1,9 +1,5 @@
-open Types
-
 type input = ModifyUserMessage.t
-
 type output = User.t
-
 type error = Errors_internal.t
 
 include

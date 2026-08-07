@@ -1,9 +1,5 @@
-open Types
-
 type input = ApplyPendingMaintenanceActionMessage.t
-
 type output = ApplyPendingMaintenanceActionResult.t
-
 type error = Errors_internal.t
 
 include

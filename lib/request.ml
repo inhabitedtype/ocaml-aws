@@ -30,4 +30,5 @@ type signature_version =
   | V2
   | S3
 
-type t = meth * Uri.t * headers
+type t = meth * Uri.t * headers * string
+(** A request is a method, a uri, a list of headers, and a body. *)

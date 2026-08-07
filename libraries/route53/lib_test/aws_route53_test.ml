@@ -33,7 +33,6 @@ functor
   ->
   struct
     let noop_test config _ = "Noop test succeeds" @? true
-
     let suite config = "Test Route53" >::: [ "Route53 noop" >:: noop_test config ]
 
     let () =

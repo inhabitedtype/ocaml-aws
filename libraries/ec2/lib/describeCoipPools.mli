@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeCoipPoolsRequest.t
-
 type output = DescribeCoipPoolsResult.t
-
 type error = Errors_internal.t
 
 include

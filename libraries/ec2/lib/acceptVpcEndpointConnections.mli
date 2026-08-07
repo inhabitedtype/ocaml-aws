@@ -1,9 +1,5 @@
-open Types
-
 type input = AcceptVpcEndpointConnectionsRequest.t
-
 type output = AcceptVpcEndpointConnectionsResult.t
-
 type error = Errors_internal.t
 
 include

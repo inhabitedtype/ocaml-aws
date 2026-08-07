@@ -1,9 +1,5 @@
-open Types
-
 type input = GenerateRandomRequest.t
-
 type output = GenerateRandomResponse.t
-
 type error = Errors_internal.t
 
 include

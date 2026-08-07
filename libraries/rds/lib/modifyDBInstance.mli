@@ -1,9 +1,5 @@
-open Types
-
 type input = ModifyDBInstanceMessage.t
-
 type output = ModifyDBInstanceResult.t
-
 type error = Errors_internal.t
 
 include

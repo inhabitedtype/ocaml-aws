@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribePatchPropertiesRequest.t
-
 type output = DescribePatchPropertiesResult.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeAutoScalingInstancesType.t
-
 type output = AutoScalingInstancesType.t
-
 type error = Errors_internal.t
 
 include

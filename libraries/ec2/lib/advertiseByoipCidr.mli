@@ -1,9 +1,5 @@
-open Types
-
 type input = AdvertiseByoipCidrRequest.t
-
 type output = AdvertiseByoipCidrResult.t
-
 type error = Errors_internal.t
 
 include

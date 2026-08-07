@@ -1,9 +1,5 @@
-open Types
-
 type input = CopyDBClusterParameterGroupMessage.t
-
 type output = CopyDBClusterParameterGroupResult.t
-
 type error = Errors_internal.t
 
 include

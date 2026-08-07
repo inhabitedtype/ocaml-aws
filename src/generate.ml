@@ -38,9 +38,7 @@ module G = Graph.Imperative.Digraph.ConcreteBidirectional (struct
   type t = Shape.t
 
   let compare a b = compare a.Shape.name b.Shape.name
-
   let hash a = Hashtbl.hash a.Shape.name
-
   let equal a b = a.Shape.name = b.Shape.name
 end)
 
@@ -84,7 +82,7 @@ let is_flat_list ~shapes ~shp =
     | _ -> false
   with Not_found -> false
 
-let types is_ec2 shapes =
+let type_units is_ec2 shapes =
   let option_type shp = function
     | true -> Syntax.ty0 shp
     | false -> Syntax.ty1 "option" shp
@@ -300,8 +298,9 @@ let types is_ec2 shapes =
                                 | None ->
                                     mem.Structure.name
                                     ^
-                                    if (not is_ec2)
-                                       && is_list ~shapes ~shp:mem.Structure.shape
+                                    if
+                                      (not is_ec2)
+                                      && is_list ~shapes ~shp:mem.Structure.shape
                                     then ".member"
                                     else ""
                               in
@@ -320,8 +319,9 @@ let types is_ec2 shapes =
                                         ^ ".to_query")
                                         arg))
                               in
-                              if mem.Structure.required
-                                 || is_list ~shapes ~shp:mem.Structure.shape
+                              if
+                                mem.Structure.required
+                                || is_list ~shapes ~shp:mem.Structure.shape
                               then
                                 app1 "Some" (q (ident ("v." ^ mem.Structure.field_name)))
                               else
@@ -376,8 +376,9 @@ let types is_ec2 shapes =
                                      ^ ".to_json")
                                      arg)
                               in
-                              if mem.Structure.required
-                                 || is_list ~shapes ~shp:mem.Structure.shape
+                              if
+                                mem.Structure.required
+                                || is_list ~shapes ~shp:mem.Structure.shape
                               then
                                 app1 "Some" (q (ident ("v." ^ mem.Structure.field_name)))
                               else
@@ -432,20 +433,22 @@ let types is_ec2 shapes =
                           | None -> mem.Structure.name
                         in
                         ( mem.Structure.field_name
-                        , (if mem.Structure.required
-                              || is_list ~shapes ~shp:mem.Structure.shape
-                          then
-                            fun v ->
-                            app1
-                              (String.capitalize_ascii mem.Structure.shape ^ ".of_json")
-                              (app1 "Aws.Util.of_option_exn" v)
-                          else
-                            fun v ->
-                            app2
-                              "Aws.Util.option_map"
-                              v
-                              (ident
-                                 (String.capitalize_ascii mem.Structure.shape ^ ".of_json")))
+                        , (if
+                             mem.Structure.required
+                             || is_list ~shapes ~shp:mem.Structure.shape
+                           then
+                             fun v ->
+                               app1
+                                 (String.capitalize_ascii mem.Structure.shape ^ ".of_json")
+                                 (app1 "Aws.Util.of_option_exn" v)
+                           else
+                             fun v ->
+                               app2
+                                 "Aws.Util.option_map"
+                                 v
+                                 (ident
+                                    (String.capitalize_ascii mem.Structure.shape
+                                    ^ ".of_json")))
                             (app2 "Aws.Json.lookup" (ident "j") (str location)) ))
                       s)
              | Shape.List (shp, _, _flatten) ->
@@ -478,21 +481,85 @@ let types is_ec2 shapes =
       @ tyextra
       |> Syntax.sig_ )
   in
+  ListLabels.map (scc shapes) ~f:(fun g ->
+      match g with
+      | `Rec group -> `Group (ListLabels.map group ~f:build_module)
+      | `Nonrec m -> `Single (build_module m))
+
+(* Modules brought into scope by [open Aws.BaseTypes]. When a shape is split
+   into its own file (--split-types) it should only open BaseTypes if it
+   actually references one of these; otherwise warning 33 (unused open) fires.
+   In the monolithic types.ml the open is always used by some shape, so this
+   only matters for the per-shape layout. *)
+let basetypes_modules =
+  [ "Unit"
+  ; "String"
+  ; "Blob"
+  ; "Boolean"
+  ; "Integer"
+  ; "Long"
+  ; "Float"
+  ; "Double"
+  ; "DateTime"
+  ]
+
+let uses_basetypes (str : Parsetree.structure) =
+  let rec leftmost = function
+    | Longident.Lident s -> s
+    | Longident.Ldot (l, _) -> leftmost l
+    | Longident.Lapply (l, _) -> leftmost l
+  in
+  (* The generator encodes dotted paths as a single [Lident "String.parse"]
+     (see Syntax.lid), so split off the first component to get the module. *)
+  let root lid =
+    let s = leftmost lid in
+    match String.index_opt s '.' with
+    | Some i -> String.sub s 0 i
+    | None -> s
+  in
+  let hit = ref false in
+  let check { Asttypes.txt; _ } =
+    if List.mem (root txt) basetypes_modules then hit := true
+  in
+  let iter =
+    { Ast_iterator.default_iterator with
+      expr =
+        (fun self e ->
+          (match e.Parsetree.pexp_desc with
+          | Pexp_ident lid | Pexp_construct (lid, _) -> check lid
+          | _ -> ());
+          Ast_iterator.default_iterator.expr self e)
+    ; typ =
+        (fun self t ->
+          (match t.Parsetree.ptyp_desc with
+          | Ptyp_constr (lid, _) -> check lid
+          | _ -> ());
+          Ast_iterator.default_iterator.typ self t)
+    ; pat =
+        (fun self p ->
+          (match p.Parsetree.ppat_desc with
+          | Ppat_construct (lid, _) -> check lid
+          | _ -> ());
+          Ast_iterator.default_iterator.pat self p)
+    }
+  in
+  iter.structure iter str;
+  !hit
+
+(* Assemble all shape modules into a single types.ml structure (the original
+   layout). [type_units] above returns one entry per strongly-connected
+   component so callers can also emit one file per shape; see --split-types. *)
+let types is_ec2 shapes =
   [ Syntax.open_ "Aws.BaseTypes"
   ; Syntax.(tylet "calendar" (ty0 "CalendarLib.Calendar.t"))
   ]
-  @ ListLabels.map (scc shapes) ~f:(fun g ->
-        match g with
-        | `Rec group ->
-            ListLabels.map group ~f:(fun m ->
-                let nm, str, sig_ = build_module m in
-                Syntax.module'_ nm str sig_)
-            |> Syntax.rec_module_
-        | `Nonrec m ->
-            let nm, str, _ = build_module m in
-            Syntax.module_ nm str)
+  @ ListLabels.map (type_units is_ec2 shapes) ~f:(function
+    | `Group group ->
+        ListLabels.map group ~f:(fun (nm, str, sig_) -> Syntax.module'_ nm str sig_)
+        |> Syntax.rec_module_
+    | `Single (nm, str, _sig) -> Syntax.module_ nm str)
 
-let op service version _shapes op signature_version =
+let op ?(split = false) service version _shapes op signature_version =
   let open Syntax in
   let mkty = function
     | None -> ty0 "unit"
@@ -505,29 +572,78 @@ let op service version _shapes op signature_version =
       ]
   in
   let to_body =
-    letin
-      "uri"
-      (app2
-         "Uri.add_query_params"
-         (app1
-            "Uri.of_string"
-            (app1
-               "Aws.Util.of_option_exn"
-               (app2 "Endpoints.url_of" (ident "service") (ident "region"))))
-         (match op.Operation.input_shape with
-         | None -> defaults
-         | Some input_shape ->
-             app2
-               "List.append"
-               defaults
-               (app1
-                  "Util.drop_empty"
-                  (app1
-                     "Uri.query_of_encoded"
-                     (app1
-                        "Query.render"
-                        (app1 (input_shape ^ ".to_query") (ident "req")))))))
-      (tuple [ variant op.Operation.http_meth; ident "uri"; list [] ])
+    match signature_version with
+    | "v2" ->
+        letin
+          "uri"
+          (app2
+             "Uri.add_query_params"
+             (app1
+                "Uri.of_string"
+                (app1
+                   "Aws.Util.of_option_exn"
+                   (app2 "Endpoints.url_of" (ident "service") (ident "region"))))
+             (match op.Operation.input_shape with
+             | None -> defaults
+             | Some input_shape ->
+                 app2
+                   "List.append"
+                   defaults
+                   (app1
+                      "Util.drop_empty"
+                      (app1
+                         "Uri.query_of_encoded"
+                         (app1
+                            "Query.render"
+                            (app1 (input_shape ^ ".to_query") (ident "req")))))))
+          (tuple [ variant op.Operation.http_meth; ident "uri"; list []; str "" ])
+    | _ ->
+        (* Query-protocol requests carry their parameters as a form-encoded
+           body rather than a URL query string. Uri's query serializer treats
+           '=' as legal unescaped inside a query value (RFC 3986 permits it),
+           but AWS's query-string parser doesn't, so any value needing '='
+           verbatim (e.g. padded base64) breaks a URL-embedded request. A
+           request body is just bytes to Cohttp, so it isn't run through
+           that serializer at all. *)
+        let defaults_query =
+          app1
+            "Aws.Query.List"
+            (list
+               [ app1
+                   "Aws.Query.Pair"
+                   (pair
+                      (str "Action")
+                      (app1 "Aws.Query.Value" (app1 "Some" (str op.Operation.name))))
+               ; app1
+                   "Aws.Query.Pair"
+                   (pair (str "Version") (app1 "Aws.Query.Value" (app1 "Some" (str version))))
+               ])
+        in
+        let body_query =
+          match op.Operation.input_shape with
+          | None -> defaults_query
+          | Some input_shape ->
+              app1
+                "Aws.Query.List"
+                (list [ defaults_query; app1 (input_shape ^ ".to_query") (ident "req") ])
+        in
+        letin
+          "uri"
+          (app1
+             "Uri.of_string"
+             (app1
+                "Aws.Util.of_option_exn"
+                (app2 "Endpoints.url_of" (ident "service") (ident "region"))))
+          (tuple
+             [ variant op.Operation.http_meth
+             ; ident "uri"
+             ; list
+                 [ pair
+                     (str "Content-Type")
+                     (str "application/x-www-form-urlencoded; charset=utf-8")
+                 ]
+             ; app1 "Aws.Query.render" body_query
+             ])
   in
   let of_body =
     match op.Operation.output_shape with
@@ -613,28 +729,31 @@ let op service version _shapes op signature_version =
             (ident "None"))
          (ident "None"))
   in
+  (* When [split] is set, shapes are top-level library modules rather than
+     submodules of [Types], so the [open Types] is dropped (and would not
+     resolve). *)
   (* Tuple corresponding to (mli, ml) *)
-  ( [ sopen_ "Types"
-    ; stylet "input" (mkty op.Operation.input_shape)
-    ; stylet "output" (mkty op.Operation.output_shape)
-    ; stylet "error" (ty0 "Errors_internal.t")
-    ; sinclude_
-        "Aws.Call"
-        [ withty "input" "input"; withty "output" "output"; withty "error" "error" ]
-    ]
-  , [ open_ "Types"
-    ; open_ "Aws"
-    ; tylet "input" (mkty op.Operation.input_shape)
-    ; tylet "output" (mkty op.Operation.output_shape)
-    ; tylet "error" (ty0 "Errors_internal.t")
-    ; let_ "service" (str service)
-    ; let_
-        "signature_version"
-        (ident ("Request." ^ String.capitalize_ascii signature_version))
-    ; let_ "to_http" (fun3 "service" "region" "req" to_body)
-    ; let_ "of_http" (fun_ "body" of_body)
-    ; let_ "parse_error" (fun2 "code" "err" op_error_parse)
-    ] )
+  ( (if split then [] else [ sopen_ "Types" ])
+    @ [ stylet "input" (mkty op.Operation.input_shape)
+      ; stylet "output" (mkty op.Operation.output_shape)
+      ; stylet "error" (ty0 "Errors_internal.t")
+      ; sinclude_
+          "Aws.Call"
+          [ withty "input" "input"; withty "output" "output"; withty "error" "error" ]
+      ]
+  , (if split then [] else [ open_ "Types" ])
+    @ [ open_ "Aws"
+      ; tylet "input" (mkty op.Operation.input_shape)
+      ; tylet "output" (mkty op.Operation.output_shape)
+      ; tylet "error" (ty0 "Errors_internal.t")
+      ; let_ "service" (str service)
+      ; let_
+          "signature_version"
+          (ident ("Request." ^ String.capitalize_ascii signature_version))
+      ; let_ "to_http" (fun3 "service" "region" "req" to_body)
+      ; let_ "of_http" (fun_ "body" of_body)
+      ; let_ "parse_error" (fun2 "code" "err" op_error_parse)
+      ] )
 
 let errors errs common_errors =
   let errs =

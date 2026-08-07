@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeVpcAttributeRequest.t
-
 type output = DescribeVpcAttributeResult.t
-
 type error = Errors_internal.t
 
 include

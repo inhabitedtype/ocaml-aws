@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeStackEventsInput.t
-
 type output = DescribeStackEventsOutput.t
-
 type error = Errors_internal.t
 
 include

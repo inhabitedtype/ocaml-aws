@@ -1,9 +1,5 @@
-open Types
-
 type input = DeleteDBInstanceAutomatedBackupMessage.t
-
 type output = DeleteDBInstanceAutomatedBackupResult.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeVpcEndpointServiceConfigurationsRequest.t
-
 type output = DescribeVpcEndpointServiceConfigurationsResult.t
-
 type error = Errors_internal.t
 
 include

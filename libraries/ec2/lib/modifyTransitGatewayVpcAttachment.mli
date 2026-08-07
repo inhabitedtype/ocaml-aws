@@ -1,9 +1,5 @@
-open Types
-
 type input = ModifyTransitGatewayVpcAttachmentRequest.t
-
 type output = ModifyTransitGatewayVpcAttachmentResult.t
-
 type error = Errors_internal.t
 
 include

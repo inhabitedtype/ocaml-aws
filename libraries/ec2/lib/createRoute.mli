@@ -1,9 +1,5 @@
-open Types
-
 type input = CreateRouteRequest.t
-
 type output = CreateRouteResult.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,5 @@
-open Types
-
 type input = UpdateHostedZoneCommentRequest.t
-
 type output = UpdateHostedZoneCommentResponse.t
-
 type error = Errors_internal.t
 
 include

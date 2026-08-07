@@ -1,9 +1,5 @@
-open Types
-
 type input = GetGroupsForCapacityReservationRequest.t
-
 type output = GetGroupsForCapacityReservationResult.t
-
 type error = Errors_internal.t
 
 include

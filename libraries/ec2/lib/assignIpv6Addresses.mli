@@ -1,9 +1,5 @@
-open Types
-
 type input = AssignIpv6AddressesRequest.t
-
 type output = AssignIpv6AddressesResult.t
-
 type error = Errors_internal.t
 
 include

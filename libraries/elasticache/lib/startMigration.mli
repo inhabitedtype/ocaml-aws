@@ -1,9 +1,5 @@
-open Types
-
 type input = StartMigrationMessage.t
-
 type output = StartMigrationResponse.t
-
 type error = Errors_internal.t
 
 include

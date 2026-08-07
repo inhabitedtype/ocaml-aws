@@ -1,9 +1,5 @@
-open Types
-
 type input = RemoveFromGlobalClusterMessage.t
-
 type output = RemoveFromGlobalClusterResult.t
-
 type error = Errors_internal.t
 
 include

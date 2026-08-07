@@ -1,9 +1,7 @@
 open Types
 
 type input = GetParameterHistoryRequest.t
-
 type output = GetParameterHistoryResult.t
-
 type error = Errors_internal.t
 
 include

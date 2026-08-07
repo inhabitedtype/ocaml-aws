@@ -1,9 +1,5 @@
-open Types
-
 type input = ListTrailsRequest.t
-
 type output = ListTrailsResponse.t
-
 type error = Errors_internal.t
 
 include

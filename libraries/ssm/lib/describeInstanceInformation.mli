@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeInstanceInformationRequest.t
-
 type output = DescribeInstanceInformationResult.t
-
 type error = Errors_internal.t
 
 include

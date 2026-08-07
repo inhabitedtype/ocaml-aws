@@ -44,7 +44,7 @@ let run_request
        and type output = output
        and type error = error)
     (inp : M.input) =
-  let meth, uri, headers =
+  let meth, uri, headers, body =
     match M.signature_version with
     | V4 | S3 ->
         Aws.Signing.sign_request
@@ -67,7 +67,7 @@ let run_request
   let headers = Header.of_list headers in
   Lwt.catch
     (fun () ->
-      Cohttp_lwt_unix.Client.call ~headers meth uri
+      Cohttp_lwt_unix.Client.call ~headers ~body:(Cohttp_lwt.Body.of_string body) meth uri
       >>= fun (resp, body) ->
       Cohttp_lwt.Body.to_string body
       >|= fun body ->

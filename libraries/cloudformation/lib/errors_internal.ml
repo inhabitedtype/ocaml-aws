@@ -4,9 +4,12 @@ type t =
   | Blocked
   | CFNRegistryException
   | ChangeSetNotFound
+  | ConcurrentResourcesLimitExceeded
   | ConditionalCheckFailed
   | CreatedButModifiedException
   | DryRunOperation
+  | GeneratedTemplateNotFound
+  | HookResultNotFound
   | IdempotentParameterMismatch
   | IncompleteSignature
   | InsufficientCapabilitiesException
@@ -33,13 +36,19 @@ type t =
   | PendingVerification
   | RequestExpired
   | RequestLimitExceeded
+  | ResourceScanInProgress
+  | ResourceScanLimitExceeded
+  | ResourceScanNotFound
   | ServiceUnavailable
   | StackInstanceNotFoundException
+  | StackNotFoundException
+  | StackRefactorNotFoundException
   | StackSetNotEmptyException
   | StackSetNotFoundException
   | StaleRequestException
   | Throttling
   | TokenAlreadyExistsException
+  | TypeConfigurationNotFoundException
   | TypeNotFoundException
   | UnauthorizedOperation
   | UnknownParameter
@@ -83,9 +92,12 @@ let to_http_code e =
   | Blocked -> None
   | CFNRegistryException -> Some 400
   | ChangeSetNotFound -> Some 404
+  | ConcurrentResourcesLimitExceeded -> Some 429
   | ConditionalCheckFailed -> Some 400
   | CreatedButModifiedException -> Some 409
   | DryRunOperation -> None
+  | GeneratedTemplateNotFound -> Some 404
+  | HookResultNotFound -> Some 404
   | IdempotentParameterMismatch -> None
   | IncompleteSignature -> Some 400
   | InsufficientCapabilitiesException -> Some 400
@@ -112,13 +124,19 @@ let to_http_code e =
   | PendingVerification -> None
   | RequestExpired -> Some 400
   | RequestLimitExceeded -> None
+  | ResourceScanInProgress -> Some 400
+  | ResourceScanLimitExceeded -> Some 400
+  | ResourceScanNotFound -> Some 400
   | ServiceUnavailable -> Some 503
   | StackInstanceNotFoundException -> Some 404
+  | StackNotFoundException -> Some 404
+  | StackRefactorNotFoundException -> Some 404
   | StackSetNotEmptyException -> Some 409
   | StackSetNotFoundException -> Some 404
   | StaleRequestException -> Some 409
   | Throttling -> Some 400
   | TokenAlreadyExistsException -> Some 400
+  | TypeConfigurationNotFoundException -> Some 404
   | TypeNotFoundException -> Some 404
   | UnauthorizedOperation -> None
   | UnknownParameter -> None
@@ -133,9 +151,12 @@ let to_string e =
   | Blocked -> "Blocked"
   | CFNRegistryException -> "CFNRegistryException"
   | ChangeSetNotFound -> "ChangeSetNotFound"
+  | ConcurrentResourcesLimitExceeded -> "ConcurrentResourcesLimitExceeded"
   | ConditionalCheckFailed -> "ConditionalCheckFailed"
   | CreatedButModifiedException -> "CreatedButModifiedException"
   | DryRunOperation -> "DryRunOperation"
+  | GeneratedTemplateNotFound -> "GeneratedTemplateNotFound"
+  | HookResultNotFound -> "HookResultNotFound"
   | IdempotentParameterMismatch -> "IdempotentParameterMismatch"
   | IncompleteSignature -> "IncompleteSignature"
   | InsufficientCapabilitiesException -> "InsufficientCapabilitiesException"
@@ -162,13 +183,19 @@ let to_string e =
   | PendingVerification -> "PendingVerification"
   | RequestExpired -> "RequestExpired"
   | RequestLimitExceeded -> "RequestLimitExceeded"
+  | ResourceScanInProgress -> "ResourceScanInProgress"
+  | ResourceScanLimitExceeded -> "ResourceScanLimitExceeded"
+  | ResourceScanNotFound -> "ResourceScanNotFound"
   | ServiceUnavailable -> "ServiceUnavailable"
   | StackInstanceNotFoundException -> "StackInstanceNotFoundException"
+  | StackNotFoundException -> "StackNotFoundException"
+  | StackRefactorNotFoundException -> "StackRefactorNotFoundException"
   | StackSetNotEmptyException -> "StackSetNotEmptyException"
   | StackSetNotFoundException -> "StackSetNotFoundException"
   | StaleRequestException -> "StaleRequestException"
   | Throttling -> "Throttling"
   | TokenAlreadyExistsException -> "TokenAlreadyExistsException"
+  | TypeConfigurationNotFoundException -> "TypeConfigurationNotFoundException"
   | TypeNotFoundException -> "TypeNotFoundException"
   | UnauthorizedOperation -> "UnauthorizedOperation"
   | UnknownParameter -> "UnknownParameter"
@@ -183,9 +210,12 @@ let of_string e =
   | "Blocked" -> Some Blocked
   | "CFNRegistryException" -> Some CFNRegistryException
   | "ChangeSetNotFound" -> Some ChangeSetNotFound
+  | "ConcurrentResourcesLimitExceeded" -> Some ConcurrentResourcesLimitExceeded
   | "ConditionalCheckFailed" -> Some ConditionalCheckFailed
   | "CreatedButModifiedException" -> Some CreatedButModifiedException
   | "DryRunOperation" -> Some DryRunOperation
+  | "GeneratedTemplateNotFound" -> Some GeneratedTemplateNotFound
+  | "HookResultNotFound" -> Some HookResultNotFound
   | "IdempotentParameterMismatch" -> Some IdempotentParameterMismatch
   | "IncompleteSignature" -> Some IncompleteSignature
   | "InsufficientCapabilitiesException" -> Some InsufficientCapabilitiesException
@@ -212,13 +242,19 @@ let of_string e =
   | "PendingVerification" -> Some PendingVerification
   | "RequestExpired" -> Some RequestExpired
   | "RequestLimitExceeded" -> Some RequestLimitExceeded
+  | "ResourceScanInProgress" -> Some ResourceScanInProgress
+  | "ResourceScanLimitExceeded" -> Some ResourceScanLimitExceeded
+  | "ResourceScanNotFound" -> Some ResourceScanNotFound
   | "ServiceUnavailable" -> Some ServiceUnavailable
   | "StackInstanceNotFoundException" -> Some StackInstanceNotFoundException
+  | "StackNotFoundException" -> Some StackNotFoundException
+  | "StackRefactorNotFoundException" -> Some StackRefactorNotFoundException
   | "StackSetNotEmptyException" -> Some StackSetNotEmptyException
   | "StackSetNotFoundException" -> Some StackSetNotFoundException
   | "StaleRequestException" -> Some StaleRequestException
   | "Throttling" -> Some Throttling
   | "TokenAlreadyExistsException" -> Some TokenAlreadyExistsException
+  | "TypeConfigurationNotFoundException" -> Some TypeConfigurationNotFoundException
   | "TypeNotFoundException" -> Some TypeNotFoundException
   | "UnauthorizedOperation" -> Some UnauthorizedOperation
   | "UnknownParameter" -> Some UnknownParameter

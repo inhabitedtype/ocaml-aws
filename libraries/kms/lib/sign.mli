@@ -1,9 +1,5 @@
-open Types
-
 type input = SignRequest.t
-
 type output = SignResponse.t
-
 type error = Errors_internal.t
 
 include

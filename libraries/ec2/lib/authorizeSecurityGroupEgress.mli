@@ -1,9 +1,5 @@
-open Types
-
 type input = AuthorizeSecurityGroupEgressRequest.t
-
-type output = unit
-
+type output = AuthorizeSecurityGroupEgressResult.t
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeLocalGatewayRouteTablesRequest.t
-
 type output = DescribeLocalGatewayRouteTablesResult.t
-
 type error = Errors_internal.t
 
 include

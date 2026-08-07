@@ -1,9 +1,5 @@
-open Types
-
 type input = CreateCustomKeyStoreRequest.t
-
 type output = CreateCustomKeyStoreResponse.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,7 @@
 open Types
 
 type input = DeleteActivationRequest.t
-
 type output = unit
-
 type error = Errors_internal.t
 
 include

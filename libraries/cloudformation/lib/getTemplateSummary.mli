@@ -1,9 +1,5 @@
-open Types
-
 type input = GetTemplateSummaryInput.t
-
 type output = GetTemplateSummaryOutput.t
-
 type error = Errors_internal.t
 
 include

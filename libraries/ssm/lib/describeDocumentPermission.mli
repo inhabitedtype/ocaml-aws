@@ -1,9 +1,7 @@
 open Types
 
 type input = DescribeDocumentPermissionRequest.t
-
 type output = DescribeDocumentPermissionResponse.t
-
 type error = Errors_internal.t
 
 include

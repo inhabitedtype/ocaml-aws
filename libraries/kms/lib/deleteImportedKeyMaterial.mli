@@ -1,9 +1,5 @@
-open Types
-
 type input = DeleteImportedKeyMaterialRequest.t
-
-type output = unit
-
+type output = DeleteImportedKeyMaterialResponse.t
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,5 @@
-open Types
-
 type input = ResetFpgaImageAttributeRequest.t
-
 type output = ResetFpgaImageAttributeResult.t
-
 type error = Errors_internal.t
 
 include

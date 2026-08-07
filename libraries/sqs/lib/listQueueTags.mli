@@ -1,9 +1,5 @@
-open Types
-
 type input = ListQueueTagsRequest.t
-
 type output = ListQueueTagsResult.t
-
 type error = Errors_internal.t
 
 include

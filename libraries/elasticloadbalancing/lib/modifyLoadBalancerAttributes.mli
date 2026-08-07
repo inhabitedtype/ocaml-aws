@@ -1,9 +1,5 @@
-open Types
-
 type input = ModifyLoadBalancerAttributesInput.t
-
 type output = ModifyLoadBalancerAttributesOutput.t
-
 type error = Errors_internal.t
 
 include

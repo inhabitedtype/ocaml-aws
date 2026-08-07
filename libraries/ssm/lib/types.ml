@@ -11,10 +11,30 @@ module TargetValues = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
+end
+
+module NodeFilterOperatorType = struct
+  type t =
+    | Equal
+    | NotEqual
+    | BeginWith
+
+  let str_to_t = [ "BeginWith", BeginWith; "NotEqual", NotEqual; "Equal", Equal ]
+  let t_to_str = [ BeginWith, "BeginWith"; NotEqual, "NotEqual"; Equal, "Equal" ]
+  let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
+  let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
+  let make v () = v
+
+  let parse xml =
+    Aws.Util.option_bind (String.parse xml) (fun s -> Aws.Util.list_find str_to_t s)
+
+  let to_query v =
+    Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
+  let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
 module InventoryDeletionSummaryItem = struct
@@ -67,41 +87,57 @@ module OperatingSystem = struct
     | WINDOWS
     | AMAZON_LINUX
     | AMAZON_LINUX_2
+    | AMAZON_LINUX_2022
     | UBUNTU
     | REDHAT_ENTERPRISE_LINUX
     | SUSE
     | CENTOS
     | ORACLE_LINUX
     | DEBIAN
+    | MACOS
+    | RASPBIAN
+    | ROCKY_LINUX
+    | ALMA_LINUX
+    | AMAZON_LINUX_2023
 
   let str_to_t =
-    [ "DEBIAN", DEBIAN
+    [ "AMAZON_LINUX_2023", AMAZON_LINUX_2023
+    ; "ALMA_LINUX", ALMA_LINUX
+    ; "ROCKY_LINUX", ROCKY_LINUX
+    ; "RASPBIAN", RASPBIAN
+    ; "MACOS", MACOS
+    ; "DEBIAN", DEBIAN
     ; "ORACLE_LINUX", ORACLE_LINUX
     ; "CENTOS", CENTOS
     ; "SUSE", SUSE
     ; "REDHAT_ENTERPRISE_LINUX", REDHAT_ENTERPRISE_LINUX
     ; "UBUNTU", UBUNTU
+    ; "AMAZON_LINUX_2022", AMAZON_LINUX_2022
     ; "AMAZON_LINUX_2", AMAZON_LINUX_2
     ; "AMAZON_LINUX", AMAZON_LINUX
     ; "WINDOWS", WINDOWS
     ]
 
   let t_to_str =
-    [ DEBIAN, "DEBIAN"
+    [ AMAZON_LINUX_2023, "AMAZON_LINUX_2023"
+    ; ALMA_LINUX, "ALMA_LINUX"
+    ; ROCKY_LINUX, "ROCKY_LINUX"
+    ; RASPBIAN, "RASPBIAN"
+    ; MACOS, "MACOS"
+    ; DEBIAN, "DEBIAN"
     ; ORACLE_LINUX, "ORACLE_LINUX"
     ; CENTOS, "CENTOS"
     ; SUSE, "SUSE"
     ; REDHAT_ENTERPRISE_LINUX, "REDHAT_ENTERPRISE_LINUX"
     ; UBUNTU, "UBUNTU"
+    ; AMAZON_LINUX_2022, "AMAZON_LINUX_2022"
     ; AMAZON_LINUX_2, "AMAZON_LINUX_2"
     ; AMAZON_LINUX, "AMAZON_LINUX"
     ; WINDOWS, "WINDOWS"
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -111,7 +147,6 @@ module OperatingSystem = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -288,9 +323,7 @@ module PatchGroupPatchBaselineMappingList = struct
       (List.map PatchGroupPatchBaselineMapping.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list PatchGroupPatchBaselineMapping.to_query v
-
   let to_json v = `List (List.map PatchGroupPatchBaselineMapping.to_json v)
-
   let of_json j = Aws.Json.to_list PatchGroupPatchBaselineMapping.of_json j
 end
 
@@ -437,10 +470,39 @@ module ParameterValueList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
+end
+
+module GetExecutionPreviewRequest = struct
+  type t = { execution_preview_id : String.t }
+
+  let make ~execution_preview_id () = { execution_preview_id }
+
+  let parse xml =
+    Some
+      { execution_preview_id =
+          Aws.Xml.required
+            "ExecutionPreviewId"
+            (Aws.Util.option_bind (Aws.Xml.member "ExecutionPreviewId" xml) String.parse)
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Some
+             (Aws.Query.Pair ("ExecutionPreviewId", String.to_query v.execution_preview_id))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Some ("ExecutionPreviewId", String.to_json v.execution_preview_id) ])
+
+  let of_json j =
+    { execution_preview_id =
+        String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "ExecutionPreviewId"))
+    }
 end
 
 module CommandInvocationStatus = struct
@@ -477,9 +539,7 @@ module CommandInvocationStatus = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -489,7 +549,6 @@ module CommandInvocationStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -749,13 +808,9 @@ module ParametersFilterKey = struct
     | KeyId
 
   let str_to_t = [ "KeyId", KeyId; "Type", Type; "Name", Name ]
-
   let t_to_str = [ KeyId, "KeyId"; Type, "Type"; Name, "Name" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -765,7 +820,6 @@ module ParametersFilterKey = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -803,9 +857,7 @@ module MaintenanceWindowExecutionStatus = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -815,8 +867,38 @@ module MaintenanceWindowExecutionStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
+end
+
+module StartExecutionPreviewResponse = struct
+  type t = { execution_preview_id : String.t option }
+
+  let make ?execution_preview_id () = { execution_preview_id }
+
+  let parse xml =
+    Some
+      { execution_preview_id =
+          Aws.Util.option_bind (Aws.Xml.member "ExecutionPreviewId" xml) String.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.execution_preview_id (fun f ->
+               Aws.Query.Pair ("ExecutionPreviewId", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.execution_preview_id (fun f ->
+               "ExecutionPreviewId", String.to_json f)
+         ])
+
+  let of_json j =
+    { execution_preview_id =
+        Aws.Util.option_map (Aws.Json.lookup j "ExecutionPreviewId") String.of_json
+    }
 end
 
 module InvalidDocumentContent = struct
@@ -867,6 +949,40 @@ module InvalidAssociation = struct
     { message = Aws.Util.option_map (Aws.Json.lookup j "Message") String.of_json }
 end
 
+module RegionList = struct
+  type t = String.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
+
+  let to_query v = Aws.Query.to_query_list String.to_query v
+  let to_json v = `List (List.map String.to_json v)
+  let of_json j = Aws.Json.to_list String.of_json j
+end
+
+module AutomationSubtype = struct
+  type t =
+    | ChangeRequest
+    | AccessRequest
+
+  let str_to_t = [ "AccessRequest", AccessRequest; "ChangeRequest", ChangeRequest ]
+  let t_to_str = [ AccessRequest, "AccessRequest"; ChangeRequest, "ChangeRequest" ]
+  let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
+  let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
+  let make v () = v
+
+  let parse xml =
+    Aws.Util.option_bind (String.parse xml) (fun s -> Aws.Util.list_find str_to_t s)
+
+  let to_query v =
+    Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
+  let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
+end
+
 module AttachmentsSourceValues = struct
   type t = String.t list
 
@@ -876,9 +992,7 @@ module AttachmentsSourceValues = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -901,9 +1015,7 @@ module AttachmentsSourceKey = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -913,7 +1025,6 @@ module AttachmentsSourceKey = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -975,9 +1086,7 @@ module AttachmentsSourceList = struct
     Aws.Util.option_all (List.map AttachmentsSource.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list AttachmentsSource.to_query v
-
   let to_json v = `List (List.map AttachmentsSource.to_json v)
-
   let of_json j = Aws.Json.to_list AttachmentsSource.of_json j
 end
 
@@ -985,13 +1094,9 @@ module InvalidOutputLocation = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -1004,23 +1109,27 @@ module DocumentKeyValuesFilterValues = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
+end
+
+module DeleteResourcePolicyResponse = struct
+  type t = unit
+
+  let make () = ()
+  let parse xml = Some ()
+  let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
+  let to_json v = `Assoc (Aws.Util.list_filter_opt [])
+  let of_json j = ()
 end
 
 module AttachmentHashType = struct
   type t = Sha256
 
   let str_to_t = [ "Sha256", Sha256 ]
-
   let t_to_str = [ Sha256, "Sha256" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -1030,7 +1139,6 @@ module AttachmentHashType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -1098,9 +1206,7 @@ module ParametersFilterValueList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -1158,9 +1264,7 @@ module ParametersFilterList = struct
     Aws.Util.option_all (List.map ParametersFilter.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list ParametersFilter.to_query v
-
   let to_json v = `List (List.map ParametersFilter.to_json v)
-
   let of_json j = Aws.Json.to_list ParametersFilter.of_json j
 end
 
@@ -1173,9 +1277,7 @@ module ParameterStringFilterValueList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -1241,9 +1343,7 @@ module ParameterStringFilterList = struct
       (List.map ParameterStringFilter.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list ParameterStringFilter.to_query v
-
   let to_json v = `List (List.map ParameterStringFilter.to_json v)
-
   let of_json j = Aws.Json.to_list ParameterStringFilter.of_json j
 end
 
@@ -1253,10 +1353,11 @@ module DescribeParametersRequest = struct
     ; parameter_filters : ParameterStringFilterList.t
     ; max_results : Integer.t option
     ; next_token : String.t option
+    ; shared : Boolean.t option
     }
 
-  let make ?(filters = []) ?(parameter_filters = []) ?max_results ?next_token () =
-    { filters; parameter_filters; max_results; next_token }
+  let make ?(filters = []) ?(parameter_filters = []) ?max_results ?next_token ?shared () =
+    { filters; parameter_filters; max_results; next_token; shared }
 
   let parse xml =
     Some
@@ -1274,12 +1375,15 @@ module DescribeParametersRequest = struct
                ParameterStringFilterList.parse)
       ; max_results = Aws.Util.option_bind (Aws.Xml.member "MaxResults" xml) Integer.parse
       ; next_token = Aws.Util.option_bind (Aws.Xml.member "NextToken" xml) String.parse
+      ; shared = Aws.Util.option_bind (Aws.Xml.member "Shared" xml) Boolean.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.next_token (fun f ->
+         [ Aws.Util.option_map v.shared (fun f ->
+               Aws.Query.Pair ("Shared", Boolean.to_query f))
+         ; Aws.Util.option_map v.next_token (fun f ->
                Aws.Query.Pair ("NextToken", String.to_query f))
          ; Aws.Util.option_map v.max_results (fun f ->
                Aws.Query.Pair ("MaxResults", Integer.to_query f))
@@ -1294,7 +1398,8 @@ module DescribeParametersRequest = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.next_token (fun f -> "NextToken", String.to_json f)
+         [ Aws.Util.option_map v.shared (fun f -> "Shared", Boolean.to_json f)
+         ; Aws.Util.option_map v.next_token (fun f -> "NextToken", String.to_json f)
          ; Aws.Util.option_map v.max_results (fun f -> "MaxResults", Integer.to_json f)
          ; Some ("ParameterFilters", ParameterStringFilterList.to_json v.parameter_filters)
          ; Some ("Filters", ParametersFilterList.to_json v.filters)
@@ -1309,6 +1414,7 @@ module DescribeParametersRequest = struct
           (Aws.Util.of_option_exn (Aws.Json.lookup j "ParameterFilters"))
     ; max_results = Aws.Util.option_map (Aws.Json.lookup j "MaxResults") Integer.of_json
     ; next_token = Aws.Util.option_map (Aws.Json.lookup j "NextToken") String.of_json
+    ; shared = Aws.Util.option_map (Aws.Json.lookup j "Shared") Boolean.of_json
     }
 end
 
@@ -1322,9 +1428,7 @@ module InventoryDeletionSummaryItems = struct
       (List.map InventoryDeletionSummaryItem.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list InventoryDeletionSummaryItem.to_query v
-
   let to_json v = `List (List.map InventoryDeletionSummaryItem.to_json v)
-
   let of_json j = Aws.Json.to_list InventoryDeletionSummaryItem.of_json j
 end
 
@@ -1389,13 +1493,9 @@ module InventoryDeletionStatus = struct
     | Complete
 
   let str_to_t = [ "Complete", Complete; "InProgress", InProgress ]
-
   let t_to_str = [ Complete, "Complete"; InProgress, "InProgress" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -1405,7 +1505,6 @@ module InventoryDeletionStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -1524,9 +1623,7 @@ module InventoryDeletionsList = struct
       (List.map InventoryDeletionStatusItem.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list InventoryDeletionStatusItem.to_query v
-
   let to_json v = `List (List.map InventoryDeletionStatusItem.to_json v)
-
   let of_json j = Aws.Json.to_list InventoryDeletionStatusItem.of_json j
 end
 
@@ -1560,13 +1657,9 @@ module DocumentParameterType = struct
     | StringList
 
   let str_to_t = [ "StringList", StringList; "String", String ]
-
   let t_to_str = [ StringList, "StringList"; String, "String" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -1576,7 +1669,6 @@ module DocumentParameterType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -1584,14 +1676,15 @@ module NormalStringMap = struct
   type t = (String.t, String.t) Hashtbl.t
 
   let make elems () = elems
-
   let parse xml = None
-
   let to_query v = Aws.Query.to_query_hashtbl String.to_string String.to_query v
 
   let to_json v =
     `Assoc
-      (Hashtbl.fold (fun k v acc -> (String.to_string k, String.to_json v) :: acc) v [])
+      (Hashtbl.fold
+         (fun k -> fun v -> fun acc -> (String.to_string k, String.to_json v) :: acc)
+         v
+         [])
 
   let of_json j = Aws.Json.to_hashtbl String.of_string String.of_json j
 end
@@ -1605,9 +1698,7 @@ module Targets = struct
     Aws.Util.option_all (List.map Target.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list Target.to_query v
-
   let to_json v = `List (List.map Target.to_json v)
-
   let of_json j = Aws.Json.to_list Target.of_json j
 end
 
@@ -1712,9 +1803,7 @@ module ComplianceResourceIdList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -1731,9 +1820,7 @@ module ParameterType = struct
     [ SecureString, "SecureString"; StringList, "StringList"; String, "String" ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -1743,7 +1830,6 @@ module ParameterType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -1766,9 +1852,7 @@ module ParameterTier = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -1778,7 +1862,6 @@ module ParameterTier = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -1837,9 +1920,7 @@ module ParameterPolicyList = struct
       (List.map ParameterInlinePolicy.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list ParameterInlinePolicy.to_query v
-
   let to_json v = `List (List.map ParameterInlinePolicy.to_json v)
-
   let of_json j = Aws.Json.to_list ParameterInlinePolicy.of_json j
 end
 
@@ -1852,9 +1933,7 @@ module ParameterLabelList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -2016,10 +2095,43 @@ module ParameterHistoryList = struct
     Aws.Util.option_all (List.map ParameterHistory.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list ParameterHistory.to_query v
-
   let to_json v = `List (List.map ParameterHistory.to_json v)
-
   let of_json j = Aws.Json.to_list ParameterHistory.of_json j
+end
+
+module ReviewStatus = struct
+  type t =
+    | APPROVED
+    | NOT_REVIEWED
+    | PENDING
+    | REJECTED
+
+  let str_to_t =
+    [ "REJECTED", REJECTED
+    ; "PENDING", PENDING
+    ; "NOT_REVIEWED", NOT_REVIEWED
+    ; "APPROVED", APPROVED
+    ]
+
+  let t_to_str =
+    [ REJECTED, "REJECTED"
+    ; PENDING, "PENDING"
+    ; NOT_REVIEWED, "NOT_REVIEWED"
+    ; APPROVED, "APPROVED"
+    ]
+
+  let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
+  let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
+  let make v () = v
+
+  let parse xml =
+    Aws.Util.option_bind (String.parse xml) (fun s -> Aws.Util.list_find str_to_t s)
+
+  let to_query v =
+    Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
+  let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
 module DocumentStatus = struct
@@ -2047,9 +2159,7 @@ module DocumentStatus = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -2059,7 +2169,6 @@ module DocumentStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -2070,13 +2179,9 @@ module DocumentFormat = struct
     | TEXT
 
   let str_to_t = [ "TEXT", TEXT; "JSON", JSON; "YAML", YAML ]
-
   let t_to_str = [ TEXT, "TEXT"; JSON, "JSON"; YAML, "YAML" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -2086,13 +2191,13 @@ module DocumentFormat = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
 module DocumentVersionInfo = struct
   type t =
     { name : String.t option
+    ; display_name : String.t option
     ; document_version : String.t option
     ; version_name : String.t option
     ; created_date : DateTime.t option
@@ -2100,10 +2205,12 @@ module DocumentVersionInfo = struct
     ; document_format : DocumentFormat.t option
     ; status : DocumentStatus.t option
     ; status_information : String.t option
+    ; review_status : ReviewStatus.t option
     }
 
   let make
       ?name
+      ?display_name
       ?document_version
       ?version_name
       ?created_date
@@ -2111,8 +2218,10 @@ module DocumentVersionInfo = struct
       ?document_format
       ?status
       ?status_information
+      ?review_status
       () =
     { name
+    ; display_name
     ; document_version
     ; version_name
     ; created_date
@@ -2120,11 +2229,14 @@ module DocumentVersionInfo = struct
     ; document_format
     ; status
     ; status_information
+    ; review_status
     }
 
   let parse xml =
     Some
       { name = Aws.Util.option_bind (Aws.Xml.member "Name" xml) String.parse
+      ; display_name =
+          Aws.Util.option_bind (Aws.Xml.member "DisplayName" xml) String.parse
       ; document_version =
           Aws.Util.option_bind (Aws.Xml.member "DocumentVersion" xml) String.parse
       ; version_name =
@@ -2138,12 +2250,16 @@ module DocumentVersionInfo = struct
       ; status = Aws.Util.option_bind (Aws.Xml.member "Status" xml) DocumentStatus.parse
       ; status_information =
           Aws.Util.option_bind (Aws.Xml.member "StatusInformation" xml) String.parse
+      ; review_status =
+          Aws.Util.option_bind (Aws.Xml.member "ReviewStatus" xml) ReviewStatus.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.status_information (fun f ->
+         [ Aws.Util.option_map v.review_status (fun f ->
+               Aws.Query.Pair ("ReviewStatus", ReviewStatus.to_query f))
+         ; Aws.Util.option_map v.status_information (fun f ->
                Aws.Query.Pair ("StatusInformation", String.to_query f))
          ; Aws.Util.option_map v.status (fun f ->
                Aws.Query.Pair ("Status", DocumentStatus.to_query f))
@@ -2157,6 +2273,8 @@ module DocumentVersionInfo = struct
                Aws.Query.Pair ("VersionName", String.to_query f))
          ; Aws.Util.option_map v.document_version (fun f ->
                Aws.Query.Pair ("DocumentVersion", String.to_query f))
+         ; Aws.Util.option_map v.display_name (fun f ->
+               Aws.Query.Pair ("DisplayName", String.to_query f))
          ; Aws.Util.option_map v.name (fun f ->
                Aws.Query.Pair ("Name", String.to_query f))
          ])
@@ -2164,7 +2282,9 @@ module DocumentVersionInfo = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.status_information (fun f ->
+         [ Aws.Util.option_map v.review_status (fun f ->
+               "ReviewStatus", ReviewStatus.to_json f)
+         ; Aws.Util.option_map v.status_information (fun f ->
                "StatusInformation", String.to_json f)
          ; Aws.Util.option_map v.status (fun f -> "Status", DocumentStatus.to_json f)
          ; Aws.Util.option_map v.document_format (fun f ->
@@ -2175,11 +2295,13 @@ module DocumentVersionInfo = struct
          ; Aws.Util.option_map v.version_name (fun f -> "VersionName", String.to_json f)
          ; Aws.Util.option_map v.document_version (fun f ->
                "DocumentVersion", String.to_json f)
+         ; Aws.Util.option_map v.display_name (fun f -> "DisplayName", String.to_json f)
          ; Aws.Util.option_map v.name (fun f -> "Name", String.to_json f)
          ])
 
   let of_json j =
     { name = Aws.Util.option_map (Aws.Json.lookup j "Name") String.of_json
+    ; display_name = Aws.Util.option_map (Aws.Json.lookup j "DisplayName") String.of_json
     ; document_version =
         Aws.Util.option_map (Aws.Json.lookup j "DocumentVersion") String.of_json
     ; version_name = Aws.Util.option_map (Aws.Json.lookup j "VersionName") String.of_json
@@ -2192,6 +2314,8 @@ module DocumentVersionInfo = struct
     ; status = Aws.Util.option_map (Aws.Json.lookup j "Status") DocumentStatus.of_json
     ; status_information =
         Aws.Util.option_map (Aws.Json.lookup j "StatusInformation") String.of_json
+    ; review_status =
+        Aws.Util.option_map (Aws.Json.lookup j "ReviewStatus") ReviewStatus.of_json
     }
 end
 
@@ -2205,9 +2329,31 @@ module AutomationExecutionStatus = struct
     | Cancelling
     | Cancelled
     | Failed
+    | PendingApproval
+    | Approved
+    | Rejected
+    | Scheduled
+    | RunbookInProgress
+    | PendingChangeCalendarOverride
+    | ChangeCalendarOverrideApproved
+    | ChangeCalendarOverrideRejected
+    | CompletedWithSuccess
+    | CompletedWithFailure
+    | Exited
 
   let str_to_t =
-    [ "Failed", Failed
+    [ "Exited", Exited
+    ; "CompletedWithFailure", CompletedWithFailure
+    ; "CompletedWithSuccess", CompletedWithSuccess
+    ; "ChangeCalendarOverrideRejected", ChangeCalendarOverrideRejected
+    ; "ChangeCalendarOverrideApproved", ChangeCalendarOverrideApproved
+    ; "PendingChangeCalendarOverride", PendingChangeCalendarOverride
+    ; "RunbookInProgress", RunbookInProgress
+    ; "Scheduled", Scheduled
+    ; "Rejected", Rejected
+    ; "Approved", Approved
+    ; "PendingApproval", PendingApproval
+    ; "Failed", Failed
     ; "Cancelled", Cancelled
     ; "Cancelling", Cancelling
     ; "TimedOut", TimedOut
@@ -2218,7 +2364,18 @@ module AutomationExecutionStatus = struct
     ]
 
   let t_to_str =
-    [ Failed, "Failed"
+    [ Exited, "Exited"
+    ; CompletedWithFailure, "CompletedWithFailure"
+    ; CompletedWithSuccess, "CompletedWithSuccess"
+    ; ChangeCalendarOverrideRejected, "ChangeCalendarOverrideRejected"
+    ; ChangeCalendarOverrideApproved, "ChangeCalendarOverrideApproved"
+    ; PendingChangeCalendarOverride, "PendingChangeCalendarOverride"
+    ; RunbookInProgress, "RunbookInProgress"
+    ; Scheduled, "Scheduled"
+    ; Rejected, "Rejected"
+    ; Approved, "Approved"
+    ; PendingApproval, "PendingApproval"
+    ; Failed, "Failed"
     ; Cancelled, "Cancelled"
     ; Cancelling, "Cancelling"
     ; TimedOut, "TimedOut"
@@ -2229,9 +2386,7 @@ module AutomationExecutionStatus = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -2241,7 +2396,6 @@ module AutomationExecutionStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -2254,9 +2408,7 @@ module PatchSourceProductList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -2406,9 +2558,7 @@ module MaintenanceWindowExecutionList = struct
       (List.map MaintenanceWindowExecution.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list MaintenanceWindowExecution.to_query v
-
   let to_json v = `List (List.map MaintenanceWindowExecution.to_json v)
-
   let of_json j = Aws.Json.to_list MaintenanceWindowExecution.of_json j
 end
 
@@ -2459,6 +2609,91 @@ module DescribeMaintenanceWindowExecutionsResult = struct
     }
 end
 
+module DocumentMetadataEnum = struct
+  type t = DocumentReviews
+
+  let str_to_t = [ "DocumentReviews", DocumentReviews ]
+  let t_to_str = [ DocumentReviews, "DocumentReviews" ]
+  let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
+  let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
+  let make v () = v
+
+  let parse xml =
+    Aws.Util.option_bind (String.parse xml) (fun s -> Aws.Util.list_find str_to_t s)
+
+  let to_query v =
+    Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
+  let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
+end
+
+module ListDocumentMetadataHistoryRequest = struct
+  type t =
+    { name : String.t
+    ; document_version : String.t option
+    ; metadata : DocumentMetadataEnum.t
+    ; next_token : String.t option
+    ; max_results : Integer.t option
+    }
+
+  let make ~name ?document_version ~metadata ?next_token ?max_results () =
+    { name; document_version; metadata; next_token; max_results }
+
+  let parse xml =
+    Some
+      { name =
+          Aws.Xml.required
+            "Name"
+            (Aws.Util.option_bind (Aws.Xml.member "Name" xml) String.parse)
+      ; document_version =
+          Aws.Util.option_bind (Aws.Xml.member "DocumentVersion" xml) String.parse
+      ; metadata =
+          Aws.Xml.required
+            "Metadata"
+            (Aws.Util.option_bind
+               (Aws.Xml.member "Metadata" xml)
+               DocumentMetadataEnum.parse)
+      ; next_token = Aws.Util.option_bind (Aws.Xml.member "NextToken" xml) String.parse
+      ; max_results = Aws.Util.option_bind (Aws.Xml.member "MaxResults" xml) Integer.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.max_results (fun f ->
+               Aws.Query.Pair ("MaxResults", Integer.to_query f))
+         ; Aws.Util.option_map v.next_token (fun f ->
+               Aws.Query.Pair ("NextToken", String.to_query f))
+         ; Some (Aws.Query.Pair ("Metadata", DocumentMetadataEnum.to_query v.metadata))
+         ; Aws.Util.option_map v.document_version (fun f ->
+               Aws.Query.Pair ("DocumentVersion", String.to_query f))
+         ; Some (Aws.Query.Pair ("Name", String.to_query v.name))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.max_results (fun f -> "MaxResults", Integer.to_json f)
+         ; Aws.Util.option_map v.next_token (fun f -> "NextToken", String.to_json f)
+         ; Some ("Metadata", DocumentMetadataEnum.to_json v.metadata)
+         ; Aws.Util.option_map v.document_version (fun f ->
+               "DocumentVersion", String.to_json f)
+         ; Some ("Name", String.to_json v.name)
+         ])
+
+  let of_json j =
+    { name = String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Name"))
+    ; document_version =
+        Aws.Util.option_map (Aws.Json.lookup j "DocumentVersion") String.of_json
+    ; metadata =
+        DocumentMetadataEnum.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "Metadata"))
+    ; next_token = Aws.Util.option_map (Aws.Json.lookup j "NextToken") String.of_json
+    ; max_results = Aws.Util.option_map (Aws.Json.lookup j "MaxResults") Integer.of_json
+    }
+end
+
 module InventoryFilterValueList = struct
   type t = String.t list
 
@@ -2468,9 +2703,7 @@ module InventoryFilterValueList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -2645,13 +2878,9 @@ module MaintenanceWindowResourceType = struct
     | RESOURCE_GROUP
 
   let str_to_t = [ "RESOURCE_GROUP", RESOURCE_GROUP; "INSTANCE", INSTANCE ]
-
   let t_to_str = [ RESOURCE_GROUP, "RESOURCE_GROUP"; INSTANCE, "INSTANCE" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -2661,7 +2890,6 @@ module MaintenanceWindowResourceType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -2790,6 +3018,44 @@ module ProgressCounters = struct
     }
 end
 
+module RegistrationMetadataItem = struct
+  type t =
+    { key : String.t
+    ; value : String.t
+    }
+
+  let make ~key ~value () = { key; value }
+
+  let parse xml =
+    Some
+      { key =
+          Aws.Xml.required
+            "Key"
+            (Aws.Util.option_bind (Aws.Xml.member "Key" xml) String.parse)
+      ; value =
+          Aws.Xml.required
+            "Value"
+            (Aws.Util.option_bind (Aws.Xml.member "Value" xml) String.parse)
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Some (Aws.Query.Pair ("Value", String.to_query v.value))
+         ; Some (Aws.Query.Pair ("Key", String.to_query v.key))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Some ("Value", String.to_json v.value); Some ("Key", String.to_json v.key) ])
+
+  let of_json j =
+    { key = String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Key"))
+    ; value = String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Value"))
+    }
+end
+
 module InstancePatchStateOperatorType = struct
   type t =
     | Equal
@@ -2812,9 +3078,7 @@ module InstancePatchStateOperatorType = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -2824,7 +3088,6 @@ module InstancePatchStateOperatorType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -2837,9 +3100,7 @@ module InstancePatchStateFilterValues = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -2911,23 +3172,19 @@ module InstancePatchStateFilterList = struct
       (List.map InstancePatchStateFilter.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list InstancePatchStateFilter.to_query v
-
   let to_json v = `List (List.map InstancePatchStateFilter.to_json v)
-
   let of_json j = Aws.Json.to_list InstancePatchStateFilter.of_json j
 end
 
-module ResourceDataSyncS3Format = struct
-  type t = JsonSerDe
+module ExternalAlarmState = struct
+  type t =
+    | UNKNOWN
+    | ALARM
 
-  let str_to_t = [ "JsonSerDe", JsonSerDe ]
-
-  let t_to_str = [ JsonSerDe, "JsonSerDe" ]
-
+  let str_to_t = [ "ALARM", ALARM; "UNKNOWN", UNKNOWN ]
+  let t_to_str = [ ALARM, "ALARM"; UNKNOWN, "UNKNOWN" ]
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -2937,7 +3194,66 @@ module ResourceDataSyncS3Format = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
+  let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
+end
 
+module AlarmStateInformation = struct
+  type t =
+    { name : String.t
+    ; state : ExternalAlarmState.t
+    }
+
+  let make ~name ~state () = { name; state }
+
+  let parse xml =
+    Some
+      { name =
+          Aws.Xml.required
+            "Name"
+            (Aws.Util.option_bind (Aws.Xml.member "Name" xml) String.parse)
+      ; state =
+          Aws.Xml.required
+            "State"
+            (Aws.Util.option_bind (Aws.Xml.member "State" xml) ExternalAlarmState.parse)
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Some (Aws.Query.Pair ("State", ExternalAlarmState.to_query v.state))
+         ; Some (Aws.Query.Pair ("Name", String.to_query v.name))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Some ("State", ExternalAlarmState.to_json v.state)
+         ; Some ("Name", String.to_json v.name)
+         ])
+
+  let of_json j =
+    { name = String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Name"))
+    ; state =
+        ExternalAlarmState.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "State"))
+    }
+end
+
+module ResourceDataSyncS3Format = struct
+  type t = JsonSerDe
+
+  let str_to_t = [ "JsonSerDe", JsonSerDe ]
+  let t_to_str = [ JsonSerDe, "JsonSerDe" ]
+  let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
+  let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
+  let make v () = v
+
+  let parse xml =
+    Aws.Util.option_bind (String.parse xml) (fun s -> Aws.Util.list_find str_to_t s)
+
+  let to_query v =
+    Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -3269,9 +3585,7 @@ module ParameterNameList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -3387,9 +3701,7 @@ module ParameterList = struct
     Aws.Util.option_all (List.map Parameter.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list Parameter.to_query v
-
   let to_json v = `List (List.map Parameter.to_json v)
-
   let of_json j = Aws.Json.to_list Parameter.of_json j
 end
 
@@ -3496,13 +3808,9 @@ module AssociationFilterOperatorType = struct
     | GREATER_THAN
 
   let str_to_t = [ "GREATER_THAN", GREATER_THAN; "LESS_THAN", LESS_THAN; "EQUAL", EQUAL ]
-
   let t_to_str = [ GREATER_THAN, "GREATER_THAN"; LESS_THAN, "LESS_THAN"; EQUAL, "EQUAL" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -3512,7 +3820,6 @@ module AssociationFilterOperatorType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -3529,9 +3836,7 @@ module AssociationExecutionFilterKey = struct
     [ CreatedTime, "CreatedTime"; Status, "Status"; ExecutionId, "ExecutionId" ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -3541,7 +3846,6 @@ module AssociationExecutionFilterKey = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -3611,10 +3915,529 @@ module AssociationExecutionFilterList = struct
       (List.map AssociationExecutionFilter.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list AssociationExecutionFilter.to_query v
-
   let to_json v = `List (List.map AssociationExecutionFilter.to_json v)
-
   let of_json j = Aws.Json.to_list AssociationExecutionFilter.of_json j
+end
+
+module SourceType = struct
+  type t =
+    | AWS__EC2__Instance
+    | AWS__IoT__Thing
+    | AWS__SSM__ManagedInstance
+
+  let str_to_t =
+    [ "AWS::SSM::ManagedInstance", AWS__SSM__ManagedInstance
+    ; "AWS::IoT::Thing", AWS__IoT__Thing
+    ; "AWS::EC2::Instance", AWS__EC2__Instance
+    ]
+
+  let t_to_str =
+    [ AWS__SSM__ManagedInstance, "AWS::SSM::ManagedInstance"
+    ; AWS__IoT__Thing, "AWS::IoT::Thing"
+    ; AWS__EC2__Instance, "AWS::EC2::Instance"
+    ]
+
+  let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
+  let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
+  let make v () = v
+
+  let parse xml =
+    Aws.Util.option_bind (String.parse xml) (fun s -> Aws.Util.list_find str_to_t s)
+
+  let to_query v =
+    Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
+  let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
+end
+
+module PlatformType = struct
+  type t =
+    | Windows
+    | Linux
+    | MacOS
+
+  let str_to_t = [ "MacOS", MacOS; "Linux", Linux; "Windows", Windows ]
+  let t_to_str = [ MacOS, "MacOS"; Linux, "Linux"; Windows, "Windows" ]
+  let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
+  let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
+  let make v () = v
+
+  let parse xml =
+    Aws.Util.option_bind (String.parse xml) (fun s -> Aws.Util.list_find str_to_t s)
+
+  let to_query v =
+    Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
+  let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
+end
+
+module PingStatus = struct
+  type t =
+    | Online
+    | ConnectionLost
+    | Inactive
+
+  let str_to_t =
+    [ "Inactive", Inactive; "ConnectionLost", ConnectionLost; "Online", Online ]
+
+  let t_to_str =
+    [ Inactive, "Inactive"; ConnectionLost, "ConnectionLost"; Online, "Online" ]
+
+  let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
+  let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
+  let make v () = v
+
+  let parse xml =
+    Aws.Util.option_bind (String.parse xml) (fun s -> Aws.Util.list_find str_to_t s)
+
+  let to_query v =
+    Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
+  let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
+end
+
+module InstanceAssociationStatusAggregatedCount = struct
+  type t = (String.t, Integer.t) Hashtbl.t
+
+  let make elems () = elems
+  let parse xml = None
+  let to_query v = Aws.Query.to_query_hashtbl String.to_string Integer.to_query v
+
+  let to_json v =
+    `Assoc
+      (Hashtbl.fold
+         (fun k -> fun v -> fun acc -> (String.to_string k, Integer.to_json v) :: acc)
+         v
+         [])
+
+  let of_json j = Aws.Json.to_hashtbl String.of_string Integer.of_json j
+end
+
+module InstanceAggregatedAssociationOverview = struct
+  type t =
+    { detailed_status : String.t option
+    ; instance_association_status_aggregated_count :
+        InstanceAssociationStatusAggregatedCount.t option
+    }
+
+  let make ?detailed_status ?instance_association_status_aggregated_count () =
+    { detailed_status; instance_association_status_aggregated_count }
+
+  let parse xml =
+    Some
+      { detailed_status =
+          Aws.Util.option_bind (Aws.Xml.member "DetailedStatus" xml) String.parse
+      ; instance_association_status_aggregated_count =
+          Aws.Util.option_bind
+            (Aws.Xml.member "InstanceAssociationStatusAggregatedCount" xml)
+            InstanceAssociationStatusAggregatedCount.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.instance_association_status_aggregated_count (fun f ->
+               Aws.Query.Pair
+                 ( "InstanceAssociationStatusAggregatedCount"
+                 , InstanceAssociationStatusAggregatedCount.to_query f ))
+         ; Aws.Util.option_map v.detailed_status (fun f ->
+               Aws.Query.Pair ("DetailedStatus", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.instance_association_status_aggregated_count (fun f ->
+               ( "InstanceAssociationStatusAggregatedCount"
+               , InstanceAssociationStatusAggregatedCount.to_json f ))
+         ; Aws.Util.option_map v.detailed_status (fun f ->
+               "DetailedStatus", String.to_json f)
+         ])
+
+  let of_json j =
+    { detailed_status =
+        Aws.Util.option_map (Aws.Json.lookup j "DetailedStatus") String.of_json
+    ; instance_association_status_aggregated_count =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "InstanceAssociationStatusAggregatedCount")
+          InstanceAssociationStatusAggregatedCount.of_json
+    }
+end
+
+module InstanceProperty = struct
+  type t =
+    { name : String.t option
+    ; instance_id : String.t option
+    ; instance_type : String.t option
+    ; instance_role : String.t option
+    ; key_name : String.t option
+    ; instance_state : String.t option
+    ; architecture : String.t option
+    ; i_p_address : String.t option
+    ; launch_time : DateTime.t option
+    ; ping_status : PingStatus.t option
+    ; last_ping_date_time : DateTime.t option
+    ; agent_version : String.t option
+    ; platform_type : PlatformType.t option
+    ; platform_name : String.t option
+    ; platform_version : String.t option
+    ; activation_id : String.t option
+    ; iam_role : String.t option
+    ; registration_date : DateTime.t option
+    ; resource_type : String.t option
+    ; computer_name : String.t option
+    ; association_status : String.t option
+    ; last_association_execution_date : DateTime.t option
+    ; last_successful_association_execution_date : DateTime.t option
+    ; association_overview : InstanceAggregatedAssociationOverview.t option
+    ; source_id : String.t option
+    ; source_type : SourceType.t option
+    }
+
+  let make
+      ?name
+      ?instance_id
+      ?instance_type
+      ?instance_role
+      ?key_name
+      ?instance_state
+      ?architecture
+      ?i_p_address
+      ?launch_time
+      ?ping_status
+      ?last_ping_date_time
+      ?agent_version
+      ?platform_type
+      ?platform_name
+      ?platform_version
+      ?activation_id
+      ?iam_role
+      ?registration_date
+      ?resource_type
+      ?computer_name
+      ?association_status
+      ?last_association_execution_date
+      ?last_successful_association_execution_date
+      ?association_overview
+      ?source_id
+      ?source_type
+      () =
+    { name
+    ; instance_id
+    ; instance_type
+    ; instance_role
+    ; key_name
+    ; instance_state
+    ; architecture
+    ; i_p_address
+    ; launch_time
+    ; ping_status
+    ; last_ping_date_time
+    ; agent_version
+    ; platform_type
+    ; platform_name
+    ; platform_version
+    ; activation_id
+    ; iam_role
+    ; registration_date
+    ; resource_type
+    ; computer_name
+    ; association_status
+    ; last_association_execution_date
+    ; last_successful_association_execution_date
+    ; association_overview
+    ; source_id
+    ; source_type
+    }
+
+  let parse xml =
+    Some
+      { name = Aws.Util.option_bind (Aws.Xml.member "Name" xml) String.parse
+      ; instance_id = Aws.Util.option_bind (Aws.Xml.member "InstanceId" xml) String.parse
+      ; instance_type =
+          Aws.Util.option_bind (Aws.Xml.member "InstanceType" xml) String.parse
+      ; instance_role =
+          Aws.Util.option_bind (Aws.Xml.member "InstanceRole" xml) String.parse
+      ; key_name = Aws.Util.option_bind (Aws.Xml.member "KeyName" xml) String.parse
+      ; instance_state =
+          Aws.Util.option_bind (Aws.Xml.member "InstanceState" xml) String.parse
+      ; architecture =
+          Aws.Util.option_bind (Aws.Xml.member "Architecture" xml) String.parse
+      ; i_p_address = Aws.Util.option_bind (Aws.Xml.member "IPAddress" xml) String.parse
+      ; launch_time =
+          Aws.Util.option_bind (Aws.Xml.member "LaunchTime" xml) DateTime.parse
+      ; ping_status =
+          Aws.Util.option_bind (Aws.Xml.member "PingStatus" xml) PingStatus.parse
+      ; last_ping_date_time =
+          Aws.Util.option_bind (Aws.Xml.member "LastPingDateTime" xml) DateTime.parse
+      ; agent_version =
+          Aws.Util.option_bind (Aws.Xml.member "AgentVersion" xml) String.parse
+      ; platform_type =
+          Aws.Util.option_bind (Aws.Xml.member "PlatformType" xml) PlatformType.parse
+      ; platform_name =
+          Aws.Util.option_bind (Aws.Xml.member "PlatformName" xml) String.parse
+      ; platform_version =
+          Aws.Util.option_bind (Aws.Xml.member "PlatformVersion" xml) String.parse
+      ; activation_id =
+          Aws.Util.option_bind (Aws.Xml.member "ActivationId" xml) String.parse
+      ; iam_role = Aws.Util.option_bind (Aws.Xml.member "IamRole" xml) String.parse
+      ; registration_date =
+          Aws.Util.option_bind (Aws.Xml.member "RegistrationDate" xml) DateTime.parse
+      ; resource_type =
+          Aws.Util.option_bind (Aws.Xml.member "ResourceType" xml) String.parse
+      ; computer_name =
+          Aws.Util.option_bind (Aws.Xml.member "ComputerName" xml) String.parse
+      ; association_status =
+          Aws.Util.option_bind (Aws.Xml.member "AssociationStatus" xml) String.parse
+      ; last_association_execution_date =
+          Aws.Util.option_bind
+            (Aws.Xml.member "LastAssociationExecutionDate" xml)
+            DateTime.parse
+      ; last_successful_association_execution_date =
+          Aws.Util.option_bind
+            (Aws.Xml.member "LastSuccessfulAssociationExecutionDate" xml)
+            DateTime.parse
+      ; association_overview =
+          Aws.Util.option_bind
+            (Aws.Xml.member "AssociationOverview" xml)
+            InstanceAggregatedAssociationOverview.parse
+      ; source_id = Aws.Util.option_bind (Aws.Xml.member "SourceId" xml) String.parse
+      ; source_type =
+          Aws.Util.option_bind (Aws.Xml.member "SourceType" xml) SourceType.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.source_type (fun f ->
+               Aws.Query.Pair ("SourceType", SourceType.to_query f))
+         ; Aws.Util.option_map v.source_id (fun f ->
+               Aws.Query.Pair ("SourceId", String.to_query f))
+         ; Aws.Util.option_map v.association_overview (fun f ->
+               Aws.Query.Pair
+                 ("AssociationOverview", InstanceAggregatedAssociationOverview.to_query f))
+         ; Aws.Util.option_map v.last_successful_association_execution_date (fun f ->
+               Aws.Query.Pair
+                 ("LastSuccessfulAssociationExecutionDate", DateTime.to_query f))
+         ; Aws.Util.option_map v.last_association_execution_date (fun f ->
+               Aws.Query.Pair ("LastAssociationExecutionDate", DateTime.to_query f))
+         ; Aws.Util.option_map v.association_status (fun f ->
+               Aws.Query.Pair ("AssociationStatus", String.to_query f))
+         ; Aws.Util.option_map v.computer_name (fun f ->
+               Aws.Query.Pair ("ComputerName", String.to_query f))
+         ; Aws.Util.option_map v.resource_type (fun f ->
+               Aws.Query.Pair ("ResourceType", String.to_query f))
+         ; Aws.Util.option_map v.registration_date (fun f ->
+               Aws.Query.Pair ("RegistrationDate", DateTime.to_query f))
+         ; Aws.Util.option_map v.iam_role (fun f ->
+               Aws.Query.Pair ("IamRole", String.to_query f))
+         ; Aws.Util.option_map v.activation_id (fun f ->
+               Aws.Query.Pair ("ActivationId", String.to_query f))
+         ; Aws.Util.option_map v.platform_version (fun f ->
+               Aws.Query.Pair ("PlatformVersion", String.to_query f))
+         ; Aws.Util.option_map v.platform_name (fun f ->
+               Aws.Query.Pair ("PlatformName", String.to_query f))
+         ; Aws.Util.option_map v.platform_type (fun f ->
+               Aws.Query.Pair ("PlatformType", PlatformType.to_query f))
+         ; Aws.Util.option_map v.agent_version (fun f ->
+               Aws.Query.Pair ("AgentVersion", String.to_query f))
+         ; Aws.Util.option_map v.last_ping_date_time (fun f ->
+               Aws.Query.Pair ("LastPingDateTime", DateTime.to_query f))
+         ; Aws.Util.option_map v.ping_status (fun f ->
+               Aws.Query.Pair ("PingStatus", PingStatus.to_query f))
+         ; Aws.Util.option_map v.launch_time (fun f ->
+               Aws.Query.Pair ("LaunchTime", DateTime.to_query f))
+         ; Aws.Util.option_map v.i_p_address (fun f ->
+               Aws.Query.Pair ("IPAddress", String.to_query f))
+         ; Aws.Util.option_map v.architecture (fun f ->
+               Aws.Query.Pair ("Architecture", String.to_query f))
+         ; Aws.Util.option_map v.instance_state (fun f ->
+               Aws.Query.Pair ("InstanceState", String.to_query f))
+         ; Aws.Util.option_map v.key_name (fun f ->
+               Aws.Query.Pair ("KeyName", String.to_query f))
+         ; Aws.Util.option_map v.instance_role (fun f ->
+               Aws.Query.Pair ("InstanceRole", String.to_query f))
+         ; Aws.Util.option_map v.instance_type (fun f ->
+               Aws.Query.Pair ("InstanceType", String.to_query f))
+         ; Aws.Util.option_map v.instance_id (fun f ->
+               Aws.Query.Pair ("InstanceId", String.to_query f))
+         ; Aws.Util.option_map v.name (fun f ->
+               Aws.Query.Pair ("Name", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.source_type (fun f -> "SourceType", SourceType.to_json f)
+         ; Aws.Util.option_map v.source_id (fun f -> "SourceId", String.to_json f)
+         ; Aws.Util.option_map v.association_overview (fun f ->
+               "AssociationOverview", InstanceAggregatedAssociationOverview.to_json f)
+         ; Aws.Util.option_map v.last_successful_association_execution_date (fun f ->
+               "LastSuccessfulAssociationExecutionDate", DateTime.to_json f)
+         ; Aws.Util.option_map v.last_association_execution_date (fun f ->
+               "LastAssociationExecutionDate", DateTime.to_json f)
+         ; Aws.Util.option_map v.association_status (fun f ->
+               "AssociationStatus", String.to_json f)
+         ; Aws.Util.option_map v.computer_name (fun f -> "ComputerName", String.to_json f)
+         ; Aws.Util.option_map v.resource_type (fun f -> "ResourceType", String.to_json f)
+         ; Aws.Util.option_map v.registration_date (fun f ->
+               "RegistrationDate", DateTime.to_json f)
+         ; Aws.Util.option_map v.iam_role (fun f -> "IamRole", String.to_json f)
+         ; Aws.Util.option_map v.activation_id (fun f -> "ActivationId", String.to_json f)
+         ; Aws.Util.option_map v.platform_version (fun f ->
+               "PlatformVersion", String.to_json f)
+         ; Aws.Util.option_map v.platform_name (fun f -> "PlatformName", String.to_json f)
+         ; Aws.Util.option_map v.platform_type (fun f ->
+               "PlatformType", PlatformType.to_json f)
+         ; Aws.Util.option_map v.agent_version (fun f -> "AgentVersion", String.to_json f)
+         ; Aws.Util.option_map v.last_ping_date_time (fun f ->
+               "LastPingDateTime", DateTime.to_json f)
+         ; Aws.Util.option_map v.ping_status (fun f -> "PingStatus", PingStatus.to_json f)
+         ; Aws.Util.option_map v.launch_time (fun f -> "LaunchTime", DateTime.to_json f)
+         ; Aws.Util.option_map v.i_p_address (fun f -> "IPAddress", String.to_json f)
+         ; Aws.Util.option_map v.architecture (fun f -> "Architecture", String.to_json f)
+         ; Aws.Util.option_map v.instance_state (fun f ->
+               "InstanceState", String.to_json f)
+         ; Aws.Util.option_map v.key_name (fun f -> "KeyName", String.to_json f)
+         ; Aws.Util.option_map v.instance_role (fun f -> "InstanceRole", String.to_json f)
+         ; Aws.Util.option_map v.instance_type (fun f -> "InstanceType", String.to_json f)
+         ; Aws.Util.option_map v.instance_id (fun f -> "InstanceId", String.to_json f)
+         ; Aws.Util.option_map v.name (fun f -> "Name", String.to_json f)
+         ])
+
+  let of_json j =
+    { name = Aws.Util.option_map (Aws.Json.lookup j "Name") String.of_json
+    ; instance_id = Aws.Util.option_map (Aws.Json.lookup j "InstanceId") String.of_json
+    ; instance_type =
+        Aws.Util.option_map (Aws.Json.lookup j "InstanceType") String.of_json
+    ; instance_role =
+        Aws.Util.option_map (Aws.Json.lookup j "InstanceRole") String.of_json
+    ; key_name = Aws.Util.option_map (Aws.Json.lookup j "KeyName") String.of_json
+    ; instance_state =
+        Aws.Util.option_map (Aws.Json.lookup j "InstanceState") String.of_json
+    ; architecture = Aws.Util.option_map (Aws.Json.lookup j "Architecture") String.of_json
+    ; i_p_address = Aws.Util.option_map (Aws.Json.lookup j "IPAddress") String.of_json
+    ; launch_time = Aws.Util.option_map (Aws.Json.lookup j "LaunchTime") DateTime.of_json
+    ; ping_status =
+        Aws.Util.option_map (Aws.Json.lookup j "PingStatus") PingStatus.of_json
+    ; last_ping_date_time =
+        Aws.Util.option_map (Aws.Json.lookup j "LastPingDateTime") DateTime.of_json
+    ; agent_version =
+        Aws.Util.option_map (Aws.Json.lookup j "AgentVersion") String.of_json
+    ; platform_type =
+        Aws.Util.option_map (Aws.Json.lookup j "PlatformType") PlatformType.of_json
+    ; platform_name =
+        Aws.Util.option_map (Aws.Json.lookup j "PlatformName") String.of_json
+    ; platform_version =
+        Aws.Util.option_map (Aws.Json.lookup j "PlatformVersion") String.of_json
+    ; activation_id =
+        Aws.Util.option_map (Aws.Json.lookup j "ActivationId") String.of_json
+    ; iam_role = Aws.Util.option_map (Aws.Json.lookup j "IamRole") String.of_json
+    ; registration_date =
+        Aws.Util.option_map (Aws.Json.lookup j "RegistrationDate") DateTime.of_json
+    ; resource_type =
+        Aws.Util.option_map (Aws.Json.lookup j "ResourceType") String.of_json
+    ; computer_name =
+        Aws.Util.option_map (Aws.Json.lookup j "ComputerName") String.of_json
+    ; association_status =
+        Aws.Util.option_map (Aws.Json.lookup j "AssociationStatus") String.of_json
+    ; last_association_execution_date =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "LastAssociationExecutionDate")
+          DateTime.of_json
+    ; last_successful_association_execution_date =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "LastSuccessfulAssociationExecutionDate")
+          DateTime.of_json
+    ; association_overview =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "AssociationOverview")
+          InstanceAggregatedAssociationOverview.of_json
+    ; source_id = Aws.Util.option_map (Aws.Json.lookup j "SourceId") String.of_json
+    ; source_type =
+        Aws.Util.option_map (Aws.Json.lookup j "SourceType") SourceType.of_json
+    }
+end
+
+module InstanceProperties = struct
+  type t = InstanceProperty.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Aws.Util.option_all (List.map InstanceProperty.parse (Aws.Xml.members "member" xml))
+
+  let to_query v = Aws.Query.to_query_list InstanceProperty.to_query v
+  let to_json v = `List (List.map InstanceProperty.to_json v)
+  let of_json j = Aws.Json.to_list InstanceProperty.of_json j
+end
+
+module DescribeInstancePropertiesResult = struct
+  type t =
+    { instance_properties : InstanceProperties.t
+    ; next_token : String.t option
+    }
+
+  let make ?(instance_properties = []) ?next_token () =
+    { instance_properties; next_token }
+
+  let parse xml =
+    Some
+      { instance_properties =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "InstanceProperties" xml)
+               InstanceProperties.parse)
+      ; next_token = Aws.Util.option_bind (Aws.Xml.member "NextToken" xml) String.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.next_token (fun f ->
+               Aws.Query.Pair ("NextToken", String.to_query f))
+         ; Some
+             (Aws.Query.Pair
+                ( "InstanceProperties.member"
+                , InstanceProperties.to_query v.instance_properties ))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.next_token (fun f -> "NextToken", String.to_json f)
+         ; Some ("InstanceProperties", InstanceProperties.to_json v.instance_properties)
+         ])
+
+  let of_json j =
+    { instance_properties =
+        InstanceProperties.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "InstanceProperties"))
+    ; next_token = Aws.Util.option_map (Aws.Json.lookup j "NextToken") String.of_json
+    }
+end
+
+module DocumentReviewCommentType = struct
+  type t = Comment
+
+  let str_to_t = [ "Comment", Comment ]
+  let t_to_str = [ Comment, "Comment" ]
+  let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
+  let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
+  let make v () = v
+
+  let parse xml =
+    Aws.Util.option_bind (String.parse xml) (fun s -> Aws.Util.list_find str_to_t s)
+
+  let to_query v =
+    Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
+  let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
 module UnsupportedInventorySchemaVersionException = struct
@@ -3665,10 +4488,26 @@ module DoesNotExistException = struct
     { message = Aws.Util.option_map (Aws.Json.lookup j "Message") String.of_json }
 end
 
-module GetOpsItemRequest = struct
-  type t = { ops_item_id : String.t }
+module MetadataKeysToDeleteList = struct
+  type t = String.t list
 
-  let make ~ops_item_id () = { ops_item_id }
+  let make elems () = elems
+
+  let parse xml =
+    Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
+
+  let to_query v = Aws.Query.to_query_list String.to_query v
+  let to_json v = `List (List.map String.to_json v)
+  let of_json j = Aws.Json.to_list String.of_json j
+end
+
+module GetOpsItemRequest = struct
+  type t =
+    { ops_item_id : String.t
+    ; ops_item_arn : String.t option
+    }
+
+  let make ~ops_item_id ?ops_item_arn () = { ops_item_id; ops_item_arn }
 
   let parse xml =
     Some
@@ -3676,19 +4515,28 @@ module GetOpsItemRequest = struct
           Aws.Xml.required
             "OpsItemId"
             (Aws.Util.option_bind (Aws.Xml.member "OpsItemId" xml) String.parse)
+      ; ops_item_arn = Aws.Util.option_bind (Aws.Xml.member "OpsItemArn" xml) String.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Some (Aws.Query.Pair ("OpsItemId", String.to_query v.ops_item_id)) ])
+         [ Aws.Util.option_map v.ops_item_arn (fun f ->
+               Aws.Query.Pair ("OpsItemArn", String.to_query f))
+         ; Some (Aws.Query.Pair ("OpsItemId", String.to_query v.ops_item_id))
+         ])
 
   let to_json v =
-    `Assoc (Aws.Util.list_filter_opt [ Some ("OpsItemId", String.to_json v.ops_item_id) ])
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.ops_item_arn (fun f -> "OpsItemArn", String.to_json f)
+         ; Some ("OpsItemId", String.to_json v.ops_item_id)
+         ])
 
   let of_json j =
     { ops_item_id =
         String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "OpsItemId"))
+    ; ops_item_arn = Aws.Util.option_map (Aws.Json.lookup j "OpsItemArn") String.of_json
     }
 end
 
@@ -3701,10 +4549,100 @@ module Regions = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
+end
+
+module ExcludeAccounts = struct
+  type t = String.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
+
+  let to_query v = Aws.Query.to_query_list String.to_query v
+  let to_json v = `List (List.map String.to_json v)
+  let of_json j = Aws.Json.to_list String.of_json j
+end
+
+module Alarm = struct
+  type t = { name : String.t }
+
+  let make ~name () = { name }
+
+  let parse xml =
+    Some
+      { name =
+          Aws.Xml.required
+            "Name"
+            (Aws.Util.option_bind (Aws.Xml.member "Name" xml) String.parse)
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Some (Aws.Query.Pair ("Name", String.to_query v.name)) ])
+
+  let to_json v =
+    `Assoc (Aws.Util.list_filter_opt [ Some ("Name", String.to_json v.name) ])
+
+  let of_json j =
+    { name = String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Name")) }
+end
+
+module AlarmList = struct
+  type t = Alarm.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Aws.Util.option_all (List.map Alarm.parse (Aws.Xml.members "member" xml))
+
+  let to_query v = Aws.Query.to_query_list Alarm.to_query v
+  let to_json v = `List (List.map Alarm.to_json v)
+  let of_json j = Aws.Json.to_list Alarm.of_json j
+end
+
+module AlarmConfiguration = struct
+  type t =
+    { ignore_poll_alarm_failure : Boolean.t option
+    ; alarms : AlarmList.t
+    }
+
+  let make ?ignore_poll_alarm_failure ~alarms () = { ignore_poll_alarm_failure; alarms }
+
+  let parse xml =
+    Some
+      { ignore_poll_alarm_failure =
+          Aws.Util.option_bind (Aws.Xml.member "IgnorePollAlarmFailure" xml) Boolean.parse
+      ; alarms =
+          Aws.Xml.required
+            "Alarms"
+            (Aws.Util.option_bind (Aws.Xml.member "Alarms" xml) AlarmList.parse)
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Some (Aws.Query.Pair ("Alarms.member", AlarmList.to_query v.alarms))
+         ; Aws.Util.option_map v.ignore_poll_alarm_failure (fun f ->
+               Aws.Query.Pair ("IgnorePollAlarmFailure", Boolean.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Some ("Alarms", AlarmList.to_json v.alarms)
+         ; Aws.Util.option_map v.ignore_poll_alarm_failure (fun f ->
+               "IgnorePollAlarmFailure", Boolean.to_json f)
+         ])
+
+  let of_json j =
+    { ignore_poll_alarm_failure =
+        Aws.Util.option_map (Aws.Json.lookup j "IgnorePollAlarmFailure") Boolean.of_json
+    ; alarms = AlarmList.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Alarms"))
+    }
 end
 
 module Accounts = struct
@@ -3716,9 +4654,7 @@ module Accounts = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -3729,6 +4665,12 @@ module TargetLocation = struct
     ; target_location_max_concurrency : String.t option
     ; target_location_max_errors : String.t option
     ; execution_role_name : String.t option
+    ; target_location_alarm_configuration : AlarmConfiguration.t option
+    ; include_child_organization_units : Boolean.t option
+    ; exclude_accounts : ExcludeAccounts.t
+    ; targets : Targets.t
+    ; targets_max_concurrency : String.t option
+    ; targets_max_errors : String.t option
     }
 
   let make
@@ -3737,12 +4679,24 @@ module TargetLocation = struct
       ?target_location_max_concurrency
       ?target_location_max_errors
       ?execution_role_name
+      ?target_location_alarm_configuration
+      ?include_child_organization_units
+      ?(exclude_accounts = [])
+      ?(targets = [])
+      ?targets_max_concurrency
+      ?targets_max_errors
       () =
     { accounts
     ; regions
     ; target_location_max_concurrency
     ; target_location_max_errors
     ; execution_role_name
+    ; target_location_alarm_configuration
+    ; include_child_organization_units
+    ; exclude_accounts
+    ; targets
+    ; targets_max_concurrency
+    ; targets_max_errors
     }
 
   let parse xml =
@@ -3763,12 +4717,47 @@ module TargetLocation = struct
           Aws.Util.option_bind (Aws.Xml.member "TargetLocationMaxErrors" xml) String.parse
       ; execution_role_name =
           Aws.Util.option_bind (Aws.Xml.member "ExecutionRoleName" xml) String.parse
+      ; target_location_alarm_configuration =
+          Aws.Util.option_bind
+            (Aws.Xml.member "TargetLocationAlarmConfiguration" xml)
+            AlarmConfiguration.parse
+      ; include_child_organization_units =
+          Aws.Util.option_bind
+            (Aws.Xml.member "IncludeChildOrganizationUnits" xml)
+            Boolean.parse
+      ; exclude_accounts =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "ExcludeAccounts" xml)
+               ExcludeAccounts.parse)
+      ; targets =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind (Aws.Xml.member "Targets" xml) Targets.parse)
+      ; targets_max_concurrency =
+          Aws.Util.option_bind (Aws.Xml.member "TargetsMaxConcurrency" xml) String.parse
+      ; targets_max_errors =
+          Aws.Util.option_bind (Aws.Xml.member "TargetsMaxErrors" xml) String.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.execution_role_name (fun f ->
+         [ Aws.Util.option_map v.targets_max_errors (fun f ->
+               Aws.Query.Pair ("TargetsMaxErrors", String.to_query f))
+         ; Aws.Util.option_map v.targets_max_concurrency (fun f ->
+               Aws.Query.Pair ("TargetsMaxConcurrency", String.to_query f))
+         ; Some (Aws.Query.Pair ("Targets.member", Targets.to_query v.targets))
+         ; Some
+             (Aws.Query.Pair
+                ("ExcludeAccounts.member", ExcludeAccounts.to_query v.exclude_accounts))
+         ; Aws.Util.option_map v.include_child_organization_units (fun f ->
+               Aws.Query.Pair ("IncludeChildOrganizationUnits", Boolean.to_query f))
+         ; Aws.Util.option_map v.target_location_alarm_configuration (fun f ->
+               Aws.Query.Pair
+                 ("TargetLocationAlarmConfiguration", AlarmConfiguration.to_query f))
+         ; Aws.Util.option_map v.execution_role_name (fun f ->
                Aws.Query.Pair ("ExecutionRoleName", String.to_query f))
          ; Aws.Util.option_map v.target_location_max_errors (fun f ->
                Aws.Query.Pair ("TargetLocationMaxErrors", String.to_query f))
@@ -3781,7 +4770,17 @@ module TargetLocation = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.execution_role_name (fun f ->
+         [ Aws.Util.option_map v.targets_max_errors (fun f ->
+               "TargetsMaxErrors", String.to_json f)
+         ; Aws.Util.option_map v.targets_max_concurrency (fun f ->
+               "TargetsMaxConcurrency", String.to_json f)
+         ; Some ("Targets", Targets.to_json v.targets)
+         ; Some ("ExcludeAccounts", ExcludeAccounts.to_json v.exclude_accounts)
+         ; Aws.Util.option_map v.include_child_organization_units (fun f ->
+               "IncludeChildOrganizationUnits", Boolean.to_json f)
+         ; Aws.Util.option_map v.target_location_alarm_configuration (fun f ->
+               "TargetLocationAlarmConfiguration", AlarmConfiguration.to_json f)
+         ; Aws.Util.option_map v.execution_role_name (fun f ->
                "ExecutionRoleName", String.to_json f)
          ; Aws.Util.option_map v.target_location_max_errors (fun f ->
                "TargetLocationMaxErrors", String.to_json f)
@@ -3802,6 +4801,22 @@ module TargetLocation = struct
         Aws.Util.option_map (Aws.Json.lookup j "TargetLocationMaxErrors") String.of_json
     ; execution_role_name =
         Aws.Util.option_map (Aws.Json.lookup j "ExecutionRoleName") String.of_json
+    ; target_location_alarm_configuration =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "TargetLocationAlarmConfiguration")
+          AlarmConfiguration.of_json
+    ; include_child_organization_units =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "IncludeChildOrganizationUnits")
+          Boolean.of_json
+    ; exclude_accounts =
+        ExcludeAccounts.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "ExcludeAccounts"))
+    ; targets = Targets.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Targets"))
+    ; targets_max_concurrency =
+        Aws.Util.option_map (Aws.Json.lookup j "TargetsMaxConcurrency") String.of_json
+    ; targets_max_errors =
+        Aws.Util.option_map (Aws.Json.lookup j "TargetsMaxErrors") String.of_json
     }
 end
 
@@ -3814,9 +4829,7 @@ module TargetLocations = struct
     Aws.Util.option_all (List.map TargetLocation.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list TargetLocation.to_query v
-
   let to_json v = `List (List.map TargetLocation.to_json v)
-
   let of_json j = Aws.Json.to_list TargetLocation.of_json j
 end
 
@@ -3829,26 +4842,8 @@ module StringList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
-end
-
-module InstanceAssociationStatusAggregatedCount = struct
-  type t = (String.t, Integer.t) Hashtbl.t
-
-  let make elems () = elems
-
-  let parse xml = None
-
-  let to_query v = Aws.Query.to_query_hashtbl String.to_string Integer.to_query v
-
-  let to_json v =
-    `Assoc
-      (Hashtbl.fold (fun k v acc -> (String.to_string k, Integer.to_json v) :: acc) v [])
-
-  let of_json j = Aws.Json.to_hashtbl String.of_string Integer.of_json j
 end
 
 module ResourceDataSyncSourceRegionList = struct
@@ -3860,9 +4855,7 @@ module ResourceDataSyncSourceRegionList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -3907,9 +4900,7 @@ module ResourceDataSyncOrganizationalUnitList = struct
       (List.map ResourceDataSyncOrganizationalUnit.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list ResourceDataSyncOrganizationalUnit.to_query v
-
   let to_json v = `List (List.map ResourceDataSyncOrganizationalUnit.to_json v)
-
   let of_json j = Aws.Json.to_list ResourceDataSyncOrganizationalUnit.of_json j
 end
 
@@ -3977,6 +4968,7 @@ module ResourceDataSyncSourceWithState = struct
     ; source_regions : ResourceDataSyncSourceRegionList.t
     ; include_future_regions : Boolean.t option
     ; state : String.t option
+    ; enable_all_ops_data_sources : Boolean.t option
     }
 
   let make
@@ -3985,12 +4977,14 @@ module ResourceDataSyncSourceWithState = struct
       ?(source_regions = [])
       ?include_future_regions
       ?state
+      ?enable_all_ops_data_sources
       () =
     { source_type
     ; aws_organizations_source
     ; source_regions
     ; include_future_regions
     ; state
+    ; enable_all_ops_data_sources
     }
 
   let parse xml =
@@ -4009,12 +5003,18 @@ module ResourceDataSyncSourceWithState = struct
       ; include_future_regions =
           Aws.Util.option_bind (Aws.Xml.member "IncludeFutureRegions" xml) Boolean.parse
       ; state = Aws.Util.option_bind (Aws.Xml.member "State" xml) String.parse
+      ; enable_all_ops_data_sources =
+          Aws.Util.option_bind
+            (Aws.Xml.member "EnableAllOpsDataSources" xml)
+            Boolean.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.state (fun f ->
+         [ Aws.Util.option_map v.enable_all_ops_data_sources (fun f ->
+               Aws.Query.Pair ("EnableAllOpsDataSources", Boolean.to_query f))
+         ; Aws.Util.option_map v.state (fun f ->
                Aws.Query.Pair ("State", String.to_query f))
          ; Aws.Util.option_map v.include_future_regions (fun f ->
                Aws.Query.Pair ("IncludeFutureRegions", Boolean.to_query f))
@@ -4033,7 +5033,9 @@ module ResourceDataSyncSourceWithState = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.state (fun f -> "State", String.to_json f)
+         [ Aws.Util.option_map v.enable_all_ops_data_sources (fun f ->
+               "EnableAllOpsDataSources", Boolean.to_json f)
+         ; Aws.Util.option_map v.state (fun f -> "State", String.to_json f)
          ; Aws.Util.option_map v.include_future_regions (fun f ->
                "IncludeFutureRegions", Boolean.to_json f)
          ; Some
@@ -4055,6 +5057,8 @@ module ResourceDataSyncSourceWithState = struct
     ; include_future_regions =
         Aws.Util.option_map (Aws.Json.lookup j "IncludeFutureRegions") Boolean.of_json
     ; state = Aws.Util.option_map (Aws.Json.lookup j "State") String.of_json
+    ; enable_all_ops_data_sources =
+        Aws.Util.option_map (Aws.Json.lookup j "EnableAllOpsDataSources") Boolean.of_json
     }
 end
 
@@ -4065,13 +5069,9 @@ module LastResourceDataSyncStatus = struct
     | InProgress
 
   let str_to_t = [ "InProgress", InProgress; "Failed", Failed; "Successful", Successful ]
-
   let t_to_str = [ InProgress, "InProgress"; Failed, "Failed"; Successful, "Successful" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -4081,7 +5081,6 @@ module LastResourceDataSyncStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -4239,9 +5238,7 @@ module ResourceDataSyncItemList = struct
       (List.map ResourceDataSyncItem.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list ResourceDataSyncItem.to_query v
-
   let to_json v = `List (List.map ResourceDataSyncItem.to_json v)
-
   let of_json j = Aws.Json.to_list ResourceDataSyncItem.of_json j
 end
 
@@ -4361,9 +5358,25 @@ module DocumentType = struct
     | ApplicationConfigurationSchema
     | DeploymentStrategy
     | ChangeCalendar
+    | Automation_ChangeTemplate
+    | ProblemAnalysis
+    | ProblemAnalysisTemplate
+    | CloudFormation
+    | ConformancePackTemplate
+    | QuickSetup
+    | ManualApprovalPolicy
+    | AutoApprovalPolicy
 
   let str_to_t =
-    [ "ChangeCalendar", ChangeCalendar
+    [ "AutoApprovalPolicy", AutoApprovalPolicy
+    ; "ManualApprovalPolicy", ManualApprovalPolicy
+    ; "QuickSetup", QuickSetup
+    ; "ConformancePackTemplate", ConformancePackTemplate
+    ; "CloudFormation", CloudFormation
+    ; "ProblemAnalysisTemplate", ProblemAnalysisTemplate
+    ; "ProblemAnalysis", ProblemAnalysis
+    ; "Automation.ChangeTemplate", Automation_ChangeTemplate
+    ; "ChangeCalendar", ChangeCalendar
     ; "DeploymentStrategy", DeploymentStrategy
     ; "ApplicationConfigurationSchema", ApplicationConfigurationSchema
     ; "ApplicationConfiguration", ApplicationConfiguration
@@ -4375,7 +5388,15 @@ module DocumentType = struct
     ]
 
   let t_to_str =
-    [ ChangeCalendar, "ChangeCalendar"
+    [ AutoApprovalPolicy, "AutoApprovalPolicy"
+    ; ManualApprovalPolicy, "ManualApprovalPolicy"
+    ; QuickSetup, "QuickSetup"
+    ; ConformancePackTemplate, "ConformancePackTemplate"
+    ; CloudFormation, "CloudFormation"
+    ; ProblemAnalysisTemplate, "ProblemAnalysisTemplate"
+    ; ProblemAnalysis, "ProblemAnalysis"
+    ; Automation_ChangeTemplate, "Automation.ChangeTemplate"
+    ; ChangeCalendar, "ChangeCalendar"
     ; DeploymentStrategy, "DeploymentStrategy"
     ; ApplicationConfigurationSchema, "ApplicationConfigurationSchema"
     ; ApplicationConfiguration, "ApplicationConfiguration"
@@ -4387,9 +5408,7 @@ module DocumentType = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -4399,7 +5418,6 @@ module DocumentType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -4407,9 +5425,12 @@ module DocumentRequires = struct
   type t =
     { name : String.t
     ; version : String.t option
+    ; require_type : String.t option
+    ; version_name : String.t option
     }
 
-  let make ~name ?version () = { name; version }
+  let make ~name ?version ?require_type ?version_name () =
+    { name; version; require_type; version_name }
 
   let parse xml =
     Some
@@ -4418,12 +5439,20 @@ module DocumentRequires = struct
             "Name"
             (Aws.Util.option_bind (Aws.Xml.member "Name" xml) String.parse)
       ; version = Aws.Util.option_bind (Aws.Xml.member "Version" xml) String.parse
+      ; require_type =
+          Aws.Util.option_bind (Aws.Xml.member "RequireType" xml) String.parse
+      ; version_name =
+          Aws.Util.option_bind (Aws.Xml.member "VersionName" xml) String.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.version (fun f ->
+         [ Aws.Util.option_map v.version_name (fun f ->
+               Aws.Query.Pair ("VersionName", String.to_query f))
+         ; Aws.Util.option_map v.require_type (fun f ->
+               Aws.Query.Pair ("RequireType", String.to_query f))
+         ; Aws.Util.option_map v.version (fun f ->
                Aws.Query.Pair ("Version", String.to_query f))
          ; Some (Aws.Query.Pair ("Name", String.to_query v.name))
          ])
@@ -4431,13 +5460,17 @@ module DocumentRequires = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.version (fun f -> "Version", String.to_json f)
+         [ Aws.Util.option_map v.version_name (fun f -> "VersionName", String.to_json f)
+         ; Aws.Util.option_map v.require_type (fun f -> "RequireType", String.to_json f)
+         ; Aws.Util.option_map v.version (fun f -> "Version", String.to_json f)
          ; Some ("Name", String.to_json v.name)
          ])
 
   let of_json j =
     { name = String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Name"))
     ; version = Aws.Util.option_map (Aws.Json.lookup j "Version") String.of_json
+    ; require_type = Aws.Util.option_map (Aws.Json.lookup j "RequireType") String.of_json
+    ; version_name = Aws.Util.option_map (Aws.Json.lookup j "VersionName") String.of_json
     }
 end
 
@@ -4450,9 +5483,7 @@ module DocumentRequiresList = struct
     Aws.Util.option_all (List.map DocumentRequires.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list DocumentRequires.to_query v
-
   let to_json v = `List (List.map DocumentRequires.to_json v)
-
   let of_json j = Aws.Json.to_list DocumentRequires.of_json j
 end
 
@@ -4465,15 +5496,15 @@ module AttachmentContentList = struct
     Aws.Util.option_all (List.map AttachmentContent.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list AttachmentContent.to_query v
-
   let to_json v = `List (List.map AttachmentContent.to_json v)
-
   let of_json j = Aws.Json.to_list AttachmentContent.of_json j
 end
 
 module GetDocumentResult = struct
   type t =
     { name : String.t option
+    ; created_date : DateTime.t option
+    ; display_name : String.t option
     ; version_name : String.t option
     ; document_version : String.t option
     ; status : DocumentStatus.t option
@@ -4483,10 +5514,13 @@ module GetDocumentResult = struct
     ; document_format : DocumentFormat.t option
     ; requires : DocumentRequiresList.t
     ; attachments_content : AttachmentContentList.t
+    ; review_status : ReviewStatus.t option
     }
 
   let make
       ?name
+      ?created_date
+      ?display_name
       ?version_name
       ?document_version
       ?status
@@ -4496,8 +5530,11 @@ module GetDocumentResult = struct
       ?document_format
       ?(requires = [])
       ?(attachments_content = [])
+      ?review_status
       () =
     { name
+    ; created_date
+    ; display_name
     ; version_name
     ; document_version
     ; status
@@ -4507,11 +5544,16 @@ module GetDocumentResult = struct
     ; document_format
     ; requires
     ; attachments_content
+    ; review_status
     }
 
   let parse xml =
     Some
       { name = Aws.Util.option_bind (Aws.Xml.member "Name" xml) String.parse
+      ; created_date =
+          Aws.Util.option_bind (Aws.Xml.member "CreatedDate" xml) DateTime.parse
+      ; display_name =
+          Aws.Util.option_bind (Aws.Xml.member "DisplayName" xml) String.parse
       ; version_name =
           Aws.Util.option_bind (Aws.Xml.member "VersionName" xml) String.parse
       ; document_version =
@@ -4536,12 +5578,16 @@ module GetDocumentResult = struct
             (Aws.Util.option_bind
                (Aws.Xml.member "AttachmentsContent" xml)
                AttachmentContentList.parse)
+      ; review_status =
+          Aws.Util.option_bind (Aws.Xml.member "ReviewStatus" xml) ReviewStatus.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Some
+         [ Aws.Util.option_map v.review_status (fun f ->
+               Aws.Query.Pair ("ReviewStatus", ReviewStatus.to_query f))
+         ; Some
              (Aws.Query.Pair
                 ( "AttachmentsContent.member"
                 , AttachmentContentList.to_query v.attachments_content ))
@@ -4561,6 +5607,10 @@ module GetDocumentResult = struct
                Aws.Query.Pair ("DocumentVersion", String.to_query f))
          ; Aws.Util.option_map v.version_name (fun f ->
                Aws.Query.Pair ("VersionName", String.to_query f))
+         ; Aws.Util.option_map v.display_name (fun f ->
+               Aws.Query.Pair ("DisplayName", String.to_query f))
+         ; Aws.Util.option_map v.created_date (fun f ->
+               Aws.Query.Pair ("CreatedDate", DateTime.to_query f))
          ; Aws.Util.option_map v.name (fun f ->
                Aws.Query.Pair ("Name", String.to_query f))
          ])
@@ -4568,7 +5618,9 @@ module GetDocumentResult = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Some ("AttachmentsContent", AttachmentContentList.to_json v.attachments_content)
+         [ Aws.Util.option_map v.review_status (fun f ->
+               "ReviewStatus", ReviewStatus.to_json f)
+         ; Some ("AttachmentsContent", AttachmentContentList.to_json v.attachments_content)
          ; Some ("Requires", DocumentRequiresList.to_json v.requires)
          ; Aws.Util.option_map v.document_format (fun f ->
                "DocumentFormat", DocumentFormat.to_json f)
@@ -4581,11 +5633,16 @@ module GetDocumentResult = struct
          ; Aws.Util.option_map v.document_version (fun f ->
                "DocumentVersion", String.to_json f)
          ; Aws.Util.option_map v.version_name (fun f -> "VersionName", String.to_json f)
+         ; Aws.Util.option_map v.display_name (fun f -> "DisplayName", String.to_json f)
+         ; Aws.Util.option_map v.created_date (fun f -> "CreatedDate", DateTime.to_json f)
          ; Aws.Util.option_map v.name (fun f -> "Name", String.to_json f)
          ])
 
   let of_json j =
     { name = Aws.Util.option_map (Aws.Json.lookup j "Name") String.of_json
+    ; created_date =
+        Aws.Util.option_map (Aws.Json.lookup j "CreatedDate") DateTime.of_json
+    ; display_name = Aws.Util.option_map (Aws.Json.lookup j "DisplayName") String.of_json
     ; version_name = Aws.Util.option_map (Aws.Json.lookup j "VersionName") String.of_json
     ; document_version =
         Aws.Util.option_map (Aws.Json.lookup j "DocumentVersion") String.of_json
@@ -4603,7 +5660,251 @@ module GetDocumentResult = struct
     ; attachments_content =
         AttachmentContentList.of_json
           (Aws.Util.of_option_exn (Aws.Json.lookup j "AttachmentsContent"))
+    ; review_status =
+        Aws.Util.option_map (Aws.Json.lookup j "ReviewStatus") ReviewStatus.of_json
     }
+end
+
+module MetadataValue = struct
+  type t = { value : String.t option }
+
+  let make ?value () = { value }
+
+  let parse xml =
+    Some { value = Aws.Util.option_bind (Aws.Xml.member "Value" xml) String.parse }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.value (fun f ->
+               Aws.Query.Pair ("Value", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.value (fun f -> "Value", String.to_json f) ])
+
+  let of_json j =
+    { value = Aws.Util.option_map (Aws.Json.lookup j "Value") String.of_json }
+end
+
+module MetadataMap = struct
+  type t = (String.t, MetadataValue.t) Hashtbl.t
+
+  let make elems () = elems
+  let parse xml = None
+  let to_query v = Aws.Query.to_query_hashtbl String.to_string MetadataValue.to_query v
+
+  let to_json v =
+    `Assoc
+      (Hashtbl.fold
+         (fun k ->
+           fun v -> fun acc -> (String.to_string k, MetadataValue.to_json v) :: acc)
+         v
+         [])
+
+  let of_json j = Aws.Json.to_hashtbl String.of_string MetadataValue.of_json j
+end
+
+module InstancePropertyFilterKey = struct
+  type t =
+    | InstanceIds
+    | AgentVersion
+    | PingStatus
+    | PlatformTypes
+    | DocumentName
+    | ActivationIds
+    | IamRole
+    | ResourceType
+    | AssociationStatus
+
+  let str_to_t =
+    [ "AssociationStatus", AssociationStatus
+    ; "ResourceType", ResourceType
+    ; "IamRole", IamRole
+    ; "ActivationIds", ActivationIds
+    ; "DocumentName", DocumentName
+    ; "PlatformTypes", PlatformTypes
+    ; "PingStatus", PingStatus
+    ; "AgentVersion", AgentVersion
+    ; "InstanceIds", InstanceIds
+    ]
+
+  let t_to_str =
+    [ AssociationStatus, "AssociationStatus"
+    ; ResourceType, "ResourceType"
+    ; IamRole, "IamRole"
+    ; ActivationIds, "ActivationIds"
+    ; DocumentName, "DocumentName"
+    ; PlatformTypes, "PlatformTypes"
+    ; PingStatus, "PingStatus"
+    ; AgentVersion, "AgentVersion"
+    ; InstanceIds, "InstanceIds"
+    ]
+
+  let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
+  let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
+  let make v () = v
+
+  let parse xml =
+    Aws.Util.option_bind (String.parse xml) (fun s -> Aws.Util.list_find str_to_t s)
+
+  let to_query v =
+    Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
+  let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
+end
+
+module OpsItemIdentity = struct
+  type t = { arn : String.t option }
+
+  let make ?arn () = { arn }
+
+  let parse xml =
+    Some { arn = Aws.Util.option_bind (Aws.Xml.member "Arn" xml) String.parse }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.arn (fun f -> Aws.Query.Pair ("Arn", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.arn (fun f -> "Arn", String.to_json f) ])
+
+  let of_json j = { arn = Aws.Util.option_map (Aws.Json.lookup j "Arn") String.of_json }
+end
+
+module OpsItemEventSummary = struct
+  type t =
+    { ops_item_id : String.t option
+    ; event_id : String.t option
+    ; source : String.t option
+    ; detail_type : String.t option
+    ; detail : String.t option
+    ; created_by : OpsItemIdentity.t option
+    ; created_time : DateTime.t option
+    }
+
+  let make
+      ?ops_item_id
+      ?event_id
+      ?source
+      ?detail_type
+      ?detail
+      ?created_by
+      ?created_time
+      () =
+    { ops_item_id; event_id; source; detail_type; detail; created_by; created_time }
+
+  let parse xml =
+    Some
+      { ops_item_id = Aws.Util.option_bind (Aws.Xml.member "OpsItemId" xml) String.parse
+      ; event_id = Aws.Util.option_bind (Aws.Xml.member "EventId" xml) String.parse
+      ; source = Aws.Util.option_bind (Aws.Xml.member "Source" xml) String.parse
+      ; detail_type = Aws.Util.option_bind (Aws.Xml.member "DetailType" xml) String.parse
+      ; detail = Aws.Util.option_bind (Aws.Xml.member "Detail" xml) String.parse
+      ; created_by =
+          Aws.Util.option_bind (Aws.Xml.member "CreatedBy" xml) OpsItemIdentity.parse
+      ; created_time =
+          Aws.Util.option_bind (Aws.Xml.member "CreatedTime" xml) DateTime.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.created_time (fun f ->
+               Aws.Query.Pair ("CreatedTime", DateTime.to_query f))
+         ; Aws.Util.option_map v.created_by (fun f ->
+               Aws.Query.Pair ("CreatedBy", OpsItemIdentity.to_query f))
+         ; Aws.Util.option_map v.detail (fun f ->
+               Aws.Query.Pair ("Detail", String.to_query f))
+         ; Aws.Util.option_map v.detail_type (fun f ->
+               Aws.Query.Pair ("DetailType", String.to_query f))
+         ; Aws.Util.option_map v.source (fun f ->
+               Aws.Query.Pair ("Source", String.to_query f))
+         ; Aws.Util.option_map v.event_id (fun f ->
+               Aws.Query.Pair ("EventId", String.to_query f))
+         ; Aws.Util.option_map v.ops_item_id (fun f ->
+               Aws.Query.Pair ("OpsItemId", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.created_time (fun f -> "CreatedTime", DateTime.to_json f)
+         ; Aws.Util.option_map v.created_by (fun f ->
+               "CreatedBy", OpsItemIdentity.to_json f)
+         ; Aws.Util.option_map v.detail (fun f -> "Detail", String.to_json f)
+         ; Aws.Util.option_map v.detail_type (fun f -> "DetailType", String.to_json f)
+         ; Aws.Util.option_map v.source (fun f -> "Source", String.to_json f)
+         ; Aws.Util.option_map v.event_id (fun f -> "EventId", String.to_json f)
+         ; Aws.Util.option_map v.ops_item_id (fun f -> "OpsItemId", String.to_json f)
+         ])
+
+  let of_json j =
+    { ops_item_id = Aws.Util.option_map (Aws.Json.lookup j "OpsItemId") String.of_json
+    ; event_id = Aws.Util.option_map (Aws.Json.lookup j "EventId") String.of_json
+    ; source = Aws.Util.option_map (Aws.Json.lookup j "Source") String.of_json
+    ; detail_type = Aws.Util.option_map (Aws.Json.lookup j "DetailType") String.of_json
+    ; detail = Aws.Util.option_map (Aws.Json.lookup j "Detail") String.of_json
+    ; created_by =
+        Aws.Util.option_map (Aws.Json.lookup j "CreatedBy") OpsItemIdentity.of_json
+    ; created_time =
+        Aws.Util.option_map (Aws.Json.lookup j "CreatedTime") DateTime.of_json
+    }
+end
+
+module OpsItemAccessDeniedException = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Aws.Util.option_bind (Aws.Xml.member "Message" xml) String.parse }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f ->
+               Aws.Query.Pair ("Message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f -> "Message", String.to_json f) ])
+
+  let of_json j =
+    { message = Aws.Util.option_map (Aws.Json.lookup j "Message") String.of_json }
+end
+
+module InvalidInstancePropertyFilterValue = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Aws.Util.option_bind (Aws.Xml.member "message" xml) String.parse }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f ->
+               Aws.Query.Pair ("message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f -> "message", String.to_json f) ])
+
+  let of_json j =
+    { message = Aws.Util.option_map (Aws.Json.lookup j "message") String.of_json }
 end
 
 module S3OutputUrl = struct
@@ -4640,9 +5941,7 @@ module PatchSourceList = struct
     Aws.Util.option_all (List.map PatchSource.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list PatchSource.to_query v
-
   let to_json v = `List (List.map PatchSource.to_json v)
-
   let of_json j = Aws.Json.to_list PatchSource.of_json j
 end
 
@@ -4655,9 +5954,7 @@ module PatchFilterValueList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -4728,9 +6025,7 @@ module PatchFilterKey = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -4740,7 +6035,6 @@ module PatchFilterKey = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -4796,9 +6090,7 @@ module PatchFilterList = struct
     Aws.Util.option_all (List.map PatchFilter.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list PatchFilter.to_query v
-
   let to_json v = `List (List.map PatchFilter.to_json v)
-
   let of_json j = Aws.Json.to_list PatchFilter.of_json j
 end
 
@@ -4865,9 +6157,7 @@ module PatchComplianceLevel = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -4877,7 +6167,6 @@ module PatchComplianceLevel = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -4980,9 +6269,7 @@ module PatchRuleList = struct
     Aws.Util.option_all (List.map PatchRule.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list PatchRule.to_query v
-
   let to_json v = `List (List.map PatchRule.to_json v)
-
   let of_json j = Aws.Json.to_list PatchRule.of_json j
 end
 
@@ -5026,9 +6313,7 @@ module PatchIdList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -5041,25 +6326,19 @@ module PatchGroupList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
-module PatchAction = struct
+module PatchComplianceStatus = struct
   type t =
-    | ALLOW_AS_DEPENDENCY
-    | BLOCK
+    | COMPLIANT
+    | NON_COMPLIANT
 
-  let str_to_t = [ "BLOCK", BLOCK; "ALLOW_AS_DEPENDENCY", ALLOW_AS_DEPENDENCY ]
-
-  let t_to_str = [ BLOCK, "BLOCK"; ALLOW_AS_DEPENDENCY, "ALLOW_AS_DEPENDENCY" ]
-
+  let str_to_t = [ "NON_COMPLIANT", NON_COMPLIANT; "COMPLIANT", COMPLIANT ]
+  let t_to_str = [ NON_COMPLIANT, "NON_COMPLIANT"; COMPLIANT, "COMPLIANT" ]
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -5069,7 +6348,27 @@ module PatchAction = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
+  let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
+end
 
+module PatchAction = struct
+  type t =
+    | ALLOW_AS_DEPENDENCY
+    | BLOCK
+
+  let str_to_t = [ "BLOCK", BLOCK; "ALLOW_AS_DEPENDENCY", ALLOW_AS_DEPENDENCY ]
+  let t_to_str = [ BLOCK, "BLOCK"; ALLOW_AS_DEPENDENCY, "ALLOW_AS_DEPENDENCY" ]
+  let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
+  let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
+  let make v () = v
+
+  let parse xml =
+    Aws.Util.option_bind (String.parse xml) (fun s -> Aws.Util.list_find str_to_t s)
+
+  let to_query v =
+    Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -5090,6 +6389,7 @@ module GetPatchBaselineResult = struct
     ; modified_date : DateTime.t option
     ; description : String.t option
     ; sources : PatchSourceList.t
+    ; available_security_updates_compliance_status : PatchComplianceStatus.t option
     }
 
   let make
@@ -5108,6 +6408,7 @@ module GetPatchBaselineResult = struct
       ?modified_date
       ?description
       ?(sources = [])
+      ?available_security_updates_compliance_status
       () =
     { baseline_id
     ; name
@@ -5124,6 +6425,7 @@ module GetPatchBaselineResult = struct
     ; modified_date
     ; description
     ; sources
+    ; available_security_updates_compliance_status
     }
 
   let parse xml =
@@ -5175,12 +6477,20 @@ module GetPatchBaselineResult = struct
           Aws.Util.of_option
             []
             (Aws.Util.option_bind (Aws.Xml.member "Sources" xml) PatchSourceList.parse)
+      ; available_security_updates_compliance_status =
+          Aws.Util.option_bind
+            (Aws.Xml.member "AvailableSecurityUpdatesComplianceStatus" xml)
+            PatchComplianceStatus.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Some (Aws.Query.Pair ("Sources.member", PatchSourceList.to_query v.sources))
+         [ Aws.Util.option_map v.available_security_updates_compliance_status (fun f ->
+               Aws.Query.Pair
+                 ( "AvailableSecurityUpdatesComplianceStatus"
+                 , PatchComplianceStatus.to_query f ))
+         ; Some (Aws.Query.Pair ("Sources.member", PatchSourceList.to_query v.sources))
          ; Aws.Util.option_map v.description (fun f ->
                Aws.Query.Pair ("Description", String.to_query f))
          ; Aws.Util.option_map v.modified_date (fun f ->
@@ -5217,7 +6527,9 @@ module GetPatchBaselineResult = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Some ("Sources", PatchSourceList.to_json v.sources)
+         [ Aws.Util.option_map v.available_security_updates_compliance_status (fun f ->
+               "AvailableSecurityUpdatesComplianceStatus", PatchComplianceStatus.to_json f)
+         ; Some ("Sources", PatchSourceList.to_json v.sources)
          ; Aws.Util.option_map v.description (fun f -> "Description", String.to_json f)
          ; Aws.Util.option_map v.modified_date (fun f ->
                "ModifiedDate", DateTime.to_json f)
@@ -5275,6 +6587,10 @@ module GetPatchBaselineResult = struct
     ; description = Aws.Util.option_map (Aws.Json.lookup j "Description") String.of_json
     ; sources =
         PatchSourceList.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Sources"))
+    ; available_security_updates_compliance_status =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "AvailableSecurityUpdatesComplianceStatus")
+          PatchComplianceStatus.of_json
     }
 end
 
@@ -5344,13 +6660,9 @@ module TagList = struct
   type t = Tag.t list
 
   let make elems () = elems
-
   let parse xml = Aws.Util.option_all (List.map Tag.parse (Aws.Xml.members "member" xml))
-
   let to_query v = Aws.Query.to_query_list Tag.to_query v
-
   let to_json v = `List (List.map Tag.to_json v)
-
   let of_json j = Aws.Json.to_list Tag.of_json j
 end
 
@@ -5501,6 +6813,27 @@ module CreateMaintenanceWindowRequest = struct
     }
 end
 
+module MaintenanceWindowTaskCutoffBehavior = struct
+  type t =
+    | CONTINUE_TASK
+    | CANCEL_TASK
+
+  let str_to_t = [ "CANCEL_TASK", CANCEL_TASK; "CONTINUE_TASK", CONTINUE_TASK ]
+  let t_to_str = [ CANCEL_TASK, "CANCEL_TASK"; CONTINUE_TASK, "CONTINUE_TASK" ]
+  let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
+  let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
+  let make v () = v
+
+  let parse xml =
+    Aws.Util.option_bind (String.parse xml) (fun s -> Aws.Util.list_find str_to_t s)
+
+  let to_query v =
+    Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
+  let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
+end
+
 module PatchOrchestratorFilterValues = struct
   type t = String.t list
 
@@ -5510,9 +6843,7 @@ module PatchOrchestratorFilterValues = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -5569,9 +6900,7 @@ module PatchOrchestratorFilterList = struct
       (List.map PatchOrchestratorFilter.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list PatchOrchestratorFilter.to_query v
-
   let to_json v = `List (List.map PatchOrchestratorFilter.to_json v)
-
   let of_json j = Aws.Json.to_list PatchOrchestratorFilter.of_json j
 end
 
@@ -5632,13 +6961,9 @@ module RebootOption = struct
     | NoReboot
 
   let str_to_t = [ "NoReboot", NoReboot; "RebootIfNeeded", RebootIfNeeded ]
-
   let t_to_str = [ NoReboot, "NoReboot"; RebootIfNeeded, "RebootIfNeeded" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -5648,7 +6973,6 @@ module RebootOption = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -5685,9 +7009,7 @@ module OpsItemFilterValues = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -5713,9 +7035,7 @@ module OpsItemFilterOperator = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -5725,7 +7045,6 @@ module OpsItemFilterOperator = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -5739,6 +7058,10 @@ module OpsItemFilterKey = struct
     | OpsItemId
     | CreatedTime
     | LastModifiedTime
+    | ActualStartTime
+    | ActualEndTime
+    | PlannedStartTime
+    | PlannedEndTime
     | OperationalData
     | OperationalDataKey
     | OperationalDataValue
@@ -5746,15 +7069,55 @@ module OpsItemFilterKey = struct
     | AutomationId
     | Category
     | Severity
+    | OpsItemType
+    | AccessRequestByRequesterArn
+    | AccessRequestByRequesterId
+    | AccessRequestByApproverArn
+    | AccessRequestByApproverId
+    | AccessRequestBySourceAccountId
+    | AccessRequestBySourceOpsItemId
+    | AccessRequestBySourceRegion
+    | AccessRequestByIsReplica
+    | AccessRequestByTargetResourceId
+    | ChangeRequestByRequesterArn
+    | ChangeRequestByRequesterName
+    | ChangeRequestByApproverArn
+    | ChangeRequestByApproverName
+    | ChangeRequestByTemplate
+    | ChangeRequestByTargetsResourceGroup
+    | InsightByType
+    | AccountId
 
   let str_to_t =
-    [ "Severity", Severity
+    [ "AccountId", AccountId
+    ; "InsightByType", InsightByType
+    ; "ChangeRequestByTargetsResourceGroup", ChangeRequestByTargetsResourceGroup
+    ; "ChangeRequestByTemplate", ChangeRequestByTemplate
+    ; "ChangeRequestByApproverName", ChangeRequestByApproverName
+    ; "ChangeRequestByApproverArn", ChangeRequestByApproverArn
+    ; "ChangeRequestByRequesterName", ChangeRequestByRequesterName
+    ; "ChangeRequestByRequesterArn", ChangeRequestByRequesterArn
+    ; "AccessRequestByTargetResourceId", AccessRequestByTargetResourceId
+    ; "AccessRequestByIsReplica", AccessRequestByIsReplica
+    ; "AccessRequestBySourceRegion", AccessRequestBySourceRegion
+    ; "AccessRequestBySourceOpsItemId", AccessRequestBySourceOpsItemId
+    ; "AccessRequestBySourceAccountId", AccessRequestBySourceAccountId
+    ; "AccessRequestByApproverId", AccessRequestByApproverId
+    ; "AccessRequestByApproverArn", AccessRequestByApproverArn
+    ; "AccessRequestByRequesterId", AccessRequestByRequesterId
+    ; "AccessRequestByRequesterArn", AccessRequestByRequesterArn
+    ; "OpsItemType", OpsItemType
+    ; "Severity", Severity
     ; "Category", Category
     ; "AutomationId", AutomationId
     ; "ResourceId", ResourceId
     ; "OperationalDataValue", OperationalDataValue
     ; "OperationalDataKey", OperationalDataKey
     ; "OperationalData", OperationalData
+    ; "PlannedEndTime", PlannedEndTime
+    ; "PlannedStartTime", PlannedStartTime
+    ; "ActualEndTime", ActualEndTime
+    ; "ActualStartTime", ActualStartTime
     ; "LastModifiedTime", LastModifiedTime
     ; "CreatedTime", CreatedTime
     ; "OpsItemId", OpsItemId
@@ -5766,13 +7129,35 @@ module OpsItemFilterKey = struct
     ]
 
   let t_to_str =
-    [ Severity, "Severity"
+    [ AccountId, "AccountId"
+    ; InsightByType, "InsightByType"
+    ; ChangeRequestByTargetsResourceGroup, "ChangeRequestByTargetsResourceGroup"
+    ; ChangeRequestByTemplate, "ChangeRequestByTemplate"
+    ; ChangeRequestByApproverName, "ChangeRequestByApproverName"
+    ; ChangeRequestByApproverArn, "ChangeRequestByApproverArn"
+    ; ChangeRequestByRequesterName, "ChangeRequestByRequesterName"
+    ; ChangeRequestByRequesterArn, "ChangeRequestByRequesterArn"
+    ; AccessRequestByTargetResourceId, "AccessRequestByTargetResourceId"
+    ; AccessRequestByIsReplica, "AccessRequestByIsReplica"
+    ; AccessRequestBySourceRegion, "AccessRequestBySourceRegion"
+    ; AccessRequestBySourceOpsItemId, "AccessRequestBySourceOpsItemId"
+    ; AccessRequestBySourceAccountId, "AccessRequestBySourceAccountId"
+    ; AccessRequestByApproverId, "AccessRequestByApproverId"
+    ; AccessRequestByApproverArn, "AccessRequestByApproverArn"
+    ; AccessRequestByRequesterId, "AccessRequestByRequesterId"
+    ; AccessRequestByRequesterArn, "AccessRequestByRequesterArn"
+    ; OpsItemType, "OpsItemType"
+    ; Severity, "Severity"
     ; Category, "Category"
     ; AutomationId, "AutomationId"
     ; ResourceId, "ResourceId"
     ; OperationalDataValue, "OperationalDataValue"
     ; OperationalDataKey, "OperationalDataKey"
     ; OperationalData, "OperationalData"
+    ; PlannedEndTime, "PlannedEndTime"
+    ; PlannedStartTime, "PlannedStartTime"
+    ; ActualEndTime, "ActualEndTime"
+    ; ActualStartTime, "ActualStartTime"
     ; LastModifiedTime, "LastModifiedTime"
     ; CreatedTime, "CreatedTime"
     ; OpsItemId, "OpsItemId"
@@ -5784,9 +7169,7 @@ module OpsItemFilterKey = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -5796,7 +7179,6 @@ module OpsItemFilterKey = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -5862,9 +7244,7 @@ module OpsItemFilters = struct
     Aws.Util.option_all (List.map OpsItemFilter.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list OpsItemFilter.to_query v
-
   let to_json v = `List (List.map OpsItemFilter.to_json v)
-
   let of_json j = Aws.Json.to_list OpsItemFilter.of_json j
 end
 
@@ -5923,14 +7303,15 @@ module InventoryItemEntry = struct
   type t = (String.t, String.t) Hashtbl.t
 
   let make elems () = elems
-
   let parse xml = None
-
   let to_query v = Aws.Query.to_query_hashtbl String.to_string String.to_query v
 
   let to_json v =
     `Assoc
-      (Hashtbl.fold (fun k v acc -> (String.to_string k, String.to_json v) :: acc) v [])
+      (Hashtbl.fold
+         (fun k -> fun v -> fun acc -> (String.to_string k, String.to_json v) :: acc)
+         v
+         [])
 
   let of_json j = Aws.Json.to_hashtbl String.of_string String.of_json j
 end
@@ -5944,9 +7325,7 @@ module InventoryItemEntryList = struct
     Aws.Util.option_all (List.map InventoryItemEntry.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list InventoryItemEntry.to_query v
-
   let to_json v = `List (List.map InventoryItemEntry.to_json v)
-
   let of_json j = Aws.Json.to_list InventoryItemEntry.of_json j
 end
 
@@ -6028,9 +7407,7 @@ module InstanceInformationFilterValueSet = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -6089,9 +7466,7 @@ module OpsFilterValueList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -6123,9 +7498,7 @@ module OpsFilterOperatorType = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -6135,7 +7508,6 @@ module OpsFilterOperatorType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -6196,9 +7568,7 @@ module OpsFilterList = struct
     Aws.Util.option_all (List.map OpsFilter.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list OpsFilter.to_query v
-
   let to_json v = `List (List.map OpsFilter.to_json v)
-
   let of_json j = Aws.Json.to_list OpsFilter.of_json j
 end
 
@@ -6206,14 +7576,15 @@ module OpsAggregatorValueMap = struct
   type t = (String.t, String.t) Hashtbl.t
 
   let make elems () = elems
-
   let parse xml = None
-
   let to_query v = Aws.Query.to_query_hashtbl String.to_string String.to_query v
 
   let to_json v =
     `Assoc
-      (Hashtbl.fold (fun k v acc -> (String.to_string k, String.to_json v) :: acc) v [])
+      (Hashtbl.fold
+         (fun k -> fun v -> fun acc -> (String.to_string k, String.to_json v) :: acc)
+         v
+         [])
 
   let of_json j = Aws.Json.to_hashtbl String.of_string String.of_json j
 end
@@ -6239,11 +7610,8 @@ module rec OpsAggregator : sig
     -> t
 
   val parse : Ezxmlm.nodes -> t option
-
   val to_query : t -> Aws.Query.t
-
   val to_json : t -> Aws.Json.t
-
   val of_json : Aws.Json.t -> t
 end = struct
   type t =
@@ -6337,13 +7705,9 @@ and OpsAggregatorList : sig
   type t = OpsAggregator.t list
 
   val make : 'a -> unit -> 'a
-
   val parse : Ezxmlm.nodes -> t option
-
   val to_query : t -> Aws.Query.t
-
   val to_json : t -> Aws.Json.t
-
   val of_json : Aws.Json.t -> t
 end = struct
   type t = OpsAggregator.t list
@@ -6354,9 +7718,7 @@ end = struct
     Aws.Util.option_all (List.map OpsAggregator.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list OpsAggregator.to_query v
-
   let to_json v = `List (List.map OpsAggregator.to_json v)
-
   let of_json j = Aws.Json.to_list OpsAggregator.of_json j
 end
 
@@ -6484,18 +7846,62 @@ module ParameterPatternMismatchException = struct
     { message = Aws.Util.option_map (Aws.Json.lookup j "message") String.of_json }
 end
 
+module ImpactType = struct
+  type t =
+    | Mutating
+    | NonMutating
+    | Undetermined
+
+  let str_to_t =
+    [ "Undetermined", Undetermined; "NonMutating", NonMutating; "Mutating", Mutating ]
+
+  let t_to_str =
+    [ Undetermined, "Undetermined"; NonMutating, "NonMutating"; Mutating, "Mutating" ]
+
+  let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
+  let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
+  let make v () = v
+
+  let parse xml =
+    Aws.Util.option_bind (String.parse xml) (fun s -> Aws.Util.list_find str_to_t s)
+
+  let to_query v =
+    Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
+  let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
+end
+
+module StepPreviewMap = struct
+  type t = (ImpactType.t, Integer.t) Hashtbl.t
+
+  let make elems () = elems
+  let parse xml = None
+  let to_query v = Aws.Query.to_query_hashtbl ImpactType.to_string Integer.to_query v
+
+  let to_json v =
+    `Assoc
+      (Hashtbl.fold
+         (fun k -> fun v -> fun acc -> (ImpactType.to_string k, Integer.to_json v) :: acc)
+         v
+         [])
+
+  let of_json j = Aws.Json.to_hashtbl ImpactType.of_string Integer.of_json j
+end
+
 module OpsEntityItemEntry = struct
   type t = (String.t, String.t) Hashtbl.t
 
   let make elems () = elems
-
   let parse xml = None
-
   let to_query v = Aws.Query.to_query_hashtbl String.to_string String.to_query v
 
   let to_json v =
     `Assoc
-      (Hashtbl.fold (fun k v acc -> (String.to_string k, String.to_json v) :: acc) v [])
+      (Hashtbl.fold
+         (fun k -> fun v -> fun acc -> (String.to_string k, String.to_json v) :: acc)
+         v
+         [])
 
   let of_json j = Aws.Json.to_hashtbl String.of_string String.of_json j
 end
@@ -6558,16 +7964,12 @@ end
 module ConnectionStatus = struct
   type t =
     | Connected
-    | NotConnected
+    | Notconnected
 
-  let str_to_t = [ "NotConnected", NotConnected; "Connected", Connected ]
-
-  let t_to_str = [ NotConnected, "NotConnected"; Connected, "Connected" ]
-
+  let str_to_t = [ "notconnected", Notconnected; "connected", Connected ]
+  let t_to_str = [ Notconnected, "notconnected"; Connected, "connected" ]
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -6577,7 +7979,6 @@ module ConnectionStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -6611,14 +8012,15 @@ module InventoryItemContentContext = struct
   type t = (String.t, String.t) Hashtbl.t
 
   let make elems () = elems
-
   let parse xml = None
-
   let to_query v = Aws.Query.to_query_hashtbl String.to_string String.to_query v
 
   let to_json v =
     `Assoc
-      (Hashtbl.fold (fun k v acc -> (String.to_string k, String.to_json v) :: acc) v [])
+      (Hashtbl.fold
+         (fun k -> fun v -> fun acc -> (String.to_string k, String.to_json v) :: acc)
+         v
+         [])
 
   let of_json j = Aws.Json.to_hashtbl String.of_string String.of_json j
 end
@@ -6723,9 +8125,7 @@ module InventoryItemList = struct
     Aws.Util.option_all (List.map InventoryItem.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list InventoryItem.to_query v
-
   let to_json v = `List (List.map InventoryItem.to_json v)
-
   let of_json j = Aws.Json.to_list InventoryItem.of_json j
 end
 
@@ -6775,7 +8175,6 @@ module Parameters = struct
   type t = (String.t, ParameterValueList.t) Hashtbl.t
 
   let make elems () = elems
-
   let parse xml = None
 
   let to_query v =
@@ -6784,7 +8183,8 @@ module Parameters = struct
   let to_json v =
     `Assoc
       (Hashtbl.fold
-         (fun k v acc -> (String.to_string k, ParameterValueList.to_json v) :: acc)
+         (fun k ->
+           fun v -> fun acc -> (String.to_string k, ParameterValueList.to_json v) :: acc)
          v
          [])
 
@@ -6797,13 +8197,9 @@ module NotificationType = struct
     | Invocation
 
   let str_to_t = [ "Invocation", Invocation; "Command", Command ]
-
   let t_to_str = [ Invocation, "Invocation"; Command, "Command" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -6813,7 +8209,6 @@ module NotificationType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -6845,9 +8240,7 @@ module NotificationEvent = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -6857,7 +8250,6 @@ module NotificationEvent = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -6870,9 +8262,7 @@ module NotificationEventList = struct
     Aws.Util.option_all (List.map NotificationEvent.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list NotificationEvent.to_query v
-
   let to_json v = `List (List.map NotificationEvent.to_json v)
-
   let of_json j = Aws.Json.to_list NotificationEvent.of_json j
 end
 
@@ -6944,13 +8334,9 @@ module DocumentHashType = struct
     | Sha1
 
   let str_to_t = [ "Sha1", Sha1; "Sha256", Sha256 ]
-
   let t_to_str = [ Sha1, "Sha1"; Sha256, "Sha256" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -6960,7 +8346,6 @@ module DocumentHashType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -7171,9 +8556,7 @@ module AutomationParameterValueList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -7181,7 +8564,6 @@ module AutomationParameterMap = struct
   type t = (String.t, AutomationParameterValueList.t) Hashtbl.t
 
   let make elems () = elems
-
   let parse xml = None
 
   let to_query v =
@@ -7190,8 +8572,9 @@ module AutomationParameterMap = struct
   let to_json v =
     `Assoc
       (Hashtbl.fold
-         (fun k v acc ->
-           (String.to_string k, AutomationParameterValueList.to_json v) :: acc)
+         (fun k ->
+           fun v ->
+            fun acc -> (String.to_string k, AutomationParameterValueList.to_json v) :: acc)
          v
          [])
 
@@ -7353,9 +8736,7 @@ module CommandPluginStatus = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -7365,7 +8746,6 @@ module CommandPluginStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -7528,13 +8908,9 @@ module StopType = struct
     | Cancel
 
   let str_to_t = [ "Cancel", Cancel; "Complete", Complete ]
-
   let t_to_str = [ Cancel, "Cancel"; Complete, "Complete" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -7544,7 +8920,6 @@ module StopType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -7592,19 +8967,13 @@ module StopAutomationExecutionRequest = struct
     }
 end
 
-module InventoryAttributeDataType = struct
-  type t =
-    | String
-    | Number
+module OpsItemRelatedItemsFilterOperator = struct
+  type t = Equal
 
-  let str_to_t = [ "number", Number; "string", String ]
-
-  let t_to_str = [ Number, "number"; String, "string" ]
-
+  let str_to_t = [ "Equal", Equal ]
+  let t_to_str = [ Equal, "Equal" ]
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -7614,7 +8983,27 @@ module InventoryAttributeDataType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
+  let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
+end
 
+module InventoryAttributeDataType = struct
+  type t =
+    | String
+    | Number
+
+  let str_to_t = [ "number", Number; "string", String ]
+  let t_to_str = [ Number, "number"; String, "string" ]
+  let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
+  let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
+  let make v () = v
+
+  let parse xml =
+    Aws.Util.option_bind (String.parse xml) (fun s -> Aws.Util.list_find str_to_t s)
+
+  let to_query v =
+    Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -7673,9 +9062,7 @@ module InventoryItemAttributeList = struct
       (List.map InventoryItemAttribute.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list InventoryItemAttribute.to_query v
-
   let to_json v = `List (List.map InventoryItemAttribute.to_json v)
-
   let of_json j = Aws.Json.to_list InventoryItemAttribute.of_json j
 end
 
@@ -7749,10 +9136,197 @@ module InventoryItemSchemaResultList = struct
       (List.map InventoryItemSchema.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list InventoryItemSchema.to_query v
-
   let to_json v = `List (List.map InventoryItemSchema.to_json v)
-
   let of_json j = Aws.Json.to_list InventoryItemSchema.of_json j
+end
+
+module TargetMapValueList = struct
+  type t = String.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
+
+  let to_query v = Aws.Query.to_query_list String.to_query v
+  let to_json v = `List (List.map String.to_json v)
+  let of_json j = Aws.Json.to_list String.of_json j
+end
+
+module TargetMap = struct
+  type t = (String.t, TargetMapValueList.t) Hashtbl.t
+
+  let make elems () = elems
+  let parse xml = None
+
+  let to_query v =
+    Aws.Query.to_query_hashtbl String.to_string TargetMapValueList.to_query v
+
+  let to_json v =
+    `Assoc
+      (Hashtbl.fold
+         (fun k ->
+           fun v -> fun acc -> (String.to_string k, TargetMapValueList.to_json v) :: acc)
+         v
+         [])
+
+  let of_json j = Aws.Json.to_hashtbl String.of_string TargetMapValueList.of_json j
+end
+
+module TargetMaps = struct
+  type t = TargetMap.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Aws.Util.option_all (List.map TargetMap.parse (Aws.Xml.members "member" xml))
+
+  let to_query v = Aws.Query.to_query_list TargetMap.to_query v
+  let to_json v = `List (List.map TargetMap.to_json v)
+  let of_json j = Aws.Json.to_list TargetMap.of_json j
+end
+
+module Runbook = struct
+  type t =
+    { document_name : String.t
+    ; document_version : String.t option
+    ; parameters : AutomationParameterMap.t option
+    ; target_parameter_name : String.t option
+    ; targets : Targets.t
+    ; target_maps : TargetMaps.t
+    ; max_concurrency : String.t option
+    ; max_errors : String.t option
+    ; target_locations : TargetLocations.t
+    }
+
+  let make
+      ~document_name
+      ?document_version
+      ?parameters
+      ?target_parameter_name
+      ?(targets = [])
+      ?(target_maps = [])
+      ?max_concurrency
+      ?max_errors
+      ?(target_locations = [])
+      () =
+    { document_name
+    ; document_version
+    ; parameters
+    ; target_parameter_name
+    ; targets
+    ; target_maps
+    ; max_concurrency
+    ; max_errors
+    ; target_locations
+    }
+
+  let parse xml =
+    Some
+      { document_name =
+          Aws.Xml.required
+            "DocumentName"
+            (Aws.Util.option_bind (Aws.Xml.member "DocumentName" xml) String.parse)
+      ; document_version =
+          Aws.Util.option_bind (Aws.Xml.member "DocumentVersion" xml) String.parse
+      ; parameters =
+          Aws.Util.option_bind
+            (Aws.Xml.member "Parameters" xml)
+            AutomationParameterMap.parse
+      ; target_parameter_name =
+          Aws.Util.option_bind (Aws.Xml.member "TargetParameterName" xml) String.parse
+      ; targets =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind (Aws.Xml.member "Targets" xml) Targets.parse)
+      ; target_maps =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind (Aws.Xml.member "TargetMaps" xml) TargetMaps.parse)
+      ; max_concurrency =
+          Aws.Util.option_bind (Aws.Xml.member "MaxConcurrency" xml) String.parse
+      ; max_errors = Aws.Util.option_bind (Aws.Xml.member "MaxErrors" xml) String.parse
+      ; target_locations =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "TargetLocations" xml)
+               TargetLocations.parse)
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Some
+             (Aws.Query.Pair
+                ("TargetLocations.member", TargetLocations.to_query v.target_locations))
+         ; Aws.Util.option_map v.max_errors (fun f ->
+               Aws.Query.Pair ("MaxErrors", String.to_query f))
+         ; Aws.Util.option_map v.max_concurrency (fun f ->
+               Aws.Query.Pair ("MaxConcurrency", String.to_query f))
+         ; Some (Aws.Query.Pair ("TargetMaps.member", TargetMaps.to_query v.target_maps))
+         ; Some (Aws.Query.Pair ("Targets.member", Targets.to_query v.targets))
+         ; Aws.Util.option_map v.target_parameter_name (fun f ->
+               Aws.Query.Pair ("TargetParameterName", String.to_query f))
+         ; Aws.Util.option_map v.parameters (fun f ->
+               Aws.Query.Pair ("Parameters", AutomationParameterMap.to_query f))
+         ; Aws.Util.option_map v.document_version (fun f ->
+               Aws.Query.Pair ("DocumentVersion", String.to_query f))
+         ; Some (Aws.Query.Pair ("DocumentName", String.to_query v.document_name))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Some ("TargetLocations", TargetLocations.to_json v.target_locations)
+         ; Aws.Util.option_map v.max_errors (fun f -> "MaxErrors", String.to_json f)
+         ; Aws.Util.option_map v.max_concurrency (fun f ->
+               "MaxConcurrency", String.to_json f)
+         ; Some ("TargetMaps", TargetMaps.to_json v.target_maps)
+         ; Some ("Targets", Targets.to_json v.targets)
+         ; Aws.Util.option_map v.target_parameter_name (fun f ->
+               "TargetParameterName", String.to_json f)
+         ; Aws.Util.option_map v.parameters (fun f ->
+               "Parameters", AutomationParameterMap.to_json f)
+         ; Aws.Util.option_map v.document_version (fun f ->
+               "DocumentVersion", String.to_json f)
+         ; Some ("DocumentName", String.to_json v.document_name)
+         ])
+
+  let of_json j =
+    { document_name =
+        String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "DocumentName"))
+    ; document_version =
+        Aws.Util.option_map (Aws.Json.lookup j "DocumentVersion") String.of_json
+    ; parameters =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "Parameters")
+          AutomationParameterMap.of_json
+    ; target_parameter_name =
+        Aws.Util.option_map (Aws.Json.lookup j "TargetParameterName") String.of_json
+    ; targets = Targets.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Targets"))
+    ; target_maps =
+        TargetMaps.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "TargetMaps"))
+    ; max_concurrency =
+        Aws.Util.option_map (Aws.Json.lookup j "MaxConcurrency") String.of_json
+    ; max_errors = Aws.Util.option_map (Aws.Json.lookup j "MaxErrors") String.of_json
+    ; target_locations =
+        TargetLocations.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "TargetLocations"))
+    }
+end
+
+module Runbooks = struct
+  type t = Runbook.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Aws.Util.option_all (List.map Runbook.parse (Aws.Xml.members "member" xml))
+
+  let to_query v = Aws.Query.to_query_list Runbook.to_query v
+  let to_json v = `List (List.map Runbook.to_json v)
+  let of_json j = Aws.Json.to_list Runbook.of_json j
 end
 
 module InventoryQueryOperatorType = struct
@@ -7783,9 +9357,7 @@ module InventoryQueryOperatorType = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -7795,7 +9367,6 @@ module InventoryQueryOperatorType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -7864,9 +9435,7 @@ module InventoryFilterList = struct
     Aws.Util.option_all (List.map InventoryFilter.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list InventoryFilter.to_query v
-
   let to_json v = `List (List.map InventoryFilter.to_json v)
-
   let of_json j = Aws.Json.to_list InventoryFilter.of_json j
 end
 
@@ -7923,9 +9492,7 @@ module InventoryGroupList = struct
     Aws.Util.option_all (List.map InventoryGroup.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list InventoryGroup.to_query v
-
   let to_json v = `List (List.map InventoryGroup.to_json v)
-
   let of_json j = Aws.Json.to_list InventoryGroup.of_json j
 end
 
@@ -7944,11 +9511,8 @@ module rec InventoryAggregator : sig
     -> t
 
   val parse : Ezxmlm.nodes -> t option
-
   val to_query : t -> Aws.Query.t
-
   val to_json : t -> Aws.Json.t
-
   val of_json : Aws.Json.t -> t
 end = struct
   type t =
@@ -8008,13 +9572,9 @@ and InventoryAggregatorList : sig
   type t = InventoryAggregator.t list
 
   val make : 'a -> unit -> 'a
-
   val parse : Ezxmlm.nodes -> t option
-
   val to_query : t -> Aws.Query.t
-
   val to_json : t -> Aws.Json.t
-
   val of_json : Aws.Json.t -> t
 end = struct
   type t = InventoryAggregator.t list
@@ -8026,9 +9586,7 @@ end = struct
       (List.map InventoryAggregator.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list InventoryAggregator.to_query v
-
   let to_json v = `List (List.map InventoryAggregator.to_json v)
-
   let of_json j = Aws.Json.to_list InventoryAggregator.of_json j
 end
 
@@ -8099,6 +9657,151 @@ module InvalidActivation = struct
     { message = Aws.Util.option_map (Aws.Json.lookup j "Message") String.of_json }
 end
 
+module StartChangeRequestExecutionRequest = struct
+  type t =
+    { scheduled_time : DateTime.t option
+    ; document_name : String.t
+    ; document_version : String.t option
+    ; parameters : AutomationParameterMap.t option
+    ; change_request_name : String.t option
+    ; client_token : String.t option
+    ; auto_approve : Boolean.t option
+    ; runbooks : Runbooks.t
+    ; tags : TagList.t
+    ; scheduled_end_time : DateTime.t option
+    ; change_details : String.t option
+    }
+
+  let make
+      ?scheduled_time
+      ~document_name
+      ?document_version
+      ?parameters
+      ?change_request_name
+      ?client_token
+      ?auto_approve
+      ~runbooks
+      ?(tags = [])
+      ?scheduled_end_time
+      ?change_details
+      () =
+    { scheduled_time
+    ; document_name
+    ; document_version
+    ; parameters
+    ; change_request_name
+    ; client_token
+    ; auto_approve
+    ; runbooks
+    ; tags
+    ; scheduled_end_time
+    ; change_details
+    }
+
+  let parse xml =
+    Some
+      { scheduled_time =
+          Aws.Util.option_bind (Aws.Xml.member "ScheduledTime" xml) DateTime.parse
+      ; document_name =
+          Aws.Xml.required
+            "DocumentName"
+            (Aws.Util.option_bind (Aws.Xml.member "DocumentName" xml) String.parse)
+      ; document_version =
+          Aws.Util.option_bind (Aws.Xml.member "DocumentVersion" xml) String.parse
+      ; parameters =
+          Aws.Util.option_bind
+            (Aws.Xml.member "Parameters" xml)
+            AutomationParameterMap.parse
+      ; change_request_name =
+          Aws.Util.option_bind (Aws.Xml.member "ChangeRequestName" xml) String.parse
+      ; client_token =
+          Aws.Util.option_bind (Aws.Xml.member "ClientToken" xml) String.parse
+      ; auto_approve =
+          Aws.Util.option_bind (Aws.Xml.member "AutoApprove" xml) Boolean.parse
+      ; runbooks =
+          Aws.Xml.required
+            "Runbooks"
+            (Aws.Util.option_bind (Aws.Xml.member "Runbooks" xml) Runbooks.parse)
+      ; tags =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind (Aws.Xml.member "Tags" xml) TagList.parse)
+      ; scheduled_end_time =
+          Aws.Util.option_bind (Aws.Xml.member "ScheduledEndTime" xml) DateTime.parse
+      ; change_details =
+          Aws.Util.option_bind (Aws.Xml.member "ChangeDetails" xml) String.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.change_details (fun f ->
+               Aws.Query.Pair ("ChangeDetails", String.to_query f))
+         ; Aws.Util.option_map v.scheduled_end_time (fun f ->
+               Aws.Query.Pair ("ScheduledEndTime", DateTime.to_query f))
+         ; Some (Aws.Query.Pair ("Tags.member", TagList.to_query v.tags))
+         ; Some (Aws.Query.Pair ("Runbooks.member", Runbooks.to_query v.runbooks))
+         ; Aws.Util.option_map v.auto_approve (fun f ->
+               Aws.Query.Pair ("AutoApprove", Boolean.to_query f))
+         ; Aws.Util.option_map v.client_token (fun f ->
+               Aws.Query.Pair ("ClientToken", String.to_query f))
+         ; Aws.Util.option_map v.change_request_name (fun f ->
+               Aws.Query.Pair ("ChangeRequestName", String.to_query f))
+         ; Aws.Util.option_map v.parameters (fun f ->
+               Aws.Query.Pair ("Parameters", AutomationParameterMap.to_query f))
+         ; Aws.Util.option_map v.document_version (fun f ->
+               Aws.Query.Pair ("DocumentVersion", String.to_query f))
+         ; Some (Aws.Query.Pair ("DocumentName", String.to_query v.document_name))
+         ; Aws.Util.option_map v.scheduled_time (fun f ->
+               Aws.Query.Pair ("ScheduledTime", DateTime.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.change_details (fun f ->
+               "ChangeDetails", String.to_json f)
+         ; Aws.Util.option_map v.scheduled_end_time (fun f ->
+               "ScheduledEndTime", DateTime.to_json f)
+         ; Some ("Tags", TagList.to_json v.tags)
+         ; Some ("Runbooks", Runbooks.to_json v.runbooks)
+         ; Aws.Util.option_map v.auto_approve (fun f -> "AutoApprove", Boolean.to_json f)
+         ; Aws.Util.option_map v.client_token (fun f -> "ClientToken", String.to_json f)
+         ; Aws.Util.option_map v.change_request_name (fun f ->
+               "ChangeRequestName", String.to_json f)
+         ; Aws.Util.option_map v.parameters (fun f ->
+               "Parameters", AutomationParameterMap.to_json f)
+         ; Aws.Util.option_map v.document_version (fun f ->
+               "DocumentVersion", String.to_json f)
+         ; Some ("DocumentName", String.to_json v.document_name)
+         ; Aws.Util.option_map v.scheduled_time (fun f ->
+               "ScheduledTime", DateTime.to_json f)
+         ])
+
+  let of_json j =
+    { scheduled_time =
+        Aws.Util.option_map (Aws.Json.lookup j "ScheduledTime") DateTime.of_json
+    ; document_name =
+        String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "DocumentName"))
+    ; document_version =
+        Aws.Util.option_map (Aws.Json.lookup j "DocumentVersion") String.of_json
+    ; parameters =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "Parameters")
+          AutomationParameterMap.of_json
+    ; change_request_name =
+        Aws.Util.option_map (Aws.Json.lookup j "ChangeRequestName") String.of_json
+    ; client_token = Aws.Util.option_map (Aws.Json.lookup j "ClientToken") String.of_json
+    ; auto_approve = Aws.Util.option_map (Aws.Json.lookup j "AutoApprove") Boolean.of_json
+    ; runbooks = Runbooks.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Runbooks"))
+    ; tags = TagList.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Tags"))
+    ; scheduled_end_time =
+        Aws.Util.option_map (Aws.Json.lookup j "ScheduledEndTime") DateTime.of_json
+    ; change_details =
+        Aws.Util.option_map (Aws.Json.lookup j "ChangeDetails") String.of_json
+    }
+end
+
 module HierarchyTypeMismatchException = struct
   type t = { message : String.t option }
 
@@ -8127,14 +9830,71 @@ module DeleteAssociationResult = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
+end
+
+module Credentials = struct
+  type t =
+    { access_key_id : String.t
+    ; secret_access_key : String.t
+    ; session_token : String.t
+    ; expiration_time : DateTime.t
+    }
+
+  let make ~access_key_id ~secret_access_key ~session_token ~expiration_time () =
+    { access_key_id; secret_access_key; session_token; expiration_time }
+
+  let parse xml =
+    Some
+      { access_key_id =
+          Aws.Xml.required
+            "AccessKeyId"
+            (Aws.Util.option_bind (Aws.Xml.member "AccessKeyId" xml) String.parse)
+      ; secret_access_key =
+          Aws.Xml.required
+            "SecretAccessKey"
+            (Aws.Util.option_bind (Aws.Xml.member "SecretAccessKey" xml) String.parse)
+      ; session_token =
+          Aws.Xml.required
+            "SessionToken"
+            (Aws.Util.option_bind (Aws.Xml.member "SessionToken" xml) String.parse)
+      ; expiration_time =
+          Aws.Xml.required
+            "ExpirationTime"
+            (Aws.Util.option_bind (Aws.Xml.member "ExpirationTime" xml) DateTime.parse)
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Some (Aws.Query.Pair ("ExpirationTime", DateTime.to_query v.expiration_time))
+         ; Some (Aws.Query.Pair ("SessionToken", String.to_query v.session_token))
+         ; Some (Aws.Query.Pair ("SecretAccessKey", String.to_query v.secret_access_key))
+         ; Some (Aws.Query.Pair ("AccessKeyId", String.to_query v.access_key_id))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Some ("ExpirationTime", DateTime.to_json v.expiration_time)
+         ; Some ("SessionToken", String.to_json v.session_token)
+         ; Some ("SecretAccessKey", String.to_json v.secret_access_key)
+         ; Some ("AccessKeyId", String.to_json v.access_key_id)
+         ])
+
+  let of_json j =
+    { access_key_id =
+        String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "AccessKeyId"))
+    ; secret_access_key =
+        String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "SecretAccessKey"))
+    ; session_token =
+        String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "SessionToken"))
+    ; expiration_time =
+        DateTime.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "ExpirationTime"))
+    }
 end
 
 module ServiceSetting = struct
@@ -8244,6 +10004,67 @@ module ResetServiceSettingResult = struct
     }
 end
 
+module AssociateOpsItemRelatedItemRequest = struct
+  type t =
+    { ops_item_id : String.t
+    ; association_type : String.t
+    ; resource_type : String.t
+    ; resource_uri : String.t
+    }
+
+  let make ~ops_item_id ~association_type ~resource_type ~resource_uri () =
+    { ops_item_id; association_type; resource_type; resource_uri }
+
+  let parse xml =
+    Some
+      { ops_item_id =
+          Aws.Xml.required
+            "OpsItemId"
+            (Aws.Util.option_bind (Aws.Xml.member "OpsItemId" xml) String.parse)
+      ; association_type =
+          Aws.Xml.required
+            "AssociationType"
+            (Aws.Util.option_bind (Aws.Xml.member "AssociationType" xml) String.parse)
+      ; resource_type =
+          Aws.Xml.required
+            "ResourceType"
+            (Aws.Util.option_bind (Aws.Xml.member "ResourceType" xml) String.parse)
+      ; resource_uri =
+          Aws.Xml.required
+            "ResourceUri"
+            (Aws.Util.option_bind (Aws.Xml.member "ResourceUri" xml) String.parse)
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Some (Aws.Query.Pair ("ResourceUri", String.to_query v.resource_uri))
+         ; Some (Aws.Query.Pair ("ResourceType", String.to_query v.resource_type))
+         ; Some (Aws.Query.Pair ("AssociationType", String.to_query v.association_type))
+         ; Some (Aws.Query.Pair ("OpsItemId", String.to_query v.ops_item_id))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Some ("ResourceUri", String.to_json v.resource_uri)
+         ; Some ("ResourceType", String.to_json v.resource_type)
+         ; Some ("AssociationType", String.to_json v.association_type)
+         ; Some ("OpsItemId", String.to_json v.ops_item_id)
+         ])
+
+  let of_json j =
+    { ops_item_id =
+        String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "OpsItemId"))
+    ; association_type =
+        String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "AssociationType"))
+    ; resource_type =
+        String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "ResourceType"))
+    ; resource_uri =
+        String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "ResourceUri"))
+    }
+end
+
 module AssociationStatusName = struct
   type t =
     | Pending
@@ -8251,13 +10072,9 @@ module AssociationStatusName = struct
     | Failed
 
   let str_to_t = [ "Failed", Failed; "Success", Success; "Pending", Pending ]
-
   let t_to_str = [ Failed, "Failed"; Success, "Success"; Pending, "Pending" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -8267,7 +10084,6 @@ module AssociationStatusName = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -8330,6 +10146,84 @@ module AssociationStatus = struct
     }
 end
 
+module PutResourcePolicyRequest = struct
+  type t =
+    { resource_arn : String.t
+    ; policy : String.t
+    ; policy_id : String.t option
+    ; policy_hash : String.t option
+    }
+
+  let make ~resource_arn ~policy ?policy_id ?policy_hash () =
+    { resource_arn; policy; policy_id; policy_hash }
+
+  let parse xml =
+    Some
+      { resource_arn =
+          Aws.Xml.required
+            "ResourceArn"
+            (Aws.Util.option_bind (Aws.Xml.member "ResourceArn" xml) String.parse)
+      ; policy =
+          Aws.Xml.required
+            "Policy"
+            (Aws.Util.option_bind (Aws.Xml.member "Policy" xml) String.parse)
+      ; policy_id = Aws.Util.option_bind (Aws.Xml.member "PolicyId" xml) String.parse
+      ; policy_hash = Aws.Util.option_bind (Aws.Xml.member "PolicyHash" xml) String.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.policy_hash (fun f ->
+               Aws.Query.Pair ("PolicyHash", String.to_query f))
+         ; Aws.Util.option_map v.policy_id (fun f ->
+               Aws.Query.Pair ("PolicyId", String.to_query f))
+         ; Some (Aws.Query.Pair ("Policy", String.to_query v.policy))
+         ; Some (Aws.Query.Pair ("ResourceArn", String.to_query v.resource_arn))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.policy_hash (fun f -> "PolicyHash", String.to_json f)
+         ; Aws.Util.option_map v.policy_id (fun f -> "PolicyId", String.to_json f)
+         ; Some ("Policy", String.to_json v.policy)
+         ; Some ("ResourceArn", String.to_json v.resource_arn)
+         ])
+
+  let of_json j =
+    { resource_arn =
+        String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "ResourceArn"))
+    ; policy = String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Policy"))
+    ; policy_id = Aws.Util.option_map (Aws.Json.lookup j "PolicyId") String.of_json
+    ; policy_hash = Aws.Util.option_map (Aws.Json.lookup j "PolicyHash") String.of_json
+    }
+end
+
+module OpsMetadataNotFoundException = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Aws.Util.option_bind (Aws.Xml.member "message" xml) String.parse }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f ->
+               Aws.Query.Pair ("message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f -> "message", String.to_json f) ])
+
+  let of_json j =
+    { message = Aws.Util.option_map (Aws.Json.lookup j "message") String.of_json }
+end
+
 module AssociationIdList = struct
   type t = String.t list
 
@@ -8339,9 +10233,7 @@ module AssociationIdList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -8378,9 +10270,7 @@ module OpsEntityItemEntryList = struct
     Aws.Util.option_all (List.map OpsEntityItemEntry.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list OpsEntityItemEntry.to_query v
-
   let to_json v = `List (List.map OpsEntityItemEntry.to_json v)
-
   let of_json j = Aws.Json.to_list OpsEntityItemEntry.of_json j
 end
 
@@ -8426,6 +10316,7 @@ module ResourceDataSyncSource = struct
     ; aws_organizations_source : ResourceDataSyncAwsOrganizationsSource.t option
     ; source_regions : ResourceDataSyncSourceRegionList.t
     ; include_future_regions : Boolean.t option
+    ; enable_all_ops_data_sources : Boolean.t option
     }
 
   let make
@@ -8433,8 +10324,14 @@ module ResourceDataSyncSource = struct
       ?aws_organizations_source
       ~source_regions
       ?include_future_regions
+      ?enable_all_ops_data_sources
       () =
-    { source_type; aws_organizations_source; source_regions; include_future_regions }
+    { source_type
+    ; aws_organizations_source
+    ; source_regions
+    ; include_future_regions
+    ; enable_all_ops_data_sources
+    }
 
   let parse xml =
     Some
@@ -8454,12 +10351,18 @@ module ResourceDataSyncSource = struct
                ResourceDataSyncSourceRegionList.parse)
       ; include_future_regions =
           Aws.Util.option_bind (Aws.Xml.member "IncludeFutureRegions" xml) Boolean.parse
+      ; enable_all_ops_data_sources =
+          Aws.Util.option_bind
+            (Aws.Xml.member "EnableAllOpsDataSources" xml)
+            Boolean.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.include_future_regions (fun f ->
+         [ Aws.Util.option_map v.enable_all_ops_data_sources (fun f ->
+               Aws.Query.Pair ("EnableAllOpsDataSources", Boolean.to_query f))
+         ; Aws.Util.option_map v.include_future_regions (fun f ->
                Aws.Query.Pair ("IncludeFutureRegions", Boolean.to_query f))
          ; Some
              (Aws.Query.Pair
@@ -8475,7 +10378,9 @@ module ResourceDataSyncSource = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.include_future_regions (fun f ->
+         [ Aws.Util.option_map v.enable_all_ops_data_sources (fun f ->
+               "EnableAllOpsDataSources", Boolean.to_json f)
+         ; Aws.Util.option_map v.include_future_regions (fun f ->
                "IncludeFutureRegions", Boolean.to_json f)
          ; Some
              ("SourceRegions", ResourceDataSyncSourceRegionList.to_json v.source_regions)
@@ -8496,6 +10401,8 @@ module ResourceDataSyncSource = struct
           (Aws.Util.of_option_exn (Aws.Json.lookup j "SourceRegions"))
     ; include_future_regions =
         Aws.Util.option_map (Aws.Json.lookup j "IncludeFutureRegions") Boolean.of_json
+    ; enable_all_ops_data_sources =
+        Aws.Util.option_map (Aws.Json.lookup j "EnableAllOpsDataSources") Boolean.of_json
     }
 end
 
@@ -8508,9 +10415,7 @@ module MaintenanceWindowFilterValues = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -8567,9 +10472,7 @@ module MaintenanceWindowFilterList = struct
       (List.map MaintenanceWindowFilter.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list MaintenanceWindowFilter.to_query v
-
   let to_json v = `List (List.map MaintenanceWindowFilter.to_json v)
-
   let of_json j = Aws.Json.to_list MaintenanceWindowFilter.of_json j
 end
 
@@ -8757,9 +10660,7 @@ module ActivationList = struct
     Aws.Util.option_all (List.map Activation.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list Activation.to_query v
-
   let to_json v = `List (List.map Activation.to_json v)
-
   let of_json j = Aws.Json.to_list Activation.of_json j
 end
 
@@ -8767,13 +10668,9 @@ module RemoveTagsFromResourceResult = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -8786,9 +10683,7 @@ module CommandPluginList = struct
     Aws.Util.option_all (List.map CommandPlugin.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list CommandPlugin.to_query v
-
   let to_json v = `List (List.map CommandPlugin.to_json v)
-
   let of_json j = Aws.Json.to_list CommandPlugin.of_json j
 end
 
@@ -9001,9 +10896,7 @@ module CommandInvocationList = struct
     Aws.Util.option_all (List.map CommandInvocation.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list CommandInvocation.to_query v
-
   let to_json v = `List (List.map CommandInvocation.to_json v)
-
   let of_json j = Aws.Json.to_list CommandInvocation.of_json j
 end
 
@@ -9057,13 +10950,9 @@ module DeleteParameterResult = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -9103,9 +10992,7 @@ module RelatedOpsItems = struct
     Aws.Util.option_all (List.map RelatedOpsItem.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list RelatedOpsItem.to_query v
-
   let to_json v = `List (List.map RelatedOpsItem.to_json v)
-
   let of_json j = Aws.Json.to_list RelatedOpsItem.of_json j
 end
 
@@ -9115,13 +11002,9 @@ module OpsItemDataType = struct
     | String
 
   let str_to_t = [ "String", String; "SearchableString", SearchableString ]
-
   let t_to_str = [ String, "String"; SearchableString, "SearchableString" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -9131,7 +11014,6 @@ module OpsItemDataType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -9175,15 +11057,14 @@ module OpsItemOperationalData = struct
   type t = (String.t, OpsItemDataValue.t) Hashtbl.t
 
   let make elems () = elems
-
   let parse xml = None
-
   let to_query v = Aws.Query.to_query_hashtbl String.to_string OpsItemDataValue.to_query v
 
   let to_json v =
     `Assoc
       (Hashtbl.fold
-         (fun k v acc -> (String.to_string k, OpsItemDataValue.to_json v) :: acc)
+         (fun k ->
+           fun v -> fun acc -> (String.to_string k, OpsItemDataValue.to_json v) :: acc)
          v
          [])
 
@@ -9222,15 +11103,14 @@ module OpsItemNotifications = struct
       (List.map OpsItemNotification.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list OpsItemNotification.to_query v
-
   let to_json v = `List (List.map OpsItemNotification.to_json v)
-
   let of_json j = Aws.Json.to_list OpsItemNotification.of_json j
 end
 
 module CreateOpsItemRequest = struct
   type t =
     { description : String.t
+    ; ops_item_type : String.t option
     ; operational_data : OpsItemOperationalData.t option
     ; notifications : OpsItemNotifications.t
     ; priority : Integer.t option
@@ -9240,10 +11120,16 @@ module CreateOpsItemRequest = struct
     ; tags : TagList.t
     ; category : String.t option
     ; severity : String.t option
+    ; actual_start_time : DateTime.t option
+    ; actual_end_time : DateTime.t option
+    ; planned_start_time : DateTime.t option
+    ; planned_end_time : DateTime.t option
+    ; account_id : String.t option
     }
 
   let make
       ~description
+      ?ops_item_type
       ?operational_data
       ?(notifications = [])
       ?priority
@@ -9253,8 +11139,14 @@ module CreateOpsItemRequest = struct
       ?(tags = [])
       ?category
       ?severity
+      ?actual_start_time
+      ?actual_end_time
+      ?planned_start_time
+      ?planned_end_time
+      ?account_id
       () =
     { description
+    ; ops_item_type
     ; operational_data
     ; notifications
     ; priority
@@ -9264,6 +11156,11 @@ module CreateOpsItemRequest = struct
     ; tags
     ; category
     ; severity
+    ; actual_start_time
+    ; actual_end_time
+    ; planned_start_time
+    ; planned_end_time
+    ; account_id
     }
 
   let parse xml =
@@ -9272,6 +11169,8 @@ module CreateOpsItemRequest = struct
           Aws.Xml.required
             "Description"
             (Aws.Util.option_bind (Aws.Xml.member "Description" xml) String.parse)
+      ; ops_item_type =
+          Aws.Util.option_bind (Aws.Xml.member "OpsItemType" xml) String.parse
       ; operational_data =
           Aws.Util.option_bind
             (Aws.Xml.member "OperationalData" xml)
@@ -9303,12 +11202,31 @@ module CreateOpsItemRequest = struct
             (Aws.Util.option_bind (Aws.Xml.member "Tags" xml) TagList.parse)
       ; category = Aws.Util.option_bind (Aws.Xml.member "Category" xml) String.parse
       ; severity = Aws.Util.option_bind (Aws.Xml.member "Severity" xml) String.parse
+      ; actual_start_time =
+          Aws.Util.option_bind (Aws.Xml.member "ActualStartTime" xml) DateTime.parse
+      ; actual_end_time =
+          Aws.Util.option_bind (Aws.Xml.member "ActualEndTime" xml) DateTime.parse
+      ; planned_start_time =
+          Aws.Util.option_bind (Aws.Xml.member "PlannedStartTime" xml) DateTime.parse
+      ; planned_end_time =
+          Aws.Util.option_bind (Aws.Xml.member "PlannedEndTime" xml) DateTime.parse
+      ; account_id = Aws.Util.option_bind (Aws.Xml.member "AccountId" xml) String.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.severity (fun f ->
+         [ Aws.Util.option_map v.account_id (fun f ->
+               Aws.Query.Pair ("AccountId", String.to_query f))
+         ; Aws.Util.option_map v.planned_end_time (fun f ->
+               Aws.Query.Pair ("PlannedEndTime", DateTime.to_query f))
+         ; Aws.Util.option_map v.planned_start_time (fun f ->
+               Aws.Query.Pair ("PlannedStartTime", DateTime.to_query f))
+         ; Aws.Util.option_map v.actual_end_time (fun f ->
+               Aws.Query.Pair ("ActualEndTime", DateTime.to_query f))
+         ; Aws.Util.option_map v.actual_start_time (fun f ->
+               Aws.Query.Pair ("ActualStartTime", DateTime.to_query f))
+         ; Aws.Util.option_map v.severity (fun f ->
                Aws.Query.Pair ("Severity", String.to_query f))
          ; Aws.Util.option_map v.category (fun f ->
                Aws.Query.Pair ("Category", String.to_query f))
@@ -9325,13 +11243,24 @@ module CreateOpsItemRequest = struct
                 ("Notifications.member", OpsItemNotifications.to_query v.notifications))
          ; Aws.Util.option_map v.operational_data (fun f ->
                Aws.Query.Pair ("OperationalData", OpsItemOperationalData.to_query f))
+         ; Aws.Util.option_map v.ops_item_type (fun f ->
+               Aws.Query.Pair ("OpsItemType", String.to_query f))
          ; Some (Aws.Query.Pair ("Description", String.to_query v.description))
          ])
 
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.severity (fun f -> "Severity", String.to_json f)
+         [ Aws.Util.option_map v.account_id (fun f -> "AccountId", String.to_json f)
+         ; Aws.Util.option_map v.planned_end_time (fun f ->
+               "PlannedEndTime", DateTime.to_json f)
+         ; Aws.Util.option_map v.planned_start_time (fun f ->
+               "PlannedStartTime", DateTime.to_json f)
+         ; Aws.Util.option_map v.actual_end_time (fun f ->
+               "ActualEndTime", DateTime.to_json f)
+         ; Aws.Util.option_map v.actual_start_time (fun f ->
+               "ActualStartTime", DateTime.to_json f)
+         ; Aws.Util.option_map v.severity (fun f -> "Severity", String.to_json f)
          ; Aws.Util.option_map v.category (fun f -> "Category", String.to_json f)
          ; Some ("Tags", TagList.to_json v.tags)
          ; Some ("Title", String.to_json v.title)
@@ -9341,12 +11270,14 @@ module CreateOpsItemRequest = struct
          ; Some ("Notifications", OpsItemNotifications.to_json v.notifications)
          ; Aws.Util.option_map v.operational_data (fun f ->
                "OperationalData", OpsItemOperationalData.to_json f)
+         ; Aws.Util.option_map v.ops_item_type (fun f -> "OpsItemType", String.to_json f)
          ; Some ("Description", String.to_json v.description)
          ])
 
   let of_json j =
     { description =
         String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Description"))
+    ; ops_item_type = Aws.Util.option_map (Aws.Json.lookup j "OpsItemType") String.of_json
     ; operational_data =
         Aws.Util.option_map
           (Aws.Json.lookup j "OperationalData")
@@ -9363,6 +11294,15 @@ module CreateOpsItemRequest = struct
     ; tags = TagList.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Tags"))
     ; category = Aws.Util.option_map (Aws.Json.lookup j "Category") String.of_json
     ; severity = Aws.Util.option_map (Aws.Json.lookup j "Severity") String.of_json
+    ; actual_start_time =
+        Aws.Util.option_map (Aws.Json.lookup j "ActualStartTime") DateTime.of_json
+    ; actual_end_time =
+        Aws.Util.option_map (Aws.Json.lookup j "ActualEndTime") DateTime.of_json
+    ; planned_start_time =
+        Aws.Util.option_map (Aws.Json.lookup j "PlannedStartTime") DateTime.of_json
+    ; planned_end_time =
+        Aws.Util.option_map (Aws.Json.lookup j "PlannedEndTime") DateTime.of_json
+    ; account_id = Aws.Util.option_map (Aws.Json.lookup j "AccountId") String.of_json
     }
 end
 
@@ -9375,9 +11315,7 @@ module StepExecutionFilterValueList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -9387,13 +11325,9 @@ module ComplianceStatus = struct
     | NON_COMPLIANT
 
   let str_to_t = [ "NON_COMPLIANT", NON_COMPLIANT; "COMPLIANT", COMPLIANT ]
-
   let t_to_str = [ NON_COMPLIANT, "NON_COMPLIANT"; COMPLIANT, "COMPLIANT" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -9403,7 +11337,6 @@ module ComplianceStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -9554,6 +11487,263 @@ module TotalSizeLimitExceededException = struct
     { message = Aws.Util.option_map (Aws.Json.lookup j "Message") String.of_json }
 end
 
+module NodeFilterKey = struct
+  type t =
+    | AgentType
+    | AgentVersion
+    | ComputerName
+    | InstanceId
+    | InstanceStatus
+    | IpAddress
+    | ManagedStatus
+    | PlatformName
+    | PlatformType
+    | PlatformVersion
+    | ResourceType
+    | OrganizationalUnitId
+    | OrganizationalUnitPath
+    | Region
+    | AccountId
+
+  let str_to_t =
+    [ "AccountId", AccountId
+    ; "Region", Region
+    ; "OrganizationalUnitPath", OrganizationalUnitPath
+    ; "OrganizationalUnitId", OrganizationalUnitId
+    ; "ResourceType", ResourceType
+    ; "PlatformVersion", PlatformVersion
+    ; "PlatformType", PlatformType
+    ; "PlatformName", PlatformName
+    ; "ManagedStatus", ManagedStatus
+    ; "IpAddress", IpAddress
+    ; "InstanceStatus", InstanceStatus
+    ; "InstanceId", InstanceId
+    ; "ComputerName", ComputerName
+    ; "AgentVersion", AgentVersion
+    ; "AgentType", AgentType
+    ]
+
+  let t_to_str =
+    [ AccountId, "AccountId"
+    ; Region, "Region"
+    ; OrganizationalUnitPath, "OrganizationalUnitPath"
+    ; OrganizationalUnitId, "OrganizationalUnitId"
+    ; ResourceType, "ResourceType"
+    ; PlatformVersion, "PlatformVersion"
+    ; PlatformType, "PlatformType"
+    ; PlatformName, "PlatformName"
+    ; ManagedStatus, "ManagedStatus"
+    ; IpAddress, "IpAddress"
+    ; InstanceStatus, "InstanceStatus"
+    ; InstanceId, "InstanceId"
+    ; ComputerName, "ComputerName"
+    ; AgentVersion, "AgentVersion"
+    ; AgentType, "AgentType"
+    ]
+
+  let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
+  let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
+  let make v () = v
+
+  let parse xml =
+    Aws.Util.option_bind (String.parse xml) (fun s -> Aws.Util.list_find str_to_t s)
+
+  let to_query v =
+    Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
+  let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
+end
+
+module AutomationExecutionInputs = struct
+  type t =
+    { parameters : AutomationParameterMap.t option
+    ; target_parameter_name : String.t option
+    ; targets : Targets.t
+    ; target_maps : TargetMaps.t
+    ; target_locations : TargetLocations.t
+    ; target_locations_u_r_l : String.t option
+    }
+
+  let make
+      ?parameters
+      ?target_parameter_name
+      ?(targets = [])
+      ?(target_maps = [])
+      ?(target_locations = [])
+      ?target_locations_u_r_l
+      () =
+    { parameters
+    ; target_parameter_name
+    ; targets
+    ; target_maps
+    ; target_locations
+    ; target_locations_u_r_l
+    }
+
+  let parse xml =
+    Some
+      { parameters =
+          Aws.Util.option_bind
+            (Aws.Xml.member "Parameters" xml)
+            AutomationParameterMap.parse
+      ; target_parameter_name =
+          Aws.Util.option_bind (Aws.Xml.member "TargetParameterName" xml) String.parse
+      ; targets =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind (Aws.Xml.member "Targets" xml) Targets.parse)
+      ; target_maps =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind (Aws.Xml.member "TargetMaps" xml) TargetMaps.parse)
+      ; target_locations =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "TargetLocations" xml)
+               TargetLocations.parse)
+      ; target_locations_u_r_l =
+          Aws.Util.option_bind (Aws.Xml.member "TargetLocationsURL" xml) String.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.target_locations_u_r_l (fun f ->
+               Aws.Query.Pair ("TargetLocationsURL", String.to_query f))
+         ; Some
+             (Aws.Query.Pair
+                ("TargetLocations.member", TargetLocations.to_query v.target_locations))
+         ; Some (Aws.Query.Pair ("TargetMaps.member", TargetMaps.to_query v.target_maps))
+         ; Some (Aws.Query.Pair ("Targets.member", Targets.to_query v.targets))
+         ; Aws.Util.option_map v.target_parameter_name (fun f ->
+               Aws.Query.Pair ("TargetParameterName", String.to_query f))
+         ; Aws.Util.option_map v.parameters (fun f ->
+               Aws.Query.Pair ("Parameters", AutomationParameterMap.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.target_locations_u_r_l (fun f ->
+               "TargetLocationsURL", String.to_json f)
+         ; Some ("TargetLocations", TargetLocations.to_json v.target_locations)
+         ; Some ("TargetMaps", TargetMaps.to_json v.target_maps)
+         ; Some ("Targets", Targets.to_json v.targets)
+         ; Aws.Util.option_map v.target_parameter_name (fun f ->
+               "TargetParameterName", String.to_json f)
+         ; Aws.Util.option_map v.parameters (fun f ->
+               "Parameters", AutomationParameterMap.to_json f)
+         ])
+
+  let of_json j =
+    { parameters =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "Parameters")
+          AutomationParameterMap.of_json
+    ; target_parameter_name =
+        Aws.Util.option_map (Aws.Json.lookup j "TargetParameterName") String.of_json
+    ; targets = Targets.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Targets"))
+    ; target_maps =
+        TargetMaps.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "TargetMaps"))
+    ; target_locations =
+        TargetLocations.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "TargetLocations"))
+    ; target_locations_u_r_l =
+        Aws.Util.option_map (Aws.Json.lookup j "TargetLocationsURL") String.of_json
+    }
+end
+
+module ExecutionInputs = struct
+  type t = { automation : AutomationExecutionInputs.t option }
+
+  let make ?automation () = { automation }
+
+  let parse xml =
+    Some
+      { automation =
+          Aws.Util.option_bind
+            (Aws.Xml.member "Automation" xml)
+            AutomationExecutionInputs.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.automation (fun f ->
+               Aws.Query.Pair ("Automation", AutomationExecutionInputs.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.automation (fun f ->
+               "Automation", AutomationExecutionInputs.to_json f)
+         ])
+
+  let of_json j =
+    { automation =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "Automation")
+          AutomationExecutionInputs.of_json
+    }
+end
+
+module StartExecutionPreviewRequest = struct
+  type t =
+    { document_name : String.t
+    ; document_version : String.t option
+    ; execution_inputs : ExecutionInputs.t option
+    }
+
+  let make ~document_name ?document_version ?execution_inputs () =
+    { document_name; document_version; execution_inputs }
+
+  let parse xml =
+    Some
+      { document_name =
+          Aws.Xml.required
+            "DocumentName"
+            (Aws.Util.option_bind (Aws.Xml.member "DocumentName" xml) String.parse)
+      ; document_version =
+          Aws.Util.option_bind (Aws.Xml.member "DocumentVersion" xml) String.parse
+      ; execution_inputs =
+          Aws.Util.option_bind
+            (Aws.Xml.member "ExecutionInputs" xml)
+            ExecutionInputs.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.execution_inputs (fun f ->
+               Aws.Query.Pair ("ExecutionInputs", ExecutionInputs.to_query f))
+         ; Aws.Util.option_map v.document_version (fun f ->
+               Aws.Query.Pair ("DocumentVersion", String.to_query f))
+         ; Some (Aws.Query.Pair ("DocumentName", String.to_query v.document_name))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.execution_inputs (fun f ->
+               "ExecutionInputs", ExecutionInputs.to_json f)
+         ; Aws.Util.option_map v.document_version (fun f ->
+               "DocumentVersion", String.to_json f)
+         ; Some ("DocumentName", String.to_json v.document_name)
+         ])
+
+  let of_json j =
+    { document_name =
+        String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "DocumentName"))
+    ; document_version =
+        Aws.Util.option_map (Aws.Json.lookup j "DocumentVersion") String.of_json
+    ; execution_inputs =
+        Aws.Util.option_map (Aws.Json.lookup j "ExecutionInputs") ExecutionInputs.of_json
+    }
+end
+
 module IncompatiblePolicyException = struct
   type t = { message : String.t option }
 
@@ -9583,15 +11773,72 @@ module OpsItemStatus = struct
     | Open
     | InProgress
     | Resolved
+    | Pending
+    | TimedOut
+    | Cancelling
+    | Cancelled
+    | Failed
+    | CompletedWithSuccess
+    | CompletedWithFailure
+    | Scheduled
+    | RunbookInProgress
+    | PendingChangeCalendarOverride
+    | ChangeCalendarOverrideApproved
+    | ChangeCalendarOverrideRejected
+    | PendingApproval
+    | Approved
+    | Revoked
+    | Rejected
+    | Closed
 
-  let str_to_t = [ "Resolved", Resolved; "InProgress", InProgress; "Open", Open ]
+  let str_to_t =
+    [ "Closed", Closed
+    ; "Rejected", Rejected
+    ; "Revoked", Revoked
+    ; "Approved", Approved
+    ; "PendingApproval", PendingApproval
+    ; "ChangeCalendarOverrideRejected", ChangeCalendarOverrideRejected
+    ; "ChangeCalendarOverrideApproved", ChangeCalendarOverrideApproved
+    ; "PendingChangeCalendarOverride", PendingChangeCalendarOverride
+    ; "RunbookInProgress", RunbookInProgress
+    ; "Scheduled", Scheduled
+    ; "CompletedWithFailure", CompletedWithFailure
+    ; "CompletedWithSuccess", CompletedWithSuccess
+    ; "Failed", Failed
+    ; "Cancelled", Cancelled
+    ; "Cancelling", Cancelling
+    ; "TimedOut", TimedOut
+    ; "Pending", Pending
+    ; "Resolved", Resolved
+    ; "InProgress", InProgress
+    ; "Open", Open
+    ]
 
-  let t_to_str = [ Resolved, "Resolved"; InProgress, "InProgress"; Open, "Open" ]
+  let t_to_str =
+    [ Closed, "Closed"
+    ; Rejected, "Rejected"
+    ; Revoked, "Revoked"
+    ; Approved, "Approved"
+    ; PendingApproval, "PendingApproval"
+    ; ChangeCalendarOverrideRejected, "ChangeCalendarOverrideRejected"
+    ; ChangeCalendarOverrideApproved, "ChangeCalendarOverrideApproved"
+    ; PendingChangeCalendarOverride, "PendingChangeCalendarOverride"
+    ; RunbookInProgress, "RunbookInProgress"
+    ; Scheduled, "Scheduled"
+    ; CompletedWithFailure, "CompletedWithFailure"
+    ; CompletedWithSuccess, "CompletedWithSuccess"
+    ; Failed, "Failed"
+    ; Cancelled, "Cancelled"
+    ; Cancelling, "Cancelling"
+    ; TimedOut, "TimedOut"
+    ; Pending, "Pending"
+    ; Resolved, "Resolved"
+    ; InProgress, "InProgress"
+    ; Open, "Open"
+    ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -9601,7 +11848,6 @@ module OpsItemStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -9707,13 +11953,9 @@ module DocumentPermissionType = struct
   type t = Share
 
   let str_to_t = [ "Share", Share ]
-
   let t_to_str = [ Share, "Share" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -9723,7 +11965,6 @@ module DocumentPermissionType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -9736,9 +11977,7 @@ module AccountIdList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -10007,9 +12246,7 @@ module AssociationExecutionTargetsList = struct
       (List.map AssociationExecutionTarget.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list AssociationExecutionTarget.to_query v
-
   let to_json v = `List (List.map AssociationExecutionTarget.to_json v)
-
   let of_json j = Aws.Json.to_list AssociationExecutionTarget.of_json j
 end
 
@@ -10021,9 +12258,11 @@ module SessionFilterKey = struct
     | Owner
     | Status
     | SessionId
+    | AccessType
 
   let str_to_t =
-    [ "SessionId", SessionId
+    [ "AccessType", AccessType
+    ; "SessionId", SessionId
     ; "Status", Status
     ; "Owner", Owner
     ; "Target", Target
@@ -10032,7 +12271,8 @@ module SessionFilterKey = struct
     ]
 
   let t_to_str =
-    [ SessionId, "SessionId"
+    [ AccessType, "AccessType"
+    ; SessionId, "SessionId"
     ; Status, "Status"
     ; Owner, "Owner"
     ; Target, "Target"
@@ -10041,9 +12281,7 @@ module SessionFilterKey = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -10053,7 +12291,6 @@ module SessionFilterKey = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -10106,9 +12343,7 @@ module SessionFilterList = struct
     Aws.Util.option_all (List.map SessionFilter.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list SessionFilter.to_query v
-
   let to_json v = `List (List.map SessionFilter.to_json v)
-
   let of_json j = Aws.Json.to_list SessionFilter.of_json j
 end
 
@@ -10117,6 +12352,7 @@ module UpdateDocumentRequest = struct
     { content : String.t
     ; attachments : AttachmentsSourceList.t
     ; name : String.t
+    ; display_name : String.t option
     ; version_name : String.t option
     ; document_version : String.t option
     ; document_format : DocumentFormat.t option
@@ -10127,6 +12363,7 @@ module UpdateDocumentRequest = struct
       ~content
       ?(attachments = [])
       ~name
+      ?display_name
       ?version_name
       ?document_version
       ?document_format
@@ -10135,6 +12372,7 @@ module UpdateDocumentRequest = struct
     { content
     ; attachments
     ; name
+    ; display_name
     ; version_name
     ; document_version
     ; document_format
@@ -10157,6 +12395,8 @@ module UpdateDocumentRequest = struct
           Aws.Xml.required
             "Name"
             (Aws.Util.option_bind (Aws.Xml.member "Name" xml) String.parse)
+      ; display_name =
+          Aws.Util.option_bind (Aws.Xml.member "DisplayName" xml) String.parse
       ; version_name =
           Aws.Util.option_bind (Aws.Xml.member "VersionName" xml) String.parse
       ; document_version =
@@ -10177,6 +12417,8 @@ module UpdateDocumentRequest = struct
                Aws.Query.Pair ("DocumentVersion", String.to_query f))
          ; Aws.Util.option_map v.version_name (fun f ->
                Aws.Query.Pair ("VersionName", String.to_query f))
+         ; Aws.Util.option_map v.display_name (fun f ->
+               Aws.Query.Pair ("DisplayName", String.to_query f))
          ; Some (Aws.Query.Pair ("Name", String.to_query v.name))
          ; Some
              (Aws.Query.Pair
@@ -10193,6 +12435,7 @@ module UpdateDocumentRequest = struct
          ; Aws.Util.option_map v.document_version (fun f ->
                "DocumentVersion", String.to_json f)
          ; Aws.Util.option_map v.version_name (fun f -> "VersionName", String.to_json f)
+         ; Aws.Util.option_map v.display_name (fun f -> "DisplayName", String.to_json f)
          ; Some ("Name", String.to_json v.name)
          ; Some ("Attachments", AttachmentsSourceList.to_json v.attachments)
          ; Some ("Content", String.to_json v.content)
@@ -10204,6 +12447,7 @@ module UpdateDocumentRequest = struct
         AttachmentsSourceList.of_json
           (Aws.Util.of_option_exn (Aws.Json.lookup j "Attachments"))
     ; name = String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Name"))
+    ; display_name = Aws.Util.option_map (Aws.Json.lookup j "DisplayName") String.of_json
     ; version_name = Aws.Util.option_map (Aws.Json.lookup j "VersionName") String.of_json
     ; document_version =
         Aws.Util.option_map (Aws.Json.lookup j "DocumentVersion") String.of_json
@@ -10222,9 +12466,7 @@ module AutomationExecutionFilterValueList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -10284,13 +12526,9 @@ module PatchOperationType = struct
     | Install
 
   let str_to_t = [ "Install", Install; "Scan", Scan ]
-
   let t_to_str = [ Install, "Install"; Scan, "Scan" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -10300,7 +12538,6 @@ module PatchOperationType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -10320,11 +12557,15 @@ module InstancePatchState = struct
     ; failed_count : Integer.t option
     ; unreported_not_applicable_count : Integer.t option
     ; not_applicable_count : Integer.t option
+    ; available_security_update_count : Integer.t option
     ; operation_start_time : DateTime.t
     ; operation_end_time : DateTime.t
     ; operation : PatchOperationType.t
     ; last_no_reboot_install_operation_time : DateTime.t option
     ; reboot_option : RebootOption.t option
+    ; critical_non_compliant_count : Integer.t option
+    ; security_non_compliant_count : Integer.t option
+    ; other_non_compliant_count : Integer.t option
     }
 
   let make
@@ -10342,11 +12583,15 @@ module InstancePatchState = struct
       ?failed_count
       ?unreported_not_applicable_count
       ?not_applicable_count
+      ?available_security_update_count
       ~operation_start_time
       ~operation_end_time
       ~operation
       ?last_no_reboot_install_operation_time
       ?reboot_option
+      ?critical_non_compliant_count
+      ?security_non_compliant_count
+      ?other_non_compliant_count
       () =
     { instance_id
     ; patch_group
@@ -10362,11 +12607,15 @@ module InstancePatchState = struct
     ; failed_count
     ; unreported_not_applicable_count
     ; not_applicable_count
+    ; available_security_update_count
     ; operation_start_time
     ; operation_end_time
     ; operation
     ; last_no_reboot_install_operation_time
     ; reboot_option
+    ; critical_non_compliant_count
+    ; security_non_compliant_count
+    ; other_non_compliant_count
     }
 
   let parse xml =
@@ -10408,6 +12657,10 @@ module InstancePatchState = struct
             Integer.parse
       ; not_applicable_count =
           Aws.Util.option_bind (Aws.Xml.member "NotApplicableCount" xml) Integer.parse
+      ; available_security_update_count =
+          Aws.Util.option_bind
+            (Aws.Xml.member "AvailableSecurityUpdateCount" xml)
+            Integer.parse
       ; operation_start_time =
           Aws.Xml.required
             "OperationStartTime"
@@ -10430,12 +12683,28 @@ module InstancePatchState = struct
             DateTime.parse
       ; reboot_option =
           Aws.Util.option_bind (Aws.Xml.member "RebootOption" xml) RebootOption.parse
+      ; critical_non_compliant_count =
+          Aws.Util.option_bind
+            (Aws.Xml.member "CriticalNonCompliantCount" xml)
+            Integer.parse
+      ; security_non_compliant_count =
+          Aws.Util.option_bind
+            (Aws.Xml.member "SecurityNonCompliantCount" xml)
+            Integer.parse
+      ; other_non_compliant_count =
+          Aws.Util.option_bind (Aws.Xml.member "OtherNonCompliantCount" xml) Integer.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.reboot_option (fun f ->
+         [ Aws.Util.option_map v.other_non_compliant_count (fun f ->
+               Aws.Query.Pair ("OtherNonCompliantCount", Integer.to_query f))
+         ; Aws.Util.option_map v.security_non_compliant_count (fun f ->
+               Aws.Query.Pair ("SecurityNonCompliantCount", Integer.to_query f))
+         ; Aws.Util.option_map v.critical_non_compliant_count (fun f ->
+               Aws.Query.Pair ("CriticalNonCompliantCount", Integer.to_query f))
+         ; Aws.Util.option_map v.reboot_option (fun f ->
                Aws.Query.Pair ("RebootOption", RebootOption.to_query f))
          ; Aws.Util.option_map v.last_no_reboot_install_operation_time (fun f ->
                Aws.Query.Pair ("LastNoRebootInstallOperationTime", DateTime.to_query f))
@@ -10445,6 +12714,8 @@ module InstancePatchState = struct
          ; Some
              (Aws.Query.Pair
                 ("OperationStartTime", DateTime.to_query v.operation_start_time))
+         ; Aws.Util.option_map v.available_security_update_count (fun f ->
+               Aws.Query.Pair ("AvailableSecurityUpdateCount", Integer.to_query f))
          ; Aws.Util.option_map v.not_applicable_count (fun f ->
                Aws.Query.Pair ("NotApplicableCount", Integer.to_query f))
          ; Aws.Util.option_map v.unreported_not_applicable_count (fun f ->
@@ -10475,13 +12746,21 @@ module InstancePatchState = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.reboot_option (fun f ->
+         [ Aws.Util.option_map v.other_non_compliant_count (fun f ->
+               "OtherNonCompliantCount", Integer.to_json f)
+         ; Aws.Util.option_map v.security_non_compliant_count (fun f ->
+               "SecurityNonCompliantCount", Integer.to_json f)
+         ; Aws.Util.option_map v.critical_non_compliant_count (fun f ->
+               "CriticalNonCompliantCount", Integer.to_json f)
+         ; Aws.Util.option_map v.reboot_option (fun f ->
                "RebootOption", RebootOption.to_json f)
          ; Aws.Util.option_map v.last_no_reboot_install_operation_time (fun f ->
                "LastNoRebootInstallOperationTime", DateTime.to_json f)
          ; Some ("Operation", PatchOperationType.to_json v.operation)
          ; Some ("OperationEndTime", DateTime.to_json v.operation_end_time)
          ; Some ("OperationStartTime", DateTime.to_json v.operation_start_time)
+         ; Aws.Util.option_map v.available_security_update_count (fun f ->
+               "AvailableSecurityUpdateCount", Integer.to_json f)
          ; Aws.Util.option_map v.not_applicable_count (fun f ->
                "NotApplicableCount", Integer.to_json f)
          ; Aws.Util.option_map v.unreported_not_applicable_count (fun f ->
@@ -10538,6 +12817,10 @@ module InstancePatchState = struct
           Integer.of_json
     ; not_applicable_count =
         Aws.Util.option_map (Aws.Json.lookup j "NotApplicableCount") Integer.of_json
+    ; available_security_update_count =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "AvailableSecurityUpdateCount")
+          Integer.of_json
     ; operation_start_time =
         DateTime.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "OperationStartTime"))
     ; operation_end_time =
@@ -10551,6 +12834,16 @@ module InstancePatchState = struct
           DateTime.of_json
     ; reboot_option =
         Aws.Util.option_map (Aws.Json.lookup j "RebootOption") RebootOption.of_json
+    ; critical_non_compliant_count =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "CriticalNonCompliantCount")
+          Integer.of_json
+    ; security_non_compliant_count =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "SecurityNonCompliantCount")
+          Integer.of_json
+    ; other_non_compliant_count =
+        Aws.Util.option_map (Aws.Json.lookup j "OtherNonCompliantCount") Integer.of_json
     }
 end
 
@@ -10563,9 +12856,7 @@ module InstancePatchStateList = struct
     Aws.Util.option_all (List.map InstancePatchState.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list InstancePatchState.to_query v
-
   let to_json v = `List (List.map InstancePatchState.to_json v)
-
   let of_json j = Aws.Json.to_list InstancePatchState.of_json j
 end
 
@@ -10647,13 +12938,9 @@ module StopAutomationExecutionResult = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -10695,6 +12982,11 @@ module OpsItemSummary = struct
     ; operational_data : OpsItemOperationalData.t option
     ; category : String.t option
     ; severity : String.t option
+    ; ops_item_type : String.t option
+    ; actual_start_time : DateTime.t option
+    ; actual_end_time : DateTime.t option
+    ; planned_start_time : DateTime.t option
+    ; planned_end_time : DateTime.t option
     }
 
   let make
@@ -10710,6 +13002,11 @@ module OpsItemSummary = struct
       ?operational_data
       ?category
       ?severity
+      ?ops_item_type
+      ?actual_start_time
+      ?actual_end_time
+      ?planned_start_time
+      ?planned_end_time
       () =
     { created_by
     ; created_time
@@ -10723,6 +13020,11 @@ module OpsItemSummary = struct
     ; operational_data
     ; category
     ; severity
+    ; ops_item_type
+    ; actual_start_time
+    ; actual_end_time
+    ; planned_start_time
+    ; planned_end_time
     }
 
   let parse xml =
@@ -10745,12 +13047,32 @@ module OpsItemSummary = struct
             OpsItemOperationalData.parse
       ; category = Aws.Util.option_bind (Aws.Xml.member "Category" xml) String.parse
       ; severity = Aws.Util.option_bind (Aws.Xml.member "Severity" xml) String.parse
+      ; ops_item_type =
+          Aws.Util.option_bind (Aws.Xml.member "OpsItemType" xml) String.parse
+      ; actual_start_time =
+          Aws.Util.option_bind (Aws.Xml.member "ActualStartTime" xml) DateTime.parse
+      ; actual_end_time =
+          Aws.Util.option_bind (Aws.Xml.member "ActualEndTime" xml) DateTime.parse
+      ; planned_start_time =
+          Aws.Util.option_bind (Aws.Xml.member "PlannedStartTime" xml) DateTime.parse
+      ; planned_end_time =
+          Aws.Util.option_bind (Aws.Xml.member "PlannedEndTime" xml) DateTime.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.severity (fun f ->
+         [ Aws.Util.option_map v.planned_end_time (fun f ->
+               Aws.Query.Pair ("PlannedEndTime", DateTime.to_query f))
+         ; Aws.Util.option_map v.planned_start_time (fun f ->
+               Aws.Query.Pair ("PlannedStartTime", DateTime.to_query f))
+         ; Aws.Util.option_map v.actual_end_time (fun f ->
+               Aws.Query.Pair ("ActualEndTime", DateTime.to_query f))
+         ; Aws.Util.option_map v.actual_start_time (fun f ->
+               Aws.Query.Pair ("ActualStartTime", DateTime.to_query f))
+         ; Aws.Util.option_map v.ops_item_type (fun f ->
+               Aws.Query.Pair ("OpsItemType", String.to_query f))
+         ; Aws.Util.option_map v.severity (fun f ->
                Aws.Query.Pair ("Severity", String.to_query f))
          ; Aws.Util.option_map v.category (fun f ->
                Aws.Query.Pair ("Category", String.to_query f))
@@ -10779,7 +13101,16 @@ module OpsItemSummary = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.severity (fun f -> "Severity", String.to_json f)
+         [ Aws.Util.option_map v.planned_end_time (fun f ->
+               "PlannedEndTime", DateTime.to_json f)
+         ; Aws.Util.option_map v.planned_start_time (fun f ->
+               "PlannedStartTime", DateTime.to_json f)
+         ; Aws.Util.option_map v.actual_end_time (fun f ->
+               "ActualEndTime", DateTime.to_json f)
+         ; Aws.Util.option_map v.actual_start_time (fun f ->
+               "ActualStartTime", DateTime.to_json f)
+         ; Aws.Util.option_map v.ops_item_type (fun f -> "OpsItemType", String.to_json f)
+         ; Aws.Util.option_map v.severity (fun f -> "Severity", String.to_json f)
          ; Aws.Util.option_map v.category (fun f -> "Category", String.to_json f)
          ; Aws.Util.option_map v.operational_data (fun f ->
                "OperationalData", OpsItemOperationalData.to_json f)
@@ -10815,6 +13146,15 @@ module OpsItemSummary = struct
           OpsItemOperationalData.of_json
     ; category = Aws.Util.option_map (Aws.Json.lookup j "Category") String.of_json
     ; severity = Aws.Util.option_map (Aws.Json.lookup j "Severity") String.of_json
+    ; ops_item_type = Aws.Util.option_map (Aws.Json.lookup j "OpsItemType") String.of_json
+    ; actual_start_time =
+        Aws.Util.option_map (Aws.Json.lookup j "ActualStartTime") DateTime.of_json
+    ; actual_end_time =
+        Aws.Util.option_map (Aws.Json.lookup j "ActualEndTime") DateTime.of_json
+    ; planned_start_time =
+        Aws.Util.option_map (Aws.Json.lookup j "PlannedStartTime") DateTime.of_json
+    ; planned_end_time =
+        Aws.Util.option_map (Aws.Json.lookup j "PlannedEndTime") DateTime.of_json
     }
 end
 
@@ -10867,9 +13207,7 @@ module AssociationComplianceSeverity = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -10879,7 +13217,6 @@ module AssociationComplianceSeverity = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -10908,9 +13245,7 @@ module CommandFilterKey = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -10920,7 +13255,6 @@ module CommandFilterKey = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -10973,9 +13307,7 @@ module CommandFilterList = struct
     Aws.Util.option_all (List.map CommandFilter.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list CommandFilter.to_query v
-
   let to_json v = `List (List.map CommandFilter.to_json v)
-
   let of_json j = Aws.Json.to_list CommandFilter.of_json j
 end
 
@@ -11193,9 +13525,7 @@ module ComplianceSeverity = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -11205,7 +13535,6 @@ module ComplianceSeverity = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -11213,14 +13542,15 @@ module ComplianceItemDetails = struct
   type t = (String.t, String.t) Hashtbl.t
 
   let make elems () = elems
-
   let parse xml = None
-
   let to_query v = Aws.Query.to_query_hashtbl String.to_string String.to_query v
 
   let to_json v =
     `Assoc
-      (Hashtbl.fold (fun k v acc -> (String.to_string k, String.to_json v) :: acc) v [])
+      (Hashtbl.fold
+         (fun k -> fun v -> fun acc -> (String.to_string k, String.to_json v) :: acc)
+         v
+         [])
 
   let of_json j = Aws.Json.to_hashtbl String.of_string String.of_json j
 end
@@ -11349,10 +13679,86 @@ module ComplianceItemList = struct
     Aws.Util.option_all (List.map ComplianceItem.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list ComplianceItem.to_query v
-
   let to_json v = `List (List.map ComplianceItem.to_json v)
-
   let of_json j = Aws.Json.to_list ComplianceItem.of_json j
+end
+
+module OpsItemRelatedItemsFilterKey = struct
+  type t =
+    | ResourceType
+    | AssociationId
+    | ResourceUri
+
+  let str_to_t =
+    [ "ResourceUri", ResourceUri
+    ; "AssociationId", AssociationId
+    ; "ResourceType", ResourceType
+    ]
+
+  let t_to_str =
+    [ ResourceUri, "ResourceUri"
+    ; AssociationId, "AssociationId"
+    ; ResourceType, "ResourceType"
+    ]
+
+  let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
+  let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
+  let make v () = v
+
+  let parse xml =
+    Aws.Util.option_bind (String.parse xml) (fun s -> Aws.Util.list_find str_to_t s)
+
+  let to_query v =
+    Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
+  let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
+end
+
+module GetResourcePoliciesRequest = struct
+  type t =
+    { resource_arn : String.t
+    ; next_token : String.t option
+    ; max_results : Integer.t option
+    }
+
+  let make ~resource_arn ?next_token ?max_results () =
+    { resource_arn; next_token; max_results }
+
+  let parse xml =
+    Some
+      { resource_arn =
+          Aws.Xml.required
+            "ResourceArn"
+            (Aws.Util.option_bind (Aws.Xml.member "ResourceArn" xml) String.parse)
+      ; next_token = Aws.Util.option_bind (Aws.Xml.member "NextToken" xml) String.parse
+      ; max_results = Aws.Util.option_bind (Aws.Xml.member "MaxResults" xml) Integer.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.max_results (fun f ->
+               Aws.Query.Pair ("MaxResults", Integer.to_query f))
+         ; Aws.Util.option_map v.next_token (fun f ->
+               Aws.Query.Pair ("NextToken", String.to_query f))
+         ; Some (Aws.Query.Pair ("ResourceArn", String.to_query v.resource_arn))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.max_results (fun f -> "MaxResults", Integer.to_json f)
+         ; Aws.Util.option_map v.next_token (fun f -> "NextToken", String.to_json f)
+         ; Some ("ResourceArn", String.to_json v.resource_arn)
+         ])
+
+  let of_json j =
+    { resource_arn =
+        String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "ResourceArn"))
+    ; next_token = Aws.Util.option_map (Aws.Json.lookup j "NextToken") String.of_json
+    ; max_results = Aws.Util.option_map (Aws.Json.lookup j "MaxResults") Integer.of_json
+    }
 end
 
 module InstanceInformationFilterKey = struct
@@ -11389,9 +13795,7 @@ module InstanceInformationFilterKey = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -11401,8 +13805,24 @@ module InstanceInformationFilterKey = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
+end
+
+module NodeSummary = struct
+  type t = (String.t, String.t) Hashtbl.t
+
+  let make elems () = elems
+  let parse xml = None
+  let to_query v = Aws.Query.to_query_hashtbl String.to_string String.to_query v
+
+  let to_json v =
+    `Assoc
+      (Hashtbl.fold
+         (fun k -> fun v -> fun acc -> (String.to_string k, String.to_json v) :: acc)
+         v
+         [])
+
+  let of_json j = Aws.Json.to_hashtbl String.of_string String.of_json j
 end
 
 module DescribeActivationsFilterKeys = struct
@@ -11424,9 +13844,7 @@ module DescribeActivationsFilterKeys = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -11436,7 +13854,6 @@ module DescribeActivationsFilterKeys = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -11497,9 +13914,7 @@ module DescribeActivationsFilterList = struct
       (List.map DescribeActivationsFilter.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list DescribeActivationsFilter.to_query v
-
   let to_json v = `List (List.map DescribeActivationsFilter.to_json v)
-
   let of_json j = Aws.Json.to_list DescribeActivationsFilter.of_json j
 end
 
@@ -11600,9 +14015,7 @@ module MaintenanceWindowsForTargetList = struct
       (List.map MaintenanceWindowIdentityForTarget.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list MaintenanceWindowIdentityForTarget.to_query v
-
   let to_json v = `List (List.map MaintenanceWindowIdentityForTarget.to_json v)
-
   let of_json j = Aws.Json.to_list MaintenanceWindowIdentityForTarget.of_json j
 end
 
@@ -11675,9 +14088,7 @@ module MaintenanceWindowTaskType = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -11687,7 +14098,6 @@ module MaintenanceWindowTaskType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -11978,9 +14388,7 @@ module InstanceInformationFilterList = struct
       (List.map InstanceInformationFilter.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list InstanceInformationFilter.to_query v
-
   let to_json v = `List (List.map InstanceInformationFilter.to_json v)
-
   let of_json j = Aws.Json.to_list InstanceInformationFilter.of_json j
 end
 
@@ -12121,9 +14529,7 @@ module AccountSharingInfoList = struct
     Aws.Util.option_all (List.map AccountSharingInfo.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list AccountSharingInfo.to_query v
-
   let to_json v = `List (List.map AccountSharingInfo.to_json v)
-
   let of_json j = Aws.Json.to_list AccountSharingInfo.of_json j
 end
 
@@ -12131,10 +14537,11 @@ module DescribeDocumentPermissionResponse = struct
   type t =
     { account_ids : AccountIdList.t
     ; account_sharing_info_list : AccountSharingInfoList.t
+    ; next_token : String.t option
     }
 
-  let make ?(account_ids = []) ?(account_sharing_info_list = []) () =
-    { account_ids; account_sharing_info_list }
+  let make ?(account_ids = []) ?(account_sharing_info_list = []) ?next_token () =
+    { account_ids; account_sharing_info_list; next_token }
 
   let parse xml =
     Some
@@ -12148,12 +14555,15 @@ module DescribeDocumentPermissionResponse = struct
             (Aws.Util.option_bind
                (Aws.Xml.member "AccountSharingInfoList" xml)
                AccountSharingInfoList.parse)
+      ; next_token = Aws.Util.option_bind (Aws.Xml.member "NextToken" xml) String.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Some
+         [ Aws.Util.option_map v.next_token (fun f ->
+               Aws.Query.Pair ("NextToken", String.to_query f))
+         ; Some
              (Aws.Query.Pair
                 ( "AccountSharingInfoList.member"
                 , AccountSharingInfoList.to_query v.account_sharing_info_list ))
@@ -12164,7 +14574,8 @@ module DescribeDocumentPermissionResponse = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Some
+         [ Aws.Util.option_map v.next_token (fun f -> "NextToken", String.to_json f)
+         ; Some
              ( "AccountSharingInfoList"
              , AccountSharingInfoList.to_json v.account_sharing_info_list )
          ; Some ("AccountIds", AccountIdList.to_json v.account_ids)
@@ -12176,6 +14587,7 @@ module DescribeDocumentPermissionResponse = struct
     ; account_sharing_info_list =
         AccountSharingInfoList.of_json
           (Aws.Util.of_option_exn (Aws.Json.lookup j "AccountSharingInfoList"))
+    ; next_token = Aws.Util.option_map (Aws.Json.lookup j "NextToken") String.of_json
     }
 end
 
@@ -12188,9 +14600,7 @@ module InstanceIdList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -12319,19 +14729,28 @@ module InstanceAssociationOutputLocation = struct
     }
 end
 
+module CalendarNameOrARNList = struct
+  type t = String.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
+
+  let to_query v = Aws.Query.to_query_list String.to_query v
+  let to_json v = `List (List.map String.to_json v)
+  let of_json j = Aws.Json.to_list String.of_json j
+end
+
 module AssociationSyncCompliance = struct
   type t =
     | AUTO
     | MANUAL
 
   let str_to_t = [ "MANUAL", MANUAL; "AUTO", AUTO ]
-
   let t_to_str = [ MANUAL, "MANUAL"; AUTO, "AUTO" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -12341,7 +14760,6 @@ module AssociationSyncCompliance = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -12362,6 +14780,13 @@ module UpdateAssociationRequest = struct
     ; compliance_severity : AssociationComplianceSeverity.t option
     ; sync_compliance : AssociationSyncCompliance.t option
     ; apply_only_at_cron_interval : Boolean.t option
+    ; calendar_names : CalendarNameOrARNList.t
+    ; target_locations : TargetLocations.t
+    ; schedule_offset : Integer.t option
+    ; duration : Integer.t option
+    ; target_maps : TargetMaps.t
+    ; alarm_configuration : AlarmConfiguration.t option
+    ; association_dispatch_assume_role : String.t option
     }
 
   let make
@@ -12380,6 +14805,13 @@ module UpdateAssociationRequest = struct
       ?compliance_severity
       ?sync_compliance
       ?apply_only_at_cron_interval
+      ?(calendar_names = [])
+      ?(target_locations = [])
+      ?schedule_offset
+      ?duration
+      ?(target_maps = [])
+      ?alarm_configuration
+      ?association_dispatch_assume_role
       () =
     { association_id
     ; parameters
@@ -12396,6 +14828,13 @@ module UpdateAssociationRequest = struct
     ; compliance_severity
     ; sync_compliance
     ; apply_only_at_cron_interval
+    ; calendar_names
+    ; target_locations
+    ; schedule_offset
+    ; duration
+    ; target_maps
+    ; alarm_configuration
+    ; association_dispatch_assume_role
     }
 
   let parse xml =
@@ -12442,12 +14881,54 @@ module UpdateAssociationRequest = struct
           Aws.Util.option_bind
             (Aws.Xml.member "ApplyOnlyAtCronInterval" xml)
             Boolean.parse
+      ; calendar_names =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "CalendarNames" xml)
+               CalendarNameOrARNList.parse)
+      ; target_locations =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "TargetLocations" xml)
+               TargetLocations.parse)
+      ; schedule_offset =
+          Aws.Util.option_bind (Aws.Xml.member "ScheduleOffset" xml) Integer.parse
+      ; duration = Aws.Util.option_bind (Aws.Xml.member "Duration" xml) Integer.parse
+      ; target_maps =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind (Aws.Xml.member "TargetMaps" xml) TargetMaps.parse)
+      ; alarm_configuration =
+          Aws.Util.option_bind
+            (Aws.Xml.member "AlarmConfiguration" xml)
+            AlarmConfiguration.parse
+      ; association_dispatch_assume_role =
+          Aws.Util.option_bind
+            (Aws.Xml.member "AssociationDispatchAssumeRole" xml)
+            String.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.apply_only_at_cron_interval (fun f ->
+         [ Aws.Util.option_map v.association_dispatch_assume_role (fun f ->
+               Aws.Query.Pair ("AssociationDispatchAssumeRole", String.to_query f))
+         ; Aws.Util.option_map v.alarm_configuration (fun f ->
+               Aws.Query.Pair ("AlarmConfiguration", AlarmConfiguration.to_query f))
+         ; Some (Aws.Query.Pair ("TargetMaps.member", TargetMaps.to_query v.target_maps))
+         ; Aws.Util.option_map v.duration (fun f ->
+               Aws.Query.Pair ("Duration", Integer.to_query f))
+         ; Aws.Util.option_map v.schedule_offset (fun f ->
+               Aws.Query.Pair ("ScheduleOffset", Integer.to_query f))
+         ; Some
+             (Aws.Query.Pair
+                ("TargetLocations.member", TargetLocations.to_query v.target_locations))
+         ; Some
+             (Aws.Query.Pair
+                ("CalendarNames.member", CalendarNameOrARNList.to_query v.calendar_names))
+         ; Aws.Util.option_map v.apply_only_at_cron_interval (fun f ->
                Aws.Query.Pair ("ApplyOnlyAtCronInterval", Boolean.to_query f))
          ; Aws.Util.option_map v.sync_compliance (fun f ->
                Aws.Query.Pair ("SyncCompliance", AssociationSyncCompliance.to_query f))
@@ -12482,7 +14963,17 @@ module UpdateAssociationRequest = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.apply_only_at_cron_interval (fun f ->
+         [ Aws.Util.option_map v.association_dispatch_assume_role (fun f ->
+               "AssociationDispatchAssumeRole", String.to_json f)
+         ; Aws.Util.option_map v.alarm_configuration (fun f ->
+               "AlarmConfiguration", AlarmConfiguration.to_json f)
+         ; Some ("TargetMaps", TargetMaps.to_json v.target_maps)
+         ; Aws.Util.option_map v.duration (fun f -> "Duration", Integer.to_json f)
+         ; Aws.Util.option_map v.schedule_offset (fun f ->
+               "ScheduleOffset", Integer.to_json f)
+         ; Some ("TargetLocations", TargetLocations.to_json v.target_locations)
+         ; Some ("CalendarNames", CalendarNameOrARNList.to_json v.calendar_names)
+         ; Aws.Util.option_map v.apply_only_at_cron_interval (fun f ->
                "ApplyOnlyAtCronInterval", Boolean.to_json f)
          ; Aws.Util.option_map v.sync_compliance (fun f ->
                "SyncCompliance", AssociationSyncCompliance.to_json f)
@@ -12544,6 +15035,190 @@ module UpdateAssociationRequest = struct
           AssociationSyncCompliance.of_json
     ; apply_only_at_cron_interval =
         Aws.Util.option_map (Aws.Json.lookup j "ApplyOnlyAtCronInterval") Boolean.of_json
+    ; calendar_names =
+        CalendarNameOrARNList.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "CalendarNames"))
+    ; target_locations =
+        TargetLocations.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "TargetLocations"))
+    ; schedule_offset =
+        Aws.Util.option_map (Aws.Json.lookup j "ScheduleOffset") Integer.of_json
+    ; duration = Aws.Util.option_map (Aws.Json.lookup j "Duration") Integer.of_json
+    ; target_maps =
+        TargetMaps.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "TargetMaps"))
+    ; alarm_configuration =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "AlarmConfiguration")
+          AlarmConfiguration.of_json
+    ; association_dispatch_assume_role =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "AssociationDispatchAssumeRole")
+          String.of_json
+    }
+end
+
+module BaselineOverride = struct
+  type t =
+    { operating_system : OperatingSystem.t option
+    ; global_filters : PatchFilterGroup.t option
+    ; approval_rules : PatchRuleGroup.t option
+    ; approved_patches : PatchIdList.t
+    ; approved_patches_compliance_level : PatchComplianceLevel.t option
+    ; rejected_patches : PatchIdList.t
+    ; rejected_patches_action : PatchAction.t option
+    ; approved_patches_enable_non_security : Boolean.t option
+    ; sources : PatchSourceList.t
+    ; available_security_updates_compliance_status : PatchComplianceStatus.t option
+    }
+
+  let make
+      ?operating_system
+      ?global_filters
+      ?approval_rules
+      ?(approved_patches = [])
+      ?approved_patches_compliance_level
+      ?(rejected_patches = [])
+      ?rejected_patches_action
+      ?approved_patches_enable_non_security
+      ?(sources = [])
+      ?available_security_updates_compliance_status
+      () =
+    { operating_system
+    ; global_filters
+    ; approval_rules
+    ; approved_patches
+    ; approved_patches_compliance_level
+    ; rejected_patches
+    ; rejected_patches_action
+    ; approved_patches_enable_non_security
+    ; sources
+    ; available_security_updates_compliance_status
+    }
+
+  let parse xml =
+    Some
+      { operating_system =
+          Aws.Util.option_bind
+            (Aws.Xml.member "OperatingSystem" xml)
+            OperatingSystem.parse
+      ; global_filters =
+          Aws.Util.option_bind (Aws.Xml.member "GlobalFilters" xml) PatchFilterGroup.parse
+      ; approval_rules =
+          Aws.Util.option_bind (Aws.Xml.member "ApprovalRules" xml) PatchRuleGroup.parse
+      ; approved_patches =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "ApprovedPatches" xml)
+               PatchIdList.parse)
+      ; approved_patches_compliance_level =
+          Aws.Util.option_bind
+            (Aws.Xml.member "ApprovedPatchesComplianceLevel" xml)
+            PatchComplianceLevel.parse
+      ; rejected_patches =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "RejectedPatches" xml)
+               PatchIdList.parse)
+      ; rejected_patches_action =
+          Aws.Util.option_bind
+            (Aws.Xml.member "RejectedPatchesAction" xml)
+            PatchAction.parse
+      ; approved_patches_enable_non_security =
+          Aws.Util.option_bind
+            (Aws.Xml.member "ApprovedPatchesEnableNonSecurity" xml)
+            Boolean.parse
+      ; sources =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind (Aws.Xml.member "Sources" xml) PatchSourceList.parse)
+      ; available_security_updates_compliance_status =
+          Aws.Util.option_bind
+            (Aws.Xml.member "AvailableSecurityUpdatesComplianceStatus" xml)
+            PatchComplianceStatus.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.available_security_updates_compliance_status (fun f ->
+               Aws.Query.Pair
+                 ( "AvailableSecurityUpdatesComplianceStatus"
+                 , PatchComplianceStatus.to_query f ))
+         ; Some (Aws.Query.Pair ("Sources.member", PatchSourceList.to_query v.sources))
+         ; Aws.Util.option_map v.approved_patches_enable_non_security (fun f ->
+               Aws.Query.Pair ("ApprovedPatchesEnableNonSecurity", Boolean.to_query f))
+         ; Aws.Util.option_map v.rejected_patches_action (fun f ->
+               Aws.Query.Pair ("RejectedPatchesAction", PatchAction.to_query f))
+         ; Some
+             (Aws.Query.Pair
+                ("RejectedPatches.member", PatchIdList.to_query v.rejected_patches))
+         ; Aws.Util.option_map v.approved_patches_compliance_level (fun f ->
+               Aws.Query.Pair
+                 ("ApprovedPatchesComplianceLevel", PatchComplianceLevel.to_query f))
+         ; Some
+             (Aws.Query.Pair
+                ("ApprovedPatches.member", PatchIdList.to_query v.approved_patches))
+         ; Aws.Util.option_map v.approval_rules (fun f ->
+               Aws.Query.Pair ("ApprovalRules", PatchRuleGroup.to_query f))
+         ; Aws.Util.option_map v.global_filters (fun f ->
+               Aws.Query.Pair ("GlobalFilters", PatchFilterGroup.to_query f))
+         ; Aws.Util.option_map v.operating_system (fun f ->
+               Aws.Query.Pair ("OperatingSystem", OperatingSystem.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.available_security_updates_compliance_status (fun f ->
+               "AvailableSecurityUpdatesComplianceStatus", PatchComplianceStatus.to_json f)
+         ; Some ("Sources", PatchSourceList.to_json v.sources)
+         ; Aws.Util.option_map v.approved_patches_enable_non_security (fun f ->
+               "ApprovedPatchesEnableNonSecurity", Boolean.to_json f)
+         ; Aws.Util.option_map v.rejected_patches_action (fun f ->
+               "RejectedPatchesAction", PatchAction.to_json f)
+         ; Some ("RejectedPatches", PatchIdList.to_json v.rejected_patches)
+         ; Aws.Util.option_map v.approved_patches_compliance_level (fun f ->
+               "ApprovedPatchesComplianceLevel", PatchComplianceLevel.to_json f)
+         ; Some ("ApprovedPatches", PatchIdList.to_json v.approved_patches)
+         ; Aws.Util.option_map v.approval_rules (fun f ->
+               "ApprovalRules", PatchRuleGroup.to_json f)
+         ; Aws.Util.option_map v.global_filters (fun f ->
+               "GlobalFilters", PatchFilterGroup.to_json f)
+         ; Aws.Util.option_map v.operating_system (fun f ->
+               "OperatingSystem", OperatingSystem.to_json f)
+         ])
+
+  let of_json j =
+    { operating_system =
+        Aws.Util.option_map (Aws.Json.lookup j "OperatingSystem") OperatingSystem.of_json
+    ; global_filters =
+        Aws.Util.option_map (Aws.Json.lookup j "GlobalFilters") PatchFilterGroup.of_json
+    ; approval_rules =
+        Aws.Util.option_map (Aws.Json.lookup j "ApprovalRules") PatchRuleGroup.of_json
+    ; approved_patches =
+        PatchIdList.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "ApprovedPatches"))
+    ; approved_patches_compliance_level =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "ApprovedPatchesComplianceLevel")
+          PatchComplianceLevel.of_json
+    ; rejected_patches =
+        PatchIdList.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "RejectedPatches"))
+    ; rejected_patches_action =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "RejectedPatchesAction")
+          PatchAction.of_json
+    ; approved_patches_enable_non_security =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "ApprovedPatchesEnableNonSecurity")
+          Boolean.of_json
+    ; sources =
+        PatchSourceList.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Sources"))
+    ; available_security_updates_compliance_status =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "AvailableSecurityUpdatesComplianceStatus")
+          PatchComplianceStatus.of_json
     }
 end
 
@@ -12556,9 +15231,7 @@ module ComplianceStringFilterValueList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -12587,9 +15260,7 @@ module ComplianceQueryOperatorType = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -12599,7 +15270,6 @@ module ComplianceQueryOperatorType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -12667,9 +15337,7 @@ module ComplianceStringFilterList = struct
       (List.map ComplianceStringFilter.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list ComplianceStringFilter.to_query v
-
   let to_json v = `List (List.map ComplianceStringFilter.to_json v)
-
   let of_json j = Aws.Json.to_list ComplianceStringFilter.of_json j
 end
 
@@ -12682,9 +15350,7 @@ module ComplianceResourceTypeList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -12771,6 +15437,278 @@ module ListComplianceItemsRequest = struct
           (Aws.Util.of_option_exn (Aws.Json.lookup j "ResourceTypes"))
     ; next_token = Aws.Util.option_map (Aws.Json.lookup j "NextToken") String.of_json
     ; max_results = Aws.Util.option_map (Aws.Json.lookup j "MaxResults") Integer.of_json
+    }
+end
+
+module DocumentReviewCommentSource = struct
+  type t =
+    { type_ : DocumentReviewCommentType.t option
+    ; content : String.t option
+    }
+
+  let make ?type_ ?content () = { type_; content }
+
+  let parse xml =
+    Some
+      { type_ =
+          Aws.Util.option_bind (Aws.Xml.member "Type" xml) DocumentReviewCommentType.parse
+      ; content = Aws.Util.option_bind (Aws.Xml.member "Content" xml) String.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.content (fun f ->
+               Aws.Query.Pair ("Content", String.to_query f))
+         ; Aws.Util.option_map v.type_ (fun f ->
+               Aws.Query.Pair ("Type", DocumentReviewCommentType.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.content (fun f -> "Content", String.to_json f)
+         ; Aws.Util.option_map v.type_ (fun f ->
+               "Type", DocumentReviewCommentType.to_json f)
+         ])
+
+  let of_json j =
+    { type_ =
+        Aws.Util.option_map (Aws.Json.lookup j "Type") DocumentReviewCommentType.of_json
+    ; content = Aws.Util.option_map (Aws.Json.lookup j "Content") String.of_json
+    }
+end
+
+module DocumentReviewCommentList = struct
+  type t = DocumentReviewCommentSource.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Aws.Util.option_all
+      (List.map DocumentReviewCommentSource.parse (Aws.Xml.members "member" xml))
+
+  let to_query v = Aws.Query.to_query_list DocumentReviewCommentSource.to_query v
+  let to_json v = `List (List.map DocumentReviewCommentSource.to_json v)
+  let of_json j = Aws.Json.to_list DocumentReviewCommentSource.of_json j
+end
+
+module DocumentReviewerResponseSource = struct
+  type t =
+    { create_time : DateTime.t option
+    ; updated_time : DateTime.t option
+    ; review_status : ReviewStatus.t option
+    ; comment : DocumentReviewCommentList.t
+    ; reviewer : String.t option
+    }
+
+  let make ?create_time ?updated_time ?review_status ?(comment = []) ?reviewer () =
+    { create_time; updated_time; review_status; comment; reviewer }
+
+  let parse xml =
+    Some
+      { create_time =
+          Aws.Util.option_bind (Aws.Xml.member "CreateTime" xml) DateTime.parse
+      ; updated_time =
+          Aws.Util.option_bind (Aws.Xml.member "UpdatedTime" xml) DateTime.parse
+      ; review_status =
+          Aws.Util.option_bind (Aws.Xml.member "ReviewStatus" xml) ReviewStatus.parse
+      ; comment =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "Comment" xml)
+               DocumentReviewCommentList.parse)
+      ; reviewer = Aws.Util.option_bind (Aws.Xml.member "Reviewer" xml) String.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.reviewer (fun f ->
+               Aws.Query.Pair ("Reviewer", String.to_query f))
+         ; Some
+             (Aws.Query.Pair
+                ("Comment.member", DocumentReviewCommentList.to_query v.comment))
+         ; Aws.Util.option_map v.review_status (fun f ->
+               Aws.Query.Pair ("ReviewStatus", ReviewStatus.to_query f))
+         ; Aws.Util.option_map v.updated_time (fun f ->
+               Aws.Query.Pair ("UpdatedTime", DateTime.to_query f))
+         ; Aws.Util.option_map v.create_time (fun f ->
+               Aws.Query.Pair ("CreateTime", DateTime.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.reviewer (fun f -> "Reviewer", String.to_json f)
+         ; Some ("Comment", DocumentReviewCommentList.to_json v.comment)
+         ; Aws.Util.option_map v.review_status (fun f ->
+               "ReviewStatus", ReviewStatus.to_json f)
+         ; Aws.Util.option_map v.updated_time (fun f -> "UpdatedTime", DateTime.to_json f)
+         ; Aws.Util.option_map v.create_time (fun f -> "CreateTime", DateTime.to_json f)
+         ])
+
+  let of_json j =
+    { create_time = Aws.Util.option_map (Aws.Json.lookup j "CreateTime") DateTime.of_json
+    ; updated_time =
+        Aws.Util.option_map (Aws.Json.lookup j "UpdatedTime") DateTime.of_json
+    ; review_status =
+        Aws.Util.option_map (Aws.Json.lookup j "ReviewStatus") ReviewStatus.of_json
+    ; comment =
+        DocumentReviewCommentList.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "Comment"))
+    ; reviewer = Aws.Util.option_map (Aws.Json.lookup j "Reviewer") String.of_json
+    }
+end
+
+module DocumentReviewerResponseList = struct
+  type t = DocumentReviewerResponseSource.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Aws.Util.option_all
+      (List.map DocumentReviewerResponseSource.parse (Aws.Xml.members "member" xml))
+
+  let to_query v = Aws.Query.to_query_list DocumentReviewerResponseSource.to_query v
+  let to_json v = `List (List.map DocumentReviewerResponseSource.to_json v)
+  let of_json j = Aws.Json.to_list DocumentReviewerResponseSource.of_json j
+end
+
+module DocumentMetadataResponseInfo = struct
+  type t = { reviewer_response : DocumentReviewerResponseList.t }
+
+  let make ?(reviewer_response = []) () = { reviewer_response }
+
+  let parse xml =
+    Some
+      { reviewer_response =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "ReviewerResponse" xml)
+               DocumentReviewerResponseList.parse)
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Some
+             (Aws.Query.Pair
+                ( "ReviewerResponse.member"
+                , DocumentReviewerResponseList.to_query v.reviewer_response ))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Some
+             ("ReviewerResponse", DocumentReviewerResponseList.to_json v.reviewer_response)
+         ])
+
+  let of_json j =
+    { reviewer_response =
+        DocumentReviewerResponseList.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "ReviewerResponse"))
+    }
+end
+
+module UnlabelParameterVersionResult = struct
+  type t =
+    { removed_labels : ParameterLabelList.t
+    ; invalid_labels : ParameterLabelList.t
+    }
+
+  let make ?(removed_labels = []) ?(invalid_labels = []) () =
+    { removed_labels; invalid_labels }
+
+  let parse xml =
+    Some
+      { removed_labels =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "RemovedLabels" xml)
+               ParameterLabelList.parse)
+      ; invalid_labels =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "InvalidLabels" xml)
+               ParameterLabelList.parse)
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Some
+             (Aws.Query.Pair
+                ("InvalidLabels.member", ParameterLabelList.to_query v.invalid_labels))
+         ; Some
+             (Aws.Query.Pair
+                ("RemovedLabels.member", ParameterLabelList.to_query v.removed_labels))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Some ("InvalidLabels", ParameterLabelList.to_json v.invalid_labels)
+         ; Some ("RemovedLabels", ParameterLabelList.to_json v.removed_labels)
+         ])
+
+  let of_json j =
+    { removed_labels =
+        ParameterLabelList.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "RemovedLabels"))
+    ; invalid_labels =
+        ParameterLabelList.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "InvalidLabels"))
+    }
+end
+
+module ThrottlingException = struct
+  type t =
+    { message : String.t
+    ; quota_code : String.t option
+    ; service_code : String.t option
+    }
+
+  let make ~message ?quota_code ?service_code () = { message; quota_code; service_code }
+
+  let parse xml =
+    Some
+      { message =
+          Aws.Xml.required
+            "Message"
+            (Aws.Util.option_bind (Aws.Xml.member "Message" xml) String.parse)
+      ; quota_code = Aws.Util.option_bind (Aws.Xml.member "QuotaCode" xml) String.parse
+      ; service_code =
+          Aws.Util.option_bind (Aws.Xml.member "ServiceCode" xml) String.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.service_code (fun f ->
+               Aws.Query.Pair ("ServiceCode", String.to_query f))
+         ; Aws.Util.option_map v.quota_code (fun f ->
+               Aws.Query.Pair ("QuotaCode", String.to_query f))
+         ; Some (Aws.Query.Pair ("Message", String.to_query v.message))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.service_code (fun f -> "ServiceCode", String.to_json f)
+         ; Aws.Util.option_map v.quota_code (fun f -> "QuotaCode", String.to_json f)
+         ; Some ("Message", String.to_json v.message)
+         ])
+
+  let of_json j =
+    { message = String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Message"))
+    ; quota_code = Aws.Util.option_map (Aws.Json.lookup j "QuotaCode") String.of_json
+    ; service_code = Aws.Util.option_map (Aws.Json.lookup j "ServiceCode") String.of_json
     }
 end
 
@@ -12868,14 +15806,15 @@ module AssociationStatusAggregatedCount = struct
   type t = (String.t, Integer.t) Hashtbl.t
 
   let make elems () = elems
-
   let parse xml = None
-
   let to_query v = Aws.Query.to_query_hashtbl String.to_string Integer.to_query v
 
   let to_json v =
     `Assoc
-      (Hashtbl.fold (fun k v acc -> (String.to_string k, Integer.to_json v) :: acc) v [])
+      (Hashtbl.fold
+         (fun k -> fun v -> fun acc -> (String.to_string k, Integer.to_json v) :: acc)
+         v
+         [])
 
   let of_json j = Aws.Json.to_hashtbl String.of_string Integer.of_json j
 end
@@ -12948,6 +15887,9 @@ module Association = struct
     ; overview : AssociationOverview.t option
     ; schedule_expression : String.t option
     ; association_name : String.t option
+    ; schedule_offset : Integer.t option
+    ; duration : Integer.t option
+    ; target_maps : TargetMaps.t
     }
 
   let make
@@ -12961,6 +15903,9 @@ module Association = struct
       ?overview
       ?schedule_expression
       ?association_name
+      ?schedule_offset
+      ?duration
+      ?(target_maps = [])
       () =
     { name
     ; instance_id
@@ -12972,6 +15917,9 @@ module Association = struct
     ; overview
     ; schedule_expression
     ; association_name
+    ; schedule_offset
+    ; duration
+    ; target_maps
     }
 
   let parse xml =
@@ -12996,12 +15944,24 @@ module Association = struct
           Aws.Util.option_bind (Aws.Xml.member "ScheduleExpression" xml) String.parse
       ; association_name =
           Aws.Util.option_bind (Aws.Xml.member "AssociationName" xml) String.parse
+      ; schedule_offset =
+          Aws.Util.option_bind (Aws.Xml.member "ScheduleOffset" xml) Integer.parse
+      ; duration = Aws.Util.option_bind (Aws.Xml.member "Duration" xml) Integer.parse
+      ; target_maps =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind (Aws.Xml.member "TargetMaps" xml) TargetMaps.parse)
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.association_name (fun f ->
+         [ Some (Aws.Query.Pair ("TargetMaps.member", TargetMaps.to_query v.target_maps))
+         ; Aws.Util.option_map v.duration (fun f ->
+               Aws.Query.Pair ("Duration", Integer.to_query f))
+         ; Aws.Util.option_map v.schedule_offset (fun f ->
+               Aws.Query.Pair ("ScheduleOffset", Integer.to_query f))
+         ; Aws.Util.option_map v.association_name (fun f ->
                Aws.Query.Pair ("AssociationName", String.to_query f))
          ; Aws.Util.option_map v.schedule_expression (fun f ->
                Aws.Query.Pair ("ScheduleExpression", String.to_query f))
@@ -13025,7 +15985,11 @@ module Association = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.association_name (fun f ->
+         [ Some ("TargetMaps", TargetMaps.to_json v.target_maps)
+         ; Aws.Util.option_map v.duration (fun f -> "Duration", Integer.to_json f)
+         ; Aws.Util.option_map v.schedule_offset (fun f ->
+               "ScheduleOffset", Integer.to_json f)
+         ; Aws.Util.option_map v.association_name (fun f ->
                "AssociationName", String.to_json f)
          ; Aws.Util.option_map v.schedule_expression (fun f ->
                "ScheduleExpression", String.to_json f)
@@ -13062,6 +16026,11 @@ module Association = struct
         Aws.Util.option_map (Aws.Json.lookup j "ScheduleExpression") String.of_json
     ; association_name =
         Aws.Util.option_map (Aws.Json.lookup j "AssociationName") String.of_json
+    ; schedule_offset =
+        Aws.Util.option_map (Aws.Json.lookup j "ScheduleOffset") Integer.of_json
+    ; duration = Aws.Util.option_map (Aws.Json.lookup j "Duration") Integer.of_json
+    ; target_maps =
+        TargetMaps.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "TargetMaps"))
     }
 end
 
@@ -13074,9 +16043,7 @@ module AssociationList = struct
     Aws.Util.option_all (List.map Association.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list Association.to_query v
-
   let to_json v = `List (List.map Association.to_json v)
-
   let of_json j = Aws.Json.to_list Association.of_json j
 end
 
@@ -13086,13 +16053,9 @@ module CalendarState = struct
     | CLOSED
 
   let str_to_t = [ "CLOSED", CLOSED; "OPEN", OPEN ]
-
   let t_to_str = [ CLOSED, "CLOSED"; OPEN, "OPEN" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -13102,7 +16065,6 @@ module CalendarState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -13112,13 +16074,9 @@ module ExecutionMode = struct
     | Interactive
 
   let str_to_t = [ "Interactive", Interactive; "Auto", Auto ]
-
   let t_to_str = [ Interactive, "Interactive"; Auto, "Auto" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -13128,7 +16086,6 @@ module ExecutionMode = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -13157,6 +16114,151 @@ module DeleteParametersRequest = struct
   let of_json j =
     { names =
         ParameterNameList.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Names"))
+    }
+end
+
+module OpsItemRelatedItemSummary = struct
+  type t =
+    { ops_item_id : String.t option
+    ; association_id : String.t option
+    ; resource_type : String.t option
+    ; association_type : String.t option
+    ; resource_uri : String.t option
+    ; created_by : OpsItemIdentity.t option
+    ; created_time : DateTime.t option
+    ; last_modified_by : OpsItemIdentity.t option
+    ; last_modified_time : DateTime.t option
+    }
+
+  let make
+      ?ops_item_id
+      ?association_id
+      ?resource_type
+      ?association_type
+      ?resource_uri
+      ?created_by
+      ?created_time
+      ?last_modified_by
+      ?last_modified_time
+      () =
+    { ops_item_id
+    ; association_id
+    ; resource_type
+    ; association_type
+    ; resource_uri
+    ; created_by
+    ; created_time
+    ; last_modified_by
+    ; last_modified_time
+    }
+
+  let parse xml =
+    Some
+      { ops_item_id = Aws.Util.option_bind (Aws.Xml.member "OpsItemId" xml) String.parse
+      ; association_id =
+          Aws.Util.option_bind (Aws.Xml.member "AssociationId" xml) String.parse
+      ; resource_type =
+          Aws.Util.option_bind (Aws.Xml.member "ResourceType" xml) String.parse
+      ; association_type =
+          Aws.Util.option_bind (Aws.Xml.member "AssociationType" xml) String.parse
+      ; resource_uri =
+          Aws.Util.option_bind (Aws.Xml.member "ResourceUri" xml) String.parse
+      ; created_by =
+          Aws.Util.option_bind (Aws.Xml.member "CreatedBy" xml) OpsItemIdentity.parse
+      ; created_time =
+          Aws.Util.option_bind (Aws.Xml.member "CreatedTime" xml) DateTime.parse
+      ; last_modified_by =
+          Aws.Util.option_bind (Aws.Xml.member "LastModifiedBy" xml) OpsItemIdentity.parse
+      ; last_modified_time =
+          Aws.Util.option_bind (Aws.Xml.member "LastModifiedTime" xml) DateTime.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.last_modified_time (fun f ->
+               Aws.Query.Pair ("LastModifiedTime", DateTime.to_query f))
+         ; Aws.Util.option_map v.last_modified_by (fun f ->
+               Aws.Query.Pair ("LastModifiedBy", OpsItemIdentity.to_query f))
+         ; Aws.Util.option_map v.created_time (fun f ->
+               Aws.Query.Pair ("CreatedTime", DateTime.to_query f))
+         ; Aws.Util.option_map v.created_by (fun f ->
+               Aws.Query.Pair ("CreatedBy", OpsItemIdentity.to_query f))
+         ; Aws.Util.option_map v.resource_uri (fun f ->
+               Aws.Query.Pair ("ResourceUri", String.to_query f))
+         ; Aws.Util.option_map v.association_type (fun f ->
+               Aws.Query.Pair ("AssociationType", String.to_query f))
+         ; Aws.Util.option_map v.resource_type (fun f ->
+               Aws.Query.Pair ("ResourceType", String.to_query f))
+         ; Aws.Util.option_map v.association_id (fun f ->
+               Aws.Query.Pair ("AssociationId", String.to_query f))
+         ; Aws.Util.option_map v.ops_item_id (fun f ->
+               Aws.Query.Pair ("OpsItemId", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.last_modified_time (fun f ->
+               "LastModifiedTime", DateTime.to_json f)
+         ; Aws.Util.option_map v.last_modified_by (fun f ->
+               "LastModifiedBy", OpsItemIdentity.to_json f)
+         ; Aws.Util.option_map v.created_time (fun f -> "CreatedTime", DateTime.to_json f)
+         ; Aws.Util.option_map v.created_by (fun f ->
+               "CreatedBy", OpsItemIdentity.to_json f)
+         ; Aws.Util.option_map v.resource_uri (fun f -> "ResourceUri", String.to_json f)
+         ; Aws.Util.option_map v.association_type (fun f ->
+               "AssociationType", String.to_json f)
+         ; Aws.Util.option_map v.resource_type (fun f -> "ResourceType", String.to_json f)
+         ; Aws.Util.option_map v.association_id (fun f ->
+               "AssociationId", String.to_json f)
+         ; Aws.Util.option_map v.ops_item_id (fun f -> "OpsItemId", String.to_json f)
+         ])
+
+  let of_json j =
+    { ops_item_id = Aws.Util.option_map (Aws.Json.lookup j "OpsItemId") String.of_json
+    ; association_id =
+        Aws.Util.option_map (Aws.Json.lookup j "AssociationId") String.of_json
+    ; resource_type =
+        Aws.Util.option_map (Aws.Json.lookup j "ResourceType") String.of_json
+    ; association_type =
+        Aws.Util.option_map (Aws.Json.lookup j "AssociationType") String.of_json
+    ; resource_uri = Aws.Util.option_map (Aws.Json.lookup j "ResourceUri") String.of_json
+    ; created_by =
+        Aws.Util.option_map (Aws.Json.lookup j "CreatedBy") OpsItemIdentity.of_json
+    ; created_time =
+        Aws.Util.option_map (Aws.Json.lookup j "CreatedTime") DateTime.of_json
+    ; last_modified_by =
+        Aws.Util.option_map (Aws.Json.lookup j "LastModifiedBy") OpsItemIdentity.of_json
+    ; last_modified_time =
+        Aws.Util.option_map (Aws.Json.lookup j "LastModifiedTime") DateTime.of_json
+    }
+end
+
+module DeleteOpsItemRequest = struct
+  type t = { ops_item_id : String.t }
+
+  let make ~ops_item_id () = { ops_item_id }
+
+  let parse xml =
+    Some
+      { ops_item_id =
+          Aws.Xml.required
+            "OpsItemId"
+            (Aws.Util.option_bind (Aws.Xml.member "OpsItemId" xml) String.parse)
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Some (Aws.Query.Pair ("OpsItemId", String.to_query v.ops_item_id)) ])
+
+  let to_json v =
+    `Assoc (Aws.Util.list_filter_opt [ Some ("OpsItemId", String.to_json v.ops_item_id) ])
+
+  let of_json j =
+    { ops_item_id =
+        String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "OpsItemId"))
     }
 end
 
@@ -13201,11 +16303,66 @@ module UpdateDocumentDefaultVersionRequest = struct
     }
 end
 
+module GetOpsMetadataResult = struct
+  type t =
+    { resource_id : String.t option
+    ; metadata : MetadataMap.t option
+    ; next_token : String.t option
+    }
+
+  let make ?resource_id ?metadata ?next_token () = { resource_id; metadata; next_token }
+
+  let parse xml =
+    Some
+      { resource_id = Aws.Util.option_bind (Aws.Xml.member "ResourceId" xml) String.parse
+      ; metadata = Aws.Util.option_bind (Aws.Xml.member "Metadata" xml) MetadataMap.parse
+      ; next_token = Aws.Util.option_bind (Aws.Xml.member "NextToken" xml) String.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.next_token (fun f ->
+               Aws.Query.Pair ("NextToken", String.to_query f))
+         ; Aws.Util.option_map v.metadata (fun f ->
+               Aws.Query.Pair ("Metadata", MetadataMap.to_query f))
+         ; Aws.Util.option_map v.resource_id (fun f ->
+               Aws.Query.Pair ("ResourceId", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.next_token (fun f -> "NextToken", String.to_json f)
+         ; Aws.Util.option_map v.metadata (fun f -> "Metadata", MetadataMap.to_json f)
+         ; Aws.Util.option_map v.resource_id (fun f -> "ResourceId", String.to_json f)
+         ])
+
+  let of_json j =
+    { resource_id = Aws.Util.option_map (Aws.Json.lookup j "ResourceId") String.of_json
+    ; metadata = Aws.Util.option_map (Aws.Json.lookup j "Metadata") MetadataMap.of_json
+    ; next_token = Aws.Util.option_map (Aws.Json.lookup j "NextToken") String.of_json
+    }
+end
+
+module AlarmStateInformationList = struct
+  type t = AlarmStateInformation.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Aws.Util.option_all
+      (List.map AlarmStateInformation.parse (Aws.Xml.members "member" xml))
+
+  let to_query v = Aws.Query.to_query_list AlarmStateInformation.to_query v
+  let to_json v = `List (List.map AlarmStateInformation.to_json v)
+  let of_json j = Aws.Json.to_list AlarmStateInformation.of_json j
+end
+
 module InventoryResultItemMap = struct
   type t = (String.t, InventoryResultItem.t) Hashtbl.t
 
   let make elems () = elems
-
   let parse xml = None
 
   let to_query v =
@@ -13214,7 +16371,8 @@ module InventoryResultItemMap = struct
   let to_json v =
     `Assoc
       (Hashtbl.fold
-         (fun k v acc -> (String.to_string k, InventoryResultItem.to_json v) :: acc)
+         (fun k ->
+           fun v -> fun acc -> (String.to_string k, InventoryResultItem.to_json v) :: acc)
          v
          [])
 
@@ -13270,6 +16428,7 @@ module CreateDocumentRequest = struct
     ; requires : DocumentRequiresList.t
     ; attachments : AttachmentsSourceList.t
     ; name : String.t
+    ; display_name : String.t option
     ; version_name : String.t option
     ; document_type : DocumentType.t option
     ; document_format : DocumentFormat.t option
@@ -13282,6 +16441,7 @@ module CreateDocumentRequest = struct
       ?(requires = [])
       ?(attachments = [])
       ~name
+      ?display_name
       ?version_name
       ?document_type
       ?document_format
@@ -13292,6 +16452,7 @@ module CreateDocumentRequest = struct
     ; requires
     ; attachments
     ; name
+    ; display_name
     ; version_name
     ; document_type
     ; document_format
@@ -13321,6 +16482,8 @@ module CreateDocumentRequest = struct
           Aws.Xml.required
             "Name"
             (Aws.Util.option_bind (Aws.Xml.member "Name" xml) String.parse)
+      ; display_name =
+          Aws.Util.option_bind (Aws.Xml.member "DisplayName" xml) String.parse
       ; version_name =
           Aws.Util.option_bind (Aws.Xml.member "VersionName" xml) String.parse
       ; document_type =
@@ -13346,6 +16509,8 @@ module CreateDocumentRequest = struct
                Aws.Query.Pair ("DocumentType", DocumentType.to_query f))
          ; Aws.Util.option_map v.version_name (fun f ->
                Aws.Query.Pair ("VersionName", String.to_query f))
+         ; Aws.Util.option_map v.display_name (fun f ->
+               Aws.Query.Pair ("DisplayName", String.to_query f))
          ; Some (Aws.Query.Pair ("Name", String.to_query v.name))
          ; Some
              (Aws.Query.Pair
@@ -13365,6 +16530,7 @@ module CreateDocumentRequest = struct
          ; Aws.Util.option_map v.document_type (fun f ->
                "DocumentType", DocumentType.to_json f)
          ; Aws.Util.option_map v.version_name (fun f -> "VersionName", String.to_json f)
+         ; Aws.Util.option_map v.display_name (fun f -> "DisplayName", String.to_json f)
          ; Some ("Name", String.to_json v.name)
          ; Some ("Attachments", AttachmentsSourceList.to_json v.attachments)
          ; Some ("Requires", DocumentRequiresList.to_json v.requires)
@@ -13380,6 +16546,7 @@ module CreateDocumentRequest = struct
         AttachmentsSourceList.of_json
           (Aws.Util.of_option_exn (Aws.Json.lookup j "Attachments"))
     ; name = String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Name"))
+    ; display_name = Aws.Util.option_map (Aws.Json.lookup j "DisplayName") String.of_json
     ; version_name = Aws.Util.option_map (Aws.Json.lookup j "VersionName") String.of_json
     ; document_type =
         Aws.Util.option_map (Aws.Json.lookup j "DocumentType") DocumentType.of_json
@@ -13399,9 +16566,7 @@ module MaintenanceWindowTaskParameterValueList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -13445,7 +16610,6 @@ module MaintenanceWindowTaskParameters = struct
   type t = (String.t, MaintenanceWindowTaskParameterValueExpression.t) Hashtbl.t
 
   let make elems () = elems
-
   let parse xml = None
 
   let to_query v =
@@ -13457,9 +16621,11 @@ module MaintenanceWindowTaskParameters = struct
   let to_json v =
     `Assoc
       (Hashtbl.fold
-         (fun k v acc ->
-           (String.to_string k, MaintenanceWindowTaskParameterValueExpression.to_json v)
-           :: acc)
+         (fun k ->
+           fun v ->
+            fun acc ->
+             (String.to_string k, MaintenanceWindowTaskParameterValueExpression.to_json v)
+             :: acc)
          v
          [])
 
@@ -13535,6 +16701,8 @@ module UpdateMaintenanceWindowTaskRequest = struct
     ; name : String.t option
     ; description : String.t option
     ; replace : Boolean.t option
+    ; cutoff_behavior : MaintenanceWindowTaskCutoffBehavior.t option
+    ; alarm_configuration : AlarmConfiguration.t option
     }
 
   let make
@@ -13552,6 +16720,8 @@ module UpdateMaintenanceWindowTaskRequest = struct
       ?name
       ?description
       ?replace
+      ?cutoff_behavior
+      ?alarm_configuration
       () =
     { window_id
     ; window_task_id
@@ -13567,6 +16737,8 @@ module UpdateMaintenanceWindowTaskRequest = struct
     ; name
     ; description
     ; replace
+    ; cutoff_behavior
+    ; alarm_configuration
     }
 
   let parse xml =
@@ -13603,12 +16775,25 @@ module UpdateMaintenanceWindowTaskRequest = struct
       ; name = Aws.Util.option_bind (Aws.Xml.member "Name" xml) String.parse
       ; description = Aws.Util.option_bind (Aws.Xml.member "Description" xml) String.parse
       ; replace = Aws.Util.option_bind (Aws.Xml.member "Replace" xml) Boolean.parse
+      ; cutoff_behavior =
+          Aws.Util.option_bind
+            (Aws.Xml.member "CutoffBehavior" xml)
+            MaintenanceWindowTaskCutoffBehavior.parse
+      ; alarm_configuration =
+          Aws.Util.option_bind
+            (Aws.Xml.member "AlarmConfiguration" xml)
+            AlarmConfiguration.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.replace (fun f ->
+         [ Aws.Util.option_map v.alarm_configuration (fun f ->
+               Aws.Query.Pair ("AlarmConfiguration", AlarmConfiguration.to_query f))
+         ; Aws.Util.option_map v.cutoff_behavior (fun f ->
+               Aws.Query.Pair
+                 ("CutoffBehavior", MaintenanceWindowTaskCutoffBehavior.to_query f))
+         ; Aws.Util.option_map v.replace (fun f ->
                Aws.Query.Pair ("Replace", Boolean.to_query f))
          ; Aws.Util.option_map v.description (fun f ->
                Aws.Query.Pair ("Description", String.to_query f))
@@ -13641,7 +16826,11 @@ module UpdateMaintenanceWindowTaskRequest = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.replace (fun f -> "Replace", Boolean.to_json f)
+         [ Aws.Util.option_map v.alarm_configuration (fun f ->
+               "AlarmConfiguration", AlarmConfiguration.to_json f)
+         ; Aws.Util.option_map v.cutoff_behavior (fun f ->
+               "CutoffBehavior", MaintenanceWindowTaskCutoffBehavior.to_json f)
+         ; Aws.Util.option_map v.replace (fun f -> "Replace", Boolean.to_json f)
          ; Aws.Util.option_map v.description (fun f -> "Description", String.to_json f)
          ; Aws.Util.option_map v.name (fun f -> "Name", String.to_json f)
          ; Aws.Util.option_map v.logging_info (fun f ->
@@ -13688,6 +16877,14 @@ module UpdateMaintenanceWindowTaskRequest = struct
     ; name = Aws.Util.option_map (Aws.Json.lookup j "Name") String.of_json
     ; description = Aws.Util.option_map (Aws.Json.lookup j "Description") String.of_json
     ; replace = Aws.Util.option_map (Aws.Json.lookup j "Replace") Boolean.of_json
+    ; cutoff_behavior =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "CutoffBehavior")
+          MaintenanceWindowTaskCutoffBehavior.of_json
+    ; alarm_configuration =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "AlarmConfiguration")
+          AlarmConfiguration.of_json
     }
 end
 
@@ -13695,13 +16892,9 @@ module ModifyDocumentPermissionResponse = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -13733,9 +16926,7 @@ module PatchProperty = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -13745,7 +16936,6 @@ module PatchProperty = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -13822,6 +17012,104 @@ module DocumentDefaultVersionDescription = struct
     }
 end
 
+module CreateOpsMetadataResult = struct
+  type t = { ops_metadata_arn : String.t option }
+
+  let make ?ops_metadata_arn () = { ops_metadata_arn }
+
+  let parse xml =
+    Some
+      { ops_metadata_arn =
+          Aws.Util.option_bind (Aws.Xml.member "OpsMetadataArn" xml) String.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.ops_metadata_arn (fun f ->
+               Aws.Query.Pair ("OpsMetadataArn", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.ops_metadata_arn (fun f ->
+               "OpsMetadataArn", String.to_json f)
+         ])
+
+  let of_json j =
+    { ops_metadata_arn =
+        Aws.Util.option_map (Aws.Json.lookup j "OpsMetadataArn") String.of_json
+    }
+end
+
+module AccessDeniedException = struct
+  type t = { message : String.t }
+
+  let make ~message () = { message }
+
+  let parse xml =
+    Some
+      { message =
+          Aws.Xml.required
+            "Message"
+            (Aws.Util.option_bind (Aws.Xml.member "Message" xml) String.parse)
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Some (Aws.Query.Pair ("Message", String.to_query v.message)) ])
+
+  let to_json v =
+    `Assoc (Aws.Util.list_filter_opt [ Some ("Message", String.to_json v.message) ])
+
+  let of_json j =
+    { message = String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Message")) }
+end
+
+module ResourcePolicyLimitExceededException = struct
+  type t =
+    { limit : Integer.t option
+    ; limit_type : String.t option
+    ; message : String.t option
+    }
+
+  let make ?limit ?limit_type ?message () = { limit; limit_type; message }
+
+  let parse xml =
+    Some
+      { limit = Aws.Util.option_bind (Aws.Xml.member "Limit" xml) Integer.parse
+      ; limit_type = Aws.Util.option_bind (Aws.Xml.member "LimitType" xml) String.parse
+      ; message = Aws.Util.option_bind (Aws.Xml.member "Message" xml) String.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f ->
+               Aws.Query.Pair ("Message", String.to_query f))
+         ; Aws.Util.option_map v.limit_type (fun f ->
+               Aws.Query.Pair ("LimitType", String.to_query f))
+         ; Aws.Util.option_map v.limit (fun f ->
+               Aws.Query.Pair ("Limit", Integer.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f -> "Message", String.to_json f)
+         ; Aws.Util.option_map v.limit_type (fun f -> "LimitType", String.to_json f)
+         ; Aws.Util.option_map v.limit (fun f -> "Limit", Integer.to_json f)
+         ])
+
+  let of_json j =
+    { limit = Aws.Util.option_map (Aws.Json.lookup j "Limit") Integer.of_json
+    ; limit_type = Aws.Util.option_map (Aws.Json.lookup j "LimitType") String.of_json
+    ; message = Aws.Util.option_map (Aws.Json.lookup j "Message") String.of_json
+    }
+end
+
 module ParameterVersionLabelLimitExceeded = struct
   type t = { message : String.t option }
 
@@ -13846,6 +17134,20 @@ module ParameterVersionLabelLimitExceeded = struct
     { message = Aws.Util.option_map (Aws.Json.lookup j "message") String.of_json }
 end
 
+module RegistrationMetadataList = struct
+  type t = RegistrationMetadataItem.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Aws.Util.option_all
+      (List.map RegistrationMetadataItem.parse (Aws.Xml.members "member" xml))
+
+  let to_query v = Aws.Query.to_query_list RegistrationMetadataItem.to_query v
+  let to_json v = `List (List.map RegistrationMetadataItem.to_json v)
+  let of_json j = Aws.Json.to_list RegistrationMetadataItem.of_json j
+end
+
 module CreateActivationRequest = struct
   type t =
     { description : String.t option
@@ -13854,6 +17156,7 @@ module CreateActivationRequest = struct
     ; registration_limit : Integer.t option
     ; expiration_date : DateTime.t option
     ; tags : TagList.t
+    ; registration_metadata : RegistrationMetadataList.t
     }
 
   let make
@@ -13863,6 +17166,7 @@ module CreateActivationRequest = struct
       ?registration_limit
       ?expiration_date
       ?(tags = [])
+      ?(registration_metadata = [])
       () =
     { description
     ; default_instance_name
@@ -13870,6 +17174,7 @@ module CreateActivationRequest = struct
     ; registration_limit
     ; expiration_date
     ; tags
+    ; registration_metadata
     }
 
   let parse xml =
@@ -13889,12 +17194,22 @@ module CreateActivationRequest = struct
           Aws.Util.of_option
             []
             (Aws.Util.option_bind (Aws.Xml.member "Tags" xml) TagList.parse)
+      ; registration_metadata =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "RegistrationMetadata" xml)
+               RegistrationMetadataList.parse)
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Some (Aws.Query.Pair ("Tags.member", TagList.to_query v.tags))
+         [ Some
+             (Aws.Query.Pair
+                ( "RegistrationMetadata.member"
+                , RegistrationMetadataList.to_query v.registration_metadata ))
+         ; Some (Aws.Query.Pair ("Tags.member", TagList.to_query v.tags))
          ; Aws.Util.option_map v.expiration_date (fun f ->
                Aws.Query.Pair ("ExpirationDate", DateTime.to_query f))
          ; Aws.Util.option_map v.registration_limit (fun f ->
@@ -13909,7 +17224,10 @@ module CreateActivationRequest = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Some ("Tags", TagList.to_json v.tags)
+         [ Some
+             ( "RegistrationMetadata"
+             , RegistrationMetadataList.to_json v.registration_metadata )
+         ; Some ("Tags", TagList.to_json v.tags)
          ; Aws.Util.option_map v.expiration_date (fun f ->
                "ExpirationDate", DateTime.to_json f)
          ; Aws.Util.option_map v.registration_limit (fun f ->
@@ -13930,6 +17248,9 @@ module CreateActivationRequest = struct
     ; expiration_date =
         Aws.Util.option_map (Aws.Json.lookup j "ExpirationDate") DateTime.of_json
     ; tags = TagList.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Tags"))
+    ; registration_metadata =
+        RegistrationMetadataList.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "RegistrationMetadata"))
     }
 end
 
@@ -13976,6 +17297,104 @@ module DeleteAssociationRequest = struct
     ; association_id =
         Aws.Util.option_map (Aws.Json.lookup j "AssociationId") String.of_json
     }
+end
+
+module AccessRequestStatus = struct
+  type t =
+    | Approved
+    | Rejected
+    | Revoked
+    | Expired
+    | Pending
+
+  let str_to_t =
+    [ "Pending", Pending
+    ; "Expired", Expired
+    ; "Revoked", Revoked
+    ; "Rejected", Rejected
+    ; "Approved", Approved
+    ]
+
+  let t_to_str =
+    [ Pending, "Pending"
+    ; Expired, "Expired"
+    ; Revoked, "Revoked"
+    ; Rejected, "Rejected"
+    ; Approved, "Approved"
+    ]
+
+  let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
+  let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
+  let make v () = v
+
+  let parse xml =
+    Aws.Util.option_bind (String.parse xml) (fun s -> Aws.Util.list_find str_to_t s)
+
+  let to_query v =
+    Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
+  let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
+end
+
+module GetAccessTokenResponse = struct
+  type t =
+    { credentials : Credentials.t option
+    ; access_request_status : AccessRequestStatus.t option
+    }
+
+  let make ?credentials ?access_request_status () = { credentials; access_request_status }
+
+  let parse xml =
+    Some
+      { credentials =
+          Aws.Util.option_bind (Aws.Xml.member "Credentials" xml) Credentials.parse
+      ; access_request_status =
+          Aws.Util.option_bind
+            (Aws.Xml.member "AccessRequestStatus" xml)
+            AccessRequestStatus.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.access_request_status (fun f ->
+               Aws.Query.Pair ("AccessRequestStatus", AccessRequestStatus.to_query f))
+         ; Aws.Util.option_map v.credentials (fun f ->
+               Aws.Query.Pair ("Credentials", Credentials.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.access_request_status (fun f ->
+               "AccessRequestStatus", AccessRequestStatus.to_json f)
+         ; Aws.Util.option_map v.credentials (fun f ->
+               "Credentials", Credentials.to_json f)
+         ])
+
+  let of_json j =
+    { credentials =
+        Aws.Util.option_map (Aws.Json.lookup j "Credentials") Credentials.of_json
+    ; access_request_status =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "AccessRequestStatus")
+          AccessRequestStatus.of_json
+    }
+end
+
+module OpsItemEventSummaries = struct
+  type t = OpsItemEventSummary.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Aws.Util.option_all
+      (List.map OpsItemEventSummary.parse (Aws.Xml.members "member" xml))
+
+  let to_query v = Aws.Query.to_query_list OpsItemEventSummary.to_query v
+  let to_json v = `List (List.map OpsItemEventSummary.to_json v)
+  let of_json j = Aws.Json.to_list OpsItemEventSummary.of_json j
 end
 
 module DeleteActivationRequest = struct
@@ -14037,9 +17456,7 @@ module CommandStatus = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -14049,7 +17466,6 @@ module CommandStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -14079,6 +17495,8 @@ module Command = struct
     ; notification_config : NotificationConfig.t option
     ; cloud_watch_output_config : CloudWatchOutputConfig.t option
     ; timeout_seconds : Integer.t option
+    ; alarm_configuration : AlarmConfiguration.t option
+    ; triggered_alarms : AlarmStateInformationList.t
     }
 
   let make
@@ -14106,6 +17524,8 @@ module Command = struct
       ?notification_config
       ?cloud_watch_output_config
       ?timeout_seconds
+      ?alarm_configuration
+      ?(triggered_alarms = [])
       () =
     { command_id
     ; document_name
@@ -14131,6 +17551,8 @@ module Command = struct
     ; notification_config
     ; cloud_watch_output_config
     ; timeout_seconds
+    ; alarm_configuration
+    ; triggered_alarms
     }
 
   let parse xml =
@@ -14186,12 +17608,28 @@ module Command = struct
             CloudWatchOutputConfig.parse
       ; timeout_seconds =
           Aws.Util.option_bind (Aws.Xml.member "TimeoutSeconds" xml) Integer.parse
+      ; alarm_configuration =
+          Aws.Util.option_bind
+            (Aws.Xml.member "AlarmConfiguration" xml)
+            AlarmConfiguration.parse
+      ; triggered_alarms =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "TriggeredAlarms" xml)
+               AlarmStateInformationList.parse)
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.timeout_seconds (fun f ->
+         [ Some
+             (Aws.Query.Pair
+                ( "TriggeredAlarms.member"
+                , AlarmStateInformationList.to_query v.triggered_alarms ))
+         ; Aws.Util.option_map v.alarm_configuration (fun f ->
+               Aws.Query.Pair ("AlarmConfiguration", AlarmConfiguration.to_query f))
+         ; Aws.Util.option_map v.timeout_seconds (fun f ->
                Aws.Query.Pair ("TimeoutSeconds", Integer.to_query f))
          ; Aws.Util.option_map v.cloud_watch_output_config (fun f ->
                Aws.Query.Pair ("CloudWatchOutputConfig", CloudWatchOutputConfig.to_query f))
@@ -14243,7 +17681,10 @@ module Command = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.timeout_seconds (fun f ->
+         [ Some ("TriggeredAlarms", AlarmStateInformationList.to_json v.triggered_alarms)
+         ; Aws.Util.option_map v.alarm_configuration (fun f ->
+               "AlarmConfiguration", AlarmConfiguration.to_json f)
+         ; Aws.Util.option_map v.timeout_seconds (fun f ->
                "TimeoutSeconds", Integer.to_json f)
          ; Aws.Util.option_map v.cloud_watch_output_config (fun f ->
                "CloudWatchOutputConfig", CloudWatchOutputConfig.to_json f)
@@ -14326,6 +17767,13 @@ module Command = struct
           CloudWatchOutputConfig.of_json
     ; timeout_seconds =
         Aws.Util.option_map (Aws.Json.lookup j "TimeoutSeconds") Integer.of_json
+    ; alarm_configuration =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "AlarmConfiguration")
+          AlarmConfiguration.of_json
+    ; triggered_alarms =
+        AlarmStateInformationList.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "TriggeredAlarms"))
     }
 end
 
@@ -14419,13 +17867,9 @@ module ComplianceUploadType = struct
     | PARTIAL
 
   let str_to_t = [ "PARTIAL", PARTIAL; "COMPLETE", COMPLETE ]
-
   let t_to_str = [ PARTIAL, "PARTIAL"; COMPLETE, "COMPLETE" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -14435,7 +17879,6 @@ module ComplianceUploadType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -14549,9 +17992,7 @@ module SessionStatus = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -14561,7 +18002,6 @@ module SessionStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -14606,6 +18046,27 @@ module SessionManagerOutputUrl = struct
     }
 end
 
+module AccessType = struct
+  type t =
+    | Standard
+    | JustInTime
+
+  let str_to_t = [ "JustInTime", JustInTime; "Standard", Standard ]
+  let t_to_str = [ JustInTime, "JustInTime"; Standard, "Standard" ]
+  let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
+  let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
+  let make v () = v
+
+  let parse xml =
+    Aws.Util.option_bind (String.parse xml) (fun s -> Aws.Util.list_find str_to_t s)
+
+  let to_query v =
+    Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
+  let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
+end
+
 module Session = struct
   type t =
     { session_id : String.t option
@@ -14615,8 +18076,11 @@ module Session = struct
     ; end_date : DateTime.t option
     ; document_name : String.t option
     ; owner : String.t option
+    ; reason : String.t option
     ; details : String.t option
     ; output_url : SessionManagerOutputUrl.t option
+    ; max_session_duration : String.t option
+    ; access_type : AccessType.t option
     }
 
   let make
@@ -14627,8 +18091,11 @@ module Session = struct
       ?end_date
       ?document_name
       ?owner
+      ?reason
       ?details
       ?output_url
+      ?max_session_duration
+      ?access_type
       () =
     { session_id
     ; target
@@ -14637,8 +18104,11 @@ module Session = struct
     ; end_date
     ; document_name
     ; owner
+    ; reason
     ; details
     ; output_url
+    ; max_session_duration
+    ; access_type
     }
 
   let parse xml =
@@ -14651,20 +18121,31 @@ module Session = struct
       ; document_name =
           Aws.Util.option_bind (Aws.Xml.member "DocumentName" xml) String.parse
       ; owner = Aws.Util.option_bind (Aws.Xml.member "Owner" xml) String.parse
+      ; reason = Aws.Util.option_bind (Aws.Xml.member "Reason" xml) String.parse
       ; details = Aws.Util.option_bind (Aws.Xml.member "Details" xml) String.parse
       ; output_url =
           Aws.Util.option_bind
             (Aws.Xml.member "OutputUrl" xml)
             SessionManagerOutputUrl.parse
+      ; max_session_duration =
+          Aws.Util.option_bind (Aws.Xml.member "MaxSessionDuration" xml) String.parse
+      ; access_type =
+          Aws.Util.option_bind (Aws.Xml.member "AccessType" xml) AccessType.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.output_url (fun f ->
+         [ Aws.Util.option_map v.access_type (fun f ->
+               Aws.Query.Pair ("AccessType", AccessType.to_query f))
+         ; Aws.Util.option_map v.max_session_duration (fun f ->
+               Aws.Query.Pair ("MaxSessionDuration", String.to_query f))
+         ; Aws.Util.option_map v.output_url (fun f ->
                Aws.Query.Pair ("OutputUrl", SessionManagerOutputUrl.to_query f))
          ; Aws.Util.option_map v.details (fun f ->
                Aws.Query.Pair ("Details", String.to_query f))
+         ; Aws.Util.option_map v.reason (fun f ->
+               Aws.Query.Pair ("Reason", String.to_query f))
          ; Aws.Util.option_map v.owner (fun f ->
                Aws.Query.Pair ("Owner", String.to_query f))
          ; Aws.Util.option_map v.document_name (fun f ->
@@ -14684,9 +18165,13 @@ module Session = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.output_url (fun f ->
+         [ Aws.Util.option_map v.access_type (fun f -> "AccessType", AccessType.to_json f)
+         ; Aws.Util.option_map v.max_session_duration (fun f ->
+               "MaxSessionDuration", String.to_json f)
+         ; Aws.Util.option_map v.output_url (fun f ->
                "OutputUrl", SessionManagerOutputUrl.to_json f)
          ; Aws.Util.option_map v.details (fun f -> "Details", String.to_json f)
+         ; Aws.Util.option_map v.reason (fun f -> "Reason", String.to_json f)
          ; Aws.Util.option_map v.owner (fun f -> "Owner", String.to_json f)
          ; Aws.Util.option_map v.document_name (fun f -> "DocumentName", String.to_json f)
          ; Aws.Util.option_map v.end_date (fun f -> "EndDate", DateTime.to_json f)
@@ -14705,11 +18190,16 @@ module Session = struct
     ; document_name =
         Aws.Util.option_map (Aws.Json.lookup j "DocumentName") String.of_json
     ; owner = Aws.Util.option_map (Aws.Json.lookup j "Owner") String.of_json
+    ; reason = Aws.Util.option_map (Aws.Json.lookup j "Reason") String.of_json
     ; details = Aws.Util.option_map (Aws.Json.lookup j "Details") String.of_json
     ; output_url =
         Aws.Util.option_map
           (Aws.Json.lookup j "OutputUrl")
           SessionManagerOutputUrl.of_json
+    ; max_session_duration =
+        Aws.Util.option_map (Aws.Json.lookup j "MaxSessionDuration") String.of_json
+    ; access_type =
+        Aws.Util.option_map (Aws.Json.lookup j "AccessType") AccessType.of_json
     }
 end
 
@@ -14722,9 +18212,7 @@ module SessionList = struct
     Aws.Util.option_all (List.map Session.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list Session.to_query v
-
   let to_json v = `List (List.map Session.to_json v)
-
   let of_json j = Aws.Json.to_list Session.of_json j
 end
 
@@ -14803,9 +18291,7 @@ module MaintenanceWindowIdentityList = struct
       (List.map MaintenanceWindowIdentity.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list MaintenanceWindowIdentity.to_query v
-
   let to_json v = `List (List.map MaintenanceWindowIdentity.to_json v)
-
   let of_json j = Aws.Json.to_list MaintenanceWindowIdentity.of_json j
 end
 
@@ -14864,9 +18350,15 @@ module ResourceTypeForTagging = struct
     | Parameter
     | PatchBaseline
     | OpsItem
+    | OpsMetadata
+    | Automation
+    | Association
 
   let str_to_t =
-    [ "OpsItem", OpsItem
+    [ "Association", Association
+    ; "Automation", Automation
+    ; "OpsMetadata", OpsMetadata
+    ; "OpsItem", OpsItem
     ; "PatchBaseline", PatchBaseline
     ; "Parameter", Parameter
     ; "MaintenanceWindow", MaintenanceWindow
@@ -14875,7 +18367,10 @@ module ResourceTypeForTagging = struct
     ]
 
   let t_to_str =
-    [ OpsItem, "OpsItem"
+    [ Association, "Association"
+    ; Automation, "Automation"
+    ; OpsMetadata, "OpsMetadata"
+    ; OpsItem, "OpsItem"
     ; PatchBaseline, "PatchBaseline"
     ; Parameter, "Parameter"
     ; MaintenanceWindow, "MaintenanceWindow"
@@ -14884,9 +18379,7 @@ module ResourceTypeForTagging = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -14896,7 +18389,6 @@ module ResourceTypeForTagging = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -14964,9 +18456,11 @@ module PatchComplianceDataState = struct
     | MISSING
     | NOT_APPLICABLE
     | FAILED
+    | AVAILABLE_SECURITY_UPDATE
 
   let str_to_t =
-    [ "FAILED", FAILED
+    [ "AVAILABLE_SECURITY_UPDATE", AVAILABLE_SECURITY_UPDATE
+    ; "FAILED", FAILED
     ; "NOT_APPLICABLE", NOT_APPLICABLE
     ; "MISSING", MISSING
     ; "INSTALLED_REJECTED", INSTALLED_REJECTED
@@ -14976,7 +18470,8 @@ module PatchComplianceDataState = struct
     ]
 
   let t_to_str =
-    [ FAILED, "FAILED"
+    [ AVAILABLE_SECURITY_UPDATE, "AVAILABLE_SECURITY_UPDATE"
+    ; FAILED, "FAILED"
     ; NOT_APPLICABLE, "NOT_APPLICABLE"
     ; MISSING, "MISSING"
     ; INSTALLED_REJECTED, "INSTALLED_REJECTED"
@@ -14986,9 +18481,7 @@ module PatchComplianceDataState = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -14998,7 +18491,6 @@ module PatchComplianceDataState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -15114,6 +18606,7 @@ end
 module ParameterMetadata = struct
   type t =
     { name : String.t option
+    ; a_r_n : String.t option
     ; type_ : ParameterType.t option
     ; key_id : String.t option
     ; last_modified_date : DateTime.t option
@@ -15128,6 +18621,7 @@ module ParameterMetadata = struct
 
   let make
       ?name
+      ?a_r_n
       ?type_
       ?key_id
       ?last_modified_date
@@ -15140,6 +18634,7 @@ module ParameterMetadata = struct
       ?data_type
       () =
     { name
+    ; a_r_n
     ; type_
     ; key_id
     ; last_modified_date
@@ -15155,6 +18650,7 @@ module ParameterMetadata = struct
   let parse xml =
     Some
       { name = Aws.Util.option_bind (Aws.Xml.member "Name" xml) String.parse
+      ; a_r_n = Aws.Util.option_bind (Aws.Xml.member "ARN" xml) String.parse
       ; type_ = Aws.Util.option_bind (Aws.Xml.member "Type" xml) ParameterType.parse
       ; key_id = Aws.Util.option_bind (Aws.Xml.member "KeyId" xml) String.parse
       ; last_modified_date =
@@ -15198,6 +18694,8 @@ module ParameterMetadata = struct
                Aws.Query.Pair ("KeyId", String.to_query f))
          ; Aws.Util.option_map v.type_ (fun f ->
                Aws.Query.Pair ("Type", ParameterType.to_query f))
+         ; Aws.Util.option_map v.a_r_n (fun f ->
+               Aws.Query.Pair ("ARN", String.to_query f))
          ; Aws.Util.option_map v.name (fun f ->
                Aws.Query.Pair ("Name", String.to_query f))
          ])
@@ -15218,11 +18716,13 @@ module ParameterMetadata = struct
                "LastModifiedDate", DateTime.to_json f)
          ; Aws.Util.option_map v.key_id (fun f -> "KeyId", String.to_json f)
          ; Aws.Util.option_map v.type_ (fun f -> "Type", ParameterType.to_json f)
+         ; Aws.Util.option_map v.a_r_n (fun f -> "ARN", String.to_json f)
          ; Aws.Util.option_map v.name (fun f -> "Name", String.to_json f)
          ])
 
   let of_json j =
     { name = Aws.Util.option_map (Aws.Json.lookup j "Name") String.of_json
+    ; a_r_n = Aws.Util.option_map (Aws.Json.lookup j "ARN") String.of_json
     ; type_ = Aws.Util.option_map (Aws.Json.lookup j "Type") ParameterType.of_json
     ; key_id = Aws.Util.option_map (Aws.Json.lookup j "KeyId") String.of_json
     ; last_modified_date =
@@ -15547,10 +19047,46 @@ module ResourceComplianceSummaryItemList = struct
       (List.map ResourceComplianceSummaryItem.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list ResourceComplianceSummaryItem.to_query v
-
   let to_json v = `List (List.map ResourceComplianceSummaryItem.to_json v)
-
   let of_json j = Aws.Json.to_list ResourceComplianceSummaryItem.of_json j
+end
+
+module InstancePropertyFilterOperator = struct
+  type t =
+    | Equal
+    | NotEqual
+    | BeginWith
+    | LessThan
+    | GreaterThan
+
+  let str_to_t =
+    [ "GreaterThan", GreaterThan
+    ; "LessThan", LessThan
+    ; "BeginWith", BeginWith
+    ; "NotEqual", NotEqual
+    ; "Equal", Equal
+    ]
+
+  let t_to_str =
+    [ GreaterThan, "GreaterThan"
+    ; LessThan, "LessThan"
+    ; BeginWith, "BeginWith"
+    ; NotEqual, "NotEqual"
+    ; Equal, "Equal"
+    ]
+
+  let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
+  let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
+  let make v () = v
+
+  let parse xml =
+    Aws.Util.option_bind (String.parse xml) (fun s -> Aws.Util.list_find str_to_t s)
+
+  let to_query v =
+    Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
+  let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
 module MaintenanceWindowExecutionTaskIdentity = struct
@@ -15563,6 +19099,8 @@ module MaintenanceWindowExecutionTaskIdentity = struct
     ; end_time : DateTime.t option
     ; task_arn : String.t option
     ; task_type : MaintenanceWindowTaskType.t option
+    ; alarm_configuration : AlarmConfiguration.t option
+    ; triggered_alarms : AlarmStateInformationList.t
     }
 
   let make
@@ -15574,6 +19112,8 @@ module MaintenanceWindowExecutionTaskIdentity = struct
       ?end_time
       ?task_arn
       ?task_type
+      ?alarm_configuration
+      ?(triggered_alarms = [])
       () =
     { window_execution_id
     ; task_execution_id
@@ -15583,6 +19123,8 @@ module MaintenanceWindowExecutionTaskIdentity = struct
     ; end_time
     ; task_arn
     ; task_type
+    ; alarm_configuration
+    ; triggered_alarms
     }
 
   let parse xml =
@@ -15604,12 +19146,28 @@ module MaintenanceWindowExecutionTaskIdentity = struct
           Aws.Util.option_bind
             (Aws.Xml.member "TaskType" xml)
             MaintenanceWindowTaskType.parse
+      ; alarm_configuration =
+          Aws.Util.option_bind
+            (Aws.Xml.member "AlarmConfiguration" xml)
+            AlarmConfiguration.parse
+      ; triggered_alarms =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "TriggeredAlarms" xml)
+               AlarmStateInformationList.parse)
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.task_type (fun f ->
+         [ Some
+             (Aws.Query.Pair
+                ( "TriggeredAlarms.member"
+                , AlarmStateInformationList.to_query v.triggered_alarms ))
+         ; Aws.Util.option_map v.alarm_configuration (fun f ->
+               Aws.Query.Pair ("AlarmConfiguration", AlarmConfiguration.to_query f))
+         ; Aws.Util.option_map v.task_type (fun f ->
                Aws.Query.Pair ("TaskType", MaintenanceWindowTaskType.to_query f))
          ; Aws.Util.option_map v.task_arn (fun f ->
                Aws.Query.Pair ("TaskArn", String.to_query f))
@@ -15630,7 +19188,10 @@ module MaintenanceWindowExecutionTaskIdentity = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.task_type (fun f ->
+         [ Some ("TriggeredAlarms", AlarmStateInformationList.to_json v.triggered_alarms)
+         ; Aws.Util.option_map v.alarm_configuration (fun f ->
+               "AlarmConfiguration", AlarmConfiguration.to_json f)
+         ; Aws.Util.option_map v.task_type (fun f ->
                "TaskType", MaintenanceWindowTaskType.to_json f)
          ; Aws.Util.option_map v.task_arn (fun f -> "TaskArn", String.to_json f)
          ; Aws.Util.option_map v.end_time (fun f -> "EndTime", DateTime.to_json f)
@@ -15663,6 +19224,13 @@ module MaintenanceWindowExecutionTaskIdentity = struct
         Aws.Util.option_map
           (Aws.Json.lookup j "TaskType")
           MaintenanceWindowTaskType.of_json
+    ; alarm_configuration =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "AlarmConfiguration")
+          AlarmConfiguration.of_json
+    ; triggered_alarms =
+        AlarmStateInformationList.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "TriggeredAlarms"))
     }
 end
 
@@ -15681,7 +19249,6 @@ module MaintenanceWindowExecutionTaskIdentityList = struct
     Aws.Query.to_query_list MaintenanceWindowExecutionTaskIdentity.to_query v
 
   let to_json v = `List (List.map MaintenanceWindowExecutionTaskIdentity.to_json v)
-
   let of_json j = Aws.Json.to_list MaintenanceWindowExecutionTaskIdentity.of_json j
 end
 
@@ -15970,9 +19537,7 @@ module InstanceAssociationStatusInfos = struct
       (List.map InstanceAssociationStatusInfo.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list InstanceAssociationStatusInfo.to_query v
-
   let to_json v = `List (List.map InstanceAssociationStatusInfo.to_json v)
-
   let of_json j = Aws.Json.to_list InstanceAssociationStatusInfo.of_json j
 end
 
@@ -16032,13 +19597,9 @@ module SessionState = struct
     | History
 
   let str_to_t = [ "History", History; "Active", Active ]
-
   let t_to_str = [ History, "History"; Active, "Active" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -16048,7 +19609,6 @@ module SessionState = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -16110,9 +19670,12 @@ module DescribeDocumentPermissionRequest = struct
   type t =
     { name : String.t
     ; permission_type : DocumentPermissionType.t
+    ; max_results : Integer.t option
+    ; next_token : String.t option
     }
 
-  let make ~name ~permission_type () = { name; permission_type }
+  let make ~name ~permission_type ?max_results ?next_token () =
+    { name; permission_type; max_results; next_token }
 
   let parse xml =
     Some
@@ -16126,12 +19689,18 @@ module DescribeDocumentPermissionRequest = struct
             (Aws.Util.option_bind
                (Aws.Xml.member "PermissionType" xml)
                DocumentPermissionType.parse)
+      ; max_results = Aws.Util.option_bind (Aws.Xml.member "MaxResults" xml) Integer.parse
+      ; next_token = Aws.Util.option_bind (Aws.Xml.member "NextToken" xml) String.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Some
+         [ Aws.Util.option_map v.next_token (fun f ->
+               Aws.Query.Pair ("NextToken", String.to_query f))
+         ; Aws.Util.option_map v.max_results (fun f ->
+               Aws.Query.Pair ("MaxResults", Integer.to_query f))
+         ; Some
              (Aws.Query.Pair
                 ("PermissionType", DocumentPermissionType.to_query v.permission_type))
          ; Some (Aws.Query.Pair ("Name", String.to_query v.name))
@@ -16140,7 +19709,9 @@ module DescribeDocumentPermissionRequest = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Some ("PermissionType", DocumentPermissionType.to_json v.permission_type)
+         [ Aws.Util.option_map v.next_token (fun f -> "NextToken", String.to_json f)
+         ; Aws.Util.option_map v.max_results (fun f -> "MaxResults", Integer.to_json f)
+         ; Some ("PermissionType", DocumentPermissionType.to_json v.permission_type)
          ; Some ("Name", String.to_json v.name)
          ])
 
@@ -16149,6 +19720,8 @@ module DescribeDocumentPermissionRequest = struct
     ; permission_type =
         DocumentPermissionType.of_json
           (Aws.Util.of_option_exn (Aws.Json.lookup j "PermissionType"))
+    ; max_results = Aws.Util.option_map (Aws.Json.lookup j "MaxResults") Integer.of_json
+    ; next_token = Aws.Util.option_map (Aws.Json.lookup j "NextToken") String.of_json
     }
 end
 
@@ -16314,9 +19887,7 @@ module TargetParameterList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -16471,6 +20042,83 @@ module DescribeMaintenanceWindowTasksRequest = struct
     }
 end
 
+module InstancePropertyFilterValueSet = struct
+  type t = String.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
+
+  let to_query v = Aws.Query.to_query_list String.to_query v
+  let to_json v = `List (List.map String.to_json v)
+  let of_json j = Aws.Json.to_list String.of_json j
+end
+
+module InstancePropertyFilter = struct
+  type t =
+    { key : InstancePropertyFilterKey.t
+    ; value_set : InstancePropertyFilterValueSet.t
+    }
+
+  let make ~key ~value_set () = { key; value_set }
+
+  let parse xml =
+    Some
+      { key =
+          Aws.Xml.required
+            "key"
+            (Aws.Util.option_bind
+               (Aws.Xml.member "key" xml)
+               InstancePropertyFilterKey.parse)
+      ; value_set =
+          Aws.Xml.required
+            "valueSet"
+            (Aws.Util.option_bind
+               (Aws.Xml.member "valueSet" xml)
+               InstancePropertyFilterValueSet.parse)
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Some
+             (Aws.Query.Pair
+                ("valueSet.member", InstancePropertyFilterValueSet.to_query v.value_set))
+         ; Some (Aws.Query.Pair ("key", InstancePropertyFilterKey.to_query v.key))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Some ("valueSet", InstancePropertyFilterValueSet.to_json v.value_set)
+         ; Some ("key", InstancePropertyFilterKey.to_json v.key)
+         ])
+
+  let of_json j =
+    { key =
+        InstancePropertyFilterKey.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "key"))
+    ; value_set =
+        InstancePropertyFilterValueSet.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "valueSet"))
+    }
+end
+
+module InstancePropertyFilterList = struct
+  type t = InstancePropertyFilter.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Aws.Util.option_all
+      (List.map InstancePropertyFilter.parse (Aws.Xml.members "member" xml))
+
+  let to_query v = Aws.Query.to_query_list InstancePropertyFilter.to_query v
+  let to_json v = `List (List.map InstancePropertyFilter.to_json v)
+  let of_json j = Aws.Json.to_list InstancePropertyFilter.of_json j
+end
+
 module PatchDeploymentStatus = struct
   type t =
     | APPROVED
@@ -16493,9 +20141,7 @@ module PatchDeploymentStatus = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -16505,13 +20151,13 @@ module PatchDeploymentStatus = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
 module OpsItem = struct
   type t =
     { created_by : String.t option
+    ; ops_item_type : String.t option
     ; created_time : DateTime.t option
     ; description : String.t option
     ; last_modified_by : String.t option
@@ -16527,10 +20173,16 @@ module OpsItem = struct
     ; operational_data : OpsItemOperationalData.t option
     ; category : String.t option
     ; severity : String.t option
+    ; actual_start_time : DateTime.t option
+    ; actual_end_time : DateTime.t option
+    ; planned_start_time : DateTime.t option
+    ; planned_end_time : DateTime.t option
+    ; ops_item_arn : String.t option
     }
 
   let make
       ?created_by
+      ?ops_item_type
       ?created_time
       ?description
       ?last_modified_by
@@ -16546,8 +20198,14 @@ module OpsItem = struct
       ?operational_data
       ?category
       ?severity
+      ?actual_start_time
+      ?actual_end_time
+      ?planned_start_time
+      ?planned_end_time
+      ?ops_item_arn
       () =
     { created_by
+    ; ops_item_type
     ; created_time
     ; description
     ; last_modified_by
@@ -16563,11 +20221,18 @@ module OpsItem = struct
     ; operational_data
     ; category
     ; severity
+    ; actual_start_time
+    ; actual_end_time
+    ; planned_start_time
+    ; planned_end_time
+    ; ops_item_arn
     }
 
   let parse xml =
     Some
       { created_by = Aws.Util.option_bind (Aws.Xml.member "CreatedBy" xml) String.parse
+      ; ops_item_type =
+          Aws.Util.option_bind (Aws.Xml.member "OpsItemType" xml) String.parse
       ; created_time =
           Aws.Util.option_bind (Aws.Xml.member "CreatedTime" xml) DateTime.parse
       ; description = Aws.Util.option_bind (Aws.Xml.member "Description" xml) String.parse
@@ -16599,12 +20264,31 @@ module OpsItem = struct
             OpsItemOperationalData.parse
       ; category = Aws.Util.option_bind (Aws.Xml.member "Category" xml) String.parse
       ; severity = Aws.Util.option_bind (Aws.Xml.member "Severity" xml) String.parse
+      ; actual_start_time =
+          Aws.Util.option_bind (Aws.Xml.member "ActualStartTime" xml) DateTime.parse
+      ; actual_end_time =
+          Aws.Util.option_bind (Aws.Xml.member "ActualEndTime" xml) DateTime.parse
+      ; planned_start_time =
+          Aws.Util.option_bind (Aws.Xml.member "PlannedStartTime" xml) DateTime.parse
+      ; planned_end_time =
+          Aws.Util.option_bind (Aws.Xml.member "PlannedEndTime" xml) DateTime.parse
+      ; ops_item_arn = Aws.Util.option_bind (Aws.Xml.member "OpsItemArn" xml) String.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.severity (fun f ->
+         [ Aws.Util.option_map v.ops_item_arn (fun f ->
+               Aws.Query.Pair ("OpsItemArn", String.to_query f))
+         ; Aws.Util.option_map v.planned_end_time (fun f ->
+               Aws.Query.Pair ("PlannedEndTime", DateTime.to_query f))
+         ; Aws.Util.option_map v.planned_start_time (fun f ->
+               Aws.Query.Pair ("PlannedStartTime", DateTime.to_query f))
+         ; Aws.Util.option_map v.actual_end_time (fun f ->
+               Aws.Query.Pair ("ActualEndTime", DateTime.to_query f))
+         ; Aws.Util.option_map v.actual_start_time (fun f ->
+               Aws.Query.Pair ("ActualStartTime", DateTime.to_query f))
+         ; Aws.Util.option_map v.severity (fun f ->
                Aws.Query.Pair ("Severity", String.to_query f))
          ; Aws.Util.option_map v.category (fun f ->
                Aws.Query.Pair ("Category", String.to_query f))
@@ -16636,6 +20320,8 @@ module OpsItem = struct
                Aws.Query.Pair ("Description", String.to_query f))
          ; Aws.Util.option_map v.created_time (fun f ->
                Aws.Query.Pair ("CreatedTime", DateTime.to_query f))
+         ; Aws.Util.option_map v.ops_item_type (fun f ->
+               Aws.Query.Pair ("OpsItemType", String.to_query f))
          ; Aws.Util.option_map v.created_by (fun f ->
                Aws.Query.Pair ("CreatedBy", String.to_query f))
          ])
@@ -16643,7 +20329,16 @@ module OpsItem = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.severity (fun f -> "Severity", String.to_json f)
+         [ Aws.Util.option_map v.ops_item_arn (fun f -> "OpsItemArn", String.to_json f)
+         ; Aws.Util.option_map v.planned_end_time (fun f ->
+               "PlannedEndTime", DateTime.to_json f)
+         ; Aws.Util.option_map v.planned_start_time (fun f ->
+               "PlannedStartTime", DateTime.to_json f)
+         ; Aws.Util.option_map v.actual_end_time (fun f ->
+               "ActualEndTime", DateTime.to_json f)
+         ; Aws.Util.option_map v.actual_start_time (fun f ->
+               "ActualStartTime", DateTime.to_json f)
+         ; Aws.Util.option_map v.severity (fun f -> "Severity", String.to_json f)
          ; Aws.Util.option_map v.category (fun f -> "Category", String.to_json f)
          ; Aws.Util.option_map v.operational_data (fun f ->
                "OperationalData", OpsItemOperationalData.to_json f)
@@ -16661,11 +20356,13 @@ module OpsItem = struct
                "LastModifiedBy", String.to_json f)
          ; Aws.Util.option_map v.description (fun f -> "Description", String.to_json f)
          ; Aws.Util.option_map v.created_time (fun f -> "CreatedTime", DateTime.to_json f)
+         ; Aws.Util.option_map v.ops_item_type (fun f -> "OpsItemType", String.to_json f)
          ; Aws.Util.option_map v.created_by (fun f -> "CreatedBy", String.to_json f)
          ])
 
   let of_json j =
     { created_by = Aws.Util.option_map (Aws.Json.lookup j "CreatedBy") String.of_json
+    ; ops_item_type = Aws.Util.option_map (Aws.Json.lookup j "OpsItemType") String.of_json
     ; created_time =
         Aws.Util.option_map (Aws.Json.lookup j "CreatedTime") DateTime.of_json
     ; description = Aws.Util.option_map (Aws.Json.lookup j "Description") String.of_json
@@ -16691,6 +20388,15 @@ module OpsItem = struct
           OpsItemOperationalData.of_json
     ; category = Aws.Util.option_map (Aws.Json.lookup j "Category") String.of_json
     ; severity = Aws.Util.option_map (Aws.Json.lookup j "Severity") String.of_json
+    ; actual_start_time =
+        Aws.Util.option_map (Aws.Json.lookup j "ActualStartTime") DateTime.of_json
+    ; actual_end_time =
+        Aws.Util.option_map (Aws.Json.lookup j "ActualEndTime") DateTime.of_json
+    ; planned_start_time =
+        Aws.Util.option_map (Aws.Json.lookup j "PlannedStartTime") DateTime.of_json
+    ; planned_end_time =
+        Aws.Util.option_map (Aws.Json.lookup j "PlannedEndTime") DateTime.of_json
+    ; ops_item_arn = Aws.Util.option_map (Aws.Json.lookup j "OpsItemArn") String.of_json
     }
 end
 
@@ -16769,9 +20475,7 @@ module MaintenanceWindowTaskParametersList = struct
       (List.map MaintenanceWindowTaskParameters.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list MaintenanceWindowTaskParameters.to_query v
-
   let to_json v = `List (List.map MaintenanceWindowTaskParameters.to_json v)
-
   let of_json j = Aws.Json.to_list MaintenanceWindowTaskParameters.of_json j
 end
 
@@ -16790,6 +20494,8 @@ module GetMaintenanceWindowExecutionTaskResult = struct
     ; status_details : String.t option
     ; start_time : DateTime.t option
     ; end_time : DateTime.t option
+    ; alarm_configuration : AlarmConfiguration.t option
+    ; triggered_alarms : AlarmStateInformationList.t
     }
 
   let make
@@ -16806,6 +20512,8 @@ module GetMaintenanceWindowExecutionTaskResult = struct
       ?status_details
       ?start_time
       ?end_time
+      ?alarm_configuration
+      ?(triggered_alarms = [])
       () =
     { window_execution_id
     ; task_execution_id
@@ -16820,6 +20528,8 @@ module GetMaintenanceWindowExecutionTaskResult = struct
     ; status_details
     ; start_time
     ; end_time
+    ; alarm_configuration
+    ; triggered_alarms
     }
 
   let parse xml =
@@ -16851,12 +20561,28 @@ module GetMaintenanceWindowExecutionTaskResult = struct
           Aws.Util.option_bind (Aws.Xml.member "StatusDetails" xml) String.parse
       ; start_time = Aws.Util.option_bind (Aws.Xml.member "StartTime" xml) DateTime.parse
       ; end_time = Aws.Util.option_bind (Aws.Xml.member "EndTime" xml) DateTime.parse
+      ; alarm_configuration =
+          Aws.Util.option_bind
+            (Aws.Xml.member "AlarmConfiguration" xml)
+            AlarmConfiguration.parse
+      ; triggered_alarms =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "TriggeredAlarms" xml)
+               AlarmStateInformationList.parse)
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.end_time (fun f ->
+         [ Some
+             (Aws.Query.Pair
+                ( "TriggeredAlarms.member"
+                , AlarmStateInformationList.to_query v.triggered_alarms ))
+         ; Aws.Util.option_map v.alarm_configuration (fun f ->
+               Aws.Query.Pair ("AlarmConfiguration", AlarmConfiguration.to_query f))
+         ; Aws.Util.option_map v.end_time (fun f ->
                Aws.Query.Pair ("EndTime", DateTime.to_query f))
          ; Aws.Util.option_map v.start_time (fun f ->
                Aws.Query.Pair ("StartTime", DateTime.to_query f))
@@ -16889,7 +20615,10 @@ module GetMaintenanceWindowExecutionTaskResult = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.end_time (fun f -> "EndTime", DateTime.to_json f)
+         [ Some ("TriggeredAlarms", AlarmStateInformationList.to_json v.triggered_alarms)
+         ; Aws.Util.option_map v.alarm_configuration (fun f ->
+               "AlarmConfiguration", AlarmConfiguration.to_json f)
+         ; Aws.Util.option_map v.end_time (fun f -> "EndTime", DateTime.to_json f)
          ; Aws.Util.option_map v.start_time (fun f -> "StartTime", DateTime.to_json f)
          ; Aws.Util.option_map v.status_details (fun f ->
                "StatusDetails", String.to_json f)
@@ -16936,6 +20665,13 @@ module GetMaintenanceWindowExecutionTaskResult = struct
         Aws.Util.option_map (Aws.Json.lookup j "StatusDetails") String.of_json
     ; start_time = Aws.Util.option_map (Aws.Json.lookup j "StartTime") DateTime.of_json
     ; end_time = Aws.Util.option_map (Aws.Json.lookup j "EndTime") DateTime.of_json
+    ; alarm_configuration =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "AlarmConfiguration")
+          AlarmConfiguration.of_json
+    ; triggered_alarms =
+        AlarmStateInformationList.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "TriggeredAlarms"))
     }
 end
 
@@ -16949,9 +20685,7 @@ module ComplianceItemEntryList = struct
       (List.map ComplianceItemEntry.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list ComplianceItemEntry.to_query v
-
   let to_json v = `List (List.map ComplianceItemEntry.to_json v)
-
   let of_json j = Aws.Json.to_list ComplianceItemEntry.of_json j
 end
 
@@ -17168,13 +20902,9 @@ module InvocationDoesNotExist = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -17209,13 +20939,9 @@ module Fault = struct
     | Unknown
 
   let str_to_t = [ "Unknown", Unknown; "Server", Server; "Client", Client ]
-
   let t_to_str = [ Unknown, "Unknown"; Server, "Server"; Client, "Client" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -17225,7 +20951,6 @@ module Fault = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -17245,6 +20970,12 @@ module CreateAssociationBatchRequestEntry = struct
     ; compliance_severity : AssociationComplianceSeverity.t option
     ; sync_compliance : AssociationSyncCompliance.t option
     ; apply_only_at_cron_interval : Boolean.t option
+    ; calendar_names : CalendarNameOrARNList.t
+    ; target_locations : TargetLocations.t
+    ; schedule_offset : Integer.t option
+    ; duration : Integer.t option
+    ; target_maps : TargetMaps.t
+    ; alarm_configuration : AlarmConfiguration.t option
     }
 
   let make
@@ -17262,6 +20993,12 @@ module CreateAssociationBatchRequestEntry = struct
       ?compliance_severity
       ?sync_compliance
       ?apply_only_at_cron_interval
+      ?(calendar_names = [])
+      ?(target_locations = [])
+      ?schedule_offset
+      ?duration
+      ?(target_maps = [])
+      ?alarm_configuration
       () =
     { name
     ; instance_id
@@ -17277,6 +21014,12 @@ module CreateAssociationBatchRequestEntry = struct
     ; compliance_severity
     ; sync_compliance
     ; apply_only_at_cron_interval
+    ; calendar_names
+    ; target_locations
+    ; schedule_offset
+    ; duration
+    ; target_maps
+    ; alarm_configuration
     }
 
   let parse xml =
@@ -17321,12 +21064,48 @@ module CreateAssociationBatchRequestEntry = struct
           Aws.Util.option_bind
             (Aws.Xml.member "ApplyOnlyAtCronInterval" xml)
             Boolean.parse
+      ; calendar_names =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "CalendarNames" xml)
+               CalendarNameOrARNList.parse)
+      ; target_locations =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "TargetLocations" xml)
+               TargetLocations.parse)
+      ; schedule_offset =
+          Aws.Util.option_bind (Aws.Xml.member "ScheduleOffset" xml) Integer.parse
+      ; duration = Aws.Util.option_bind (Aws.Xml.member "Duration" xml) Integer.parse
+      ; target_maps =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind (Aws.Xml.member "TargetMaps" xml) TargetMaps.parse)
+      ; alarm_configuration =
+          Aws.Util.option_bind
+            (Aws.Xml.member "AlarmConfiguration" xml)
+            AlarmConfiguration.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.apply_only_at_cron_interval (fun f ->
+         [ Aws.Util.option_map v.alarm_configuration (fun f ->
+               Aws.Query.Pair ("AlarmConfiguration", AlarmConfiguration.to_query f))
+         ; Some (Aws.Query.Pair ("TargetMaps.member", TargetMaps.to_query v.target_maps))
+         ; Aws.Util.option_map v.duration (fun f ->
+               Aws.Query.Pair ("Duration", Integer.to_query f))
+         ; Aws.Util.option_map v.schedule_offset (fun f ->
+               Aws.Query.Pair ("ScheduleOffset", Integer.to_query f))
+         ; Some
+             (Aws.Query.Pair
+                ("TargetLocations.member", TargetLocations.to_query v.target_locations))
+         ; Some
+             (Aws.Query.Pair
+                ("CalendarNames.member", CalendarNameOrARNList.to_query v.calendar_names))
+         ; Aws.Util.option_map v.apply_only_at_cron_interval (fun f ->
                Aws.Query.Pair ("ApplyOnlyAtCronInterval", Boolean.to_query f))
          ; Aws.Util.option_map v.sync_compliance (fun f ->
                Aws.Query.Pair ("SyncCompliance", AssociationSyncCompliance.to_query f))
@@ -17359,7 +21138,15 @@ module CreateAssociationBatchRequestEntry = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.apply_only_at_cron_interval (fun f ->
+         [ Aws.Util.option_map v.alarm_configuration (fun f ->
+               "AlarmConfiguration", AlarmConfiguration.to_json f)
+         ; Some ("TargetMaps", TargetMaps.to_json v.target_maps)
+         ; Aws.Util.option_map v.duration (fun f -> "Duration", Integer.to_json f)
+         ; Aws.Util.option_map v.schedule_offset (fun f ->
+               "ScheduleOffset", Integer.to_json f)
+         ; Some ("TargetLocations", TargetLocations.to_json v.target_locations)
+         ; Some ("CalendarNames", CalendarNameOrARNList.to_json v.calendar_names)
+         ; Aws.Util.option_map v.apply_only_at_cron_interval (fun f ->
                "ApplyOnlyAtCronInterval", Boolean.to_json f)
          ; Aws.Util.option_map v.sync_compliance (fun f ->
                "SyncCompliance", AssociationSyncCompliance.to_json f)
@@ -17416,6 +21203,21 @@ module CreateAssociationBatchRequestEntry = struct
           AssociationSyncCompliance.of_json
     ; apply_only_at_cron_interval =
         Aws.Util.option_map (Aws.Json.lookup j "ApplyOnlyAtCronInterval") Boolean.of_json
+    ; calendar_names =
+        CalendarNameOrARNList.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "CalendarNames"))
+    ; target_locations =
+        TargetLocations.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "TargetLocations"))
+    ; schedule_offset =
+        Aws.Util.option_map (Aws.Json.lookup j "ScheduleOffset") Integer.of_json
+    ; duration = Aws.Util.option_map (Aws.Json.lookup j "Duration") Integer.of_json
+    ; target_maps =
+        TargetMaps.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "TargetMaps"))
+    ; alarm_configuration =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "AlarmConfiguration")
+          AlarmConfiguration.of_json
     }
 end
 
@@ -17478,9 +21280,7 @@ module FailedCreateAssociationList = struct
       (List.map FailedCreateAssociation.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list FailedCreateAssociation.to_query v
-
   let to_json v = `List (List.map FailedCreateAssociation.to_json v)
-
   let of_json j = Aws.Json.to_list FailedCreateAssociation.of_json j
 end
 
@@ -17508,6 +21308,14 @@ module AssociationDescription = struct
     ; compliance_severity : AssociationComplianceSeverity.t option
     ; sync_compliance : AssociationSyncCompliance.t option
     ; apply_only_at_cron_interval : Boolean.t option
+    ; calendar_names : CalendarNameOrARNList.t
+    ; target_locations : TargetLocations.t
+    ; schedule_offset : Integer.t option
+    ; duration : Integer.t option
+    ; target_maps : TargetMaps.t
+    ; alarm_configuration : AlarmConfiguration.t option
+    ; triggered_alarms : AlarmStateInformationList.t
+    ; association_dispatch_assume_role : String.t option
     }
 
   let make
@@ -17533,6 +21341,14 @@ module AssociationDescription = struct
       ?compliance_severity
       ?sync_compliance
       ?apply_only_at_cron_interval
+      ?(calendar_names = [])
+      ?(target_locations = [])
+      ?schedule_offset
+      ?duration
+      ?(target_maps = [])
+      ?alarm_configuration
+      ?(triggered_alarms = [])
+      ?association_dispatch_assume_role
       () =
     { name
     ; instance_id
@@ -17556,6 +21372,14 @@ module AssociationDescription = struct
     ; compliance_severity
     ; sync_compliance
     ; apply_only_at_cron_interval
+    ; calendar_names
+    ; target_locations
+    ; schedule_offset
+    ; duration
+    ; target_maps
+    ; alarm_configuration
+    ; triggered_alarms
+    ; association_dispatch_assume_role
     }
 
   let parse xml =
@@ -17616,12 +21440,64 @@ module AssociationDescription = struct
           Aws.Util.option_bind
             (Aws.Xml.member "ApplyOnlyAtCronInterval" xml)
             Boolean.parse
+      ; calendar_names =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "CalendarNames" xml)
+               CalendarNameOrARNList.parse)
+      ; target_locations =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "TargetLocations" xml)
+               TargetLocations.parse)
+      ; schedule_offset =
+          Aws.Util.option_bind (Aws.Xml.member "ScheduleOffset" xml) Integer.parse
+      ; duration = Aws.Util.option_bind (Aws.Xml.member "Duration" xml) Integer.parse
+      ; target_maps =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind (Aws.Xml.member "TargetMaps" xml) TargetMaps.parse)
+      ; alarm_configuration =
+          Aws.Util.option_bind
+            (Aws.Xml.member "AlarmConfiguration" xml)
+            AlarmConfiguration.parse
+      ; triggered_alarms =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "TriggeredAlarms" xml)
+               AlarmStateInformationList.parse)
+      ; association_dispatch_assume_role =
+          Aws.Util.option_bind
+            (Aws.Xml.member "AssociationDispatchAssumeRole" xml)
+            String.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.apply_only_at_cron_interval (fun f ->
+         [ Aws.Util.option_map v.association_dispatch_assume_role (fun f ->
+               Aws.Query.Pair ("AssociationDispatchAssumeRole", String.to_query f))
+         ; Some
+             (Aws.Query.Pair
+                ( "TriggeredAlarms.member"
+                , AlarmStateInformationList.to_query v.triggered_alarms ))
+         ; Aws.Util.option_map v.alarm_configuration (fun f ->
+               Aws.Query.Pair ("AlarmConfiguration", AlarmConfiguration.to_query f))
+         ; Some (Aws.Query.Pair ("TargetMaps.member", TargetMaps.to_query v.target_maps))
+         ; Aws.Util.option_map v.duration (fun f ->
+               Aws.Query.Pair ("Duration", Integer.to_query f))
+         ; Aws.Util.option_map v.schedule_offset (fun f ->
+               Aws.Query.Pair ("ScheduleOffset", Integer.to_query f))
+         ; Some
+             (Aws.Query.Pair
+                ("TargetLocations.member", TargetLocations.to_query v.target_locations))
+         ; Some
+             (Aws.Query.Pair
+                ("CalendarNames.member", CalendarNameOrARNList.to_query v.calendar_names))
+         ; Aws.Util.option_map v.apply_only_at_cron_interval (fun f ->
                Aws.Query.Pair ("ApplyOnlyAtCronInterval", Boolean.to_query f))
          ; Aws.Util.option_map v.sync_compliance (fun f ->
                Aws.Query.Pair ("SyncCompliance", AssociationSyncCompliance.to_query f))
@@ -17671,7 +21547,18 @@ module AssociationDescription = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.apply_only_at_cron_interval (fun f ->
+         [ Aws.Util.option_map v.association_dispatch_assume_role (fun f ->
+               "AssociationDispatchAssumeRole", String.to_json f)
+         ; Some ("TriggeredAlarms", AlarmStateInformationList.to_json v.triggered_alarms)
+         ; Aws.Util.option_map v.alarm_configuration (fun f ->
+               "AlarmConfiguration", AlarmConfiguration.to_json f)
+         ; Some ("TargetMaps", TargetMaps.to_json v.target_maps)
+         ; Aws.Util.option_map v.duration (fun f -> "Duration", Integer.to_json f)
+         ; Aws.Util.option_map v.schedule_offset (fun f ->
+               "ScheduleOffset", Integer.to_json f)
+         ; Some ("TargetLocations", TargetLocations.to_json v.target_locations)
+         ; Some ("CalendarNames", CalendarNameOrARNList.to_json v.calendar_names)
+         ; Aws.Util.option_map v.apply_only_at_cron_interval (fun f ->
                "ApplyOnlyAtCronInterval", Boolean.to_json f)
          ; Aws.Util.option_map v.sync_compliance (fun f ->
                "SyncCompliance", AssociationSyncCompliance.to_json f)
@@ -17760,6 +21647,28 @@ module AssociationDescription = struct
           AssociationSyncCompliance.of_json
     ; apply_only_at_cron_interval =
         Aws.Util.option_map (Aws.Json.lookup j "ApplyOnlyAtCronInterval") Boolean.of_json
+    ; calendar_names =
+        CalendarNameOrARNList.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "CalendarNames"))
+    ; target_locations =
+        TargetLocations.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "TargetLocations"))
+    ; schedule_offset =
+        Aws.Util.option_map (Aws.Json.lookup j "ScheduleOffset") Integer.of_json
+    ; duration = Aws.Util.option_map (Aws.Json.lookup j "Duration") Integer.of_json
+    ; target_maps =
+        TargetMaps.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "TargetMaps"))
+    ; alarm_configuration =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "AlarmConfiguration")
+          AlarmConfiguration.of_json
+    ; triggered_alarms =
+        AlarmStateInformationList.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "TriggeredAlarms"))
+    ; association_dispatch_assume_role =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "AssociationDispatchAssumeRole")
+          String.of_json
     }
 end
 
@@ -17773,9 +21682,7 @@ module AssociationDescriptionList = struct
       (List.map AssociationDescription.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list AssociationDescription.to_query v
-
   let to_json v = `List (List.map AssociationDescription.to_json v)
-
   let of_json j = Aws.Json.to_list AssociationDescription.of_json j
 end
 
@@ -17865,9 +21772,7 @@ module AssociationFilterKey = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -17877,7 +21782,6 @@ module AssociationFilterKey = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -17922,6 +21826,64 @@ module AssociationFilter = struct
     }
 end
 
+module OpsItemRelatedItemSummaries = struct
+  type t = OpsItemRelatedItemSummary.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Aws.Util.option_all
+      (List.map OpsItemRelatedItemSummary.parse (Aws.Xml.members "member" xml))
+
+  let to_query v = Aws.Query.to_query_list OpsItemRelatedItemSummary.to_query v
+  let to_json v = `List (List.map OpsItemRelatedItemSummary.to_json v)
+  let of_json j = Aws.Json.to_list OpsItemRelatedItemSummary.of_json j
+end
+
+module ListOpsItemRelatedItemsResponse = struct
+  type t =
+    { next_token : String.t option
+    ; summaries : OpsItemRelatedItemSummaries.t
+    }
+
+  let make ?next_token ?(summaries = []) () = { next_token; summaries }
+
+  let parse xml =
+    Some
+      { next_token = Aws.Util.option_bind (Aws.Xml.member "NextToken" xml) String.parse
+      ; summaries =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "Summaries" xml)
+               OpsItemRelatedItemSummaries.parse)
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Some
+             (Aws.Query.Pair
+                ("Summaries.member", OpsItemRelatedItemSummaries.to_query v.summaries))
+         ; Aws.Util.option_map v.next_token (fun f ->
+               Aws.Query.Pair ("NextToken", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Some ("Summaries", OpsItemRelatedItemSummaries.to_json v.summaries)
+         ; Aws.Util.option_map v.next_token (fun f -> "NextToken", String.to_json f)
+         ])
+
+  let of_json j =
+    { next_token = Aws.Util.option_map (Aws.Json.lookup j "NextToken") String.of_json
+    ; summaries =
+        OpsItemRelatedItemSummaries.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "Summaries"))
+    }
+end
+
 module KeyList = struct
   type t = String.t list
 
@@ -17931,9 +21893,7 @@ module KeyList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -18044,9 +22004,7 @@ module MaintenanceWindowTargetList = struct
       (List.map MaintenanceWindowTarget.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list MaintenanceWindowTarget.to_query v
-
   let to_json v = `List (List.map MaintenanceWindowTarget.to_json v)
-
   let of_json j = Aws.Json.to_list MaintenanceWindowTarget.of_json j
 end
 
@@ -18092,6 +22050,64 @@ module GetPatchBaselineForPatchGroupRequest = struct
     ; operating_system =
         Aws.Util.option_map (Aws.Json.lookup j "OperatingSystem") OperatingSystem.of_json
     }
+end
+
+module UnsupportedOperationException = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Aws.Util.option_bind (Aws.Xml.member "Message" xml) String.parse }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f ->
+               Aws.Query.Pair ("Message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f -> "Message", String.to_json f) ])
+
+  let of_json j =
+    { message = Aws.Util.option_map (Aws.Json.lookup j "Message") String.of_json }
+end
+
+module DisassociateOpsItemRelatedItemResponse = struct
+  type t = unit
+
+  let make () = ()
+  let parse xml = Some ()
+  let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
+  let to_json v = `Assoc (Aws.Util.list_filter_opt [])
+  let of_json j = ()
+end
+
+module ResourcePolicyConflictException = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Aws.Util.option_bind (Aws.Xml.member "Message" xml) String.parse }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f ->
+               Aws.Query.Pair ("Message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f -> "Message", String.to_json f) ])
+
+  let of_json j =
+    { message = Aws.Util.option_map (Aws.Json.lookup j "Message") String.of_json }
 end
 
 module InvalidUpdate = struct
@@ -18187,9 +22203,7 @@ module PatchCVEIdList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -18202,9 +22216,7 @@ module PatchBugzillaIdList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -18217,9 +22229,7 @@ module PatchAdvisoryIdList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -18509,9 +22519,7 @@ module EffectivePatchList = struct
     Aws.Util.option_all (List.map EffectivePatch.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list EffectivePatch.to_query v
-
   let to_json v = `List (List.map EffectivePatch.to_json v)
-
   let of_json j = Aws.Json.to_list EffectivePatch.of_json j
 end
 
@@ -18560,6 +22568,42 @@ module DescribeEffectivePatchesForPatchBaselineResult = struct
     }
 end
 
+module TargetPreview = struct
+  type t =
+    { count : Integer.t option
+    ; target_type : String.t option
+    }
+
+  let make ?count ?target_type () = { count; target_type }
+
+  let parse xml =
+    Some
+      { count = Aws.Util.option_bind (Aws.Xml.member "Count" xml) Integer.parse
+      ; target_type = Aws.Util.option_bind (Aws.Xml.member "TargetType" xml) String.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.target_type (fun f ->
+               Aws.Query.Pair ("TargetType", String.to_query f))
+         ; Aws.Util.option_map v.count (fun f ->
+               Aws.Query.Pair ("Count", Integer.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.target_type (fun f -> "TargetType", String.to_json f)
+         ; Aws.Util.option_map v.count (fun f -> "Count", Integer.to_json f)
+         ])
+
+  let of_json j =
+    { count = Aws.Util.option_map (Aws.Json.lookup j "Count") Integer.of_json
+    ; target_type = Aws.Util.option_map (Aws.Json.lookup j "TargetType") String.of_json
+    }
+end
+
 module SessionManagerParameterValueList = struct
   type t = String.t list
 
@@ -18569,9 +22613,7 @@ module SessionManagerParameterValueList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -18579,7 +22621,6 @@ module SessionManagerParameters = struct
   type t = (String.t, SessionManagerParameterValueList.t) Hashtbl.t
 
   let make elems () = elems
-
   let parse xml = None
 
   let to_query v =
@@ -18591,8 +22632,10 @@ module SessionManagerParameters = struct
   let to_json v =
     `Assoc
       (Hashtbl.fold
-         (fun k v acc ->
-           (String.to_string k, SessionManagerParameterValueList.to_json v) :: acc)
+         (fun k ->
+           fun v ->
+            fun acc ->
+             (String.to_string k, SessionManagerParameterValueList.to_json v) :: acc)
          v
          [])
 
@@ -18604,10 +22647,12 @@ module StartSessionRequest = struct
   type t =
     { target : String.t
     ; document_name : String.t option
+    ; reason : String.t option
     ; parameters : SessionManagerParameters.t option
     }
 
-  let make ~target ?document_name ?parameters () = { target; document_name; parameters }
+  let make ~target ?document_name ?reason ?parameters () =
+    { target; document_name; reason; parameters }
 
   let parse xml =
     Some
@@ -18617,6 +22662,7 @@ module StartSessionRequest = struct
             (Aws.Util.option_bind (Aws.Xml.member "Target" xml) String.parse)
       ; document_name =
           Aws.Util.option_bind (Aws.Xml.member "DocumentName" xml) String.parse
+      ; reason = Aws.Util.option_bind (Aws.Xml.member "Reason" xml) String.parse
       ; parameters =
           Aws.Util.option_bind
             (Aws.Xml.member "Parameters" xml)
@@ -18628,6 +22674,8 @@ module StartSessionRequest = struct
       (Aws.Util.list_filter_opt
          [ Aws.Util.option_map v.parameters (fun f ->
                Aws.Query.Pair ("Parameters", SessionManagerParameters.to_query f))
+         ; Aws.Util.option_map v.reason (fun f ->
+               Aws.Query.Pair ("Reason", String.to_query f))
          ; Aws.Util.option_map v.document_name (fun f ->
                Aws.Query.Pair ("DocumentName", String.to_query f))
          ; Some (Aws.Query.Pair ("Target", String.to_query v.target))
@@ -18638,6 +22686,7 @@ module StartSessionRequest = struct
       (Aws.Util.list_filter_opt
          [ Aws.Util.option_map v.parameters (fun f ->
                "Parameters", SessionManagerParameters.to_json f)
+         ; Aws.Util.option_map v.reason (fun f -> "Reason", String.to_json f)
          ; Aws.Util.option_map v.document_name (fun f -> "DocumentName", String.to_json f)
          ; Some ("Target", String.to_json v.target)
          ])
@@ -18646,6 +22695,7 @@ module StartSessionRequest = struct
     { target = String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Target"))
     ; document_name =
         Aws.Util.option_map (Aws.Json.lookup j "DocumentName") String.of_json
+    ; reason = Aws.Util.option_map (Aws.Json.lookup j "Reason") String.of_json
     ; parameters =
         Aws.Util.option_map
           (Aws.Json.lookup j "Parameters")
@@ -18653,34 +22703,26 @@ module StartSessionRequest = struct
     }
 end
 
-module SignalType = struct
-  type t =
-    | Approve
-    | Reject
-    | StartStep
-    | StopStep
-    | Resume
+module OpsItemEventFilterValues = struct
+  type t = String.t list
 
-  let str_to_t =
-    [ "Resume", Resume
-    ; "StopStep", StopStep
-    ; "StartStep", StartStep
-    ; "Reject", Reject
-    ; "Approve", Approve
-    ]
+  let make elems () = elems
 
-  let t_to_str =
-    [ Resume, "Resume"
-    ; StopStep, "StopStep"
-    ; StartStep, "StartStep"
-    ; Reject, "Reject"
-    ; Approve, "Approve"
-    ]
+  let parse xml =
+    Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
+  let to_query v = Aws.Query.to_query_list String.to_query v
+  let to_json v = `List (List.map String.to_json v)
+  let of_json j = Aws.Json.to_list String.of_json j
+end
+
+module OpsItemEventFilterOperator = struct
+  type t = Equal
+
+  let str_to_t = [ "Equal", Equal ]
+  let t_to_str = [ Equal, "Equal" ]
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -18690,8 +22732,555 @@ module SignalType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
+end
+
+module OpsItemEventFilterKey = struct
+  type t = OpsItemId
+
+  let str_to_t = [ "OpsItemId", OpsItemId ]
+  let t_to_str = [ OpsItemId, "OpsItemId" ]
+  let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
+  let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
+  let make v () = v
+
+  let parse xml =
+    Aws.Util.option_bind (String.parse xml) (fun s -> Aws.Util.list_find str_to_t s)
+
+  let to_query v =
+    Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
+  let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
+end
+
+module OpsItemEventFilter = struct
+  type t =
+    { key : OpsItemEventFilterKey.t
+    ; values : OpsItemEventFilterValues.t
+    ; operator : OpsItemEventFilterOperator.t
+    }
+
+  let make ~key ~values ~operator () = { key; values; operator }
+
+  let parse xml =
+    Some
+      { key =
+          Aws.Xml.required
+            "Key"
+            (Aws.Util.option_bind (Aws.Xml.member "Key" xml) OpsItemEventFilterKey.parse)
+      ; values =
+          Aws.Xml.required
+            "Values"
+            (Aws.Util.option_bind
+               (Aws.Xml.member "Values" xml)
+               OpsItemEventFilterValues.parse)
+      ; operator =
+          Aws.Xml.required
+            "Operator"
+            (Aws.Util.option_bind
+               (Aws.Xml.member "Operator" xml)
+               OpsItemEventFilterOperator.parse)
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Some
+             (Aws.Query.Pair ("Operator", OpsItemEventFilterOperator.to_query v.operator))
+         ; Some
+             (Aws.Query.Pair ("Values.member", OpsItemEventFilterValues.to_query v.values))
+         ; Some (Aws.Query.Pair ("Key", OpsItemEventFilterKey.to_query v.key))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Some ("Operator", OpsItemEventFilterOperator.to_json v.operator)
+         ; Some ("Values", OpsItemEventFilterValues.to_json v.values)
+         ; Some ("Key", OpsItemEventFilterKey.to_json v.key)
+         ])
+
+  let of_json j =
+    { key =
+        OpsItemEventFilterKey.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Key"))
+    ; values =
+        OpsItemEventFilterValues.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "Values"))
+    ; operator =
+        OpsItemEventFilterOperator.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "Operator"))
+    }
+end
+
+module OpsItemEventFilters = struct
+  type t = OpsItemEventFilter.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Aws.Util.option_all (List.map OpsItemEventFilter.parse (Aws.Xml.members "member" xml))
+
+  let to_query v = Aws.Query.to_query_list OpsItemEventFilter.to_query v
+  let to_json v = `List (List.map OpsItemEventFilter.to_json v)
+  let of_json j = Aws.Json.to_list OpsItemEventFilter.of_json j
+end
+
+module SignalType = struct
+  type t =
+    | Approve
+    | Reject
+    | StartStep
+    | StopStep
+    | Resume
+    | Revoke
+
+  let str_to_t =
+    [ "Revoke", Revoke
+    ; "Resume", Resume
+    ; "StopStep", StopStep
+    ; "StartStep", StartStep
+    ; "Reject", Reject
+    ; "Approve", Approve
+    ]
+
+  let t_to_str =
+    [ Revoke, "Revoke"
+    ; Resume, "Resume"
+    ; StopStep, "StopStep"
+    ; StartStep, "StartStep"
+    ; Reject, "Reject"
+    ; Approve, "Approve"
+    ]
+
+  let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
+  let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
+  let make v () = v
+
+  let parse xml =
+    Aws.Util.option_bind (String.parse xml) (fun s -> Aws.Util.list_find str_to_t s)
+
+  let to_query v =
+    Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
+  let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
+end
+
+module ResourceType = struct
+  type t =
+    | ManagedInstance
+    | EC2Instance
+
+  let str_to_t = [ "EC2Instance", EC2Instance; "ManagedInstance", ManagedInstance ]
+  let t_to_str = [ EC2Instance, "EC2Instance"; ManagedInstance, "ManagedInstance" ]
+  let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
+  let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
+  let make v () = v
+
+  let parse xml =
+    Aws.Util.option_bind (String.parse xml) (fun s -> Aws.Util.list_find str_to_t s)
+
+  let to_query v =
+    Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
+  let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
+end
+
+module ManagedStatus = struct
+  type t =
+    | All
+    | Managed
+    | Unmanaged
+
+  let str_to_t = [ "Unmanaged", Unmanaged; "Managed", Managed; "All", All ]
+  let t_to_str = [ Unmanaged, "Unmanaged"; Managed, "Managed"; All, "All" ]
+  let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
+  let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
+  let make v () = v
+
+  let parse xml =
+    Aws.Util.option_bind (String.parse xml) (fun s -> Aws.Util.list_find str_to_t s)
+
+  let to_query v =
+    Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
+  let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
+end
+
+module InstanceInfo = struct
+  type t =
+    { agent_type : String.t option
+    ; agent_version : String.t option
+    ; computer_name : String.t option
+    ; instance_status : String.t option
+    ; ip_address : String.t option
+    ; managed_status : ManagedStatus.t option
+    ; platform_type : PlatformType.t option
+    ; platform_name : String.t option
+    ; platform_version : String.t option
+    ; resource_type : ResourceType.t option
+    }
+
+  let make
+      ?agent_type
+      ?agent_version
+      ?computer_name
+      ?instance_status
+      ?ip_address
+      ?managed_status
+      ?platform_type
+      ?platform_name
+      ?platform_version
+      ?resource_type
+      () =
+    { agent_type
+    ; agent_version
+    ; computer_name
+    ; instance_status
+    ; ip_address
+    ; managed_status
+    ; platform_type
+    ; platform_name
+    ; platform_version
+    ; resource_type
+    }
+
+  let parse xml =
+    Some
+      { agent_type = Aws.Util.option_bind (Aws.Xml.member "AgentType" xml) String.parse
+      ; agent_version =
+          Aws.Util.option_bind (Aws.Xml.member "AgentVersion" xml) String.parse
+      ; computer_name =
+          Aws.Util.option_bind (Aws.Xml.member "ComputerName" xml) String.parse
+      ; instance_status =
+          Aws.Util.option_bind (Aws.Xml.member "InstanceStatus" xml) String.parse
+      ; ip_address = Aws.Util.option_bind (Aws.Xml.member "IpAddress" xml) String.parse
+      ; managed_status =
+          Aws.Util.option_bind (Aws.Xml.member "ManagedStatus" xml) ManagedStatus.parse
+      ; platform_type =
+          Aws.Util.option_bind (Aws.Xml.member "PlatformType" xml) PlatformType.parse
+      ; platform_name =
+          Aws.Util.option_bind (Aws.Xml.member "PlatformName" xml) String.parse
+      ; platform_version =
+          Aws.Util.option_bind (Aws.Xml.member "PlatformVersion" xml) String.parse
+      ; resource_type =
+          Aws.Util.option_bind (Aws.Xml.member "ResourceType" xml) ResourceType.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.resource_type (fun f ->
+               Aws.Query.Pair ("ResourceType", ResourceType.to_query f))
+         ; Aws.Util.option_map v.platform_version (fun f ->
+               Aws.Query.Pair ("PlatformVersion", String.to_query f))
+         ; Aws.Util.option_map v.platform_name (fun f ->
+               Aws.Query.Pair ("PlatformName", String.to_query f))
+         ; Aws.Util.option_map v.platform_type (fun f ->
+               Aws.Query.Pair ("PlatformType", PlatformType.to_query f))
+         ; Aws.Util.option_map v.managed_status (fun f ->
+               Aws.Query.Pair ("ManagedStatus", ManagedStatus.to_query f))
+         ; Aws.Util.option_map v.ip_address (fun f ->
+               Aws.Query.Pair ("IpAddress", String.to_query f))
+         ; Aws.Util.option_map v.instance_status (fun f ->
+               Aws.Query.Pair ("InstanceStatus", String.to_query f))
+         ; Aws.Util.option_map v.computer_name (fun f ->
+               Aws.Query.Pair ("ComputerName", String.to_query f))
+         ; Aws.Util.option_map v.agent_version (fun f ->
+               Aws.Query.Pair ("AgentVersion", String.to_query f))
+         ; Aws.Util.option_map v.agent_type (fun f ->
+               Aws.Query.Pair ("AgentType", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.resource_type (fun f ->
+               "ResourceType", ResourceType.to_json f)
+         ; Aws.Util.option_map v.platform_version (fun f ->
+               "PlatformVersion", String.to_json f)
+         ; Aws.Util.option_map v.platform_name (fun f -> "PlatformName", String.to_json f)
+         ; Aws.Util.option_map v.platform_type (fun f ->
+               "PlatformType", PlatformType.to_json f)
+         ; Aws.Util.option_map v.managed_status (fun f ->
+               "ManagedStatus", ManagedStatus.to_json f)
+         ; Aws.Util.option_map v.ip_address (fun f -> "IpAddress", String.to_json f)
+         ; Aws.Util.option_map v.instance_status (fun f ->
+               "InstanceStatus", String.to_json f)
+         ; Aws.Util.option_map v.computer_name (fun f -> "ComputerName", String.to_json f)
+         ; Aws.Util.option_map v.agent_version (fun f -> "AgentVersion", String.to_json f)
+         ; Aws.Util.option_map v.agent_type (fun f -> "AgentType", String.to_json f)
+         ])
+
+  let of_json j =
+    { agent_type = Aws.Util.option_map (Aws.Json.lookup j "AgentType") String.of_json
+    ; agent_version =
+        Aws.Util.option_map (Aws.Json.lookup j "AgentVersion") String.of_json
+    ; computer_name =
+        Aws.Util.option_map (Aws.Json.lookup j "ComputerName") String.of_json
+    ; instance_status =
+        Aws.Util.option_map (Aws.Json.lookup j "InstanceStatus") String.of_json
+    ; ip_address = Aws.Util.option_map (Aws.Json.lookup j "IpAddress") String.of_json
+    ; managed_status =
+        Aws.Util.option_map (Aws.Json.lookup j "ManagedStatus") ManagedStatus.of_json
+    ; platform_type =
+        Aws.Util.option_map (Aws.Json.lookup j "PlatformType") PlatformType.of_json
+    ; platform_name =
+        Aws.Util.option_map (Aws.Json.lookup j "PlatformName") String.of_json
+    ; platform_version =
+        Aws.Util.option_map (Aws.Json.lookup j "PlatformVersion") String.of_json
+    ; resource_type =
+        Aws.Util.option_map (Aws.Json.lookup j "ResourceType") ResourceType.of_json
+    }
+end
+
+module NodeType = struct
+  type t = { instance : InstanceInfo.t option }
+
+  let make ?instance () = { instance }
+
+  let parse xml =
+    Some
+      { instance = Aws.Util.option_bind (Aws.Xml.member "Instance" xml) InstanceInfo.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.instance (fun f ->
+               Aws.Query.Pair ("Instance", InstanceInfo.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.instance (fun f -> "Instance", InstanceInfo.to_json f) ])
+
+  let of_json j =
+    { instance = Aws.Util.option_map (Aws.Json.lookup j "Instance") InstanceInfo.of_json }
+end
+
+module NodeOwnerInfo = struct
+  type t =
+    { account_id : String.t option
+    ; organizational_unit_id : String.t option
+    ; organizational_unit_path : String.t option
+    }
+
+  let make ?account_id ?organizational_unit_id ?organizational_unit_path () =
+    { account_id; organizational_unit_id; organizational_unit_path }
+
+  let parse xml =
+    Some
+      { account_id = Aws.Util.option_bind (Aws.Xml.member "AccountId" xml) String.parse
+      ; organizational_unit_id =
+          Aws.Util.option_bind (Aws.Xml.member "OrganizationalUnitId" xml) String.parse
+      ; organizational_unit_path =
+          Aws.Util.option_bind (Aws.Xml.member "OrganizationalUnitPath" xml) String.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.organizational_unit_path (fun f ->
+               Aws.Query.Pair ("OrganizationalUnitPath", String.to_query f))
+         ; Aws.Util.option_map v.organizational_unit_id (fun f ->
+               Aws.Query.Pair ("OrganizationalUnitId", String.to_query f))
+         ; Aws.Util.option_map v.account_id (fun f ->
+               Aws.Query.Pair ("AccountId", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.organizational_unit_path (fun f ->
+               "OrganizationalUnitPath", String.to_json f)
+         ; Aws.Util.option_map v.organizational_unit_id (fun f ->
+               "OrganizationalUnitId", String.to_json f)
+         ; Aws.Util.option_map v.account_id (fun f -> "AccountId", String.to_json f)
+         ])
+
+  let of_json j =
+    { account_id = Aws.Util.option_map (Aws.Json.lookup j "AccountId") String.of_json
+    ; organizational_unit_id =
+        Aws.Util.option_map (Aws.Json.lookup j "OrganizationalUnitId") String.of_json
+    ; organizational_unit_path =
+        Aws.Util.option_map (Aws.Json.lookup j "OrganizationalUnitPath") String.of_json
+    }
+end
+
+module Node = struct
+  type t =
+    { capture_time : DateTime.t option
+    ; id : String.t option
+    ; owner : NodeOwnerInfo.t option
+    ; region : String.t option
+    ; node_type : NodeType.t option
+    }
+
+  let make ?capture_time ?id ?owner ?region ?node_type () =
+    { capture_time; id; owner; region; node_type }
+
+  let parse xml =
+    Some
+      { capture_time =
+          Aws.Util.option_bind (Aws.Xml.member "CaptureTime" xml) DateTime.parse
+      ; id = Aws.Util.option_bind (Aws.Xml.member "Id" xml) String.parse
+      ; owner = Aws.Util.option_bind (Aws.Xml.member "Owner" xml) NodeOwnerInfo.parse
+      ; region = Aws.Util.option_bind (Aws.Xml.member "Region" xml) String.parse
+      ; node_type = Aws.Util.option_bind (Aws.Xml.member "NodeType" xml) NodeType.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.node_type (fun f ->
+               Aws.Query.Pair ("NodeType", NodeType.to_query f))
+         ; Aws.Util.option_map v.region (fun f ->
+               Aws.Query.Pair ("Region", String.to_query f))
+         ; Aws.Util.option_map v.owner (fun f ->
+               Aws.Query.Pair ("Owner", NodeOwnerInfo.to_query f))
+         ; Aws.Util.option_map v.id (fun f -> Aws.Query.Pair ("Id", String.to_query f))
+         ; Aws.Util.option_map v.capture_time (fun f ->
+               Aws.Query.Pair ("CaptureTime", DateTime.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.node_type (fun f -> "NodeType", NodeType.to_json f)
+         ; Aws.Util.option_map v.region (fun f -> "Region", String.to_json f)
+         ; Aws.Util.option_map v.owner (fun f -> "Owner", NodeOwnerInfo.to_json f)
+         ; Aws.Util.option_map v.id (fun f -> "Id", String.to_json f)
+         ; Aws.Util.option_map v.capture_time (fun f -> "CaptureTime", DateTime.to_json f)
+         ])
+
+  let of_json j =
+    { capture_time =
+        Aws.Util.option_map (Aws.Json.lookup j "CaptureTime") DateTime.of_json
+    ; id = Aws.Util.option_map (Aws.Json.lookup j "Id") String.of_json
+    ; owner = Aws.Util.option_map (Aws.Json.lookup j "Owner") NodeOwnerInfo.of_json
+    ; region = Aws.Util.option_map (Aws.Json.lookup j "Region") String.of_json
+    ; node_type = Aws.Util.option_map (Aws.Json.lookup j "NodeType") NodeType.of_json
+    }
+end
+
+module OpsMetadata = struct
+  type t =
+    { resource_id : String.t option
+    ; ops_metadata_arn : String.t option
+    ; last_modified_date : DateTime.t option
+    ; last_modified_user : String.t option
+    ; creation_date : DateTime.t option
+    }
+
+  let make
+      ?resource_id
+      ?ops_metadata_arn
+      ?last_modified_date
+      ?last_modified_user
+      ?creation_date
+      () =
+    { resource_id
+    ; ops_metadata_arn
+    ; last_modified_date
+    ; last_modified_user
+    ; creation_date
+    }
+
+  let parse xml =
+    Some
+      { resource_id = Aws.Util.option_bind (Aws.Xml.member "ResourceId" xml) String.parse
+      ; ops_metadata_arn =
+          Aws.Util.option_bind (Aws.Xml.member "OpsMetadataArn" xml) String.parse
+      ; last_modified_date =
+          Aws.Util.option_bind (Aws.Xml.member "LastModifiedDate" xml) DateTime.parse
+      ; last_modified_user =
+          Aws.Util.option_bind (Aws.Xml.member "LastModifiedUser" xml) String.parse
+      ; creation_date =
+          Aws.Util.option_bind (Aws.Xml.member "CreationDate" xml) DateTime.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.creation_date (fun f ->
+               Aws.Query.Pair ("CreationDate", DateTime.to_query f))
+         ; Aws.Util.option_map v.last_modified_user (fun f ->
+               Aws.Query.Pair ("LastModifiedUser", String.to_query f))
+         ; Aws.Util.option_map v.last_modified_date (fun f ->
+               Aws.Query.Pair ("LastModifiedDate", DateTime.to_query f))
+         ; Aws.Util.option_map v.ops_metadata_arn (fun f ->
+               Aws.Query.Pair ("OpsMetadataArn", String.to_query f))
+         ; Aws.Util.option_map v.resource_id (fun f ->
+               Aws.Query.Pair ("ResourceId", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.creation_date (fun f ->
+               "CreationDate", DateTime.to_json f)
+         ; Aws.Util.option_map v.last_modified_user (fun f ->
+               "LastModifiedUser", String.to_json f)
+         ; Aws.Util.option_map v.last_modified_date (fun f ->
+               "LastModifiedDate", DateTime.to_json f)
+         ; Aws.Util.option_map v.ops_metadata_arn (fun f ->
+               "OpsMetadataArn", String.to_json f)
+         ; Aws.Util.option_map v.resource_id (fun f -> "ResourceId", String.to_json f)
+         ])
+
+  let of_json j =
+    { resource_id = Aws.Util.option_map (Aws.Json.lookup j "ResourceId") String.of_json
+    ; ops_metadata_arn =
+        Aws.Util.option_map (Aws.Json.lookup j "OpsMetadataArn") String.of_json
+    ; last_modified_date =
+        Aws.Util.option_map (Aws.Json.lookup j "LastModifiedDate") DateTime.of_json
+    ; last_modified_user =
+        Aws.Util.option_map (Aws.Json.lookup j "LastModifiedUser") String.of_json
+    ; creation_date =
+        Aws.Util.option_map (Aws.Json.lookup j "CreationDate") DateTime.of_json
+    }
+end
+
+module OpsMetadataList = struct
+  type t = OpsMetadata.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Aws.Util.option_all (List.map OpsMetadata.parse (Aws.Xml.members "member" xml))
+
+  let to_query v = Aws.Query.to_query_list OpsMetadata.to_query v
+  let to_json v = `List (List.map OpsMetadata.to_json v)
+  let of_json j = Aws.Json.to_list OpsMetadata.of_json j
+end
+
+module InvalidTag = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Aws.Util.option_bind (Aws.Xml.member "Message" xml) String.parse }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f ->
+               Aws.Query.Pair ("Message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f -> "Message", String.to_json f) ])
+
+  let of_json j =
+    { message = Aws.Util.option_map (Aws.Json.lookup j "Message") String.of_json }
 end
 
 module GetDefaultPatchBaselineRequest = struct
@@ -18749,6 +23338,30 @@ module ParameterVersionNotFound = struct
 
   let of_json j =
     { message = Aws.Util.option_map (Aws.Json.lookup j "message") String.of_json }
+end
+
+module MalformedResourcePolicyDocumentException = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Aws.Util.option_bind (Aws.Xml.member "Message" xml) String.parse }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f ->
+               Aws.Query.Pair ("Message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f -> "Message", String.to_json f) ])
+
+  let of_json j =
+    { message = Aws.Util.option_map (Aws.Json.lookup j "Message") String.of_json }
 end
 
 module DescribeMaintenanceWindowExecutionTaskInvocationsRequest = struct
@@ -18824,31 +23437,17 @@ module PatchPropertyEntry = struct
   type t = (String.t, String.t) Hashtbl.t
 
   let make elems () = elems
-
   let parse xml = None
-
   let to_query v = Aws.Query.to_query_hashtbl String.to_string String.to_query v
 
   let to_json v =
     `Assoc
-      (Hashtbl.fold (fun k v acc -> (String.to_string k, String.to_json v) :: acc) v [])
+      (Hashtbl.fold
+         (fun k -> fun v -> fun acc -> (String.to_string k, String.to_json v) :: acc)
+         v
+         [])
 
   let of_json j = Aws.Json.to_hashtbl String.of_string String.of_json j
-end
-
-module CalendarNameOrARNList = struct
-  type t = String.t list
-
-  let make elems () = elems
-
-  let parse xml =
-    Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
-
-  let to_query v = Aws.Query.to_query_list String.to_query v
-
-  let to_json v = `List (List.map String.to_json v)
-
-  let of_json j = Aws.Json.to_list String.of_json j
 end
 
 module GetCalendarStateRequest = struct
@@ -18965,9 +23564,7 @@ module ComplianceSummaryItemList = struct
       (List.map ComplianceSummaryItem.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list ComplianceSummaryItem.to_query v
-
   let to_json v = `List (List.map ComplianceSummaryItem.to_json v)
-
   let of_json j = Aws.Json.to_list ComplianceSummaryItem.of_json j
 end
 
@@ -19031,9 +23628,13 @@ module AutomationExecutionFilterKey = struct
     | AutomationType
     | TagKey
     | TargetResourceGroup
+    | AutomationSubtype
+    | OpsItemId
 
   let str_to_t =
-    [ "TargetResourceGroup", TargetResourceGroup
+    [ "OpsItemId", OpsItemId
+    ; "AutomationSubtype", AutomationSubtype
+    ; "TargetResourceGroup", TargetResourceGroup
     ; "TagKey", TagKey
     ; "AutomationType", AutomationType
     ; "StartTimeAfter", StartTimeAfter
@@ -19046,7 +23647,9 @@ module AutomationExecutionFilterKey = struct
     ]
 
   let t_to_str =
-    [ TargetResourceGroup, "TargetResourceGroup"
+    [ OpsItemId, "OpsItemId"
+    ; AutomationSubtype, "AutomationSubtype"
+    ; TargetResourceGroup, "TargetResourceGroup"
     ; TagKey, "TagKey"
     ; AutomationType, "AutomationType"
     ; StartTimeAfter, "StartTimeAfter"
@@ -19059,9 +23662,7 @@ module AutomationExecutionFilterKey = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -19071,8 +23672,20 @@ module AutomationExecutionFilterKey = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
+end
+
+module OpsItemRelatedItemsFilterValues = struct
+  type t = String.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
+
+  let to_query v = Aws.Query.to_query_list String.to_query v
+  let to_json v = `List (List.map String.to_json v)
+  let of_json j = Aws.Json.to_list String.of_json j
 end
 
 module CreatePatchBaselineResult = struct
@@ -19347,13 +23960,9 @@ module InvalidFilterKey = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -19374,6 +23983,12 @@ module AssociationVersionInfo = struct
     ; compliance_severity : AssociationComplianceSeverity.t option
     ; sync_compliance : AssociationSyncCompliance.t option
     ; apply_only_at_cron_interval : Boolean.t option
+    ; calendar_names : CalendarNameOrARNList.t
+    ; target_locations : TargetLocations.t
+    ; schedule_offset : Integer.t option
+    ; duration : Integer.t option
+    ; target_maps : TargetMaps.t
+    ; association_dispatch_assume_role : String.t option
     }
 
   let make
@@ -19392,6 +24007,12 @@ module AssociationVersionInfo = struct
       ?compliance_severity
       ?sync_compliance
       ?apply_only_at_cron_interval
+      ?(calendar_names = [])
+      ?(target_locations = [])
+      ?schedule_offset
+      ?duration
+      ?(target_maps = [])
+      ?association_dispatch_assume_role
       () =
     { association_id
     ; association_version
@@ -19408,6 +24029,12 @@ module AssociationVersionInfo = struct
     ; compliance_severity
     ; sync_compliance
     ; apply_only_at_cron_interval
+    ; calendar_names
+    ; target_locations
+    ; schedule_offset
+    ; duration
+    ; target_maps
+    ; association_dispatch_assume_role
     }
 
   let parse xml =
@@ -19450,12 +24077,48 @@ module AssociationVersionInfo = struct
           Aws.Util.option_bind
             (Aws.Xml.member "ApplyOnlyAtCronInterval" xml)
             Boolean.parse
+      ; calendar_names =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "CalendarNames" xml)
+               CalendarNameOrARNList.parse)
+      ; target_locations =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "TargetLocations" xml)
+               TargetLocations.parse)
+      ; schedule_offset =
+          Aws.Util.option_bind (Aws.Xml.member "ScheduleOffset" xml) Integer.parse
+      ; duration = Aws.Util.option_bind (Aws.Xml.member "Duration" xml) Integer.parse
+      ; target_maps =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind (Aws.Xml.member "TargetMaps" xml) TargetMaps.parse)
+      ; association_dispatch_assume_role =
+          Aws.Util.option_bind
+            (Aws.Xml.member "AssociationDispatchAssumeRole" xml)
+            String.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.apply_only_at_cron_interval (fun f ->
+         [ Aws.Util.option_map v.association_dispatch_assume_role (fun f ->
+               Aws.Query.Pair ("AssociationDispatchAssumeRole", String.to_query f))
+         ; Some (Aws.Query.Pair ("TargetMaps.member", TargetMaps.to_query v.target_maps))
+         ; Aws.Util.option_map v.duration (fun f ->
+               Aws.Query.Pair ("Duration", Integer.to_query f))
+         ; Aws.Util.option_map v.schedule_offset (fun f ->
+               Aws.Query.Pair ("ScheduleOffset", Integer.to_query f))
+         ; Some
+             (Aws.Query.Pair
+                ("TargetLocations.member", TargetLocations.to_query v.target_locations))
+         ; Some
+             (Aws.Query.Pair
+                ("CalendarNames.member", CalendarNameOrARNList.to_query v.calendar_names))
+         ; Aws.Util.option_map v.apply_only_at_cron_interval (fun f ->
                Aws.Query.Pair ("ApplyOnlyAtCronInterval", Boolean.to_query f))
          ; Aws.Util.option_map v.sync_compliance (fun f ->
                Aws.Query.Pair ("SyncCompliance", AssociationSyncCompliance.to_query f))
@@ -19491,7 +24154,15 @@ module AssociationVersionInfo = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.apply_only_at_cron_interval (fun f ->
+         [ Aws.Util.option_map v.association_dispatch_assume_role (fun f ->
+               "AssociationDispatchAssumeRole", String.to_json f)
+         ; Some ("TargetMaps", TargetMaps.to_json v.target_maps)
+         ; Aws.Util.option_map v.duration (fun f -> "Duration", Integer.to_json f)
+         ; Aws.Util.option_map v.schedule_offset (fun f ->
+               "ScheduleOffset", Integer.to_json f)
+         ; Some ("TargetLocations", TargetLocations.to_json v.target_locations)
+         ; Some ("CalendarNames", CalendarNameOrARNList.to_json v.calendar_names)
+         ; Aws.Util.option_map v.apply_only_at_cron_interval (fun f ->
                "ApplyOnlyAtCronInterval", Boolean.to_json f)
          ; Aws.Util.option_map v.sync_compliance (fun f ->
                "SyncCompliance", AssociationSyncCompliance.to_json f)
@@ -19551,6 +24222,21 @@ module AssociationVersionInfo = struct
           AssociationSyncCompliance.of_json
     ; apply_only_at_cron_interval =
         Aws.Util.option_map (Aws.Json.lookup j "ApplyOnlyAtCronInterval") Boolean.of_json
+    ; calendar_names =
+        CalendarNameOrARNList.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "CalendarNames"))
+    ; target_locations =
+        TargetLocations.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "TargetLocations"))
+    ; schedule_offset =
+        Aws.Util.option_map (Aws.Json.lookup j "ScheduleOffset") Integer.of_json
+    ; duration = Aws.Util.option_map (Aws.Json.lookup j "Duration") Integer.of_json
+    ; target_maps =
+        TargetMaps.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "TargetMaps"))
+    ; association_dispatch_assume_role =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "AssociationDispatchAssumeRole")
+          String.of_json
     }
 end
 
@@ -19564,9 +24250,7 @@ module AssociationVersionList = struct
       (List.map AssociationVersionInfo.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list AssociationVersionInfo.to_query v
-
   let to_json v = `List (List.map AssociationVersionInfo.to_json v)
-
   let of_json j = Aws.Json.to_list AssociationVersionInfo.of_json j
 end
 
@@ -19627,9 +24311,7 @@ module DocumentKeyValuesFilterList = struct
       (List.map DocumentKeyValuesFilter.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list DocumentKeyValuesFilter.to_query v
-
   let to_json v = `List (List.map DocumentKeyValuesFilter.to_json v)
-
   let of_json j = Aws.Json.to_list DocumentKeyValuesFilter.of_json j
 end
 
@@ -19655,9 +24337,7 @@ module DocumentFilterKey = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -19667,7 +24347,6 @@ module DocumentFilterKey = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -19720,9 +24399,7 @@ module DocumentFilterList = struct
     Aws.Util.option_all (List.map DocumentFilter.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list DocumentFilter.to_query v
-
   let to_json v = `List (List.map DocumentFilter.to_json v)
-
   let of_json j = Aws.Json.to_list DocumentFilter.of_json j
 end
 
@@ -19826,9 +24503,7 @@ module ResultAttributeList = struct
     Aws.Util.option_all (List.map ResultAttribute.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list ResultAttribute.to_query v
-
   let to_json v = `List (List.map ResultAttribute.to_json v)
-
   let of_json j = Aws.Json.to_list ResultAttribute.of_json j
 end
 
@@ -19902,9 +24577,7 @@ module PatchComplianceDataList = struct
       (List.map PatchComplianceData.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list PatchComplianceData.to_query v
-
   let to_json v = `List (List.map PatchComplianceData.to_json v)
-
   let of_json j = Aws.Json.to_list PatchComplianceData.of_json j
 end
 
@@ -19961,6 +24634,78 @@ module DescribeAssociationRequest = struct
     ; association_version =
         Aws.Util.option_map (Aws.Json.lookup j "AssociationVersion") String.of_json
     }
+end
+
+module OpsMetadataFilterValueList = struct
+  type t = String.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
+
+  let to_query v = Aws.Query.to_query_list String.to_query v
+  let to_json v = `List (List.map String.to_json v)
+  let of_json j = Aws.Json.to_list String.of_json j
+end
+
+module OpsMetadataFilter = struct
+  type t =
+    { key : String.t
+    ; values : OpsMetadataFilterValueList.t
+    }
+
+  let make ~key ~values () = { key; values }
+
+  let parse xml =
+    Some
+      { key =
+          Aws.Xml.required
+            "Key"
+            (Aws.Util.option_bind (Aws.Xml.member "Key" xml) String.parse)
+      ; values =
+          Aws.Xml.required
+            "Values"
+            (Aws.Util.option_bind
+               (Aws.Xml.member "Values" xml)
+               OpsMetadataFilterValueList.parse)
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Some
+             (Aws.Query.Pair
+                ("Values.member", OpsMetadataFilterValueList.to_query v.values))
+         ; Some (Aws.Query.Pair ("Key", String.to_query v.key))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Some ("Values", OpsMetadataFilterValueList.to_json v.values)
+         ; Some ("Key", String.to_json v.key)
+         ])
+
+  let of_json j =
+    { key = String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Key"))
+    ; values =
+        OpsMetadataFilterValueList.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "Values"))
+    }
+end
+
+module OpsMetadataFilterList = struct
+  type t = OpsMetadataFilter.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Aws.Util.option_all (List.map OpsMetadataFilter.parse (Aws.Xml.members "member" xml))
+
+  let to_query v = Aws.Query.to_query_list OpsMetadataFilter.to_query v
+  let to_json v = `List (List.map OpsMetadataFilter.to_json v)
+  let of_json j = Aws.Json.to_list OpsMetadataFilter.of_json j
 end
 
 module ItemContentMismatchException = struct
@@ -20106,64 +24851,54 @@ module CommandList = struct
     Aws.Util.option_all (List.map Command.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list Command.to_query v
-
   let to_json v = `List (List.map Command.to_json v)
-
   let of_json j = Aws.Json.to_list Command.of_json j
 end
 
 module CreateOpsItemResponse = struct
-  type t = { ops_item_id : String.t option }
+  type t =
+    { ops_item_id : String.t option
+    ; ops_item_arn : String.t option
+    }
 
-  let make ?ops_item_id () = { ops_item_id }
+  let make ?ops_item_id ?ops_item_arn () = { ops_item_id; ops_item_arn }
 
   let parse xml =
     Some
-      { ops_item_id = Aws.Util.option_bind (Aws.Xml.member "OpsItemId" xml) String.parse }
+      { ops_item_id = Aws.Util.option_bind (Aws.Xml.member "OpsItemId" xml) String.parse
+      ; ops_item_arn = Aws.Util.option_bind (Aws.Xml.member "OpsItemArn" xml) String.parse
+      }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.ops_item_id (fun f ->
+         [ Aws.Util.option_map v.ops_item_arn (fun f ->
+               Aws.Query.Pair ("OpsItemArn", String.to_query f))
+         ; Aws.Util.option_map v.ops_item_id (fun f ->
                Aws.Query.Pair ("OpsItemId", String.to_query f))
          ])
 
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.ops_item_id (fun f -> "OpsItemId", String.to_json f) ])
+         [ Aws.Util.option_map v.ops_item_arn (fun f -> "OpsItemArn", String.to_json f)
+         ; Aws.Util.option_map v.ops_item_id (fun f -> "OpsItemId", String.to_json f)
+         ])
 
   let of_json j =
-    { ops_item_id = Aws.Util.option_map (Aws.Json.lookup j "OpsItemId") String.of_json }
+    { ops_item_id = Aws.Util.option_map (Aws.Json.lookup j "OpsItemId") String.of_json
+    ; ops_item_arn = Aws.Util.option_map (Aws.Json.lookup j "OpsItemArn") String.of_json
+    }
 end
 
 module UpdateOpsItemResponse = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
-end
-
-module TargetMapValueList = struct
-  type t = String.t list
-
-  let make elems () = elems
-
-  let parse xml =
-    Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
-
-  let to_query v = Aws.Query.to_query_list String.to_query v
-
-  let to_json v = `List (List.map String.to_json v)
-
-  let of_json j = Aws.Json.to_list String.of_json j
 end
 
 module DeletePatchBaselineResult = struct
@@ -20272,32 +25007,6 @@ module GetMaintenanceWindowRequest = struct
     { window_id = String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "WindowId")) }
 end
 
-module PlatformType = struct
-  type t =
-    | Windows
-    | Linux
-
-  let str_to_t = [ "Linux", Linux; "Windows", Windows ]
-
-  let t_to_str = [ Linux, "Linux"; Windows, "Windows" ]
-
-  let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
-  let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
-  let make v () = v
-
-  let parse xml =
-    Aws.Util.option_bind (String.parse xml) (fun s -> Aws.Util.list_find str_to_t s)
-
-  let to_query v =
-    Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
-
-  let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
-  let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
-end
-
 module PlatformTypeList = struct
   type t = PlatformType.t list
 
@@ -20307,9 +25016,7 @@ module PlatformTypeList = struct
     Aws.Util.option_all (List.map PlatformType.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list PlatformType.to_query v
-
   let to_json v = `List (List.map PlatformType.to_json v)
-
   let of_json j = Aws.Json.to_list PlatformType.of_json j
 end
 
@@ -20389,9 +25096,7 @@ module PatchPropertiesList = struct
     Aws.Util.option_all (List.map PatchPropertyEntry.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list PatchPropertyEntry.to_query v
-
   let to_json v = `List (List.map PatchPropertyEntry.to_json v)
-
   let of_json j = Aws.Json.to_list PatchPropertyEntry.of_json j
 end
 
@@ -20583,9 +25288,7 @@ module PatchList = struct
     Aws.Util.option_all (List.map Patch.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list Patch.to_query v
-
   let to_json v = `List (List.map Patch.to_json v)
-
   let of_json j = Aws.Json.to_list Patch.of_json j
 end
 
@@ -20627,17 +25330,48 @@ module DescribeAvailablePatchesResult = struct
     }
 end
 
+module DocumentReviewAction = struct
+  type t =
+    | SendForReview
+    | UpdateReview
+    | Approve
+    | Reject
+
+  let str_to_t =
+    [ "Reject", Reject
+    ; "Approve", Approve
+    ; "UpdateReview", UpdateReview
+    ; "SendForReview", SendForReview
+    ]
+
+  let t_to_str =
+    [ Reject, "Reject"
+    ; Approve, "Approve"
+    ; UpdateReview, "UpdateReview"
+    ; SendForReview, "SendForReview"
+    ]
+
+  let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
+  let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
+  let make v () = v
+
+  let parse xml =
+    Aws.Util.option_bind (String.parse xml) (fun s -> Aws.Util.list_find str_to_t s)
+
+  let to_query v =
+    Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
+  let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
+end
+
 module InvalidPluginName = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -20739,39 +25473,34 @@ module GetPatchBaselineForPatchGroupResult = struct
     }
 end
 
-module TargetMap = struct
-  type t = (String.t, TargetMapValueList.t) Hashtbl.t
+module GetAccessTokenRequest = struct
+  type t = { access_request_id : String.t }
 
-  let make elems () = elems
+  let make ~access_request_id () = { access_request_id }
 
-  let parse xml = None
+  let parse xml =
+    Some
+      { access_request_id =
+          Aws.Xml.required
+            "AccessRequestId"
+            (Aws.Util.option_bind (Aws.Xml.member "AccessRequestId" xml) String.parse)
+      }
 
   let to_query v =
-    Aws.Query.to_query_hashtbl String.to_string TargetMapValueList.to_query v
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Some (Aws.Query.Pair ("AccessRequestId", String.to_query v.access_request_id))
+         ])
 
   let to_json v =
     `Assoc
-      (Hashtbl.fold
-         (fun k v acc -> (String.to_string k, TargetMapValueList.to_json v) :: acc)
-         v
-         [])
+      (Aws.Util.list_filter_opt
+         [ Some ("AccessRequestId", String.to_json v.access_request_id) ])
 
-  let of_json j = Aws.Json.to_hashtbl String.of_string TargetMapValueList.of_json j
-end
-
-module TargetMaps = struct
-  type t = TargetMap.t list
-
-  let make elems () = elems
-
-  let parse xml =
-    Aws.Util.option_all (List.map TargetMap.parse (Aws.Xml.members "member" xml))
-
-  let to_query v = Aws.Query.to_query_list TargetMap.to_query v
-
-  let to_json v = `List (List.map TargetMap.to_json v)
-
-  let of_json j = Aws.Json.to_list TargetMap.of_json j
+  let of_json j =
+    { access_request_id =
+        String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "AccessRequestId"))
+    }
 end
 
 module DescribeInstancePatchesResult = struct
@@ -20857,6 +25586,8 @@ module GetMaintenanceWindowTaskResult = struct
     ; logging_info : LoggingInfo.t option
     ; name : String.t option
     ; description : String.t option
+    ; cutoff_behavior : MaintenanceWindowTaskCutoffBehavior.t option
+    ; alarm_configuration : AlarmConfiguration.t option
     }
 
   let make
@@ -20874,6 +25605,8 @@ module GetMaintenanceWindowTaskResult = struct
       ?logging_info
       ?name
       ?description
+      ?cutoff_behavior
+      ?alarm_configuration
       () =
     { window_id
     ; window_task_id
@@ -20889,6 +25622,8 @@ module GetMaintenanceWindowTaskResult = struct
     ; logging_info
     ; name
     ; description
+    ; cutoff_behavior
+    ; alarm_configuration
     }
 
   let parse xml =
@@ -20923,12 +25658,25 @@ module GetMaintenanceWindowTaskResult = struct
           Aws.Util.option_bind (Aws.Xml.member "LoggingInfo" xml) LoggingInfo.parse
       ; name = Aws.Util.option_bind (Aws.Xml.member "Name" xml) String.parse
       ; description = Aws.Util.option_bind (Aws.Xml.member "Description" xml) String.parse
+      ; cutoff_behavior =
+          Aws.Util.option_bind
+            (Aws.Xml.member "CutoffBehavior" xml)
+            MaintenanceWindowTaskCutoffBehavior.parse
+      ; alarm_configuration =
+          Aws.Util.option_bind
+            (Aws.Xml.member "AlarmConfiguration" xml)
+            AlarmConfiguration.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.description (fun f ->
+         [ Aws.Util.option_map v.alarm_configuration (fun f ->
+               Aws.Query.Pair ("AlarmConfiguration", AlarmConfiguration.to_query f))
+         ; Aws.Util.option_map v.cutoff_behavior (fun f ->
+               Aws.Query.Pair
+                 ("CutoffBehavior", MaintenanceWindowTaskCutoffBehavior.to_query f))
+         ; Aws.Util.option_map v.description (fun f ->
                Aws.Query.Pair ("Description", String.to_query f))
          ; Aws.Util.option_map v.name (fun f ->
                Aws.Query.Pair ("Name", String.to_query f))
@@ -20963,7 +25711,11 @@ module GetMaintenanceWindowTaskResult = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.description (fun f -> "Description", String.to_json f)
+         [ Aws.Util.option_map v.alarm_configuration (fun f ->
+               "AlarmConfiguration", AlarmConfiguration.to_json f)
+         ; Aws.Util.option_map v.cutoff_behavior (fun f ->
+               "CutoffBehavior", MaintenanceWindowTaskCutoffBehavior.to_json f)
+         ; Aws.Util.option_map v.description (fun f -> "Description", String.to_json f)
          ; Aws.Util.option_map v.name (fun f -> "Name", String.to_json f)
          ; Aws.Util.option_map v.logging_info (fun f ->
                "LoggingInfo", LoggingInfo.to_json f)
@@ -21015,6 +25767,14 @@ module GetMaintenanceWindowTaskResult = struct
         Aws.Util.option_map (Aws.Json.lookup j "LoggingInfo") LoggingInfo.of_json
     ; name = Aws.Util.option_map (Aws.Json.lookup j "Name") String.of_json
     ; description = Aws.Util.option_map (Aws.Json.lookup j "Description") String.of_json
+    ; cutoff_behavior =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "CutoffBehavior")
+          MaintenanceWindowTaskCutoffBehavior.of_json
+    ; alarm_configuration =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "AlarmConfiguration")
+          AlarmConfiguration.of_json
     }
 end
 
@@ -21076,9 +25836,7 @@ module OpsResultAttributeList = struct
     Aws.Util.option_all (List.map OpsResultAttribute.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list OpsResultAttribute.to_query v
-
   let to_json v = `List (List.map OpsResultAttribute.to_json v)
-
   let of_json j = Aws.Json.to_list OpsResultAttribute.of_json j
 end
 
@@ -21203,9 +25961,7 @@ module OpsItemParameterNamesList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -21310,10 +26066,69 @@ module ValidNextStepList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
+end
+
+module ParentStepDetails = struct
+  type t =
+    { step_execution_id : String.t option
+    ; step_name : String.t option
+    ; action : String.t option
+    ; iteration : Integer.t option
+    ; iterator_value : String.t option
+    }
+
+  let make ?step_execution_id ?step_name ?action ?iteration ?iterator_value () =
+    { step_execution_id; step_name; action; iteration; iterator_value }
+
+  let parse xml =
+    Some
+      { step_execution_id =
+          Aws.Util.option_bind (Aws.Xml.member "StepExecutionId" xml) String.parse
+      ; step_name = Aws.Util.option_bind (Aws.Xml.member "StepName" xml) String.parse
+      ; action = Aws.Util.option_bind (Aws.Xml.member "Action" xml) String.parse
+      ; iteration = Aws.Util.option_bind (Aws.Xml.member "Iteration" xml) Integer.parse
+      ; iterator_value =
+          Aws.Util.option_bind (Aws.Xml.member "IteratorValue" xml) String.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.iterator_value (fun f ->
+               Aws.Query.Pair ("IteratorValue", String.to_query f))
+         ; Aws.Util.option_map v.iteration (fun f ->
+               Aws.Query.Pair ("Iteration", Integer.to_query f))
+         ; Aws.Util.option_map v.action (fun f ->
+               Aws.Query.Pair ("Action", String.to_query f))
+         ; Aws.Util.option_map v.step_name (fun f ->
+               Aws.Query.Pair ("StepName", String.to_query f))
+         ; Aws.Util.option_map v.step_execution_id (fun f ->
+               Aws.Query.Pair ("StepExecutionId", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.iterator_value (fun f ->
+               "IteratorValue", String.to_json f)
+         ; Aws.Util.option_map v.iteration (fun f -> "Iteration", Integer.to_json f)
+         ; Aws.Util.option_map v.action (fun f -> "Action", String.to_json f)
+         ; Aws.Util.option_map v.step_name (fun f -> "StepName", String.to_json f)
+         ; Aws.Util.option_map v.step_execution_id (fun f ->
+               "StepExecutionId", String.to_json f)
+         ])
+
+  let of_json j =
+    { step_execution_id =
+        Aws.Util.option_map (Aws.Json.lookup j "StepExecutionId") String.of_json
+    ; step_name = Aws.Util.option_map (Aws.Json.lookup j "StepName") String.of_json
+    ; action = Aws.Util.option_map (Aws.Json.lookup j "Action") String.of_json
+    ; iteration = Aws.Util.option_map (Aws.Json.lookup j "Iteration") Integer.of_json
+    ; iterator_value =
+        Aws.Util.option_map (Aws.Json.lookup j "IteratorValue") String.of_json
+    }
 end
 
 module FailureDetails = struct
@@ -21389,6 +26204,8 @@ module StepExecution = struct
     ; valid_next_steps : ValidNextStepList.t
     ; targets : Targets.t
     ; target_location : TargetLocation.t option
+    ; triggered_alarms : AlarmStateInformationList.t
+    ; parent_step_details : ParentStepDetails.t option
     }
 
   let make
@@ -21414,6 +26231,8 @@ module StepExecution = struct
       ?(valid_next_steps = [])
       ?(targets = [])
       ?target_location
+      ?(triggered_alarms = [])
+      ?parent_step_details
       () =
     { step_name
     ; action
@@ -21437,6 +26256,8 @@ module StepExecution = struct
     ; valid_next_steps
     ; targets
     ; target_location
+    ; triggered_alarms
+    ; parent_step_details
     }
 
   let parse xml =
@@ -21487,12 +26308,28 @@ module StepExecution = struct
             (Aws.Util.option_bind (Aws.Xml.member "Targets" xml) Targets.parse)
       ; target_location =
           Aws.Util.option_bind (Aws.Xml.member "TargetLocation" xml) TargetLocation.parse
+      ; triggered_alarms =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "TriggeredAlarms" xml)
+               AlarmStateInformationList.parse)
+      ; parent_step_details =
+          Aws.Util.option_bind
+            (Aws.Xml.member "ParentStepDetails" xml)
+            ParentStepDetails.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.target_location (fun f ->
+         [ Aws.Util.option_map v.parent_step_details (fun f ->
+               Aws.Query.Pair ("ParentStepDetails", ParentStepDetails.to_query f))
+         ; Some
+             (Aws.Query.Pair
+                ( "TriggeredAlarms.member"
+                , AlarmStateInformationList.to_query v.triggered_alarms ))
+         ; Aws.Util.option_map v.target_location (fun f ->
                Aws.Query.Pair ("TargetLocation", TargetLocation.to_query f))
          ; Some (Aws.Query.Pair ("Targets.member", Targets.to_query v.targets))
          ; Some
@@ -21541,7 +26378,10 @@ module StepExecution = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.target_location (fun f ->
+         [ Aws.Util.option_map v.parent_step_details (fun f ->
+               "ParentStepDetails", ParentStepDetails.to_json f)
+         ; Some ("TriggeredAlarms", AlarmStateInformationList.to_json v.triggered_alarms)
+         ; Aws.Util.option_map v.target_location (fun f ->
                "TargetLocation", TargetLocation.to_json f)
          ; Some ("Targets", Targets.to_json v.targets)
          ; Some ("ValidNextSteps", ValidNextStepList.to_json v.valid_next_steps)
@@ -21615,6 +26455,13 @@ module StepExecution = struct
     ; targets = Targets.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Targets"))
     ; target_location =
         Aws.Util.option_map (Aws.Json.lookup j "TargetLocation") TargetLocation.of_json
+    ; triggered_alarms =
+        AlarmStateInformationList.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "TriggeredAlarms"))
+    ; parent_step_details =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "ParentStepDetails")
+          ParentStepDetails.of_json
     }
 end
 
@@ -21627,9 +26474,7 @@ module StepExecutionList = struct
     Aws.Util.option_all (List.map StepExecution.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list StepExecution.to_query v
-
   let to_json v = `List (List.map StepExecution.to_json v)
-
   let of_json j = Aws.Json.to_list StepExecution.of_json j
 end
 
@@ -21677,17 +26522,26 @@ module DescribeAutomationStepExecutionsResult = struct
     }
 end
 
+module CategoryList = struct
+  type t = String.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
+
+  let to_query v = Aws.Query.to_query_list String.to_query v
+  let to_json v = `List (List.map String.to_json v)
+  let of_json j = Aws.Json.to_list String.of_json j
+end
+
 module SendAutomationSignalResult = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -21743,6 +26597,7 @@ module UpdatePatchBaselineResult = struct
     ; modified_date : DateTime.t option
     ; description : String.t option
     ; sources : PatchSourceList.t
+    ; available_security_updates_compliance_status : PatchComplianceStatus.t option
     }
 
   let make
@@ -21760,6 +26615,7 @@ module UpdatePatchBaselineResult = struct
       ?modified_date
       ?description
       ?(sources = [])
+      ?available_security_updates_compliance_status
       () =
     { baseline_id
     ; name
@@ -21775,6 +26631,7 @@ module UpdatePatchBaselineResult = struct
     ; modified_date
     ; description
     ; sources
+    ; available_security_updates_compliance_status
     }
 
   let parse xml =
@@ -21822,12 +26679,20 @@ module UpdatePatchBaselineResult = struct
           Aws.Util.of_option
             []
             (Aws.Util.option_bind (Aws.Xml.member "Sources" xml) PatchSourceList.parse)
+      ; available_security_updates_compliance_status =
+          Aws.Util.option_bind
+            (Aws.Xml.member "AvailableSecurityUpdatesComplianceStatus" xml)
+            PatchComplianceStatus.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Some (Aws.Query.Pair ("Sources.member", PatchSourceList.to_query v.sources))
+         [ Aws.Util.option_map v.available_security_updates_compliance_status (fun f ->
+               Aws.Query.Pair
+                 ( "AvailableSecurityUpdatesComplianceStatus"
+                 , PatchComplianceStatus.to_query f ))
+         ; Some (Aws.Query.Pair ("Sources.member", PatchSourceList.to_query v.sources))
          ; Aws.Util.option_map v.description (fun f ->
                Aws.Query.Pair ("Description", String.to_query f))
          ; Aws.Util.option_map v.modified_date (fun f ->
@@ -21862,7 +26727,9 @@ module UpdatePatchBaselineResult = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Some ("Sources", PatchSourceList.to_json v.sources)
+         [ Aws.Util.option_map v.available_security_updates_compliance_status (fun f ->
+               "AvailableSecurityUpdatesComplianceStatus", PatchComplianceStatus.to_json f)
+         ; Some ("Sources", PatchSourceList.to_json v.sources)
          ; Aws.Util.option_map v.description (fun f -> "Description", String.to_json f)
          ; Aws.Util.option_map v.modified_date (fun f ->
                "ModifiedDate", DateTime.to_json f)
@@ -21917,6 +26784,10 @@ module UpdatePatchBaselineResult = struct
     ; description = Aws.Util.option_map (Aws.Json.lookup j "Description") String.of_json
     ; sources =
         PatchSourceList.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Sources"))
+    ; available_security_updates_compliance_status =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "AvailableSecurityUpdatesComplianceStatus")
+          PatchComplianceStatus.of_json
     }
 end
 
@@ -21934,6 +26805,8 @@ module StartAutomationExecutionRequest = struct
     ; max_errors : String.t option
     ; target_locations : TargetLocations.t
     ; tags : TagList.t
+    ; alarm_configuration : AlarmConfiguration.t option
+    ; target_locations_u_r_l : String.t option
     }
 
   let make
@@ -21949,6 +26822,8 @@ module StartAutomationExecutionRequest = struct
       ?max_errors
       ?(target_locations = [])
       ?(tags = [])
+      ?alarm_configuration
+      ?target_locations_u_r_l
       () =
     { document_name
     ; document_version
@@ -21962,6 +26837,8 @@ module StartAutomationExecutionRequest = struct
     ; max_errors
     ; target_locations
     ; tags
+    ; alarm_configuration
+    ; target_locations_u_r_l
     }
 
   let parse xml =
@@ -22002,12 +26879,22 @@ module StartAutomationExecutionRequest = struct
           Aws.Util.of_option
             []
             (Aws.Util.option_bind (Aws.Xml.member "Tags" xml) TagList.parse)
+      ; alarm_configuration =
+          Aws.Util.option_bind
+            (Aws.Xml.member "AlarmConfiguration" xml)
+            AlarmConfiguration.parse
+      ; target_locations_u_r_l =
+          Aws.Util.option_bind (Aws.Xml.member "TargetLocationsURL" xml) String.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Some (Aws.Query.Pair ("Tags.member", TagList.to_query v.tags))
+         [ Aws.Util.option_map v.target_locations_u_r_l (fun f ->
+               Aws.Query.Pair ("TargetLocationsURL", String.to_query f))
+         ; Aws.Util.option_map v.alarm_configuration (fun f ->
+               Aws.Query.Pair ("AlarmConfiguration", AlarmConfiguration.to_query f))
+         ; Some (Aws.Query.Pair ("Tags.member", TagList.to_query v.tags))
          ; Some
              (Aws.Query.Pair
                 ("TargetLocations.member", TargetLocations.to_query v.target_locations))
@@ -22033,7 +26920,11 @@ module StartAutomationExecutionRequest = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Some ("Tags", TagList.to_json v.tags)
+         [ Aws.Util.option_map v.target_locations_u_r_l (fun f ->
+               "TargetLocationsURL", String.to_json f)
+         ; Aws.Util.option_map v.alarm_configuration (fun f ->
+               "AlarmConfiguration", AlarmConfiguration.to_json f)
+         ; Some ("Tags", TagList.to_json v.tags)
          ; Some ("TargetLocations", TargetLocations.to_json v.target_locations)
          ; Aws.Util.option_map v.max_errors (fun f -> "MaxErrors", String.to_json f)
          ; Aws.Util.option_map v.max_concurrency (fun f ->
@@ -22074,6 +26965,58 @@ module StartAutomationExecutionRequest = struct
         TargetLocations.of_json
           (Aws.Util.of_option_exn (Aws.Json.lookup j "TargetLocations"))
     ; tags = TagList.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Tags"))
+    ; alarm_configuration =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "AlarmConfiguration")
+          AlarmConfiguration.of_json
+    ; target_locations_u_r_l =
+        Aws.Util.option_map (Aws.Json.lookup j "TargetLocationsURL") String.of_json
+    }
+end
+
+module GetOpsMetadataRequest = struct
+  type t =
+    { ops_metadata_arn : String.t
+    ; max_results : Integer.t option
+    ; next_token : String.t option
+    }
+
+  let make ~ops_metadata_arn ?max_results ?next_token () =
+    { ops_metadata_arn; max_results; next_token }
+
+  let parse xml =
+    Some
+      { ops_metadata_arn =
+          Aws.Xml.required
+            "OpsMetadataArn"
+            (Aws.Util.option_bind (Aws.Xml.member "OpsMetadataArn" xml) String.parse)
+      ; max_results = Aws.Util.option_bind (Aws.Xml.member "MaxResults" xml) Integer.parse
+      ; next_token = Aws.Util.option_bind (Aws.Xml.member "NextToken" xml) String.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.next_token (fun f ->
+               Aws.Query.Pair ("NextToken", String.to_query f))
+         ; Aws.Util.option_map v.max_results (fun f ->
+               Aws.Query.Pair ("MaxResults", Integer.to_query f))
+         ; Some (Aws.Query.Pair ("OpsMetadataArn", String.to_query v.ops_metadata_arn))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.next_token (fun f -> "NextToken", String.to_json f)
+         ; Aws.Util.option_map v.max_results (fun f -> "MaxResults", Integer.to_json f)
+         ; Some ("OpsMetadataArn", String.to_json v.ops_metadata_arn)
+         ])
+
+  let of_json j =
+    { ops_metadata_arn =
+        String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "OpsMetadataArn"))
+    ; max_results = Aws.Util.option_map (Aws.Json.lookup j "MaxResults") Integer.of_json
+    ; next_token = Aws.Util.option_map (Aws.Json.lookup j "NextToken") String.of_json
     }
 end
 
@@ -22086,9 +27029,7 @@ module OpsItemSummaries = struct
     Aws.Util.option_all (List.map OpsItemSummary.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list OpsItemSummary.to_query v
-
   let to_json v = `List (List.map OpsItemSummary.to_json v)
-
   let of_json j = Aws.Json.to_list OpsItemSummary.of_json j
 end
 
@@ -22200,13 +27141,9 @@ module InvalidResourceType = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -22252,6 +27189,54 @@ module DescribeMaintenanceWindowTargetsResult = struct
           (Aws.Util.of_option_exn (Aws.Json.lookup j "Targets"))
     ; next_token = Aws.Util.option_map (Aws.Json.lookup j "NextToken") String.of_json
     }
+end
+
+module InvalidTargetMaps = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Aws.Util.option_bind (Aws.Xml.member "Message" xml) String.parse }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f ->
+               Aws.Query.Pair ("Message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f -> "Message", String.to_json f) ])
+
+  let of_json j =
+    { message = Aws.Util.option_map (Aws.Json.lookup j "Message") String.of_json }
+end
+
+module ResourcePolicyNotFoundException = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Aws.Util.option_bind (Aws.Xml.member "Message" xml) String.parse }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f ->
+               Aws.Query.Pair ("Message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f -> "Message", String.to_json f) ])
+
+  let of_json j =
+    { message = Aws.Util.option_map (Aws.Json.lookup j "Message") String.of_json }
 end
 
 module InvalidOptionException = struct
@@ -22313,6 +27298,47 @@ module UpdateAssociationStatusResult = struct
     }
 end
 
+module NodeAttributeName = struct
+  type t =
+    | AgentVersion
+    | PlatformName
+    | PlatformType
+    | PlatformVersion
+    | Region
+    | ResourceType
+
+  let str_to_t =
+    [ "ResourceType", ResourceType
+    ; "Region", Region
+    ; "PlatformVersion", PlatformVersion
+    ; "PlatformType", PlatformType
+    ; "PlatformName", PlatformName
+    ; "AgentVersion", AgentVersion
+    ]
+
+  let t_to_str =
+    [ ResourceType, "ResourceType"
+    ; Region, "Region"
+    ; PlatformVersion, "PlatformVersion"
+    ; PlatformType, "PlatformType"
+    ; PlatformName, "PlatformName"
+    ; AgentVersion, "AgentVersion"
+    ]
+
+  let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
+  let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
+  let make v () = v
+
+  let parse xml =
+    Aws.Util.option_bind (String.parse xml) (fun s -> Aws.Util.list_find str_to_t s)
+
+  let to_query v =
+    Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
+  let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
+end
+
 module DeleteMaintenanceWindowRequest = struct
   type t = { window_id : String.t }
 
@@ -22351,9 +27377,7 @@ module AssociationExecutionTargetsFilterKey = struct
     [ ResourceType, "ResourceType"; ResourceId, "ResourceId"; Status, "Status" ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -22363,7 +27387,6 @@ module AssociationExecutionTargetsFilterKey = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -22371,13 +27394,9 @@ module CreateResourceDataSyncResult = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -22432,13 +27451,9 @@ module DeregisterManagedInstanceResult = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -22539,9 +27554,7 @@ module AttachmentInformationList = struct
       (List.map AttachmentInformation.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list AttachmentInformation.to_query v
-
   let to_json v = `List (List.map AttachmentInformation.to_json v)
-
   let of_json j = Aws.Json.to_list AttachmentInformation.of_json j
 end
 
@@ -22594,9 +27607,7 @@ module AutomationExecutionFilterList = struct
       (List.map AutomationExecutionFilter.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list AutomationExecutionFilter.to_query v
-
   let to_json v = `List (List.map AutomationExecutionFilter.to_json v)
-
   let of_json j = Aws.Json.to_list AutomationExecutionFilter.of_json j
 end
 
@@ -22679,13 +27690,9 @@ module InvalidCommandId = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -22762,14 +27769,142 @@ module DuplicateInstanceId = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
+end
+
+module NodeAggregatorType = struct
+  type t = Count
+
+  let str_to_t = [ "Count", Count ]
+  let t_to_str = [ Count, "Count" ]
+  let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
+  let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
+  let make v () = v
+
+  let parse xml =
+    Aws.Util.option_bind (String.parse xml) (fun s -> Aws.Util.list_find str_to_t s)
+
+  let to_query v =
+    Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
+  let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
+end
+
+module TargetPreviewList = struct
+  type t = TargetPreview.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Aws.Util.option_all (List.map TargetPreview.parse (Aws.Xml.members "member" xml))
+
+  let to_query v = Aws.Query.to_query_list TargetPreview.to_query v
+  let to_json v = `List (List.map TargetPreview.to_json v)
+  let of_json j = Aws.Json.to_list TargetPreview.of_json j
+end
+
+module AutomationExecutionPreview = struct
+  type t =
+    { step_previews : StepPreviewMap.t option
+    ; regions : RegionList.t
+    ; target_previews : TargetPreviewList.t
+    ; total_accounts : Integer.t option
+    }
+
+  let make ?step_previews ?(regions = []) ?(target_previews = []) ?total_accounts () =
+    { step_previews; regions; target_previews; total_accounts }
+
+  let parse xml =
+    Some
+      { step_previews =
+          Aws.Util.option_bind (Aws.Xml.member "StepPreviews" xml) StepPreviewMap.parse
+      ; regions =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind (Aws.Xml.member "Regions" xml) RegionList.parse)
+      ; target_previews =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "TargetPreviews" xml)
+               TargetPreviewList.parse)
+      ; total_accounts =
+          Aws.Util.option_bind (Aws.Xml.member "TotalAccounts" xml) Integer.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.total_accounts (fun f ->
+               Aws.Query.Pair ("TotalAccounts", Integer.to_query f))
+         ; Some
+             (Aws.Query.Pair
+                ("TargetPreviews.member", TargetPreviewList.to_query v.target_previews))
+         ; Some (Aws.Query.Pair ("Regions.member", RegionList.to_query v.regions))
+         ; Aws.Util.option_map v.step_previews (fun f ->
+               Aws.Query.Pair ("StepPreviews", StepPreviewMap.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.total_accounts (fun f ->
+               "TotalAccounts", Integer.to_json f)
+         ; Some ("TargetPreviews", TargetPreviewList.to_json v.target_previews)
+         ; Some ("Regions", RegionList.to_json v.regions)
+         ; Aws.Util.option_map v.step_previews (fun f ->
+               "StepPreviews", StepPreviewMap.to_json f)
+         ])
+
+  let of_json j =
+    { step_previews =
+        Aws.Util.option_map (Aws.Json.lookup j "StepPreviews") StepPreviewMap.of_json
+    ; regions = RegionList.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Regions"))
+    ; target_previews =
+        TargetPreviewList.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "TargetPreviews"))
+    ; total_accounts =
+        Aws.Util.option_map (Aws.Json.lookup j "TotalAccounts") Integer.of_json
+    }
+end
+
+module ExecutionPreview = struct
+  type t = { automation : AutomationExecutionPreview.t option }
+
+  let make ?automation () = { automation }
+
+  let parse xml =
+    Some
+      { automation =
+          Aws.Util.option_bind
+            (Aws.Xml.member "Automation" xml)
+            AutomationExecutionPreview.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.automation (fun f ->
+               Aws.Query.Pair ("Automation", AutomationExecutionPreview.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.automation (fun f ->
+               "Automation", AutomationExecutionPreview.to_json f)
+         ])
+
+  let of_json j =
+    { automation =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "Automation")
+          AutomationExecutionPreview.of_json
+    }
 end
 
 module InstancePatchStatesList = struct
@@ -22781,9 +27916,7 @@ module InstancePatchStatesList = struct
     Aws.Util.option_all (List.map InstancePatchState.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list InstancePatchState.to_query v
-
   let to_json v = `List (List.map InstancePatchState.to_json v)
-
   let of_json j = Aws.Json.to_list InstancePatchState.of_json j
 end
 
@@ -22857,6 +27990,51 @@ module AssociationVersionLimitExceeded = struct
 
   let of_json j =
     { message = Aws.Util.option_map (Aws.Json.lookup j "Message") String.of_json }
+end
+
+module ReviewInformation = struct
+  type t =
+    { reviewed_time : DateTime.t option
+    ; status : ReviewStatus.t option
+    ; reviewer : String.t option
+    }
+
+  let make ?reviewed_time ?status ?reviewer () = { reviewed_time; status; reviewer }
+
+  let parse xml =
+    Some
+      { reviewed_time =
+          Aws.Util.option_bind (Aws.Xml.member "ReviewedTime" xml) DateTime.parse
+      ; status = Aws.Util.option_bind (Aws.Xml.member "Status" xml) ReviewStatus.parse
+      ; reviewer = Aws.Util.option_bind (Aws.Xml.member "Reviewer" xml) String.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.reviewer (fun f ->
+               Aws.Query.Pair ("Reviewer", String.to_query f))
+         ; Aws.Util.option_map v.status (fun f ->
+               Aws.Query.Pair ("Status", ReviewStatus.to_query f))
+         ; Aws.Util.option_map v.reviewed_time (fun f ->
+               Aws.Query.Pair ("ReviewedTime", DateTime.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.reviewer (fun f -> "Reviewer", String.to_json f)
+         ; Aws.Util.option_map v.status (fun f -> "Status", ReviewStatus.to_json f)
+         ; Aws.Util.option_map v.reviewed_time (fun f ->
+               "ReviewedTime", DateTime.to_json f)
+         ])
+
+  let of_json j =
+    { reviewed_time =
+        Aws.Util.option_map (Aws.Json.lookup j "ReviewedTime") DateTime.of_json
+    ; status = Aws.Util.option_map (Aws.Json.lookup j "Status") ReviewStatus.of_json
+    ; reviewer = Aws.Util.option_map (Aws.Json.lookup j "Reviewer") String.of_json
+    }
 end
 
 module InvalidParameters = struct
@@ -22964,6 +28142,8 @@ end
 module DocumentIdentifier = struct
   type t =
     { name : String.t option
+    ; created_date : DateTime.t option
+    ; display_name : String.t option
     ; owner : String.t option
     ; version_name : String.t option
     ; platform_types : PlatformTypeList.t
@@ -22974,10 +28154,14 @@ module DocumentIdentifier = struct
     ; target_type : String.t option
     ; tags : TagList.t
     ; requires : DocumentRequiresList.t
+    ; review_status : ReviewStatus.t option
+    ; author : String.t option
     }
 
   let make
       ?name
+      ?created_date
+      ?display_name
       ?owner
       ?version_name
       ?(platform_types = [])
@@ -22988,8 +28172,12 @@ module DocumentIdentifier = struct
       ?target_type
       ?(tags = [])
       ?(requires = [])
+      ?review_status
+      ?author
       () =
     { name
+    ; created_date
+    ; display_name
     ; owner
     ; version_name
     ; platform_types
@@ -23000,11 +28188,17 @@ module DocumentIdentifier = struct
     ; target_type
     ; tags
     ; requires
+    ; review_status
+    ; author
     }
 
   let parse xml =
     Some
       { name = Aws.Util.option_bind (Aws.Xml.member "Name" xml) String.parse
+      ; created_date =
+          Aws.Util.option_bind (Aws.Xml.member "CreatedDate" xml) DateTime.parse
+      ; display_name =
+          Aws.Util.option_bind (Aws.Xml.member "DisplayName" xml) String.parse
       ; owner = Aws.Util.option_bind (Aws.Xml.member "Owner" xml) String.parse
       ; version_name =
           Aws.Util.option_bind (Aws.Xml.member "VersionName" xml) String.parse
@@ -23033,12 +28227,19 @@ module DocumentIdentifier = struct
             (Aws.Util.option_bind
                (Aws.Xml.member "Requires" xml)
                DocumentRequiresList.parse)
+      ; review_status =
+          Aws.Util.option_bind (Aws.Xml.member "ReviewStatus" xml) ReviewStatus.parse
+      ; author = Aws.Util.option_bind (Aws.Xml.member "Author" xml) String.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Some
+         [ Aws.Util.option_map v.author (fun f ->
+               Aws.Query.Pair ("Author", String.to_query f))
+         ; Aws.Util.option_map v.review_status (fun f ->
+               Aws.Query.Pair ("ReviewStatus", ReviewStatus.to_query f))
+         ; Some
              (Aws.Query.Pair ("Requires.member", DocumentRequiresList.to_query v.requires))
          ; Some (Aws.Query.Pair ("Tags.member", TagList.to_query v.tags))
          ; Aws.Util.option_map v.target_type (fun f ->
@@ -23058,6 +28259,10 @@ module DocumentIdentifier = struct
                Aws.Query.Pair ("VersionName", String.to_query f))
          ; Aws.Util.option_map v.owner (fun f ->
                Aws.Query.Pair ("Owner", String.to_query f))
+         ; Aws.Util.option_map v.display_name (fun f ->
+               Aws.Query.Pair ("DisplayName", String.to_query f))
+         ; Aws.Util.option_map v.created_date (fun f ->
+               Aws.Query.Pair ("CreatedDate", DateTime.to_query f))
          ; Aws.Util.option_map v.name (fun f ->
                Aws.Query.Pair ("Name", String.to_query f))
          ])
@@ -23065,7 +28270,10 @@ module DocumentIdentifier = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Some ("Requires", DocumentRequiresList.to_json v.requires)
+         [ Aws.Util.option_map v.author (fun f -> "Author", String.to_json f)
+         ; Aws.Util.option_map v.review_status (fun f ->
+               "ReviewStatus", ReviewStatus.to_json f)
+         ; Some ("Requires", DocumentRequiresList.to_json v.requires)
          ; Some ("Tags", TagList.to_json v.tags)
          ; Aws.Util.option_map v.target_type (fun f -> "TargetType", String.to_json f)
          ; Aws.Util.option_map v.document_format (fun f ->
@@ -23079,11 +28287,16 @@ module DocumentIdentifier = struct
          ; Some ("PlatformTypes", PlatformTypeList.to_json v.platform_types)
          ; Aws.Util.option_map v.version_name (fun f -> "VersionName", String.to_json f)
          ; Aws.Util.option_map v.owner (fun f -> "Owner", String.to_json f)
+         ; Aws.Util.option_map v.display_name (fun f -> "DisplayName", String.to_json f)
+         ; Aws.Util.option_map v.created_date (fun f -> "CreatedDate", DateTime.to_json f)
          ; Aws.Util.option_map v.name (fun f -> "Name", String.to_json f)
          ])
 
   let of_json j =
     { name = Aws.Util.option_map (Aws.Json.lookup j "Name") String.of_json
+    ; created_date =
+        Aws.Util.option_map (Aws.Json.lookup j "CreatedDate") DateTime.of_json
+    ; display_name = Aws.Util.option_map (Aws.Json.lookup j "DisplayName") String.of_json
     ; owner = Aws.Util.option_map (Aws.Json.lookup j "Owner") String.of_json
     ; version_name = Aws.Util.option_map (Aws.Json.lookup j "VersionName") String.of_json
     ; platform_types =
@@ -23102,6 +28315,9 @@ module DocumentIdentifier = struct
     ; requires =
         DocumentRequiresList.of_json
           (Aws.Util.of_option_exn (Aws.Json.lookup j "Requires"))
+    ; review_status =
+        Aws.Util.option_map (Aws.Json.lookup j "ReviewStatus") ReviewStatus.of_json
+    ; author = Aws.Util.option_map (Aws.Json.lookup j "Author") String.of_json
     }
 end
 
@@ -23114,125 +28330,8 @@ module DocumentIdentifierList = struct
     Aws.Util.option_all (List.map DocumentIdentifier.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list DocumentIdentifier.to_query v
-
   let to_json v = `List (List.map DocumentIdentifier.to_json v)
-
   let of_json j = Aws.Json.to_list DocumentIdentifier.of_json j
-end
-
-module ResourceType = struct
-  type t =
-    | ManagedInstance
-    | Document
-    | EC2Instance
-
-  let str_to_t =
-    [ "EC2Instance", EC2Instance
-    ; "Document", Document
-    ; "ManagedInstance", ManagedInstance
-    ]
-
-  let t_to_str =
-    [ EC2Instance, "EC2Instance"
-    ; Document, "Document"
-    ; ManagedInstance, "ManagedInstance"
-    ]
-
-  let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
-  let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
-  let make v () = v
-
-  let parse xml =
-    Aws.Util.option_bind (String.parse xml) (fun s -> Aws.Util.list_find str_to_t s)
-
-  let to_query v =
-    Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
-
-  let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
-  let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
-end
-
-module PingStatus = struct
-  type t =
-    | Online
-    | ConnectionLost
-    | Inactive
-
-  let str_to_t =
-    [ "Inactive", Inactive; "ConnectionLost", ConnectionLost; "Online", Online ]
-
-  let t_to_str =
-    [ Inactive, "Inactive"; ConnectionLost, "ConnectionLost"; Online, "Online" ]
-
-  let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
-  let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
-  let make v () = v
-
-  let parse xml =
-    Aws.Util.option_bind (String.parse xml) (fun s -> Aws.Util.list_find str_to_t s)
-
-  let to_query v =
-    Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
-
-  let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
-  let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
-end
-
-module InstanceAggregatedAssociationOverview = struct
-  type t =
-    { detailed_status : String.t option
-    ; instance_association_status_aggregated_count :
-        InstanceAssociationStatusAggregatedCount.t option
-    }
-
-  let make ?detailed_status ?instance_association_status_aggregated_count () =
-    { detailed_status; instance_association_status_aggregated_count }
-
-  let parse xml =
-    Some
-      { detailed_status =
-          Aws.Util.option_bind (Aws.Xml.member "DetailedStatus" xml) String.parse
-      ; instance_association_status_aggregated_count =
-          Aws.Util.option_bind
-            (Aws.Xml.member "InstanceAssociationStatusAggregatedCount" xml)
-            InstanceAssociationStatusAggregatedCount.parse
-      }
-
-  let to_query v =
-    Aws.Query.List
-      (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.instance_association_status_aggregated_count (fun f ->
-               Aws.Query.Pair
-                 ( "InstanceAssociationStatusAggregatedCount"
-                 , InstanceAssociationStatusAggregatedCount.to_query f ))
-         ; Aws.Util.option_map v.detailed_status (fun f ->
-               Aws.Query.Pair ("DetailedStatus", String.to_query f))
-         ])
-
-  let to_json v =
-    `Assoc
-      (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.instance_association_status_aggregated_count (fun f ->
-               ( "InstanceAssociationStatusAggregatedCount"
-               , InstanceAssociationStatusAggregatedCount.to_json f ))
-         ; Aws.Util.option_map v.detailed_status (fun f ->
-               "DetailedStatus", String.to_json f)
-         ])
-
-  let of_json j =
-    { detailed_status =
-        Aws.Util.option_map (Aws.Json.lookup j "DetailedStatus") String.of_json
-    ; instance_association_status_aggregated_count =
-        Aws.Util.option_map
-          (Aws.Json.lookup j "InstanceAssociationStatusAggregatedCount")
-          InstanceAssociationStatusAggregatedCount.of_json
-    }
 end
 
 module InstanceInformation = struct
@@ -23256,6 +28355,8 @@ module InstanceInformation = struct
     ; last_association_execution_date : DateTime.t option
     ; last_successful_association_execution_date : DateTime.t option
     ; association_overview : InstanceAggregatedAssociationOverview.t option
+    ; source_id : String.t option
+    ; source_type : SourceType.t option
     }
 
   let make
@@ -23278,6 +28379,8 @@ module InstanceInformation = struct
       ?last_association_execution_date
       ?last_successful_association_execution_date
       ?association_overview
+      ?source_id
+      ?source_type
       () =
     { instance_id
     ; ping_status
@@ -23298,6 +28401,8 @@ module InstanceInformation = struct
     ; last_association_execution_date
     ; last_successful_association_execution_date
     ; association_overview
+    ; source_id
+    ; source_type
     }
 
   let parse xml =
@@ -23342,12 +28447,19 @@ module InstanceInformation = struct
           Aws.Util.option_bind
             (Aws.Xml.member "AssociationOverview" xml)
             InstanceAggregatedAssociationOverview.parse
+      ; source_id = Aws.Util.option_bind (Aws.Xml.member "SourceId" xml) String.parse
+      ; source_type =
+          Aws.Util.option_bind (Aws.Xml.member "SourceType" xml) SourceType.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.association_overview (fun f ->
+         [ Aws.Util.option_map v.source_type (fun f ->
+               Aws.Query.Pair ("SourceType", SourceType.to_query f))
+         ; Aws.Util.option_map v.source_id (fun f ->
+               Aws.Query.Pair ("SourceId", String.to_query f))
+         ; Aws.Util.option_map v.association_overview (fun f ->
                Aws.Query.Pair
                  ("AssociationOverview", InstanceAggregatedAssociationOverview.to_query f))
          ; Aws.Util.option_map v.last_successful_association_execution_date (fun f ->
@@ -23392,7 +28504,9 @@ module InstanceInformation = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.association_overview (fun f ->
+         [ Aws.Util.option_map v.source_type (fun f -> "SourceType", SourceType.to_json f)
+         ; Aws.Util.option_map v.source_id (fun f -> "SourceId", String.to_json f)
+         ; Aws.Util.option_map v.association_overview (fun f ->
                "AssociationOverview", InstanceAggregatedAssociationOverview.to_json f)
          ; Aws.Util.option_map v.last_successful_association_execution_date (fun f ->
                "LastSuccessfulAssociationExecutionDate", DateTime.to_json f)
@@ -23464,6 +28578,9 @@ module InstanceInformation = struct
         Aws.Util.option_map
           (Aws.Json.lookup j "AssociationOverview")
           InstanceAggregatedAssociationOverview.of_json
+    ; source_id = Aws.Util.option_map (Aws.Json.lookup j "SourceId") String.of_json
+    ; source_type =
+        Aws.Util.option_map (Aws.Json.lookup j "SourceType") SourceType.of_json
     }
 end
 
@@ -23477,9 +28594,7 @@ module InstanceInformationList = struct
       (List.map InstanceInformation.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list InstanceInformation.to_query v
-
   let to_json v = `List (List.map InstanceInformation.to_json v)
-
   let of_json j = Aws.Json.to_list InstanceInformation.of_json j
 end
 
@@ -23549,6 +28664,7 @@ module SendCommandRequest = struct
     ; service_role_arn : String.t option
     ; notification_config : NotificationConfig.t option
     ; cloud_watch_output_config : CloudWatchOutputConfig.t option
+    ; alarm_configuration : AlarmConfiguration.t option
     }
 
   let make
@@ -23569,6 +28685,7 @@ module SendCommandRequest = struct
       ?service_role_arn
       ?notification_config
       ?cloud_watch_output_config
+      ?alarm_configuration
       () =
     { instance_ids
     ; targets
@@ -23587,6 +28704,7 @@ module SendCommandRequest = struct
     ; service_role_arn
     ; notification_config
     ; cloud_watch_output_config
+    ; alarm_configuration
     }
 
   let parse xml =
@@ -23635,12 +28753,18 @@ module SendCommandRequest = struct
           Aws.Util.option_bind
             (Aws.Xml.member "CloudWatchOutputConfig" xml)
             CloudWatchOutputConfig.parse
+      ; alarm_configuration =
+          Aws.Util.option_bind
+            (Aws.Xml.member "AlarmConfiguration" xml)
+            AlarmConfiguration.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.cloud_watch_output_config (fun f ->
+         [ Aws.Util.option_map v.alarm_configuration (fun f ->
+               Aws.Query.Pair ("AlarmConfiguration", AlarmConfiguration.to_query f))
+         ; Aws.Util.option_map v.cloud_watch_output_config (fun f ->
                Aws.Query.Pair ("CloudWatchOutputConfig", CloudWatchOutputConfig.to_query f))
          ; Aws.Util.option_map v.notification_config (fun f ->
                Aws.Query.Pair ("NotificationConfig", NotificationConfig.to_query f))
@@ -23677,7 +28801,9 @@ module SendCommandRequest = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.cloud_watch_output_config (fun f ->
+         [ Aws.Util.option_map v.alarm_configuration (fun f ->
+               "AlarmConfiguration", AlarmConfiguration.to_json f)
+         ; Aws.Util.option_map v.cloud_watch_output_config (fun f ->
                "CloudWatchOutputConfig", CloudWatchOutputConfig.to_json f)
          ; Aws.Util.option_map v.notification_config (fun f ->
                "NotificationConfig", NotificationConfig.to_json f)
@@ -23743,6 +28869,10 @@ module SendCommandRequest = struct
         Aws.Util.option_map
           (Aws.Json.lookup j "CloudWatchOutputConfig")
           CloudWatchOutputConfig.of_json
+    ; alarm_configuration =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "AlarmConfiguration")
+          AlarmConfiguration.of_json
     }
 end
 
@@ -23752,13 +28882,9 @@ module InventorySchemaDeleteOption = struct
     | DeleteSchema
 
   let str_to_t = [ "DeleteSchema", DeleteSchema; "DisableSchema", DisableSchema ]
-
   let t_to_str = [ DeleteSchema, "DeleteSchema"; DisableSchema, "DisableSchema" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -23768,7 +28894,6 @@ module InventorySchemaDeleteOption = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -23837,9 +28962,7 @@ module InstanceAssociationList = struct
       (List.map InstanceAssociation.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list InstanceAssociation.to_query v
-
   let to_json v = `List (List.map InstanceAssociation.to_json v)
-
   let of_json j = Aws.Json.to_list InstanceAssociation.of_json j
 end
 
@@ -23847,13 +28970,9 @@ module UpdateServiceSettingResult = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -23891,6 +29010,8 @@ module AssociationExecution = struct
     ; created_time : DateTime.t option
     ; last_execution_date : DateTime.t option
     ; resource_count_by_status : String.t option
+    ; alarm_configuration : AlarmConfiguration.t option
+    ; triggered_alarms : AlarmStateInformationList.t
     }
 
   let make
@@ -23902,6 +29023,8 @@ module AssociationExecution = struct
       ?created_time
       ?last_execution_date
       ?resource_count_by_status
+      ?alarm_configuration
+      ?(triggered_alarms = [])
       () =
     { association_id
     ; association_version
@@ -23911,6 +29034,8 @@ module AssociationExecution = struct
     ; created_time
     ; last_execution_date
     ; resource_count_by_status
+    ; alarm_configuration
+    ; triggered_alarms
     }
 
   let parse xml =
@@ -23930,12 +29055,28 @@ module AssociationExecution = struct
           Aws.Util.option_bind (Aws.Xml.member "LastExecutionDate" xml) DateTime.parse
       ; resource_count_by_status =
           Aws.Util.option_bind (Aws.Xml.member "ResourceCountByStatus" xml) String.parse
+      ; alarm_configuration =
+          Aws.Util.option_bind
+            (Aws.Xml.member "AlarmConfiguration" xml)
+            AlarmConfiguration.parse
+      ; triggered_alarms =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "TriggeredAlarms" xml)
+               AlarmStateInformationList.parse)
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.resource_count_by_status (fun f ->
+         [ Some
+             (Aws.Query.Pair
+                ( "TriggeredAlarms.member"
+                , AlarmStateInformationList.to_query v.triggered_alarms ))
+         ; Aws.Util.option_map v.alarm_configuration (fun f ->
+               Aws.Query.Pair ("AlarmConfiguration", AlarmConfiguration.to_query f))
+         ; Aws.Util.option_map v.resource_count_by_status (fun f ->
                Aws.Query.Pair ("ResourceCountByStatus", String.to_query f))
          ; Aws.Util.option_map v.last_execution_date (fun f ->
                Aws.Query.Pair ("LastExecutionDate", DateTime.to_query f))
@@ -23956,7 +29097,10 @@ module AssociationExecution = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.resource_count_by_status (fun f ->
+         [ Some ("TriggeredAlarms", AlarmStateInformationList.to_json v.triggered_alarms)
+         ; Aws.Util.option_map v.alarm_configuration (fun f ->
+               "AlarmConfiguration", AlarmConfiguration.to_json f)
+         ; Aws.Util.option_map v.resource_count_by_status (fun f ->
                "ResourceCountByStatus", String.to_json f)
          ; Aws.Util.option_map v.last_execution_date (fun f ->
                "LastExecutionDate", DateTime.to_json f)
@@ -23986,6 +29130,13 @@ module AssociationExecution = struct
         Aws.Util.option_map (Aws.Json.lookup j "LastExecutionDate") DateTime.of_json
     ; resource_count_by_status =
         Aws.Util.option_map (Aws.Json.lookup j "ResourceCountByStatus") String.of_json
+    ; alarm_configuration =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "AlarmConfiguration")
+          AlarmConfiguration.of_json
+    ; triggered_alarms =
+        AlarmStateInformationList.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "TriggeredAlarms"))
     }
 end
 
@@ -23999,9 +29150,7 @@ module AssociationExecutionsList = struct
       (List.map AssociationExecution.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list AssociationExecution.to_query v
-
   let to_json v = `List (List.map AssociationExecution.to_json v)
-
   let of_json j = Aws.Json.to_list AssociationExecution.of_json j
 end
 
@@ -24053,6 +29202,30 @@ module DescribeAssociationExecutionsResult = struct
     }
 end
 
+module OpsMetadataLimitExceededException = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Aws.Util.option_bind (Aws.Xml.member "message" xml) String.parse }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f ->
+               Aws.Query.Pair ("message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f -> "message", String.to_json f) ])
+
+  let of_json j =
+    { message = Aws.Util.option_map (Aws.Json.lookup j "message") String.of_json }
+end
+
 module InvalidDocumentOperation = struct
   type t = { message : String.t option }
 
@@ -24075,6 +29248,68 @@ module InvalidDocumentOperation = struct
 
   let of_json j =
     { message = Aws.Util.option_map (Aws.Json.lookup j "Message") String.of_json }
+end
+
+module NodeFilterValueList = struct
+  type t = String.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
+
+  let to_query v = Aws.Query.to_query_list String.to_query v
+  let to_json v = `List (List.map String.to_json v)
+  let of_json j = Aws.Json.to_list String.of_json j
+end
+
+module NodeFilter = struct
+  type t =
+    { key : NodeFilterKey.t
+    ; values : NodeFilterValueList.t
+    ; type_ : NodeFilterOperatorType.t option
+    }
+
+  let make ~key ~values ?type_ () = { key; values; type_ }
+
+  let parse xml =
+    Some
+      { key =
+          Aws.Xml.required
+            "Key"
+            (Aws.Util.option_bind (Aws.Xml.member "Key" xml) NodeFilterKey.parse)
+      ; values =
+          Aws.Xml.required
+            "Values"
+            (Aws.Util.option_bind (Aws.Xml.member "Values" xml) NodeFilterValueList.parse)
+      ; type_ =
+          Aws.Util.option_bind (Aws.Xml.member "Type" xml) NodeFilterOperatorType.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.type_ (fun f ->
+               Aws.Query.Pair ("Type", NodeFilterOperatorType.to_query f))
+         ; Some (Aws.Query.Pair ("Values.member", NodeFilterValueList.to_query v.values))
+         ; Some (Aws.Query.Pair ("Key", NodeFilterKey.to_query v.key))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.type_ (fun f -> "Type", NodeFilterOperatorType.to_json f)
+         ; Some ("Values", NodeFilterValueList.to_json v.values)
+         ; Some ("Key", NodeFilterKey.to_json v.key)
+         ])
+
+  let of_json j =
+    { key = NodeFilterKey.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Key"))
+    ; values =
+        NodeFilterValueList.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Values"))
+    ; type_ =
+        Aws.Util.option_map (Aws.Json.lookup j "Type") NodeFilterOperatorType.of_json
+    }
 end
 
 module DescribeAssociationExecutionTargetsResult = struct
@@ -24210,13 +29445,9 @@ module StatusUnchanged = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -24230,16 +29461,18 @@ module CreateAssociationBatchRequestEntries = struct
       (List.map CreateAssociationBatchRequestEntry.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list CreateAssociationBatchRequestEntry.to_query v
-
   let to_json v = `List (List.map CreateAssociationBatchRequestEntry.to_json v)
-
   let of_json j = Aws.Json.to_list CreateAssociationBatchRequestEntry.of_json j
 end
 
 module CreateAssociationBatchRequest = struct
-  type t = { entries : CreateAssociationBatchRequestEntries.t }
+  type t =
+    { entries : CreateAssociationBatchRequestEntries.t
+    ; association_dispatch_assume_role : String.t option
+    }
 
-  let make ~entries () = { entries }
+  let make ~entries ?association_dispatch_assume_role () =
+    { entries; association_dispatch_assume_role }
 
   let parse xml =
     Some
@@ -24249,12 +29482,18 @@ module CreateAssociationBatchRequest = struct
             (Aws.Util.option_bind
                (Aws.Xml.member "Entries" xml)
                CreateAssociationBatchRequestEntries.parse)
+      ; association_dispatch_assume_role =
+          Aws.Util.option_bind
+            (Aws.Xml.member "AssociationDispatchAssumeRole" xml)
+            String.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Some
+         [ Aws.Util.option_map v.association_dispatch_assume_role (fun f ->
+               Aws.Query.Pair ("AssociationDispatchAssumeRole", String.to_query f))
+         ; Some
              (Aws.Query.Pair
                 ("Entries.member", CreateAssociationBatchRequestEntries.to_query v.entries))
          ])
@@ -24262,12 +29501,19 @@ module CreateAssociationBatchRequest = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Some ("Entries", CreateAssociationBatchRequestEntries.to_json v.entries) ])
+         [ Aws.Util.option_map v.association_dispatch_assume_role (fun f ->
+               "AssociationDispatchAssumeRole", String.to_json f)
+         ; Some ("Entries", CreateAssociationBatchRequestEntries.to_json v.entries)
+         ])
 
   let of_json j =
     { entries =
         CreateAssociationBatchRequestEntries.of_json
           (Aws.Util.of_option_exn (Aws.Json.lookup j "Entries"))
+    ; association_dispatch_assume_role =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "AssociationDispatchAssumeRole")
+          String.of_json
     }
 end
 
@@ -24346,19 +29592,70 @@ module DescribeAvailablePatchesRequest = struct
     }
 end
 
+module StartAccessRequestResponse = struct
+  type t = { access_request_id : String.t option }
+
+  let make ?access_request_id () = { access_request_id }
+
+  let parse xml =
+    Some
+      { access_request_id =
+          Aws.Util.option_bind (Aws.Xml.member "AccessRequestId" xml) String.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.access_request_id (fun f ->
+               Aws.Query.Pair ("AccessRequestId", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.access_request_id (fun f ->
+               "AccessRequestId", String.to_json f)
+         ])
+
+  let of_json j =
+    { access_request_id =
+        Aws.Util.option_map (Aws.Json.lookup j "AccessRequestId") String.of_json
+    }
+end
+
+module OpsItemConflictException = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Aws.Util.option_bind (Aws.Xml.member "Message" xml) String.parse }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f ->
+               Aws.Query.Pair ("Message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f -> "Message", String.to_json f) ])
+
+  let of_json j =
+    { message = Aws.Util.option_map (Aws.Json.lookup j "Message") String.of_json }
+end
+
 module PatchSet = struct
   type t =
     | OS
     | APPLICATION
 
   let str_to_t = [ "APPLICATION", APPLICATION; "OS", OS ]
-
   let t_to_str = [ APPLICATION, "APPLICATION"; OS, "OS" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -24368,7 +29665,6 @@ module PatchSet = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -24486,23 +29782,151 @@ module InvalidAllowedPatternException = struct
     { message = Aws.Util.option_map (Aws.Json.lookup j "message") String.of_json }
 end
 
+module NoLongerSupportedException = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Aws.Util.option_bind (Aws.Xml.member "Message" xml) String.parse }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f ->
+               Aws.Query.Pair ("Message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f -> "Message", String.to_json f) ])
+
+  let of_json j =
+    { message = Aws.Util.option_map (Aws.Json.lookup j "Message") String.of_json }
+end
+
 module OpsEntityItemMap = struct
   type t = (String.t, OpsEntityItem.t) Hashtbl.t
 
   let make elems () = elems
-
   let parse xml = None
-
   let to_query v = Aws.Query.to_query_hashtbl String.to_string OpsEntityItem.to_query v
 
   let to_json v =
     `Assoc
       (Hashtbl.fold
-         (fun k v acc -> (String.to_string k, OpsEntityItem.to_json v) :: acc)
+         (fun k ->
+           fun v -> fun acc -> (String.to_string k, OpsEntityItem.to_json v) :: acc)
          v
          [])
 
   let of_json j = Aws.Json.to_hashtbl String.of_string OpsEntityItem.of_json j
+end
+
+module DocumentReviews = struct
+  type t =
+    { action : DocumentReviewAction.t
+    ; comment : DocumentReviewCommentList.t
+    }
+
+  let make ~action ?(comment = []) () = { action; comment }
+
+  let parse xml =
+    Some
+      { action =
+          Aws.Xml.required
+            "Action"
+            (Aws.Util.option_bind
+               (Aws.Xml.member "Action" xml)
+               DocumentReviewAction.parse)
+      ; comment =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "Comment" xml)
+               DocumentReviewCommentList.parse)
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Some
+             (Aws.Query.Pair
+                ("Comment.member", DocumentReviewCommentList.to_query v.comment))
+         ; Some (Aws.Query.Pair ("Action", DocumentReviewAction.to_query v.action))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Some ("Comment", DocumentReviewCommentList.to_json v.comment)
+         ; Some ("Action", DocumentReviewAction.to_json v.action)
+         ])
+
+  let of_json j =
+    { action =
+        DocumentReviewAction.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Action"))
+    ; comment =
+        DocumentReviewCommentList.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "Comment"))
+    }
+end
+
+module UpdateDocumentMetadataRequest = struct
+  type t =
+    { name : String.t
+    ; document_version : String.t option
+    ; document_reviews : DocumentReviews.t
+    }
+
+  let make ~name ?document_version ~document_reviews () =
+    { name; document_version; document_reviews }
+
+  let parse xml =
+    Some
+      { name =
+          Aws.Xml.required
+            "Name"
+            (Aws.Util.option_bind (Aws.Xml.member "Name" xml) String.parse)
+      ; document_version =
+          Aws.Util.option_bind (Aws.Xml.member "DocumentVersion" xml) String.parse
+      ; document_reviews =
+          Aws.Xml.required
+            "DocumentReviews"
+            (Aws.Util.option_bind
+               (Aws.Xml.member "DocumentReviews" xml)
+               DocumentReviews.parse)
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Some
+             (Aws.Query.Pair
+                ("DocumentReviews", DocumentReviews.to_query v.document_reviews))
+         ; Aws.Util.option_map v.document_version (fun f ->
+               Aws.Query.Pair ("DocumentVersion", String.to_query f))
+         ; Some (Aws.Query.Pair ("Name", String.to_query v.name))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Some ("DocumentReviews", DocumentReviews.to_json v.document_reviews)
+         ; Aws.Util.option_map v.document_version (fun f ->
+               "DocumentVersion", String.to_json f)
+         ; Some ("Name", String.to_json v.name)
+         ])
+
+  let of_json j =
+    { name = String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Name"))
+    ; document_version =
+        Aws.Util.option_map (Aws.Json.lookup j "DocumentVersion") String.of_json
+    ; document_reviews =
+        DocumentReviews.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "DocumentReviews"))
+    }
 end
 
 module DeleteMaintenanceWindowResult = struct
@@ -24529,13 +29953,26 @@ module DeleteMaintenanceWindowResult = struct
     { window_id = Aws.Util.option_map (Aws.Json.lookup j "WindowId") String.of_json }
 end
 
+module UpdateDocumentMetadataResponse = struct
+  type t = unit
+
+  let make () = ()
+  let parse xml = Some ()
+  let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
+  let to_json v = `Assoc (Aws.Util.list_filter_opt [])
+  let of_json j = ()
+end
+
 module GetDeployablePatchSnapshotForInstanceRequest = struct
   type t =
     { instance_id : String.t
     ; snapshot_id : String.t
+    ; baseline_override : BaselineOverride.t option
+    ; use_s3_dual_stack_endpoint : Boolean.t option
     }
 
-  let make ~instance_id ~snapshot_id () = { instance_id; snapshot_id }
+  let make ~instance_id ~snapshot_id ?baseline_override ?use_s3_dual_stack_endpoint () =
+    { instance_id; snapshot_id; baseline_override; use_s3_dual_stack_endpoint }
 
   let parse xml =
     Some
@@ -24547,19 +29984,33 @@ module GetDeployablePatchSnapshotForInstanceRequest = struct
           Aws.Xml.required
             "SnapshotId"
             (Aws.Util.option_bind (Aws.Xml.member "SnapshotId" xml) String.parse)
+      ; baseline_override =
+          Aws.Util.option_bind
+            (Aws.Xml.member "BaselineOverride" xml)
+            BaselineOverride.parse
+      ; use_s3_dual_stack_endpoint =
+          Aws.Util.option_bind (Aws.Xml.member "UseS3DualStackEndpoint" xml) Boolean.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Some (Aws.Query.Pair ("SnapshotId", String.to_query v.snapshot_id))
+         [ Aws.Util.option_map v.use_s3_dual_stack_endpoint (fun f ->
+               Aws.Query.Pair ("UseS3DualStackEndpoint", Boolean.to_query f))
+         ; Aws.Util.option_map v.baseline_override (fun f ->
+               Aws.Query.Pair ("BaselineOverride", BaselineOverride.to_query f))
+         ; Some (Aws.Query.Pair ("SnapshotId", String.to_query v.snapshot_id))
          ; Some (Aws.Query.Pair ("InstanceId", String.to_query v.instance_id))
          ])
 
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Some ("SnapshotId", String.to_json v.snapshot_id)
+         [ Aws.Util.option_map v.use_s3_dual_stack_endpoint (fun f ->
+               "UseS3DualStackEndpoint", Boolean.to_json f)
+         ; Aws.Util.option_map v.baseline_override (fun f ->
+               "BaselineOverride", BaselineOverride.to_json f)
+         ; Some ("SnapshotId", String.to_json v.snapshot_id)
          ; Some ("InstanceId", String.to_json v.instance_id)
          ])
 
@@ -24568,6 +30019,12 @@ module GetDeployablePatchSnapshotForInstanceRequest = struct
         String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "InstanceId"))
     ; snapshot_id =
         String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "SnapshotId"))
+    ; baseline_override =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "BaselineOverride")
+          BaselineOverride.of_json
+    ; use_s3_dual_stack_endpoint =
+        Aws.Util.option_map (Aws.Json.lookup j "UseS3DualStackEndpoint") Boolean.of_json
     }
 end
 
@@ -24628,6 +30085,42 @@ module DescribeInstancePatchStatesForPatchGroupRequest = struct
           (Aws.Util.of_option_exn (Aws.Json.lookup j "Filters"))
     ; next_token = Aws.Util.option_map (Aws.Json.lookup j "NextToken") String.of_json
     ; max_results = Aws.Util.option_map (Aws.Json.lookup j "MaxResults") Integer.of_json
+    }
+end
+
+module PutResourcePolicyResponse = struct
+  type t =
+    { policy_id : String.t option
+    ; policy_hash : String.t option
+    }
+
+  let make ?policy_id ?policy_hash () = { policy_id; policy_hash }
+
+  let parse xml =
+    Some
+      { policy_id = Aws.Util.option_bind (Aws.Xml.member "PolicyId" xml) String.parse
+      ; policy_hash = Aws.Util.option_bind (Aws.Xml.member "PolicyHash" xml) String.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.policy_hash (fun f ->
+               Aws.Query.Pair ("PolicyHash", String.to_query f))
+         ; Aws.Util.option_map v.policy_id (fun f ->
+               Aws.Query.Pair ("PolicyId", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.policy_hash (fun f -> "PolicyHash", String.to_json f)
+         ; Aws.Util.option_map v.policy_id (fun f -> "PolicyId", String.to_json f)
+         ])
+
+  let of_json j =
+    { policy_id = Aws.Util.option_map (Aws.Json.lookup j "PolicyId") String.of_json
+    ; policy_hash = Aws.Util.option_map (Aws.Json.lookup j "PolicyHash") String.of_json
     }
 end
 
@@ -24709,14 +30202,53 @@ module AssociationAlreadyExists = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
+end
+
+module OpsItemRelatedItemAlreadyExistsException = struct
+  type t =
+    { message : String.t option
+    ; resource_uri : String.t option
+    ; ops_item_id : String.t option
+    }
+
+  let make ?message ?resource_uri ?ops_item_id () = { message; resource_uri; ops_item_id }
+
+  let parse xml =
+    Some
+      { message = Aws.Util.option_bind (Aws.Xml.member "Message" xml) String.parse
+      ; resource_uri =
+          Aws.Util.option_bind (Aws.Xml.member "ResourceUri" xml) String.parse
+      ; ops_item_id = Aws.Util.option_bind (Aws.Xml.member "OpsItemId" xml) String.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.ops_item_id (fun f ->
+               Aws.Query.Pair ("OpsItemId", String.to_query f))
+         ; Aws.Util.option_map v.resource_uri (fun f ->
+               Aws.Query.Pair ("ResourceUri", String.to_query f))
+         ; Aws.Util.option_map v.message (fun f ->
+               Aws.Query.Pair ("Message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.ops_item_id (fun f -> "OpsItemId", String.to_json f)
+         ; Aws.Util.option_map v.resource_uri (fun f -> "ResourceUri", String.to_json f)
+         ; Aws.Util.option_map v.message (fun f -> "Message", String.to_json f)
+         ])
+
+  let of_json j =
+    { message = Aws.Util.option_map (Aws.Json.lookup j "Message") String.of_json
+    ; resource_uri = Aws.Util.option_map (Aws.Json.lookup j "ResourceUri") String.of_json
+    ; ops_item_id = Aws.Util.option_map (Aws.Json.lookup j "OpsItemId") String.of_json
+    }
 end
 
 module DescribeMaintenanceWindowExecutionsRequest = struct
@@ -24958,6 +30490,19 @@ module UpdateAssociationStatusRequest = struct
     }
 end
 
+module ReviewInformationList = struct
+  type t = ReviewInformation.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Aws.Util.option_all (List.map ReviewInformation.parse (Aws.Xml.members "member" xml))
+
+  let to_query v = Aws.Query.to_query_list ReviewInformation.to_query v
+  let to_json v = `List (List.map ReviewInformation.to_json v)
+  let of_json j = Aws.Json.to_list ReviewInformation.of_json j
+end
+
 module DocumentParameter = struct
   type t =
     { name : String.t option
@@ -25019,10 +30564,21 @@ module DocumentParameterList = struct
     Aws.Util.option_all (List.map DocumentParameter.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list DocumentParameter.to_query v
-
   let to_json v = `List (List.map DocumentParameter.to_json v)
-
   let of_json j = Aws.Json.to_list DocumentParameter.of_json j
+end
+
+module CategoryEnumList = struct
+  type t = String.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
+
+  let to_query v = Aws.Query.to_query_list String.to_query v
+  let to_json v = `List (List.map String.to_json v)
+  let of_json j = Aws.Json.to_list String.of_json j
 end
 
 module DocumentDescription = struct
@@ -25031,6 +30587,7 @@ module DocumentDescription = struct
     ; hash : String.t option
     ; hash_type : DocumentHashType.t option
     ; name : String.t option
+    ; display_name : String.t option
     ; version_name : String.t option
     ; owner : String.t option
     ; created_date : DateTime.t option
@@ -25049,6 +30606,13 @@ module DocumentDescription = struct
     ; tags : TagList.t
     ; attachments_information : AttachmentInformationList.t
     ; requires : DocumentRequiresList.t
+    ; author : String.t option
+    ; review_information : ReviewInformationList.t
+    ; approved_version : String.t option
+    ; pending_review_version : String.t option
+    ; review_status : ReviewStatus.t option
+    ; category : CategoryList.t
+    ; category_enum : CategoryEnumList.t
     }
 
   let make
@@ -25056,6 +30620,7 @@ module DocumentDescription = struct
       ?hash
       ?hash_type
       ?name
+      ?display_name
       ?version_name
       ?owner
       ?created_date
@@ -25074,11 +30639,19 @@ module DocumentDescription = struct
       ?(tags = [])
       ?(attachments_information = [])
       ?(requires = [])
+      ?author
+      ?(review_information = [])
+      ?approved_version
+      ?pending_review_version
+      ?review_status
+      ?(category = [])
+      ?(category_enum = [])
       () =
     { sha1
     ; hash
     ; hash_type
     ; name
+    ; display_name
     ; version_name
     ; owner
     ; created_date
@@ -25097,6 +30670,13 @@ module DocumentDescription = struct
     ; tags
     ; attachments_information
     ; requires
+    ; author
+    ; review_information
+    ; approved_version
+    ; pending_review_version
+    ; review_status
+    ; category
+    ; category_enum
     }
 
   let parse xml =
@@ -25106,6 +30686,8 @@ module DocumentDescription = struct
       ; hash_type =
           Aws.Util.option_bind (Aws.Xml.member "HashType" xml) DocumentHashType.parse
       ; name = Aws.Util.option_bind (Aws.Xml.member "Name" xml) String.parse
+      ; display_name =
+          Aws.Util.option_bind (Aws.Xml.member "DisplayName" xml) String.parse
       ; version_name =
           Aws.Util.option_bind (Aws.Xml.member "VersionName" xml) String.parse
       ; owner = Aws.Util.option_bind (Aws.Xml.member "Owner" xml) String.parse
@@ -25156,12 +30738,51 @@ module DocumentDescription = struct
             (Aws.Util.option_bind
                (Aws.Xml.member "Requires" xml)
                DocumentRequiresList.parse)
+      ; author = Aws.Util.option_bind (Aws.Xml.member "Author" xml) String.parse
+      ; review_information =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "ReviewInformation" xml)
+               ReviewInformationList.parse)
+      ; approved_version =
+          Aws.Util.option_bind (Aws.Xml.member "ApprovedVersion" xml) String.parse
+      ; pending_review_version =
+          Aws.Util.option_bind (Aws.Xml.member "PendingReviewVersion" xml) String.parse
+      ; review_status =
+          Aws.Util.option_bind (Aws.Xml.member "ReviewStatus" xml) ReviewStatus.parse
+      ; category =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind (Aws.Xml.member "Category" xml) CategoryList.parse)
+      ; category_enum =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "CategoryEnum" xml)
+               CategoryEnumList.parse)
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
          [ Some
+             (Aws.Query.Pair
+                ("CategoryEnum.member", CategoryEnumList.to_query v.category_enum))
+         ; Some (Aws.Query.Pair ("Category.member", CategoryList.to_query v.category))
+         ; Aws.Util.option_map v.review_status (fun f ->
+               Aws.Query.Pair ("ReviewStatus", ReviewStatus.to_query f))
+         ; Aws.Util.option_map v.pending_review_version (fun f ->
+               Aws.Query.Pair ("PendingReviewVersion", String.to_query f))
+         ; Aws.Util.option_map v.approved_version (fun f ->
+               Aws.Query.Pair ("ApprovedVersion", String.to_query f))
+         ; Some
+             (Aws.Query.Pair
+                ( "ReviewInformation.member"
+                , ReviewInformationList.to_query v.review_information ))
+         ; Aws.Util.option_map v.author (fun f ->
+               Aws.Query.Pair ("Author", String.to_query f))
+         ; Some
              (Aws.Query.Pair ("Requires.member", DocumentRequiresList.to_query v.requires))
          ; Some
              (Aws.Query.Pair
@@ -25200,6 +30821,8 @@ module DocumentDescription = struct
                Aws.Query.Pair ("Owner", String.to_query f))
          ; Aws.Util.option_map v.version_name (fun f ->
                Aws.Query.Pair ("VersionName", String.to_query f))
+         ; Aws.Util.option_map v.display_name (fun f ->
+               Aws.Query.Pair ("DisplayName", String.to_query f))
          ; Aws.Util.option_map v.name (fun f ->
                Aws.Query.Pair ("Name", String.to_query f))
          ; Aws.Util.option_map v.hash_type (fun f ->
@@ -25213,7 +30836,17 @@ module DocumentDescription = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Some ("Requires", DocumentRequiresList.to_json v.requires)
+         [ Some ("CategoryEnum", CategoryEnumList.to_json v.category_enum)
+         ; Some ("Category", CategoryList.to_json v.category)
+         ; Aws.Util.option_map v.review_status (fun f ->
+               "ReviewStatus", ReviewStatus.to_json f)
+         ; Aws.Util.option_map v.pending_review_version (fun f ->
+               "PendingReviewVersion", String.to_json f)
+         ; Aws.Util.option_map v.approved_version (fun f ->
+               "ApprovedVersion", String.to_json f)
+         ; Some ("ReviewInformation", ReviewInformationList.to_json v.review_information)
+         ; Aws.Util.option_map v.author (fun f -> "Author", String.to_json f)
+         ; Some ("Requires", DocumentRequiresList.to_json v.requires)
          ; Some
              ( "AttachmentsInformation"
              , AttachmentInformationList.to_json v.attachments_information )
@@ -25240,6 +30873,7 @@ module DocumentDescription = struct
          ; Aws.Util.option_map v.created_date (fun f -> "CreatedDate", DateTime.to_json f)
          ; Aws.Util.option_map v.owner (fun f -> "Owner", String.to_json f)
          ; Aws.Util.option_map v.version_name (fun f -> "VersionName", String.to_json f)
+         ; Aws.Util.option_map v.display_name (fun f -> "DisplayName", String.to_json f)
          ; Aws.Util.option_map v.name (fun f -> "Name", String.to_json f)
          ; Aws.Util.option_map v.hash_type (fun f ->
                "HashType", DocumentHashType.to_json f)
@@ -25253,6 +30887,7 @@ module DocumentDescription = struct
     ; hash_type =
         Aws.Util.option_map (Aws.Json.lookup j "HashType") DocumentHashType.of_json
     ; name = Aws.Util.option_map (Aws.Json.lookup j "Name") String.of_json
+    ; display_name = Aws.Util.option_map (Aws.Json.lookup j "DisplayName") String.of_json
     ; version_name = Aws.Util.option_map (Aws.Json.lookup j "VersionName") String.of_json
     ; owner = Aws.Util.option_map (Aws.Json.lookup j "Owner") String.of_json
     ; created_date =
@@ -25287,6 +30922,21 @@ module DocumentDescription = struct
     ; requires =
         DocumentRequiresList.of_json
           (Aws.Util.of_option_exn (Aws.Json.lookup j "Requires"))
+    ; author = Aws.Util.option_map (Aws.Json.lookup j "Author") String.of_json
+    ; review_information =
+        ReviewInformationList.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "ReviewInformation"))
+    ; approved_version =
+        Aws.Util.option_map (Aws.Json.lookup j "ApprovedVersion") String.of_json
+    ; pending_review_version =
+        Aws.Util.option_map (Aws.Json.lookup j "PendingReviewVersion") String.of_json
+    ; review_status =
+        Aws.Util.option_map (Aws.Json.lookup j "ReviewStatus") ReviewStatus.of_json
+    ; category =
+        CategoryList.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Category"))
+    ; category_enum =
+        CategoryEnumList.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "CategoryEnum"))
     }
 end
 
@@ -25346,17 +30996,37 @@ module DeleteParameterRequest = struct
     { name = String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Name")) }
 end
 
+module AutomationDefinitionNotApprovedException = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Aws.Util.option_bind (Aws.Xml.member "Message" xml) String.parse }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f ->
+               Aws.Query.Pair ("Message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f -> "Message", String.to_json f) ])
+
+  let of_json j =
+    { message = Aws.Util.option_map (Aws.Json.lookup j "Message") String.of_json }
+end
+
 module AssociationLimitExceeded = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -25449,10 +31119,32 @@ module PatchBaselineIdentityList = struct
       (List.map PatchBaselineIdentity.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list PatchBaselineIdentity.to_query v
-
   let to_json v = `List (List.map PatchBaselineIdentity.to_json v)
-
   let of_json j = Aws.Json.to_list PatchBaselineIdentity.of_json j
+end
+
+module OpsItemRelatedItemAssociationNotFoundException = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Aws.Util.option_bind (Aws.Xml.member "Message" xml) String.parse }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f ->
+               Aws.Query.Pair ("Message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f -> "Message", String.to_json f) ])
+
+  let of_json j =
+    { message = Aws.Util.option_map (Aws.Json.lookup j "Message") String.of_json }
 end
 
 module UnsupportedCalendarException = struct
@@ -25477,6 +31169,70 @@ module UnsupportedCalendarException = struct
 
   let of_json j =
     { message = Aws.Util.option_map (Aws.Json.lookup j "Message") String.of_json }
+end
+
+module OpsItemRelatedItemsFilter = struct
+  type t =
+    { key : OpsItemRelatedItemsFilterKey.t
+    ; values : OpsItemRelatedItemsFilterValues.t
+    ; operator : OpsItemRelatedItemsFilterOperator.t
+    }
+
+  let make ~key ~values ~operator () = { key; values; operator }
+
+  let parse xml =
+    Some
+      { key =
+          Aws.Xml.required
+            "Key"
+            (Aws.Util.option_bind
+               (Aws.Xml.member "Key" xml)
+               OpsItemRelatedItemsFilterKey.parse)
+      ; values =
+          Aws.Xml.required
+            "Values"
+            (Aws.Util.option_bind
+               (Aws.Xml.member "Values" xml)
+               OpsItemRelatedItemsFilterValues.parse)
+      ; operator =
+          Aws.Xml.required
+            "Operator"
+            (Aws.Util.option_bind
+               (Aws.Xml.member "Operator" xml)
+               OpsItemRelatedItemsFilterOperator.parse)
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Some
+             (Aws.Query.Pair
+                ("Operator", OpsItemRelatedItemsFilterOperator.to_query v.operator))
+         ; Some
+             (Aws.Query.Pair
+                ("Values.member", OpsItemRelatedItemsFilterValues.to_query v.values))
+         ; Some (Aws.Query.Pair ("Key", OpsItemRelatedItemsFilterKey.to_query v.key))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Some ("Operator", OpsItemRelatedItemsFilterOperator.to_json v.operator)
+         ; Some ("Values", OpsItemRelatedItemsFilterValues.to_json v.values)
+         ; Some ("Key", OpsItemRelatedItemsFilterKey.to_json v.key)
+         ])
+
+  let of_json j =
+    { key =
+        OpsItemRelatedItemsFilterKey.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "Key"))
+    ; values =
+        OpsItemRelatedItemsFilterValues.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "Values"))
+    ; operator =
+        OpsItemRelatedItemsFilterOperator.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "Operator"))
+    }
 end
 
 module DescribeEffectiveInstanceAssociationsResult = struct
@@ -25533,29 +31289,33 @@ module RegisterTaskWithMaintenanceWindowRequest = struct
     ; task_parameters : MaintenanceWindowTaskParameters.t option
     ; task_invocation_parameters : MaintenanceWindowTaskInvocationParameters.t option
     ; priority : Integer.t option
-    ; max_concurrency : String.t
-    ; max_errors : String.t
+    ; max_concurrency : String.t option
+    ; max_errors : String.t option
     ; logging_info : LoggingInfo.t option
     ; name : String.t option
     ; description : String.t option
     ; client_token : String.t option
+    ; cutoff_behavior : MaintenanceWindowTaskCutoffBehavior.t option
+    ; alarm_configuration : AlarmConfiguration.t option
     }
 
   let make
       ~window_id
-      ~targets
+      ?(targets = [])
       ~task_arn
       ?service_role_arn
       ~task_type
       ?task_parameters
       ?task_invocation_parameters
       ?priority
-      ~max_concurrency
-      ~max_errors
+      ?max_concurrency
+      ?max_errors
       ?logging_info
       ?name
       ?description
       ?client_token
+      ?cutoff_behavior
+      ?alarm_configuration
       () =
     { window_id
     ; targets
@@ -25571,6 +31331,8 @@ module RegisterTaskWithMaintenanceWindowRequest = struct
     ; name
     ; description
     ; client_token
+    ; cutoff_behavior
+    ; alarm_configuration
     }
 
   let parse xml =
@@ -25580,8 +31342,8 @@ module RegisterTaskWithMaintenanceWindowRequest = struct
             "WindowId"
             (Aws.Util.option_bind (Aws.Xml.member "WindowId" xml) String.parse)
       ; targets =
-          Aws.Xml.required
-            "Targets"
+          Aws.Util.of_option
+            []
             (Aws.Util.option_bind (Aws.Xml.member "Targets" xml) Targets.parse)
       ; task_arn =
           Aws.Xml.required
@@ -25605,25 +31367,33 @@ module RegisterTaskWithMaintenanceWindowRequest = struct
             MaintenanceWindowTaskInvocationParameters.parse
       ; priority = Aws.Util.option_bind (Aws.Xml.member "Priority" xml) Integer.parse
       ; max_concurrency =
-          Aws.Xml.required
-            "MaxConcurrency"
-            (Aws.Util.option_bind (Aws.Xml.member "MaxConcurrency" xml) String.parse)
-      ; max_errors =
-          Aws.Xml.required
-            "MaxErrors"
-            (Aws.Util.option_bind (Aws.Xml.member "MaxErrors" xml) String.parse)
+          Aws.Util.option_bind (Aws.Xml.member "MaxConcurrency" xml) String.parse
+      ; max_errors = Aws.Util.option_bind (Aws.Xml.member "MaxErrors" xml) String.parse
       ; logging_info =
           Aws.Util.option_bind (Aws.Xml.member "LoggingInfo" xml) LoggingInfo.parse
       ; name = Aws.Util.option_bind (Aws.Xml.member "Name" xml) String.parse
       ; description = Aws.Util.option_bind (Aws.Xml.member "Description" xml) String.parse
       ; client_token =
           Aws.Util.option_bind (Aws.Xml.member "ClientToken" xml) String.parse
+      ; cutoff_behavior =
+          Aws.Util.option_bind
+            (Aws.Xml.member "CutoffBehavior" xml)
+            MaintenanceWindowTaskCutoffBehavior.parse
+      ; alarm_configuration =
+          Aws.Util.option_bind
+            (Aws.Xml.member "AlarmConfiguration" xml)
+            AlarmConfiguration.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.client_token (fun f ->
+         [ Aws.Util.option_map v.alarm_configuration (fun f ->
+               Aws.Query.Pair ("AlarmConfiguration", AlarmConfiguration.to_query f))
+         ; Aws.Util.option_map v.cutoff_behavior (fun f ->
+               Aws.Query.Pair
+                 ("CutoffBehavior", MaintenanceWindowTaskCutoffBehavior.to_query f))
+         ; Aws.Util.option_map v.client_token (fun f ->
                Aws.Query.Pair ("ClientToken", String.to_query f))
          ; Aws.Util.option_map v.description (fun f ->
                Aws.Query.Pair ("Description", String.to_query f))
@@ -25631,8 +31401,10 @@ module RegisterTaskWithMaintenanceWindowRequest = struct
                Aws.Query.Pair ("Name", String.to_query f))
          ; Aws.Util.option_map v.logging_info (fun f ->
                Aws.Query.Pair ("LoggingInfo", LoggingInfo.to_query f))
-         ; Some (Aws.Query.Pair ("MaxErrors", String.to_query v.max_errors))
-         ; Some (Aws.Query.Pair ("MaxConcurrency", String.to_query v.max_concurrency))
+         ; Aws.Util.option_map v.max_errors (fun f ->
+               Aws.Query.Pair ("MaxErrors", String.to_query f))
+         ; Aws.Util.option_map v.max_concurrency (fun f ->
+               Aws.Query.Pair ("MaxConcurrency", String.to_query f))
          ; Aws.Util.option_map v.priority (fun f ->
                Aws.Query.Pair ("Priority", Integer.to_query f))
          ; Aws.Util.option_map v.task_invocation_parameters (fun f ->
@@ -25654,13 +31426,18 @@ module RegisterTaskWithMaintenanceWindowRequest = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.client_token (fun f -> "ClientToken", String.to_json f)
+         [ Aws.Util.option_map v.alarm_configuration (fun f ->
+               "AlarmConfiguration", AlarmConfiguration.to_json f)
+         ; Aws.Util.option_map v.cutoff_behavior (fun f ->
+               "CutoffBehavior", MaintenanceWindowTaskCutoffBehavior.to_json f)
+         ; Aws.Util.option_map v.client_token (fun f -> "ClientToken", String.to_json f)
          ; Aws.Util.option_map v.description (fun f -> "Description", String.to_json f)
          ; Aws.Util.option_map v.name (fun f -> "Name", String.to_json f)
          ; Aws.Util.option_map v.logging_info (fun f ->
                "LoggingInfo", LoggingInfo.to_json f)
-         ; Some ("MaxErrors", String.to_json v.max_errors)
-         ; Some ("MaxConcurrency", String.to_json v.max_concurrency)
+         ; Aws.Util.option_map v.max_errors (fun f -> "MaxErrors", String.to_json f)
+         ; Aws.Util.option_map v.max_concurrency (fun f ->
+               "MaxConcurrency", String.to_json f)
          ; Aws.Util.option_map v.priority (fun f -> "Priority", Integer.to_json f)
          ; Aws.Util.option_map v.task_invocation_parameters (fun f ->
                ( "TaskInvocationParameters"
@@ -25694,13 +31471,21 @@ module RegisterTaskWithMaintenanceWindowRequest = struct
           MaintenanceWindowTaskInvocationParameters.of_json
     ; priority = Aws.Util.option_map (Aws.Json.lookup j "Priority") Integer.of_json
     ; max_concurrency =
-        String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "MaxConcurrency"))
-    ; max_errors = String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "MaxErrors"))
+        Aws.Util.option_map (Aws.Json.lookup j "MaxConcurrency") String.of_json
+    ; max_errors = Aws.Util.option_map (Aws.Json.lookup j "MaxErrors") String.of_json
     ; logging_info =
         Aws.Util.option_map (Aws.Json.lookup j "LoggingInfo") LoggingInfo.of_json
     ; name = Aws.Util.option_map (Aws.Json.lookup j "Name") String.of_json
     ; description = Aws.Util.option_map (Aws.Json.lookup j "Description") String.of_json
     ; client_token = Aws.Util.option_map (Aws.Json.lookup j "ClientToken") String.of_json
+    ; cutoff_behavior =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "CutoffBehavior")
+          MaintenanceWindowTaskCutoffBehavior.of_json
+    ; alarm_configuration =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "AlarmConfiguration")
+          AlarmConfiguration.of_json
     }
 end
 
@@ -25713,9 +31498,7 @@ module ParameterMetadataList = struct
     Aws.Util.option_all (List.map ParameterMetadata.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list ParameterMetadata.to_query v
-
   let to_json v = `List (List.map ParameterMetadata.to_json v)
-
   let of_json j = Aws.Json.to_list ParameterMetadata.of_json j
 end
 
@@ -25723,13 +31506,9 @@ module UpdateResourceDataSyncResult = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -25743,9 +31522,7 @@ module InventoryResultEntityList = struct
       (List.map InventoryResultEntity.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list InventoryResultEntity.to_query v
-
   let to_json v = `List (List.map InventoryResultEntity.to_json v)
-
   let of_json j = Aws.Json.to_list InventoryResultEntity.of_json j
 end
 
@@ -25790,6 +31567,293 @@ module GetInventoryResult = struct
         InventoryResultEntityList.of_json
           (Aws.Util.of_option_exn (Aws.Json.lookup j "Entities"))
     ; next_token = Aws.Util.option_map (Aws.Json.lookup j "NextToken") String.of_json
+    }
+end
+
+module InstancePropertyStringFilter = struct
+  type t =
+    { key : String.t
+    ; values : InstancePropertyFilterValueSet.t
+    ; operator : InstancePropertyFilterOperator.t option
+    }
+
+  let make ~key ~values ?operator () = { key; values; operator }
+
+  let parse xml =
+    Some
+      { key =
+          Aws.Xml.required
+            "Key"
+            (Aws.Util.option_bind (Aws.Xml.member "Key" xml) String.parse)
+      ; values =
+          Aws.Xml.required
+            "Values"
+            (Aws.Util.option_bind
+               (Aws.Xml.member "Values" xml)
+               InstancePropertyFilterValueSet.parse)
+      ; operator =
+          Aws.Util.option_bind
+            (Aws.Xml.member "Operator" xml)
+            InstancePropertyFilterOperator.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.operator (fun f ->
+               Aws.Query.Pair ("Operator", InstancePropertyFilterOperator.to_query f))
+         ; Some
+             (Aws.Query.Pair
+                ("Values.member", InstancePropertyFilterValueSet.to_query v.values))
+         ; Some (Aws.Query.Pair ("Key", String.to_query v.key))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.operator (fun f ->
+               "Operator", InstancePropertyFilterOperator.to_json f)
+         ; Some ("Values", InstancePropertyFilterValueSet.to_json v.values)
+         ; Some ("Key", String.to_json v.key)
+         ])
+
+  let of_json j =
+    { key = String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Key"))
+    ; values =
+        InstancePropertyFilterValueSet.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "Values"))
+    ; operator =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "Operator")
+          InstancePropertyFilterOperator.of_json
+    }
+end
+
+module InstancePropertyStringFilterList = struct
+  type t = InstancePropertyStringFilter.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Aws.Util.option_all
+      (List.map InstancePropertyStringFilter.parse (Aws.Xml.members "member" xml))
+
+  let to_query v = Aws.Query.to_query_list InstancePropertyStringFilter.to_query v
+  let to_json v = `List (List.map InstancePropertyStringFilter.to_json v)
+  let of_json j = Aws.Json.to_list InstancePropertyStringFilter.of_json j
+end
+
+module NodeFilterList = struct
+  type t = NodeFilter.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Aws.Util.option_all (List.map NodeFilter.parse (Aws.Xml.members "member" xml))
+
+  let to_query v = Aws.Query.to_query_list NodeFilter.to_query v
+  let to_json v = `List (List.map NodeFilter.to_json v)
+  let of_json j = Aws.Json.to_list NodeFilter.of_json j
+end
+
+module NodeTypeName = struct
+  type t = Instance
+
+  let str_to_t = [ "Instance", Instance ]
+  let t_to_str = [ Instance, "Instance" ]
+  let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
+  let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
+  let make v () = v
+
+  let parse xml =
+    Aws.Util.option_bind (String.parse xml) (fun s -> Aws.Util.list_find str_to_t s)
+
+  let to_query v =
+    Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
+  let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
+end
+
+module rec NodeAggregator : sig
+  type t =
+    { aggregator_type : NodeAggregatorType.t
+    ; type_name : NodeTypeName.t
+    ; attribute_name : NodeAttributeName.t
+    ; aggregators : NodeAggregatorList.t
+    }
+
+  val make :
+       aggregator_type:NodeAggregatorType.t
+    -> type_name:NodeTypeName.t
+    -> attribute_name:NodeAttributeName.t
+    -> ?aggregators:NodeAggregatorList.t
+    -> unit
+    -> t
+
+  val parse : Ezxmlm.nodes -> t option
+  val to_query : t -> Aws.Query.t
+  val to_json : t -> Aws.Json.t
+  val of_json : Aws.Json.t -> t
+end = struct
+  type t =
+    { aggregator_type : NodeAggregatorType.t
+    ; type_name : NodeTypeName.t
+    ; attribute_name : NodeAttributeName.t
+    ; aggregators : NodeAggregatorList.t
+    }
+
+  let make ~aggregator_type ~type_name ~attribute_name ?(aggregators = []) () =
+    { aggregator_type; type_name; attribute_name; aggregators }
+
+  let parse xml =
+    Some
+      { aggregator_type =
+          Aws.Xml.required
+            "AggregatorType"
+            (Aws.Util.option_bind
+               (Aws.Xml.member "AggregatorType" xml)
+               NodeAggregatorType.parse)
+      ; type_name =
+          Aws.Xml.required
+            "TypeName"
+            (Aws.Util.option_bind (Aws.Xml.member "TypeName" xml) NodeTypeName.parse)
+      ; attribute_name =
+          Aws.Xml.required
+            "AttributeName"
+            (Aws.Util.option_bind
+               (Aws.Xml.member "AttributeName" xml)
+               NodeAttributeName.parse)
+      ; aggregators =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "Aggregators" xml)
+               NodeAggregatorList.parse)
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Some
+             (Aws.Query.Pair
+                ("Aggregators.member", NodeAggregatorList.to_query v.aggregators))
+         ; Some
+             (Aws.Query.Pair ("AttributeName", NodeAttributeName.to_query v.attribute_name))
+         ; Some (Aws.Query.Pair ("TypeName", NodeTypeName.to_query v.type_name))
+         ; Some
+             (Aws.Query.Pair
+                ("AggregatorType", NodeAggregatorType.to_query v.aggregator_type))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Some ("Aggregators", NodeAggregatorList.to_json v.aggregators)
+         ; Some ("AttributeName", NodeAttributeName.to_json v.attribute_name)
+         ; Some ("TypeName", NodeTypeName.to_json v.type_name)
+         ; Some ("AggregatorType", NodeAggregatorType.to_json v.aggregator_type)
+         ])
+
+  let of_json j =
+    { aggregator_type =
+        NodeAggregatorType.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "AggregatorType"))
+    ; type_name =
+        NodeTypeName.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "TypeName"))
+    ; attribute_name =
+        NodeAttributeName.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "AttributeName"))
+    ; aggregators =
+        NodeAggregatorList.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "Aggregators"))
+    }
+end
+
+and NodeAggregatorList : sig
+  type t = NodeAggregator.t list
+
+  val make : 'a -> unit -> 'a
+  val parse : Ezxmlm.nodes -> t option
+  val to_query : t -> Aws.Query.t
+  val to_json : t -> Aws.Json.t
+  val of_json : Aws.Json.t -> t
+end = struct
+  type t = NodeAggregator.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Aws.Util.option_all (List.map NodeAggregator.parse (Aws.Xml.members "member" xml))
+
+  let to_query v = Aws.Query.to_query_list NodeAggregator.to_query v
+  let to_json v = `List (List.map NodeAggregator.to_json v)
+  let of_json j = Aws.Json.to_list NodeAggregator.of_json j
+end
+
+module ListNodesSummaryRequest = struct
+  type t =
+    { sync_name : String.t option
+    ; filters : NodeFilterList.t
+    ; aggregators : NodeAggregatorList.t
+    ; next_token : String.t option
+    ; max_results : Integer.t option
+    }
+
+  let make ?sync_name ?(filters = []) ~aggregators ?next_token ?max_results () =
+    { sync_name; filters; aggregators; next_token; max_results }
+
+  let parse xml =
+    Some
+      { sync_name = Aws.Util.option_bind (Aws.Xml.member "SyncName" xml) String.parse
+      ; filters =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind (Aws.Xml.member "Filters" xml) NodeFilterList.parse)
+      ; aggregators =
+          Aws.Xml.required
+            "Aggregators"
+            (Aws.Util.option_bind
+               (Aws.Xml.member "Aggregators" xml)
+               NodeAggregatorList.parse)
+      ; next_token = Aws.Util.option_bind (Aws.Xml.member "NextToken" xml) String.parse
+      ; max_results = Aws.Util.option_bind (Aws.Xml.member "MaxResults" xml) Integer.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.max_results (fun f ->
+               Aws.Query.Pair ("MaxResults", Integer.to_query f))
+         ; Aws.Util.option_map v.next_token (fun f ->
+               Aws.Query.Pair ("NextToken", String.to_query f))
+         ; Some
+             (Aws.Query.Pair
+                ("Aggregators.member", NodeAggregatorList.to_query v.aggregators))
+         ; Some (Aws.Query.Pair ("Filters.member", NodeFilterList.to_query v.filters))
+         ; Aws.Util.option_map v.sync_name (fun f ->
+               Aws.Query.Pair ("SyncName", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.max_results (fun f -> "MaxResults", Integer.to_json f)
+         ; Aws.Util.option_map v.next_token (fun f -> "NextToken", String.to_json f)
+         ; Some ("Aggregators", NodeAggregatorList.to_json v.aggregators)
+         ; Some ("Filters", NodeFilterList.to_json v.filters)
+         ; Aws.Util.option_map v.sync_name (fun f -> "SyncName", String.to_json f)
+         ])
+
+  let of_json j =
+    { sync_name = Aws.Util.option_map (Aws.Json.lookup j "SyncName") String.of_json
+    ; filters =
+        NodeFilterList.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Filters"))
+    ; aggregators =
+        NodeAggregatorList.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "Aggregators"))
+    ; next_token = Aws.Util.option_map (Aws.Json.lookup j "NextToken") String.of_json
+    ; max_results = Aws.Util.option_map (Aws.Json.lookup j "MaxResults") Integer.of_json
     }
 end
 
@@ -25854,6 +31918,7 @@ module CreatePatchBaselineRequest = struct
     ; rejected_patches_action : PatchAction.t option
     ; description : String.t option
     ; sources : PatchSourceList.t
+    ; available_security_updates_compliance_status : PatchComplianceStatus.t option
     ; client_token : String.t option
     ; tags : TagList.t
     }
@@ -25870,6 +31935,7 @@ module CreatePatchBaselineRequest = struct
       ?rejected_patches_action
       ?description
       ?(sources = [])
+      ?available_security_updates_compliance_status
       ?client_token
       ?(tags = [])
       () =
@@ -25884,6 +31950,7 @@ module CreatePatchBaselineRequest = struct
     ; rejected_patches_action
     ; description
     ; sources
+    ; available_security_updates_compliance_status
     ; client_token
     ; tags
     }
@@ -25931,6 +31998,10 @@ module CreatePatchBaselineRequest = struct
           Aws.Util.of_option
             []
             (Aws.Util.option_bind (Aws.Xml.member "Sources" xml) PatchSourceList.parse)
+      ; available_security_updates_compliance_status =
+          Aws.Util.option_bind
+            (Aws.Xml.member "AvailableSecurityUpdatesComplianceStatus" xml)
+            PatchComplianceStatus.parse
       ; client_token =
           Aws.Util.option_bind (Aws.Xml.member "ClientToken" xml) String.parse
       ; tags =
@@ -25945,6 +32016,10 @@ module CreatePatchBaselineRequest = struct
          [ Some (Aws.Query.Pair ("Tags.member", TagList.to_query v.tags))
          ; Aws.Util.option_map v.client_token (fun f ->
                Aws.Query.Pair ("ClientToken", String.to_query f))
+         ; Aws.Util.option_map v.available_security_updates_compliance_status (fun f ->
+               Aws.Query.Pair
+                 ( "AvailableSecurityUpdatesComplianceStatus"
+                 , PatchComplianceStatus.to_query f ))
          ; Some (Aws.Query.Pair ("Sources.member", PatchSourceList.to_query v.sources))
          ; Aws.Util.option_map v.description (fun f ->
                Aws.Query.Pair ("Description", String.to_query f))
@@ -25975,6 +32050,8 @@ module CreatePatchBaselineRequest = struct
       (Aws.Util.list_filter_opt
          [ Some ("Tags", TagList.to_json v.tags)
          ; Aws.Util.option_map v.client_token (fun f -> "ClientToken", String.to_json f)
+         ; Aws.Util.option_map v.available_security_updates_compliance_status (fun f ->
+               "AvailableSecurityUpdatesComplianceStatus", PatchComplianceStatus.to_json f)
          ; Some ("Sources", PatchSourceList.to_json v.sources)
          ; Aws.Util.option_map v.description (fun f -> "Description", String.to_json f)
          ; Aws.Util.option_map v.rejected_patches_action (fun f ->
@@ -26021,22 +32098,32 @@ module CreatePatchBaselineRequest = struct
     ; description = Aws.Util.option_map (Aws.Json.lookup j "Description") String.of_json
     ; sources =
         PatchSourceList.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Sources"))
+    ; available_security_updates_compliance_status =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "AvailableSecurityUpdatesComplianceStatus")
+          PatchComplianceStatus.of_json
     ; client_token = Aws.Util.option_map (Aws.Json.lookup j "ClientToken") String.of_json
     ; tags = TagList.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Tags"))
     }
+end
+
+module DeleteOpsMetadataResult = struct
+  type t = unit
+
+  let make () = ()
+  let parse xml = Some ()
+  let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
+  let to_json v = `Assoc (Aws.Util.list_filter_opt [])
+  let of_json j = ()
 end
 
 module TooManyTagsError = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -26107,9 +32194,7 @@ module OpsItemOpsDataKeysList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -26147,9 +32232,15 @@ module StepExecutionFilterKey = struct
     | StepExecutionId
     | StepName
     | Action
+    | ParentStepExecutionId
+    | ParentStepIteration
+    | ParentStepIteratorValue
 
   let str_to_t =
-    [ "Action", Action
+    [ "ParentStepIteratorValue", ParentStepIteratorValue
+    ; "ParentStepIteration", ParentStepIteration
+    ; "ParentStepExecutionId", ParentStepExecutionId
+    ; "Action", Action
     ; "StepName", StepName
     ; "StepExecutionId", StepExecutionId
     ; "StepExecutionStatus", StepExecutionStatus
@@ -26158,7 +32249,10 @@ module StepExecutionFilterKey = struct
     ]
 
   let t_to_str =
-    [ Action, "Action"
+    [ ParentStepIteratorValue, "ParentStepIteratorValue"
+    ; ParentStepIteration, "ParentStepIteration"
+    ; ParentStepExecutionId, "ParentStepExecutionId"
+    ; Action, "Action"
     ; StepName, "StepName"
     ; StepExecutionId, "StepExecutionId"
     ; StepExecutionStatus, "StepExecutionStatus"
@@ -26167,9 +32261,7 @@ module StepExecutionFilterKey = struct
     ]
 
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -26179,7 +32271,6 @@ module StepExecutionFilterKey = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -26222,6 +32313,8 @@ module MaintenanceWindowTask = struct
     ; max_errors : String.t option
     ; name : String.t option
     ; description : String.t option
+    ; cutoff_behavior : MaintenanceWindowTaskCutoffBehavior.t option
+    ; alarm_configuration : AlarmConfiguration.t option
     }
 
   let make
@@ -26238,6 +32331,8 @@ module MaintenanceWindowTask = struct
       ?max_errors
       ?name
       ?description
+      ?cutoff_behavior
+      ?alarm_configuration
       () =
     { window_id
     ; window_task_id
@@ -26252,6 +32347,8 @@ module MaintenanceWindowTask = struct
     ; max_errors
     ; name
     ; description
+    ; cutoff_behavior
+    ; alarm_configuration
     }
 
   let parse xml =
@@ -26280,12 +32377,25 @@ module MaintenanceWindowTask = struct
       ; max_errors = Aws.Util.option_bind (Aws.Xml.member "MaxErrors" xml) String.parse
       ; name = Aws.Util.option_bind (Aws.Xml.member "Name" xml) String.parse
       ; description = Aws.Util.option_bind (Aws.Xml.member "Description" xml) String.parse
+      ; cutoff_behavior =
+          Aws.Util.option_bind
+            (Aws.Xml.member "CutoffBehavior" xml)
+            MaintenanceWindowTaskCutoffBehavior.parse
+      ; alarm_configuration =
+          Aws.Util.option_bind
+            (Aws.Xml.member "AlarmConfiguration" xml)
+            AlarmConfiguration.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.description (fun f ->
+         [ Aws.Util.option_map v.alarm_configuration (fun f ->
+               Aws.Query.Pair ("AlarmConfiguration", AlarmConfiguration.to_query f))
+         ; Aws.Util.option_map v.cutoff_behavior (fun f ->
+               Aws.Query.Pair
+                 ("CutoffBehavior", MaintenanceWindowTaskCutoffBehavior.to_query f))
+         ; Aws.Util.option_map v.description (fun f ->
                Aws.Query.Pair ("Description", String.to_query f))
          ; Aws.Util.option_map v.name (fun f ->
                Aws.Query.Pair ("Name", String.to_query f))
@@ -26316,7 +32426,11 @@ module MaintenanceWindowTask = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.description (fun f -> "Description", String.to_json f)
+         [ Aws.Util.option_map v.alarm_configuration (fun f ->
+               "AlarmConfiguration", AlarmConfiguration.to_json f)
+         ; Aws.Util.option_map v.cutoff_behavior (fun f ->
+               "CutoffBehavior", MaintenanceWindowTaskCutoffBehavior.to_json f)
+         ; Aws.Util.option_map v.description (fun f -> "Description", String.to_json f)
          ; Aws.Util.option_map v.name (fun f -> "Name", String.to_json f)
          ; Aws.Util.option_map v.max_errors (fun f -> "MaxErrors", String.to_json f)
          ; Aws.Util.option_map v.max_concurrency (fun f ->
@@ -26359,6 +32473,14 @@ module MaintenanceWindowTask = struct
     ; max_errors = Aws.Util.option_map (Aws.Json.lookup j "MaxErrors") String.of_json
     ; name = Aws.Util.option_map (Aws.Json.lookup j "Name") String.of_json
     ; description = Aws.Util.option_map (Aws.Json.lookup j "Description") String.of_json
+    ; cutoff_behavior =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "CutoffBehavior")
+          MaintenanceWindowTaskCutoffBehavior.of_json
+    ; alarm_configuration =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "AlarmConfiguration")
+          AlarmConfiguration.of_json
     }
 end
 
@@ -26372,9 +32494,7 @@ module MaintenanceWindowTaskList = struct
       (List.map MaintenanceWindowTask.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list MaintenanceWindowTask.to_query v
-
   let to_json v = `List (List.map MaintenanceWindowTask.to_json v)
-
   let of_json j = Aws.Json.to_list MaintenanceWindowTask.of_json j
 end
 
@@ -26564,10 +32684,57 @@ module StepExecutionFilterList = struct
       (List.map StepExecutionFilter.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list StepExecutionFilter.to_query v
-
   let to_json v = `List (List.map StepExecutionFilter.to_json v)
-
   let of_json j = Aws.Json.to_list StepExecutionFilter.of_json j
+end
+
+module ListOpsItemEventsRequest = struct
+  type t =
+    { filters : OpsItemEventFilters.t
+    ; max_results : Integer.t option
+    ; next_token : String.t option
+    }
+
+  let make ?(filters = []) ?max_results ?next_token () =
+    { filters; max_results; next_token }
+
+  let parse xml =
+    Some
+      { filters =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "Filters" xml)
+               OpsItemEventFilters.parse)
+      ; max_results = Aws.Util.option_bind (Aws.Xml.member "MaxResults" xml) Integer.parse
+      ; next_token = Aws.Util.option_bind (Aws.Xml.member "NextToken" xml) String.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.next_token (fun f ->
+               Aws.Query.Pair ("NextToken", String.to_query f))
+         ; Aws.Util.option_map v.max_results (fun f ->
+               Aws.Query.Pair ("MaxResults", Integer.to_query f))
+         ; Some
+             (Aws.Query.Pair ("Filters.member", OpsItemEventFilters.to_query v.filters))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.next_token (fun f -> "NextToken", String.to_json f)
+         ; Aws.Util.option_map v.max_results (fun f -> "MaxResults", Integer.to_json f)
+         ; Some ("Filters", OpsItemEventFilters.to_json v.filters)
+         ])
+
+  let of_json j =
+    { filters =
+        OpsItemEventFilters.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Filters"))
+    ; max_results = Aws.Util.option_map (Aws.Json.lookup j "MaxResults") Integer.of_json
+    ; next_token = Aws.Util.option_map (Aws.Json.lookup j "NextToken") String.of_json
+    }
 end
 
 module DescribeMaintenanceWindowScheduleRequest = struct
@@ -26665,9 +32832,7 @@ module ScheduledWindowExecutionList = struct
       (List.map ScheduledWindowExecution.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list ScheduledWindowExecution.to_query v
-
   let to_json v = `List (List.map ScheduledWindowExecution.to_json v)
-
   let of_json j = Aws.Json.to_list ScheduledWindowExecution.of_json j
 end
 
@@ -26783,9 +32948,7 @@ module InstanceInformationStringFilterList = struct
       (List.map InstanceInformationStringFilter.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list InstanceInformationStringFilter.to_query v
-
   let to_json v = `List (List.map InstanceInformationStringFilter.to_json v)
-
   let of_json j = Aws.Json.to_list InstanceInformationStringFilter.of_json j
 end
 
@@ -26946,13 +33109,9 @@ module CancelCommandResult = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -26962,13 +33121,9 @@ module AutomationType = struct
     | Local
 
   let str_to_t = [ "Local", Local; "CrossAccount", CrossAccount ]
-
   let t_to_str = [ Local, "Local"; CrossAccount, "CrossAccount" ]
-
   let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
-
   let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
-
   let make v () = v
 
   let parse xml =
@@ -26978,7 +33133,6 @@ module AutomationType = struct
     Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
 
   let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
-
   let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
 end
 
@@ -27006,6 +33160,15 @@ module AutomationExecutionMetadata = struct
     ; max_errors : String.t option
     ; target : String.t option
     ; automation_type : AutomationType.t option
+    ; alarm_configuration : AlarmConfiguration.t option
+    ; triggered_alarms : AlarmStateInformationList.t
+    ; target_locations_u_r_l : String.t option
+    ; automation_subtype : AutomationSubtype.t option
+    ; scheduled_time : DateTime.t option
+    ; runbooks : Runbooks.t
+    ; ops_item_id : String.t option
+    ; association_id : String.t option
+    ; change_request_name : String.t option
     }
 
   let make
@@ -27031,6 +33194,15 @@ module AutomationExecutionMetadata = struct
       ?max_errors
       ?target
       ?automation_type
+      ?alarm_configuration
+      ?(triggered_alarms = [])
+      ?target_locations_u_r_l
+      ?automation_subtype
+      ?scheduled_time
+      ?(runbooks = [])
+      ?ops_item_id
+      ?association_id
+      ?change_request_name
       () =
     { automation_execution_id
     ; document_name
@@ -27054,6 +33226,15 @@ module AutomationExecutionMetadata = struct
     ; max_errors
     ; target
     ; automation_type
+    ; alarm_configuration
+    ; triggered_alarms
+    ; target_locations_u_r_l
+    ; automation_subtype
+    ; scheduled_time
+    ; runbooks
+    ; ops_item_id
+    ; association_id
+    ; change_request_name
     }
 
   let parse xml =
@@ -27107,12 +33288,58 @@ module AutomationExecutionMetadata = struct
       ; target = Aws.Util.option_bind (Aws.Xml.member "Target" xml) String.parse
       ; automation_type =
           Aws.Util.option_bind (Aws.Xml.member "AutomationType" xml) AutomationType.parse
+      ; alarm_configuration =
+          Aws.Util.option_bind
+            (Aws.Xml.member "AlarmConfiguration" xml)
+            AlarmConfiguration.parse
+      ; triggered_alarms =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "TriggeredAlarms" xml)
+               AlarmStateInformationList.parse)
+      ; target_locations_u_r_l =
+          Aws.Util.option_bind (Aws.Xml.member "TargetLocationsURL" xml) String.parse
+      ; automation_subtype =
+          Aws.Util.option_bind
+            (Aws.Xml.member "AutomationSubtype" xml)
+            AutomationSubtype.parse
+      ; scheduled_time =
+          Aws.Util.option_bind (Aws.Xml.member "ScheduledTime" xml) DateTime.parse
+      ; runbooks =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind (Aws.Xml.member "Runbooks" xml) Runbooks.parse)
+      ; ops_item_id = Aws.Util.option_bind (Aws.Xml.member "OpsItemId" xml) String.parse
+      ; association_id =
+          Aws.Util.option_bind (Aws.Xml.member "AssociationId" xml) String.parse
+      ; change_request_name =
+          Aws.Util.option_bind (Aws.Xml.member "ChangeRequestName" xml) String.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.automation_type (fun f ->
+         [ Aws.Util.option_map v.change_request_name (fun f ->
+               Aws.Query.Pair ("ChangeRequestName", String.to_query f))
+         ; Aws.Util.option_map v.association_id (fun f ->
+               Aws.Query.Pair ("AssociationId", String.to_query f))
+         ; Aws.Util.option_map v.ops_item_id (fun f ->
+               Aws.Query.Pair ("OpsItemId", String.to_query f))
+         ; Some (Aws.Query.Pair ("Runbooks.member", Runbooks.to_query v.runbooks))
+         ; Aws.Util.option_map v.scheduled_time (fun f ->
+               Aws.Query.Pair ("ScheduledTime", DateTime.to_query f))
+         ; Aws.Util.option_map v.automation_subtype (fun f ->
+               Aws.Query.Pair ("AutomationSubtype", AutomationSubtype.to_query f))
+         ; Aws.Util.option_map v.target_locations_u_r_l (fun f ->
+               Aws.Query.Pair ("TargetLocationsURL", String.to_query f))
+         ; Some
+             (Aws.Query.Pair
+                ( "TriggeredAlarms.member"
+                , AlarmStateInformationList.to_query v.triggered_alarms ))
+         ; Aws.Util.option_map v.alarm_configuration (fun f ->
+               Aws.Query.Pair ("AlarmConfiguration", AlarmConfiguration.to_query f))
+         ; Aws.Util.option_map v.automation_type (fun f ->
                Aws.Query.Pair ("AutomationType", AutomationType.to_query f))
          ; Aws.Util.option_map v.target (fun f ->
                Aws.Query.Pair ("Target", String.to_query f))
@@ -27160,7 +33387,22 @@ module AutomationExecutionMetadata = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.automation_type (fun f ->
+         [ Aws.Util.option_map v.change_request_name (fun f ->
+               "ChangeRequestName", String.to_json f)
+         ; Aws.Util.option_map v.association_id (fun f ->
+               "AssociationId", String.to_json f)
+         ; Aws.Util.option_map v.ops_item_id (fun f -> "OpsItemId", String.to_json f)
+         ; Some ("Runbooks", Runbooks.to_json v.runbooks)
+         ; Aws.Util.option_map v.scheduled_time (fun f ->
+               "ScheduledTime", DateTime.to_json f)
+         ; Aws.Util.option_map v.automation_subtype (fun f ->
+               "AutomationSubtype", AutomationSubtype.to_json f)
+         ; Aws.Util.option_map v.target_locations_u_r_l (fun f ->
+               "TargetLocationsURL", String.to_json f)
+         ; Some ("TriggeredAlarms", AlarmStateInformationList.to_json v.triggered_alarms)
+         ; Aws.Util.option_map v.alarm_configuration (fun f ->
+               "AlarmConfiguration", AlarmConfiguration.to_json f)
+         ; Aws.Util.option_map v.automation_type (fun f ->
                "AutomationType", AutomationType.to_json f)
          ; Aws.Util.option_map v.target (fun f -> "Target", String.to_json f)
          ; Aws.Util.option_map v.max_errors (fun f -> "MaxErrors", String.to_json f)
@@ -27241,6 +33483,27 @@ module AutomationExecutionMetadata = struct
     ; target = Aws.Util.option_map (Aws.Json.lookup j "Target") String.of_json
     ; automation_type =
         Aws.Util.option_map (Aws.Json.lookup j "AutomationType") AutomationType.of_json
+    ; alarm_configuration =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "AlarmConfiguration")
+          AlarmConfiguration.of_json
+    ; triggered_alarms =
+        AlarmStateInformationList.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "TriggeredAlarms"))
+    ; target_locations_u_r_l =
+        Aws.Util.option_map (Aws.Json.lookup j "TargetLocationsURL") String.of_json
+    ; automation_subtype =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "AutomationSubtype")
+          AutomationSubtype.of_json
+    ; scheduled_time =
+        Aws.Util.option_map (Aws.Json.lookup j "ScheduledTime") DateTime.of_json
+    ; runbooks = Runbooks.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Runbooks"))
+    ; ops_item_id = Aws.Util.option_map (Aws.Json.lookup j "OpsItemId") String.of_json
+    ; association_id =
+        Aws.Util.option_map (Aws.Json.lookup j "AssociationId") String.of_json
+    ; change_request_name =
+        Aws.Util.option_map (Aws.Json.lookup j "ChangeRequestName") String.of_json
     }
 end
 
@@ -27254,10 +33517,64 @@ module AutomationExecutionMetadataList = struct
       (List.map AutomationExecutionMetadata.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list AutomationExecutionMetadata.to_query v
-
   let to_json v = `List (List.map AutomationExecutionMetadata.to_json v)
-
   let of_json j = Aws.Json.to_list AutomationExecutionMetadata.of_json j
+end
+
+module GetResourcePoliciesResponseEntry = struct
+  type t =
+    { policy_id : String.t option
+    ; policy_hash : String.t option
+    ; policy : String.t option
+    }
+
+  let make ?policy_id ?policy_hash ?policy () = { policy_id; policy_hash; policy }
+
+  let parse xml =
+    Some
+      { policy_id = Aws.Util.option_bind (Aws.Xml.member "PolicyId" xml) String.parse
+      ; policy_hash = Aws.Util.option_bind (Aws.Xml.member "PolicyHash" xml) String.parse
+      ; policy = Aws.Util.option_bind (Aws.Xml.member "Policy" xml) String.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.policy (fun f ->
+               Aws.Query.Pair ("Policy", String.to_query f))
+         ; Aws.Util.option_map v.policy_hash (fun f ->
+               Aws.Query.Pair ("PolicyHash", String.to_query f))
+         ; Aws.Util.option_map v.policy_id (fun f ->
+               Aws.Query.Pair ("PolicyId", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.policy (fun f -> "Policy", String.to_json f)
+         ; Aws.Util.option_map v.policy_hash (fun f -> "PolicyHash", String.to_json f)
+         ; Aws.Util.option_map v.policy_id (fun f -> "PolicyId", String.to_json f)
+         ])
+
+  let of_json j =
+    { policy_id = Aws.Util.option_map (Aws.Json.lookup j "PolicyId") String.of_json
+    ; policy_hash = Aws.Util.option_map (Aws.Json.lookup j "PolicyHash") String.of_json
+    ; policy = Aws.Util.option_map (Aws.Json.lookup j "Policy") String.of_json
+    }
+end
+
+module GetResourcePoliciesResponseEntries = struct
+  type t = GetResourcePoliciesResponseEntry.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Aws.Util.option_all
+      (List.map GetResourcePoliciesResponseEntry.parse (Aws.Xml.members "member" xml))
+
+  let to_query v = Aws.Query.to_query_list GetResourcePoliciesResponseEntry.to_query v
+  let to_json v = `List (List.map GetResourcePoliciesResponseEntry.to_json v)
+  let of_json j = Aws.Json.to_list GetResourcePoliciesResponseEntry.of_json j
 end
 
 module UpdateResourceDataSyncRequest = struct
@@ -27337,6 +33654,116 @@ module PoliciesLimitExceededException = struct
     { message = Aws.Util.option_map (Aws.Json.lookup j "message") String.of_json }
 end
 
+module ExecutionPreviewStatus = struct
+  type t =
+    | Pending
+    | InProgress
+    | Success
+    | Failed
+
+  let str_to_t =
+    [ "Failed", Failed; "Success", Success; "InProgress", InProgress; "Pending", Pending ]
+
+  let t_to_str =
+    [ Failed, "Failed"; Success, "Success"; InProgress, "InProgress"; Pending, "Pending" ]
+
+  let to_string e = Aws.Util.of_option_exn (Aws.Util.list_find t_to_str e)
+  let of_string s = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t s)
+  let make v () = v
+
+  let parse xml =
+    Aws.Util.option_bind (String.parse xml) (fun s -> Aws.Util.list_find str_to_t s)
+
+  let to_query v =
+    Aws.Query.Value (Some (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v)))
+
+  let to_json v = String.to_json (Aws.Util.of_option_exn (Aws.Util.list_find t_to_str v))
+  let of_json j = Aws.Util.of_option_exn (Aws.Util.list_find str_to_t (String.of_json j))
+end
+
+module NodeSummaryList = struct
+  type t = NodeSummary.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Aws.Util.option_all (List.map NodeSummary.parse (Aws.Xml.members "member" xml))
+
+  let to_query v = Aws.Query.to_query_list NodeSummary.to_query v
+  let to_json v = `List (List.map NodeSummary.to_json v)
+  let of_json j = Aws.Json.to_list NodeSummary.of_json j
+end
+
+module ListNodesSummaryResult = struct
+  type t =
+    { summary : NodeSummaryList.t
+    ; next_token : String.t option
+    }
+
+  let make ?(summary = []) ?next_token () = { summary; next_token }
+
+  let parse xml =
+    Some
+      { summary =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind (Aws.Xml.member "Summary" xml) NodeSummaryList.parse)
+      ; next_token = Aws.Util.option_bind (Aws.Xml.member "NextToken" xml) String.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.next_token (fun f ->
+               Aws.Query.Pair ("NextToken", String.to_query f))
+         ; Some (Aws.Query.Pair ("Summary.member", NodeSummaryList.to_query v.summary))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.next_token (fun f -> "NextToken", String.to_json f)
+         ; Some ("Summary", NodeSummaryList.to_json v.summary)
+         ])
+
+  let of_json j =
+    { summary =
+        NodeSummaryList.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Summary"))
+    ; next_token = Aws.Util.option_map (Aws.Json.lookup j "NextToken") String.of_json
+    }
+end
+
+module AssociateOpsItemRelatedItemResponse = struct
+  type t = { association_id : String.t option }
+
+  let make ?association_id () = { association_id }
+
+  let parse xml =
+    Some
+      { association_id =
+          Aws.Util.option_bind (Aws.Xml.member "AssociationId" xml) String.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.association_id (fun f ->
+               Aws.Query.Pair ("AssociationId", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.association_id (fun f ->
+               "AssociationId", String.to_json f)
+         ])
+
+  let of_json j =
+    { association_id =
+        Aws.Util.option_map (Aws.Json.lookup j "AssociationId") String.of_json
+    }
+end
+
 module InvalidTypeNameException = struct
   type t = { message : String.t option }
 
@@ -27405,9 +33832,7 @@ module OpsEntityList = struct
     Aws.Util.option_all (List.map OpsEntity.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list OpsEntity.to_query v
-
   let to_json v = `List (List.map OpsEntity.to_json v)
-
   let of_json j = Aws.Json.to_list OpsEntity.of_json j
 end
 
@@ -27495,6 +33920,42 @@ module DescribeInstancePatchesRequest = struct
     }
 end
 
+module ValidationException = struct
+  type t =
+    { message : String.t option
+    ; reason_code : String.t option
+    }
+
+  let make ?message ?reason_code () = { message; reason_code }
+
+  let parse xml =
+    Some
+      { message = Aws.Util.option_bind (Aws.Xml.member "Message" xml) String.parse
+      ; reason_code = Aws.Util.option_bind (Aws.Xml.member "ReasonCode" xml) String.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.reason_code (fun f ->
+               Aws.Query.Pair ("ReasonCode", String.to_query f))
+         ; Aws.Util.option_map v.message (fun f ->
+               Aws.Query.Pair ("Message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.reason_code (fun f -> "ReasonCode", String.to_json f)
+         ; Aws.Util.option_map v.message (fun f -> "Message", String.to_json f)
+         ])
+
+  let of_json j =
+    { message = Aws.Util.option_map (Aws.Json.lookup j "Message") String.of_json
+    ; reason_code = Aws.Util.option_map (Aws.Json.lookup j "ReasonCode") String.of_json
+    }
+end
+
 module DescribeInstanceAssociationsStatusRequest = struct
   type t =
     { instance_id : String.t
@@ -27545,13 +34006,9 @@ module AssociatedInstances = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -27623,6 +34080,16 @@ module ListAssociationsResult = struct
     }
 end
 
+module DeleteOpsItemResponse = struct
+  type t = unit
+
+  let make () = ()
+  let parse xml = Some ()
+  let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
+  let to_json v = `Assoc (Aws.Util.list_filter_opt [])
+  let of_json j = ()
+end
+
 module RegisterPatchBaselineForPatchGroupResult = struct
   type t =
     { baseline_id : String.t option
@@ -27656,6 +34123,71 @@ module RegisterPatchBaselineForPatchGroupResult = struct
   let of_json j =
     { baseline_id = Aws.Util.option_map (Aws.Json.lookup j "BaselineId") String.of_json
     ; patch_group = Aws.Util.option_map (Aws.Json.lookup j "PatchGroup") String.of_json
+    }
+end
+
+module ListDocumentMetadataHistoryResponse = struct
+  type t =
+    { name : String.t option
+    ; document_version : String.t option
+    ; author : String.t option
+    ; metadata : DocumentMetadataResponseInfo.t option
+    ; next_token : String.t option
+    }
+
+  let make ?name ?document_version ?author ?metadata ?next_token () =
+    { name; document_version; author; metadata; next_token }
+
+  let parse xml =
+    Some
+      { name = Aws.Util.option_bind (Aws.Xml.member "Name" xml) String.parse
+      ; document_version =
+          Aws.Util.option_bind (Aws.Xml.member "DocumentVersion" xml) String.parse
+      ; author = Aws.Util.option_bind (Aws.Xml.member "Author" xml) String.parse
+      ; metadata =
+          Aws.Util.option_bind
+            (Aws.Xml.member "Metadata" xml)
+            DocumentMetadataResponseInfo.parse
+      ; next_token = Aws.Util.option_bind (Aws.Xml.member "NextToken" xml) String.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.next_token (fun f ->
+               Aws.Query.Pair ("NextToken", String.to_query f))
+         ; Aws.Util.option_map v.metadata (fun f ->
+               Aws.Query.Pair ("Metadata", DocumentMetadataResponseInfo.to_query f))
+         ; Aws.Util.option_map v.author (fun f ->
+               Aws.Query.Pair ("Author", String.to_query f))
+         ; Aws.Util.option_map v.document_version (fun f ->
+               Aws.Query.Pair ("DocumentVersion", String.to_query f))
+         ; Aws.Util.option_map v.name (fun f ->
+               Aws.Query.Pair ("Name", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.next_token (fun f -> "NextToken", String.to_json f)
+         ; Aws.Util.option_map v.metadata (fun f ->
+               "Metadata", DocumentMetadataResponseInfo.to_json f)
+         ; Aws.Util.option_map v.author (fun f -> "Author", String.to_json f)
+         ; Aws.Util.option_map v.document_version (fun f ->
+               "DocumentVersion", String.to_json f)
+         ; Aws.Util.option_map v.name (fun f -> "Name", String.to_json f)
+         ])
+
+  let of_json j =
+    { name = Aws.Util.option_map (Aws.Json.lookup j "Name") String.of_json
+    ; document_version =
+        Aws.Util.option_map (Aws.Json.lookup j "DocumentVersion") String.of_json
+    ; author = Aws.Util.option_map (Aws.Json.lookup j "Author") String.of_json
+    ; metadata =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "Metadata")
+          DocumentMetadataResponseInfo.of_json
+    ; next_token = Aws.Util.option_map (Aws.Json.lookup j "NextToken") String.of_json
     }
 end
 
@@ -27722,6 +34254,16 @@ module AutomationExecution = struct
     ; target : String.t option
     ; target_locations : TargetLocations.t
     ; progress_counters : ProgressCounters.t option
+    ; alarm_configuration : AlarmConfiguration.t option
+    ; triggered_alarms : AlarmStateInformationList.t
+    ; target_locations_u_r_l : String.t option
+    ; automation_subtype : AutomationSubtype.t option
+    ; scheduled_time : DateTime.t option
+    ; runbooks : Runbooks.t
+    ; ops_item_id : String.t option
+    ; association_id : String.t option
+    ; change_request_name : String.t option
+    ; variables : AutomationParameterMap.t option
     }
 
   let make
@@ -27750,6 +34292,16 @@ module AutomationExecution = struct
       ?target
       ?(target_locations = [])
       ?progress_counters
+      ?alarm_configuration
+      ?(triggered_alarms = [])
+      ?target_locations_u_r_l
+      ?automation_subtype
+      ?scheduled_time
+      ?(runbooks = [])
+      ?ops_item_id
+      ?association_id
+      ?change_request_name
+      ?variables
       () =
     { automation_execution_id
     ; document_name
@@ -27776,6 +34328,16 @@ module AutomationExecution = struct
     ; target
     ; target_locations
     ; progress_counters
+    ; alarm_configuration
+    ; triggered_alarms
+    ; target_locations_u_r_l
+    ; automation_subtype
+    ; scheduled_time
+    ; runbooks
+    ; ops_item_id
+    ; association_id
+    ; change_request_name
+    ; variables
     }
 
   let parse xml =
@@ -27850,12 +34412,64 @@ module AutomationExecution = struct
           Aws.Util.option_bind
             (Aws.Xml.member "ProgressCounters" xml)
             ProgressCounters.parse
+      ; alarm_configuration =
+          Aws.Util.option_bind
+            (Aws.Xml.member "AlarmConfiguration" xml)
+            AlarmConfiguration.parse
+      ; triggered_alarms =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "TriggeredAlarms" xml)
+               AlarmStateInformationList.parse)
+      ; target_locations_u_r_l =
+          Aws.Util.option_bind (Aws.Xml.member "TargetLocationsURL" xml) String.parse
+      ; automation_subtype =
+          Aws.Util.option_bind
+            (Aws.Xml.member "AutomationSubtype" xml)
+            AutomationSubtype.parse
+      ; scheduled_time =
+          Aws.Util.option_bind (Aws.Xml.member "ScheduledTime" xml) DateTime.parse
+      ; runbooks =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind (Aws.Xml.member "Runbooks" xml) Runbooks.parse)
+      ; ops_item_id = Aws.Util.option_bind (Aws.Xml.member "OpsItemId" xml) String.parse
+      ; association_id =
+          Aws.Util.option_bind (Aws.Xml.member "AssociationId" xml) String.parse
+      ; change_request_name =
+          Aws.Util.option_bind (Aws.Xml.member "ChangeRequestName" xml) String.parse
+      ; variables =
+          Aws.Util.option_bind
+            (Aws.Xml.member "Variables" xml)
+            AutomationParameterMap.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.progress_counters (fun f ->
+         [ Aws.Util.option_map v.variables (fun f ->
+               Aws.Query.Pair ("Variables", AutomationParameterMap.to_query f))
+         ; Aws.Util.option_map v.change_request_name (fun f ->
+               Aws.Query.Pair ("ChangeRequestName", String.to_query f))
+         ; Aws.Util.option_map v.association_id (fun f ->
+               Aws.Query.Pair ("AssociationId", String.to_query f))
+         ; Aws.Util.option_map v.ops_item_id (fun f ->
+               Aws.Query.Pair ("OpsItemId", String.to_query f))
+         ; Some (Aws.Query.Pair ("Runbooks.member", Runbooks.to_query v.runbooks))
+         ; Aws.Util.option_map v.scheduled_time (fun f ->
+               Aws.Query.Pair ("ScheduledTime", DateTime.to_query f))
+         ; Aws.Util.option_map v.automation_subtype (fun f ->
+               Aws.Query.Pair ("AutomationSubtype", AutomationSubtype.to_query f))
+         ; Aws.Util.option_map v.target_locations_u_r_l (fun f ->
+               Aws.Query.Pair ("TargetLocationsURL", String.to_query f))
+         ; Some
+             (Aws.Query.Pair
+                ( "TriggeredAlarms.member"
+                , AlarmStateInformationList.to_query v.triggered_alarms ))
+         ; Aws.Util.option_map v.alarm_configuration (fun f ->
+               Aws.Query.Pair ("AlarmConfiguration", AlarmConfiguration.to_query f))
+         ; Aws.Util.option_map v.progress_counters (fun f ->
                Aws.Query.Pair ("ProgressCounters", ProgressCounters.to_query f))
          ; Some
              (Aws.Query.Pair
@@ -27911,7 +34525,24 @@ module AutomationExecution = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.progress_counters (fun f ->
+         [ Aws.Util.option_map v.variables (fun f ->
+               "Variables", AutomationParameterMap.to_json f)
+         ; Aws.Util.option_map v.change_request_name (fun f ->
+               "ChangeRequestName", String.to_json f)
+         ; Aws.Util.option_map v.association_id (fun f ->
+               "AssociationId", String.to_json f)
+         ; Aws.Util.option_map v.ops_item_id (fun f -> "OpsItemId", String.to_json f)
+         ; Some ("Runbooks", Runbooks.to_json v.runbooks)
+         ; Aws.Util.option_map v.scheduled_time (fun f ->
+               "ScheduledTime", DateTime.to_json f)
+         ; Aws.Util.option_map v.automation_subtype (fun f ->
+               "AutomationSubtype", AutomationSubtype.to_json f)
+         ; Aws.Util.option_map v.target_locations_u_r_l (fun f ->
+               "TargetLocationsURL", String.to_json f)
+         ; Some ("TriggeredAlarms", AlarmStateInformationList.to_json v.triggered_alarms)
+         ; Aws.Util.option_map v.alarm_configuration (fun f ->
+               "AlarmConfiguration", AlarmConfiguration.to_json f)
+         ; Aws.Util.option_map v.progress_counters (fun f ->
                "ProgressCounters", ProgressCounters.to_json f)
          ; Some ("TargetLocations", TargetLocations.to_json v.target_locations)
          ; Aws.Util.option_map v.target (fun f -> "Target", String.to_json f)
@@ -28010,6 +34641,29 @@ module AutomationExecution = struct
         Aws.Util.option_map
           (Aws.Json.lookup j "ProgressCounters")
           ProgressCounters.of_json
+    ; alarm_configuration =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "AlarmConfiguration")
+          AlarmConfiguration.of_json
+    ; triggered_alarms =
+        AlarmStateInformationList.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "TriggeredAlarms"))
+    ; target_locations_u_r_l =
+        Aws.Util.option_map (Aws.Json.lookup j "TargetLocationsURL") String.of_json
+    ; automation_subtype =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "AutomationSubtype")
+          AutomationSubtype.of_json
+    ; scheduled_time =
+        Aws.Util.option_map (Aws.Json.lookup j "ScheduledTime") DateTime.of_json
+    ; runbooks = Runbooks.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Runbooks"))
+    ; ops_item_id = Aws.Util.option_map (Aws.Json.lookup j "OpsItemId") String.of_json
+    ; association_id =
+        Aws.Util.option_map (Aws.Json.lookup j "AssociationId") String.of_json
+    ; change_request_name =
+        Aws.Util.option_map (Aws.Json.lookup j "ChangeRequestName") String.of_json
+    ; variables =
+        Aws.Util.option_map (Aws.Json.lookup j "Variables") AutomationParameterMap.of_json
     }
 end
 
@@ -28048,18 +34702,83 @@ module UpdateAssociationResult = struct
     }
 end
 
+module NodeList = struct
+  type t = Node.t list
+
+  let make elems () = elems
+  let parse xml = Aws.Util.option_all (List.map Node.parse (Aws.Xml.members "member" xml))
+  let to_query v = Aws.Query.to_query_list Node.to_query v
+  let to_json v = `List (List.map Node.to_json v)
+  let of_json j = Aws.Json.to_list Node.of_json j
+end
+
 module InvalidResourceId = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
+end
+
+module ResourcePolicyParameterNamesList = struct
+  type t = String.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
+
+  let to_query v = Aws.Query.to_query_list String.to_query v
+  let to_json v = `List (List.map String.to_json v)
+  let of_json j = Aws.Json.to_list String.of_json j
+end
+
+module ResourcePolicyInvalidParameterException = struct
+  type t =
+    { parameter_names : ResourcePolicyParameterNamesList.t
+    ; message : String.t option
+    }
+
+  let make ?(parameter_names = []) ?message () = { parameter_names; message }
+
+  let parse xml =
+    Some
+      { parameter_names =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "ParameterNames" xml)
+               ResourcePolicyParameterNamesList.parse)
+      ; message = Aws.Util.option_bind (Aws.Xml.member "Message" xml) String.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f ->
+               Aws.Query.Pair ("Message", String.to_query f))
+         ; Some
+             (Aws.Query.Pair
+                ( "ParameterNames.member"
+                , ResourcePolicyParameterNamesList.to_query v.parameter_names ))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f -> "Message", String.to_json f)
+         ; Some
+             ("ParameterNames", ResourcePolicyParameterNamesList.to_json v.parameter_names)
+         ])
+
+  let of_json j =
+    { parameter_names =
+        ResourcePolicyParameterNamesList.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "ParameterNames"))
+    ; message = Aws.Util.option_map (Aws.Json.lookup j "Message") String.of_json
+    }
 end
 
 module OpsItemAlreadyExistsException = struct
@@ -28111,6 +34830,7 @@ module UpdatePatchBaselineRequest = struct
     ; rejected_patches_action : PatchAction.t option
     ; description : String.t option
     ; sources : PatchSourceList.t
+    ; available_security_updates_compliance_status : PatchComplianceStatus.t option
     ; replace : Boolean.t option
     }
 
@@ -28126,6 +34846,7 @@ module UpdatePatchBaselineRequest = struct
       ?rejected_patches_action
       ?description
       ?(sources = [])
+      ?available_security_updates_compliance_status
       ?replace
       () =
     { baseline_id
@@ -28139,6 +34860,7 @@ module UpdatePatchBaselineRequest = struct
     ; rejected_patches_action
     ; description
     ; sources
+    ; available_security_updates_compliance_status
     ; replace
     }
 
@@ -28182,6 +34904,10 @@ module UpdatePatchBaselineRequest = struct
           Aws.Util.of_option
             []
             (Aws.Util.option_bind (Aws.Xml.member "Sources" xml) PatchSourceList.parse)
+      ; available_security_updates_compliance_status =
+          Aws.Util.option_bind
+            (Aws.Xml.member "AvailableSecurityUpdatesComplianceStatus" xml)
+            PatchComplianceStatus.parse
       ; replace = Aws.Util.option_bind (Aws.Xml.member "Replace" xml) Boolean.parse
       }
 
@@ -28190,6 +34916,10 @@ module UpdatePatchBaselineRequest = struct
       (Aws.Util.list_filter_opt
          [ Aws.Util.option_map v.replace (fun f ->
                Aws.Query.Pair ("Replace", Boolean.to_query f))
+         ; Aws.Util.option_map v.available_security_updates_compliance_status (fun f ->
+               Aws.Query.Pair
+                 ( "AvailableSecurityUpdatesComplianceStatus"
+                 , PatchComplianceStatus.to_query f ))
          ; Some (Aws.Query.Pair ("Sources.member", PatchSourceList.to_query v.sources))
          ; Aws.Util.option_map v.description (fun f ->
                Aws.Query.Pair ("Description", String.to_query f))
@@ -28219,6 +34949,8 @@ module UpdatePatchBaselineRequest = struct
     `Assoc
       (Aws.Util.list_filter_opt
          [ Aws.Util.option_map v.replace (fun f -> "Replace", Boolean.to_json f)
+         ; Aws.Util.option_map v.available_security_updates_compliance_status (fun f ->
+               "AvailableSecurityUpdatesComplianceStatus", PatchComplianceStatus.to_json f)
          ; Some ("Sources", PatchSourceList.to_json v.sources)
          ; Aws.Util.option_map v.description (fun f -> "Description", String.to_json f)
          ; Aws.Util.option_map v.rejected_patches_action (fun f ->
@@ -28264,6 +34996,10 @@ module UpdatePatchBaselineRequest = struct
     ; description = Aws.Util.option_map (Aws.Json.lookup j "Description") String.of_json
     ; sources =
         PatchSourceList.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Sources"))
+    ; available_security_updates_compliance_status =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "AvailableSecurityUpdatesComplianceStatus")
+          PatchComplianceStatus.of_json
     ; replace = Aws.Util.option_map (Aws.Json.lookup j "Replace") Boolean.of_json
     }
 end
@@ -28487,6 +35223,44 @@ module DescribeEffectiveInstanceAssociationsRequest = struct
     }
 end
 
+module ListNodesResult = struct
+  type t =
+    { nodes : NodeList.t
+    ; next_token : String.t option
+    }
+
+  let make ?(nodes = []) ?next_token () = { nodes; next_token }
+
+  let parse xml =
+    Some
+      { nodes =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind (Aws.Xml.member "Nodes" xml) NodeList.parse)
+      ; next_token = Aws.Util.option_bind (Aws.Xml.member "NextToken" xml) String.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.next_token (fun f ->
+               Aws.Query.Pair ("NextToken", String.to_query f))
+         ; Some (Aws.Query.Pair ("Nodes.member", NodeList.to_query v.nodes))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.next_token (fun f -> "NextToken", String.to_json f)
+         ; Some ("Nodes", NodeList.to_json v.nodes)
+         ])
+
+  let of_json j =
+    { nodes = NodeList.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Nodes"))
+    ; next_token = Aws.Util.option_map (Aws.Json.lookup j "NextToken") String.of_json
+    }
+end
+
 module UpdateOpsItemRequest = struct
   type t =
     { description : String.t option
@@ -28500,6 +35274,11 @@ module UpdateOpsItemRequest = struct
     ; title : String.t option
     ; category : String.t option
     ; severity : String.t option
+    ; actual_start_time : DateTime.t option
+    ; actual_end_time : DateTime.t option
+    ; planned_start_time : DateTime.t option
+    ; planned_end_time : DateTime.t option
+    ; ops_item_arn : String.t option
     }
 
   let make
@@ -28514,6 +35293,11 @@ module UpdateOpsItemRequest = struct
       ?title
       ?category
       ?severity
+      ?actual_start_time
+      ?actual_end_time
+      ?planned_start_time
+      ?planned_end_time
+      ?ops_item_arn
       () =
     { description
     ; operational_data
@@ -28526,6 +35310,11 @@ module UpdateOpsItemRequest = struct
     ; title
     ; category
     ; severity
+    ; actual_start_time
+    ; actual_end_time
+    ; planned_start_time
+    ; planned_end_time
+    ; ops_item_arn
     }
 
   let parse xml =
@@ -28562,12 +35351,31 @@ module UpdateOpsItemRequest = struct
       ; title = Aws.Util.option_bind (Aws.Xml.member "Title" xml) String.parse
       ; category = Aws.Util.option_bind (Aws.Xml.member "Category" xml) String.parse
       ; severity = Aws.Util.option_bind (Aws.Xml.member "Severity" xml) String.parse
+      ; actual_start_time =
+          Aws.Util.option_bind (Aws.Xml.member "ActualStartTime" xml) DateTime.parse
+      ; actual_end_time =
+          Aws.Util.option_bind (Aws.Xml.member "ActualEndTime" xml) DateTime.parse
+      ; planned_start_time =
+          Aws.Util.option_bind (Aws.Xml.member "PlannedStartTime" xml) DateTime.parse
+      ; planned_end_time =
+          Aws.Util.option_bind (Aws.Xml.member "PlannedEndTime" xml) DateTime.parse
+      ; ops_item_arn = Aws.Util.option_bind (Aws.Xml.member "OpsItemArn" xml) String.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.severity (fun f ->
+         [ Aws.Util.option_map v.ops_item_arn (fun f ->
+               Aws.Query.Pair ("OpsItemArn", String.to_query f))
+         ; Aws.Util.option_map v.planned_end_time (fun f ->
+               Aws.Query.Pair ("PlannedEndTime", DateTime.to_query f))
+         ; Aws.Util.option_map v.planned_start_time (fun f ->
+               Aws.Query.Pair ("PlannedStartTime", DateTime.to_query f))
+         ; Aws.Util.option_map v.actual_end_time (fun f ->
+               Aws.Query.Pair ("ActualEndTime", DateTime.to_query f))
+         ; Aws.Util.option_map v.actual_start_time (fun f ->
+               Aws.Query.Pair ("ActualStartTime", DateTime.to_query f))
+         ; Aws.Util.option_map v.severity (fun f ->
                Aws.Query.Pair ("Severity", String.to_query f))
          ; Aws.Util.option_map v.category (fun f ->
                Aws.Query.Pair ("Category", String.to_query f))
@@ -28597,7 +35405,16 @@ module UpdateOpsItemRequest = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.severity (fun f -> "Severity", String.to_json f)
+         [ Aws.Util.option_map v.ops_item_arn (fun f -> "OpsItemArn", String.to_json f)
+         ; Aws.Util.option_map v.planned_end_time (fun f ->
+               "PlannedEndTime", DateTime.to_json f)
+         ; Aws.Util.option_map v.planned_start_time (fun f ->
+               "PlannedStartTime", DateTime.to_json f)
+         ; Aws.Util.option_map v.actual_end_time (fun f ->
+               "ActualEndTime", DateTime.to_json f)
+         ; Aws.Util.option_map v.actual_start_time (fun f ->
+               "ActualStartTime", DateTime.to_json f)
+         ; Aws.Util.option_map v.severity (fun f -> "Severity", String.to_json f)
          ; Aws.Util.option_map v.category (fun f -> "Category", String.to_json f)
          ; Aws.Util.option_map v.title (fun f -> "Title", String.to_json f)
          ; Some ("OpsItemId", String.to_json v.ops_item_id)
@@ -28635,6 +35452,15 @@ module UpdateOpsItemRequest = struct
     ; title = Aws.Util.option_map (Aws.Json.lookup j "Title") String.of_json
     ; category = Aws.Util.option_map (Aws.Json.lookup j "Category") String.of_json
     ; severity = Aws.Util.option_map (Aws.Json.lookup j "Severity") String.of_json
+    ; actual_start_time =
+        Aws.Util.option_map (Aws.Json.lookup j "ActualStartTime") DateTime.of_json
+    ; actual_end_time =
+        Aws.Util.option_map (Aws.Json.lookup j "ActualEndTime") DateTime.of_json
+    ; planned_start_time =
+        Aws.Util.option_map (Aws.Json.lookup j "PlannedStartTime") DateTime.of_json
+    ; planned_end_time =
+        Aws.Util.option_map (Aws.Json.lookup j "PlannedEndTime") DateTime.of_json
+    ; ops_item_arn = Aws.Util.option_map (Aws.Json.lookup j "OpsItemArn") String.of_json
     }
 end
 
@@ -29068,6 +35894,30 @@ module DescribeAssociationExecutionsRequest = struct
     }
 end
 
+module OpsMetadataKeyLimitExceededException = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Aws.Util.option_bind (Aws.Xml.member "message" xml) String.parse }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f ->
+               Aws.Query.Pair ("message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f -> "message", String.to_json f) ])
+
+  let of_json j =
+    { message = Aws.Util.option_map (Aws.Json.lookup j "message") String.of_json }
+end
+
 module LabelParameterVersionRequest = struct
   type t =
     { name : String.t
@@ -29115,6 +35965,35 @@ module LabelParameterVersionRequest = struct
         Aws.Util.option_map (Aws.Json.lookup j "ParameterVersion") Long.of_json
     ; labels =
         ParameterLabelList.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Labels"))
+    }
+end
+
+module DeleteOpsMetadataRequest = struct
+  type t = { ops_metadata_arn : String.t }
+
+  let make ~ops_metadata_arn () = { ops_metadata_arn }
+
+  let parse xml =
+    Some
+      { ops_metadata_arn =
+          Aws.Xml.required
+            "OpsMetadataArn"
+            (Aws.Util.option_bind (Aws.Xml.member "OpsMetadataArn" xml) String.parse)
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Some (Aws.Query.Pair ("OpsMetadataArn", String.to_query v.ops_metadata_arn)) ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Some ("OpsMetadataArn", String.to_json v.ops_metadata_arn) ])
+
+  let of_json j =
+    { ops_metadata_arn =
+        String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "OpsMetadataArn"))
     }
 end
 
@@ -29313,13 +36192,9 @@ module UpdateManagedInstanceRoleResult = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -29516,6 +36391,130 @@ module CreateAssociationResult = struct
     }
 end
 
+module DescribeInstancePropertiesRequest = struct
+  type t =
+    { instance_property_filter_list : InstancePropertyFilterList.t
+    ; filters_with_operator : InstancePropertyStringFilterList.t
+    ; max_results : Integer.t option
+    ; next_token : String.t option
+    }
+
+  let make
+      ?(instance_property_filter_list = [])
+      ?(filters_with_operator = [])
+      ?max_results
+      ?next_token
+      () =
+    { instance_property_filter_list; filters_with_operator; max_results; next_token }
+
+  let parse xml =
+    Some
+      { instance_property_filter_list =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "InstancePropertyFilterList" xml)
+               InstancePropertyFilterList.parse)
+      ; filters_with_operator =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "FiltersWithOperator" xml)
+               InstancePropertyStringFilterList.parse)
+      ; max_results = Aws.Util.option_bind (Aws.Xml.member "MaxResults" xml) Integer.parse
+      ; next_token = Aws.Util.option_bind (Aws.Xml.member "NextToken" xml) String.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.next_token (fun f ->
+               Aws.Query.Pair ("NextToken", String.to_query f))
+         ; Aws.Util.option_map v.max_results (fun f ->
+               Aws.Query.Pair ("MaxResults", Integer.to_query f))
+         ; Some
+             (Aws.Query.Pair
+                ( "FiltersWithOperator.member"
+                , InstancePropertyStringFilterList.to_query v.filters_with_operator ))
+         ; Some
+             (Aws.Query.Pair
+                ( "InstancePropertyFilterList.member"
+                , InstancePropertyFilterList.to_query v.instance_property_filter_list ))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.next_token (fun f -> "NextToken", String.to_json f)
+         ; Aws.Util.option_map v.max_results (fun f -> "MaxResults", Integer.to_json f)
+         ; Some
+             ( "FiltersWithOperator"
+             , InstancePropertyStringFilterList.to_json v.filters_with_operator )
+         ; Some
+             ( "InstancePropertyFilterList"
+             , InstancePropertyFilterList.to_json v.instance_property_filter_list )
+         ])
+
+  let of_json j =
+    { instance_property_filter_list =
+        InstancePropertyFilterList.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "InstancePropertyFilterList"))
+    ; filters_with_operator =
+        InstancePropertyStringFilterList.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "FiltersWithOperator"))
+    ; max_results = Aws.Util.option_map (Aws.Json.lookup j "MaxResults") Integer.of_json
+    ; next_token = Aws.Util.option_map (Aws.Json.lookup j "NextToken") String.of_json
+    }
+end
+
+module StartAccessRequestRequest = struct
+  type t =
+    { reason : String.t
+    ; targets : Targets.t
+    ; tags : TagList.t
+    }
+
+  let make ~reason ~targets ?(tags = []) () = { reason; targets; tags }
+
+  let parse xml =
+    Some
+      { reason =
+          Aws.Xml.required
+            "Reason"
+            (Aws.Util.option_bind (Aws.Xml.member "Reason" xml) String.parse)
+      ; targets =
+          Aws.Xml.required
+            "Targets"
+            (Aws.Util.option_bind (Aws.Xml.member "Targets" xml) Targets.parse)
+      ; tags =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind (Aws.Xml.member "Tags" xml) TagList.parse)
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Some (Aws.Query.Pair ("Tags.member", TagList.to_query v.tags))
+         ; Some (Aws.Query.Pair ("Targets.member", Targets.to_query v.targets))
+         ; Some (Aws.Query.Pair ("Reason", String.to_query v.reason))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Some ("Tags", TagList.to_json v.tags)
+         ; Some ("Targets", Targets.to_json v.targets)
+         ; Some ("Reason", String.to_json v.reason)
+         ])
+
+  let of_json j =
+    { reason = String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Reason"))
+    ; targets = Targets.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Targets"))
+    ; tags = TagList.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Tags"))
+    }
+end
+
 module ParameterLimitExceeded = struct
   type t = { message : String.t option }
 
@@ -29568,13 +36567,9 @@ module DeleteDocumentResult = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -29601,6 +36596,56 @@ module GetServiceSettingRequest = struct
 
   let of_json j =
     { setting_id = String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "SettingId"))
+    }
+end
+
+module ListOpsMetadataRequest = struct
+  type t =
+    { filters : OpsMetadataFilterList.t
+    ; max_results : Integer.t option
+    ; next_token : String.t option
+    }
+
+  let make ?(filters = []) ?max_results ?next_token () =
+    { filters; max_results; next_token }
+
+  let parse xml =
+    Some
+      { filters =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "Filters" xml)
+               OpsMetadataFilterList.parse)
+      ; max_results = Aws.Util.option_bind (Aws.Xml.member "MaxResults" xml) Integer.parse
+      ; next_token = Aws.Util.option_bind (Aws.Xml.member "NextToken" xml) String.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.next_token (fun f ->
+               Aws.Query.Pair ("NextToken", String.to_query f))
+         ; Aws.Util.option_map v.max_results (fun f ->
+               Aws.Query.Pair ("MaxResults", Integer.to_query f))
+         ; Some
+             (Aws.Query.Pair ("Filters.member", OpsMetadataFilterList.to_query v.filters))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.next_token (fun f -> "NextToken", String.to_json f)
+         ; Aws.Util.option_map v.max_results (fun f -> "MaxResults", Integer.to_json f)
+         ; Some ("Filters", OpsMetadataFilterList.to_json v.filters)
+         ])
+
+  let of_json j =
+    { filters =
+        OpsMetadataFilterList.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "Filters"))
+    ; max_results = Aws.Util.option_map (Aws.Json.lookup j "MaxResults") Integer.of_json
+    ; next_token = Aws.Util.option_map (Aws.Json.lookup j "NextToken") String.of_json
     }
 end
 
@@ -29702,9 +36747,7 @@ module MaintenanceWindowExecutionTaskIdList = struct
     Aws.Util.option_all (List.map String.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list String.to_query v
-
   let to_json v = `List (List.map String.to_json v)
-
   let of_json j = Aws.Json.to_list String.of_json j
 end
 
@@ -29747,14 +36790,34 @@ module DeleteActivationResult = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
+end
+
+module ResourceNotFoundException = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Aws.Util.option_bind (Aws.Xml.member "Message" xml) String.parse }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f ->
+               Aws.Query.Pair ("Message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f -> "Message", String.to_json f) ])
+
+  let of_json j =
+    { message = Aws.Util.option_map (Aws.Json.lookup j "Message") String.of_json }
 end
 
 module UpdateManagedInstanceRoleRequest = struct
@@ -29874,6 +36937,30 @@ module DeregisterManagedInstanceRequest = struct
     }
 end
 
+module OpsMetadataInvalidArgumentException = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Aws.Util.option_bind (Aws.Xml.member "message" xml) String.parse }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f ->
+               Aws.Query.Pair ("message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f -> "message", String.to_json f) ])
+
+  let of_json j =
+    { message = Aws.Util.option_map (Aws.Json.lookup j "message") String.of_json }
+end
+
 module InvalidPolicyAttributeException = struct
   type t = { message : String.t option }
 
@@ -29920,6 +37007,30 @@ module InvalidDocument = struct
 
   let of_json j =
     { message = Aws.Util.option_map (Aws.Json.lookup j "Message") String.of_json }
+end
+
+module OpsMetadataAlreadyExistsException = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Aws.Util.option_bind (Aws.Xml.member "message" xml) String.parse }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f ->
+               Aws.Query.Pair ("message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f -> "message", String.to_json f) ])
+
+  let of_json j =
+    { message = Aws.Util.option_map (Aws.Json.lookup j "message") String.of_json }
 end
 
 module DescribeInstancePatchStatesRequest = struct
@@ -29978,9 +37089,7 @@ module AssociationFilterList = struct
     Aws.Util.option_all (List.map AssociationFilter.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list AssociationFilter.to_query v
-
   let to_json v = `List (List.map AssociationFilter.to_json v)
-
   let of_json j = Aws.Json.to_list AssociationFilter.of_json j
 end
 
@@ -30191,6 +37300,51 @@ module DescribeInstanceInformationRequest = struct
     }
 end
 
+module StartChangeRequestExecutionResult = struct
+  type t = { automation_execution_id : String.t option }
+
+  let make ?automation_execution_id () = { automation_execution_id }
+
+  let parse xml =
+    Some
+      { automation_execution_id =
+          Aws.Util.option_bind (Aws.Xml.member "AutomationExecutionId" xml) String.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.automation_execution_id (fun f ->
+               Aws.Query.Pair ("AutomationExecutionId", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.automation_execution_id (fun f ->
+               "AutomationExecutionId", String.to_json f)
+         ])
+
+  let of_json j =
+    { automation_execution_id =
+        Aws.Util.option_map (Aws.Json.lookup j "AutomationExecutionId") String.of_json
+    }
+end
+
+module OpsItemRelatedItemsFilters = struct
+  type t = OpsItemRelatedItemsFilter.t list
+
+  let make elems () = elems
+
+  let parse xml =
+    Aws.Util.option_all
+      (List.map OpsItemRelatedItemsFilter.parse (Aws.Xml.members "member" xml))
+
+  let to_query v = Aws.Query.to_query_list OpsItemRelatedItemsFilter.to_query v
+  let to_json v = `List (List.map OpsItemRelatedItemsFilter.to_json v)
+  let of_json j = Aws.Json.to_list OpsItemRelatedItemsFilter.of_json j
+end
+
 module AssociationExecutionTargetsFilter = struct
   type t =
     { key : AssociationExecutionTargetsFilterKey.t
@@ -30240,13 +37394,9 @@ module StartAssociationsOnceResult = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -30329,6 +37479,57 @@ module InvalidInventoryRequestException = struct
 
   let of_json j =
     { message = Aws.Util.option_map (Aws.Json.lookup j "Message") String.of_json }
+end
+
+module DeleteResourcePolicyRequest = struct
+  type t =
+    { resource_arn : String.t
+    ; policy_id : String.t
+    ; policy_hash : String.t
+    }
+
+  let make ~resource_arn ~policy_id ~policy_hash () =
+    { resource_arn; policy_id; policy_hash }
+
+  let parse xml =
+    Some
+      { resource_arn =
+          Aws.Xml.required
+            "ResourceArn"
+            (Aws.Util.option_bind (Aws.Xml.member "ResourceArn" xml) String.parse)
+      ; policy_id =
+          Aws.Xml.required
+            "PolicyId"
+            (Aws.Util.option_bind (Aws.Xml.member "PolicyId" xml) String.parse)
+      ; policy_hash =
+          Aws.Xml.required
+            "PolicyHash"
+            (Aws.Util.option_bind (Aws.Xml.member "PolicyHash" xml) String.parse)
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Some (Aws.Query.Pair ("PolicyHash", String.to_query v.policy_hash))
+         ; Some (Aws.Query.Pair ("PolicyId", String.to_query v.policy_id))
+         ; Some (Aws.Query.Pair ("ResourceArn", String.to_query v.resource_arn))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Some ("PolicyHash", String.to_json v.policy_hash)
+         ; Some ("PolicyId", String.to_json v.policy_id)
+         ; Some ("ResourceArn", String.to_json v.resource_arn)
+         ])
+
+  let of_json j =
+    { resource_arn =
+        String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "ResourceArn"))
+    ; policy_id = String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "PolicyId"))
+    ; policy_hash =
+        String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "PolicyHash"))
+    }
 end
 
 module DeleteInventoryRequest = struct
@@ -30431,6 +37632,14 @@ module CreateAssociationRequest = struct
     ; compliance_severity : AssociationComplianceSeverity.t option
     ; sync_compliance : AssociationSyncCompliance.t option
     ; apply_only_at_cron_interval : Boolean.t option
+    ; calendar_names : CalendarNameOrARNList.t
+    ; target_locations : TargetLocations.t
+    ; schedule_offset : Integer.t option
+    ; duration : Integer.t option
+    ; target_maps : TargetMaps.t
+    ; tags : TagList.t
+    ; alarm_configuration : AlarmConfiguration.t option
+    ; association_dispatch_assume_role : String.t option
     }
 
   let make
@@ -30448,6 +37657,14 @@ module CreateAssociationRequest = struct
       ?compliance_severity
       ?sync_compliance
       ?apply_only_at_cron_interval
+      ?(calendar_names = [])
+      ?(target_locations = [])
+      ?schedule_offset
+      ?duration
+      ?(target_maps = [])
+      ?(tags = [])
+      ?alarm_configuration
+      ?association_dispatch_assume_role
       () =
     { name
     ; document_version
@@ -30463,6 +37680,14 @@ module CreateAssociationRequest = struct
     ; compliance_severity
     ; sync_compliance
     ; apply_only_at_cron_interval
+    ; calendar_names
+    ; target_locations
+    ; schedule_offset
+    ; duration
+    ; target_maps
+    ; tags
+    ; alarm_configuration
+    ; association_dispatch_assume_role
     }
 
   let parse xml =
@@ -30507,12 +37732,59 @@ module CreateAssociationRequest = struct
           Aws.Util.option_bind
             (Aws.Xml.member "ApplyOnlyAtCronInterval" xml)
             Boolean.parse
+      ; calendar_names =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "CalendarNames" xml)
+               CalendarNameOrARNList.parse)
+      ; target_locations =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "TargetLocations" xml)
+               TargetLocations.parse)
+      ; schedule_offset =
+          Aws.Util.option_bind (Aws.Xml.member "ScheduleOffset" xml) Integer.parse
+      ; duration = Aws.Util.option_bind (Aws.Xml.member "Duration" xml) Integer.parse
+      ; target_maps =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind (Aws.Xml.member "TargetMaps" xml) TargetMaps.parse)
+      ; tags =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind (Aws.Xml.member "Tags" xml) TagList.parse)
+      ; alarm_configuration =
+          Aws.Util.option_bind
+            (Aws.Xml.member "AlarmConfiguration" xml)
+            AlarmConfiguration.parse
+      ; association_dispatch_assume_role =
+          Aws.Util.option_bind
+            (Aws.Xml.member "AssociationDispatchAssumeRole" xml)
+            String.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.apply_only_at_cron_interval (fun f ->
+         [ Aws.Util.option_map v.association_dispatch_assume_role (fun f ->
+               Aws.Query.Pair ("AssociationDispatchAssumeRole", String.to_query f))
+         ; Aws.Util.option_map v.alarm_configuration (fun f ->
+               Aws.Query.Pair ("AlarmConfiguration", AlarmConfiguration.to_query f))
+         ; Some (Aws.Query.Pair ("Tags.member", TagList.to_query v.tags))
+         ; Some (Aws.Query.Pair ("TargetMaps.member", TargetMaps.to_query v.target_maps))
+         ; Aws.Util.option_map v.duration (fun f ->
+               Aws.Query.Pair ("Duration", Integer.to_query f))
+         ; Aws.Util.option_map v.schedule_offset (fun f ->
+               Aws.Query.Pair ("ScheduleOffset", Integer.to_query f))
+         ; Some
+             (Aws.Query.Pair
+                ("TargetLocations.member", TargetLocations.to_query v.target_locations))
+         ; Some
+             (Aws.Query.Pair
+                ("CalendarNames.member", CalendarNameOrARNList.to_query v.calendar_names))
+         ; Aws.Util.option_map v.apply_only_at_cron_interval (fun f ->
                Aws.Query.Pair ("ApplyOnlyAtCronInterval", Boolean.to_query f))
          ; Aws.Util.option_map v.sync_compliance (fun f ->
                Aws.Query.Pair ("SyncCompliance", AssociationSyncCompliance.to_query f))
@@ -30545,7 +37817,18 @@ module CreateAssociationRequest = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.apply_only_at_cron_interval (fun f ->
+         [ Aws.Util.option_map v.association_dispatch_assume_role (fun f ->
+               "AssociationDispatchAssumeRole", String.to_json f)
+         ; Aws.Util.option_map v.alarm_configuration (fun f ->
+               "AlarmConfiguration", AlarmConfiguration.to_json f)
+         ; Some ("Tags", TagList.to_json v.tags)
+         ; Some ("TargetMaps", TargetMaps.to_json v.target_maps)
+         ; Aws.Util.option_map v.duration (fun f -> "Duration", Integer.to_json f)
+         ; Aws.Util.option_map v.schedule_offset (fun f ->
+               "ScheduleOffset", Integer.to_json f)
+         ; Some ("TargetLocations", TargetLocations.to_json v.target_locations)
+         ; Some ("CalendarNames", CalendarNameOrARNList.to_json v.calendar_names)
+         ; Aws.Util.option_map v.apply_only_at_cron_interval (fun f ->
                "ApplyOnlyAtCronInterval", Boolean.to_json f)
          ; Aws.Util.option_map v.sync_compliance (fun f ->
                "SyncCompliance", AssociationSyncCompliance.to_json f)
@@ -30602,6 +37885,97 @@ module CreateAssociationRequest = struct
           AssociationSyncCompliance.of_json
     ; apply_only_at_cron_interval =
         Aws.Util.option_map (Aws.Json.lookup j "ApplyOnlyAtCronInterval") Boolean.of_json
+    ; calendar_names =
+        CalendarNameOrARNList.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "CalendarNames"))
+    ; target_locations =
+        TargetLocations.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "TargetLocations"))
+    ; schedule_offset =
+        Aws.Util.option_map (Aws.Json.lookup j "ScheduleOffset") Integer.of_json
+    ; duration = Aws.Util.option_map (Aws.Json.lookup j "Duration") Integer.of_json
+    ; target_maps =
+        TargetMaps.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "TargetMaps"))
+    ; tags = TagList.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Tags"))
+    ; alarm_configuration =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "AlarmConfiguration")
+          AlarmConfiguration.of_json
+    ; association_dispatch_assume_role =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "AssociationDispatchAssumeRole")
+          String.of_json
+    }
+end
+
+module GetExecutionPreviewResponse = struct
+  type t =
+    { execution_preview_id : String.t option
+    ; ended_at : DateTime.t option
+    ; status : ExecutionPreviewStatus.t option
+    ; status_message : String.t option
+    ; execution_preview : ExecutionPreview.t option
+    }
+
+  let make ?execution_preview_id ?ended_at ?status ?status_message ?execution_preview () =
+    { execution_preview_id; ended_at; status; status_message; execution_preview }
+
+  let parse xml =
+    Some
+      { execution_preview_id =
+          Aws.Util.option_bind (Aws.Xml.member "ExecutionPreviewId" xml) String.parse
+      ; ended_at = Aws.Util.option_bind (Aws.Xml.member "EndedAt" xml) DateTime.parse
+      ; status =
+          Aws.Util.option_bind (Aws.Xml.member "Status" xml) ExecutionPreviewStatus.parse
+      ; status_message =
+          Aws.Util.option_bind (Aws.Xml.member "StatusMessage" xml) String.parse
+      ; execution_preview =
+          Aws.Util.option_bind
+            (Aws.Xml.member "ExecutionPreview" xml)
+            ExecutionPreview.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.execution_preview (fun f ->
+               Aws.Query.Pair ("ExecutionPreview", ExecutionPreview.to_query f))
+         ; Aws.Util.option_map v.status_message (fun f ->
+               Aws.Query.Pair ("StatusMessage", String.to_query f))
+         ; Aws.Util.option_map v.status (fun f ->
+               Aws.Query.Pair ("Status", ExecutionPreviewStatus.to_query f))
+         ; Aws.Util.option_map v.ended_at (fun f ->
+               Aws.Query.Pair ("EndedAt", DateTime.to_query f))
+         ; Aws.Util.option_map v.execution_preview_id (fun f ->
+               Aws.Query.Pair ("ExecutionPreviewId", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.execution_preview (fun f ->
+               "ExecutionPreview", ExecutionPreview.to_json f)
+         ; Aws.Util.option_map v.status_message (fun f ->
+               "StatusMessage", String.to_json f)
+         ; Aws.Util.option_map v.status (fun f ->
+               "Status", ExecutionPreviewStatus.to_json f)
+         ; Aws.Util.option_map v.ended_at (fun f -> "EndedAt", DateTime.to_json f)
+         ; Aws.Util.option_map v.execution_preview_id (fun f ->
+               "ExecutionPreviewId", String.to_json f)
+         ])
+
+  let of_json j =
+    { execution_preview_id =
+        Aws.Util.option_map (Aws.Json.lookup j "ExecutionPreviewId") String.of_json
+    ; ended_at = Aws.Util.option_map (Aws.Json.lookup j "EndedAt") DateTime.of_json
+    ; status =
+        Aws.Util.option_map (Aws.Json.lookup j "Status") ExecutionPreviewStatus.of_json
+    ; status_message =
+        Aws.Util.option_map (Aws.Json.lookup j "StatusMessage") String.of_json
+    ; execution_preview =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "ExecutionPreview")
+          ExecutionPreview.of_json
     }
 end
 
@@ -30778,13 +38152,9 @@ module AddTagsToResourceResult = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -31045,14 +38415,60 @@ module DeleteResourceDataSyncResult = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
+end
+
+module UnlabelParameterVersionRequest = struct
+  type t =
+    { name : String.t
+    ; parameter_version : Long.t
+    ; labels : ParameterLabelList.t
+    }
+
+  let make ~name ~parameter_version ~labels () = { name; parameter_version; labels }
+
+  let parse xml =
+    Some
+      { name =
+          Aws.Xml.required
+            "Name"
+            (Aws.Util.option_bind (Aws.Xml.member "Name" xml) String.parse)
+      ; parameter_version =
+          Aws.Xml.required
+            "ParameterVersion"
+            (Aws.Util.option_bind (Aws.Xml.member "ParameterVersion" xml) Long.parse)
+      ; labels =
+          Aws.Xml.required
+            "Labels"
+            (Aws.Util.option_bind (Aws.Xml.member "Labels" xml) ParameterLabelList.parse)
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Some (Aws.Query.Pair ("Labels.member", ParameterLabelList.to_query v.labels))
+         ; Some (Aws.Query.Pair ("ParameterVersion", Long.to_query v.parameter_version))
+         ; Some (Aws.Query.Pair ("Name", String.to_query v.name))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Some ("Labels", ParameterLabelList.to_json v.labels)
+         ; Some ("ParameterVersion", Long.to_json v.parameter_version)
+         ; Some ("Name", String.to_json v.name)
+         ])
+
+  let of_json j =
+    { name = String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Name"))
+    ; parameter_version =
+        Long.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "ParameterVersion"))
+    ; labels =
+        ParameterLabelList.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Labels"))
+    }
 end
 
 module GetServiceSettingResult = struct
@@ -31368,6 +38784,48 @@ module UpdateMaintenanceWindowTargetResult = struct
     }
 end
 
+module DisassociateOpsItemRelatedItemRequest = struct
+  type t =
+    { ops_item_id : String.t
+    ; association_id : String.t
+    }
+
+  let make ~ops_item_id ~association_id () = { ops_item_id; association_id }
+
+  let parse xml =
+    Some
+      { ops_item_id =
+          Aws.Xml.required
+            "OpsItemId"
+            (Aws.Util.option_bind (Aws.Xml.member "OpsItemId" xml) String.parse)
+      ; association_id =
+          Aws.Xml.required
+            "AssociationId"
+            (Aws.Util.option_bind (Aws.Xml.member "AssociationId" xml) String.parse)
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Some (Aws.Query.Pair ("AssociationId", String.to_query v.association_id))
+         ; Some (Aws.Query.Pair ("OpsItemId", String.to_query v.ops_item_id))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Some ("AssociationId", String.to_json v.association_id)
+         ; Some ("OpsItemId", String.to_json v.ops_item_id)
+         ])
+
+  let of_json j =
+    { ops_item_id =
+        String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "OpsItemId"))
+    ; association_id =
+        String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "AssociationId"))
+    }
+end
+
 module AssociationExecutionTargetsFilterList = struct
   type t = AssociationExecutionTargetsFilter.t list
 
@@ -31378,9 +38836,7 @@ module AssociationExecutionTargetsFilterList = struct
       (List.map AssociationExecutionTargetsFilter.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list AssociationExecutionTargetsFilter.to_query v
-
   let to_json v = `List (List.map AssociationExecutionTargetsFilter.to_json v)
-
   let of_json j = Aws.Json.to_list AssociationExecutionTargetsFilter.of_json j
 end
 
@@ -31656,6 +39112,58 @@ module AutomationDefinitionNotFoundException = struct
     { message = Aws.Util.option_map (Aws.Json.lookup j "Message") String.of_json }
 end
 
+module ListNodesRequest = struct
+  type t =
+    { sync_name : String.t option
+    ; filters : NodeFilterList.t
+    ; next_token : String.t option
+    ; max_results : Integer.t option
+    }
+
+  let make ?sync_name ?(filters = []) ?next_token ?max_results () =
+    { sync_name; filters; next_token; max_results }
+
+  let parse xml =
+    Some
+      { sync_name = Aws.Util.option_bind (Aws.Xml.member "SyncName" xml) String.parse
+      ; filters =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind (Aws.Xml.member "Filters" xml) NodeFilterList.parse)
+      ; next_token = Aws.Util.option_bind (Aws.Xml.member "NextToken" xml) String.parse
+      ; max_results = Aws.Util.option_bind (Aws.Xml.member "MaxResults" xml) Integer.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.max_results (fun f ->
+               Aws.Query.Pair ("MaxResults", Integer.to_query f))
+         ; Aws.Util.option_map v.next_token (fun f ->
+               Aws.Query.Pair ("NextToken", String.to_query f))
+         ; Some (Aws.Query.Pair ("Filters.member", NodeFilterList.to_query v.filters))
+         ; Aws.Util.option_map v.sync_name (fun f ->
+               Aws.Query.Pair ("SyncName", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.max_results (fun f -> "MaxResults", Integer.to_json f)
+         ; Aws.Util.option_map v.next_token (fun f -> "NextToken", String.to_json f)
+         ; Some ("Filters", NodeFilterList.to_json v.filters)
+         ; Aws.Util.option_map v.sync_name (fun f -> "SyncName", String.to_json f)
+         ])
+
+  let of_json j =
+    { sync_name = Aws.Util.option_map (Aws.Json.lookup j "SyncName") String.of_json
+    ; filters =
+        NodeFilterList.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Filters"))
+    ; next_token = Aws.Util.option_map (Aws.Json.lookup j "NextToken") String.of_json
+    ; max_results = Aws.Util.option_map (Aws.Json.lookup j "MaxResults") Integer.of_json
+    }
+end
+
 module ResourceDataSyncCountExceededException = struct
   type t = { message : String.t option }
 
@@ -31690,9 +39198,7 @@ module DocumentVersionList = struct
       (List.map DocumentVersionInfo.parse (Aws.Xml.members "member" xml))
 
   let to_query v = Aws.Query.to_query_list DocumentVersionInfo.to_query v
-
   let to_json v = `List (List.map DocumentVersionInfo.to_json v)
-
   let of_json j = Aws.Json.to_list DocumentVersionInfo.of_json j
 end
 
@@ -31841,6 +39347,10 @@ module DescribePatchGroupStateResult = struct
     ; instances_with_failed_patches : Integer.t option
     ; instances_with_not_applicable_patches : Integer.t option
     ; instances_with_unreported_not_applicable_patches : Integer.t option
+    ; instances_with_critical_non_compliant_patches : Integer.t option
+    ; instances_with_security_non_compliant_patches : Integer.t option
+    ; instances_with_other_non_compliant_patches : Integer.t option
+    ; instances_with_available_security_updates : Integer.t option
     }
 
   let make
@@ -31853,6 +39363,10 @@ module DescribePatchGroupStateResult = struct
       ?instances_with_failed_patches
       ?instances_with_not_applicable_patches
       ?instances_with_unreported_not_applicable_patches
+      ?instances_with_critical_non_compliant_patches
+      ?instances_with_security_non_compliant_patches
+      ?instances_with_other_non_compliant_patches
+      ?instances_with_available_security_updates
       () =
     { instances
     ; instances_with_installed_patches
@@ -31863,6 +39377,10 @@ module DescribePatchGroupStateResult = struct
     ; instances_with_failed_patches
     ; instances_with_not_applicable_patches
     ; instances_with_unreported_not_applicable_patches
+    ; instances_with_critical_non_compliant_patches
+    ; instances_with_security_non_compliant_patches
+    ; instances_with_other_non_compliant_patches
+    ; instances_with_available_security_updates
     }
 
   let parse xml =
@@ -31900,12 +39418,38 @@ module DescribePatchGroupStateResult = struct
           Aws.Util.option_bind
             (Aws.Xml.member "InstancesWithUnreportedNotApplicablePatches" xml)
             Integer.parse
+      ; instances_with_critical_non_compliant_patches =
+          Aws.Util.option_bind
+            (Aws.Xml.member "InstancesWithCriticalNonCompliantPatches" xml)
+            Integer.parse
+      ; instances_with_security_non_compliant_patches =
+          Aws.Util.option_bind
+            (Aws.Xml.member "InstancesWithSecurityNonCompliantPatches" xml)
+            Integer.parse
+      ; instances_with_other_non_compliant_patches =
+          Aws.Util.option_bind
+            (Aws.Xml.member "InstancesWithOtherNonCompliantPatches" xml)
+            Integer.parse
+      ; instances_with_available_security_updates =
+          Aws.Util.option_bind
+            (Aws.Xml.member "InstancesWithAvailableSecurityUpdates" xml)
+            Integer.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map
+         [ Aws.Util.option_map v.instances_with_available_security_updates (fun f ->
+               Aws.Query.Pair ("InstancesWithAvailableSecurityUpdates", Integer.to_query f))
+         ; Aws.Util.option_map v.instances_with_other_non_compliant_patches (fun f ->
+               Aws.Query.Pair ("InstancesWithOtherNonCompliantPatches", Integer.to_query f))
+         ; Aws.Util.option_map v.instances_with_security_non_compliant_patches (fun f ->
+               Aws.Query.Pair
+                 ("InstancesWithSecurityNonCompliantPatches", Integer.to_query f))
+         ; Aws.Util.option_map v.instances_with_critical_non_compliant_patches (fun f ->
+               Aws.Query.Pair
+                 ("InstancesWithCriticalNonCompliantPatches", Integer.to_query f))
+         ; Aws.Util.option_map
              v.instances_with_unreported_not_applicable_patches
              (fun f ->
                Aws.Query.Pair
@@ -31932,7 +39476,15 @@ module DescribePatchGroupStateResult = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map
+         [ Aws.Util.option_map v.instances_with_available_security_updates (fun f ->
+               "InstancesWithAvailableSecurityUpdates", Integer.to_json f)
+         ; Aws.Util.option_map v.instances_with_other_non_compliant_patches (fun f ->
+               "InstancesWithOtherNonCompliantPatches", Integer.to_json f)
+         ; Aws.Util.option_map v.instances_with_security_non_compliant_patches (fun f ->
+               "InstancesWithSecurityNonCompliantPatches", Integer.to_json f)
+         ; Aws.Util.option_map v.instances_with_critical_non_compliant_patches (fun f ->
+               "InstancesWithCriticalNonCompliantPatches", Integer.to_json f)
+         ; Aws.Util.option_map
              v.instances_with_unreported_not_applicable_patches
              (fun f -> "InstancesWithUnreportedNotApplicablePatches", Integer.to_json f)
          ; Aws.Util.option_map v.instances_with_not_applicable_patches (fun f ->
@@ -31985,6 +39537,22 @@ module DescribePatchGroupStateResult = struct
     ; instances_with_unreported_not_applicable_patches =
         Aws.Util.option_map
           (Aws.Json.lookup j "InstancesWithUnreportedNotApplicablePatches")
+          Integer.of_json
+    ; instances_with_critical_non_compliant_patches =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "InstancesWithCriticalNonCompliantPatches")
+          Integer.of_json
+    ; instances_with_security_non_compliant_patches =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "InstancesWithSecurityNonCompliantPatches")
+          Integer.of_json
+    ; instances_with_other_non_compliant_patches =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "InstancesWithOtherNonCompliantPatches")
+          Integer.of_json
+    ; instances_with_available_security_updates =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "InstancesWithAvailableSecurityUpdates")
           Integer.of_json
     }
 end
@@ -32305,13 +39873,9 @@ module InvalidOutputFolder = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
 end
 
@@ -32339,6 +39903,53 @@ module InvalidAutomationExecutionParametersException = struct
     { message = Aws.Util.option_map (Aws.Json.lookup j "Message") String.of_json }
 end
 
+module CreateOpsMetadataRequest = struct
+  type t =
+    { resource_id : String.t
+    ; metadata : MetadataMap.t option
+    ; tags : TagList.t
+    }
+
+  let make ~resource_id ?metadata ?(tags = []) () = { resource_id; metadata; tags }
+
+  let parse xml =
+    Some
+      { resource_id =
+          Aws.Xml.required
+            "ResourceId"
+            (Aws.Util.option_bind (Aws.Xml.member "ResourceId" xml) String.parse)
+      ; metadata = Aws.Util.option_bind (Aws.Xml.member "Metadata" xml) MetadataMap.parse
+      ; tags =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind (Aws.Xml.member "Tags" xml) TagList.parse)
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Some (Aws.Query.Pair ("Tags.member", TagList.to_query v.tags))
+         ; Aws.Util.option_map v.metadata (fun f ->
+               Aws.Query.Pair ("Metadata", MetadataMap.to_query f))
+         ; Some (Aws.Query.Pair ("ResourceId", String.to_query v.resource_id))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Some ("Tags", TagList.to_json v.tags)
+         ; Aws.Util.option_map v.metadata (fun f -> "Metadata", MetadataMap.to_json f)
+         ; Some ("ResourceId", String.to_json v.resource_id)
+         ])
+
+  let of_json j =
+    { resource_id =
+        String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "ResourceId"))
+    ; metadata = Aws.Util.option_map (Aws.Json.lookup j "Metadata") MetadataMap.of_json
+    ; tags = TagList.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Tags"))
+    }
+end
+
 module UpdateMaintenanceWindowTaskResult = struct
   type t =
     { window_id : String.t option
@@ -32354,6 +39965,8 @@ module UpdateMaintenanceWindowTaskResult = struct
     ; logging_info : LoggingInfo.t option
     ; name : String.t option
     ; description : String.t option
+    ; cutoff_behavior : MaintenanceWindowTaskCutoffBehavior.t option
+    ; alarm_configuration : AlarmConfiguration.t option
     }
 
   let make
@@ -32370,6 +39983,8 @@ module UpdateMaintenanceWindowTaskResult = struct
       ?logging_info
       ?name
       ?description
+      ?cutoff_behavior
+      ?alarm_configuration
       () =
     { window_id
     ; window_task_id
@@ -32384,6 +39999,8 @@ module UpdateMaintenanceWindowTaskResult = struct
     ; logging_info
     ; name
     ; description
+    ; cutoff_behavior
+    ; alarm_configuration
     }
 
   let parse xml =
@@ -32414,12 +40031,25 @@ module UpdateMaintenanceWindowTaskResult = struct
           Aws.Util.option_bind (Aws.Xml.member "LoggingInfo" xml) LoggingInfo.parse
       ; name = Aws.Util.option_bind (Aws.Xml.member "Name" xml) String.parse
       ; description = Aws.Util.option_bind (Aws.Xml.member "Description" xml) String.parse
+      ; cutoff_behavior =
+          Aws.Util.option_bind
+            (Aws.Xml.member "CutoffBehavior" xml)
+            MaintenanceWindowTaskCutoffBehavior.parse
+      ; alarm_configuration =
+          Aws.Util.option_bind
+            (Aws.Xml.member "AlarmConfiguration" xml)
+            AlarmConfiguration.parse
       }
 
   let to_query v =
     Aws.Query.List
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.description (fun f ->
+         [ Aws.Util.option_map v.alarm_configuration (fun f ->
+               Aws.Query.Pair ("AlarmConfiguration", AlarmConfiguration.to_query f))
+         ; Aws.Util.option_map v.cutoff_behavior (fun f ->
+               Aws.Query.Pair
+                 ("CutoffBehavior", MaintenanceWindowTaskCutoffBehavior.to_query f))
+         ; Aws.Util.option_map v.description (fun f ->
                Aws.Query.Pair ("Description", String.to_query f))
          ; Aws.Util.option_map v.name (fun f ->
                Aws.Query.Pair ("Name", String.to_query f))
@@ -32452,7 +40082,11 @@ module UpdateMaintenanceWindowTaskResult = struct
   let to_json v =
     `Assoc
       (Aws.Util.list_filter_opt
-         [ Aws.Util.option_map v.description (fun f -> "Description", String.to_json f)
+         [ Aws.Util.option_map v.alarm_configuration (fun f ->
+               "AlarmConfiguration", AlarmConfiguration.to_json f)
+         ; Aws.Util.option_map v.cutoff_behavior (fun f ->
+               "CutoffBehavior", MaintenanceWindowTaskCutoffBehavior.to_json f)
+         ; Aws.Util.option_map v.description (fun f -> "Description", String.to_json f)
          ; Aws.Util.option_map v.name (fun f -> "Name", String.to_json f)
          ; Aws.Util.option_map v.logging_info (fun f ->
                "LoggingInfo", LoggingInfo.to_json f)
@@ -32498,6 +40132,102 @@ module UpdateMaintenanceWindowTaskResult = struct
         Aws.Util.option_map (Aws.Json.lookup j "LoggingInfo") LoggingInfo.of_json
     ; name = Aws.Util.option_map (Aws.Json.lookup j "Name") String.of_json
     ; description = Aws.Util.option_map (Aws.Json.lookup j "Description") String.of_json
+    ; cutoff_behavior =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "CutoffBehavior")
+          MaintenanceWindowTaskCutoffBehavior.of_json
+    ; alarm_configuration =
+        Aws.Util.option_map
+          (Aws.Json.lookup j "AlarmConfiguration")
+          AlarmConfiguration.of_json
+    }
+end
+
+module ListOpsItemEventsResponse = struct
+  type t =
+    { next_token : String.t option
+    ; summaries : OpsItemEventSummaries.t
+    }
+
+  let make ?next_token ?(summaries = []) () = { next_token; summaries }
+
+  let parse xml =
+    Some
+      { next_token = Aws.Util.option_bind (Aws.Xml.member "NextToken" xml) String.parse
+      ; summaries =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "Summaries" xml)
+               OpsItemEventSummaries.parse)
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Some
+             (Aws.Query.Pair
+                ("Summaries.member", OpsItemEventSummaries.to_query v.summaries))
+         ; Aws.Util.option_map v.next_token (fun f ->
+               Aws.Query.Pair ("NextToken", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Some ("Summaries", OpsItemEventSummaries.to_json v.summaries)
+         ; Aws.Util.option_map v.next_token (fun f -> "NextToken", String.to_json f)
+         ])
+
+  let of_json j =
+    { next_token = Aws.Util.option_map (Aws.Json.lookup j "NextToken") String.of_json
+    ; summaries =
+        OpsItemEventSummaries.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "Summaries"))
+    }
+end
+
+module GetResourcePoliciesResponse = struct
+  type t =
+    { next_token : String.t option
+    ; policies : GetResourcePoliciesResponseEntries.t
+    }
+
+  let make ?next_token ?(policies = []) () = { next_token; policies }
+
+  let parse xml =
+    Some
+      { next_token = Aws.Util.option_bind (Aws.Xml.member "NextToken" xml) String.parse
+      ; policies =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "Policies" xml)
+               GetResourcePoliciesResponseEntries.parse)
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Some
+             (Aws.Query.Pair
+                ("Policies.member", GetResourcePoliciesResponseEntries.to_query v.policies))
+         ; Aws.Util.option_map v.next_token (fun f ->
+               Aws.Query.Pair ("NextToken", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Some ("Policies", GetResourcePoliciesResponseEntries.to_json v.policies)
+         ; Aws.Util.option_map v.next_token (fun f -> "NextToken", String.to_json f)
+         ])
+
+  let of_json j =
+    { next_token = Aws.Util.option_map (Aws.Json.lookup j "NextToken") String.of_json
+    ; policies =
+        GetResourcePoliciesResponseEntries.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "Policies"))
     }
 end
 
@@ -32547,6 +40277,37 @@ module InvalidDeletionIdException = struct
 
   let of_json j =
     { message = Aws.Util.option_map (Aws.Json.lookup j "Message") String.of_json }
+end
+
+module UpdateOpsMetadataResult = struct
+  type t = { ops_metadata_arn : String.t option }
+
+  let make ?ops_metadata_arn () = { ops_metadata_arn }
+
+  let parse xml =
+    Some
+      { ops_metadata_arn =
+          Aws.Util.option_bind (Aws.Xml.member "OpsMetadataArn" xml) String.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.ops_metadata_arn (fun f ->
+               Aws.Query.Pair ("OpsMetadataArn", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.ops_metadata_arn (fun f ->
+               "OpsMetadataArn", String.to_json f)
+         ])
+
+  let of_json j =
+    { ops_metadata_arn =
+        Aws.Util.option_map (Aws.Json.lookup j "OpsMetadataArn") String.of_json
+    }
 end
 
 module DescribePatchBaselinesResult = struct
@@ -32641,6 +40402,74 @@ module DescribeParametersResult = struct
     }
 end
 
+module OpsMetadataTooManyUpdatesException = struct
+  type t = { message : String.t option }
+
+  let make ?message () = { message }
+
+  let parse xml =
+    Some { message = Aws.Util.option_bind (Aws.Xml.member "message" xml) String.parse }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f ->
+               Aws.Query.Pair ("message", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.message (fun f -> "message", String.to_json f) ])
+
+  let of_json j =
+    { message = Aws.Util.option_map (Aws.Json.lookup j "message") String.of_json }
+end
+
+module ListOpsMetadataResult = struct
+  type t =
+    { ops_metadata_list : OpsMetadataList.t
+    ; next_token : String.t option
+    }
+
+  let make ?(ops_metadata_list = []) ?next_token () = { ops_metadata_list; next_token }
+
+  let parse xml =
+    Some
+      { ops_metadata_list =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "OpsMetadataList" xml)
+               OpsMetadataList.parse)
+      ; next_token = Aws.Util.option_bind (Aws.Xml.member "NextToken" xml) String.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.next_token (fun f ->
+               Aws.Query.Pair ("NextToken", String.to_query f))
+         ; Some
+             (Aws.Query.Pair
+                ("OpsMetadataList.member", OpsMetadataList.to_query v.ops_metadata_list))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.next_token (fun f -> "NextToken", String.to_json f)
+         ; Some ("OpsMetadataList", OpsMetadataList.to_json v.ops_metadata_list)
+         ])
+
+  let of_json j =
+    { ops_metadata_list =
+        OpsMetadataList.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "OpsMetadataList"))
+    ; next_token = Aws.Util.option_map (Aws.Json.lookup j "NextToken") String.of_json
+    }
+end
+
 module GetParameterResult = struct
   type t = { parameter : Parameter.t option }
 
@@ -32718,16 +40547,190 @@ module ListComplianceSummariesRequest = struct
     }
 end
 
+module UpdateOpsMetadataRequest = struct
+  type t =
+    { ops_metadata_arn : String.t
+    ; metadata_to_update : MetadataMap.t option
+    ; keys_to_delete : MetadataKeysToDeleteList.t
+    }
+
+  let make ~ops_metadata_arn ?metadata_to_update ?(keys_to_delete = []) () =
+    { ops_metadata_arn; metadata_to_update; keys_to_delete }
+
+  let parse xml =
+    Some
+      { ops_metadata_arn =
+          Aws.Xml.required
+            "OpsMetadataArn"
+            (Aws.Util.option_bind (Aws.Xml.member "OpsMetadataArn" xml) String.parse)
+      ; metadata_to_update =
+          Aws.Util.option_bind (Aws.Xml.member "MetadataToUpdate" xml) MetadataMap.parse
+      ; keys_to_delete =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "KeysToDelete" xml)
+               MetadataKeysToDeleteList.parse)
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Some
+             (Aws.Query.Pair
+                ("KeysToDelete.member", MetadataKeysToDeleteList.to_query v.keys_to_delete))
+         ; Aws.Util.option_map v.metadata_to_update (fun f ->
+               Aws.Query.Pair ("MetadataToUpdate", MetadataMap.to_query f))
+         ; Some (Aws.Query.Pair ("OpsMetadataArn", String.to_query v.ops_metadata_arn))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Some ("KeysToDelete", MetadataKeysToDeleteList.to_json v.keys_to_delete)
+         ; Aws.Util.option_map v.metadata_to_update (fun f ->
+               "MetadataToUpdate", MetadataMap.to_json f)
+         ; Some ("OpsMetadataArn", String.to_json v.ops_metadata_arn)
+         ])
+
+  let of_json j =
+    { ops_metadata_arn =
+        String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "OpsMetadataArn"))
+    ; metadata_to_update =
+        Aws.Util.option_map (Aws.Json.lookup j "MetadataToUpdate") MetadataMap.of_json
+    ; keys_to_delete =
+        MetadataKeysToDeleteList.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "KeysToDelete"))
+    }
+end
+
 module PutComplianceItemsResult = struct
   type t = unit
 
   let make () = ()
-
   let parse xml = Some ()
-
   let to_query v = Aws.Query.List (Aws.Util.list_filter_opt [])
-
   let to_json v = `Assoc (Aws.Util.list_filter_opt [])
-
   let of_json j = ()
+end
+
+module ServiceQuotaExceededException = struct
+  type t =
+    { message : String.t
+    ; resource_id : String.t option
+    ; resource_type : String.t option
+    ; quota_code : String.t
+    ; service_code : String.t
+    }
+
+  let make ~message ?resource_id ?resource_type ~quota_code ~service_code () =
+    { message; resource_id; resource_type; quota_code; service_code }
+
+  let parse xml =
+    Some
+      { message =
+          Aws.Xml.required
+            "Message"
+            (Aws.Util.option_bind (Aws.Xml.member "Message" xml) String.parse)
+      ; resource_id = Aws.Util.option_bind (Aws.Xml.member "ResourceId" xml) String.parse
+      ; resource_type =
+          Aws.Util.option_bind (Aws.Xml.member "ResourceType" xml) String.parse
+      ; quota_code =
+          Aws.Xml.required
+            "QuotaCode"
+            (Aws.Util.option_bind (Aws.Xml.member "QuotaCode" xml) String.parse)
+      ; service_code =
+          Aws.Xml.required
+            "ServiceCode"
+            (Aws.Util.option_bind (Aws.Xml.member "ServiceCode" xml) String.parse)
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Some (Aws.Query.Pair ("ServiceCode", String.to_query v.service_code))
+         ; Some (Aws.Query.Pair ("QuotaCode", String.to_query v.quota_code))
+         ; Aws.Util.option_map v.resource_type (fun f ->
+               Aws.Query.Pair ("ResourceType", String.to_query f))
+         ; Aws.Util.option_map v.resource_id (fun f ->
+               Aws.Query.Pair ("ResourceId", String.to_query f))
+         ; Some (Aws.Query.Pair ("Message", String.to_query v.message))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Some ("ServiceCode", String.to_json v.service_code)
+         ; Some ("QuotaCode", String.to_json v.quota_code)
+         ; Aws.Util.option_map v.resource_type (fun f -> "ResourceType", String.to_json f)
+         ; Aws.Util.option_map v.resource_id (fun f -> "ResourceId", String.to_json f)
+         ; Some ("Message", String.to_json v.message)
+         ])
+
+  let of_json j =
+    { message = String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "Message"))
+    ; resource_id = Aws.Util.option_map (Aws.Json.lookup j "ResourceId") String.of_json
+    ; resource_type =
+        Aws.Util.option_map (Aws.Json.lookup j "ResourceType") String.of_json
+    ; quota_code = String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "QuotaCode"))
+    ; service_code =
+        String.of_json (Aws.Util.of_option_exn (Aws.Json.lookup j "ServiceCode"))
+    }
+end
+
+module ListOpsItemRelatedItemsRequest = struct
+  type t =
+    { ops_item_id : String.t option
+    ; filters : OpsItemRelatedItemsFilters.t
+    ; max_results : Integer.t option
+    ; next_token : String.t option
+    }
+
+  let make ?ops_item_id ?(filters = []) ?max_results ?next_token () =
+    { ops_item_id; filters; max_results; next_token }
+
+  let parse xml =
+    Some
+      { ops_item_id = Aws.Util.option_bind (Aws.Xml.member "OpsItemId" xml) String.parse
+      ; filters =
+          Aws.Util.of_option
+            []
+            (Aws.Util.option_bind
+               (Aws.Xml.member "Filters" xml)
+               OpsItemRelatedItemsFilters.parse)
+      ; max_results = Aws.Util.option_bind (Aws.Xml.member "MaxResults" xml) Integer.parse
+      ; next_token = Aws.Util.option_bind (Aws.Xml.member "NextToken" xml) String.parse
+      }
+
+  let to_query v =
+    Aws.Query.List
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.next_token (fun f ->
+               Aws.Query.Pair ("NextToken", String.to_query f))
+         ; Aws.Util.option_map v.max_results (fun f ->
+               Aws.Query.Pair ("MaxResults", Integer.to_query f))
+         ; Some
+             (Aws.Query.Pair
+                ("Filters.member", OpsItemRelatedItemsFilters.to_query v.filters))
+         ; Aws.Util.option_map v.ops_item_id (fun f ->
+               Aws.Query.Pair ("OpsItemId", String.to_query f))
+         ])
+
+  let to_json v =
+    `Assoc
+      (Aws.Util.list_filter_opt
+         [ Aws.Util.option_map v.next_token (fun f -> "NextToken", String.to_json f)
+         ; Aws.Util.option_map v.max_results (fun f -> "MaxResults", Integer.to_json f)
+         ; Some ("Filters", OpsItemRelatedItemsFilters.to_json v.filters)
+         ; Aws.Util.option_map v.ops_item_id (fun f -> "OpsItemId", String.to_json f)
+         ])
+
+  let of_json j =
+    { ops_item_id = Aws.Util.option_map (Aws.Json.lookup j "OpsItemId") String.of_json
+    ; filters =
+        OpsItemRelatedItemsFilters.of_json
+          (Aws.Util.of_option_exn (Aws.Json.lookup j "Filters"))
+    ; max_results = Aws.Util.option_map (Aws.Json.lookup j "MaxResults") Integer.of_json
+    ; next_token = Aws.Util.option_map (Aws.Json.lookup j "NextToken") String.of_json
+    }
 end

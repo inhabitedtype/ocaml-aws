@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeStackResourcesInput.t
-
 type output = DescribeStackResourcesOutput.t
-
 type error = Errors_internal.t
 
 include

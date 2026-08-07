@@ -1,9 +1,5 @@
-open Types
-
 type input = ValidateTemplateInput.t
-
 type output = ValidateTemplateOutput.t
-
 type error = Errors_internal.t
 
 include

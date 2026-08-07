@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeTransitGatewayAttachmentsRequest.t
-
 type output = DescribeTransitGatewayAttachmentsResult.t
-
 type error = Errors_internal.t
 
 include

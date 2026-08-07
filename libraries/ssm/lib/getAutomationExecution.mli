@@ -1,9 +1,7 @@
 open Types
 
 type input = GetAutomationExecutionRequest.t
-
 type output = GetAutomationExecutionResult.t
-
 type error = Errors_internal.t
 
 include

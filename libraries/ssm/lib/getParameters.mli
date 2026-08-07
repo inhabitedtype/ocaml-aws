@@ -1,9 +1,7 @@
 open Types
 
 type input = GetParametersRequest.t
-
 type output = GetParametersResult.t
-
 type error = Errors_internal.t
 
 include

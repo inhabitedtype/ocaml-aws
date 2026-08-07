@@ -125,7 +125,6 @@ module Json = struct
 end
 
 let log s = Printf.eprintf (s ^^ "\n%!")
-
 let ( </> ) a b = Filename.concat a b
 
 let rec mkdir_p ?(root = "") dirs =
@@ -136,7 +135,7 @@ let rec mkdir_p ?(root = "") dirs =
       (try Unix.mkdir dir 0o777 with Unix.Unix_error (Unix.EEXIST, _, _) -> ());
       mkdir_p ~root:dir ds
 
-let main input override errors_path outdir is_ec2 (optional_libs : string list) =
+let main input override errors_path outdir is_ec2 split (optional_libs : string list) =
   log "## Generating...";
   let overrides =
     match override with
@@ -192,14 +191,37 @@ let main input override errors_path outdir is_ec2 (optional_libs : string list) 
         common @ specific
   in
   let errors =
-    List.sort_uniq
-      Structures.Error.compare
-      (Util.filter_map shp_json ~f:(fun (nm, flds) ->
-           match Json.member "exception" flds with
-           | `Bool true -> Some (Reading.error nm flds)
-           | `Null | `Bool false -> None
-           | _ -> assert false)
-      @ common_errors)
+    let all =
+      List.sort_uniq
+        Structures.Error.compare
+        (Util.filter_map shp_json ~f:(fun (nm, flds) ->
+             match Json.member "exception" flds with
+             | `Bool true -> Some (Reading.error nm flds)
+             | `Null | `Bool false -> None
+             | _ -> assert false)
+        @ common_errors)
+    in
+    (* The same error code can appear both as a service-specific exception
+       shape and in the common errors file, sometimes with differing
+       http_code/string_name. Those map to a single OCaml variant, so dedup on
+       variant_name, preferring an entry that carries a real HTTP code. *)
+    List.fold_left
+      (fun acc (e : Structures.Error.t) ->
+        match
+          List.partition
+            (fun (e' : Structures.Error.t) -> e'.variant_name = e.variant_name)
+            acc
+        with
+        | [], _ -> acc @ [ e ]
+        | existing :: _, rest ->
+            let keep =
+              match existing.http_code, e.http_code with
+              | None, Some _ -> e
+              | _ -> existing
+            in
+            rest @ [ keep ])
+      []
+      all
   in
   let shapes, ops =
     inline_shapes
@@ -216,7 +238,43 @@ let main input override errors_path outdir is_ec2 (optional_libs : string list) 
   let dir = outdir </> lib_name_dir in
   let lib_dir = dir </> "lib" in
   let lib_dir_test = dir </> "lib_test" in
-  Printing.write_structure (lib_dir </> "types.ml") (Generate.types is_ec2 shapes);
+  if split
+  then begin
+    (* One file per shape: a shape becomes a top-level library module, so an
+        op only elaborates the shapes it references instead of the whole
+        signature. Only valid when the shape graph is acyclic (no shape SCC
+        with >1 member), since OCaml has no cross-file recursive modules. *)
+    let units = Generate.type_units is_ec2 shapes in
+    List.iter
+      (function
+        | `Single (nm, str, _sig) ->
+            (* Only open BaseTypes when the shape references it, otherwise the
+               per-shape file trips warning 33 (unused open). *)
+            let header =
+              if Generate.uses_basetypes str then [ Syntax.open_ "Aws.BaseTypes" ] else []
+            in
+            Printing.write_structure (lib_dir </> uncapitalize nm ^ ".ml") (header @ str)
+        | `Group group ->
+            let names = String.concat ", " (List.map (fun (nm, _, _) -> nm) group) in
+            failwith
+              (Printf.sprintf
+                 "--split-types: mutually-recursive shapes (%s) cannot be split across \
+                  files; this service has a cyclic shape graph"
+                 names))
+      units;
+    (* Backward-compatible namespace: re-export every shape as an alias under a
+        [Types] module, so existing [Aws_x.Types.Foo] references keep working.
+        Each shape is still its own compilation unit; the wrapper holds only
+        aliases ([module Foo = Foo]), which the typechecker elaborates without
+        per-shape signature substitution, so this does not reintroduce the
+        whole-signature (quadratic) cost the split was meant to avoid. *)
+    let alias_of = function
+      | `Single (nm, _, _) -> [ Syntax.modlet nm nm ]
+      | `Group group -> List.map (fun (nm, _, _) -> Syntax.modlet nm nm) group
+    in
+    Printing.write_structure (lib_dir </> "types.ml") (List.concat_map alias_of units)
+  end
+  else Printing.write_structure (lib_dir </> "types.ml") (Generate.types is_ec2 shapes);
   log
     "## Wrote %d/%d shape modules..."
     (StringTable.cardinal shapes)
@@ -227,7 +285,7 @@ let main input override errors_path outdir is_ec2 (optional_libs : string list) 
   log "## Wrote %d error variants..." (List.length errors);
   List.iter
     (fun op ->
-      let mli, ml = Generate.op lib_name api_version shapes op signature_version in
+      let mli, ml = Generate.op ~split lib_name api_version shapes op signature_version in
       let modname = uncapitalize op.Operation.name in
       Printing.write_signature (lib_dir </> modname ^ ".mli") mli;
       Printing.write_structure (lib_dir </> modname ^ ".ml") ml)
@@ -290,13 +348,22 @@ module CommandLine = struct
     let doc = "This enables EC2-specific special casing in parts of code generation." in
     Arg.(value & flag & info [ "is-ec2" ] ~docv:"Filename" ~doc)
 
+  let split =
+    let doc =
+      "Emit one file per shape instead of a single large types.ml. Speeds up compilation \
+       of large services by avoiding whole-signature elaboration per unit. Only valid \
+       for services with an acyclic shape graph."
+    in
+    Arg.(value & flag & info [ "split-types" ] ~doc)
+
   let optional_libs =
     let doc = "This allows us to include arbitrary libraries in our test files" in
     let type_ = Arg.(opt (list string) []) in
     Arg.(value & (type_ @@ info ~docv:"Filename" [ "optional-libs" ] ~doc))
 
   let gen_t =
-    Term.(const main $ input $ override $ errors $ outdir $ is_ec2 $ optional_libs)
+    Term.(
+      const main $ input $ override $ errors $ outdir $ is_ec2 $ split $ optional_libs)
 
   let info =
     let doc = "Generate a library for an AWS schema." in

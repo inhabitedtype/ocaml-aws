@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeCertificatesMessage.t
-
 type output = CertificateMessage.t
-
 type error = Errors_internal.t
 
 include

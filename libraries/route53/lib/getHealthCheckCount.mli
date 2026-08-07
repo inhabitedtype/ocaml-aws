@@ -1,9 +1,5 @@
-open Types
-
 type input = unit
-
 type output = GetHealthCheckCountResponse.t
-
 type error = Errors_internal.t
 
 include

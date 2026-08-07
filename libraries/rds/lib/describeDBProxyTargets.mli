@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeDBProxyTargetsRequest.t
-
 type output = DescribeDBProxyTargetsResponse.t
-
 type error = Errors_internal.t
 
 include

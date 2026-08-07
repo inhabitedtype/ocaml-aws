@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeDBLogFilesMessage.t
-
 type output = DescribeDBLogFilesResponse.t
-
 type error = Errors_internal.t
 
 include

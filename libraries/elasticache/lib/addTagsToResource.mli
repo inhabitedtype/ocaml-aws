@@ -1,9 +1,5 @@
-open Types
-
 type input = AddTagsToResourceMessage.t
-
 type output = TagListMessage.t
-
 type error = Errors_internal.t
 
 include

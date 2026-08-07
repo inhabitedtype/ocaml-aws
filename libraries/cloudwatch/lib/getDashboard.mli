@@ -1,9 +1,5 @@
-open Types
-
 type input = GetDashboardInput.t
-
 type output = GetDashboardOutput.t
-
 type error = Errors_internal.t
 
 include

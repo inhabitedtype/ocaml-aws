@@ -1,9 +1,5 @@
-open Types
-
 type input = DeregisterTransitGatewayMulticastGroupMembersRequest.t
-
 type output = DeregisterTransitGatewayMulticastGroupMembersResult.t
-
 type error = Errors_internal.t
 
 include

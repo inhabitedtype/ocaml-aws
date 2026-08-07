@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeElasticGpusRequest.t
-
 type output = DescribeElasticGpusResult.t
-
 type error = Errors_internal.t
 
 include

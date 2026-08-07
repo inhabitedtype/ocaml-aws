@@ -1,9 +1,5 @@
-open Types
-
 type input = ImportKeyMaterialRequest.t
-
-type output = unit
-
+type output = ImportKeyMaterialResponse.t
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,5 @@
-open Types
-
 type input = RestoreDBClusterToPointInTimeMessage.t
-
 type output = RestoreDBClusterToPointInTimeResult.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeValidDBInstanceModificationsMessage.t
-
 type output = DescribeValidDBInstanceModificationsResult.t
-
 type error = Errors_internal.t
 
 include

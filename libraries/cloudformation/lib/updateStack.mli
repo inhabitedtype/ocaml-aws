@@ -1,9 +1,5 @@
-open Types
-
 type input = UpdateStackInput.t
-
 type output = UpdateStackOutput.t
-
 type error = Errors_internal.t
 
 include

@@ -1,9 +1,7 @@
 open Types
 
 type input = CreateOpsItemRequest.t
-
 type output = CreateOpsItemResponse.t
-
 type error = Errors_internal.t
 
 include

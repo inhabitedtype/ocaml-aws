@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeCacheSecurityGroupsMessage.t
-
 type output = CacheSecurityGroupMessage.t
-
 type error = Errors_internal.t
 
 include

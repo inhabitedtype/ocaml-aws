@@ -1,9 +1,5 @@
-open Types
-
 type input = CreateStackInstancesInput.t
-
 type output = CreateStackInstancesOutput.t
-
 type error = Errors_internal.t
 
 include

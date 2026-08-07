@@ -30,8 +30,8 @@
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
   ----------------------------------------------------------------------------*)
-(** This module contains an {{:https://github.com/ocsigen/lwt} [Lwt]} based runtime
-    for executing AWS requests. *)
+(** This module contains an {{:https://github.com/ocsigen/lwt} [Lwt]} based runtime for
+    executing AWS requests. *)
 
 val run_request :
      region:string
@@ -41,5 +41,5 @@ val run_request :
   -> ('input, 'output, 'error) Aws.call
   -> 'input
   -> [ `Ok of 'output | `Error of 'error Aws.Error.t ] Lwt.t
-(** Run an AWS request, in the [region] with [access_key] and [secret_key].
- * An STS assume_role [token] can be optionally used to sign the request. *)
+(** Run an AWS request, in the [region] with [access_key] and [secret_key]. * An STS
+    assume_role [token] can be optionally used to sign the request. *)

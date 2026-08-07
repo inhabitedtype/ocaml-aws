@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeNetworkInterfacePermissionsRequest.t
-
 type output = DescribeNetworkInterfacePermissionsResult.t
-
 type error = Errors_internal.t
 
 include

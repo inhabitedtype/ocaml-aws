@@ -1,9 +1,5 @@
-open Types
-
 type input = CreateCacheClusterMessage.t
-
 type output = CreateCacheClusterResult.t
-
 type error = Errors_internal.t
 
 include

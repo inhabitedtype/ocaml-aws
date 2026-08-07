@@ -1,9 +1,5 @@
-open Types
-
 type input = GetEventSelectorsRequest.t
-
 type output = GetEventSelectorsResponse.t
-
 type error = Errors_internal.t
 
 include

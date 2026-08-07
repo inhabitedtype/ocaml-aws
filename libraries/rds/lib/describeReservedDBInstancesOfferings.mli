@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeReservedDBInstancesOfferingsMessage.t
-
 type output = ReservedDBInstancesOfferingMessage.t
-
 type error = Errors_internal.t
 
 include

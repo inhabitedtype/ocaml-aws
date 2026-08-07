@@ -2,6 +2,7 @@ type t =
   | AuthFailure
   | Blocked
   | ConcurrentModificationException
+  | ConflictException
   | DryRunOperation
   | IdempotentParameterMismatch
   | IncompleteSignature
@@ -16,6 +17,9 @@ type t =
   | InvalidParameterInput
   | InvalidParameterValue
   | InvalidQueryParameter
+  | KmsAccessDeniedException
+  | KmsKeyDisabledException
+  | KmsKeyNotFoundException
   | LimitExceeded
   | LimitExceededException
   | MalformedQueryString
@@ -70,6 +74,7 @@ let to_http_code e =
   | AuthFailure -> None
   | Blocked -> None
   | ConcurrentModificationException -> Some 429
+  | ConflictException -> Some 409
   | DryRunOperation -> None
   | IdempotentParameterMismatch -> None
   | IncompleteSignature -> Some 400
@@ -84,6 +89,9 @@ let to_http_code e =
   | InvalidParameterInput -> Some 400
   | InvalidParameterValue -> Some 400
   | InvalidQueryParameter -> Some 400
+  | KmsAccessDeniedException -> None
+  | KmsKeyDisabledException -> None
+  | KmsKeyNotFoundException -> None
   | LimitExceeded -> Some 400
   | LimitExceededException -> Some 400
   | MalformedQueryString -> Some 404
@@ -109,6 +117,7 @@ let to_string e =
   | AuthFailure -> "AuthFailure"
   | Blocked -> "Blocked"
   | ConcurrentModificationException -> "ConcurrentModificationException"
+  | ConflictException -> "ConflictException"
   | DryRunOperation -> "DryRunOperation"
   | IdempotentParameterMismatch -> "IdempotentParameterMismatch"
   | IncompleteSignature -> "IncompleteSignature"
@@ -123,6 +132,9 @@ let to_string e =
   | InvalidParameterInput -> "InvalidParameterInput"
   | InvalidParameterValue -> "InvalidParameterValue"
   | InvalidQueryParameter -> "InvalidQueryParameter"
+  | KmsAccessDeniedException -> "KmsAccessDeniedException"
+  | KmsKeyDisabledException -> "KmsKeyDisabledException"
+  | KmsKeyNotFoundException -> "KmsKeyNotFoundException"
   | LimitExceeded -> "LimitExceeded"
   | LimitExceededException -> "LimitExceededException"
   | MalformedQueryString -> "MalformedQueryString"
@@ -148,6 +160,7 @@ let of_string e =
   | "AuthFailure" -> Some AuthFailure
   | "Blocked" -> Some Blocked
   | "ConcurrentModificationException" -> Some ConcurrentModificationException
+  | "ConflictException" -> Some ConflictException
   | "DryRunOperation" -> Some DryRunOperation
   | "IdempotentParameterMismatch" -> Some IdempotentParameterMismatch
   | "IncompleteSignature" -> Some IncompleteSignature
@@ -162,6 +175,9 @@ let of_string e =
   | "InvalidParameterInput" -> Some InvalidParameterInput
   | "InvalidParameterValue" -> Some InvalidParameterValue
   | "InvalidQueryParameter" -> Some InvalidQueryParameter
+  | "KmsAccessDeniedException" -> Some KmsAccessDeniedException
+  | "KmsKeyDisabledException" -> Some KmsKeyDisabledException
+  | "KmsKeyNotFoundException" -> Some KmsKeyNotFoundException
   | "LimitExceeded" -> Some LimitExceeded
   | "LimitExceededException" -> Some LimitExceededException
   | "MalformedQueryString" -> Some MalformedQueryString

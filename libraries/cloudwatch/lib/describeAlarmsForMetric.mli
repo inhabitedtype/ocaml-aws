@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeAlarmsForMetricInput.t
-
 type output = DescribeAlarmsForMetricOutput.t
-
 type error = Errors_internal.t
 
 include

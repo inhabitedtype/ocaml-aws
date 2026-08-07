@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeCacheEngineVersionsMessage.t
-
 type output = CacheEngineVersionMessage.t
-
 type error = Errors_internal.t
 
 include

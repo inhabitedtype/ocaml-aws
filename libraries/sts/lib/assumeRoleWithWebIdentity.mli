@@ -1,9 +1,5 @@
-open Types
-
 type input = AssumeRoleWithWebIdentityRequest.t
-
 type output = AssumeRoleWithWebIdentityResponse.t
-
 type error = Errors_internal.t
 
 include

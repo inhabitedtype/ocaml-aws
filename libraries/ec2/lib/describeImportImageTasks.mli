@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeImportImageTasksRequest.t
-
 type output = DescribeImportImageTasksResult.t
-
 type error = Errors_internal.t
 
 include

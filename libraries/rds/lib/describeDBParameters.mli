@@ -1,9 +1,5 @@
-open Types
-
 type input = DescribeDBParametersMessage.t
-
 type output = DBParameterGroupDetails.t
-
 type error = Errors_internal.t
 
 include
